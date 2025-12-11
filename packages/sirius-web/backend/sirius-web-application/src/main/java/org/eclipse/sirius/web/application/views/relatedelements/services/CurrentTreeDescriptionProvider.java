@@ -20,16 +20,19 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.sirius.components.core.CoreImageConstants;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
@@ -73,14 +76,11 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
 
     private final ILabelService labelService;
 
-    private final ComposedAdapterFactory adapterFactory;
-    
     private final IMessageService messageService;
 
-    public CurrentTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory, IMessageService messageService) {
+    public CurrentTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, IMessageService messageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.adapterFactory = Objects.requireNonNull(adapterFactory);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -129,7 +129,12 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
         } else if (self instanceof EReference eReference) {
             var optionalRootEObject = variableManager.get(TreeComponent.ROOT_VARIABLE, EObject.class);
             if (optionalRootEObject.isPresent()) {
-                result = this.getContainmentReferenceLabel(optionalRootEObject.get(), eReference);
+                var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                        .map(IEMFEditingContext::getDomain)
+                        .map(AdapterFactoryEditingDomain::getAdapterFactory);
+                if (optionalAdapterFactory.isPresent()) {
+                    result = this.getContainmentReferenceLabel(optionalAdapterFactory.get(), optionalRootEObject.get(), eReference);
+                }
             }
             if (result == null) {
                 result = this.labelService.getStyledLabel(self).toString();
@@ -144,8 +149,8 @@ public class CurrentTreeDescriptionProvider implements ICurrentTreeDescriptionPr
      * EMF Edit does not generate IItemPropertyDescriptors for containment references, so we have to resort to looking
      * up the label directly in the ResourceLocator.
      */
-    private String getContainmentReferenceLabel(EObject eObject, EReference eReference) {
-        Adapter adapter = this.adapterFactory.adapt(eObject, IItemLabelProvider.class);
+    private String getContainmentReferenceLabel(AdapterFactory adapterFactory, EObject eObject, EReference eReference) {
+        Adapter adapter = adapterFactory.adapt(eObject, IItemLabelProvider.class);
         if (adapter instanceof ItemProviderAdapter editingDomainItemProvider) {
             String key = String.format("_UI_%s_%s_feature", eReference.getEContainingClass().getName(), eReference.getName());
             try {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -33,23 +35,23 @@ public class EStructuralFeatureChoiceOfValueProvider implements Function<Variabl
 
     private final String featureVariableName;
 
-    private final AdapterFactory adapterFactory;
-
-    public EStructuralFeatureChoiceOfValueProvider(String featureVariableName, AdapterFactory adapterFactory) {
+    public EStructuralFeatureChoiceOfValueProvider(String featureVariableName) {
         this.featureVariableName = Objects.requireNonNull(featureVariableName);
-        this.adapterFactory = Objects.requireNonNull(adapterFactory);
     }
 
     @Override
     public List<?> apply(VariableManager variableManager) {
         var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
         var optionalEReference = variableManager.get(this.featureVariableName, EReference.class);
+        var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                .map(IEMFEditingContext::getDomain)
+                .map(AdapterFactoryEditingDomain::getAdapterFactory);
 
-        if (optionalEObject.isPresent() && optionalEReference.isPresent()) {
+        if (optionalEObject.isPresent() && optionalEReference.isPresent() && optionalAdapterFactory.isPresent()) {
             EObject eObject = optionalEObject.get();
             EReference eReference = optionalEReference.get();
 
-            Object adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
+            Object adapter = optionalAdapterFactory.get().adapt(eObject, IItemPropertySource.class);
             if (adapter instanceof IItemPropertySource itemPropertySource) {
                 IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eReference);
                 if (descriptor != null) {

@@ -24,13 +24,15 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -59,22 +61,19 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
 
     private final ILabelService labelService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IEMFKindService emfKindService;
 
-    public ReferenceWidgetPropertiesConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, IEMFKindService emfKindService) {
+    public ReferenceWidgetPropertiesConverter(IIdentityService identityService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ILabelService labelService, IEMFKindService emfKindService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.labelService = Objects.requireNonNull(labelService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.emfKindService = Objects.requireNonNull(emfKindService);
     }
 
     @Override
     public void convert(Builder referenceWidgetDescriptionBuilder, ReferenceWidgetDescription viewReferenceWidgetDescription, AQLInterpreter interpreter) {
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(identityService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         referenceWidgetDescriptionBuilder
@@ -146,8 +145,12 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
     private List<?> getReferenceOptions(AQLInterpreter interpreter, ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
         EObject owner = this.getReferenceOwner(interpreter, variableManager, referenceDescription.getReferenceOwnerExpression());
         String referenceName = new StringValueProvider(interpreter, Optional.ofNullable(referenceDescription.getReferenceNameExpression()).orElse("")).apply(variableManager);
-        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference eReference) {
-            Object adapter = this.composedAdapterFactory.adapt(owner, IItemPropertySource.class);
+        var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                .map(IEMFEditingContext::getDomain)
+                .map(AdapterFactoryEditingDomain::getAdapterFactory);
+
+        if (owner != null && owner.eClass().getEStructuralFeature(referenceName) instanceof EReference eReference && optionalAdapterFactory.isPresent()) {
+            var adapter = optionalAdapterFactory.get().adapt(owner, IItemPropertySource.class);
             if (adapter instanceof IItemPropertySource itemPropertySource) {
                 IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(owner, eReference);
                 List<?> referenceOptions;

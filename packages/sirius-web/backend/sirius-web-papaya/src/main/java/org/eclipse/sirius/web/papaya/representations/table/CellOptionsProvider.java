@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,9 +23,11 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -35,23 +37,21 @@ import org.eclipse.sirius.components.representations.VariableManager;
  */
 public class CellOptionsProvider implements BiFunction<VariableManager, Object, List<Object>> {
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
-    public CellOptionsProvider(ComposedAdapterFactory composedAdapterFactory) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
-    }
-
     @Override
     public List<Object> apply(VariableManager variableManager, Object columnTargetObject) {
         List<Object> options = new ArrayList<>();
         Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-        if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
+        var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                .map(IEMFEditingContext::getDomain)
+                .map(AdapterFactoryEditingDomain::getAdapterFactory);
+
+        if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature && optionalAdapterFactory.isPresent()) {
             EObject eObject = optionalEObject.get();
             EClassifier eType = eStructuralFeature.getEType();
             if (eType instanceof EEnum eEnum) {
                 options.addAll(eEnum.getELiterals());
             } else {
-                Object adapter = this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class);
+                var adapter = optionalAdapterFactory.get().adapt(eObject, IItemPropertySource.class);
                 if (adapter instanceof IItemPropertySource itemPropertySource) {
                     IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eStructuralFeature);
                     if (descriptor != null) {

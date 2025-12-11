@@ -17,16 +17,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.Project;
@@ -59,12 +61,9 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
 
     private final ILabelService labelService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
-    public ProjectTableRepresentationDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory) {
+    public ProjectTableRepresentationDescriptionProvider(IIdentityService identityService, ILabelService labelService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .labelProvider(new TableLabelProvider(this.labelService))
                 .canCreatePredicate(this::canCreate)
                 .lineDescription(lineDescription)
-                .columnDescriptions(this.getColumnDescriptions())
+                .columnDescriptions(this.getColumnDescriptions(editingContext))
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellDescriptions(this.getCellDescriptions())
@@ -115,8 +114,8 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
         return new CursorBasedNavigationServices().collect(self, cursor, direction, size);
     }
 
-    private List<ColumnDescription> getColumnDescriptions() {
-        Map<EStructuralFeature, String> featureToDisplayName = this.getColumnsStructuralFeaturesDisplayName();
+    private List<ColumnDescription> getColumnDescriptions(IEditingContext editingContext) {
+        Map<EStructuralFeature, String> featureToDisplayName = this.getColumnsStructuralFeaturesDisplayName(editingContext);
 
         Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
                 .map(featureToDisplayName::get)
@@ -155,40 +154,49 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .toList();
     }
 
-    private Map<EStructuralFeature, String> getColumnsStructuralFeaturesDisplayName() {
+    private Map<EStructuralFeature, String> getColumnsStructuralFeaturesDisplayName(IEditingContext editingContext) {
         Map<EStructuralFeature, String> result = new HashMap<>();
-        var objects = List.of(
-                PapayaFactory.eINSTANCE.createAnnotation(),
-                PapayaFactory.eINSTANCE.createAnnotationField(),
-                PapayaFactory.eINSTANCE.createAttribute(),
-                PapayaFactory.eINSTANCE.createClass(),
-                PapayaFactory.eINSTANCE.createComponent(),
-                PapayaFactory.eINSTANCE.createComponentExchange(),
-                PapayaFactory.eINSTANCE.createComponentPort(),
-                PapayaFactory.eINSTANCE.createConstructor(),
-                PapayaFactory.eINSTANCE.createContribution(),
-                PapayaFactory.eINSTANCE.createDataType(),
-                PapayaFactory.eINSTANCE.createEnum(),
-                PapayaFactory.eINSTANCE.createEnumLiteral(),
-                PapayaFactory.eINSTANCE.createGenericType(),
-                PapayaFactory.eINSTANCE.createInterface(),
-                PapayaFactory.eINSTANCE.createIteration(),
-                PapayaFactory.eINSTANCE.createOperation(),
-                PapayaFactory.eINSTANCE.createPackage(),
-                PapayaFactory.eINSTANCE.createParameter(),
-                PapayaFactory.eINSTANCE.createProject(),
-                PapayaFactory.eINSTANCE.createProvidedService(),
-                PapayaFactory.eINSTANCE.createRecord(),
-                PapayaFactory.eINSTANCE.createRecordComponent(),
-                PapayaFactory.eINSTANCE.createRequiredService(),
-                PapayaFactory.eINSTANCE.createTag(),
-                PapayaFactory.eINSTANCE.createTask(),
-                PapayaFactory.eINSTANCE.createTypeParameter()
-        );
 
-        var provider = new StructuralFeatureToDisplayNameProvider(new DisplayNameProvider(this.composedAdapterFactory));
-        for (var eObject : objects) {
-            this.addStructuralFeature(result, provider.getColumnsStructuralFeaturesDisplayName(eObject, eObject.eClass()));
+        var optionalAdapterFactory = Optional.of(editingContext)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
+                .map(AdapterFactoryEditingDomain::getAdapterFactory);
+
+        if (optionalAdapterFactory.isPresent()) {
+            var objects = List.of(
+                    PapayaFactory.eINSTANCE.createAnnotation(),
+                    PapayaFactory.eINSTANCE.createAnnotationField(),
+                    PapayaFactory.eINSTANCE.createAttribute(),
+                    PapayaFactory.eINSTANCE.createClass(),
+                    PapayaFactory.eINSTANCE.createComponent(),
+                    PapayaFactory.eINSTANCE.createComponentExchange(),
+                    PapayaFactory.eINSTANCE.createComponentPort(),
+                    PapayaFactory.eINSTANCE.createConstructor(),
+                    PapayaFactory.eINSTANCE.createContribution(),
+                    PapayaFactory.eINSTANCE.createDataType(),
+                    PapayaFactory.eINSTANCE.createEnum(),
+                    PapayaFactory.eINSTANCE.createEnumLiteral(),
+                    PapayaFactory.eINSTANCE.createGenericType(),
+                    PapayaFactory.eINSTANCE.createInterface(),
+                    PapayaFactory.eINSTANCE.createIteration(),
+                    PapayaFactory.eINSTANCE.createOperation(),
+                    PapayaFactory.eINSTANCE.createPackage(),
+                    PapayaFactory.eINSTANCE.createParameter(),
+                    PapayaFactory.eINSTANCE.createProject(),
+                    PapayaFactory.eINSTANCE.createProvidedService(),
+                    PapayaFactory.eINSTANCE.createRecord(),
+                    PapayaFactory.eINSTANCE.createRecordComponent(),
+                    PapayaFactory.eINSTANCE.createRequiredService(),
+                    PapayaFactory.eINSTANCE.createTag(),
+                    PapayaFactory.eINSTANCE.createTask(),
+                    PapayaFactory.eINSTANCE.createTypeParameter()
+                    );
+
+            var provider = new StructuralFeatureToDisplayNameProvider(new DisplayNameProvider(optionalAdapterFactory.get()));
+            for (var eObject : objects) {
+                this.addStructuralFeature(result, provider.getColumnsStructuralFeaturesDisplayName(eObject, eObject.eClass()));
+            }
         }
         return result;
     }
@@ -231,7 +239,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
-                .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellOptionsProvider(new CellOptionsProvider())
                 .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
         cellDescriptions.add(MultiSelectCellDescription.newMultiSelectCellDescription("multiselectCells")
@@ -241,7 +249,7 @@ public class ProjectTableRepresentationDescriptionProvider implements IEditingCo
                 .cellValueProvider(new CellStringListValueProvider(this.identityService))
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
-                .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellOptionsProvider(new CellOptionsProvider())
                 .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
         return cellDescriptions;

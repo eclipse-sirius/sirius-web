@@ -24,7 +24,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -57,8 +56,6 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     private static final String REFERENCE_WIDGET_DESCRIPTION_ID = "NonContainmentReferenceIfDescriptionProvider.ReferenceWidget";
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IIdentityService identityService;
 
     private final ILabelService labelService;
@@ -71,9 +68,8 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
 
     private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
 
-    public NonContainmentReferenceIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, ILabelService labelService, IEMFKindService emfKindService,
+    public NonContainmentReferenceIfDescriptionProvider(IIdentityService identityService, ILabelService labelService, IEMFKindService emfKindService,
                                                         IFeedbackMessageService feedbackMessageService, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
@@ -153,7 +149,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     }
 
     private Function<VariableManager, List<?>> getOptionsProvider() {
-        return new EStructuralFeatureChoiceOfValueProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureChoiceOfValueProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private EStructuralFeature.Setting resolveSetting(VariableManager variableManager) {
@@ -192,7 +188,7 @@ public class NonContainmentReferenceIfDescriptionProvider implements IEMFFormIfD
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private String getTypeName(VariableManager variableManager) {

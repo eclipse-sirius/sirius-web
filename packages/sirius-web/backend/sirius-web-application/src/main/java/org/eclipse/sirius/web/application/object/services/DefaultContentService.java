@@ -17,9 +17,11 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.IDefaultContentService;
 import org.springframework.stereotype.Service;
@@ -32,21 +34,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultContentService implements IDefaultContentService {
 
-    private final ComposedAdapterFactory composedAdapterFactory;
+    private final List<Descriptor> composedAdapterFactoryDescriptors;
 
-    public DefaultContentService(ComposedAdapterFactory composedAdapterFactory) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+    public DefaultContentService(List<Descriptor> composedAdapterFactoryDescriptors) {
+        this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
     }
+
     @Override
     public List<Object> getContents(Object object) {
         List<Object> contents = new ArrayList<>();
         if (object instanceof EObject eObject) {
-            Adapter adapter = this.composedAdapterFactory.adapt(eObject, IEditingDomainItemProvider.class);
+            List<AdapterFactory> adapterFactories = this.composedAdapterFactoryDescriptors.stream()
+                    .map(Descriptor::createAdapterFactory)
+                    .toList();
+            var composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
+            Adapter adapter = composedAdapterFactory.adapt(eObject, IEditingDomainItemProvider.class);
             if (adapter instanceof IEditingDomainItemProvider contentProvider) {
                 contents.addAll(contentProvider.getChildren(eObject));
             } else {
                 contents.addAll(eObject.eContents());
             }
+            composedAdapterFactory.dispose();
         }
         else if (object instanceof Resource resource) {
             // The object may be a document

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.configuration;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.papaya.provider.PapayaItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 public class PapayaEMFConfiguration {
 
     @Bean
-    public AdapterFactory papayaAdapterFactory() {
-        return new PapayaItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor papayaAdapterFactoryDescriptor() {
+        return PapayaItemProviderAdapterFactory::new;
     }
 }

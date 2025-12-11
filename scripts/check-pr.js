@@ -49,7 +49,7 @@ for (const issue of closingIssuesReferences.nodes) {
     labels.nodes.filter((label) => label.name.startsWith("type:")).length >= 1;
   const hasOneDifficultyLabel =
     labels.nodes.filter((label) => label.name.startsWith("difficulty:"))
-      .length === 1;
+      .length >= 1;
 
   if (
     !hasAtLeastOnePackageLabel ||

@@ -25,13 +25,15 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.messages.IEMFMessageService;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
@@ -55,16 +57,13 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
     private final ILabelService labelService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders;
 
     private final IEMFMessageService messageService;
 
-    public EMFFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders, IEMFMessageService messageService) {
+    public EMFFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders, IEMFMessageService messageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.emfFormIfDescriptionProviders = Objects.requireNonNull(emfFormIfDescriptionProviders);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -140,10 +139,13 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         Function<VariableManager, List<?>> iterableProvider = variableManager -> {
             List<Object> objects = new ArrayList<>();
 
-            Object self = variableManager.getVariables().get(VariableManager.SELF);
-            if (self instanceof EObject eObject) {
+            var self = variableManager.getVariables().get(VariableManager.SELF);
+            var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                    .map(IEMFEditingContext::getDomain)
+                    .map(AdapterFactoryEditingDomain::getAdapterFactory);
 
-                List<IItemPropertyDescriptor> propertyDescriptors = Optional.ofNullable(this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class))
+            if (self instanceof EObject eObject && optionalAdapterFactory.isPresent()) {
+                List<IItemPropertyDescriptor> propertyDescriptors = Optional.ofNullable(optionalAdapterFactory.get().adapt(eObject, IItemPropertySource.class))
                         .filter(IItemPropertySource.class::isInstance)
                         .map(IItemPropertySource.class::cast)
                         .map(iItemPropertySource -> iItemPropertySource.getPropertyDescriptors(eObject))
@@ -159,7 +161,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         };
 
         Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .map(identityService::getId)
+                .map(this.identityService::getId)
                 .orElse(null);
 
         List<AbstractControlDescription> ifDescriptions = new ArrayList<>();

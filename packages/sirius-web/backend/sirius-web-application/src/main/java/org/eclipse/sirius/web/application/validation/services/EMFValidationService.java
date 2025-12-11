@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EValidator;
@@ -26,6 +27,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IValidationService;
@@ -45,11 +47,11 @@ public class EMFValidationService implements IValidationService {
 
     private final EValidator.Registry eValidatorRegistry;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
+    private final List<Descriptor> composedAdapterFactoryDescriptors;
 
-    public EMFValidationService(EValidator.Registry eValidatorRegistry, ComposedAdapterFactory composedAdapterFactory) {
+    public EMFValidationService(EValidator.Registry eValidatorRegistry, List<Descriptor> composedAdapterFactoryDescriptors) {
         this.eValidatorRegistry = Objects.requireNonNull(eValidatorRegistry);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+        this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
     }
 
     @Override
@@ -99,6 +101,7 @@ public class EMFValidationService implements IValidationService {
 
         Map<Object, Object> options = new HashMap<>();
         options.put(Diagnostician.VALIDATE_RECURSIVELY, true);
+
         Diagnostician diagnostician = this.getNewDiagnostician();
 
         return domain.getResourceSet().getResources().stream()
@@ -115,10 +118,17 @@ public class EMFValidationService implements IValidationService {
         return new Diagnostician(this.eValidatorRegistry) {
             @Override
             public String getObjectLabel(EObject eObject) {
-                IItemLabelProvider itemLabelProvider = (IItemLabelProvider) EMFValidationService.this.composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
+                List<AdapterFactory> adapterFactories = EMFValidationService.this.composedAdapterFactoryDescriptors.stream()
+                        .map(ComposedAdapterFactory.Descriptor::createAdapterFactory)
+                        .toList();
+                var composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
+
+                IItemLabelProvider itemLabelProvider = (IItemLabelProvider) composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
                 if (itemLabelProvider != null) {
                     return itemLabelProvider.getText(eObject);
                 }
+
+                composedAdapterFactory.dispose();
 
                 return super.getObjectLabel(eObject);
             }

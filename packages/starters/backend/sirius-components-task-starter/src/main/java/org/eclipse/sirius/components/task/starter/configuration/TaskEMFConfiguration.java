@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.task.starter.configuration;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.task.provider.TaskItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +26,7 @@ import org.springframework.context.annotation.Configuration;
 public class TaskEMFConfiguration {
 
     @Bean
-    public AdapterFactory taskAdapterFactory() {
-        return new TaskItemProviderAdapterFactory();
+    public ComposedAdapterFactory.Descriptor taskAdapterFactoryDescriptor() {
+        return TaskItemProviderAdapterFactory::new;
     }
 }

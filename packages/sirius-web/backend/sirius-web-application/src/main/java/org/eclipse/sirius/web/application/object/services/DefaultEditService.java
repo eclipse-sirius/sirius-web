@@ -20,7 +20,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.emf.common.command.BasicCommandStack;
 import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EClass;
@@ -35,7 +34,6 @@ import org.eclipse.emf.edit.command.CreateChildCommand;
 import org.eclipse.emf.edit.command.CreateChildCommand.Helper;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.ChildCreationDescription;
 import org.eclipse.sirius.components.core.api.IDefaultEditService;
@@ -62,8 +60,6 @@ public class DefaultEditService implements IDefaultEditService {
 
     private final IEMFKindService emfKindService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final ISuggestedRootObjectTypesProvider suggestedRootObjectTypesProvider;
 
     private final IObjectSearchService objectSearchService;
@@ -74,10 +70,9 @@ public class DefaultEditService implements IDefaultEditService {
 
     private final IEMFMessageService messageService;
 
-    public DefaultEditService(IEMFKindService emfKindService, ComposedAdapterFactory composedAdapterFactory, Optional<ISuggestedRootObjectTypesProvider> optionalSuggestedRootObjectsProvider,
+    public DefaultEditService(IEMFKindService emfKindService, Optional<ISuggestedRootObjectTypesProvider> optionalSuggestedRootObjectsProvider,
             IObjectSearchService objectSearchService, ILabelService labelService, IFeedbackMessageService feedbackMessageService, IEMFMessageService messageService) {
         this.emfKindService = Objects.requireNonNull(emfKindService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.suggestedRootObjectTypesProvider = optionalSuggestedRootObjectsProvider.orElse(null);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.labelService = Objects.requireNonNull(labelService);
@@ -108,9 +103,11 @@ public class DefaultEditService implements IDefaultEditService {
     public List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String containerId, String referenceKind) {
         List<ChildCreationDescription> childCreationDescriptions = new ArrayList<>();
 
-        this.getPackageRegistry(editingContext).ifPresent(ePackageRegistry -> {
+        var optPackageRegistry = this.getPackageRegistry(editingContext);
 
-            AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
+        if (optPackageRegistry.isPresent()) {
+
+            var ePackageRegistry = optPackageRegistry.get();
 
             var optionalContainer = this.objectSearchService.getObject(editingContext, containerId)
                     .filter(EObject.class::isInstance)
@@ -127,19 +124,26 @@ public class DefaultEditService implements IDefaultEditService {
             if (optionalContainer.isPresent()) {
                 EObject eObject = optionalContainer.get();
 
-                Collection<?> newChildDescriptors = editingDomain.getNewChildDescriptors(eObject, null);
+                var optAdapterFactoryEditingDomain = Optional.of(editingContext)
+                        .filter(IEMFEditingContext.class::isInstance)
+                        .map(IEMFEditingContext.class::cast)
+                        .map(IEMFEditingContext::getDomain);
 
-                List<CommandParameter> commandParameters = newChildDescriptors.stream()
-                        .filter(CommandParameter.class::isInstance)
-                        .map(CommandParameter.class::cast)
-                        .filter(commandParameter -> optionalEClassReference.map(eClassReference -> eClassReference.isInstance(commandParameter.getValue()))
-                                .orElse(true))
-                        .toList();
+                if (optAdapterFactoryEditingDomain.isPresent()) {
 
-                Adapter adapter = editingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
+                    AdapterFactoryEditingDomain adapterFactoryEditingDomain = optAdapterFactoryEditingDomain.get();
+                    Adapter adapter = adapterFactoryEditingDomain.getAdapterFactory().adapt(eObject, IEditingDomainItemProvider.class);
 
-                if (adapter instanceof IEditingDomainItemProvider editingDomainItemProvider) {
-                    if (editingDomainItemProvider instanceof Helper helper) {
+                    if (adapter instanceof IEditingDomainItemProvider editingDomainItemProvider && editingDomainItemProvider instanceof Helper helper) {
+
+                        Collection<?> newChildDescriptors = adapterFactoryEditingDomain.getNewChildDescriptors(eObject, null);
+
+                        List<CommandParameter> commandParameters = newChildDescriptors.stream()
+                                .filter(CommandParameter.class::isInstance)
+                                .map(CommandParameter.class::cast)
+                                .filter(commandParameter -> optionalEClassReference.map(eClassReference -> eClassReference.isInstance(commandParameter.getValue())).orElse(true))
+                                .toList();
+
                         for (CommandParameter commandParameter : commandParameters) {
                             String id = this.getChildCreationDescriptionId(commandParameter);
                             String label = helper.getCreateChildText(eObject, commandParameter.getFeature(), commandParameter.getValue(), null);
@@ -150,7 +154,7 @@ public class DefaultEditService implements IDefaultEditService {
                     }
                 }
             }
-        });
+        }
 
         return childCreationDescriptions;
     }

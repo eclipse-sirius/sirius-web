@@ -23,7 +23,6 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.emf.forms.EStructuralFeatureLabelProvider;
 import org.eclipse.sirius.components.emf.forms.WidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
@@ -47,8 +46,6 @@ public class CustomizableEStringIfDescriptionProvider {
 
     private static final String TEXTAREA_DESCRIPTION_ID = "Textarea";
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
     private final ITextfieldCustomizer customizer;
@@ -57,8 +54,7 @@ public class CustomizableEStringIfDescriptionProvider {
 
     private final WidgetReadOnlyProvider widgetReadOnlyProvider;
 
-    public CustomizableEStringIfDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, ITextfieldCustomizer customizer, Function<VariableManager, String> semanticTargetIdProvider, WidgetReadOnlyProvider widgetReadOnlyProvider) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+    public CustomizableEStringIfDescriptionProvider(IPropertiesValidationProvider propertiesValidationProvider, ITextfieldCustomizer customizer, Function<VariableManager, String> semanticTargetIdProvider, WidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.customizer = Objects.requireNonNull(customizer);
         this.semanticTargetIdProvider = Objects.requireNonNull(semanticTargetIdProvider);
@@ -103,7 +99,7 @@ public class CustomizableEStringIfDescriptionProvider {
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(StudioDetailsViewWidgetDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(StudioDetailsViewWidgetDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, String> getValueProvider() {

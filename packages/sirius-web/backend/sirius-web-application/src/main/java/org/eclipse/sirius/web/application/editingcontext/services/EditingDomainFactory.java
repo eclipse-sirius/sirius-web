@@ -12,15 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.common.command.BasicCommandStack;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.BasicExtendedMetaData;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.springframework.stereotype.Service;
@@ -34,18 +37,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class EditingDomainFactory implements IEditingDomainFactory {
 
-    private final ComposedAdapterFactory composedAdapterFactory;
+    private final List<Descriptor> composedAdapterFactoryDescriptors;
 
     private final EPackage.Registry globalEPackageRegistry;
 
-    public EditingDomainFactory(ComposedAdapterFactory composedAdapterFactory, EPackage.Registry globalEPackageRegistry) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+    public EditingDomainFactory(List<Descriptor> composedAdapterFactoryDescriptors, EPackage.Registry globalEPackageRegistry) {
+        this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
         this.globalEPackageRegistry = Objects.requireNonNull(globalEPackageRegistry);
     }
 
     @Override
     public AdapterFactoryEditingDomain createEditingDomain() {
-        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(this.composedAdapterFactory, new BasicCommandStack());
+        List<AdapterFactory> adapterFactories = this.composedAdapterFactoryDescriptors.stream()
+                .map(Descriptor::createAdapterFactory)
+                .toList();
+        var composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
+
+        AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack());
         ResourceSet resourceSet = editingDomain.getResourceSet();
         resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new BasicExtendedMetaData(resourceSet.getPackageRegistry()));
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
@@ -57,6 +65,7 @@ public class EditingDomainFactory implements IEditingDomainFactory {
         globalEPackages.forEach(ePackage -> ePackageRegistry.put(ePackage.getNsURI(), ePackage));
 
         resourceSet.setPackageRegistry(ePackageRegistry);
+
 
         return editingDomain;
     }

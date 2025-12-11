@@ -27,7 +27,6 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
@@ -60,15 +59,12 @@ public class EEnumIfDescriptionProvider implements IEMFFormIfDescriptionProvider
 
     private final IIdentityService identityService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
     private final IWidgetReadOnlyProvider widgetReadOnlyProvider;
 
-    public EEnumIfDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
+    public EEnumIfDescriptionProvider(IIdentityService identityService, IPropertiesValidationProvider propertiesValidationProvider, IWidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.identityService = Objects.requireNonNull(identityService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.widgetReadOnlyProvider = Objects.requireNonNull(widgetReadOnlyProvider);
     }
@@ -117,7 +113,7 @@ public class EEnumIfDescriptionProvider implements IEMFFormIfDescriptionProvider
     }
 
     private Function<VariableManager, String> getLabelProvider() {
-        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, List<?>> getOptionsProvider() {
@@ -146,7 +142,7 @@ public class EEnumIfDescriptionProvider implements IEMFFormIfDescriptionProvider
     }
 
     private Function<VariableManager, String> getOptionLabelProvider() {
-        return new EEnumLiteralLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EEnumLiteralLabelProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private Function<VariableManager, Boolean> getOptionSelectedProvider() {
