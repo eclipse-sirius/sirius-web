@@ -21,6 +21,16 @@
 The `initialSelectedPageId` prop in `FormProps` has been changed to `initialSelectedPageLabel`.
 `DetailsView`, `DiagramFilterForm`, `FormBasedView`, `FormRepresentation`, `RelatedElementsView`, and `RelatedViewsView` have been updated to reflect this change.
 The link produced by the _Share_ action on a project now includes the `selectedPageLabel` instead of the `selectedPageId`.
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] `IExplorerServices#getDefaultElements` has been removed.
+It has been replaced by a new service named `IExplorerContentService#getElements` which allow downstream application to customize the behavior of the explorer more easily.
+Those who want to customize the behavior of the root elements of the explorer can thus create an instance of `IExplorerContentServiceDelegate` and customize the default value for their editing context.
+The previous behavior has been used for the implementation of the `IDefaultExplorerContentService` to keep the same behavior.
+One key difference between the previous API and the new one is that the previous one in `IExplorerServices#getDefaultElements` made the hypothesis that all the root elements were EMF resources.
+The new API only expect a list of objects, as a result it allows the contribution of representations as root elements in the explorer for example.
+- A new API `org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy` has been added to delegate persistence decisions for representations (used to support transient diagrams).
+Several event-processor-related constructors now accept an additional `IRepresentationPersistenceStrategy` parameter (for example: `DiagramEventProcessorFactory`, `PapayaDashboardEventProcessorFactory`, and related `DiagramEventProcessor`/`DiagramEventProcessorParameters` builders).
+If you directly instantiate or extend those factories in downstream code or tests, update the constructors to provide an `IRepresentationPersistenceStrategy` implementation.
+
 
 === Dependency update
 
@@ -48,6 +58,7 @@ When the selection changes, the details view will attempt to re-open the same ta
 If the tab cannot be found the first tab of the form will be opened instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/6040[#6040] [sirius-web] Only propose to select project template or libraries when it is relevant
 - https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Standardize font sizes on the _New Project_ creation page
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] [diagram] Make it possible to have transient diagrams: delegate the save operation to a new `IRepresentationPersistenceStrategy` service which persists only when the representation exists in the database, and add a transient diagram sample in Papaya.
 
 
 

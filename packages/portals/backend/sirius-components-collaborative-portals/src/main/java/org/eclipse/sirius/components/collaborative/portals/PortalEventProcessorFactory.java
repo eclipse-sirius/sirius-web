@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
@@ -35,16 +35,16 @@ import org.springframework.stereotype.Service;
 public class PortalEventProcessorFactory implements IRepresentationEventProcessorFactory {
     private final IRepresentationSearchService representationSearchService;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
     private final List<IPortalEventHandler> portalEventHandlers;
 
-    public PortalEventProcessorFactory(IRepresentationSearchService representationSearchService, IRepresentationPersistenceService representationPersistenceService,
+    public PortalEventProcessorFactory(IRepresentationSearchService representationSearchService, IRepresentationPersistenceStrategy representationPersistenceStrategy,
             ISubscriptionManagerFactory subscriptionManagerFactory, List<IPortalEventHandler> portalEventHandlers) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.portalEventHandlers = Objects.requireNonNull(portalEventHandlers);
     }
@@ -59,7 +59,7 @@ public class PortalEventProcessorFactory implements IRepresentationEventProcesso
         var optionalPortal = this.representationSearchService.findById(editingContext, representationId, Portal.class);
         if (optionalPortal.isPresent()) {
             Portal portal = optionalPortal.get();
-            var portalEventProcessor = new PortalEventProcessor(editingContext, this.representationSearchService, this.representationPersistenceService, this.portalEventHandlers, this.subscriptionManagerFactory.create(), portal);
+            var portalEventProcessor = new PortalEventProcessor(editingContext, this.representationSearchService, this.representationPersistenceStrategy, this.portalEventHandlers, this.subscriptionManagerFactory.create(), portal);
             return Optional.of(portalEventProcessor);
         }
 

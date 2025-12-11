@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,12 +17,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
+import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerContentService;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
-import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeAlteredContentProvider;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +35,11 @@ public class ExplorerElementsProvider implements IExplorerElementsProvider {
 
     private final List<IExplorerTreeAlteredContentProvider> alteredContentProviders;
 
-    private final IExplorerServices explorerServices;
+    private final IExplorerContentService explorerContentService;
 
-    public ExplorerElementsProvider(List<IExplorerTreeAlteredContentProvider> alteredContentProviders, IExplorerServices explorerServices) {
+    public ExplorerElementsProvider(List<IExplorerTreeAlteredContentProvider> alteredContentProviders, IExplorerContentService explorerContentService) {
         this.alteredContentProviders = Objects.requireNonNull(alteredContentProviders);
-        this.explorerServices = Objects.requireNonNull(explorerServices);
+        this.explorerContentService = Objects.requireNonNull(explorerContentService);
     }
 
     @Override
@@ -62,9 +61,13 @@ public class ExplorerElementsProvider implements IExplorerElementsProvider {
         return elements;
     }
 
-    private List<Resource> getDefaultElements(VariableManager variableManager) {
+    private List<Object> getDefaultElements(VariableManager variableManager) {
         Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        return this.explorerServices.getDefaultElements(optionalEditingContext.orElse(null));
+        if (optionalEditingContext.isPresent()) {
+            var editingContext = optionalEditingContext.get();
+            return this.explorerContentService.getContents(editingContext);
+        }
+        return List.of();
     }
 
     private List<String> getActiveFilterIds(VariableManager variableManager) {

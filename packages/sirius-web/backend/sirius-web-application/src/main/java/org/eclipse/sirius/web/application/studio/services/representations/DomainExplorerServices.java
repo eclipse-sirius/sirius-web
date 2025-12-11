@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -101,9 +101,13 @@ public class DomainExplorerServices {
 
     public List<Object> getElements(IEditingContext editingContext) {
         List<Object> elements = new ArrayList<>();
-        this.explorerServices.getDefaultElements(editingContext).stream()
+        this.contentService.getContents(editingContext).stream()
+                .filter(Resource.class::isInstance)
+                .map(Resource.class::cast)
                 .filter(resource -> resource.getContents().stream().anyMatch(Domain.class::isInstance))
                 .forEach(elements::add);
+        //We sort the elements as it was done by the former IExplorerServices#getDefaultElements service.
+        elements.sort(Comparator.nullsLast(Comparator.comparing(resource -> this.labelService.getStyledLabel(resource).toString(), String.CASE_INSENSITIVE_ORDER)));
         return elements;
     }
 

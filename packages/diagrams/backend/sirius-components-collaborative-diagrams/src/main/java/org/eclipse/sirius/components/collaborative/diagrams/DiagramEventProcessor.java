@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
@@ -71,7 +71,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -96,7 +96,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.subscriptionManager = parameters.subscriptionManager();
         this.representationDescriptionSearchService = parameters.representationDescriptionSearchService();
         this.representationRefreshPolicyRegistry = parameters.representationRefreshPolicyRegistry();
-        this.representationPersistenceService = parameters.representationPersistenceService();
+        this.representationPersistenceStrategy = parameters.representationPersistenceStrategy();
         this.representationSearchService = parameters.representationSearchService();
         this.diagramCreationService = parameters.diagramCreationService();
         this.diagramInputReferencePositionProviders = parameters.diagramInputReferencePositionProviders();
@@ -105,8 +105,8 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database. This is quite similar to the auto-refresh on loading in Sirius.
         Diagram diagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-        this.representationPersistenceService.save(null, this.editingContext, diagram);
-        this.diagramContext = new DiagramContext(diagram, this.diagramContext.viewCreationRequests(), this.diagramContext.viewDeletionRequests(), this.diagramContext.diagramEvents());
+        this.representationPersistenceStrategy.applyPersistenceStrategy(null, this.editingContext, diagram);
+        this.diagramContext = new DiagramContext(diagram);
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
         if (diagram != null) {
@@ -133,7 +133,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 var diagram = this.diagramContext.diagram();
                 var laidOutDiagram = this.diagramCreationService.updateLayout(this.editingContext, diagram, layoutDiagramInput);
 
-                this.representationPersistenceService.save(layoutDiagramInput, this.editingContext, laidOutDiagram);
+                this.representationPersistenceStrategy.applyPersistenceStrategy(layoutDiagramInput, this.editingContext, laidOutDiagram);
                 this.diagramContext = new DiagramContext(laidOutDiagram);
                 this.diagramEventFlux.diagramRefreshed(layoutDiagramInput.id(), laidOutDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, null);
                 this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
@@ -163,7 +163,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         if (this.shouldRefresh(changeDescription)) {
             this.diagramEventConsumers.forEach(consumer -> consumer.accept(this.editingContext, this.diagramContext.diagram(), this.diagramContext.diagramEvents(), this.diagramContext.viewDeletionRequests(), this.diagramContext.viewCreationRequests(), changeDescription));
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-            this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDiagram);
+            this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedDiagram);
 
             if (refreshedDiagram != null) {
                 this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId());
@@ -217,10 +217,9 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
         return changeDescription -> {
-            boolean shouldRefresh = false;
-            shouldRefresh = shouldRefresh || ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
+            boolean shouldRefresh = ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind());
             if (!shouldRefresh && changeDescription.getSourceId().equals(this.diagramContext.diagram().getId())) {
-                shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE.equals(changeDescription.getKind());
+                shouldRefresh = DiagramChangeKind.DIAGRAM_APPEARANCE_CHANGE.equals(changeDescription.getKind());
                 shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_LAYOUT_CHANGE.equals(changeDescription.getKind());
                 shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_ELEMENT_VISIBILITY_CHANGE.equals(changeDescription.getKind());
                 shouldRefresh = shouldRefresh || DiagramChangeKind.DIAGRAM_ELEMENT_COLLAPSING_STATE_CHANGE.equals(changeDescription.getKind());

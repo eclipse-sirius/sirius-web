@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventHandler;
@@ -54,7 +54,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     private final GanttCreationService ganttCreationService;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
     private final GanttContext ganttContext;
 
@@ -66,7 +66,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
     public GanttEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, GanttCreationService ganttCreationService,
             IRepresentationSearchService representationSearchService, List<IGanttEventHandler> ganttEventHandlers, GanttContext ganttContext,
-            IRepresentationPersistenceService representationPersistenceService) {
+            IRepresentationPersistenceStrategy representationPersistenceStrategy) {
         this.logger.trace("Creating the gantt event processor {}", ganttContext.getGantt().getId());
 
         this.editingContext = Objects.requireNonNull(editingContext);
@@ -74,7 +74,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
         this.ganttCreationService = Objects.requireNonNull(ganttCreationService);
         this.ganttEventHandlers = Objects.requireNonNull(ganttEventHandlers);
         this.ganttContext = Objects.requireNonNull(ganttContext);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
@@ -122,7 +122,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
             this.ganttContext.update(refreshedGanttRepresentation);
 
             if (refreshedGanttRepresentation != null) {
-                this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedGanttRepresentation);
+                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedGanttRepresentation);
                 this.logger.trace("Gantt refreshed: {}", ganttId);
             } else {
                 this.logger.warn("Gantt refresh failed: {}", ganttId);
