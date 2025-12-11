@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
@@ -53,7 +53,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     private final ISubscriptionManager subscriptionManager;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
     private final IRepresentationSearchService representationSearchService;
 
@@ -66,7 +66,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
     private final IDeckContext deckContext;
 
     public DeckEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, DeckCreationService deckCreationService,
-            List<IDeckEventHandler> deckEventHandlers, IDeckContext deckContext, IRepresentationPersistenceService representationPersistenceService,
+            List<IDeckEventHandler> deckEventHandlers, IDeckContext deckContext, IRepresentationPersistenceStrategy representationPersistenceStrategy,
             IRepresentationSearchService representationSearchService) {
 
         this.editingContext = Objects.requireNonNull(editingContext);
@@ -74,7 +74,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
         this.deckCreationService = Objects.requireNonNull(deckCreationService);
         this.deckEventHandlers = Objects.requireNonNull(deckEventHandlers);
         this.deckContext = Objects.requireNonNull(deckContext);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
 
         String id = this.deckContext.getDeck().getId();
@@ -122,7 +122,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
             this.deckContext.reset();
             this.deckContext.update(refreshedDeckRepresentation);
             if (refreshedDeckRepresentation != null) {
-                this.representationPersistenceService.save(changeDescription.getInput(), this.editingContext, refreshedDeckRepresentation);
+                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedDeckRepresentation);
                 this.logger.trace("Deck refreshed: {}", refreshedDeckRepresentation.getId());
             }
             this.deckEventFlux.deckRefreshed(changeDescription.getInput(), this.deckContext.getDeck());
