@@ -95,6 +95,8 @@ public AdapterFactory papayaAdapterFactory() {
 - https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] In table, `RowDescription` must now declare a `hasChildrenExpression` if `subRows` is enabled.
 - https://github.com/eclipse-sirius/sirius-web/issues/5884[#5884] [diagram] The `ReactFlow.css` has been updated to reduce the size of edge handles.
 - https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] All mutations related to the update of the appearance of an edge or node (`EditxxxAppearanceInput` && `ResetxxxAppearanceInput`) have been modified to take a list of elements instead of only one.
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] `IExplorerServices#getDefaultElements` has been removed. Use `DefaultContentService#getContents` instead by passing the `IEditingContext`. *Note* that `DefaultContentService#getContents` will not return a sorted list as it was before by `IExplorerServices#getDefaultElements`.
+- A new API `org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy` has been added to delegate persistence decisions for representations (used to support transient diagrams). Several event-processor-related constructors now accept an additional `IRepresentationPersistenceStrategy` parameter (for example: `DiagramEventProcessorFactory`, `PapayaDashboardEventProcessorFactory`, and related `DiagramEventProcessor`/`DiagramEventProcessorParameters` builders). If you directly instantiate or extend those factories in downstream code or tests, update the constructors to provide an `IRepresentationPersistenceStrategy` implementation.
 
 
 === Dependency update
@@ -177,6 +179,7 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] Add `hasChildrenExpression` on `RowDescription` to block the expand action on rows that have no children
 - https://github.com/eclipse-sirius/sirius-web/issues/5939[#5939] [diagram] When moving a node on a diagram, we now _highlight_ compatible drop targets/locations instead of fading all the incompatible ones
 - https://github.com/eclipse-sirius/sirius-web/issues/5884[#5884] [diagram] Facilitate the moving of a border node even when an edge is selected
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] [diagram] Make it possible to have transient diagrams: delegate the save operation to a new `IRepresentationPersistenceStrategy` service which persists only when the representation exists in the database, and add a transient diagram sample in Papaya.
 
 
 

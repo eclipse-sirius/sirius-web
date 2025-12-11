@@ -12,23 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Stream;
-
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -38,6 +29,12 @@ import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerS
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Services used to perform operations in the explorer.
@@ -53,7 +50,6 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IContentService contentService;
 
-    private final ILabelService labelService;
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
@@ -61,10 +57,9 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IDefaultObjectSearchService defaultObjectSearchService;
 
-    public ExplorerServices(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IDefaultObjectSearchService defaultObjectSearchService) {
+    public ExplorerServices(IIdentityService identityService, IObjectSearchService objectSearchService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IDefaultObjectSearchService defaultObjectSearchService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
-        this.labelService = Objects.requireNonNull(labelService);
         this.contentService = Objects.requireNonNull(contentService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
@@ -202,21 +197,4 @@ public class ExplorerServices implements IExplorerServices {
     private Stream<RepresentationMetadata> findRepresentationsForTargetObjectId(List<RepresentationMetadata> existingRepresentations, String targetObjectd) {
         return existingRepresentations.stream().filter(representationMetadata -> representationMetadata.getTargetObjectId().equals(targetObjectd));
     }
-
-    @Override
-    public List<Resource> getDefaultElements(IEditingContext editingContext) {
-        var optionalResourceSet = Optional.ofNullable(editingContext)
-                .filter(IEMFEditingContext.class::isInstance)
-                .map(IEMFEditingContext.class::cast)
-                .map(IEMFEditingContext::getDomain)
-                .map(EditingDomain::getResourceSet);
-
-        return optionalResourceSet
-                .map(resourceSet -> resourceSet.getResources().stream()
-                        .sorted(Comparator.nullsLast(Comparator.comparing(resource -> this.labelService.getStyledLabel(resource).toString(), String.CASE_INSENSITIVE_ORDER)))
-                        .toList())
-                .orElseGet(ArrayList::new);
-    }
-
-
 }

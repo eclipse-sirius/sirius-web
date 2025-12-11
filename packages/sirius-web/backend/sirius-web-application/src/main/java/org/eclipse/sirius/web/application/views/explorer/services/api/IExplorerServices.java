@@ -12,11 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.views.explorer.services.api;
 
-import java.util.List;
-
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import java.util.List;
 
 /**
  * Services used to perform operations in the explorer.
@@ -53,13 +51,4 @@ public interface IExplorerServices {
      * @return the list of children
      */
     List<Object> getDefaultChildren(Object self, IEditingContext editingContext, List<String> expandedIds, List<RepresentationMetadata> existingRepresentations);
-
-    /**
-     * Returns the un-filtered list of root elements.
-     *
-     * @param editingContext
-     *            the editing context
-     * @return the list of root elements
-     */
-    List<Resource> getDefaultElements(IEditingContext editingContext);
 }
