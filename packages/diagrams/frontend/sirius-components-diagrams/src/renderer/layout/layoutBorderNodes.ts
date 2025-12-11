@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CoordinateExtent, Node, XYPosition, Position, InternalNode } from '@xyflow/react';
+import { CoordinateExtent, Edge, InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeLookup } from '@xyflow/system';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
-import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
+import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { borderNodeOffset, borderNodeReferencePositionRatio, borderNodeGap } from './layoutParams';
+import { borderNodeGap, borderNodeOffset, borderNodeReferencePositionRatio } from './layoutParams';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
   return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.EAST;
@@ -201,4 +201,53 @@ export const computeBorderNodeXYPositionFromBorderNodePosition = (
     }
   }
   return null;
+};
+
+export const computeBorderNodeLabelPosition = (
+  nodes: Node<NodeData, DiagramNodeType>[],
+  edges: Edge<EdgeData>[]
+): void => {
+  nodes
+    .filter((node) => node.data.isBorderNode)
+    .forEach((borderNode) => {
+      if (
+        borderNode.data.outsideLabels.BOTTOM_MIDDLE &&
+        borderNode.data.outsideLabels.BOTTOM_MIDDLE.movedByUser === false
+      ) {
+        const hasEdge = edges.some((edge) => edge.source === borderNode.id || edge.target === borderNode.id);
+        switch (borderNode.data.borderNodePosition) {
+          case BorderNodePosition.EAST:
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.x =
+              (borderNode.width ?? 0) / 2 + borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2;
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y = hasEdge
+              ? -(borderNode.height ?? 0) - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height
+              : -(borderNode.height ?? 0) / 2 - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height / 2;
+            break;
+          case BorderNodePosition.WEST:
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.x =
+              -(borderNode.width ?? 0) / 2 - borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2;
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y = hasEdge
+              ? -(borderNode.height ?? 0) - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height
+              : -(borderNode.height ?? 0) / 2 - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height / 2;
+            break;
+          case BorderNodePosition.NORTH:
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.x = hasEdge
+              ? (borderNode.width ?? 0) / 2 + borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2
+              : 0;
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y =
+              -(borderNode.height ?? 0) - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height;
+            break;
+          case BorderNodePosition.SOUTH:
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.x = hasEdge
+              ? (borderNode.width ?? 0) / 2 + borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2
+              : 0;
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y = 0;
+            break;
+          default:
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.x = 0;
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y = 0;
+            break;
+        }
+      }
+    });
 };

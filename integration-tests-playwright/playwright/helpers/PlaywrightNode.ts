@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,11 +94,11 @@ export class PlaywrightNode {
     };
   }
 
-  async move(offset: { x: number; y: number }) {
+  async move(offset: { x: number; y: number }, steps: number = 10) {
     const xyPosition = await this.getDOMXYPosition();
     await this.nodeLocator.hover({ position: { x: 10, y: 10 } });
     await this.page.mouse.down();
-    await this.page.mouse.move(xyPosition.x + offset.x, xyPosition.y + offset.y, { steps: 10 });
+    await this.page.mouse.move(xyPosition.x + offset.x, xyPosition.y + offset.y, { steps });
     await this.page.mouse.up();
   }
 

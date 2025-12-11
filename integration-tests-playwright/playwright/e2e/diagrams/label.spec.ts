@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -324,5 +324,60 @@ test.describe('diagram - label', () => {
     await page.locator('[data-testid="toolSection-Appearance-Hide"]').first().click();
     await edge.closePalette();
     await expect(page.locator('.react-resizable-handle')).toHaveCount(2);
+  });
+});
+
+test.describe('diagram - label', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('diagram-border-node-label', 'blank-project');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramWithBorderNodeWithOutsideLabel.xml');
+    await playwrightExplorer.expand('diagramWithBorderNodeWithOutsideLabel.xml');
+    await playwrightExplorer.createRepresentation('Root', 'diagramBorderNode - simple border', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+  test('when a border node has an outside label, then it is not placed on the parent node', async ({ page }) => {
+    await page.waitForFunction(
+      () => {
+        const label = document.querySelector(`[data-testid="Label content - north"]`);
+        const borderNode = document.querySelector(`[data-testid="FreeForm - north"]`);
+        if (!label || !borderNode) {
+          return false;
+        }
+        const labelBoundingBox = label.getBoundingClientRect();
+        const borderNodeBoundingBox = borderNode.getBoundingClientRect();
+        // border node position = north => label position = north
+        return labelBoundingBox.y < borderNodeBoundingBox.y;
+      },
+      { timeout: 2000 }
+    );
+    const borderNode = new PlaywrightNode(page, 'north');
+    await borderNode.waitForAnimationToFinish();
+    await borderNode.move({ x: 600, y: 75 });
+
+    await page.waitForFunction(
+      () => {
+        const label = document.querySelector(`[data-testid="Label content - north"]`);
+        const borderNode = document.querySelector(`[data-testid="FreeForm - north"]`);
+        if (!label || !borderNode) {
+          return false;
+        }
+        const labelBoundingBox = label.getBoundingClientRect();
+        const borderNodeBoundingBox = borderNode.getBoundingClientRect();
+        // border node position = east => label position = east
+        return (
+          labelBoundingBox.y > borderNodeBoundingBox.y &&
+          Math.trunc(labelBoundingBox.x) >= Math.trunc(borderNodeBoundingBox.x + borderNodeBoundingBox.width)
+        );
+      },
+      { timeout: 2000 }
+    );
   });
 });
