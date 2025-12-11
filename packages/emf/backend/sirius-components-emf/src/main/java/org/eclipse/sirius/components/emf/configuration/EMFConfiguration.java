@@ -17,7 +17,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EValidator;
 import org.eclipse.emf.ecore.impl.EPackageRegistryImpl;
@@ -62,11 +61,13 @@ public class EMFConfiguration {
     }
 
     @Bean
-    public ComposedAdapterFactory composedAdapterFactory(List<AdapterFactory> adapterFactories) {
-        ComposedAdapterFactory composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
-        composedAdapterFactory.addAdapterFactory(new EcoreAdapterFactory());
-        composedAdapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
-        return composedAdapterFactory;
+    public ComposedAdapterFactory.Descriptor ecoreAdapterFactoryDescriptor() {
+        return EcoreAdapterFactory::new;
+    }
+
+    @Bean
+    public ComposedAdapterFactory.Descriptor reflectiveItemProviderAdapterFactoryDescriptor() {
+        return ReflectiveItemProviderAdapterFactory::new;
     }
 
     @Bean

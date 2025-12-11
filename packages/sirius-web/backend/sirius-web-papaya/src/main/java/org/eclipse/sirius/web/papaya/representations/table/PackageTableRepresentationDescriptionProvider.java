@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -26,11 +27,12 @@ import java.util.function.Predicate;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.tables.CursorBasedNavigationServices;
 import org.eclipse.sirius.components.papaya.AnnotableElement;
 import org.eclipse.sirius.components.papaya.Operation;
@@ -71,14 +73,11 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
 
     private final ILabelService labelService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final ObjectMapper objectMapper;
 
-    public PackageTableRepresentationDescriptionProvider(IIdentityService identityService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory, ObjectMapper objectMapper) {
+    public PackageTableRepresentationDescriptionProvider(IIdentityService identityService, ILabelService labelService, ObjectMapper objectMapper) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.objectMapper = Objects.requireNonNull(objectMapper);
     }
 
@@ -114,7 +113,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .labelProvider(new TableLabelProvider(this.labelService))
                 .canCreatePredicate(this::canCreate)
                 .lineDescription(lineDescription)
-                .columnDescriptions(this.getColumnDescriptions())
+                .columnDescriptions(this.getColumnDescriptions(editingContext))
                 .targetObjectIdProvider(new TableTargetObjectIdProvider(this.identityService))
                 .targetObjectKindProvider(new TableTargetObjectKindProvider(this.identityService))
                 .cellDescriptions(this.getCellDescriptions())
@@ -217,8 +216,14 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
         }
     }
 
-    private List<ColumnDescription> getColumnDescriptions() {
-        var provider = new StructuralFeatureToDisplayNameProvider(new DisplayNameProvider(this.composedAdapterFactory));
+    private List<ColumnDescription> getColumnDescriptions(IEditingContext editingContext) {
+        var optionalAdapterFactory = Optional.of(editingContext)
+                .filter(IEMFEditingContext.class::isInstance)
+                .map(IEMFEditingContext.class::cast)
+                .map(IEMFEditingContext::getDomain)
+                .map(AdapterFactoryEditingDomain::getAdapterFactory);
+
+        var provider = new StructuralFeatureToDisplayNameProvider(new DisplayNameProvider(optionalAdapterFactory.get()));
         Map<EStructuralFeature, String> featureToDisplayName = provider.getColumnsStructuralFeaturesDisplayName(PapayaFactory.eINSTANCE.createClass(), PapayaPackage.eINSTANCE.getType());
 
         ColumnDescription iconColumnDescription = ColumnDescription.newColumnDescription(UUID.nameUUIDFromBytes("icon".getBytes()).toString())
@@ -300,7 +305,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellValueProvider(new CellStringValueProvider(this.identityService))
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
-                .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellOptionsProvider(new CellOptionsProvider())
                 .cellTooltipValueProvider(new CellStringValueProvider(this.identityService))
                 .build());
 
@@ -311,7 +316,7 @@ public class PackageTableRepresentationDescriptionProvider implements IEditingCo
                 .cellValueProvider(new CellStringListValueProvider(this.identityService))
                 .cellOptionsIdProvider(new CellOptionIdProvider(this.identityService, this.labelService))
                 .cellOptionsLabelProvider(new CellOptionLabelProvider(this.labelService))
-                .cellOptionsProvider(new CellOptionsProvider(this.composedAdapterFactory))
+                .cellOptionsProvider(new CellOptionsProvider())
                 .cellTooltipValueProvider((variableManager, o) -> "")
                 .build());
 

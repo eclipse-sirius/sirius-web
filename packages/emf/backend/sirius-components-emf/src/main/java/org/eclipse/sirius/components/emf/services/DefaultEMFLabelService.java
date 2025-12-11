@@ -18,10 +18,11 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.Objects;
 
-import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.emf.edit.provider.ComposedImage;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.ReflectiveItemProvider;
@@ -40,14 +41,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultEMFLabelService implements IDefaultEMFLabelService {
 
-    private final ComposedAdapterFactory composedAdapterFactory;
+    private final List<Descriptor> composedAdapterFactoryDescriptors;
 
     private final IDefaultLabelFeatureProvider defaultLabelFeatureProvider;
 
     private final Logger logger = LoggerFactory.getLogger(DefaultEMFLabelService.class);
 
-    public DefaultEMFLabelService(ComposedAdapterFactory composedAdapterFactory, IDefaultLabelFeatureProvider defaultLabelFeatureProvider) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+    public DefaultEMFLabelService(List<Descriptor> composedAdapterFactoryDescriptors, IDefaultLabelFeatureProvider defaultLabelFeatureProvider) {
+        this.composedAdapterFactoryDescriptors = Objects.requireNonNull(composedAdapterFactoryDescriptors);
         this.defaultLabelFeatureProvider = Objects.requireNonNull(defaultLabelFeatureProvider);
     }
 
@@ -67,7 +68,11 @@ public class DefaultEMFLabelService implements IDefaultEMFLabelService {
     public List<String> getImagePaths(EObject self) {
         List<String> result = List.of("/icons/svg/Default.svg");
 
-        Adapter adapter = this.composedAdapterFactory.adapt(self, IItemLabelProvider.class);
+        List<AdapterFactory> adapterFactories = this.composedAdapterFactoryDescriptors.stream()
+                .map(Descriptor::createAdapterFactory)
+                .toList();
+        var composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
+        var adapter = composedAdapterFactory.adapt(self, IItemLabelProvider.class);
         if (adapter instanceof IItemLabelProvider labelProvider && !(adapter instanceof ReflectiveItemProvider)) {
             try {
                 Object image = labelProvider.getImage(self);
@@ -79,6 +84,7 @@ public class DefaultEMFLabelService implements IDefaultEMFLabelService {
                 this.logger.warn("Missing icon for {}", self);
             }
         }
+        composedAdapterFactory.dispose();
         return result;
     }
 

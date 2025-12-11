@@ -20,6 +20,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -94,6 +95,9 @@ public class ReactorLibraryPublisher implements IPapayaLibraryPublisher {
             var java003Library = optionalJava003Library.get();
             var reactiveStreams003Library = optionalReactiveStreams003Library.get();
             this.createReactor(command, editingDomain.getResourceSet(), List.of(java003Library, reactiveStreams003Library));
+        }
+        if (editingDomain.getAdapterFactory() instanceof IDisposable disposable) {
+            disposable.dispose();
         }
     }
 

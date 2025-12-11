@@ -19,16 +19,19 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.core.CoreImageConstants;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
@@ -66,14 +69,11 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private final ILabelService labelService;
 
-    private final ComposedAdapterFactory adapterFactory;
-
     private final IMessageService messageService;
 
-    public OutgoingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory, IMessageService messageService) {
+    public OutgoingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, IMessageService messageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.adapterFactory = Objects.requireNonNull(adapterFactory);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -118,8 +118,11 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
         if (self instanceof EReference eReference) {
             result = this.labelService.getStyledLabel(eReference).toString();
             var optionalRootEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            if (optionalRootEObject.isPresent()) {
-                result = this.getDisplayName(eReference, optionalRootEObject.get());
+            var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                    .map(IEMFEditingContext::getDomain)
+                    .map(AdapterFactoryEditingDomain::getAdapterFactory);
+            if (optionalRootEObject.isPresent() && optionalAdapterFactory.isPresent()) {
+                result = this.getDisplayName(optionalAdapterFactory.get(), eReference, optionalRootEObject.get());
             }
         } else if (self != null) {
             result = this.labelService.getStyledLabel(self).toString();
@@ -127,9 +130,9 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
         return result;
     }
 
-    private String getDisplayName(EReference eReference, EObject eObject) {
+    private String getDisplayName(AdapterFactory adapterFactory, EReference eReference, EObject eObject) {
         String result = null;
-        Adapter adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
+        Adapter adapter = adapterFactory.adapt(eObject, IItemPropertySource.class);
         if (adapter instanceof IItemPropertySource itemPropertySource) {
             IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eReference);
             if (descriptor != null) {

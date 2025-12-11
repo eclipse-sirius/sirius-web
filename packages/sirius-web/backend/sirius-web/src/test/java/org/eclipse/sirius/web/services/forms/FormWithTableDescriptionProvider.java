@@ -25,6 +25,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -34,13 +35,14 @@ import org.eclipse.emf.ecore.EEnumLiteral;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
@@ -79,21 +81,18 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
 
     public static final String FORM_WITH_TABLE_ID = "tasksTableId";
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IIdentityService identityService;
 
     private final ILabelService labelService;
 
-    public FormWithTableDescriptionProvider(ComposedAdapterFactory composedAdapterFactory, IIdentityService identityService, ILabelService labelService) {
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
+    public FormWithTableDescriptionProvider(IIdentityService identityService, ILabelService labelService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
     }
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-        TableWidgetDescription tableWidgetDescription = this.getTableWidgetDescription();
+        TableWidgetDescription tableWidgetDescription = this.getTableWidgetDescription(editingContext);
 
         GroupDescription taskGroup = GroupDescription.newGroupDescription("iterationGroupId")
                 .idProvider(variableManager -> "iterationGroupId")
@@ -122,7 +121,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
         return List.of(formDescription);
     }
 
-    private TableWidgetDescription getTableWidgetDescription() {
+    private TableWidgetDescription getTableWidgetDescription(IEditingContext editingContext) {
         Function<VariableManager, PaginatedData> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Iteration.class)
                 .map(eObject -> {
                     List<Object> objects = new ArrayList<>();
@@ -154,7 +153,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .targetObjectKindProvider(this::getTargetObjectKind)
                 .labelProvider(labelProvider)
                 .lineDescription(lineDescription)
-                .columnDescriptions(this.getColumnDescriptions())
+                .columnDescriptions(this.getColumnDescriptions(editingContext))
                 .cellDescriptions(this.getCellDescriptions())
                 .iconURLsProvider(variableManager -> List.of())
                 .isStripeRowPredicate(variableManager -> false)
@@ -244,8 +243,8 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 .isPresent();
     }
 
-    private List<ColumnDescription> getColumnDescriptions() {
-        Map<EStructuralFeature, String> featureToDisplayName = this.getColumnsStructuralFeaturesDisplayName(PapayaFactory.eINSTANCE.createTask(), PapayaPackage.eINSTANCE.getTask());
+    private List<ColumnDescription> getColumnDescriptions(IEditingContext editingContext) {
+        Map<EStructuralFeature, String> featureToDisplayName = this.getColumnsStructuralFeaturesDisplayName(editingContext, PapayaFactory.eINSTANCE.createTask(), PapayaPackage.eINSTANCE.getTask());
 
         Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
                 .map(featureToDisplayName::get)
@@ -337,14 +336,17 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
     private BiFunction<VariableManager, Object, List<Object>> getCellOptionsProvider() {
         return (variableManager, columnTargetObject) -> {
             List<Object> options = new ArrayList<>();
-            Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
+            var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
+            var editingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
+
+            if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature && editingContext.isPresent()) {
                 EObject eObject = optionalEObject.get();
                 EClassifier eType = eStructuralFeature.getEType();
-                if (eType instanceof EEnum) {
-                    options.addAll(((EEnum) eType).getELiterals());
+                if (eType instanceof EEnum eEnum) {
+                    options.addAll(eEnum.getELiterals());
                 } else {
-                    Object adapter = this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class);
+                    var adapterFactory = editingContext.get().getDomain().getAdapterFactory();
+                    var adapter = adapterFactory.adapt(eObject, IItemPropertySource.class);
                     if (adapter instanceof IItemPropertySource itemPropertySource) {
                         IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eStructuralFeature);
                         if (descriptor != null) {
@@ -359,21 +361,30 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
         };
     }
 
-    private Map<EStructuralFeature, String> getColumnsStructuralFeaturesDisplayName(EObject eObject, EClass eClass) {
+    private Map<EStructuralFeature, String> getColumnsStructuralFeaturesDisplayName(IEditingContext editingContext, EObject eObject, EClass eClass) {
         Map<EStructuralFeature, String> featureToDisplayName = new LinkedHashMap<>();
-        EList<EStructuralFeature> eAllStructuralFeatures = eClass.getEAllStructuralFeatures();
-        for (EStructuralFeature eStructuralFeature : eAllStructuralFeatures) {
-            if (eStructuralFeature instanceof EAttribute && !eStructuralFeature.isMany() && !eStructuralFeature.isDerived()) {
-                featureToDisplayName.put(eStructuralFeature, this.getDisplayName(eObject, eStructuralFeature));
-            } else if (eStructuralFeature instanceof EReference ref && !eStructuralFeature.isDerived() && !ref.isContainment()) {
-                featureToDisplayName.put(eStructuralFeature, this.getDisplayName(eObject, eStructuralFeature));
+        var optionalAdapterFactory = Optional.of(editingContext)
+                    .filter(IEMFEditingContext.class::isInstance)
+                    .map(IEMFEditingContext.class::cast)
+                    .map(IEMFEditingContext::getDomain)
+                    .map(AdapterFactoryEditingDomain::getAdapterFactory);
+        if (optionalAdapterFactory.isPresent()) {
+            var adapterFactory = optionalAdapterFactory.get();
+
+            EList<EStructuralFeature> eAllStructuralFeatures = eClass.getEAllStructuralFeatures();
+            for (EStructuralFeature eStructuralFeature : eAllStructuralFeatures) {
+                if (eStructuralFeature instanceof EAttribute && !eStructuralFeature.isMany() && !eStructuralFeature.isDerived()) {
+                    featureToDisplayName.put(eStructuralFeature, this.getDisplayName(adapterFactory, eObject, eStructuralFeature));
+                } else if (eStructuralFeature instanceof EReference ref && !eStructuralFeature.isDerived() && !ref.isContainment()) {
+                    featureToDisplayName.put(eStructuralFeature, this.getDisplayName(adapterFactory, eObject, eStructuralFeature));
+                }
             }
         }
         return featureToDisplayName;
     }
 
-    private String getDisplayName(EObject eObject, EStructuralFeature eStructuralFeature) {
-        Adapter adapter = this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class);
+    private String getDisplayName(AdapterFactory adapterFactory, EObject eObject, EStructuralFeature eStructuralFeature) {
+        Adapter adapter = adapterFactory.adapt(eObject, IItemPropertySource.class);
         if (adapter instanceof IItemPropertySource itemPropertySource) {
             IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eStructuralFeature);
             if (descriptor != null) {

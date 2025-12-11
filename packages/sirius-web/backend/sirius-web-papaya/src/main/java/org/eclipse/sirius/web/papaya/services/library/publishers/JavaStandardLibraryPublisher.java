@@ -20,6 +20,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -84,6 +85,9 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
             this.createJava002(command, editingDomain.getResourceSet());
         } else if (command.version().equals("0.0.3")) {
             this.createJava003(command, editingDomain.getResourceSet());
+        }
+        if (editingDomain.getAdapterFactory() instanceof IDisposable disposable) {
+            disposable.dispose();
         }
     }
 

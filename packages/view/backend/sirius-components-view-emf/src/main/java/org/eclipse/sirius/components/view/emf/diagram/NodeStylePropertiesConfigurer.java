@@ -29,7 +29,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -83,15 +82,12 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private final ILabelService labelService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     public NodeStylePropertiesConfigurer(ICustomImageMetadataSearchService customImageSearchService, PropertiesConfigurerService propertiesConfigurerService,
-            IPropertiesWidgetCreationService propertiesWidgetCreationService, ILabelService labelService, ComposedAdapterFactory composedAdapterFactory) {
+            IPropertiesWidgetCreationService propertiesWidgetCreationService, ILabelService labelService) {
         this.customImageSearchService = Objects.requireNonNull(customImageSearchService);
         this.propertiesConfigurerService = Objects.requireNonNull(propertiesConfigurerService);
         this.propertiesWidgetCreationService = Objects.requireNonNull(propertiesWidgetCreationService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
     }
 
     @Override
@@ -161,7 +157,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private Function<VariableManager, List<?>> getBorderNodeOptionsProvider() {
-        return new EStructuralFeatureChoiceOfValueProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE, this.composedAdapterFactory);
+        return new EStructuralFeatureChoiceOfValueProvider(EMFFormDescriptionProvider.ESTRUCTURAL_FEATURE);
     }
 
     private List<NodeDescription> getSubNodes(VariableManager variableManager) {

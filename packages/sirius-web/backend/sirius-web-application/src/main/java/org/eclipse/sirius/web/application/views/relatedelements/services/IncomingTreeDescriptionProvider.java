@@ -25,14 +25,16 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.ECrossReferenceAdapter;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.sirius.components.core.CoreImageConstants;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
@@ -63,14 +65,11 @@ public class IncomingTreeDescriptionProvider implements IIncomingTreeDescription
 
     private final ILabelService labelService;
 
-    private final ComposedAdapterFactory adapterFactory;
-
     private final IMessageService messageService;
 
-    public IncomingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, ComposedAdapterFactory adapterFactory, IMessageService messageService) {
+    public IncomingTreeDescriptionProvider(IObjectService objectService, ILabelService labelService, IMessageService messageService) {
         this.objectService = Objects.requireNonNull(objectService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.adapterFactory = Objects.requireNonNull(adapterFactory);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -112,13 +111,17 @@ public class IncomingTreeDescriptionProvider implements IIncomingTreeDescription
     private String getNodeLabel(VariableManager variableManager) {
         String result = null;
         var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
-        if (self instanceof IncomingReferences incomingReferences) {
+        var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                .map(IEMFEditingContext::getDomain)
+                .map(AdapterFactoryEditingDomain::getAdapterFactory);
+
+        if (self instanceof IncomingReferences incomingReferences && optionalAdapterFactory.isPresent()) {
             EReference eReference = incomingReferences.eReference();
             EObject eObject = incomingReferences.sources().get(0);
             result = eReference.getName();
             if (eReference.isContainment()) {
                 result = "owned " + result;
-                Adapter adapter = this.adapterFactory.adapt(eObject, IItemLabelProvider.class);
+                Adapter adapter = optionalAdapterFactory.get().adapt(eObject, IItemLabelProvider.class);
                 if (adapter instanceof ItemProviderAdapter editingDomainItemProvider) {
                     String key = String.format("_UI_%s_%s_feature", eReference.getEContainingClass().getName(), eReference.getName());
                     try {
@@ -128,7 +131,7 @@ public class IncomingTreeDescriptionProvider implements IIncomingTreeDescription
                     }
                 }
             } else {
-                Adapter adapter = this.adapterFactory.adapt(eObject, IItemPropertySource.class);
+                Adapter adapter = optionalAdapterFactory.get().adapt(eObject, IItemPropertySource.class);
                 if (adapter instanceof IItemPropertySource itemPropertySource) {
                     IItemPropertyDescriptor descriptor = itemPropertySource.getPropertyDescriptor(eObject, eReference);
                     if (descriptor != null) {

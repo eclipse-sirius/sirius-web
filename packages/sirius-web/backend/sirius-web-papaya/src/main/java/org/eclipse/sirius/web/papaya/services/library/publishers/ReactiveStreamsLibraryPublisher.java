@@ -20,6 +20,7 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
+import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
@@ -94,6 +95,9 @@ public class ReactiveStreamsLibraryPublisher implements IPapayaLibraryPublisher 
         } else if (command.version().equals("0.0.3") && optionalJava003Library.isPresent()) {
             var java003Library = optionalJava003Library.get();
             this.createReactiveStreams(command, editingDomain.getResourceSet(), java003Library);
+        }
+        if (editingDomain.getAdapterFactory() instanceof IDisposable disposable) {
+            disposable.dispose();
         }
     }
 

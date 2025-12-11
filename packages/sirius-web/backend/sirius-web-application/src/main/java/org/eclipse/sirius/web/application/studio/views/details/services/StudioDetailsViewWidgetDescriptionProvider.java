@@ -22,14 +22,16 @@ import java.util.function.Function;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.emf.forms.EStringIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.WidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -49,8 +51,6 @@ public class StudioDetailsViewWidgetDescriptionProvider implements IStudioDetail
 
     private final IIdentityService identityService;
 
-    private final ComposedAdapterFactory composedAdapterFactory;
-
     private final IPropertiesValidationProvider propertiesValidationProvider;
 
     private final List<ITextfieldCustomizer> customizers;
@@ -59,10 +59,9 @@ public class StudioDetailsViewWidgetDescriptionProvider implements IStudioDetail
 
     private final WidgetReadOnlyProvider widgetReadOnlyProvider;
 
-    public StudioDetailsViewWidgetDescriptionProvider(IIdentityService identityService, ComposedAdapterFactory composedAdapterFactory, IPropertiesValidationProvider propertiesValidationProvider,
+    public StudioDetailsViewWidgetDescriptionProvider(IIdentityService identityService, IPropertiesValidationProvider propertiesValidationProvider,
                                                       List<ITextfieldCustomizer> customizers, List<IEMFFormIfDescriptionProvider> emfFormIfDescriptionProviders, WidgetReadOnlyProvider widgetReadOnlyProvider) {
         this.identityService = Objects.requireNonNull(identityService);
-        this.composedAdapterFactory = Objects.requireNonNull(composedAdapterFactory);
         this.propertiesValidationProvider = Objects.requireNonNull(propertiesValidationProvider);
         this.customizers = Objects.requireNonNull(customizers);
         this.emfFormIfDescriptionProviders = Objects.requireNonNull(emfFormIfDescriptionProviders);
@@ -74,10 +73,13 @@ public class StudioDetailsViewWidgetDescriptionProvider implements IStudioDetail
         Function<VariableManager, List<?>> iterableProvider = variableManager -> {
             List<Object> objects = new ArrayList<>();
 
-            Object self = variableManager.getVariables().get(VariableManager.SELF);
-            if (self instanceof EObject eObject) {
+            var self = variableManager.getVariables().get(VariableManager.SELF);
+            var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+                    .map(IEMFEditingContext::getDomain)
+                    .map(AdapterFactoryEditingDomain::getAdapterFactory);
 
-                List<IItemPropertyDescriptor> propertyDescriptors = Optional.ofNullable(this.composedAdapterFactory.adapt(eObject, IItemPropertySource.class))
+            if (self instanceof EObject eObject && optionalAdapterFactory.isPresent()) {
+                List<IItemPropertyDescriptor> propertyDescriptors = Optional.ofNullable(optionalAdapterFactory.get().adapt(eObject, IItemPropertySource.class))
                         .filter(IItemPropertySource.class::isInstance)
                         .map(IItemPropertySource.class::cast)
                         .map(iItemPropertySource -> iItemPropertySource.getPropertyDescriptors(eObject))
@@ -99,7 +101,7 @@ public class StudioDetailsViewWidgetDescriptionProvider implements IStudioDetail
 
         List<AbstractControlDescription> ifDescriptions = new ArrayList<>();
         for (ITextfieldCustomizer customizer : this.customizers) {
-            ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, customizer, semanticTargetIdProvider, this.widgetReadOnlyProvider).getIfDescription());
+            ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.propertiesValidationProvider, customizer, semanticTargetIdProvider, this.widgetReadOnlyProvider).getIfDescription());
         }
         ITextfieldCustomizer fallbackCustomizer = new ITextfieldCustomizer.NoOp() {
             @Override
@@ -107,7 +109,7 @@ public class StudioDetailsViewWidgetDescriptionProvider implements IStudioDetail
                 return StudioDetailsViewWidgetDescriptionProvider.this.customizers.stream().noneMatch(customizer -> customizer.handles(eAttribute, eObject));
             }
         };
-        ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.composedAdapterFactory, this.propertiesValidationProvider, fallbackCustomizer, semanticTargetIdProvider, this.widgetReadOnlyProvider).getIfDescription());
+        ifDescriptions.add(new CustomizableEStringIfDescriptionProvider(this.propertiesValidationProvider, fallbackCustomizer, semanticTargetIdProvider, this.widgetReadOnlyProvider).getIfDescription());
         this.emfFormIfDescriptionProviders.stream()
                 .map(IEMFFormIfDescriptionProvider::getIfDescriptions)
                 .flatMap(Collection::stream)

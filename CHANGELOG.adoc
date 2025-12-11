@@ -62,7 +62,22 @@ They have been replaced by proper transactional event listeners and new events s
 Those events did not exist in the past and it was impossible for someone to listen for the removal of some `ProjectSemanticData` or some `SemanticData`.
 Downstream projects which made some hypothesis on the impact of the deletion of a project will now be able to remove those hypothesis and listen to regular events.
 - https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] `OmniboxCommandOverrideContribution` and `OmniboxCommandComponentProps` now use `OmniboxCommand` instead of `GQLOmniboxCommand` type.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5953[#5953] [emf] Provide `AdapterFactory Descriptors` instead of `AdapterFactories`.
+Downstream projects contributing custom `AdapterFactory` @Bean must now contribute `AdapterFactory.Descriptor` @Bean instead.
+For example, the Papaya AdapterFactory is now contributed like this:
+```
+@Bean
+public ComposedAdapterFactory.Descriptor papayaAdapterFactoryDescriptor() {
+    return PapayaItemProviderAdapterFactory::new;
+}
+````
+instead of the previous way:
+```
+@Bean
+public AdapterFactory papayaAdapterFactory() {
+    return new PapayaItemProviderAdapterFactory();
+}
+````
 
 === Dependency update
 
