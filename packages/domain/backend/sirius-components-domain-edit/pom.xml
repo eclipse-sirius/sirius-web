@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.0</version>
+		<version>2025.12.1</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-domain-edit</artifactId>
-	<version>2025.12.0</version>
+	<version>2025.12.1</version>
 	<name>sirius-components-domain-edit</name>
 	<description>Sirius Components Domain Definition DSL - Edit Support</description>
 
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain</artifactId>
-			<version>2025.12.0</version>
+			<version>2025.12.1</version>
 		</dependency>
 	</dependencies>
 
