@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.portals;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescriptionParameters;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.portals.api.IPortalEventHandler;
@@ -42,6 +38,10 @@ import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 /**
  * The event processor for portals.
  *
@@ -55,7 +55,7 @@ public class PortalEventProcessor implements IPortalEventProcessor {
 
     private final IRepresentationSearchService representationSearchService;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
     private final List<IPortalEventHandler> portalEventHandlers;
 
@@ -65,11 +65,11 @@ public class PortalEventProcessor implements IPortalEventProcessor {
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
-    public PortalEventProcessor(IEditingContext editingContext, IRepresentationSearchService representationSearchService, IRepresentationPersistenceService representationPersistenceService,
+    public PortalEventProcessor(IEditingContext editingContext, IRepresentationSearchService representationSearchService, IRepresentationPersistenceStrategy representationPersistenceStrategy,
             List<IPortalEventHandler> portalEventHandlers, ISubscriptionManager subscriptionManager, Portal portal) {
         this.editingContext = Objects.requireNonNull(editingContext);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
         this.portalEventHandlers = Objects.requireNonNull(portalEventHandlers);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.currentPortal = Objects.requireNonNull(portal);
@@ -103,7 +103,7 @@ public class PortalEventProcessor implements IPortalEventProcessor {
 
     private void updatePortal(IInput input, Portal newPortal) {
         this.currentPortal = newPortal;
-        this.representationPersistenceService.save(input, this.editingContext, this.currentPortal);
+        this.representationPersistenceStrategy.applyPersistStrategy(input, this.editingContext, this.currentPortal);
         this.emitNewPortal(input);
     }
 

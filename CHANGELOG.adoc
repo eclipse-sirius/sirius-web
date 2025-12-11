@@ -127,6 +127,8 @@ This will mainly affect `IRepresentationMetadataSearchService`, `IRepresentation
 * `IRepresentationSearchService#existByIdAndKind` will now require the `IEditingContext``
 * `IRepresentationMetadataProvider#getMetadata` will now require the `editingContextId`
 * `IRepresentationApplicationService#findRepresentationMetadataById` will not require the `editingContextId`
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] `IExplorerServices#getDefaultElements` has been removed. Use `DefaultContentService#getContents` instead by passing the `IEditingContext`. *Note* that `DefaultContentService#getContents` will not return a sorted list as it was before by `IExplorerServices#getDefaultElements`.
+- A new API `org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy` has been added to delegate persistence decisions for representations (used to support transient diagrams). Several event-processor-related constructors now accept an additional `IRepresentationPersistenceStrategy` parameter (for example: `DiagramEventProcessorFactory`, `PapayaDashboardEventProcessorFactory`, and related `DiagramEventProcessor`/`DiagramEventProcessorParameters` builders). If you directly instantiate or extend those factories in downstream code or tests, update the constructors to provide an `IRepresentationPersistenceStrategy` implementation.
 
 
 === Dependency update
@@ -227,6 +229,7 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/5991[#5991] [diagram] Improve the UI of the Manage Visibility modal
 - https://github.com/eclipse-sirius/sirius-web/issues/5946[#5946] [diagram] Prevent the border node label from overlapping the parent node by adjusting its position based on the position of the border node.
 - https://github.com/eclipse-sirius/sirius-web/issues/5969[#5969] [diagram] Prevent label to overflow child node during resize
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] [diagram] Make it possible to have transient diagrams: delegate the save operation to a new `IRepresentationPersistenceStrategy` service which persists only when the representation exists in the database, and add a transient diagram sample in Papaya.
 
 
 == 2025.12.0

@@ -12,13 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
@@ -26,6 +22,10 @@ import org.eclipse.sirius.components.collaborative.deck.service.DeckCreationServ
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.deck.Deck;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Used to create the deck event processors.
@@ -43,15 +43,15 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
 
     private final List<IDeckEventHandler> deckEventHandlers;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
     public DeckEventProcessorFactory(IRepresentationSearchService representationSearchService, DeckCreationService deckCreationService, ISubscriptionManagerFactory subscriptionManagerFactory,
-            List<IDeckEventHandler> deckEventHandlers, IRepresentationPersistenceService representationPersistenceService) {
+            List<IDeckEventHandler> deckEventHandlers, IRepresentationPersistenceStrategy representationPersistenceStrategy) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.deckCreationService = Objects.requireNonNull(deckCreationService);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.deckEventHandlers = Objects.requireNonNull(deckEventHandlers);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
             DeckContext deckContext = new DeckContext(deck);
 
             IRepresentationEventProcessor deckEventProcessor = new DeckEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.deckCreationService, this.deckEventHandlers,
-                    deckContext, this.representationPersistenceService, this.representationSearchService);
+                    deckContext, this.representationPersistenceStrategy, this.representationSearchService);
 
             return Optional.of(deckEventProcessor);
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
@@ -42,15 +39,17 @@ import org.eclipse.sirius.components.tables.components.TableComponentProps;
 import org.eclipse.sirius.components.tables.renderer.TableRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 import reactor.core.publisher.Sinks.EmitResult;
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Reacts to the input that target a table representation and publishes updated versions of the Table to
@@ -74,13 +73,13 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
 
     private final ITableContext tableContext;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
     private final Timer timer;
 
     public TableEventProcessor(TableCreationParameters tableCreationParameters, List<ITableEventHandler> tableEventHandlers, ITableContext tableContext,
             ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
-            IRepresentationPersistenceService representationPersistenceService) {
+            IRepresentationPersistenceStrategy representationPersistenceStrategy) {
         this.logger.trace("Creating the table event processor {}", tableCreationParameters.getEditingContext().getId());
 
         this.tableCreationParameters = Objects.requireNonNull(tableCreationParameters);
@@ -88,7 +87,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         this.tableContext = Objects.requireNonNull(tableContext);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
 
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "table")
@@ -97,7 +96,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         Table table = this.refreshTable();
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database.
-        this.representationPersistenceService.save(null, this.tableCreationParameters.getEditingContext(), table);
+        this.representationPersistenceStrategy.applyPersistStrategy(null, this.tableCreationParameters.getEditingContext(), table);
         this.tableContext.update(table);
     }
 
@@ -147,7 +146,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
             this.tableContext.reset();
             this.tableContext.update(table);
             if (table != null) {
-                this.representationPersistenceService.save(changeDescription.getInput(), this.tableCreationParameters.getEditingContext(), table);
+                this.representationPersistenceStrategy.applyPersistStrategy(changeDescription.getInput(), this.tableCreationParameters.getEditingContext(), table);
                 this.logger.trace("Table refreshed: {}", table.getId());
             }
             if (this.sink.currentSubscriberCount() > 0) {
