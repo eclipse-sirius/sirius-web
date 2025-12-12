@@ -11,5 +11,5 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 export interface AdjustSizeToolProps {
-  diagramElementId: string;
+  diagramElementIds: string[];
 }

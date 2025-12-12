@@ -30,8 +30,8 @@ import { PinUnPinTool } from './PinUnPinTool';
 import { ResetEditedEdgePathTool } from './ResetEditedEdgePathTool';
 import { ResetLabelPositionTool } from './ResetLabelPositionTool';
 import { ResetManuallyLaidOutHandlesTool } from './ResetManuallyLaidOutHandlesTool';
-import { Tool } from './Tool';
 import { ResetMovedByUserTool } from './ResetMovedByUserTool';
+import { Tool } from './Tool';
 
 /**
  *
@@ -151,6 +151,13 @@ export const PaletteQuickAccessToolBar = ({
         />
       );
     }
+    quickAccessToolComponents.push(
+      <AdjustSizeTool
+        diagramElementIds={diagramElements.map((diagramElement) => diagramElement.id)}
+        key="tool_adjustSizeTool"
+      />
+    );
+
     if (diagramElements.length > 1) {
       quickAccessToolComponents.push(
         <HideElementTool diagramElementIds={diagramElementIds} key="tool_hideElementTool" />
@@ -182,10 +189,6 @@ export const PaletteQuickAccessToolBar = ({
           diagramElementId={diagramElements[0].id}
           key="tool_resetManuallyLaidOutHandlesTool"
         />
-      );
-
-      quickAccessToolComponents.push(
-        <AdjustSizeTool diagramElementId={diagramElements[0].id} key="tool_adjustSizeTool" />
       );
     }
   }

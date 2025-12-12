@@ -12,5 +12,5 @@
  *******************************************************************************/
 
 export interface UseAdjustSizeValue {
-  adjustSize: (nodeId: string) => void;
+  adjustSize: (nodeIds: string[]) => void;
 }

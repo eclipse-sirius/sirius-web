@@ -14,10 +14,10 @@
 import AdjustIcon from '@mui/icons-material/Adjust';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { useAdjustSize } from '../../adjust-size/useAdjustSize';
 import { AdjustSizeToolProps } from './AdjustSizeTool.types';
-import { useTranslation } from 'react-i18next';
 
 const useStyle = makeStyles()((theme) => ({
   toolIcon: {
@@ -28,7 +28,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const AdjustSizeTool = ({ diagramElementId }: AdjustSizeToolProps) => {
+export const AdjustSizeTool = ({ diagramElementIds }: AdjustSizeToolProps) => {
   const { classes } = useStyle();
   const { adjustSize } = useAdjustSize();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'adjustSizeTool' });
@@ -38,7 +38,7 @@ export const AdjustSizeTool = ({ diagramElementId }: AdjustSizeToolProps) => {
         className={classes.toolIcon}
         size="small"
         aria-label={t('adjustElement')}
-        onClick={() => adjustSize(diagramElementId)}
+        onClick={() => adjustSize(diagramElementIds)}
         data-testid="adjust-element">
         <AdjustIcon sx={{ fontSize: 16 }} />
       </IconButton>
