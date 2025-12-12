@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DiagramDialogComponentProps, GQLToolVariable } from '@eclipse-sirius/sirius-components-diagrams';
-import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
+import { GQLTree, GQLTreeItem, useTreeSelection } from '@eclipse-sirius/sirius-components-trees';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -42,31 +42,19 @@ export const SelectionDialog = ({
     variables,
   });
 
+  const { treeItemClick } = useTreeSelection();
+
   const message: string = selectionDescription?.message ?? '';
   const treeDescriptionId: string | null = selectionDescription?.treeDescription.id ?? null;
   const multiple: boolean = selectionDescription?.multiple ?? false;
 
-  const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => {
-    if (multiple) {
-      if (event.ctrlKey || event.metaKey) {
-        event.stopPropagation();
-        if (state.selectedObjectIds.includes(item.id)) {
-          setState((prevState) => ({
-            ...prevState,
-            selectedObjectIds: prevState.selectedObjectIds.filter((itemId) => itemId !== item.id),
-          }));
-        } else {
-          setState((prevState) => ({
-            ...prevState,
-            selectedObjectIds: [...prevState.selectedObjectIds, item.id],
-          }));
-        }
-      } else {
-        setState((prevState) => ({ ...prevState, selectedObjectIds: [item.id] }));
-      }
-    } else {
-      setState((prevState) => ({ ...prevState, selectedObjectIds: [item.id] }));
-    }
+  const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => {
+    var newSelection = treeItemClick(event, tree, item, state.selectedObjectIds, multiple);
+    setState((prevState) => ({
+      ...prevState,
+      selectedObjectIds: newSelection.selectedTreeItemIds,
+      singleTreeItemSelected: newSelection.singleTreeItemSelected,
+    }));
   };
 
   const handleClick = () => {

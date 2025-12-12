@@ -13,7 +13,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
 import { DRAG_SOURCES_TYPE, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
+import { GQLTree, GQLTreeItem, useTreeSelection } from '@eclipse-sirius/sirius-components-trees';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import Box from '@mui/material/Box';
@@ -79,6 +79,8 @@ export const TransferModal = ({
     selectedTreeItemIds: [],
   });
   const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'transferModal' });
+
+  const { treeItemClick } = useTreeSelection();
 
   const {
     loading: childReferenceValueOptionsLoading,
@@ -203,27 +205,13 @@ export const TransferModal = ({
     state.rightSelection.forEach((element) => removeElement(element.id));
   };
 
-  const onTreeItemClick = (event, item: GQLTreeItem) => {
-    if (widget.reference.manyValued) {
-      if (event.ctrlKey || event.metaKey) {
-        event.stopPropagation();
-        if (state.selectedTreeItemIds.includes(item.id)) {
-          setState((prevState) => ({
-            ...prevState,
-            selectedTreeItemIds: prevState.selectedTreeItemIds.filter((itemId) => itemId !== item.id),
-          }));
-        } else {
-          setState((prevState) => ({
-            ...prevState,
-            selectedTreeItemIds: [...prevState.selectedTreeItemIds, item.id],
-          }));
-        }
-      } else {
-        setState((prevState) => ({ ...prevState, selectedTreeItemIds: [item.id] }));
-      }
-    } else {
-      setState((prevState) => ({ ...prevState, selectedTreeItemIds: [item.id] }));
-    }
+  const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => {
+    var newSelection = treeItemClick(event, tree, item, state.selectedTreeItemIds, widget.reference.manyValued);
+    setState((prevState) => ({
+      ...prevState,
+      selectedTreeItemIds: newSelection.selectedTreeItemIds,
+      singleTreeItemSelected: newSelection.singleTreeItemSelected,
+    }));
   };
 
   return (

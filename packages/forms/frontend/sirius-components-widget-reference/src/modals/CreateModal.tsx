@@ -13,7 +13,7 @@
 import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
 import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
+import { GQLTree, GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -340,7 +340,7 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
     }
   }, [state.selectedDomainId, state.containerId, state.containerKind]);
 
-  const onTreeItemClick = (_event, item: GQLTreeItem) => {
+  const onTreeItemClick = (_event, _tree: GQLTree, item: GQLTreeItem) => {
     setState((prevState) => ({
       ...prevState,
       containerSelected: item,

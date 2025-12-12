@@ -132,7 +132,7 @@ export const Tree = ({
               textToFilter={textToFilter}
               markedItemIds={markedItemIds}
               treeItemActionRender={treeItemActionRender}
-              onTreeItemClick={onTreeItemClick}
+              onTreeItemClick={(event, item) => onTreeItemClick(event, tree, item)}
               selectTreeItems={selectTreeItems}
               selectedTreeItemIds={selectedTreeItemIds}
             />
@@ -150,7 +150,7 @@ export const Tree = ({
               textToFilter={textToFilter}
               markedItemIds={markedItemIds}
               treeItemActionRender={treeItemActionRender}
-              onTreeItemClick={onTreeItemClick}
+              onTreeItemClick={(event, item) => onTreeItemClick(event, tree, item)}
               selectTreeItems={selectTreeItems}
               selectedTreeItemIds={selectedTreeItemIds}
             />
