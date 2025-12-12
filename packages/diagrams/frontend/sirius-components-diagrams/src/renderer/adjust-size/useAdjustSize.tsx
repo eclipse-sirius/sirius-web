@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
-import { DiagramNodeType } from '../node/NodeTypes.types';
 import { UseAdjustSizeValue } from './useAdjustSize.types';
 
 export const useAdjustSize = (): UseAdjustSizeValue => {
@@ -23,33 +22,38 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
-  const adjustSize = (nodeId: string): void => {
-    const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
-    const targetedNode: Node<NodeData, string> | undefined = nodes.find((node) => node.id === nodeId);
-    const childNodes: Node<NodeData, string>[] | [] = nodes
-      .filter((node) => node.parentId === nodeId)
-      .map((node) => {
-        node.data.resizedByUser = true;
-        return node;
-      });
-    if (targetedNode) {
-      targetedNode.data.resizedByUser = false;
+  const adjustSize = (nodeIds: string[]): void => {
+    const updatedNodes = getNodes().map((node) => {
+      if (nodeIds.find((nodeId) => nodeId === node.id)) {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            resizedByUser: false,
+          },
+        };
+      }
+      return node;
+    });
+
+    if (nodeIds.length > 0) {
       const diagramToLayout: RawDiagram = {
-        nodes: [targetedNode, ...childNodes],
+        nodes: updatedNodes,
         edges: getEdges(),
       };
 
       layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-        nodes.map((node) => {
-          if (node.id === targetedNode.id) {
-            return laidOutDiagram.nodes.find((laidOutNode) => laidOutNode.id === targetedNode.id) ?? node;
+        updatedNodes.map((node) => {
+          if (nodeIds.find((nodeId) => nodeId === node.id)) {
+            return laidOutDiagram.nodes.find((laidOutNode) => laidOutNode.id === node.id) ?? node;
           }
           return node;
         });
-        setNodes(nodes);
+
+        setNodes(updatedNodes);
         setEdges(laidOutDiagram.edges);
         const finalDiagram: RawDiagram = {
-          nodes: nodes,
+          nodes: updatedNodes,
           edges: laidOutDiagram.edges,
         };
         synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);

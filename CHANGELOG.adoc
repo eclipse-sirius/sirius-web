@@ -190,6 +190,7 @@ With the workbench configuration, downstream projects can give the representatio
 In conjonction of the `workbenchViewContributionExtensionPoint` frontend extension point, downstream projects can add custom views with their workbench configuration.
 - https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] Highlight the last selected elements with custom resize handles, this can be useful when executing a layout group tool.
 - https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] Replace use of foreign keys between different bounded contexts with proper events
+- https://github.com/eclipse-sirius/sirius-web/issues/5958[#5958] [diagram] Allow the execution of adjust size tool on a multi selection
 
 
 === Improvements

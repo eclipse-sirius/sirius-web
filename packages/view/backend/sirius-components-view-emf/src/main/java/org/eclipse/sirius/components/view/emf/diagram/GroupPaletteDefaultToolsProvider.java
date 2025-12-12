@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,6 +63,10 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
             extraTools.add(fadeTool);
         }
 
+        if (diagramElements.stream().anyMatch(Node.class::isInstance)) {
+            extraTools.add(this.getAdjustSizeTool(targetDescriptions));
+        }
+
         var hideTool = this.createHideTool(targetDescriptions);
         extraTools.add(hideTool);
         return  extraTools;
@@ -102,6 +106,15 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(id)
                 .label(this.messageService.defaultQuickToolHide())
                 .iconURL(List.of(DiagramImageConstants.HIDE_SVG))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .build();
+    }
+
+    private ITool getAdjustSizeTool(List<IDiagramElementDescription> targetDescriptions) {
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("adjust-size")
+                .label(this.messageService.defaultQuickToolAdjustSize())
+                .iconURL(List.of(DiagramImageConstants.ADJUST_SIZE))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
                 .build();

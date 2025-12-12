@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -88,13 +88,9 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
         if (diagramElementIds.length === 1 && diagramElementIds[0]) {
           removeNodeHandleLayoutData(diagramElementIds[0]);
         }
-
         break;
       case 'adjust-size':
-        if (diagramElementIds.length === 1 && diagramElementIds[0]) {
-          adjustSize(diagramElementIds[0]);
-        }
-
+        adjustSize(diagramElementIds);
         break;
       default:
         invokeSingleClickTool(editingContextId, diagramId, tool, diagramElementIds, targetObjectId, x, y);
