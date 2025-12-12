@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.0</version>
+		<version>2025.12.1-prerelease</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-widget-reference</artifactId>
-	<version>2025.12.0</version>
+	<version>2025.12.1-prerelease</version>
 	<name>sirius-components-widget-reference</name>
 	<description>Sirius Components Forms :: Reference Widget</description>
 
@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-forms</artifactId>
-			<version>2025.12.0</version>
+			<version>2025.12.1-prerelease</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -42,7 +42,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.12.0</version>
+			<version>2025.12.1-prerelease</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
