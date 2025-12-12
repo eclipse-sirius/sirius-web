@@ -60,6 +60,7 @@ The `WorkbenchEntry` object has also been transformed into a record
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.8[Spring Boot 3.5.8]
 - [releng] Switch to https://eclipse.dev/elk/downloads/releasenotes/release-0.11.0.html[elkjs 0.11.0]
+- [releng] Switch to https://github.com/xyflow/xyflow/releases/tag/%40xyflow%2Freact%4012.10.0[xyflow 12.10.0]
 
 
 === Bug fixes

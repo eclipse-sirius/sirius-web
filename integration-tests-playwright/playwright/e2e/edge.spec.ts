@@ -41,6 +41,9 @@ test.describe('edge', () => {
 
   test('when a bend point is moved, then the edge path is changed', async ({ page }) => {
     const playwrightEdge = new PlaywrightEdge(page);
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    await playwrightNode.click();
+    await playwrightNode.move({ x: 200, y: 50 });
 
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
@@ -64,7 +67,7 @@ test.describe('edge', () => {
   }) => {
     const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
     await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 50 });
+    await playwrightNode.move({ x: 200, y: 150 });
 
     const playwrightEdge = new PlaywrightEdge(page);
 
@@ -145,7 +148,7 @@ test.describe('edge', () => {
     const dataSource = new PlaywrightNode(page, 'DataSource1');
     const edge = new PlaywrightEdge(page);
     await compositeProcessor.click();
-    await compositeProcessor.move({ x: 150, y: 50 });
+    await compositeProcessor.move({ x: 150, y: 150 });
 
     await expect(edge.edgeLocator).toBeAttached();
 
