@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,13 +16,12 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.gantt.GanttContext;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttContext;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.description.GanttDescription;
@@ -47,14 +46,13 @@ public class GanttCreationService implements IGanttCreationService {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final Timer timer;
 
-    public GanttCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService,
-            IObjectService objectService, MeterRegistry meterRegistry) {
+    public GanttCreationService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IObjectSearchService objectSearchService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.timer = Timer.builder(Monitoring.REPRESENTATION_EVENT_PROCESSOR_REFRESH)
                 .tag(Monitoring.NAME, "gantt")
                 .register(meterRegistry);
@@ -68,7 +66,7 @@ public class GanttCreationService implements IGanttCreationService {
 
     @Override
     public Optional<Gantt> refresh(IEditingContext editingContext, GanttContext ganttContext) {
-        var optionalObject = this.objectService.getObject(editingContext, ganttContext.getGantt().targetObjectId());
+        var optionalObject = this.objectSearchService.getObject(editingContext, ganttContext.getGantt().targetObjectId());
         var optionalGanttDescription = this.representationDescriptionSearchService.findById(editingContext, ganttContext.getGantt().getDescriptionId())
                 .filter(GanttDescription.class::isInstance)
                 .map(GanttDescription.class::cast);

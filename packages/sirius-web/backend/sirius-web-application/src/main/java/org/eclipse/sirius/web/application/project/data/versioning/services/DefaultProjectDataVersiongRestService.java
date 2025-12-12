@@ -33,7 +33,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.dto.Identified;
@@ -65,7 +66,9 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
 
     private final IDefaultObjectRestService defaultObjectRestService;
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
+
+    private final IObjectSearchService objectSearchService;
 
     private final IProjectEditingContextService projectEditingContextService;
 
@@ -75,9 +78,10 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
 
     private final IEObjectRestDeserializer objectRestDeserializer;
 
-    public DefaultProjectDataVersiongRestService(IDefaultObjectRestService defaultObjectRestService, IObjectService objectService, IProjectEditingContextService projectEditingContextService, IEditService editService, IEObjectRestSerializer eObjectRestSerializer, IEObjectRestDeserializer objectRestDeserializer) {
+    public DefaultProjectDataVersiongRestService(IDefaultObjectRestService defaultObjectRestService, IIdentityService identityService, IObjectSearchService objectSearchService, IProjectEditingContextService projectEditingContextService, IEditService editService, IEObjectRestSerializer eObjectRestSerializer, IEObjectRestDeserializer objectRestDeserializer) {
         this.defaultObjectRestService = Objects.requireNonNull(defaultObjectRestService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
         this.editService = Objects.requireNonNull(editService);
         this.eObjectRestSerializer = Objects.requireNonNull(eObjectRestSerializer);
@@ -114,7 +118,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
                 var identity = dataVersion.identity();
 
                 if (payload == null && identity != null && identity.id() != null) {
-                    this.objectService.getObject(editingContext, identity.id().toString()).ifPresent(objectsToDelete::add);
+                    this.objectSearchService.getObject(editingContext, identity.id().toString()).ifPresent(objectsToDelete::add);
                 } else if (payload != null && identity == null) {
                     var rawType = payload.get("@type");
                     if (rawType instanceof String type) {
@@ -123,7 +127,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
                         });
                     }
                 } else if (payload != null && identity != null && identity.id() != null) {
-                    this.objectService.getObject(editingContext, identity.id().toString())
+                    this.objectSearchService.getObject(editingContext, identity.id().toString())
                         .filter(EObject.class::isInstance)
                         .map(EObject.class::cast)
                         .ifPresent(existingObject -> {
@@ -142,10 +146,10 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
                     // object with no container, so add it as root object to the first sirius document found
                     this.getResourceSet(editingContext).map(ResourceSet::getResources).stream()
                         .flatMap(Collection::stream)
-                        .filter(r -> r.getURI().scheme().equals(IEMFEditingContext.RESOURCE_SCHEME))
+                        .filter(resource -> resource.getURI().scheme().equals(IEMFEditingContext.RESOURCE_SCHEME))
                         .findFirst()
-                        .ifPresent(r -> {
-                            r.getContents().add(newObject);
+                        .ifPresent(resource -> {
+                            resource.getContents().add(newObject);
                         });
                 }
             });
@@ -186,7 +190,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
                     .map(EObject.class::cast)
                     .toList();
             for (var element : elements) {
-                var elementId = this.objectService.getId(element);
+                var elementId = this.identityService.getId(element);
                 var changeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
                 var payload = this.eObjectRestSerializer.toMap(element);
                 var dataVersion = new RestDataVersion(changeId, new RestDataIdentity(UUID.fromString(elementId)), payload);
@@ -208,7 +212,7 @@ public class DefaultProjectDataVersiongRestService implements IDefaultProjectDat
                     .map(EObject.class::cast)
                     .toList();
             for (var element : elements) {
-                var elementId = this.objectService.getId(element);
+                var elementId = this.identityService.getId(element);
                 if (elementId != null) {
                     var computedChangeId = UUID.nameUUIDFromBytes((commitId + elementId).getBytes());
                     if (changeId.toString().equals(computedChangeId.toString())) {

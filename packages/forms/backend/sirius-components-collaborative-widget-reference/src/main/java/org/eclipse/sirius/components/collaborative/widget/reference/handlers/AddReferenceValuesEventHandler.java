@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.widget.reference.dto.AddRefer
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
@@ -50,16 +50,16 @@ import reactor.core.publisher.Sinks.One;
 public class AddReferenceValuesEventHandler implements IFormEventHandler {
     private final IFormQueryService formQueryService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final IReferenceMessageService messageService;
 
     private final Counter counter;
 
-    public AddReferenceValuesEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, MeterRegistry meterRegistry) {
+    public AddReferenceValuesEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService, MeterRegistry meterRegistry) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -115,7 +115,7 @@ public class AddReferenceValuesEventHandler implements IFormEventHandler {
     }
 
     private List<Object> resolve(IEditingContext editingContext, List<String> ids) {
-        return ids.stream().flatMap(id -> this.objectService.getObject(editingContext, id).stream()).toList();
+        return ids.stream().flatMap(id -> this.objectSearchService.getObject(editingContext, id).stream()).toList();
     }
 
 }

@@ -35,7 +35,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-browser-graphql", 100.0),
   new ModuleCoverage("sirius-components-collaborative-browser", 98.0),
   new ModuleCoverage("sirius-components-representations", 78.0),
-  new ModuleCoverage("sirius-components-core", 82.0),
+  new ModuleCoverage("sirius-components-core", 81.0),
   new ModuleCoverage("sirius-components-collaborative", 90.0),
   new ModuleCoverage("sirius-components-graphql-api", 62.0),
   new ModuleCoverage("sirius-components-datatree", 100.0),

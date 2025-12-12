@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.tables.api.IRowContextMenuEntryExecutor;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.tables.Line;
@@ -38,11 +38,11 @@ public class DeleteRowContextMenuEntryExecutor implements IRowContextMenuEntryEx
 
     private final IEditService editService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
-    public DeleteRowContextMenuEntryExecutor(IEditService editService, IObjectService objectService) {
+    public DeleteRowContextMenuEntryExecutor(IEditService editService, IObjectSearchService objectSearchService) {
         this.editService = Objects.requireNonNull(editService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class DeleteRowContextMenuEntryExecutor implements IRowContextMenuEntryEx
 
     @Override
     public IStatus execute(IEditingContext editingContext, TableDescription tableDescription, Table table, Line row, String rowMenuContextEntryId) {
-        this.objectService.getObject(editingContext, row.getTargetObjectId()).ifPresent(this.editService::delete);
+        this.objectSearchService.getObject(editingContext, row.getTargetObjectId()).ifPresent(this.editService::delete);
         return new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
     }
 }

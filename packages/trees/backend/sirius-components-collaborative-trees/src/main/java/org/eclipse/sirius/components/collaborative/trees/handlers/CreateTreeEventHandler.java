@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -59,19 +59,19 @@ public class CreateTreeEventHandler implements IEditingContextEventHandler {
 
     private final TreeCreationService treeCreationService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
     public CreateTreeEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, IRepresentationPersistenceService representationPersistenceService,
-            TreeCreationService treeCreationService, IObjectService objectService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+                                  TreeCreationService treeCreationService, IObjectSearchService objectSearchService, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.treeCreationService = Objects.requireNonNull(treeCreationService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -101,7 +101,7 @@ public class CreateTreeEventHandler implements IEditingContextEventHandler {
             Optional<TreeDescription> optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(TreeDescription.class::isInstance)
                     .map(TreeDescription.class::cast);
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
+            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, createRepresentationInput.objectId());
 
             if (optionalTreeDescription.isPresent() && optionalObject.isPresent()) {
                 TreeDescription treeDescription = optionalTreeDescription.get();

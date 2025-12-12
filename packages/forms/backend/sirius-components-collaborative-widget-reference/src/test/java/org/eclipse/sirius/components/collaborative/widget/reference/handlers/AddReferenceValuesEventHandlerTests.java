@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.collaborative.widget.reference.dto.AddRefer
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
@@ -78,7 +78,7 @@ public class AddReferenceValuesEventHandlerTests {
                 .kind("")
                 .build();
 
-        IObjectService objectService = new IObjectService.NoOp() {
+        IObjectSearchService objectSearchService = new IObjectSearchService.NoOp() {
             @Override
             public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
                 return Optional.of(referenceValue);
@@ -123,7 +123,7 @@ public class AddReferenceValuesEventHandlerTests {
             }
         };
 
-        AddReferenceValuesEventHandler handler = new AddReferenceValuesEventHandler(formQueryService, new IReferenceMessageService.NoOp(), objectService, new SimpleMeterRegistry());
+        AddReferenceValuesEventHandler handler = new AddReferenceValuesEventHandler(formQueryService, new IReferenceMessageService.NoOp(), objectSearchService, new SimpleMeterRegistry());
         assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
@@ -202,7 +202,7 @@ public class AddReferenceValuesEventHandlerTests {
             }
         };
 
-        AddReferenceValuesEventHandler handler = new AddReferenceValuesEventHandler(formQueryService, messageService, new IObjectService.NoOp(), new SimpleMeterRegistry());
+        AddReferenceValuesEventHandler handler = new AddReferenceValuesEventHandler(formQueryService, messageService, new IObjectSearchService.NoOp(), new SimpleMeterRegistry());
         assertThat(handler.canHandle(new IEditingContext.NoOp(), input)).isTrue();
 
         Sinks.Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();

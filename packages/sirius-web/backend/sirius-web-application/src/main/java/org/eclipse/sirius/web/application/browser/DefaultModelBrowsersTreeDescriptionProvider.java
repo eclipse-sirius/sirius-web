@@ -36,11 +36,12 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.browser.ModelBrowserEventProcessorFactory;
 import org.eclipse.sirius.components.collaborative.browser.api.IModelBrowserRootCandidateSearchProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
@@ -78,7 +79,9 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private static final String DOCUMENT_KIND = "siriusWeb://document";
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
+
+    private final IContentService contentService;
 
     private final IIdentityService identityService;
 
@@ -92,9 +95,10 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private final IModelBrowserRootCandidateSearchProvider defaultCandidateProvider;
 
-    public DefaultModelBrowsersTreeDescriptionProvider(IObjectService objectService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, IEMFKindService emfKindService,
-            List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DefaultModelBrowsersTreeDescriptionProvider(IObjectSearchService objectSearchService, IContentService contentService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser,
+                                                       IEMFKindService emfKindService, List<IModelBrowserRootCandidateSearchProvider> candidateProviders) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.contentService = Objects.requireNonNull(contentService);
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.urlParser = Objects.requireNonNull(urlParser);
@@ -189,7 +193,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String ownerId = parameters.get("ownerId").get(0);
 
-            return this.objectService.getObject(optionalEditingContext.get(), ownerId)
+            return this.objectSearchService.getObject(optionalEditingContext.get(), ownerId)
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast);
         } else {
@@ -306,7 +310,6 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private boolean isEditable(VariableManager variableManager) {
         return false;
-
     }
 
     private boolean isDeletable(VariableManager variableManager) {
@@ -331,7 +334,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String descriptionId = parameters.get("descriptionId").get(0);
             String ownerId = parameters.get("ownerId").get(0);
-            var optionalSemanticOwner = this.objectService.getObject(optionalEditingContext.get(), ownerId);
+            var optionalSemanticOwner = this.objectSearchService.getObject(optionalEditingContext.get(), ownerId);
 
             if (optionalSemanticOwner.isPresent()) {
                 return this.candidateProviders.stream()
@@ -389,7 +392,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
                 } else if (self instanceof EObject) {
-                    List<Object> contents = this.objectService.getContents(self);
+                    List<Object> contents = this.contentService.getContents(self);
                     result.addAll(contents);
                 }
             }
@@ -410,7 +413,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
         var optionalId = variableManager.get(TreeDescription.ID, String.class);
         if (optionalId.isPresent() && optionalEditingContext.isPresent()) {
-            var optionalObject = this.objectService.getObject(optionalEditingContext.get(), optionalId.get());
+            var optionalObject = this.objectSearchService.getObject(optionalEditingContext.get(), optionalId.get());
             if (optionalObject.isPresent()) {
                 result = optionalObject.get();
             } else {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,7 +35,7 @@ import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTask
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
@@ -62,12 +62,12 @@ public class GanttTaskService implements IGanttTaskService {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
-    public GanttTaskService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, IObjectService objectService) {
+    public GanttTaskService(IRepresentationDescriptionSearchService representationDescriptionSearchService, IFeedbackMessageService feedbackMessageService, IObjectSearchService objectSearchService) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class GanttTaskService implements IGanttTaskService {
             if (currentTaskId != null) {
                 targetObjectOpt = this.getTaskSemanticObject(currentTaskId, gantt, editingContext);
             } else {
-                targetObjectOpt = this.objectService.getObject(editingContext, gantt.targetObjectId());
+                targetObjectOpt = this.objectSearchService.getObject(editingContext, gantt.targetObjectId());
             }
             if (targetObjectOpt.isPresent()) {
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
@@ -105,7 +105,7 @@ public class GanttTaskService implements IGanttTaskService {
         Optional<GanttDescription> ganttDescriptionOpt = this.findGanttDescription(gantt.descriptionId(), editingContext);
 
         if (taskOpt.isPresent() && ganttDescriptionOpt.isPresent()) {
-            Optional<Object> targetObjectOpt = this.objectService.getObject(editingContext, taskOpt.get().targetObjectId());
+            Optional<Object> targetObjectOpt = this.objectSearchService.getObject(editingContext, taskOpt.get().targetObjectId());
             if (targetObjectOpt.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
@@ -126,7 +126,7 @@ public class GanttTaskService implements IGanttTaskService {
         Optional<GanttDescription> ganttDescriptionOpt = this.findGanttDescription(gantt.descriptionId(), editingContext);
 
         if (taskOpt.isPresent() && ganttDescriptionOpt.isPresent()) {
-            Optional<Object> targetObjectOpt = this.objectService.getObject(editingContext, taskOpt.get().targetObjectId());
+            Optional<Object> targetObjectOpt = this.objectSearchService.getObject(editingContext, taskOpt.get().targetObjectId());
             if (targetObjectOpt.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, targetObjectOpt.get());
@@ -199,8 +199,8 @@ public class GanttTaskService implements IGanttTaskService {
 
         if (droppedTaskOpt.isPresent() && ganttDescriptionOpt.isPresent()) {
             String targetObjectId = targetTaskOpt.map(Task::targetObjectId).orElseGet(gantt::targetObjectId);
-            Optional<Object> draggedObjectOpt = this.objectService.getObject(editingContext, droppedTaskOpt.get().targetObjectId());
-            Optional<Object> targetObjectOpt = this.objectService.getObject(editingContext, targetObjectId);
+            Optional<Object> draggedObjectOpt = this.objectSearchService.getObject(editingContext, droppedTaskOpt.get().targetObjectId());
+            Optional<Object> targetObjectOpt = this.objectSearchService.getObject(editingContext, targetObjectId);
             if (draggedObjectOpt.isPresent() && targetObjectOpt.isPresent()) {
                 VariableManager variableManager = new VariableManager();
                 variableManager.put(VariableManager.SELF, draggedObjectOpt.get());
@@ -276,7 +276,7 @@ public class GanttTaskService implements IGanttTaskService {
 
     private Optional<Object> getTaskSemanticObject(String taskId, Gantt gantt, IEditingContext editingContext) {
         Optional<Object> targetObjectOpt = this.findTask(task -> Objects.equals(task.id(), taskId), gantt.tasks())
-                .map(task -> this.objectService.getObject(editingContext, task.targetObjectId()))
+                .map(task -> this.objectSearchService.getObject(editingContext, task.targetObjectId()))
                 .map(Optional::get);
         if (targetObjectOpt.isEmpty()) {
             this.feedbackMessageService.addFeedbackMessage(new Message(MessageFormat.format("The current task of id ''{0}'' is not found", taskId), MessageLevel.ERROR));

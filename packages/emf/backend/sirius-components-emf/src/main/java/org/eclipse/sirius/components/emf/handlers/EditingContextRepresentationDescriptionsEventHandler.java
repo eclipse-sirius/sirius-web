@@ -31,8 +31,9 @@ import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentat
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
@@ -57,22 +58,25 @@ import reactor.core.publisher.Sinks.One;
 public class EditingContextRepresentationDescriptionsEventHandler implements IEditingContextEventHandler {
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IIdentityService identityService;
+
     private final IEMFKindService emfKindService;
 
     private final IEMFMessageService emfMessageService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final List<IRepresentationDescriptionsProvider> representationDescriptionsProviders;
 
     private final List<IRepresentationDescriptionMetadataSorter> representationDescriptionMetadataSorters;
 
-    public EditingContextRepresentationDescriptionsEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IEMFKindService emfKindService,
-            IEMFMessageService emfMessageService, IObjectService objectService, List<IRepresentationDescriptionsProvider> representationDescriptionsProviders, List<IRepresentationDescriptionMetadataSorter> representationDescriptionMetadataSorters) {
+    public EditingContextRepresentationDescriptionsEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IIdentityService identityService, IEMFKindService emfKindService,
+                                                                IEMFMessageService emfMessageService, IObjectSearchService objectSearchService, List<IRepresentationDescriptionsProvider> representationDescriptionsProviders, List<IRepresentationDescriptionMetadataSorter> representationDescriptionMetadataSorters) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.identityService = Objects.requireNonNull(identityService);
         this.emfKindService = Objects.requireNonNull(emfKindService);
         this.emfMessageService = Objects.requireNonNull(emfMessageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.representationDescriptionsProviders = Objects.requireNonNull(representationDescriptionsProviders);
         this.representationDescriptionMetadataSorters = Objects.requireNonNull(representationDescriptionMetadataSorters);
     }
@@ -87,7 +91,7 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
         var optionalObject = Optional.empty();
         if (input instanceof EditingContextRepresentationDescriptionsInput editingContextRepresentationDescriptionsInput) {
             String objectId = editingContextRepresentationDescriptionsInput.objectId();
-            optionalObject = this.objectService.getObject(editingContext, objectId);
+            optionalObject = this.objectSearchService.getObject(editingContext, objectId);
         }
         if (optionalObject.isPresent()) {
             List<RepresentationDescriptionMetadata> result = this.findAllCompatibleRepresentationDescriptions(editingContext, optionalObject.get());
@@ -101,7 +105,7 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
 
     private List<RepresentationDescriptionMetadata> findAllCompatibleRepresentationDescriptions(IEditingContext editingContext, Object object) {
         List<RepresentationDescriptionMetadata> result = new ArrayList<>();
-        var kind = this.objectService.getKind(object);
+        var kind = this.identityService.getKind(object);
         var clazz = this.resolveKind(editingContext, kind);
 
         if (clazz.isPresent()) {

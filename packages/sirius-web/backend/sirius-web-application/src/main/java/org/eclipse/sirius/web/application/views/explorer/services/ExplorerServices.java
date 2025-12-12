@@ -24,15 +24,16 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -46,7 +47,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExplorerServices implements IExplorerServices {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
+
+    private final IObjectSearchService objectSearchService;
+
+    private final IContentService contentService;
 
     private final ILabelService labelService;
 
@@ -56,9 +61,11 @@ public class ExplorerServices implements IExplorerServices {
 
     private final IDefaultObjectSearchService defaultObjectSearchService;
 
-    public ExplorerServices(IObjectService objectService, ILabelService labelService, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IDefaultObjectSearchService defaultObjectSearchService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public ExplorerServices(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, IContentService contentService, IRepresentationMetadataSearchService representationMetadataSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, IDefaultObjectSearchService defaultObjectSearchService) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.labelService = Objects.requireNonNull(labelService);
+        this.contentService = Objects.requireNonNull(contentService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.defaultObjectSearchService = Objects.requireNonNull(defaultObjectSearchService);
@@ -70,7 +77,7 @@ public class ExplorerServices implements IExplorerServices {
         if (self instanceof RepresentationMetadata representationMetadata) {
             id = representationMetadata.getId().toString();
         } else if (self instanceof Resource || self instanceof EObject) {
-            id = this.objectService.getId(self);
+            id = this.identityService.getId(self);
         }
         return id;
     }
@@ -83,7 +90,7 @@ public class ExplorerServices implements IExplorerServices {
         } else if (self instanceof Resource) {
             kind = ExplorerDescriptionProvider.DOCUMENT_KIND;
         } else {
-            kind = this.objectService.getKind(self);
+            kind = this.identityService.getKind(self);
         }
         return kind;
     }
@@ -106,7 +113,7 @@ public class ExplorerServices implements IExplorerServices {
             var optionalObject = this.defaultObjectSearchService.getObject(editingContext, treeItemId);
             if (optionalObject.isEmpty()) {
                 // Slow path: fallback to the full algorithm
-                optionalObject = this.objectService.getObject(editingContext, treeItemId);
+                optionalObject = this.objectSearchService.getObject(editingContext, treeItemId);
             }
 
             if (optionalObject.isPresent()) {
@@ -139,7 +146,7 @@ public class ExplorerServices implements IExplorerServices {
         if (self instanceof RepresentationMetadata && treeItemId != null && editingContext != null) {
             var optionalRepresentationMetadata = new UUIDParser().parse(treeItemId).flatMap(this.representationMetadataSearchService::findMetadataById);
             var targetObjectId = optionalRepresentationMetadata.map(RepresentationMetadata::getTargetObjectId).orElse(null);
-            result = this.objectService.getObject(editingContext, targetObjectId).orElse(null);
+            result = this.objectSearchService.getObject(editingContext, targetObjectId).orElse(null);
         } else if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();
             if (semanticContainer == null) {
@@ -160,7 +167,7 @@ public class ExplorerServices implements IExplorerServices {
 
             var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
             if (!hasChildren && optionalSemanticDataId.isPresent()) {
-                String id = this.objectService.getId(eObject);
+                String id = this.identityService.getId(eObject);
                 hasChildren = this.findRepresentationsForTargetObjectId(existingRepresentations, id).findAny().isPresent();
             }
         }
@@ -184,7 +191,7 @@ public class ExplorerServices implements IExplorerServices {
                             .forEachOrdered(result::add);
                     }
 
-                    List<Object> contents = this.objectService.getContents(self);
+                    List<Object> contents = this.contentService.getContents(self);
                     result.addAll(contents);
                 }
             }
