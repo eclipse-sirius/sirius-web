@@ -21,7 +21,8 @@ public record LabelLayoutData(
         String id,
         Position position,
         Size size,
-        boolean resizedByUser
+        boolean resizedByUser,
+        boolean movedByUser
 ) {
 
 }

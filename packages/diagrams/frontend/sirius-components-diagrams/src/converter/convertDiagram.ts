@@ -28,7 +28,11 @@ import { Diagram, EdgeData, EdgeLabel, NodeData } from '../renderer/DiagramRende
 import { MultiLabelEdgeData } from '../renderer/edge/MultiLabelEdge.types';
 import { updateHandleFromReferencePosition } from '../renderer/layout/UpdateHandleFromReferencePosition';
 import { RawDiagram } from '../renderer/layout/layout.types';
-import { computeBorderNodeExtents, computeBorderNodePositions } from '../renderer/layout/layoutBorderNodes';
+import {
+  computeBorderNodeExtents,
+  computeBorderNodePositions,
+  computeBorderNodeLabelPosition,
+} from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
 import { updateHandleViewModifier } from '../renderer/layout/updateHandleViewModifier';
 import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
@@ -80,6 +84,7 @@ const convertEdgeLabel = (gqlEdgeLabel: GQLLabel, gqlLabelLayoutData: GQLLabelLa
     width: labelLayoutData?.size.width ?? 0,
     height: labelLayoutData?.size.height ?? 0,
     resizedByUser: labelLayoutData?.resizedByUser ?? false,
+    movedByUser: labelLayoutData?.movedByUser ?? false,
     overflowStrategy: 'WRAP', // all edge labels use the wrap strategy
   };
 };
@@ -307,6 +312,7 @@ export const convertDiagram = (
   computeBorderNodePositions(rawDiagram.nodes);
   layoutHandles(rawDiagram, diagramDescription, nodeLookUp);
   updateHandleFromReferencePosition(rawDiagram, state, referencePosition);
+  computeBorderNodeLabelPosition(rawDiagram.nodes, rawDiagram.edges);
 
   return {
     nodes: rawDiagram.nodes,

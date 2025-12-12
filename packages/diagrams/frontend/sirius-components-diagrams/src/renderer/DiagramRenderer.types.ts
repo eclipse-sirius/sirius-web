@@ -134,6 +134,7 @@ export interface EdgeLabel {
   width: number;
   height: number;
   resizedByUser: boolean;
+  movedByUser: boolean;
   overflowStrategy: LabelOverflowStrategy;
 }
 
@@ -149,6 +150,7 @@ export interface OutsideLabel {
   width: number;
   height: number;
   resizedByUser: boolean;
+  movedByUser: boolean;
 }
 
 export type ReactFlowPropsCustomizer = (

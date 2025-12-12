@@ -83,6 +83,7 @@ type LabelLayoutData {
   position: Position!
   size: Size!
   resizedByUser: Boolean!
+  movedByUser: Boolean!
 }
 
 enum ViewModifier {
@@ -751,6 +752,7 @@ input LabelLayoutDataInput {
   position: PositionInput!
   size: SizeInput!
   resizedByUser: Boolean!
+  movedByUser: Boolean!
 }
 
 input PositionInput {
