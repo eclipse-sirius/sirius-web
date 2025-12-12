@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ConfirmationDialogContext } from './ConfirmationDialogContext';
 import { UseConfirmationDialogValue, UseDeletionConfirmationDialogValue } from './useConfirmationDialog.types';
 
@@ -22,14 +23,10 @@ export const useConfirmationDialog = (): UseConfirmationDialogValue => {
 
 export const useDeletionConfirmationDialog = (): UseDeletionConfirmationDialogValue => {
   const { showConfirmation } = useConfirmationDialog();
+  const { t } = useTranslation('sirius-components-core', { keyPrefix: 'useDeletionConfirmationDialog' });
   return {
     showDeletionConfirmation: (onConfirm: () => void) => {
-      showConfirmation(
-        'Are you sure?',
-        "This action will delete the selected element(s).\nYou won't be able to revert this.",
-        'Delete',
-        onConfirm
-      );
+      showConfirmation(t('title'), `${t('willDelete')}\n${t('willNotBeAbleToRevert')}`, t('buttonLabel'), onConfirm);
     },
   };
 };

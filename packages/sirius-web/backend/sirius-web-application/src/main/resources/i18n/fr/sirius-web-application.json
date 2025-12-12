@@ -371,5 +371,15 @@
   },
   "siriusWebManageVisibilityNodeAction": {
     "manageVisibility": "Gérer la visibilité"
+  },
+  "projectGeneralSettingsView": {
+    "clientSettings": "Paramètres du client pour ce projet",
+    "enableConfirmationDialogs": "Activer les popups de confirmation",
+    "enableConfirmationDialogsDescription": "Afficher des demandes de confirmation avant de supprimer des éléments ou d'effectuer des actions critiques. Ce paramètre est stocké dans votre navigateur.",
+    "enableConfirmationDialogsTooltip": "Lorsqu'il est activé, vous verrez des demandes de confirmation avant de supprimer des éléments ou d'effectuer des actions critiques qui ne peuvent pas être annulées.",
+    "pageTitle": "Paramètres",
+    "personalBadge": "Personnel",
+    "sectionDescription": "Vos préférences personnelles - ces paramètres sont stockés dans votre navigateur",
+    "title": "Paramètres généraux"
   }
 }

@@ -61,6 +61,7 @@ export class RepresentationsViewProvider implements TreeDataProvider<Representat
                   serverData.serverAddress,
                   serverData.username,
                   serverData.password,
+                  projectData.id,
                   projectData.editingContextId,
                   representationData.id,
                   representationData.label,
