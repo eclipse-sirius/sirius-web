@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,9 +55,9 @@ public class OperationValidator implements IOperationValidator {
                         if (entry.getValue() != null) {
                             var expectedVariable = optionalExpectedVariable.get();
 
-                            var matchesExpectedType = expectedVariable.types().stream().anyMatch(type -> type.isInstance(entry.getValue()));
+                            var matchesExpectedType = expectedVariable.type().isInstance(entry.getValue());
                             if (!matchesExpectedType) {
-                                this.logger.trace("{}: The variable '{}' does not match one of the expected types {}", operationName, entry.getKey(), expectedVariable.types());
+                                this.logger.trace("{}: The variable '{}' does not match one of the expected type {}", operationName, entry.getKey(), expectedVariable.type());
                             }
                         }
                     } else {

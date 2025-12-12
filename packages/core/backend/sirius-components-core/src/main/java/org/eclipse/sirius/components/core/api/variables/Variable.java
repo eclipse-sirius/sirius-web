@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,16 +13,14 @@
 package org.eclipse.sirius.components.core.api.variables;
 
 
-import java.util.List;
-
 /**
  * The description of a variable which can be used by various operations.
  *
  * @param name The name
- * @param types The various types of the object that can be affected to the variable
+ * @param type The type
  * @param documentation The documentation
  *
  * @author sbegaudeau
  */
-public record Variable(String name, List<Class<?>> types, String documentation) {
+public record Variable(String name, Class<?> type, String documentation) {
 }

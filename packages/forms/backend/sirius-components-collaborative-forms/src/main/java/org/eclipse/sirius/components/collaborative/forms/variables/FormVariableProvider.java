@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FormVariableProvider implements IVariableProvider {
 
-    public static final Variable SELECTION = new Variable("selection", List.of(Object.class), "The selection of the workbench");
+    public static final Variable SELECTION = new Variable("selection", Object.class, "The selection of the workbench");
 
     @Override
     public List<Variable> getVariables(String operation) {

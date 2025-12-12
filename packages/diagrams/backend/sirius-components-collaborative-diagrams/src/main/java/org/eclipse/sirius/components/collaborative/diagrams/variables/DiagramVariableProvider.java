@@ -48,22 +48,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramVariableProvider implements IVariableProvider {
 
-    public static final Variable LABEL = new Variable("label", List.of(String.class), "The label of the diagram");
-    public static final Variable DIAGRAM_EVENT = new Variable("diagramEvent", List.of(IDiagramEvent.class), "Indicates the potential event which has triggered a new rendering");
-    public static final Variable DIAGRAM_CONTEXT = new Variable("diagramContext", List.of(DiagramContext.class), "Used to retrieve the diagram context which contains the diagram, the view creation and deletion requests and the diagram events");
-    public static final Variable PREVIOUS_DIAGRAM = new Variable("previousDiagram", List.of(Diagram.class), "The diagram rendered during the previous refresh");
-    public static final Variable COLLAPSING_STATE = new Variable("collapsingState", List.of(CollapsingState.class), "Indicates if a node is collapsed or expanded");
-    public static final Variable SEMANTIC_ELEMENT_IDS = new Variable("semanticElementIds", List.of(List.class), "The list of the identifiers of all semantic elements which should appear in the diagram with the current description");
-    public static final Variable SEMANTIC_EDGE_SOURCE = new Variable("semanticEdgeSource", List.of(Object.class), "The semantic element at the source of the edge");
-    public static final Variable SEMANTIC_EDGE_TARGET = new Variable("semanticEdgeTarget", List.of(Object.class), "The semantic element at the target of the edge");
-    public static final Variable GRAPHICAL_EDGE_SOURCE = new Variable("graphicalEdgeSource", List.of(Element.class), "The virtual diagram element at the source of the edge");
-    public static final Variable GRAPHICAL_EDGE_TARGET = new Variable("graphicalEdgeTarget", List.of(Element.class), "The virtual diagram element at the target of the edge");
-    public static final Variable CACHE = new Variable("cache", List.of(DiagramRenderingCache.class), "An internal cache used to retrieve some internal data during the rendering");
-    public static final Variable ANCESTORS = new Variable("ancestors", List.of(Object.class), "The semantic ancestors of the node");
-    public static final Variable DROPPED_ELEMENTS = new Variable("droppedElements", List.of(List.class), "All the semantic objects being dropped");
-    public static final Variable DROPPED_NODES = new Variable("droppedNodes", List.of(List.class), "All the graphical elements being dropped");
-    public static final Variable TARGET_ELEMENT = new Variable("targetElement", List.of(Object.class), "The semantic object in which the element is being dropped");
-    public static final Variable TARGET_NODE = new Variable("targetNode", List.of(Node.class), "The graphical element in which the element is being dropped");
+    public static final Variable LABEL = new Variable("label", String.class, "The label of the diagram");
+    public static final Variable DIAGRAM_EVENT = new Variable("diagramEvent", IDiagramEvent.class, "Indicates the potential event which has triggered a new rendering");
+    public static final Variable DIAGRAM_CONTEXT = new Variable("diagramContext", DiagramContext.class, "Used to retrieve the diagram context which contains the diagram, the view creation and deletion requests and the diagram events");
+    public static final Variable PREVIOUS_DIAGRAM = new Variable("previousDiagram", Diagram.class, "The diagram rendered during the previous refresh");
+    public static final Variable COLLAPSING_STATE = new Variable("collapsingState", CollapsingState.class, "Indicates if a node is collapsed or expanded");
+    public static final Variable SEMANTIC_ELEMENT_IDS = new Variable("semanticElementIds", List.class, "The list of the identifiers of all semantic elements which should appear in the diagram with the current description");
+    public static final Variable SEMANTIC_EDGE_SOURCE = new Variable("semanticEdgeSource", Object.class, "The semantic element at the source of the edge");
+    public static final Variable SEMANTIC_EDGE_TARGET = new Variable("semanticEdgeTarget", Object.class, "The semantic element at the target of the edge");
+    public static final Variable GRAPHICAL_EDGE_SOURCE = new Variable("graphicalEdgeSource", Element.class, "The virtual diagram element at the source of the edge");
+    public static final Variable GRAPHICAL_EDGE_TARGET = new Variable("graphicalEdgeTarget", Element.class, "The virtual diagram element at the target of the edge");
+    public static final Variable CACHE = new Variable("cache", DiagramRenderingCache.class, "An internal cache used to retrieve some internal data during the rendering");
+    public static final Variable ANCESTORS = new Variable("ancestors", Object.class, "The semantic ancestors of the node");
+    public static final Variable DROPPED_ELEMENTS = new Variable("droppedElements", List.class, "All the semantic objects being dropped");
+    public static final Variable DROPPED_NODES = new Variable("droppedNodes", List.class, "All the graphical elements being dropped");
+    public static final Variable TARGET_ELEMENT = new Variable("targetElement", Object.class, "The semantic object in which the element is being dropped");
+    public static final Variable TARGET_NODE = new Variable("targetNode", Node.class, "The graphical element in which the element is being dropped");
 
     /**
      * The semantic element being dropped.
@@ -73,7 +73,7 @@ public class DiagramVariableProvider implements IVariableProvider {
      * bugs in your code.
      */
     @Deprecated(forRemoval = true)
-    public static final Variable DROPPED_ELEMENT = new Variable("droppedElement", List.of(Object.class), "The semantic object being dropped");
+    public static final Variable DROPPED_ELEMENT = new Variable("droppedElement", Object.class, "The semantic object being dropped");
 
     /**
      * The graphical element being dropped.
@@ -83,7 +83,7 @@ public class DiagramVariableProvider implements IVariableProvider {
      * bugs in your code.
      */
     @Deprecated(forRemoval = true)
-    public static final Variable DROPPED_NODE = new Variable("droppedNode", List.of(Node.class), "The graphical element being dropped");
+    public static final Variable DROPPED_NODE = new Variable("droppedNode", Node.class, "The graphical element being dropped");
 
 
     @Override
