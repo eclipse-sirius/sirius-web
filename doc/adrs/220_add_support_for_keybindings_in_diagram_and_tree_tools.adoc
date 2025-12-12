@@ -1,0 +1,92 @@
+= ADR-220 - Add support for key bindings in diagram and tree tools
+
+== Context
+
+Sirius Web does not allow to define key bindings for tools in diagrams and entries in tree contextual menus.
+
+We should provide a way for specifiers to define such key bindings, and for users to see which key bindings are associated with a tool.
+
+== Decision
+
+=== Frontend
+
+We will update `Palette.tsx` to handle key down events
+
+[source, typescript]
+----
+const handleKeyDown = useCallback((event: React.KeyboardEvent<Element>) => {
+  const toolToExecute = GQLTool | null = findToolToExecute(palette, event);
+  if (toolToExecute) {
+    event.stopPropagation();
+    event.preventDefault();
+    handleToolClick(toolToExecute);
+  }
+}), [palette];
+----
+
+The `findToolToExecute` function will search in all the tools of the palette for one that matches the provided `event` (including CTRL, ALT, META keys).
+
+We will update `TreeItemContextMenu.tsx` similarly.
+
+We will update `Tool.tsx`, `DefaultMenuItem.tsx`, and `PaletteToolList.tsx` to ensure the key bindings are visible to the user in the associated tooltips.
+
+=== GraphQL
+
+We will update `diagram.graphqls` as follows
+
+[source, graphqls]
+----
+interface Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  keyBindings: [KeyBinding!]!
+}
+----
+
+We will update `tree.graphqls` as follows
+
+[source, graphqls]
+----
+interface TreeItemContextMenuEntry {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  keyBindings: [KeyBinding!]!
+}
+----
+
+And `core.graphqls` as follows to make the `KeyBinding` type reusable.
+
+[source, graphqls]
+----
+type KeyBinding {
+    isCtrl: Boolean!
+    isMeta: Boolean!
+    isAlt: Boolean!
+    key: String!
+}
+----
+
+=== Backend
+
+We will add the corresponding `KeyBinding` DTO in the backend and update the related DTOs that should contain a key binding.
+
+To help with view-level specification of key bindings, we will perform the following modifications:
+
+- Create a new `KeyBinding` EClass in `view.ecore` with boolean attributes for `CTRL`, `ALT`, and `META` keys, and a string attribute for the pressed key.
+- Add `keyBindings: KeyBinding[*]` references in appropriate types in `tree.ecore` and `diagram.ecore`.
+- Update the view converters where necessary.
+
+
+== Consequences
+
+Migration participants may be required to ensure the new required fields are present in previously serialized view descriptions.
+
+== Cutting backs
+
+- (Nice to have) Show conflicts in key bindings to the specifier in the studio
+
+== Status
+
+Proposed.
