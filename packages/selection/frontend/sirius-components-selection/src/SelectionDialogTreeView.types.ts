@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DiagramDialogVariable } from '@eclipse-sirius/sirius-components-diagrams';
-import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
+import { GQLTree, GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 
 export interface SelectionDialogTreeViewProps {
   editingContextId: string;
   treeDescriptionId: string;
   variables: DiagramDialogVariable[];
-  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => void;
+  onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => void;
   selectedTreeItemIds: string[];
 }
 

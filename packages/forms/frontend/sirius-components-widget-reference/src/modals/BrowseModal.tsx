@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
-import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
+import { GQLTree, GQLTreeItem, useTreeSelection } from '@eclipse-sirius/sirius-components-trees';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -36,21 +36,11 @@ export const BrowseModal = ({ editingContextId, widget, onClose }: BrowseModalPr
   );
   const { t } = useTranslation('sirius-components-widget-reference', { keyPrefix: 'browseModal' });
 
-  const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => {
-    if (widget.reference.manyValued) {
-      if (event.ctrlKey || event.metaKey) {
-        event.stopPropagation();
-        if (selectedTreeItemIds.includes(item.id)) {
-          setSelectedTreeItemIds((prevState) => prevState.filter((itemId) => itemId !== item.id));
-        } else {
-          setSelectedTreeItemIds((prevState) => [...prevState, item.id]);
-        }
-      } else {
-        setSelectedTreeItemIds([item.id]);
-      }
-    } else {
-      setSelectedTreeItemIds([item.id]);
-    }
+  const { treeItemClick } = useTreeSelection();
+
+  const onTreeItemClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => {
+    var newSelection = treeItemClick(event, tree, item, selectedTreeItemIds, widget.reference.manyValued);
+    setSelectedTreeItemIds(newSelection.selectedTreeItemIds);
   };
 
   return (

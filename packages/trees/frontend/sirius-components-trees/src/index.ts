@@ -25,6 +25,8 @@ export * from './treeitems/filterTreeItem';
 export * from './treeitems/TreeItemAction.types';
 export * from './trees/FilterBar';
 export * from './trees/TreeRepresentation';
+export * from './trees/useTreeSelection';
+export { type TreeItemClickResult, type UseTreeSelectionValue } from './trees/useTreeSelection.types';
 export * from './views/getTreeEventSubscription';
 export * from './views/TreeFiltersMenu';
 export * from './views/TreeFiltersMenu.types';

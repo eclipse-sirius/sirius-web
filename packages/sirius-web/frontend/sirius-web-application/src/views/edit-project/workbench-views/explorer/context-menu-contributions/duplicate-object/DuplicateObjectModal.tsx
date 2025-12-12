@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ModelBrowserTreeView } from '@eclipse-sirius/sirius-components-browser';
-import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
+import { GQLTree, GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
@@ -106,7 +106,7 @@ export const DuplicateObjectModal = ({
     setState((prevState) => ({ ...prevState, updateIncomingReferences: value }));
   };
 
-  const onTreeItemClick = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>, item: GQLTreeItem) => {
+  const onTreeItemClick = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>, _tree: GQLTree, item: GQLTreeItem) => {
     setState((prevState) => ({
       ...prevState,
       containerSelectedId: item.id,
