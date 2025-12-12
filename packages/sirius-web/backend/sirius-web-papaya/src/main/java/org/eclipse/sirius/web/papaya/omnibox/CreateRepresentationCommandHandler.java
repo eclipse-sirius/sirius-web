@@ -61,7 +61,7 @@ public class CreateRepresentationCommandHandler implements IWorkbenchOmniboxComm
                     .map(payload -> {
                         if (payload instanceof CreateRepresentationSuccessPayload createRepresentationSuccessPayload) {
                             List<WorkbenchSelectionEntry> entries = List.of(
-                                    new WorkbenchSelectionEntry(createRepresentationSuccessPayload.representation().id(), createRepresentationSuccessPayload.representation().kind())
+                                    new WorkbenchSelectionEntry(createRepresentationSuccessPayload.representation().id())
                             );
                             var workbenchSelection = new WorkbenchSelection(entries);
                             return new ExecuteWorkbenchOmniboxCommandSuccessPayload(createRepresentationSuccessPayload.id(), workbenchSelection, List.of());

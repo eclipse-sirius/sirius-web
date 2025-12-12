@@ -56,7 +56,7 @@ public class InvokeSingleClickOnDiagramElementToolAssert {
 
     public InvokeSingleClickOnDiagramElementToolAssert hasSelection(Consumer<WorkbenchSelection> consumer) {
         List<String> rawSelection = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.newSelection.entries[*].id");
-        var selection = new WorkbenchSelection(rawSelection.stream().map(id -> new WorkbenchSelectionEntry(id, "")).toList());
+        var selection = new WorkbenchSelection(rawSelection.stream().map(id -> new WorkbenchSelectionEntry(id)).toList());
 
         consumer.accept(selection);
         return this;

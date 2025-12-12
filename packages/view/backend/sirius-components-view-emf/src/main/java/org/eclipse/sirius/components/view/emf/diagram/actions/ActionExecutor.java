@@ -72,7 +72,7 @@ public class ActionExecutor implements IActionExecutor {
         }
 
         var selectionEntries = result.newInstances().values().stream()
-                .map(newInstance -> new WorkbenchSelectionEntry(this.identityService.getId(newInstance), this.identityService.getKind(newInstance)))
+                .map(newInstance -> new WorkbenchSelectionEntry(this.identityService.getId(newInstance)))
                 .toList();
         Map<String, Object> parameters = Map.of(Success.NEW_SELECTION, new WorkbenchSelection(selectionEntries));
         return new Success("", parameters, this.feedbackMessageService.getFeedbackMessages());

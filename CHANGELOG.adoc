@@ -52,6 +52,8 @@ An example is visible in `StudioSemanticDataInitializer` and `StudioRepresentati
 On top of that a new interface, `IRestDefaultProjectTemplateProvider`, is available for those who want to specify the default template to use when a project is created thanks to the rest API.
 This API will probably slightly evolve in the futur but it provides today the ability to change the project created from the default "Blank Project".
 On the frontend, the `ProjectTemplateCard` component has been removed; the `NewProjectCard` component handles all cases now, with a new `template` prop.
+- Remove the useless property `WorkbenchEntry#kind` from the GraphQL API and the DTO.
+The `WorkbenchEntry` object has also been transformed into a record
 
 
 === Dependency update

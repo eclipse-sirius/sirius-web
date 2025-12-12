@@ -245,7 +245,6 @@ type WorkbenchSelection {
 
 type WorkbenchSelectionEntry {
   id: String!
-  kind: String!
 }
 
 input InvokeEditingContextActionInput {
