@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.api.variables;
 
-import java.util.List;
-
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 
@@ -24,11 +22,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  */
 public final class CommonVariables {
 
-    public static final Variable SELF = new Variable("self", List.of(Object.class), "The current element on which the operation is performed");
+    public static final Variable SELF = new Variable("self", Object.class, "The current element on which the operation is performed");
 
-    public static final Variable EDITING_CONTEXT = new Variable("editingContext", List.of(IEditingContext.class), "The editing context is an abstraction used to access all the semantic data");
+    public static final Variable EDITING_CONTEXT = new Variable("editingContext", IEditingContext.class, "The editing context is an abstraction used to access all the semantic data");
 
-    public static final Variable ENVIRONMENT = new Variable("environment", List.of(Environment.class), "The environment may contain some information on the application currently running");
+    public static final Variable ENVIRONMENT = new Variable("environment", Environment.class, "The environment may contain some information on the application currently running");
 
     private CommonVariables() {
         // Prevent instantiation
