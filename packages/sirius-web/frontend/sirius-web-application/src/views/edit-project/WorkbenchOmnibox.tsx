@@ -11,19 +11,61 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useEffect, useState } from 'react';
-import { WorkbenchOmniboxProps, WorkbenchOmniboxState } from './WorkbenchOmnibox.types';
+import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
-  OmniboxMode,
-  GQLOmniboxCommand,
-  OmniboxProvider,
-  useWorkbenchOmniboxCommands,
   GQLGetWorkbenchOmniboxCommandsQueryVariables,
-  useExecuteWorkbenchOmniboxCommand,
-  useWorkbenchOmniboxSearch,
   GQLGetWorkbenchOmniboxSearchResultsQueryVariables,
+  OmniboxCommand,
+  OmniboxMode,
+  OmniboxProvider,
+  toOmniboxCommand,
+  useExecuteWorkbenchOmniboxCommand,
+  useWorkbenchOmniboxCommands,
+  useWorkbenchOmniboxSearch,
 } from '@eclipse-sirius/sirius-components-omnibox';
-import { useSelection, Selection } from '@eclipse-sirius/sirius-components-core';
+import SearchIcon from '@mui/icons-material/Search';
+import { RefObject, useEffect, useState } from 'react';
+import { WorkbenchOmniboxProps, WorkbenchOmniboxState } from './WorkbenchOmnibox.types';
+
+const isLocalStorageAvailable = (): boolean => {
+  let available = false;
+  if (window.localStorage) {
+    try {
+      window.localStorage.setItem('local_storage_availability', 'value');
+      window.localStorage.getItem('local_storage_availability');
+      window.localStorage.removeItem('local_storage_availability');
+      available = true;
+    } catch {
+      available = false;
+    }
+  }
+  return available;
+};
+
+const localStorageKey = 'sirius_web_search_history';
+
+const getPreviousSearches = (): string[] => {
+  if (!isLocalStorageAvailable()) return [];
+  try {
+    const data = window.localStorage.getItem(localStorageKey);
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+};
+
+const saveNewSearchQuery = (newSearch: string) => {
+  if (isLocalStorageAvailable() && newSearch && newSearch.length > 0) {
+    const previousSearches = getPreviousSearches().filter((value) => value !== newSearch);
+
+    const newPreviousSearch =
+      previousSearches.length < 10
+        ? [newSearch, ...previousSearches]
+        : [newSearch, ...previousSearches.slice(0, previousSearches.length - 1)];
+
+    window.localStorage.setItem(localStorageKey, JSON.stringify(newPreviousSearch));
+  }
+};
 
 export const WorkbenchOmnibox = ({ editingContextId, workbenchHandle, children }: WorkbenchOmniboxProps) => {
   const [state, setState] = useState<WorkbenchOmniboxState>({
@@ -47,6 +89,7 @@ export const WorkbenchOmnibox = ({ editingContextId, workbenchHandle, children }
         selectedObjectIds,
         query,
       };
+      saveNewSearchQuery(query);
       getWorkbenchOmniboxSearchResults({ variables });
     } else if (mode === 'Command') {
       const variables: GQLGetWorkbenchOmniboxCommandsQueryVariables = {
@@ -62,7 +105,7 @@ export const WorkbenchOmnibox = ({ editingContextId, workbenchHandle, children }
     if (!commandsLoading && commandsData) {
       setState((prevState) => ({
         ...prevState,
-        commands: commandsData.viewer.workbenchOmniboxCommands.edges.map((edge) => edge.node),
+        commands: commandsData.viewer.workbenchOmniboxCommands.edges.map((edge) => toOmniboxCommand(edge.node)),
       }));
     }
   }, [commandsLoading, commandsData]);
@@ -71,7 +114,7 @@ export const WorkbenchOmnibox = ({ editingContextId, workbenchHandle, children }
     if (!searchLoading && searchData) {
       setState((prevState) => ({
         ...prevState,
-        commands: searchData.viewer.workbenchOmniboxSearch.edges.map((edge) => edge.node),
+        commands: searchData.viewer.workbenchOmniboxSearch.edges.map((edge) => toOmniboxCommand(edge.node)),
       }));
     }
   }, [searchLoading, searchData]);
@@ -88,17 +131,48 @@ export const WorkbenchOmnibox = ({ editingContextId, workbenchHandle, children }
     }
   }, [executeCommandLoading, executeCommandData]);
 
-  const handleCommandClick = (command: GQLOmniboxCommand, mode: OmniboxMode) => {
+  const handleCommandClick = (
+    command: OmniboxCommand,
+    mode: OmniboxMode,
+    inputElement: RefObject<HTMLInputElement>
+  ) => {
     if (mode === 'Search') {
-      const newSelection: Selection = { entries: [{ id: command.id }] };
-      setSelection(newSelection);
-      workbenchHandle.applySelection(newSelection);
-      onClose();
+      if (command.id.startsWith('search:')) {
+        // User selected a previous search command
+        const lastSearch = command.id.replaceAll('search:', '');
+        const variables: GQLGetWorkbenchOmniboxSearchResultsQueryVariables = {
+          editingContextId,
+          selectedObjectIds,
+          query: lastSearch,
+        };
+        if (inputElement?.current) {
+          inputElement.current.value = lastSearch;
+          inputElement.current.focus();
+        }
+        getWorkbenchOmniboxSearchResults({ variables });
+      } else {
+        // User selected a search result
+        const newSelection: Selection = { entries: [{ id: command.id }] };
+        setSelection(newSelection);
+        workbenchHandle.applySelection(newSelection);
+        onClose();
+      }
     } else if (mode === 'Command') {
       if (command.id === 'search') {
+        // Switch to search mode. Display previous search commands
+        const previousSearchCommands = getPreviousSearches().map((value) => {
+          return {
+            id: `search:${value}`,
+            label: `Search '${value}'`,
+            iconComponent: <SearchIcon />,
+            description: `Previous search '${value}'`,
+            __typename: 'GQLOmniboxCommandWithComponent',
+          };
+        });
+
         setState((prevState) => ({
           ...prevState,
-          commands: null,
+          commands: previousSearchCommands,
         }));
       } else {
         executeWorkbenchOmniboxCommand(editingContextId, selectedObjectIds, command.id);

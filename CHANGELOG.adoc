@@ -52,6 +52,7 @@ An example is visible in `StudioSemanticDataInitializer` and `StudioRepresentati
 On top of that a new interface, `IRestDefaultProjectTemplateProvider`, is available for those who want to specify the default template to use when a project is created thanks to the rest API.
 This API will probably slightly evolve in the futur but it provides today the ability to change the project created from the default "Blank Project".
 On the frontend, the `ProjectTemplateCard` component has been removed; the `NewProjectCard` component handles all cases now, with a new `template` prop.
+- `OmniboxCommandOverrideContribution` and `OmniboxCommandComponentProps` now use `OmniboxCommand` instead of `GQLOmniboxCommand` type.
 
 
 === Dependency update
@@ -106,6 +107,7 @@ Sirius Web provides a default implementation for all these services, which creat
 - https://github.com/eclipse-sirius/sirius-web/issues/5507[#5507] [form] Add the support for form `canEdit` capabilities.
 The `canEdit` capabilities delegates to `ProjectCapabilities#canEdit` by default.
 Downstream projects can provide their own `IFormCapabilitiesService` primary service to override the default behavior.
+- https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] Provide a search history in omnibox command.
 
 
 
@@ -204,6 +206,7 @@ And the props of `PaletteAppearanceSectionContributionComponentProps` has been r
 - https://github.com/eclipse-sirius/sirius-web/issues/5673[#5673] [emf] Both `IRepresentationDescriptionConverter` and `IViewConverter` convert methodz now return `ViewConverterResult` and a `list of ViewConverterResult`.
 `ViewConverterResult` contains the converted `IRepresentationDescription`.
 The convert method signature of IViewConverter has been modified to `List<ViewConverterResult> convert(IEMFEditingContext editingContext, List<View> views)`;
+Upstream, based on origin/master
 - https://github.com/eclipse-sirius/sirius-web/issues/5002[#5002] [sirius-web] Tree based representations have always enjoyed some hardcoded entries in the context menu.
 Those menu entries are not hardcoded in the frontend anymore and, just like in diagrams, will be retrieved from the backend.
 As a result, specifiers who want to reuse some of those menu entries of the Sirius Web explorer will have to provide `SingleClickTreeItemContextMenuEntry` with specific values for `id`.
@@ -529,7 +532,6 @@ Instead, a new button available in the diagram's toolbar can be used to trigger 
 While it is pinned, other panels and representation can use the new "Show in Details" action to force it to update its local selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
-
 
 === Improvements
 

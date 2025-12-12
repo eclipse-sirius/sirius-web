@@ -20,11 +20,10 @@ import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import { useEffect, useRef, useState } from 'react';
-import { makeStyles } from 'tss-react/mui';
-import { OmniboxMode, OmniboxProps, OmniboxState } from './Omnibox.types';
-import { OmniboxCommandList } from './OmniboxCommandList';
-import { GQLOmniboxCommand } from './useWorkbenchOmniboxCommands.types';
 import { useTranslation } from 'react-i18next';
+import { makeStyles } from 'tss-react/mui';
+import { OmniboxCommand, OmniboxMode, OmniboxProps, OmniboxState } from './Omnibox.types';
+import { OmniboxCommandList } from './OmniboxCommandList';
 
 const useOmniboxStyles = makeStyles()((theme) => ({
   omnibox: {
@@ -107,19 +106,21 @@ export const Omnibox = ({ open, loading, commands, onQuery, onCommandClick, onCl
   };
 
   const onModeChanged = (mode: OmniboxMode) => {
-    setState((prevState) => ({
-      ...prevState,
-      mode,
-      queryHasChanged: true,
-    }));
-    if (inputRef.current) {
-      inputRef.current.value = '';
+    if (mode !== state.mode) {
+      setState((prevState) => ({
+        ...prevState,
+        mode,
+        queryHasChanged: true,
+      }));
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
     }
     inputRef.current?.focus();
   };
 
-  const handleCommandClick = (command: GQLOmniboxCommand) => {
-    onCommandClick(command, state.mode);
+  const handleCommandClick = (command: OmniboxCommand) => {
+    onCommandClick(command, state.mode, inputRef);
   };
 
   const { classes } = useOmniboxStyles();
@@ -154,7 +155,7 @@ export const Omnibox = ({ open, loading, commands, onQuery, onCommandClick, onCl
           {loading ? <CircularProgress size="24px" color="inherit" /> : <SubdirectoryArrowLeftIcon color="inherit" />}
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers={state.mode === 'Command' && commands !== null} className={classes.omniboxResultArea}>
+      <DialogContent dividers={commands != null && commands?.length > 0} className={classes.omniboxResultArea}>
         <OmniboxCommandList
           loading={loading}
           commands={commands}
