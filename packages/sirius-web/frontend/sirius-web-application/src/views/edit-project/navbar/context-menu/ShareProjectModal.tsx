@@ -36,7 +36,6 @@ export const ShareProjectModal = ({ workbenchConfiguration, onClose }: ShareProj
       }
     }
   };
-
   const { selection } = useSelection();
   const searchParams: URLSearchParams = new URLSearchParams({
     workbenchConfiguration: JSON.stringify(workbenchConfiguration),

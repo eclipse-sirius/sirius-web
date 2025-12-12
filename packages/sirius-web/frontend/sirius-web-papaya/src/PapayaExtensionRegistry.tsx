@@ -16,6 +16,8 @@ import {
   DataExtension,
   ExtensionRegistry,
   IconOverlay,
+  WorkbenchViewContribution,
+  workbenchViewContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-core';
 import {
   ActionProps,
@@ -39,6 +41,7 @@ import {
   navigationBarCenterContributionExtensionPoint,
   useCurrentProject,
 } from '@eclipse-sirius/sirius-web-application';
+import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -48,6 +51,7 @@ import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformati
 import { PapayaComponentLabelDetailNodeActionContribution } from './nodeactions/PapayaComponentLabelDetailNodeActionContribution';
 import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
 import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
+import { PapayaView } from './workbenchviews/PapayaView';
 
 const papayaExtensionRegistry = new ExtensionRegistry();
 
@@ -179,5 +183,25 @@ papayaExtensionRegistry.putData<DiagramNodeActionOverrideContribution[]>(
     data: diagramNodeActionOverrides,
   }
 );
+
+/*******************************************************************************
+ *
+ * Diagram node action command overrides
+ *
+ * Used to override the default show label node action
+ *
+ *******************************************************************************/
+const papayaWorkbenchViewContributions: WorkbenchViewContribution[] = [
+  {
+    id: 'papaya-view',
+    title: 'Papaya View',
+    icon: <TroubleshootIcon />,
+    component: PapayaView,
+  },
+];
+papayaExtensionRegistry.putData(workbenchViewContributionExtensionPoint, {
+  identifier: `papaya_${workbenchViewContributionExtensionPoint.identifier}`,
+  data: papayaWorkbenchViewContributions,
+});
 
 export { papayaExtensionRegistry };
