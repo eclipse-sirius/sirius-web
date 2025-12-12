@@ -25,11 +25,12 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
 import org.eclipse.sirius.components.core.CoreImageConstants;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
@@ -63,7 +64,9 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     public static final String SETTING_ID_SEPARATOR = "::";
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
+
+    private final IContentService contentService;
 
     private final IIdentityService identityService;
 
@@ -75,8 +78,9 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
-    public DomainTreeRepresentationDescriptionProvider(IObjectService objectService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DomainTreeRepresentationDescriptionProvider(IObjectSearchService objectSearchService, IContentService contentService, IIdentityService identityService, ILabelService labelService, IURLParser urlParser, List<IRepresentationImageProvider> representationImageProviders, IRepresentationMetadataSearchService representationMetadataSearchService) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.contentService = Objects.requireNonNull(contentService);
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.urlParser = Objects.requireNonNull(urlParser);
@@ -95,7 +99,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
                 .treeItemLabelProvider(this::getLabel)
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.identityService::getId).orElse(null))
                 .treeItemIconURLsProvider(this::getImageURL)
                 .editableProvider(variableManager -> false)
                 .deletableProvider(variableManager -> false)
@@ -139,7 +143,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         } else if (self instanceof Setting) {
             kind = "setting";
         } else {
-            kind = this.objectService.getKind(self);
+            kind = this.identityService.getKind(self);
         }
         return kind;
     }
@@ -153,7 +157,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         } else if (self instanceof EObject) {
             label = this.labelService.getStyledLabel(self).toString();
             if (label.isBlank()) {
-                var kind = this.objectService.getKind(self);
+                var kind = this.identityService.getKind(self);
                 label = this.urlParser.getParameterValues(kind).get(SemanticKindConstants.ENTITY_ARGUMENT).get(0);
             }
         } else if (self instanceof Setting setting) {
@@ -252,7 +256,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                     representationMetadata.sort(Comparator.comparing(RepresentationMetadata::getLabel));
                     result.addAll(representationMetadata);
                 }
-                List<Object> contents = this.objectService.getContents(self);
+                List<Object> contents = this.contentService.getContents(self);
                 if (self instanceof Entity entity) {
                     result.add(((InternalEObject) entity).eSetting(entity.eClass().getEStructuralFeature("superTypes")));
                 }
@@ -280,13 +284,13 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                 // the tree item is a setting, get the object and then the structural feature associated
                 var objectId = treeItemId.substring(SETTING.length(), treeItemId.indexOf(SETTING_ID_SEPARATOR));
                 var featureName = treeItemId.substring(treeItemId.indexOf(SETTING_ID_SEPARATOR) + SETTING_ID_SEPARATOR.length());
-                var optObject = this.objectService.getObject(editingContext, objectId);
+                var optObject = this.objectSearchService.getObject(editingContext, objectId);
                 if (optObject.isPresent()) {
                     InternalEObject internalObject = (InternalEObject) optObject.get();
                     result = internalObject.eSetting(internalObject.eClass().getEStructuralFeature(featureName));
                 }
             } else {
-                var optionalObject = this.objectService.getObject(editingContext, treeItemId);
+                var optionalObject = this.objectSearchService.getObject(editingContext, treeItemId);
                 if (optionalObject.isPresent()) {
                     result = optionalObject.get();
                 }
@@ -305,7 +309,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         if (self instanceof RepresentationMetadata && optionalTreeItemId.isPresent() && optionalEditingContext.isPresent()) {
             var optionalRepresentationMetadata = new UUIDParser().parse(optionalTreeItemId.get()).flatMap(this.representationMetadataSearchService::findMetadataById);
             var repId = optionalRepresentationMetadata.map(RepresentationMetadata::getTargetObjectId).orElse(null);
-            var optionalObject = this.objectService.getObject(optionalEditingContext.get(), repId);
+            var optionalObject = this.objectSearchService.getObject(optionalEditingContext.get(), repId);
             if (optionalObject.isPresent()) {
                 result = optionalObject.get();
             }

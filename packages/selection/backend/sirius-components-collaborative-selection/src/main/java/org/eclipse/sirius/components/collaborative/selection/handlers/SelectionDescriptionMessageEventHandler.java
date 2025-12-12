@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialog
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
@@ -45,11 +45,11 @@ public class SelectionDescriptionMessageEventHandler implements IEditingContextE
 
     private final ICollaborativeMessageService messageService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
-    public SelectionDescriptionMessageEventHandler(ICollaborativeMessageService messageService, IObjectService objectService) {
+    public SelectionDescriptionMessageEventHandler(ICollaborativeMessageService messageService, IObjectSearchService objectSearchService) {
         this.messageService = Objects.requireNonNull(messageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class SelectionDescriptionMessageEventHandler implements IEditingContextE
     }
 
     private void addToVariableManager(IEditingContext editingContext, SelectionDialogVariable variable, VariableManager variableManager) {
-        Optional<Object> optionalObject = this.objectService.getObject(editingContext, variable.value());
+        Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, variable.value());
         if (optionalObject.isPresent()) {
             String variableName;
             if (TARGET_OBJECT_ID.equals(variable.name())) {

@@ -22,9 +22,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -43,13 +45,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class DomainExplorerServices {
 
-    public static final String DOCUMENT_KIND = "siriusWeb://document";
-
     public static final String SETTING = "setting:";
 
     public static final String SETTING_ID_SEPARATOR = "::";
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
+
+    private final IObjectSearchService objectSearchService;
+
+    private final IContentService contentService;
 
     private final ILabelService labelService;
 
@@ -59,8 +63,10 @@ public class DomainExplorerServices {
 
     private final IExplorerServices explorerServices;
 
-    public DomainExplorerServices(IObjectService objectService, ILabelService labelService, IExplorerLabelService explorerLabelService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DomainExplorerServices(IIdentityService identityService, IObjectSearchService objectSearchService, IContentService contentService, ILabelService labelService, IExplorerLabelService explorerLabelService, IRepresentationMetadataSearchService representationMetadataSearchService, IExplorerServices explorerServices) {
+        this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
+        this.contentService = Objects.requireNonNull(contentService);
         this.labelService = Objects.requireNonNull(labelService);
         this.explorerLabelService = Objects.requireNonNull(explorerLabelService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
@@ -118,7 +124,7 @@ public class DomainExplorerServices {
                         result.addAll(representationMetadata);
                     }
 
-                    List<Object> contents = this.objectService.getContents(self);
+                    List<Object> contents = this.contentService.getContents(self);
                     if (self instanceof Entity entity) {
                         result.add(new SettingWrapper(((InternalEObject) entity).eSetting(entity.eClass().getEStructuralFeature("superTypes"))));
                     }
@@ -158,7 +164,7 @@ public class DomainExplorerServices {
     public String getTreeItemId(Object self) {
         String id = null;
         if (self instanceof SettingWrapper wrapper) {
-            id = SETTING + this.objectService.getId(wrapper.setting.getEObject()) + SETTING_ID_SEPARATOR + wrapper.setting.getEStructuralFeature().getName();
+            id = SETTING + this.identityService.getId(wrapper.setting.getEObject()) + SETTING_ID_SEPARATOR + wrapper.setting.getEStructuralFeature().getName();
         } else {
             id = this.explorerServices.getTreeItemId(self);
         }
@@ -172,7 +178,7 @@ public class DomainExplorerServices {
             // the tree item is a setting, get the object and then the structural feature associated
             var objectId = treeItemId.substring(SETTING.length(), treeItemId.indexOf(SETTING_ID_SEPARATOR));
             var featureName = treeItemId.substring(treeItemId.indexOf(SETTING_ID_SEPARATOR) + SETTING_ID_SEPARATOR.length());
-            var optObject = this.objectService.getObject(editingContext, objectId);
+            var optObject = this.objectSearchService.getObject(editingContext, objectId);
             if (optObject.isPresent()) {
                 InternalEObject internalObject = (InternalEObject) optObject.get();
                 result = new SettingWrapper(internalObject.eSetting(internalObject.eClass().getEStructuralFeature(featureName)));

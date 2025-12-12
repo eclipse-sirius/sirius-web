@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IInitialDirectEditElementLabelProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -68,7 +68,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final List<IJavaServiceProvider> javaServiceProviders;
 
@@ -76,12 +76,12 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
 
     private final ApplicationContext applicationContext;
 
-    public ViewInitialDirectEditElementLabelProvider(IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectService objectService,
+    public ViewInitialDirectEditElementLabelProvider(IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IDiagramQueryService diagramQueryService, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IObjectSearchService objectSearchService,
             List<IJavaServiceProvider> javaServiceProviders, IDiagramIdProvider idProvider, ApplicationContext applicationContext) {
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.javaServiceProviders = Objects.requireNonNull(javaServiceProviders);
         this.idProvider = Objects.requireNonNull(idProvider);
         this.applicationContext = Objects.requireNonNull(applicationContext);
@@ -108,7 +108,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
             if (diagramElement instanceof Node node) {
                 String descriptionId = node.getDescriptionId();
                 optionalLabelEditTool = this.getNodeDescription(diagramDescription.getNodeDescriptions(), descriptionId).map(NodeDescription::getPalette).map(NodePalette::getLabelEditTool);
-                semanticElement = this.objectService.getObject(editingContext, node.getTargetObjectId());
+                semanticElement = this.objectSearchService.getObject(editingContext, node.getTargetObjectId());
                 if (node.getInsideLabel() != null && Objects.equals(node.getInsideLabel().getId(), labelId)) {
                     initialDirectEditElementLabel = node.getInsideLabel().getText();
                 } else {
@@ -116,7 +116,7 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                 }
             } else if (diagramElement instanceof Edge edge) {
                 String descriptionId = edge.getDescriptionId();
-                semanticElement = this.objectService.getObject(editingContext, edge.getTargetObjectId());
+                semanticElement = this.objectSearchService.getObject(editingContext, edge.getTargetObjectId());
 
                 var optionalEdgeDescription = this.getEdgeDescription(diagramDescription.getEdgeDescriptions(), descriptionId);
 
@@ -142,10 +142,10 @@ public class ViewInitialDirectEditElementLabelProvider implements IInitialDirect
                     variableManager.put("diagram", diagram);
                     if (diagramElement instanceof Edge edge) {
                         var semanticEdgeSource = this.diagramQueryService.findNodeById(diagram, edge.getSourceId())
-                                .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                                .flatMap(node -> this.objectSearchService.getObject(editingContext, node.getTargetObjectId()))
                                 .orElse(null);
                         var semanticEdgeTarget = this.diagramQueryService.findNodeById(diagram, edge.getTargetId())
-                                .flatMap(node -> this.objectService.getObject(editingContext, node.getTargetObjectId()))
+                                .flatMap(node -> this.objectSearchService.getObject(editingContext, node.getTargetObjectId()))
                                 .orElse(null);
                         variableManager.put("semanticEdgeSource", semanticEdgeSource);
                         variableManager.put("semanticEdgeTarget", semanticEdgeTarget);

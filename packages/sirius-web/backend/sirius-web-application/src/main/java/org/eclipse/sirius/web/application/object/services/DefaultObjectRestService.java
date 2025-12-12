@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.object.dto.Direction;
 import org.eclipse.sirius.web.application.object.services.api.IDefaultObjectRestService;
@@ -36,10 +36,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class DefaultObjectRestService implements IDefaultObjectRestService {
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
-    public DefaultObjectRestService(IObjectService objectService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public DefaultObjectRestService(IObjectSearchService objectSearchService) {
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class DefaultObjectRestService implements IDefaultObjectRestService {
 
     @Override
     public Optional<Object> getElementById(IEditingContext editingContext, String elementId) {
-        return this.objectService.getObject(editingContext, elementId);
+        return this.objectSearchService.getObject(editingContext, elementId);
     }
 
     @Override

@@ -21,7 +21,6 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -72,8 +71,7 @@ public class ApplyElementsToSelectExpressionPostExecutionToolCustomizer implemen
                 var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
                 if (optionalEditingContext.isPresent()) {
                     newSelection = workbenchSelection.getEntries().stream()
-                            .filter(entry -> entry.getKind().startsWith(SemanticKindConstants.PREFIX + "?"))
-                            .map(entry -> this.objectSearchService.getObject(optionalEditingContext.get(), entry.getId()))
+                            .map(entry -> this.objectSearchService.getObject(optionalEditingContext.get(), entry.id()))
                             .flatMap(Optional::stream)
                             .toList();
                 }

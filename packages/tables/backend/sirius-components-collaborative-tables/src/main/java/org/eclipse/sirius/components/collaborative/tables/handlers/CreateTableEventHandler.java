@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -58,18 +58,18 @@ public class CreateTableEventHandler implements IEditingContextEventHandler {
 
     private final ICollaborativeMessageService messageService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final TableCreationService tableCreationService;
 
     private final Counter counter;
 
-    public CreateTableEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, ICollaborativeMessageService messageService, IObjectService objectService, TableCreationService tableCreationService, MeterRegistry meterRegistry) {
+    public CreateTableEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationPersistenceService representationPersistenceService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService, ICollaborativeMessageService messageService, IObjectSearchService objectSearchService, TableCreationService tableCreationService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
         this.messageService = Objects.requireNonNull(messageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.tableCreationService = Objects.requireNonNull(tableCreationService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -99,7 +99,7 @@ public class CreateTableEventHandler implements IEditingContextEventHandler {
             Optional<TableDescription> optionalTreeDescription = this.representationDescriptionSearchService.findById(editingContext, createRepresentationInput.representationDescriptionId())
                     .filter(TableDescription.class::isInstance)
                     .map(TableDescription.class::cast);
-            Optional<Object> optionalObject = this.objectService.getObject(editingContext, createRepresentationInput.objectId());
+            Optional<Object> optionalObject = this.objectSearchService.getObject(editingContext, createRepresentationInput.objectId());
 
             if (optionalTreeDescription.isPresent() && optionalObject.isPresent()) {
                 TableDescription tableDescription = optionalTreeDescription.get();

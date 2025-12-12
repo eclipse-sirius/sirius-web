@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.widget.reference.dto.SetRefer
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.Form;
@@ -53,12 +53,12 @@ public class SetReferenceEventHandler implements IFormEventHandler {
 
     private final IFormQueryService formQueryService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
-    public SetReferenceEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, MeterRegistry meterRegistry) {
+    public SetReferenceEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService, MeterRegistry meterRegistry) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
@@ -87,7 +87,7 @@ public class SetReferenceEventHandler implements IFormEventHandler {
             if (optionalReferenceWidget.map(ReferenceWidget::isReadOnly).filter(Boolean::booleanValue).isPresent()) {
                 status = new Failure(this.messageService.unableToEditReadOnlyWidget());
             } else {
-                var value = this.objectService.getObject(editingContext, input.newValueId());
+                var value = this.objectSearchService.getObject(editingContext, input.newValueId());
                 if (value.isPresent()) {
                     status = optionalReferenceWidget.map(ReferenceWidget::getSetHandler)
                             .map(handler -> handler.apply(value.get()))

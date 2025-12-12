@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.tables.api.IEditCellHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -49,12 +48,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class PapayaTableEditCellHandler implements IEditCellHandler {
 
-    private final IObjectService objectService;
-
     private final IObjectSearchService objectSearchService;
 
-    public PapayaTableEditCellHandler(IObjectService objectService, IObjectSearchService objectSearchService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public PapayaTableEditCellHandler(IObjectSearchService objectSearchService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
 
@@ -67,7 +63,7 @@ public class PapayaTableEditCellHandler implements IEditCellHandler {
     @Override
     public IStatus handle(IEditingContext editingContext, TableDescription tableDescription, ICell cell, Line line, Column column, Object newValue) {
         AtomicReference<IStatus> status = new AtomicReference<>(new Failure(""));
-        var optionalEObject = this.objectService.getObject(editingContext, line.getTargetObjectId()).filter(EObject.class::isInstance).map(EObject.class::cast);
+        var optionalEObject = this.objectSearchService.getObject(editingContext, line.getTargetObjectId()).filter(EObject.class::isInstance).map(EObject.class::cast);
         optionalEObject.ifPresent(eObject -> {
             var optionalFeatureName = this.getFeatureName(column.getTargetObjectId());
             optionalFeatureName.ifPresent(featureName -> {

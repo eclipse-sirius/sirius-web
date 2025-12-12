@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.forms.api.IFormEventHandler;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormInput;
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.collaborative.widget.reference.ReferenceWidgetDefaultCreateElementHandler;
+import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetCreateElementHandler;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInReferenceSuccessPayload;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.CreateElementInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.messages.IReferenceMessageService;
@@ -32,10 +33,9 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.forms.Form;
-import org.eclipse.sirius.components.collaborative.widget.reference.api.IReferenceWidgetCreateElementHandler;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +56,7 @@ public class CreateElementEventHandler implements IFormEventHandler {
 
     private final IReferenceMessageService messageService;
 
-    private final IObjectService objectService;
+    private final IObjectSearchService objectSearchService;
 
     private final List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers;
 
@@ -66,10 +66,10 @@ public class CreateElementEventHandler implements IFormEventHandler {
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectService objectService, List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, IEditService editService, MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
+    public CreateElementEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService, List<IReferenceWidgetCreateElementHandler> referenceWidgetCreateElementHandlers, IEditService editService, MeterRegistry meterRegistry, IFeedbackMessageService feedbackMessageService) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
         this.messageService = Objects.requireNonNull(messageService);
-        this.objectService = Objects.requireNonNull(objectService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.referenceWidgetCreateElementHandlers = Objects.requireNonNull(referenceWidgetCreateElementHandlers);
         this.defaultReferenceWidgetCreateElementHandler = new ReferenceWidgetDefaultCreateElementHandler(Objects.requireNonNull(editService));
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
@@ -120,7 +120,7 @@ public class CreateElementEventHandler implements IFormEventHandler {
 
     private Optional<Object> createElement(IEditingContext editingContext, IReferenceWidgetCreateElementHandler handler, CreateElementInput input) {
         if (input.domainId() == null) {
-            EObject parent = this.objectService.getObject(editingContext, input.containerId())
+            EObject parent = this.objectSearchService.getObject(editingContext, input.containerId())
                     .filter(EObject.class::isInstance)
                     .map(EObject.class::cast)
                     .orElse(null);

@@ -19,7 +19,7 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.UpdateCollapsingStateInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.forms.ButtonStyle;
@@ -41,14 +41,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class CollapseButtonDescriptionProvider implements IDiagramFilterActionContributionProvider {
 
-    private final IObjectService objectService;
+    private final IIdentityService identityService;
 
     private final IDiagramFilterHelper diagramFilterHelper;
 
     private final IMessageService messageService;
 
-    public CollapseButtonDescriptionProvider(IObjectService objectService, IDiagramFilterHelper diagramFilterHelper, IMessageService messageService) {
-        this.objectService = Objects.requireNonNull(objectService);
+    public CollapseButtonDescriptionProvider(IIdentityService identityService, IDiagramFilterHelper diagramFilterHelper, IMessageService messageService) {
+        this.identityService = Objects.requireNonNull(identityService);
         this.diagramFilterHelper = Objects.requireNonNull(diagramFilterHelper);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -57,7 +57,7 @@ public class CollapseButtonDescriptionProvider implements IDiagramFilterActionCo
     public ButtonDescription getButtonDescription() {
         return ButtonDescription.newButtonDescription("diagram-filter/split-button/collapse")
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.identityService::getId).orElse(null))
                 .labelProvider(variableManager -> this.messageService.diagramFilterCollapseElements())
                 .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(variableManager -> false)
