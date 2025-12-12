@@ -63,3 +63,10 @@ Thus, we will use the ID of the contribution to compute the capability `type`.
 * identifier: *should* be the ID of a project
 * capability:
 ** canView: Whether the project image settings tab is displayed or not.
+
+==== Project General Settings
+
+* type: `ProjectSettings#general`
+* identifier: *should* be the ID of a project
+* capability:
+** canView: Whether the project general settings tab is displayed or not.

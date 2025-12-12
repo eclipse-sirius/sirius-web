@@ -371,5 +371,15 @@
   },
   "siriusWebManageVisibilityNodeAction": {
     "manageVisibility": "Manage visibility"
+  },
+  "projectGeneralSettingsView": {
+    "clientSettings": "Client settings for this project",
+    "enableConfirmationDialogs": "Enable confirmation dialogs",
+    "enableConfirmationDialogsDescription": "Show confirmation prompts before deleting items or performing critical actions. This setting is stored in your browser.",
+    "enableConfirmationDialogsTooltip": "When enabled, you will see confirmation prompts before deleting items or performing critical other actions that cannot be undone.",
+    "pageTitle": "Settings",
+    "personalBadge": "Personal",
+    "sectionDescription": "Your personal preferences - these settings are stored in your browser",
+    "title": "General Settings"
   }
 }

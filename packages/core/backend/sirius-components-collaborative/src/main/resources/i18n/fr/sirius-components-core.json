@@ -26,5 +26,11 @@
     "elementsDeleted": "Éléments supprimés: {{nbElementDeleted}}",
     "elementsModified": "Éléments modifiés: {{nbElementModified}}",
     "areYouSureYouWantToProceed": "Êtes-vous sûr de vouloir procéder ?"
+  },
+  "useDeletionConfirmationDialog": {
+    "title": "Êtes-vous sûr ?",
+    "willDelete": "Cette action va supprimer les éléments sélectionnés.",
+    "willNotBeAbleToRevert": "Vous ne pourrez pas revenir en arrière.",
+    "buttonLabel": "Supprimer"
   }
 }
