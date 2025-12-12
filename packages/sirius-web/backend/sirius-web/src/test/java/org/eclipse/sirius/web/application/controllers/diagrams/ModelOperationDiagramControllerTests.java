@@ -120,7 +120,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
         });
 
         Runnable assertSelection = () -> {
-            var consumedSelection = new WorkbenchSelection(List.of(new WorkbenchSelectionEntry(expectedNodeSelected.get().getTargetObjectId(), "")));
+            var consumedSelection = new WorkbenchSelection(List.of(new WorkbenchSelectionEntry(expectedNodeSelected.get().getTargetObjectId())));
             assertThat(consumedSelection).isEqualTo(consumedWorkbenchSelection.get());
         };
 

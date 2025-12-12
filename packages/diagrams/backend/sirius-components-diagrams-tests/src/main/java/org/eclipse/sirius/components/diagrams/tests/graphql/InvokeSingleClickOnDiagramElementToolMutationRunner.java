@@ -36,8 +36,6 @@ public class InvokeSingleClickOnDiagramElementToolMutationRunner implements IMut
                   newSelection {
                     entries {
                       id
-                      kind
-                      __typename
                     }
                     __typename
                   }

@@ -93,7 +93,7 @@ public class ApplyElementsToSelectExpressionPostExecutionToolCustomizer implemen
             if (optionalComputedNewSelection.isPresent()) {
                 // Convert back the result into a WorkbenchSelection
                 var entries = optionalComputedNewSelection.get().stream()
-                        .map(element -> new WorkbenchSelectionEntry(this.identityService.getId(element), this.identityService.getKind(element)))
+                        .map(element -> new WorkbenchSelectionEntry(this.identityService.getId(element)))
                         .toList();
                 success.getParameters().put(Success.NEW_SELECTION, new WorkbenchSelection(entries));
             }
