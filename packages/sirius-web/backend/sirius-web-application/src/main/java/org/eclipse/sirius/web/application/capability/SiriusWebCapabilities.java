@@ -167,4 +167,11 @@ public final class SiriusWebCapabilities {
      */
     public static final String PROJECT_SETTINGS_IMAGE_TAB = PROJECT_SETTINGS + '#' + "images";
 
+    /**
+     * The identifier of the general settings tab.
+     *
+     * @since v2026.1.0
+     */
+    public static final String PROJECT_SETTINGS_GENERAL_TAB = PROJECT_SETTINGS + '#' + "general";
+
 }

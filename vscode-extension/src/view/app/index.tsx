@@ -39,6 +39,7 @@ declare global {
     serverAddress: string;
     username: string;
     password: string;
+    projectId: string;
     editingContextId: string;
     representationId: string;
     representationLabel: string;
@@ -121,6 +122,7 @@ root.render(
               serverAddress={window.serverAddress}
               username={window.username}
               password={window.password}
+              projectId={window.projectId}
               editingContextId={window.editingContextId}
               representationId={window.representationId}
               representationLabel={window.representationLabel}

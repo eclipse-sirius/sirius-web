@@ -148,6 +148,8 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
 - https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] Provide a search history in omnibox command.
 - https://github.com/eclipse-sirius/sirius-web/issues/5966[#5966] [diagram] The UI of the palette has been tweaked to reduce the risk of misclicks on quick actions
+- https://github.com/eclipse-sirius/sirius-web/issues/5813[#5813] Add new project setting to enable/disable confirmation modals.
+
 
 
 == 2025.12.0

@@ -146,6 +146,7 @@ export class ExplorerViewProvider implements TreeDataProvider<ModelItem> {
           serverData.serverAddress,
           serverData.username,
           serverData.password,
+          projectData.id,
           projectData.editingContextId,
           element.id,
           element.label,

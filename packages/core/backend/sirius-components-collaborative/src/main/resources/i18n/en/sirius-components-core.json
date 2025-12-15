@@ -26,5 +26,11 @@
     "elementsDeleted": "Elements deleted: {{nbElementDeleted}}",
     "elementsModified": "Elements modified: {{nbElementModified}}",
     "areYouSureYouWantToProceed": "Are you sure you want to proceed?"
+  },
+  "useDeletionConfirmationDialog": {
+    "title": "Are you sure?",
+    "willDelete": "This action will delete the selected element(s).",
+    "willNotBeAbleToRevert": "You won't be able to revert this.",
+    "buttonLabel": "Delete"
   }
 }

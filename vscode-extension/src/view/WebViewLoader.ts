@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ export default class WebViewLoader {
     serverAddress: string,
     username: string,
     password: string,
+    projectId: string,
     editingContextId: string,
     representationId: string,
     representationLabel: string,
@@ -35,6 +36,7 @@ export default class WebViewLoader {
       serverAddress,
       username,
       password,
+      projectId,
       editingContextId,
       representationId,
       representationLabel,
@@ -82,6 +84,7 @@ export default class WebViewLoader {
             window.serverAddress = '${webViewContext.serverAddress}';
             window.username = '${webViewContext.username}';
             window.password = '${webViewContext.password}';
+            window.projectId = '${webViewContext.projectId}';
             window.editingContextId = '${webViewContext.editingContextId}';
             window.representationId = '${webViewContext.representationId}';
             window.representationLabel = '${webViewContext.representationLabel}';
@@ -102,6 +105,7 @@ interface WebViewContext {
   serverAddress: string;
   username: string;
   password: string;
+  projectId: string;
   editingContextId: string;
   representationId: string;
   representationLabel: string;

@@ -81,6 +81,7 @@ import LinkIcon from '@mui/icons-material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
 import TableViewIcon from '@mui/icons-material/TableView';
 import WarningIcon from '@mui/icons-material/Warning';
 import { Navigate, PathRouteProps, matchRoutes, useLocation } from 'react-router-dom';
@@ -117,6 +118,7 @@ import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView'
 import { NewProjectView } from '../views/new-project/NewProjectView';
 import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
 import { ProjectImagesSettings } from '../views/project-settings/images/ProjectImagesSettings';
+import { ProjectGeneralSettingsView } from '../views/project-settings/ProjectGeneralSettingsView';
 import { ProjectSettingsView } from '../views/project-settings/ProjectSettingsView';
 import { ProjectSettingTabContribution } from '../views/project-settings/ProjectSettingsView.types';
 import { projectSettingsTabExtensionPoint } from '../views/project-settings/ProjectSettingsViewExtensionPoints';
@@ -494,6 +496,12 @@ defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
  *
  *******************************************************************************/
 const defaultSettingPages: ProjectSettingTabContribution[] = [
+  {
+    id: 'general',
+    title: 'General',
+    icon: <SettingsIcon />,
+    component: ProjectGeneralSettingsView,
+  },
   {
     id: 'images',
     title: 'Images',

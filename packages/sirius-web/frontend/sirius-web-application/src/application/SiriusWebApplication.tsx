@@ -10,11 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import {
-  ConfirmationDialogContextProvider,
-  ExtensionProvider,
-  ServerContext,
-} from '@eclipse-sirius/sirius-components-core';
+import { ExtensionProvider, ServerContext } from '@eclipse-sirius/sirius-components-core';
 import { NodeTypeContext, NodeTypeContextValue } from '@eclipse-sirius/sirius-components-diagrams';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Theme, ThemeProvider } from '@mui/material/styles';
@@ -77,13 +73,11 @@ export const SiriusWebApplication = ({
               <CssBaseline />
               <ServerContext.Provider value={{ httpOrigin }}>
                 <ToastProvider>
-                  <ConfirmationDialogContextProvider>
-                    <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-                      <div style={style}>
-                        <Router />
-                      </div>
-                    </NodeTypeContext.Provider>
-                  </ConfirmationDialogContextProvider>
+                  <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+                    <div style={style}>
+                      <Router />
+                    </div>
+                  </NodeTypeContext.Provider>
                 </ToastProvider>
               </ServerContext.Provider>
             </ThemeProvider>
