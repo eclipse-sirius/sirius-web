@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.core.api.variables;
 
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.representations.Variable;
 
 /**
  * Contains some variables which are available in several representations.
@@ -22,11 +23,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
  */
 public final class CommonVariables {
 
-    public static final Variable SELF = new Variable("self", Object.class, "The current element on which the operation is performed");
+    public static final Variable SELF = new Variable("self", Object.class, false, "The current element on which the operation is performed");
 
-    public static final Variable EDITING_CONTEXT = new Variable("editingContext", IEditingContext.class, "The editing context is an abstraction used to access all the semantic data");
+    public static final Variable EDITING_CONTEXT = new Variable("editingContext", IEditingContext.class, false, "The editing context is an abstraction used to access all the semantic data");
 
-    public static final Variable ENVIRONMENT = new Variable("environment", Environment.class, "The environment may contain some information on the application currently running");
+    public static final Variable ENVIRONMENT = new Variable("environment", Environment.class, false, "The environment may contain some information on the application currently running");
 
     private CommonVariables() {
         // Prevent instantiation

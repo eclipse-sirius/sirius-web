@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.core.api.variables;
+package org.eclipse.sirius.components.representations;
 
 
 /**
@@ -22,5 +22,5 @@ package org.eclipse.sirius.components.core.api.variables;
  *
  * @author sbegaudeau
  */
-public record Variable(String name, Class<?> type, String documentation) {
+public record Variable(String name, Class<?> type, boolean isMany, String documentation) {
 }

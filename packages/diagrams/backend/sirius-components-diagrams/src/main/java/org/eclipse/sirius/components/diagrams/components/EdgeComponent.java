@@ -44,6 +44,7 @@ import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.IEdgeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
+import org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
@@ -85,6 +86,7 @@ public class EdgeComponent implements IComponent {
 
             Map<String, Integer> edgeIdPrefixToCount = new HashMap<>();
             List<String> lastPreviousRenderedEdgeIds = new ArrayList<>();
+            this.props.getOperationValidator().validate(DiagramRenderingOperations.EDGE_SEMANTIC_CANDIDATES, semanticElementsVariableManager.getVariables());
             List<?> semanticElements = edgeDescription.getSemanticElementsProvider().apply(semanticElementsVariableManager);
             for (Object semanticElement : semanticElements) {
                 List<Element> edgesToRender = this.renderEdge(variableManager, edgeDescription, diagramEvents, edgeIdPrefixToCount, lastPreviousRenderedEdgeIds, semanticElement);
@@ -120,7 +122,7 @@ public class EdgeComponent implements IComponent {
                     edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceElement);
                     edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_TARGET, targetElement);
 
-                    this.props.getOperationValidator().validate("Edge#precondition", edgeInstanceVariableManager.getVariables());
+                    this.props.getOperationValidator().validate(DiagramRenderingOperations.EDGE_PRECONDITION, edgeInstanceVariableManager.getVariables());
                     var shouldRender = edgeDescription.getShouldRenderPredicate().test(edgeInstanceVariableManager);
                     if (shouldRender) {
                         this.doRenderEdge(edgeInstanceVariableManager, edgeDescription, sourceElement, targetElement, diagramEvents, edgeIdPrefixToCount, lastPreviousRenderedEdgeIds)

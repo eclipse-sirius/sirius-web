@@ -20,13 +20,14 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramInteractionOperations;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVariables;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -34,10 +35,12 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.variables.CommonVariables;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.representations.Failure;
+import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -60,15 +63,18 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
+    private final IOperationValidator operationValidator;
+
     private final ICollaborativeDiagramMessageService messageService;
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public DropOnDiagramEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService) {
+    public DropOnDiagramEventHandler(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IRepresentationDescriptionSearchService representationDescriptionSearchService, IOperationValidator operationValidator,
+                                     ICollaborativeDiagramMessageService messageService, IFeedbackMessageService feedbackMessageService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+        this.operationValidator = Objects.requireNonNull(operationValidator);
         this.messageService = Objects.requireNonNull(messageService);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
@@ -85,7 +91,10 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
         var changeDescription = new ChangeDescription(ChangeKind.NOTHING, diagramInput.representationId(), diagramInput);
         IPayload payload = new ErrorPayload(diagramInput.id(), message);
         if (diagramInput instanceof DropOnDiagramInput input) {
-            List<Object> objects = input.objectIds().stream().map(objectId -> this.objectSearchService.getObject(editingContext, objectId)).flatMap(Optional::stream).toList();
+            List<Object> objects = input.objectIds().stream()
+                    .map(objectId -> this.objectSearchService.getObject(editingContext, objectId))
+                    .flatMap(Optional::stream)
+                    .toList();
             Diagram diagram = diagramContext.diagram();
 
             payload = new ErrorPayload(diagramInput.id(), this.messageService.invalidDrop());
@@ -120,12 +129,14 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
 
             for (Object self : objects) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(Node.SELECTED_NODE, node.orElse(null));
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-                variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
-                variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
-                variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
-                variableManager.put(VariableManager.SELF, self);
+                variableManager.put(CommonVariables.SELF.name(), self);
+                variableManager.put(CommonVariables.EDITING_CONTEXT.name(), editingContext);
+                variableManager.put(CommonVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
+                variableManager.put(DiagramVariables.DIAGRAM_CONTEXT.name(), diagramContext);
+                variableManager.put(DiagramVariables.DIAGRAM_SERVICES.name(), new DiagramService(diagramContext));
+                variableManager.put(DiagramVariables.SELECTED_NODE.name(), node.orElse(null));
+
+                this.operationValidator.validate(DiagramInteractionOperations.OBJECT_DROP, variableManager.getVariables());
 
                 IStatus dropResult = dropHandler.apply(variableManager);
                 if (dropResult instanceof Failure) {
