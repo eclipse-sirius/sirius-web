@@ -21,6 +21,8 @@ import { ExportDataButton } from './ExportDataButton';
 import { ToolsButtonProps, ToolsButtonState } from './ToolsButton.types';
 import { toolsButtonMenuEntryExtensionPoint } from './ToolsButtonExtensionPoints';
 import { ToolsButtonMenuEntryProps } from './ToolsButtonExtensionPoints.types';
+import { useToolMenuEntries } from './useToolMenuEntries';
+import { DefaultToolMenuEntry } from './DefaultToolMenuEntry';
 
 export const ToolsButton = ({ editingContextId, representationId, table }: ToolsButtonProps) => {
   const { t } = useTranslation('sirius-components-tables', { keyPrefix: 'toolsButton' });
@@ -36,6 +38,11 @@ export const ToolsButton = ({ editingContextId, representationId, table }: Tools
     setState((prevState) => ({ ...prevState, contextMenuAnchorElement: event.currentTarget }));
 
   const handleClose = () => setState((prevState) => ({ ...prevState, contextMenuAnchorElement: null }));
+
+  const { loading, toolMenuEntries } = useToolMenuEntries(editingContextId, representationId, table.id);
+  if (loading) {
+    return null;
+  }
 
   return (
     <>
@@ -53,6 +60,16 @@ export const ToolsButton = ({ editingContextId, representationId, table }: Tools
         open={!!state.contextMenuAnchorElement}
         onClose={handleClose}>
         <ExportDataButton table={table} />
+        {toolMenuEntries.map((entry) => (
+          <DefaultToolMenuEntry
+            key={entry.id}
+            editingContextId={editingContextId}
+            representationId={representationId}
+            tableId={table.id}
+            entry={entry}
+            readOnly={false}
+          />
+        ))}
         {toolsButtonMenuEntries.map(({ Component: ToolsButtonMenuItem }, index) => (
           <ToolsButtonMenuItem
             key={index}
