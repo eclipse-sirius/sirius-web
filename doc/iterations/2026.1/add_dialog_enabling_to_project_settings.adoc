@@ -1,0 +1,27 @@
+= Add confirmation dialog enabling/disabling to project settings
+
+== Problem
+
+Confirmation dialogs can be disabled by and for a client, but they cannot be re-enabled afterward.
+Moreover, disabling them currently applies to the entire application and is not scoped to a specific project.
+
+== Key Result
+
+Sirius Web should provide a way to re-enable dialogs.
+
+This mechanism should be scoped to a project.
+
+=== Acceptance Criteria
+
+Existing Cypress tests should leverage the new functionality, and new tests must be created to verify the scoping of delete-modal disabling.
+
+== Solution
+
+We propose adding a new boolean setting in the project settings page.
+This setting is displayed inside a new contributed settings tab named "General."
+
+=== Cutting backs
+
+== Rabbit holes
+
+== No-gos

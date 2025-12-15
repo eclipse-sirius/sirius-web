@@ -30,6 +30,7 @@ import {
 import { RefObject, useEffect, useRef, useState } from 'react';
 import { Navigate, useParams, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import { ConfirmationDialogSettingsContextProvider } from '../../confirmationDialogSettings/ConfirmationDialogSettingsContext';
 import { EditProjectViewParams, EditProjectViewState, TreeToolBarProviderProps } from './EditProjectView.types';
 import { EditProjectNavbar } from './navbar/EditProjectNavbar';
 import { ProjectContext } from './ProjectContext';
@@ -139,31 +140,33 @@ export const EditProjectView = () => {
 
     content = (
       <ProjectContext.Provider value={{ project: state.project, name }}>
-        <SelectionContextProvider initialSelection={initialSelection}>
-          <SelectionSynchronizer>
-            <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
-              <WorkbenchOmnibox
-                editingContextId={state.project.currentEditingContext.id}
-                workbenchHandle={refWorkbenchHandle.current}>
-                <UndoRedo>
-                  <EditProjectNavbar workbenchHandle={refWorkbenchHandle.current} />
-                  <TreeToolBarProvider>
-                    <ImpactAnalysisDialogContextProvider>
-                      <Workbench
-                        editingContextId={state.project.currentEditingContext.id}
-                        initialRepresentationSelected={state.representation}
-                        onRepresentationSelected={onRepresentationSelected}
-                        readOnly={!state.project.capabilities.canEdit}
-                        initialWorkbenchConfiguration={state.workbenchConfiguration}
-                        ref={refWorkbenchHandle}
-                      />
-                    </ImpactAnalysisDialogContextProvider>
-                  </TreeToolBarProvider>
-                </UndoRedo>
-              </WorkbenchOmnibox>
-            </RepresentationPathContext.Provider>
-          </SelectionSynchronizer>
-        </SelectionContextProvider>
+        <ConfirmationDialogSettingsContextProvider projectId={projectId}>
+          <SelectionContextProvider initialSelection={initialSelection}>
+            <SelectionSynchronizer>
+              <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
+                <WorkbenchOmnibox
+                  editingContextId={state.project.currentEditingContext.id}
+                  workbenchHandle={refWorkbenchHandle.current}>
+                  <UndoRedo>
+                    <EditProjectNavbar workbenchHandle={refWorkbenchHandle.current} />
+                    <TreeToolBarProvider>
+                      <ImpactAnalysisDialogContextProvider>
+                        <Workbench
+                          editingContextId={state.project.currentEditingContext.id}
+                          initialRepresentationSelected={state.representation}
+                          onRepresentationSelected={onRepresentationSelected}
+                          readOnly={!state.project.capabilities.canEdit}
+                          initialWorkbenchConfiguration={state.workbenchConfiguration}
+                          ref={refWorkbenchHandle}
+                        />
+                      </ImpactAnalysisDialogContextProvider>
+                    </TreeToolBarProvider>
+                  </UndoRedo>
+                </WorkbenchOmnibox>
+              </RepresentationPathContext.Provider>
+            </SelectionSynchronizer>
+          </SelectionContextProvider>
+        </ConfirmationDialogSettingsContextProvider>
       </ProjectContext.Provider>
     );
   }

@@ -13,6 +13,8 @@
 
 export { SiriusWebApplication } from './application/SiriusWebApplication';
 export type { SiriusWebApplicationProps } from './application/SiriusWebApplication.types';
+export { ConfirmationDialogSettingsContextProvider } from './confirmationDialogSettings/ConfirmationDialogSettingsContext';
+export type { ConfirmationDialogSettingsContextValue } from './confirmationDialogSettings/ConfirmationDialogSettingsContext.types';
 export { DiagramRepresentationConfiguration } from './diagrams/DiagramRepresentationConfiguration';
 export type { NodeTypeRegistry } from './diagrams/DiagramRepresentationConfiguration.types';
 export { DefaultExtensionRegistryMergeStrategy } from './extension/DefaultExtensionRegistryMergeStrategy';

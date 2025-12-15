@@ -25,16 +25,15 @@ test.describe('diagram - delete node', () => {
     const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
     projectId = project.projectId;
     await page.goto(`/projects/${projectId}/edit`);
+    await page.evaluate(([id]) => {
+      window.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify([id]));
+    }, [projectId]);
 
     const explorer = await new PlaywrightExplorer(page);
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
     const representationItem = await explorer.getTreeItemLabel('Topography');
     representationItem.click();
-
-    await page.evaluate(() => {
-      window.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify(true));
-    });
   });
 
   test.afterEach(async ({ request }) => {

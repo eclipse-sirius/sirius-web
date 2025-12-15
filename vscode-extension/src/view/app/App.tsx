@@ -12,9 +12,8 @@
  *******************************************************************************/
 
 import {
-  ConfirmationDialogContextProvider,
   Selection,
-  SelectionContextProvider,
+  SelectionContextProvider
 } from '@eclipse-sirius/sirius-components-core';
 import {
   DiagramRepresentation,
@@ -24,7 +23,7 @@ import {
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
-import { DetailsView } from '@eclipse-sirius/sirius-web-application';
+import { ConfirmationDialogSettingsContextProvider, DetailsView } from '@eclipse-sirius/sirius-web-application';
 import { Theme, ThemeProvider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { EllipseNode } from './nodes/EllipseNode';
@@ -36,6 +35,7 @@ import './reset.css';
 import './variables.css';
 
 interface AppState {
+  projectId: string;
   editingContextId: string;
   representationId: string;
   representationLabel: string;
@@ -47,6 +47,7 @@ interface AppProps {
   serverAddress: string;
   username: string;
   password: string;
+  projectId: string;
   editingContextId: string;
   representationId: string;
   representationLabel: string;
@@ -58,6 +59,7 @@ export const App = ({
   serverAddress,
   username,
   password,
+  projectId,
   editingContextId,
   representationId,
   representationLabel,
@@ -65,6 +67,7 @@ export const App = ({
   theme,
 }: AppProps) => {
   const [state, setState] = useState<AppState>({
+    projectId,
     editingContextId,
     representationId,
     representationLabel,
@@ -172,14 +175,14 @@ export const App = ({
   return (
     <ThemeProvider theme={siriusWebTheme}>
       <SelectionContextProvider initialSelection={selection}>
-        <ConfirmationDialogContextProvider>
+        <ConfirmationDialogSettingsContextProvider projectId={projectId}>
           <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
             <div style={appStyle}>
               <div style={headerStyle}></div>
               {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
             </div>
           </NodeTypeContext.Provider>
-        </ConfirmationDialogContextProvider>
+        </ConfirmationDialogSettingsContextProvider>
       </SelectionContextProvider>
     </ThemeProvider>
   );
