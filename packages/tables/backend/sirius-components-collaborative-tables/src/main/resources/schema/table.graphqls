@@ -168,6 +168,7 @@ type TableDescription implements RepresentationDescription {
   label: String!
   rowContextMenuEntries(tableId: ID!, rowId: ID!): [RowContextMenuEntry!]!
   rowFilters(tableId: ID!): [RowFilter!]!
+  toolMenuEntries(tableId: ID!): [ToolMenuEntry!]!
 }
 
 type RowContextMenuEntry {
@@ -180,6 +181,12 @@ type RowFilter {
   id: ID!
   label: String!
   defaultState: Boolean!
+}
+
+type ToolMenuEntry {
+  id: ID!
+  label: String!
+  iconURLs: [String!]!
 }
 
 extend type Mutation {
@@ -196,6 +203,7 @@ extend type Mutation {
   reorderTableColumns(input: ReorderTableColumnsInput!): ReorderTableColumnsPayload!
   invokeRowContextMenuEntry(input: InvokeRowContextMenuEntryInput!): InvokeRowContextMenuEntryPayload!
   changeColumnSort(input: ChangeColumnSortInput!): ChangeColumnSortPayload!
+  invokeToolMenuEntry(input: InvokeToolMenuEntryInput!): InvokeToolMenuEntryPayload!
 }
 
 input EditSelectCellInput {
@@ -348,3 +356,13 @@ input ColumnSortInput {
 }
 
 union ChangeColumnSortPayload = ErrorPayload | SuccessPayload
+
+input InvokeToolMenuEntryInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: ID!
+  tableId: ID!
+  menuEntryId: ID!
+}
+
+union InvokeToolMenuEntryPayload = SuccessPayload | ErrorPayload
