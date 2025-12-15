@@ -22,7 +22,7 @@ import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { ListPropertySection } from '../ListPropertySection';
-import { listReadOnly, list, itemClickCalledCalledSuccessMock } from './ListPropertySection.data';
+import { itemClickCalledCalledSuccessMock, list, listReadOnly } from './ListPropertySection.data';
 
 const setSelection = () => {};
 
@@ -31,7 +31,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
+const mockEnqueue = vi.fn<(body: string, options?: MessageOptions) => void>();
 
 const toastContextMock: ToastContextValue = {
   enqueueSnackbar: mockEnqueue,
@@ -45,7 +45,7 @@ test('should the click event sent on item click', async () => {
   render(
     <MockedProvider mocks={[itemClickCalledCalledSuccessMock]}>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection }}>
           <ListPropertySection editingContextId="editingContextId" formId="formId" widget={list} readOnly={false} />
         </SelectionContext.Provider>
       </ToastContext.Provider>
@@ -64,7 +64,7 @@ test('when in read-only mode, list items can still be selected but handlers are 
   render(
     <MockedProvider mocks={[itemClickCalledCalledSuccessMock]}>
       <ToastContext.Provider value={toastContextMock}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection, selectedRepresentations: [] }}>
+        <SelectionContext.Provider value={{ selection: emptySelection, setSelection }}>
           <ListPropertySection
             editingContextId="editingContextId"
             formId="formId"

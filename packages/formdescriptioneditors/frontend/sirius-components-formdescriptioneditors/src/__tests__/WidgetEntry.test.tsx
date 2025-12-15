@@ -37,7 +37,7 @@ import { WidgetEntry } from '../WidgetEntry';
 import { FormDescriptionEditorContext } from '../hooks/FormDescriptionEditorContext';
 import { DataTransfer } from './DataTransfer';
 
-crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
+vi.spyOn(crypto, 'randomUUID').mockReturnValue('48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => {
   cleanup();
@@ -139,6 +139,7 @@ test('should drop the Textfield in the drop area', async () => {
       bold: null,
       underline: null,
       strikeThrough: null,
+      widgetGridLayout: null,
     },
     supportsCompletion: false,
     readOnly: false,
@@ -225,6 +226,7 @@ test('should delete the Textfield from the drop area', async () => {
       bold: null,
       underline: null,
       strikeThrough: null,
+      widgetGridLayout: null,
     },
     supportsCompletion: false,
     readOnly: false,
@@ -300,10 +302,6 @@ test('should delete the Textfield from the drop area', async () => {
 test('should delete the PieChart from the drop area', async () => {
   const pieChart: GQLPieChart = {
     __typename: 'PieChart',
-    metadata: {
-      label: 'PieChart1',
-    },
-    label: 'PieChart1',
     entries: [{ key: 'entry1', value: 1 }],
     style: {
       fontSize: null,
@@ -410,6 +408,7 @@ test('should move the existing Textfield from/into the drop area', async () => {
       bold: null,
       underline: null,
       strikeThrough: null,
+      widgetGridLayout: null,
     },
     supportsCompletion: false,
     readOnly: false,
