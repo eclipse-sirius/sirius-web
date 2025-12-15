@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnFilterInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnSortInput;
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeGlobalFilterValueInput;
+import org.eclipse.sirius.components.collaborative.tables.dto.InvokeToolMenuEntryInput;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.tables.ColumnFilter;
@@ -44,8 +45,10 @@ import org.eclipse.sirius.components.tables.ColumnSort;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeColumnFilterMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeColumnSortMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.ChangeGlobalFilterMutationRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.InvokeToolMenuEntryMutationRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableConfigurationQueryRunner;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
+import org.eclipse.sirius.components.tables.tests.graphql.ToolMenuEntriesQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -99,6 +102,12 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private TableConfigurationQueryRunner tableConfigurationQueryRunner;
+
+    @Autowired
+    private ToolMenuEntriesQueryRunner toolMenuEntriesQueryRunner;
+
+    @Autowired
+    private InvokeToolMenuEntryMutationRunner invokeToolMenuEntryMutationRunner;
 
 
     @BeforeEach
@@ -382,6 +391,61 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
         Integer defaultPageSizeResult = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.defaultPageSize");
         assertThat(defaultPageSizeResult).isEqualTo(10);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table, when tool menu entries query is triggered, then all related tools are returned")
+    public void givenTableWhenToolMenuEntriesQueryIsTriggeredThenAllRelatedToolsAreReturned() {
+        this.givenCommittedTransaction.commit();
+
+        Map<String, Object> variables = Map.of(
+                "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                "representationId", PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(),
+                "tableId", PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString()
+        );
+        var result = this.toolMenuEntriesQueryRunner.run(variables);
+
+        List<String> toolMenuEntriesId = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.toolMenuEntries[*].id");
+        assertThat(toolMenuEntriesId).containsExactlyInAnyOrder("add-class-tool-entry");
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a table, when a tool is triggered, then the tool is correctly executed")
+    public void givenTableWhenAToolIsTriggeredThenTheToolIsCorrectlyExecuted() {
+        var flux = this.givenSubscriptionToTable();
+
+        var tableId = new AtomicReference<String>();
+
+        Consumer<Object> initialTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(4);
+            tableId.set(table.getId());
+        });
+
+        Runnable invokeToolMenuEntry = () -> {
+            var invokeToolMenuEntryInput = new InvokeToolMenuEntryInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    tableId.get(), tableId.get(), "add-class-tool-entry");
+            var result = this.invokeToolMenuEntryMutationRunner.run(invokeToolMenuEntryInput);
+
+            String typename = JsonPath.read(result, "$.data.invokeToolMenuEntry.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> updatedTableContentConsumer = assertRefreshedTableThat(table -> {
+            assertThat(table).isNotNull();
+            assertThat(table.getLines()).hasSize(5);
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTableContentConsumer)
+                .then(invokeToolMenuEntry)
+                .consumeNextWith(updatedTableContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
 }
