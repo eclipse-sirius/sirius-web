@@ -94,3 +94,7 @@ test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
+
+.gemini
+.claude
+.codex
