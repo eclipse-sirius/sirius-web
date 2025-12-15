@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.diagrams.events.UpdateCollapsingStateEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
+import org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
@@ -85,7 +86,7 @@ public class NodeComponent implements IComponent {
         }
 
         List<Element> children = new ArrayList<>();
-        this.props.getOperationValidator().validate("Node#semanticCandidates", nodeComponentVariableManager.getVariables());
+        this.props.getOperationValidator().validate(DiagramRenderingOperations.NODE_SEMANTIC_CANDIDATES, nodeComponentVariableManager.getVariables());
         List<?> semanticElements = nodeDescription.getSemanticElementsProvider().apply(nodeComponentVariableManager);
 
         for (Object semanticElement : semanticElements) {

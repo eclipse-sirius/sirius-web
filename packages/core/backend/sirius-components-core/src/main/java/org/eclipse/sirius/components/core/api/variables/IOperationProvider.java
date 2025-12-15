@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.core.api.variables;
 
 import java.util.List;
+
+import org.eclipse.sirius.components.representations.Operation;
 
 /**
  * Used to provide some operations which can be performed.

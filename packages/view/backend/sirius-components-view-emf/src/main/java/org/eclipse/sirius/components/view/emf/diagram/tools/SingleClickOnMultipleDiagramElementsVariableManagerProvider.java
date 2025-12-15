@@ -19,15 +19,18 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramService;
+import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramInteractionOperations;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVariables;
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.variables.CommonVariables;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramConversionData;
 import org.eclipse.sirius.components.view.emf.diagram.ViewDiagramDescriptionConverter;
@@ -50,10 +53,13 @@ public class SingleClickOnMultipleDiagramElementsVariableManagerProvider impleme
 
     private final IToolVariableHandler toolVariableHandler;
 
-    public SingleClickOnMultipleDiagramElementsVariableManagerProvider(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IToolVariableHandler toolVariableHandler) {
+    private final IOperationValidator operationValidator;
+
+    public SingleClickOnMultipleDiagramElementsVariableManagerProvider(IObjectSearchService objectSearchService, IDiagramQueryService diagramQueryService, IToolVariableHandler toolVariableHandler, IOperationValidator operationValidator) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.toolVariableHandler = Objects.requireNonNull(toolVariableHandler);
+        this.operationValidator = Objects.requireNonNull(operationValidator);
     }
 
     @Override
@@ -68,18 +74,19 @@ public class SingleClickOnMultipleDiagramElementsVariableManagerProvider impleme
         var edges = diagramElements.stream().filter(Edge.class::isInstance).map(Edge.class::cast).toList();
         if (!self.isEmpty()) {
             VariableManager variableManager = new VariableManager();
-            variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-            variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
-            variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
-            variableManager.put(VariableManager.SELF, self);
-            variableManager.put("selectedNodes", nodes);
-            variableManager.put("selectedEdges", edges);
+            variableManager.put(CommonVariables.SELF.name(), self);
+            variableManager.put(CommonVariables.EDITING_CONTEXT.name(), editingContext);
+            variableManager.put(CommonVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
+            variableManager.put(DiagramVariables.DIAGRAM_CONTEXT.name(), diagramContext);
+            variableManager.put(DiagramVariables.DIAGRAM_SERVICES.name(), new DiagramService(diagramContext));
+            variableManager.put(DiagramVariables.SELECTED_NODES.name(), nodes);
+            variableManager.put(DiagramVariables.SELECTED_EDGES.name(), edges);
 
             this.getViewDiagramConversionData(editingContext, diagramContext.diagram().getDescriptionId()).ifPresent(viewDiagramConversionData -> variableManager.put(ViewDiagramDescriptionConverter.CONVERTED_NODES_VARIABLE, viewDiagramConversionData.convertedNodes()));
 
             this.toolVariableHandler.addToolVariablesInVariableManager(editingContext, variableManager, variables);
 
+            this.operationValidator.validate(DiagramInteractionOperations.GROUP_TOOL, variableManager.getVariables());
             return Optional.of(variableManager);
         }
 

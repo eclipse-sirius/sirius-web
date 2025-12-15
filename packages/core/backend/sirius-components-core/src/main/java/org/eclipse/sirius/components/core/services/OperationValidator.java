@@ -13,12 +13,14 @@
 
 package org.eclipse.sirius.components.core.services;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.variables.IVariableProvider;
 import org.eclipse.sirius.components.representations.IOperationValidator;
+import org.eclipse.sirius.components.representations.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -47,22 +49,26 @@ public class OperationValidator implements IOperationValidator {
                 .toList();
 
         variables.entrySet().stream()
-                .forEach(entry -> {
-                    var optionalExpectedVariable = expectedVariables.stream()
-                            .filter(variable -> variable.name().equals(entry.getKey()))
-                            .findFirst();
-                    if (optionalExpectedVariable.isPresent()) {
-                        if (entry.getValue() != null) {
-                            var expectedVariable = optionalExpectedVariable.get();
+                .forEach(entry -> this.validate(operationName, expectedVariables, entry.getKey(), entry.getValue()));
+    }
 
-                            var matchesExpectedType = expectedVariable.type().isInstance(entry.getValue());
-                            if (!matchesExpectedType) {
-                                this.logger.trace("{}: The variable '{}' does not match one of the expected type {}", operationName, entry.getKey(), expectedVariable.type());
-                            }
-                        }
-                    } else {
-                        this.logger.trace("{}: The variable '{}' was not expected", operationName, entry.getKey());
-                    }
-                });
+    private void validate(String operationName, List<Variable> expectedVariables, String variableName, Object value) {
+        var optionalExpectedVariable = expectedVariables.stream()
+                .filter(variable -> variable.name().equals(variableName))
+                .findFirst();
+        if (optionalExpectedVariable.isPresent()) {
+            var expectedVariable = optionalExpectedVariable.get();
+
+            if (expectedVariable.isMany() && value instanceof Collection<?> collection) {
+                var allMatch = collection.stream().allMatch(expectedVariable.type()::isInstance);
+                if (!allMatch) {
+                    this.logger.trace("{}: The variable '{}' does not match one of the expected type {}", operationName, variableName, expectedVariable.type());
+                }
+            } else if (!expectedVariable.type().isInstance(value)) {
+                this.logger.trace("{}: The variable '{}' does not match one of the expected type {}", operationName, variableName, expectedVariable.type());
+            }
+        } else {
+            this.logger.trace("{}: The variable '{}' is missing", operationName, variableName);
+        }
     }
 }

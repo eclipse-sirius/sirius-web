@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.collaborative.forms.variables;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.variables.IVariableProvider;
-import org.eclipse.sirius.components.core.api.variables.Variable;
+import org.eclipse.sirius.components.representations.Variable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class FormVariableProvider implements IVariableProvider {
 
-    public static final Variable SELECTION = new Variable("selection", Object.class, "The selection of the workbench");
+    public static final Variable SELECTION = new Variable("selection", Object.class, true, "The selection of the workbench");
 
     @Override
     public List<Variable> getVariables(String operation) {

@@ -16,6 +16,18 @@
 
 === Deprecation warning
 
+- [diagram] Finding the variables accessible for a given operation is a complex task today.
+The name of the various variables are scattered all accross the codebase without any consistency.
+To fix this issue, the various variables used will be consolidated in dedicated classes such as `CommonVariables` and `DiagramVariables`.
+These variables will be used along with the definition of various operations (i.e. `DiagramRenderingOperations` or `DiagramInteractionOperations`) to document and check the variable accessible for a given operation (see `DiagramVariableProvider`).
+It will be possible to validate the variables used for an operation using `IOperationValidator`.
+As a result, all the existing constants used to store variable names will be progressively deprecated since they cannot be found easily and lack some meaningful information like the type and documentation.
+Calls to constants like `VariableManager.SELF` or `IEditingContext.EDITING_CONTEXT` will be progressively replaced by using `CommonVariables`.
+Diagram specific constants like `Node.SELECTED_NODE` will be replaced by using `DiagramVariables`.
+Other representations will follow the same patterns.
+Those new APIs and constants are still subject to various changes but once the API will be stable, existing variables will be marked as deprecated.
+New variables will only be available thanks to the new API such as `DiagramVariables.SELECTED_NODES` or `DiagramVariables.SELECTED_EDGES` for group tools.
+The current constants and the new ones can be mixed without issues.
 
 
 === Breaking changes
