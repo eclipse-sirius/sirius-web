@@ -31,7 +31,7 @@ const useStyle = makeStyles()((theme: Theme) => ({
     justifyContent: 'flex-start',
     alignItems: 'center',
     gap: theme.spacing(0.5),
-    paddingLeft: theme.spacing(0.5),
+    padding: theme.spacing(0.5),
     overflowX: 'auto',
   },
 }));
