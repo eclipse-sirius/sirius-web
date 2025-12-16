@@ -55,6 +55,12 @@ On the frontend, the `ProjectTemplateCard` component has been removed; the `NewP
 - Remove the useless property `WorkbenchEntry#kind` from the GraphQL API and the DTO.
 The `WorkbenchEntry` object has also been transformed into a record
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] The interfaces `ISingleClickOnMultipleDiagramElementHandler` `ISingleClickOnOneDiagramElementHandler` `IPaletteToolsProvider` have been modified to take the `DiagramContext` instead of the `Diagram` as parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] The foreign keys `fk_project_semantic_data_project_id` and `fk_project_semantic_data_semantic_data_id` have been removed.
+They should not have existed at all since we should not have any foreign keys between bounded contexts.
+Their existence allowed us to clean some part of the database "for free" thanks to some "ON DELETE CASCADE" instructions.
+They have been replaced by proper transactional event listeners and new events such as `ProjectSemanticDataDeletedEvent` and `SemanticDataDeletedEvent`.
+Those events did not exist in the past and it was impossible for someone to listen for the removal of some `ProjectSemanticData` or some `SemanticData`.
+Downstream projects which made some hypothesis on the impact of the deletion of a project will now be able to remove those hypothesis and listen to regular events.
 
 
 === Dependency update
@@ -99,7 +105,7 @@ This preference is saved in the browser local storage.
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple elements are selected
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Add `IGroupPaletteToolsProvider` in order to provide extra tools to a group palette
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] Replace use of foreign keys in project semantic data with proper events
 
 === Improvements
 

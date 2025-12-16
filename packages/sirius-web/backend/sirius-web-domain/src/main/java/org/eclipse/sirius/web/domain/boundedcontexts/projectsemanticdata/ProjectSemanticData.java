@@ -16,6 +16,7 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -87,6 +88,10 @@ public class ProjectSemanticData extends AbstractValidatingAggregateRoot<Project
 
     public static ProjectSemanticData.Builder newProjectSemanticData() {
         return new ProjectSemanticData.Builder();
+    }
+
+    public void dispose(ICause cause) {
+        this.registerEvent(new ProjectSemanticDataDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
 
     /**
