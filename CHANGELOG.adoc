@@ -132,7 +132,7 @@ Downstream projects can provide their own `IFormCapabilitiesService` primary ser
 Downstream applications can now implement `IProxyRemovalServiceDelegate` to customize how proxies are removed.
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
 - https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] Provide a search history in omnibox command.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5966[#5966] [diagram] The UI of the palette has been tweaked to reduce the risk of misclicks on quick actions
 
 
 == 2025.12.0

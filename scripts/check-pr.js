@@ -45,15 +45,15 @@ for (const issue of closingIssuesReferences.nodes) {
   const hasAtLeastOnePackageLabel =
     labels.nodes.filter((label) => label.name.startsWith("package:")).length >=
     1;
-  const hasOneTypeLabel =
-    labels.nodes.filter((label) => label.name.startsWith("type:")).length === 1;
+  const hasAtLeastOneTypeLabel =
+    labels.nodes.filter((label) => label.name.startsWith("type:")).length >= 1;
   const hasOneDifficultyLabel =
     labels.nodes.filter((label) => label.name.startsWith("difficulty:"))
       .length === 1;
 
   if (
     !hasAtLeastOnePackageLabel ||
-    !hasOneTypeLabel ||
+    !hasAtLeastOneTypeLabel ||
     !hasOneDifficultyLabel
   ) {
     hasError = true;

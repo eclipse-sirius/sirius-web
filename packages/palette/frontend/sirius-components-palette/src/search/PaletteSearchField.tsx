@@ -65,7 +65,6 @@ export const PaletteSearchField = ({ onValueChanged }: PaletteSearchFieldProps) 
       ref={ref}
       slotProps={{
         input: {
-          disableUnderline: true,
           startAdornment: (
             <InputAdornment position="start">
               <SearchIcon fontSize="small" />
