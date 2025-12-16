@@ -39,9 +39,11 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreat
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
@@ -479,6 +481,8 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(this.semanticDataSearchService.findById(semanticData.getId())).isEmpty();
 
         assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(ProjectDeletedEvent.class::isInstance);
+        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(ProjectSemanticDataDeletedEvent.class::isInstance);
+        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(SemanticDataDeletedEvent.class::isInstance);
     }
 
     @Test

@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -166,6 +167,10 @@ public class SemanticData extends AbstractValidatingAggregateRoot<SemanticData> 
 
         this.lastModifiedOn = Instant.now();
         this.registerEvent(new SemanticDataUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this));
+    }
+
+    public void dispose(ICause cause) {
+        this.registerEvent(new SemanticDataDeletedEvent(UUID.randomUUID(), Instant.now(), cause, this));
     }
 
     public static Builder newSemanticData() {

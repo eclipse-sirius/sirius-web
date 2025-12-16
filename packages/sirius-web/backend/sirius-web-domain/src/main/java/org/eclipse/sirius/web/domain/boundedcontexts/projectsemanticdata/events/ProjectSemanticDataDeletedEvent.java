@@ -10,20 +10,24 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api;
+package org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events;
 
-import java.util.List;
+import java.time.Instant;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.services.IResult;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to delete semantic data.
+ * Event fired when the project semantic data are deleted.
  *
- * @author sbegaudeau
+ * @author ntinsalhi
  */
-public interface ISemanticDataDeletionService {
-    IResult<Void> deleteAllById(List<UUID> semanticDataIds);
-    IResult<Void> deleteSemanticData(ICause cause, UUID semanticData);
+public record ProjectSemanticDataDeletedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull ICause causedBy,
+        @NotNull ProjectSemanticData projectSemanticData) implements IProjectSemanticDataEvent {
 }

@@ -12,12 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 
-import java.time.Instant;
 import java.util.Objects;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletionRequestedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -29,10 +26,6 @@ import org.springframework.stereotype.Service;
 
 /**
  * Used to delete projects.
- *
- * @technical-debt This service needs to fire manually some event to give the opportunity to other services to be
- * synchronized with the deletion of a project. This is done thanks to a small hack relying on the application event
- * publisher that will need to be deleted in the future. Do not rely on this.
  *
  * @author sbegaudeau
  */
@@ -59,9 +52,6 @@ public class ProjectDeletionService implements IProjectDeletionService {
         if (optionalProject.isPresent()) {
             var project = optionalProject.get();
             project.dispose(cause);
-
-            this.applicationEventPublisher.publishEvent(new ProjectDeletionRequestedEvent(UUID.randomUUID(), Instant.now(), cause, project));
-
             this.projectRepository.delete(project);
             result = new Success<>(null);
         } else {

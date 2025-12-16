@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2025 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="01-drop-fks-project-semantic-data-add-unique-constraints" author="ntinsalhi">
+        <dropForeignKeyConstraint
+                baseTableName="project_semantic_data"
+                constraintName="fk_project_semantic_data_project_id"/>
+        <dropForeignKeyConstraint
+                baseTableName="project_semantic_data"
+                constraintName="fk_project_semantic_data_semantic_data_id"/>
+        <addUniqueConstraint tableName="project_semantic_data" columnNames="semantic_data_id" />
+        <addUniqueConstraint tableName="project_semantic_data" columnNames="project_id, name"/>
+    </changeSet>
+</databaseChangeLog>
