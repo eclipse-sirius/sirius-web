@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,12 @@ import org.eclipse.sirius.web.application.images.dto.RenameImageInput;
 import org.eclipse.sirius.web.application.images.dto.UploadImageInput;
 import org.eclipse.sirius.web.application.images.dto.UploadImageSuccessPayload;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.event.ProjectImageDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageSearchService;
+import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.DeleteImageMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectImagesQueryRunner;
@@ -86,9 +91,19 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @Autowired
     private IProjectImageSearchService projectImageSearchService;
 
+    @Autowired
+    private IProjectSearchService projectSearchService;
+
+    @Autowired
+    private IProjectDeletionService projectDeletionService;
+
+    @Autowired
+    private IDomainEventCollector domainEventCollector;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
+        this.domainEventCollector.clear();
     }
 
     @Test
@@ -235,5 +250,28 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
         var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given an image, when its project is deleted, then the image is deleted")
+    public void givenAnImageWhenItsProjectIsDeletedThenTheImageIsDeleted() {
+        var optionalProjectImage = this.projectImageSearchService.findById(TestIdentifiers.SYSML_IMAGE);
+        assertThat(optionalProjectImage).isPresent();
+
+        var optionalProject = this.projectSearchService.findById(optionalProjectImage.get().getProject().getId());
+        assertThat(optionalProject).isPresent();
+
+        this.projectDeletionService.deleteProject(null, optionalProject.get().getId());
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
+
+        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(ProjectDeletedEvent.class::isInstance);
+        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(ProjectImageDeletedEvent.class::isInstance);
+
+        optionalProjectImage = this.projectImageSearchService.findById(TestIdentifiers.SYSML_IMAGE);
+        assertThat(optionalProjectImage).isEmpty();
     }
 }

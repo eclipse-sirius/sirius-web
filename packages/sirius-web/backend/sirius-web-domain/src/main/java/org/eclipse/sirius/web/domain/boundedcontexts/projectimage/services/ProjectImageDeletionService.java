@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.ProjectImage;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.repositories.IProjectImageRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageDeletionService;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -57,5 +59,14 @@ public class ProjectImageDeletionService implements IProjectImageDeletionService
         }
 
         return result;
+    }
+
+    @Override
+    public IResult<Void> deleteAllProjectImages(ICause cause, String projectId) {
+        List<ProjectImage> allProjectImages = this.projectImageRepository.findAllByProjectId(projectId);
+        allProjectImages.forEach(projectImage -> projectImage.dispose(cause));
+        this.projectImageRepository.deleteAll(allProjectImages);
+
+        return new Success<>(null);
     }
 }
