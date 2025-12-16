@@ -10,35 +10,35 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.semanticdata.listeners;
+package org.eclipse.sirius.web.application.images.listeners;
 
 import java.util.Objects;
 
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataDeletedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataDeletionService;
+import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageDeletionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 /**
- * Service used to delete the semantic data of a project.
+ * Used to delete a project image.
  *
  * @author ntinsalhi
  */
 @Service
-public class SemanticDataCleaner {
+public class ProjectImageCleaner {
 
-    private final ISemanticDataDeletionService semanticDataDeletionService;
+    private final IProjectImageDeletionService projectImageDeletionService;
 
-    public SemanticDataCleaner(ISemanticDataDeletionService semanticDataDeletionService) {
-        this.semanticDataDeletionService = Objects.requireNonNull(semanticDataDeletionService);
+    public ProjectImageCleaner(IProjectImageDeletionService projectImageDeletionService) {
+        this.projectImageDeletionService = Objects.requireNonNull(projectImageDeletionService);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
-    public void onProjectSemanticDataDeletedEvent(ProjectSemanticDataDeletedEvent event) {
-        var semanticDataId = event.projectSemanticData().getSemanticData().getId();
-        this.semanticDataDeletionService.deleteSemanticData(event, semanticDataId);
+    public void onProjectDeletedEvent(ProjectDeletedEvent event) {
+        var projectId = event.project().getId();
+        this.projectImageDeletionService.deleteAllProjectImages(event, projectId);
     }
 }

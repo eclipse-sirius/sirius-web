@@ -110,6 +110,9 @@ Downstream projects relying on this should switch to a better initialization or 
 The optional editing context id argument has been removed since it can be computed from the variable manager.
 - https://github.com/eclipse-sirius/sirius-web/issues/4860[#4860] [core] The `workbenchViewContributionExtensionPoint` frontend extension point has slightly changed since the `side` attribute has been removed and it is now managed directly by the workbench configuration.
 - https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] `isLastNodeSelected` should be set when converting custom nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] Additional foreign keys set up between bounded contexts have been deleted.
+These should not have axisted in the first place and have now been replaced with transaction event listeners.
+As a consequence, additional domain events can now be fired while using Sirius Web giving downstream projects additional insights into the consequences of an action.
 
 
 === Dependency update
@@ -172,6 +175,7 @@ With this architecture, downstream projects can customize this behavior by provi
 With the workbench configuration, downstream projects can give the representation to open when the user open a project and in which side panel views will be available.
 In conjonction of the `workbenchViewContributionExtensionPoint` frontend extension point, downstream projects can add custom views with their workbench configuration.
 - https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] Highlight the last selected elements with custom resize handles, this can be useful when executing a layout group tool.
+- https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] Replace use of foreign keys between different bounded contexts with proper events
 
 
 === Improvements
