@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
+import { Edge, Node, NodeChange, NodeDimensionChange, NodePositionChange, useStoreApi } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
-import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
+import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getBorderNodeExtent } from '../layout/layoutBorderNodes';
 import { ListNodeData } from '../node/ListNode.types';
 import { UseResizeChangeValue } from './useResizeChange.types';
@@ -158,6 +158,41 @@ const applyMoveToBorderNodes = (resizedNode: Node<NodeData>, nodes: Node<NodeDat
   return newChanges;
 };
 
+const applyMoveToListChild = (
+  resizedNode: Node<NodeData>,
+  nodes: Node<NodeData>[],
+  _change: NodeDimensionChange,
+  zoom: number
+): NodeChange<Node<NodeData>>[] => {
+  if (isListData(resizedNode)) {
+    const insideLabel = resizedNode.data.insideLabel;
+    if (insideLabel && insideLabel.isHeader && insideLabel.headerPosition === 'TOP') {
+      const element = document.querySelector(`[data-id="${insideLabel.id}"]`);
+      if (element) {
+        const borderOffset = insideLabel.displayHeaderSeparator
+          ? getBorderWidth(resizedNode) * 2
+          : getBorderWidth(resizedNode);
+        const newLabelHeight = element.getBoundingClientRect().height / zoom + borderOffset + resizedNode.data.topGap;
+        return nodes
+          .filter((node) => node.parentId === resizedNode.id && !node.hidden)
+          .map((node, index, array) => {
+            const previousSibling = array[index - 1];
+            let newPositionY: number = newLabelHeight;
+            if (previousSibling) {
+              newPositionY = previousSibling.position.y + (previousSibling.height ?? 0);
+            }
+            return {
+              id: node.id,
+              type: 'position',
+              position: { x: node.position.x, y: newPositionY },
+            };
+          });
+      }
+    }
+  }
+  return [];
+};
+
 const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
   change.type === 'dimensions' && (change.resizing ?? false);
 const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
@@ -165,6 +200,8 @@ const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChang
 
 export const useResizeChange = (): UseResizeChangeValue => {
   const { getNodes } = useStore();
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const zoom = store.getState().transform[2];
 
   const transformResizeListNodeChanges = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
@@ -176,6 +213,7 @@ export const useResizeChange = (): UseResizeChangeValue => {
           if (resizedNode) {
             newResizeListContainChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
             newBorderNodeMoveChanges.push(...applyMoveToBorderNodes(resizedNode, getNodes(), change));
+            newResizeListContainChanges.push(...applyMoveToListChild(resizedNode, getNodes(), change, zoom));
           }
         }
         if (isMove(change)) {
