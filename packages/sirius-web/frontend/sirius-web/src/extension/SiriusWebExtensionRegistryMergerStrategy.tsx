@@ -15,6 +15,7 @@ import {
   ComponentExtension,
   DataExtension,
   ExtensionRegistryMergeStrategy,
+  workbenchViewContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-core';
 import { diagramNodeActionOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
@@ -41,6 +42,11 @@ export class SiriusWebExtensionRegistryMergeStrategy implements ExtensionRegistr
     } else if (identifier === diagramNodeActionOverrideContributionExtensionPoint.identifier) {
       return {
         identifier: `siriusweb_${diagramNodeActionOverrideContributionExtensionPoint.identifier}`,
+        data: [...existingValue.data, ...newValue.data],
+      };
+    } else if (identifier === workbenchViewContributionExtensionPoint.identifier) {
+      return {
+        identifier: `siriusweb_${workbenchViewContributionExtensionPoint.identifier}`,
         data: [...existingValue.data, ...newValue.data],
       };
     }

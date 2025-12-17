@@ -18,7 +18,6 @@ import {
   SelectionContextProvider,
   SelectionEntry,
   Workbench,
-  WorkbenchConfiguration,
   WorkbenchHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import { ImpactAnalysisDialogContextProvider } from '@eclipse-sirius/sirius-components-impactanalysis';
@@ -37,6 +36,7 @@ import { SelectionSynchronizer } from './SelectionSynchronizer';
 import { NewDocumentModalContribution } from './TreeToolBarContributions/NewDocumentModalContribution';
 import { UploadDocumentModalContribution } from './TreeToolBarContributions/UploadDocumentModalContribution';
 import { UndoRedo } from './UndoRedo';
+import { useInitialWorkbenchConfiguration } from './useInitialWorkbenchConfiguration';
 import { useProjectAndRepresentationMetadata } from './useProjectAndRepresentationMetadata';
 import { useSynchronizeSelectionAndURL } from './useSynchronizeSelectionAndURL';
 import { WorkbenchOmnibox } from './WorkbenchOmnibox';
@@ -56,30 +56,27 @@ const useEditProjectViewStyles = makeStyles()((_) => ({
 export const EditProjectView = () => {
   const { projectId: rawProjectId, representationId } = useParams<EditProjectViewParams>();
   const { classes } = useEditProjectViewStyles();
-  const [urlSearchParams, setSearchParams] = useSearchParams();
+  const [urlSearchParams] = useSearchParams();
 
   const separatorIndex = rawProjectId.indexOf(PROJECT_ID_SEPARATOR);
   const projectId: string = separatorIndex !== -1 ? rawProjectId.substring(0, separatorIndex) : rawProjectId;
   const name: string | null =
     separatorIndex !== -1 ? rawProjectId.substring(separatorIndex + 1, rawProjectId.length) : null;
-  const workbenchConfiguration: WorkbenchConfiguration | null = urlSearchParams.has('workbenchConfiguration')
-    ? JSON.parse(urlSearchParams.get('workbenchConfiguration'))
-    : null;
 
   const [state, setState] = useState<EditProjectViewState>({
     project: null,
     representation: null,
-    workbenchConfiguration,
   });
 
-  useEffect(() => {
-    if (urlSearchParams.has('workbenchConfiguration')) {
-      urlSearchParams.delete('workbenchConfiguration');
-      setSearchParams(urlSearchParams);
-    }
-  }, [urlSearchParams]);
+  const { workbenchConfiguration } = useInitialWorkbenchConfiguration(
+    state.project ? state.project.currentEditingContext.id : null
+  );
 
-  const { data, loading } = useProjectAndRepresentationMetadata(projectId, name, representationId);
+  const { data, loading: projectAndRepresentationLoading } = useProjectAndRepresentationMetadata(
+    projectId,
+    name,
+    representationId
+  );
   useEffect(() => {
     if (data) {
       const { project } = data.viewer;
@@ -125,18 +122,18 @@ export const EditProjectView = () => {
     return `/projects/${rawProjectId}/edit/${representationId}`;
   };
 
-  const isMissing = !loading && (!data || !data.viewer.project || !data.viewer.project.currentEditingContext);
+  const isMissing =
+    !projectAndRepresentationLoading && (!data || !data.viewer.project || !data.viewer.project.currentEditingContext);
   if (isMissing) {
     return <Navigate to="/errors/404" replace />;
   }
 
   let content: React.ReactNode = null;
-  if (state.project && state.project.currentEditingContext) {
+  if (!!workbenchConfiguration && state.project && state.project.currentEditingContext) {
     const urlSelectionValue: string = urlSearchParams.get('selection') ?? '';
     const entries: SelectionEntry[] =
       urlSelectionValue.trim().length > 0 ? urlSelectionValue.split(',').map((id) => ({ id })) : [];
     const initialSelection: Selection = { entries };
-
     content = (
       <ProjectContext.Provider value={{ project: state.project, name }}>
         <SelectionContextProvider initialSelection={initialSelection}>
@@ -154,7 +151,7 @@ export const EditProjectView = () => {
                         initialRepresentationSelected={state.representation}
                         onRepresentationSelected={onRepresentationSelected}
                         readOnly={!state.project.capabilities.canEdit}
-                        initialWorkbenchConfiguration={state.workbenchConfiguration}
+                        initialWorkbenchConfiguration={workbenchConfiguration}
                         ref={refWorkbenchHandle}
                       />
                     </ImpactAnalysisDialogContextProvider>

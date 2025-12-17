@@ -14,7 +14,7 @@ import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
 import { Workbench } from '../Workbench';
-import { RepresentationMetadata } from '../Workbench.types';
+import { RepresentationMetadata, WorkbenchConfiguration } from '../Workbench.types';
 import { WorkbenchTestEnvironment } from './WorkbenchTestEnvironment';
 
 afterEach(() => {
@@ -22,13 +22,38 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
+const defaultWorkbenchConfiguration: WorkbenchConfiguration = {
+  mainPanel: null,
+  workbenchPanels: [
+    {
+      id: 'left',
+      isOpen: true,
+      views: [
+        { id: 'explorer-view', isActive: true },
+        { id: 'validation-view', isActive: false },
+        { id: 'search-view', isActive: false },
+      ],
+    },
+    {
+      id: 'right',
+      isOpen: true,
+      views: [
+        { id: 'details-view', isActive: true },
+        { id: 'query-view', isActive: false },
+        { id: 'representations-view', isActive: false },
+        { id: 'related-elements-view', isActive: false },
+      ],
+    },
+  ],
+};
+
 test('given a workbench, when no representation is opened, then the main area should be rendered', () => {
   render(
     <WorkbenchTestEnvironment initialSelection={null}>
       <Workbench
         editingContextId="editing-context-id"
         initialRepresentationSelected={null}
-        initialWorkbenchConfiguration={null}
+        initialWorkbenchConfiguration={defaultWorkbenchConfiguration}
         onRepresentationSelected={() => {}}
         readOnly={false}
       />
@@ -44,7 +69,7 @@ test('given a workbench, when views are provided, then they should be rendered',
       <Workbench
         editingContextId="editing-context-id"
         initialRepresentationSelected={null}
-        initialWorkbenchConfiguration={null}
+        initialWorkbenchConfiguration={defaultWorkbenchConfiguration}
         onRepresentationSelected={() => {}}
         readOnly={false}
       />
@@ -71,7 +96,7 @@ test('given a workbench, when a representation is opened initially, then it shou
       <Workbench
         editingContextId="editing-context-id"
         initialRepresentationSelected={representationMetadata}
-        initialWorkbenchConfiguration={null}
+        initialWorkbenchConfiguration={defaultWorkbenchConfiguration}
         onRepresentationSelected={() => {}}
         readOnly={false}
       />
@@ -88,7 +113,7 @@ test('given a workbench, when we open a representation, then it should be render
       <Workbench
         editingContextId="editing-context-id"
         initialRepresentationSelected={null}
-        initialWorkbenchConfiguration={null}
+        initialWorkbenchConfiguration={defaultWorkbenchConfiguration}
         onRepresentationSelected={() => {}}
         readOnly={false}
       />
@@ -103,13 +128,13 @@ test('given a workbench, when we open a representation, then it should be render
   expect(screen.queryByTestId('main-area')).toBeNull();
 });
 
-test('given a workbench, when ask for data accross workbench views, then we can retrieve it', async () => {
+test('given a workbench, when ask for data across workbench views, then we can retrieve it', async () => {
   render(
     <WorkbenchTestEnvironment initialSelection={null}>
       <Workbench
         editingContextId="editing-context-id"
         initialRepresentationSelected={null}
-        initialWorkbenchConfiguration={null}
+        initialWorkbenchConfiguration={defaultWorkbenchConfiguration}
         onRepresentationSelected={() => {}}
         readOnly={false}
       />

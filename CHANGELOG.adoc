@@ -55,6 +55,7 @@ On the frontend, the `ProjectTemplateCard` component has been removed; the `NewP
 - Remove the useless property `WorkbenchEntry#kind` from the GraphQL API and the DTO.
 The `WorkbenchEntry` object has also been transformed into a record
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] The interfaces `ISingleClickOnMultipleDiagramElementHandler` `ISingleClickOnOneDiagramElementHandler` `IPaletteToolsProvider` have been modified to take the `DiagramContext` instead of the `Diagram` as parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/4860[#4860] [core] The `workbenchViewContributionExtensionPoint` frontend extension point has slightly changed since the `side` attribute is now managed directly by the workbench configuration returned by the backend.
 
 
 === Dependency update
@@ -99,6 +100,12 @@ This preference is saved in the browser local storage.
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
 https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple elements are selected
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Add `IGroupPaletteToolsProvider` in order to provide extra tools to a group palette
+- https://github.com/eclipse-sirius/sirius-web/issues/4860[#4860] [core] The workbench is now configured by the backend.
+The default implementation of `IWorkbenchConfigurationService` delegates to any implementation of `IWorkbenchConfigurationServiceDelegate`.
+If none of the provided implementation of `IWorkbenchConfigurationServiceDelegate` is able to handle the `editingContextId`, then returns the default workbench configuration provided by the implementation of `IDefaultWorkbenchConfigurationService`.
+With this architecture, downstream projects can replace the whole behavior by providing their own implementation of `IWorkbenchConfigurationService`, or provide an implementation of `IWorkbenchConfigurationServiceDelegate` to provide new workbench configuration for their needs, or replace the default implementation of `IDefaultWorkbenchConfigurationService` to change the default workbench configuration.
+With the workbench configuration, downstream projects can gives the representation to open when the user open a project and in which side panel views will be available.
+In conjonction of the `workbenchViewContributionExtensionPoint` frontend extension point, downstream project can add custom views with their workbench configuration.
 
 
 === Improvements
