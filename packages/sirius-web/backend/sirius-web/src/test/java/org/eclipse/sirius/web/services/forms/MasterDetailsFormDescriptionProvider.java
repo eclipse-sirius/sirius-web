@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,7 +66,7 @@ public class MasterDetailsFormDescriptionProvider implements IEditingContextRepr
                 .optionLabelProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, String.class).orElse(""))
                 .newValueHandler((variableManager, newValue) -> {
                     var currentVariableManager = variableManager;
-                    while (!currentVariableManager.hasVariable(CUSTOM_VARIABLE)) {
+                    while (!currentVariableManager.hasLocalVariable(CUSTOM_VARIABLE)) {
                         currentVariableManager = currentVariableManager.getParent();
                     }
 

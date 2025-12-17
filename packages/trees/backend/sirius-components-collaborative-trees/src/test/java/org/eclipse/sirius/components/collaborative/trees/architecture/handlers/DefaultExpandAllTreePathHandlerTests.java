@@ -121,7 +121,7 @@ public class DefaultExpandAllTreePathHandlerTests {
                         .elementsProvider(variableManager -> List.of())
                         .hasChildrenProvider(variableManager -> {
                             // Keep the test simple by checking the variable in hasChildren instead of getChildren, so we don't have to mock children.
-                            hasActiveFilterIds.set(variableManager.hasVariable(TreeRenderer.ACTIVE_FILTER_IDS));
+                            hasActiveFilterIds.set(variableManager.hasLocalVariable(TreeRenderer.ACTIVE_FILTER_IDS));
                             return false;
                         })
                         .treeItemIconURLsProvider(variableManager -> List.of())

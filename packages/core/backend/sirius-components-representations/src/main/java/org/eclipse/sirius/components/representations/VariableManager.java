@@ -108,7 +108,15 @@ public class VariableManager {
         return this.parent;
     }
 
-    public boolean hasVariable(String name) {
+    /**
+     * Checks whether this specific VariableManager has a definition for a variable with the given name.
+     * This does <em>not</em> consider parent variable managers.
+     *
+     * @param name
+     *            the variable name to check.
+     * @return true if there is a local definition for a variable with the given name.
+     */
+    public boolean hasLocalVariable(String name) {
         return this.variables.containsKey(name);
     }
 
