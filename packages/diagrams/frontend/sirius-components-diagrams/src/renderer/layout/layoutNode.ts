@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import {
   isNorthBorderNode,
   isSouthBorderNode,
   isWestBorderNode,
+  getNewlyAddedBorderNodePosition,
 } from './layoutBorderNodes';
 import {
   borderNodeOffset,
@@ -29,7 +30,11 @@ import {
   defaultWidth,
   gap,
   rectangularNodePadding,
+  maxOverflowIteration,
 } from './layoutParams';
+import { DiagramNodeType } from '../node/NodeTypes.types';
+import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
+import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
 
 /**
  * It requires that nodes are already positioned
@@ -571,7 +576,7 @@ export const getPositionAbsoluteFromNodeChange = (
   return undefined;
 };
 
-export const getNodeBorderNodeFootprint = (node: Node<NodeData>, allVisibleNodes: Node<NodeData>[]) => {
+const getNodeBorderNodeFootprint = (node: Node<NodeData>, allVisibleNodes: Node<NodeData>[]) => {
   const children = getChildren(node, allVisibleNodes);
   const maxBorderNodeWidthWest = children
     .filter(isWestBorderNode)
@@ -595,4 +600,145 @@ export const getNodeBorderNodeFootprint = (node: Node<NodeData>, allVisibleNodes
     eastFootprint: maxBorderNodeWidthEast,
     westFootprint: maxBorderNodeWidthWest,
   };
+};
+
+const getOffsetFromPreviousNewSibling = (
+  node: Node<NodeData, DiagramNodeType>,
+  nodeIndex: number,
+  nodes: Node<NodeData, DiagramNodeType>[],
+  newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
+  layoutDirection: GQLArrangeLayoutDirection
+): { xOffset: number; yOffset: number } => {
+  const nodeBorderNodeFootprint = getNodeBorderNodeFootprint(node, nodes);
+  const previousSiblingNewNodes = newlyAddedNodes.filter(
+    (n, nIndex) => nIndex < nodeIndex && n.parentId === node.parentId
+  );
+  let xOffset = 0;
+  let yOffset = 0;
+  previousSiblingNewNodes.forEach((previousSiblingNewNode) => {
+    const previousNodeBorderNodeFootprint = getNodeBorderNodeFootprint(previousSiblingNewNode, nodes);
+    switch (layoutDirection) {
+      case 'DOWN':
+        yOffset +=
+          (previousSiblingNewNode.height ?? 0) +
+          gap +
+          previousNodeBorderNodeFootprint.southFootprint +
+          nodeBorderNodeFootprint.northFootprint;
+        break;
+      case 'UP':
+        yOffset +=
+          -(previousSiblingNewNode.height ?? 0) -
+          gap -
+          previousNodeBorderNodeFootprint.northFootprint -
+          nodeBorderNodeFootprint.southFootprint;
+        break;
+      case 'LEFT':
+        xOffset +=
+          -(previousSiblingNewNode.width ?? 0) -
+          gap -
+          previousNodeBorderNodeFootprint.westFootprint -
+          nodeBorderNodeFootprint.eastFootprint;
+        break;
+      case 'UNDEFINED':
+      case 'RIGHT':
+        xOffset +=
+          (previousSiblingNewNode.width ?? 0) +
+          gap +
+          previousNodeBorderNodeFootprint.eastFootprint +
+          nodeBorderNodeFootprint.westFootprint;
+        break;
+    }
+  });
+  return { xOffset, yOffset };
+};
+
+const getPositionFromReferencedNode = (
+  node: Node<NodeData, DiagramNodeType>,
+  referencedNode: Node<NodeData, DiagramNodeType>,
+  layoutDirection: GQLArrangeLayoutDirection
+) => {
+  let newPosition: XYPosition;
+  switch (layoutDirection) {
+    case 'DOWN':
+      newPosition = {
+        x: referencedNode.position.x,
+        y: referencedNode.position.y + (referencedNode.height ?? 0) + gap,
+      };
+      break;
+    case 'UP':
+      newPosition = {
+        x: referencedNode.position.x,
+        y: referencedNode.position.y - (node.height ?? 0) - gap,
+      };
+      break;
+    case 'LEFT':
+      newPosition = {
+        x: referencedNode.position.x - (node.width ?? 0) - gap,
+        y: referencedNode.position.y,
+      };
+      break;
+    case 'UNDEFINED':
+    case 'RIGHT':
+      newPosition = {
+        x: referencedNode.position.x + (referencedNode.width ?? 0) + gap,
+        y: referencedNode.position.y,
+      };
+      break;
+  }
+  return newPosition;
+};
+
+export const computeNewlyNodePosition = (
+  nodes: Node<NodeData, DiagramNodeType>[],
+  previousNodes: Node<NodeData, DiagramNodeType>[],
+  referencePosition: GQLReferencePosition | null,
+  layoutDirection: GQLArrangeLayoutDirection
+): Node<NodeData, DiagramNodeType>[] => {
+  let newlyAddedNodes: Node<NodeData, DiagramNodeType>[] = [];
+  if (referencePosition) {
+    newlyAddedNodes = nodes
+      .filter((node) => !previousNodes.map((n) => n.id).find((n) => n === node.id))
+      .filter((node) => {
+        const referencedNode = nodes.find((n) => n.id === referencePosition?.parentId);
+        return (
+          (!referencedNode && !node.parentId) ||
+          referencedNode?.parentId === node.parentId ||
+          referencedNode?.id === node.parentId
+        );
+      })
+      .map((node, index, array) => {
+        const { xOffset, yOffset } = getOffsetFromPreviousNewSibling(node, index, nodes, array, layoutDirection);
+        let newPosition: XYPosition = { ...referencePosition.position };
+        if (
+          (!node.parentId || referencePosition.parentId !== node.parentId) &&
+          referencePosition.parentId &&
+          referencePosition.parentId !== ''
+        ) {
+          let referencedNode = nodes.find((n) => n.id === referencePosition?.parentId);
+          if (referencedNode) {
+            for (let iter = 0; iter <= maxOverflowIteration; iter++) {
+              newPosition = getPositionFromReferencedNode(node, referencedNode, layoutDirection);
+              const samePositionSibling = nodes.find(
+                (n) => n.parentId === node.parentId && n.position.x === newPosition.x && n.position.y === newPosition.y
+              );
+              if (!samePositionSibling) {
+                break;
+              }
+              referencedNode = samePositionSibling;
+            }
+          }
+        }
+        if (node.data.isBorderNode) {
+          getNewlyAddedBorderNodePosition(
+            node,
+            nodes.find((node) => node.id === node?.parentId),
+            referencePosition
+          );
+        }
+        newPosition.x += xOffset;
+        newPosition.y += yOffset;
+        return { ...node, position: newPosition };
+      });
+  }
+  return newlyAddedNodes;
 };
