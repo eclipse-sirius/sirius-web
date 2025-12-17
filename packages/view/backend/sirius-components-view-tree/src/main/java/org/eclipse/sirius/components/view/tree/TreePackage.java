@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -115,7 +115,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TREE_DESCRIPTION__KIND_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
+    int TREE_DESCRIPTION__KIND_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT;
 
     /**
      * The feature id for the '<em><b>Tree Item Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -240,7 +240,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TREE_DESCRIPTION_OPERATION_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_OPERATION_COUNT + 0;
+    int TREE_DESCRIPTION_OPERATION_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_OPERATION_COUNT;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.tree.impl.TreeItemLabelDescriptionImpl
@@ -343,7 +343,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__PREDICATE_EXPRESSION = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+    int IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__PREDICATE_EXPRESSION = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT;
 
     /**
      * The feature id for the '<em><b>Children</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -370,7 +370,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
+    int IF_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT;
 
     /**
      * The meta object id for the
@@ -389,7 +389,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__ITERATOR = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION__ITERATOR = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT;
 
     /**
      * The feature id for the '<em><b>Iterable Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -425,7 +425,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
+    int FOR_TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT;
 
     /**
      * The meta object id for the
@@ -445,7 +445,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT + 0;
+    int TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_FEATURE_COUNT;
 
     /**
      * The feature id for the '<em><b>Style</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -471,7 +471,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION_OPERATION_COUNT = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT + 0;
+    int TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION_OPERATION_COUNT = TREE_ITEM_LABEL_ELEMENT_DESCRIPTION_OPERATION_COUNT;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.tree.impl.TreeItemContextMenuEntryImpl
@@ -501,13 +501,22 @@ public interface TreePackage extends EPackage {
     int TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = 1;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = 2;
+
+    /**
      * The number of structural features of the '<em>Item Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = 2;
+    int TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Item Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
@@ -547,13 +556,22 @@ public interface TreePackage extends EPackage {
     int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS;
+
+    /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 0;
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT;
 
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
@@ -598,7 +616,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT + 0;
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.tree.impl.FetchTreeItemContextMenuEntryImpl
@@ -628,12 +646,21 @@ public interface TreePackage extends EPackage {
     int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS;
+
+    /**
      * The feature id for the '<em><b>Url Exression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__URL_EXRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 0;
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__URL_EXRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT;
 
     /**
      * The feature id for the '<em><b>Kind</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -677,7 +704,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT + 0;
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT;
 
     /**
      * The meta object id for the
@@ -708,12 +735,21 @@ public interface TreePackage extends EPackage {
     int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS;
+
+    /**
      * The feature id for the '<em><b>Contribution Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 0;
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT;
 
     /**
      * The feature id for the '<em><b>With Impact Analysis</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -740,7 +776,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT + 0;
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_OPERATION_COUNT;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind
@@ -1131,6 +1167,18 @@ public interface TreePackage extends EPackage {
      * @generated
      */
     EAttribute getTreeItemContextMenuEntry_PreconditionExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getKeyBindings <em>Key Bindings</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Key Bindings</em>'.
+     * @see org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getKeyBindings()
+     * @see #getTreeItemContextMenuEntry()
+     * @generated
+     */
+    EReference getTreeItemContextMenuEntry_KeyBindings();
 
     /**
      * Returns the meta object for class
@@ -1592,6 +1640,14 @@ public interface TreePackage extends EPackage {
          * @generated
          */
         EAttribute TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = eINSTANCE.getTreeItemContextMenuEntry_PreconditionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Key Bindings</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = eINSTANCE.getTreeItemContextMenuEntry_KeyBindings();
 
         /**
          * The meta object literal for the

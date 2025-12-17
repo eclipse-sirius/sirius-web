@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
@@ -29,6 +29,12 @@ const getAllContextMenuEntriesQuery = gql`
           description {
             ... on TreeDescription {
               contextMenu(treeItemId: $treeItemId) {
+                keyBindings {
+                  isCtrl
+                  isMeta
+                  isAlt
+                  key
+                }
                 ... on SingleClickTreeItemContextMenuEntry {
                   __typename
                   id
@@ -51,21 +57,11 @@ const getAllContextMenuEntriesQuery = gql`
   }
 `;
 
-export const useContextMenuEntries = (
-  editingContextId: string,
-  treeId: string,
-  treeItemId: string
-): UseContextMenuEntriesValue => {
-  const { loading, data, error } = useQuery<GQLGetAllContextMenuEntriesData, GQLGetAllContextMenuEntriesVariables>(
-    getAllContextMenuEntriesQuery,
-    {
-      variables: {
-        editingContextId,
-        representationId: treeId,
-        treeItemId,
-      },
-    }
-  );
+export const useContextMenuEntries = (): UseContextMenuEntriesValue => {
+  const [getContextMenuEntries, { loading, data, error }] = useLazyQuery<
+    GQLGetAllContextMenuEntriesData,
+    GQLGetAllContextMenuEntriesVariables
+  >(getAllContextMenuEntriesQuery);
 
   const { addErrorMessage } = useMultiToast();
 
@@ -80,6 +76,7 @@ export const useContextMenuEntries = (
     data?.viewer.editingContext.representation?.description.contextMenu || [];
 
   return {
+    getContextMenuEntries,
     contextMenuEntries,
     loading,
   };
