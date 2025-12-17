@@ -134,6 +134,9 @@
     "manageVisibility": "Manage visibility",
     "close": "Close"
   },
+  "manageVisibilityModalMenuCheckBox": {
+      "all": "All"
+  },
   "labelAppearancePart": {
     "hide": "Hide",
     "fontSize": "Font Size",

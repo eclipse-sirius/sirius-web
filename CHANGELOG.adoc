@@ -193,6 +193,7 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/5939[#5939] [diagram] When moving a node on a diagram, we now _highlight_ compatible drop targets/locations instead of fading all the incompatible ones
 - https://github.com/eclipse-sirius/sirius-web/issues/5884[#5884] [diagram] Facilitate the moving of a border node even when an edge is selected
 - https://github.com/eclipse-sirius/sirius-web/issues/5989[#5989] [sirius-web] Add button to access explorer filter bar feature
+- https://github.com/eclipse-sirius/sirius-web/issues/5991[#5991] [diagram] Improve the UI of the Manage Visibility modal
 
 
 
