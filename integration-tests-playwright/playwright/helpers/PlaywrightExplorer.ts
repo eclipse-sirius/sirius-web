@@ -85,4 +85,9 @@ export class PlaywrightExplorer {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
     await this.page.getByTestId(`push-selection-to-${selectionTargetLabel}`).click();
   }
+
+  async openExplorer(explorerDescriptionLabel: string) {
+    await this.page.getByTestId('tree-descriptions-menu-icon').click();
+    await this.page.getByRole('menuitem').filter({ hasText: explorerDescriptionLabel }).click();
+  }
 }

@@ -11,7 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { LazyQueryExecFunction } from '@apollo/client';
+
 export interface UseContextMenuEntriesValue {
+  getContextMenuEntries: LazyQueryExecFunction<GQLGetAllContextMenuEntriesData, GQLGetAllContextMenuEntriesVariables>;
   contextMenuEntries: GQLTreeItemContextMenuEntry[];
   loading: boolean;
 }
@@ -48,4 +51,12 @@ export interface GQLTreeItemContextMenuEntry {
   label: string;
   iconURL: string[];
   withImpactAnalysis: boolean;
+  keyBindings: GQLKeyBinding[];
+}
+
+export interface GQLKeyBinding {
+  isCtrl: boolean;
+  isMeta: boolean;
+  isAlt: boolean;
+  key: string;
 }

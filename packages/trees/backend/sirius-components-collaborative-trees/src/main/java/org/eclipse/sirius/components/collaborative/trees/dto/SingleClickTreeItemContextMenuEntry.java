@@ -14,10 +14,12 @@ package org.eclipse.sirius.components.collaborative.trees.dto;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
+
 /**
  * Used to represent a single click entry inside a context menu of a tree item.
  *
  * @author Jerome Gout
  */
-public record SingleClickTreeItemContextMenuEntry(String id, String label, List<String> iconURL, boolean withImpactAnalysis) implements ITreeItemContextMenuEntry { }
+public record SingleClickTreeItemContextMenuEntry(String id, String label, List<String> iconURL, boolean withImpactAnalysis, List<KeyBinding> keyBindings) implements ITreeItemContextMenuEntry { }
 

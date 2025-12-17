@@ -53,3 +53,31 @@ test.describe('diagram - key bindings', () => {
     await expect(page.getByTestId('IconLabel - newBoolean')).toBeAttached();
   });
 });
+
+test.describe('explorer - key bindings', () => {
+  let projectId;
+  let playwrightExplorer;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('Studio', 'blank-studio-template');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit/`);
+
+    playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('studioKeyBindings.xml');
+  });
+
+  test('When clicking on a tree item and entering a valid key binding, then the corresponding entry is executed', async ({
+    page,
+  }) => {
+    // Reload the page to display the explorer selection button (which is only present if a domain model is in the editing context)
+    page.reload();
+    await playwrightExplorer.openExplorer('Domain explorer by DSL');
+    await playwrightExplorer.expand('studioKeyBindings.xml');
+    await playwrightExplorer.expand('domain');
+    await playwrightExplorer.select('[Entity] Entity1 {}');
+    const entity1Item = await playwrightExplorer.getTreeItemLabel('[Entity] Entity1 {}');
+    entity1Item.press('ControlOrMeta+a');
+    await expect(page.getByTestId('impact-analysis-dialog')).toBeAttached();
+  });
+});

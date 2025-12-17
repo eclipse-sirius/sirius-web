@@ -61,6 +61,18 @@ public class SingleClickTreeItemContextMenuEntryBuilder {
         return this;
     }
     /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public SingleClickTreeItemContextMenuEntryBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getSingleClickTreeItemContextMenuEntry().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for Body.
      *
      * @generated

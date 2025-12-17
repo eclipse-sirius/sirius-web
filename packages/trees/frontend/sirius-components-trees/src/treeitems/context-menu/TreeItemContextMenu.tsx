@@ -24,6 +24,7 @@ import { DeleteMenuItem } from './DeleteMenuItem';
 import { RenameMenuItem } from './RenameMenuItem';
 
 import MenuItem from '@mui/material/MenuItem';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { TreeItemContextMenuProps } from './TreeItemContextMenu.types';
 import { TreeItemContextMenuComponentProps } from './TreeItemContextMenuEntry.types';
@@ -64,7 +65,18 @@ export const TreeItemContextMenu = ({
 
   const { selectionTargets } = useSelectionTargets();
 
-  const { loading, contextMenuEntries } = useContextMenuEntries(editingContextId, treeId, item.id);
+  const { getContextMenuEntries, loading, contextMenuEntries } = useContextMenuEntries();
+
+  useEffect(() => {
+    getContextMenuEntries({
+      variables: {
+        editingContextId,
+        representationId: treeId,
+        treeItemId: item.id,
+      },
+    });
+  }, []);
+
   if (loading) {
     return null;
   }

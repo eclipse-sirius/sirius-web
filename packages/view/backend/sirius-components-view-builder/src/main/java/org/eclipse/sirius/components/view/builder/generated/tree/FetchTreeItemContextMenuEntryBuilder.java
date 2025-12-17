@@ -61,6 +61,18 @@ public class FetchTreeItemContextMenuEntryBuilder {
         return this;
     }
     /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public FetchTreeItemContextMenuEntryBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getFetchTreeItemContextMenuEntry().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for UrlExression.
      *
      * @generated

@@ -61,6 +61,18 @@ public class CustomTreeItemContextMenuEntryBuilder {
         return this;
     }
     /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public CustomTreeItemContextMenuEntryBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getCustomTreeItemContextMenuEntry().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for ContributionId.
      *
      * @generated
