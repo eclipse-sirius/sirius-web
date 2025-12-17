@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
+import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 
 test.describe('diagram - node creation', () => {
   let projectId;
@@ -23,8 +24,8 @@ test.describe('diagram - node creation', () => {
 
     await page.goto(`/projects/${projectId}/edit`);
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.uploadDocument('diagramNodeCreation.xml');
-    await playwrightExplorer.expand('diagramNodeCreation.xml');
+    await playwrightExplorer.uploadDocument('diagramNodeCreationEmpty.xml');
+    await playwrightExplorer.expand('diagramNodeCreationEmpty.xml');
     await playwrightExplorer.createRepresentation('Root', 'diagramNodeCreation - node creation', 'diagram');
   });
 
@@ -80,5 +81,63 @@ test.describe('diagram - node creation', () => {
     expect(reactFlowXYPositionEntity4Second.x).toBe(
       reactFlowXYPositionEntity4First.x + reactFlowSizeEntity4First.width + nodeGap
     );
+  });
+});
+
+test.describe('diagram - node creation', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await page.addInitScript(() => {
+      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
+      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
+    });
+    const project = await new PlaywrightProject(request).createProject('diagram-nodeCreation', 'blank-project');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramNodeCreationWithEntity1.xml');
+    await playwrightExplorer.expand('diagramNodeCreationWithEntity1.xml');
+    await playwrightExplorer.createRepresentation('Root', 'diagramNodeCreation - node creation', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when trigger a sibling creation tool multi times, then all the new nodes are properly placed', async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const entity1Node = new PlaywrightNode(page, 'Entity1');
+    const reactFlowXYPositionEntity1 = await entity1Node.getReactFlowXYPosition();
+    await entity1Node.openPalette();
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('tool-creationNode').click();
+
+    const nodeWidth = 150;
+    const nodeGap = 25;
+
+    const firstCreatedNode = new PlaywrightNode(page, 'New node created');
+    const reactFlowXYPositionFirstCreatedNode = await firstCreatedNode.getReactFlowXYPosition('New node created');
+
+    expect(reactFlowXYPositionFirstCreatedNode.y).toBe(reactFlowXYPositionEntity1.y);
+    expect(reactFlowXYPositionFirstCreatedNode.x).toBe(reactFlowXYPositionEntity1.x + nodeWidth + nodeGap);
+
+    await page.keyboard.press('Escape'); // remove selection
+    await firstCreatedNode.click();
+
+    const playwrightDetails = new PlaywrightDetails(page);
+    await playwrightDetails.setText('Name', 'first');
+
+    await entity1Node.openPalette();
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('tool-creationNode').first().click();
+
+    const secondCreatedNode = new PlaywrightNode(page, 'New node created');
+    const reactFlowXYPositionSecondCreatedNode = await secondCreatedNode.getReactFlowXYPosition('New node created');
+
+    expect(reactFlowXYPositionSecondCreatedNode.y).toBe(reactFlowXYPositionEntity1.y);
+    expect(reactFlowXYPositionSecondCreatedNode.x).toBe(reactFlowXYPositionFirstCreatedNode.x + nodeWidth + nodeGap);
   });
 });

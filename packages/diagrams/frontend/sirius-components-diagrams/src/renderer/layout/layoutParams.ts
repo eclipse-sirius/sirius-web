@@ -31,3 +31,4 @@ export const horizontalLayoutAngleMin = 300;
 export const horizontalLayoutAngleMax = 60;
 export const edgeBendPointOffset = 25;
 export const borderNodeGap = 10;
+export const maxOverflowIteration = 10;
