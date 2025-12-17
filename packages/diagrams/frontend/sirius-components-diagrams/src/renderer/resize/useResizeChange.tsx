@@ -10,7 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Node, NodeChange, NodeDimensionChange, NodePositionChange } from '@xyflow/react';
+import {
+  Node,
+  NodeChange,
+  NodeDimensionChange,
+  NodePositionChange,
+  ReactFlowState,
+  useStore as useReactFlowStore,
+} from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
@@ -19,6 +26,8 @@ import { ListNodeData } from '../node/ListNode.types';
 import { UseResizeChangeValue } from './useResizeChange.types';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
+
+const zoomSelector = (state: ReactFlowState) => state.panZoom?.getViewport().zoom || 1;
 
 const getBorderWidth = (resizedNode: Node<NodeData>): number => {
   let borderLeftWidth: number = 1;
@@ -158,6 +167,41 @@ const applyMoveToBorderNodes = (resizedNode: Node<NodeData>, nodes: Node<NodeDat
   return newChanges;
 };
 
+const applyMoveToListChild = (
+  resizedNode: Node<NodeData>,
+  nodes: Node<NodeData>[],
+  _change: NodeDimensionChange,
+  zoom: number
+): NodeChange<Node<NodeData>>[] => {
+  if (isListData(resizedNode)) {
+    const insideLabel = resizedNode.data.insideLabel;
+    if (insideLabel && insideLabel.isHeader && insideLabel.headerPosition === 'TOP') {
+      const element = document.querySelector(`[data-id="${insideLabel.id}"]`);
+      if (element) {
+        const borderOffset = insideLabel.displayHeaderSeparator
+          ? getBorderWidth(resizedNode) * 2
+          : getBorderWidth(resizedNode);
+        const newLabelHeight = element.getBoundingClientRect().height / zoom + borderOffset + resizedNode.data.topGap;
+        return nodes
+          .filter((node) => node.parentId === resizedNode.id && !node.hidden)
+          .map((node, index, array) => {
+            const previousSibling = array[index - 1];
+            let newPositionY: number = newLabelHeight;
+            if (previousSibling) {
+              newPositionY = previousSibling.position.y + (previousSibling.height ?? 0);
+            }
+            return {
+              id: node.id,
+              type: 'position',
+              position: { x: node.position.x, y: newPositionY },
+            };
+          });
+      }
+    }
+  }
+  return [];
+};
+
 const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
   change.type === 'dimensions' && (change.resizing ?? false);
 const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
@@ -165,6 +209,7 @@ const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChang
 
 export const useResizeChange = (): UseResizeChangeValue => {
   const { getNodes } = useStore();
+  const zoom = useReactFlowStore(zoomSelector);
 
   const transformResizeListNodeChanges = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
@@ -175,6 +220,7 @@ export const useResizeChange = (): UseResizeChangeValue => {
           if (resizedNode) {
             newChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
             newChanges.push(...applyMoveToBorderNodes(resizedNode, getNodes(), change));
+            newChanges.push(...applyMoveToListChild(resizedNode, getNodes(), change, zoom));
           }
         }
         if (isMove(change)) {
