@@ -10,20 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.library.services.api;
+package org.eclipse.sirius.web.application.library.api;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Handles the publication of libraries.
+ * {@link IInput} for publishing a library.
  *
- * @author gdaniel
+ * @author flatombe
  */
-public interface ILibraryPublicationHandler {
+public interface IPublishLibraryInput extends IInput {
 
-    boolean canHandle(IPublishLibraryInput input);
+    String projectId();
 
-    IPayload handle(IPublishLibraryInput input);
+    String publicationKind();
 
+    String version();
+
+    String description();
 }

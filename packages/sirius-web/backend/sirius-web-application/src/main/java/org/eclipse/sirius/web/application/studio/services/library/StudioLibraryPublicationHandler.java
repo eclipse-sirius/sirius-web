@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
-import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
+import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryPublicationHandler;
 import org.eclipse.sirius.web.application.studio.services.library.api.DependencyGraph;
 import org.eclipse.sirius.web.application.studio.services.library.api.IStudioLibraryDependencyCollector;
@@ -65,12 +65,12 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
     }
 
     @Override
-    public boolean canHandle(PublishLibrariesInput input) {
+    public boolean canHandle(IPublishLibraryInput input) {
         return Objects.equals(input.publicationKind(), "studio-all");
     }
 
     @Override
-    public IPayload handle(PublishLibrariesInput input) {
+    public IPayload handle(IPublishLibraryInput input) {
         IPayload result = new ErrorPayload(input.id(), this.messageService.unexpectedError());
 
         Optional<IEMFEditingContext> optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(input.projectId()))

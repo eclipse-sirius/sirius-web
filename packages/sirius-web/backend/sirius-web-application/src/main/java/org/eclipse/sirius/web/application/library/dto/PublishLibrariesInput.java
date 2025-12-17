@@ -14,7 +14,7 @@ package org.eclipse.sirius.web.application.library.dto;
 
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
 
 import jakarta.validation.constraints.NotNull;
 
@@ -23,6 +23,7 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author gdaniel
  */
-public record PublishLibrariesInput(@NotNull UUID id, @NotNull String projectId, @NotNull String publicationKind, @NotNull String version, @NotNull String description) implements IInput {
+public record PublishLibrariesInput(@NotNull UUID id, @NotNull String projectId, @NotNull String publicationKind, @NotNull String version, @NotNull String description)
+        implements IPublishLibraryInput {
 
 }

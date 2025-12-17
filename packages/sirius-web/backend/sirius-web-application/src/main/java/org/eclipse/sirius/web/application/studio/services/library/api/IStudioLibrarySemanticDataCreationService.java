@@ -16,7 +16,7 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
+import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 
 /**
@@ -26,6 +26,6 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
  */
 public interface IStudioLibrarySemanticDataCreationService {
 
-    Collection<SemanticData> createSemanticData(PublishLibrariesInput input, DependencyGraph<EObject> dependencyGraph, ResourceSet resourceSet);
+    Collection<SemanticData> createSemanticData(IPublishLibraryInput input, DependencyGraph<EObject> dependencyGraph, ResourceSet resourceSet);
 
 }

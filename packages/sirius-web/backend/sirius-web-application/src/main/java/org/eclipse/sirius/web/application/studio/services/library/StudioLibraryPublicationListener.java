@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.library;
 
-import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
+import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibraryCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
@@ -39,7 +39,7 @@ public class StudioLibraryPublicationListener {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void onSemanticDataCreatedEvent(SemanticDataCreatedEvent semanticDataCreatedEvent) {
-        if (semanticDataCreatedEvent.causedBy() instanceof StudioLibrarySemanticDataCreationRequested request && request.causedBy() instanceof PublishLibrariesInput publishLibrariesInput) {
+        if (semanticDataCreatedEvent.causedBy() instanceof StudioLibrarySemanticDataCreationRequested request && request.causedBy() instanceof IPublishLibraryInput publishLibrariesInput) {
             var semanticData = semanticDataCreatedEvent.semanticData();
 
             Library library = Library.newLibrary()

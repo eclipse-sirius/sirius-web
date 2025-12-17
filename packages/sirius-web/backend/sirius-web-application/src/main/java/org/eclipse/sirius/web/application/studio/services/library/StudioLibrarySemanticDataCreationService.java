@@ -34,7 +34,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.web.application.editingcontext.services.DocumentData;
 import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
-import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
+import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.studio.services.library.api.DependencyGraph;
 import org.eclipse.sirius.web.application.studio.services.library.api.IStudioLibrarySemanticDataCreationService;
@@ -71,7 +71,7 @@ public class StudioLibrarySemanticDataCreationService implements IStudioLibraryS
     }
 
     @Override
-    public Collection<SemanticData> createSemanticData(PublishLibrariesInput input, DependencyGraph<EObject> dependencyGraph, ResourceSet resourceSet) {
+    public Collection<SemanticData> createSemanticData(IPublishLibraryInput input, DependencyGraph<EObject> dependencyGraph, ResourceSet resourceSet) {
         // Compute the topological ordering to ensure that all the dependencies of a library have been created before it.
         List<EObject> libraryCandidates = dependencyGraph.computeTopologicalOrdering();
         for (EObject libraryCandidate : libraryCandidates) {

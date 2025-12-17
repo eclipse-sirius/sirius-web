@@ -19,7 +19,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
+import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -46,7 +46,7 @@ public class MutationPublishLibrariesDataFetcher implements IDataFetcherWithFiel
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, PublishLibrariesInput.class);
+        var input = this.objectMapper.convertValue(argument, IPublishLibraryInput.class);
 
         return this.libraryApplicationService.publishLibraries(input);
     }
