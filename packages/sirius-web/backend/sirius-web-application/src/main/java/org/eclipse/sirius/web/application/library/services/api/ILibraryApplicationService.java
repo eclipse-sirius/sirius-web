@@ -15,8 +15,8 @@ package org.eclipse.sirius.web.application.library.services.api;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
-import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -33,5 +33,5 @@ public interface ILibraryApplicationService {
 
     Page<LibraryDTO> findByNamespaceAndName(String namespace, String name, Pageable pageable);
 
-    IPayload publishLibraries(PublishLibrariesInput input);
+    IPayload publishLibraries(IPublishLibraryInput input);
 }

@@ -18,8 +18,8 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
 import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
-import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryMapper;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryPublicationHandler;
@@ -77,7 +77,7 @@ public class LibraryApplicationService implements ILibraryApplicationService {
 
     @Override
     @Transactional
-    public IPayload publishLibraries(PublishLibrariesInput input) {
+    public IPayload publishLibraries(IPublishLibraryInput input) {
         IPayload payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
         Optional<ILibraryPublicationHandler> optionalHandler = this.libraryPublicationHandlers.stream()
             .filter(handler -> handler.canHandle(input))

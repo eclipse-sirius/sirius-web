@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
-import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
+import org.eclipse.sirius.web.application.library.api.IPublishLibraryInput;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @author gdaniel
  */
 @Service
-public class PublishLibrariesMutationRunner implements IMutationRunner<PublishLibrariesInput> {
+public class PublishLibrariesMutationRunner implements IMutationRunner<IPublishLibraryInput> {
 
     private static final String PUBLISH_LIBRARIES = """
             mutation publishLibraries($input: PublishLibrariesInput!) {
@@ -54,7 +54,7 @@ public class PublishLibrariesMutationRunner implements IMutationRunner<PublishLi
     }
 
     @Override
-    public String run(PublishLibrariesInput input) {
+    public String run(IPublishLibraryInput input) {
         return this.graphQLRequestor.execute(PUBLISH_LIBRARIES, input);
     }
 

@@ -55,6 +55,7 @@ On the frontend, the `ProjectTemplateCard` component has been removed; the `NewP
 - Remove the useless property `WorkbenchEntry#kind` from the GraphQL API and the DTO.
 The `WorkbenchEntry` object has also been transformed into a record
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] The interfaces `ISingleClickOnMultipleDiagramElementHandler` `ISingleClickOnOneDiagramElementHandler` `IPaletteToolsProvider` have been modified to take the `DiagramContext` instead of the `Diagram` as parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/5683[#5683] All APIs related to library publication now rely on interface `IPublishLibraryInput` instead of record  `PublishLibrariesInput`, making it extensible by downstream applications.
 
 
 === Dependency update
@@ -124,7 +125,6 @@ Downstream projects can provide their own `IFormCapabilitiesService` primary ser
 - https://github.com/eclipse-sirius/sirius-web/issues/5883[#5883] Make `IProxyRemovalService` extensible
 Downstream applications can now implement `IProxyRemovalServiceDelegate` to customize how proxies are removed.
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
-
 
 
 == 2025.12.0
