@@ -28,6 +28,7 @@ export class PlaywrightDetails {
 
   async setText(widget: string, text: string) {
     const inputField = this.detailsLocator.getByTestId(`input-${widget}`);
+    await inputField.press('ControlOrMeta+A');
     await inputField.fill(text);
     await inputField.press('Enter');
   }
