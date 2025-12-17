@@ -70,14 +70,16 @@ For example, the Papaya AdapterFactory is now contributed like this:
 public ComposedAdapterFactory.Descriptor papayaAdapterFactoryDescriptor() {
     return PapayaItemProviderAdapterFactory::new;
 }
-````
+```
 instead of the previous way:
 ```
 @Bean
 public AdapterFactory papayaAdapterFactory() {
     return new PapayaItemProviderAdapterFactory();
 }
-````
+```
+- The method `VariableManager.hasVariable()` has been renamed into `hasLocalVariable()` to make its semantics clearer.
+
 
 === Dependency update
 
