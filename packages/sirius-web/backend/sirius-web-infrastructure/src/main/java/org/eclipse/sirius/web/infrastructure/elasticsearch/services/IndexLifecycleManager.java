@@ -12,21 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.infrastructure.elasticsearch.services;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexCreationService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexDeletionService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexUpdateService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -47,18 +43,15 @@ public class IndexLifecycleManager {
 
     private final IEditingContextSearchService editingContextSearchService;
 
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
-
     private final IIndexCreationService indexCreationService;
 
     private final IIndexDeletionService indexDeletionService;
 
     private final IIndexUpdateService indexUpdateService;
 
-    public IndexLifecycleManager(Optional<ElasticsearchClient> optionalElasticSearchClient, IEditingContextSearchService editingContextSearchService, IProjectSemanticDataSearchService projectSemanticDataSearchService, IIndexCreationService indexCreationService, IIndexDeletionService indexDeletionService, IIndexUpdateService indexUpdateService) {
+    public IndexLifecycleManager(Optional<ElasticsearchClient> optionalElasticSearchClient, IEditingContextSearchService editingContextSearchService , IIndexCreationService indexCreationService, IIndexDeletionService indexDeletionService, IIndexUpdateService indexUpdateService) {
         this.optionalElasticSearchClient = Objects.requireNonNull(optionalElasticSearchClient);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.indexCreationService = Objects.requireNonNull(indexCreationService);
         this.indexDeletionService = Objects.requireNonNull(indexDeletionService);
         this.indexUpdateService = Objects.requireNonNull(indexUpdateService);
@@ -67,12 +60,9 @@ public class IndexLifecycleManager {
     @Async
     @TransactionalEventListener
     @Transactional(propagation = Propagation.REQUIRES_NEW, readOnly = true)
-    public void onProjectDeletedEvent(ProjectDeletedEvent projectDeletedEvent) {
+    public void onSemanticDataDeletedEvent(SemanticDataDeletedEvent semanticDataDeletedEvent) {
         this.optionalElasticSearchClient.ifPresent(elasticSearchClient -> {
-            List<ProjectSemanticData> projectSemanticData = this.projectSemanticDataSearchService.findAllByProjectId(AggregateReference.to(projectDeletedEvent.project().getId()));
-            for (ProjectSemanticData semanticData : projectSemanticData) {
-                this.indexDeletionService.deleteIndex(semanticData.getId().toString());
-            }
+            this.indexDeletionService.deleteIndex(semanticDataDeletedEvent.semanticData().getId().toString());
         });
     }
 
