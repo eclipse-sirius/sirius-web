@@ -151,6 +151,7 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/5522[#5522] [core] Provide a search history in omnibox command.
 - https://github.com/eclipse-sirius/sirius-web/issues/5966[#5966] [diagram] The UI of the palette has been tweaked to reduce the risk of misclicks on quick actions
 - https://github.com/eclipse-sirius/sirius-web/issues/5813[#5813] Add new project setting to enable/disable confirmation modals.
+- https://github.com/eclipse-sirius/sirius-web/issues/5977[#5977] [sirius-web] Leverage `SemanticDataDeletedEvent` to delete Elasticsearch indices.
 
 
 
