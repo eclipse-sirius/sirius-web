@@ -1,0 +1,3 @@
+* xref:user-manual:tour.adoc[]
+** xref:user-manual:features/homepage.adoc[]
+** xref:user-manual:features/editor.adoc[]

@@ -1,0 +1,85 @@
+= Gantt
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page documents the Gantt description defined in the {product} view configuration.
+
+== Introduction
+
+Gantt definitions focus on describing task hierarchies, scheduling expressions, and task dependency tools.
+Every field is configured with the same expression editor and palette pickers you already use elsewhere in {product}.
+Taken together, these pieces let you describe timelines that stay synchronized with your semantic model, support task creation and editing operations, and expose dependency management directly inside {product}.
+
+== Configuring Gantt descriptions
+
+image::representations/gantt-overview.png[Gantt representation overview]
+
+image::representations/gantt-description-overview.png[Gantt configuration overview]
+
+When you create a `GanttDescription` inside your view you will typically:
+
+1. Configure the description’s metadata (name, domain type, precondition, title).
+2. Set the `dateRoundingExpression` to snap inline edits to meaningful intervals (for example `12H` for half days).
+3. Add one or more `TaskDescription` entries to map semantic elements to rows on the timeline.
+4. Provide tools for creating, editing, deleting, and connecting tasks so the UI can react to user actions.
+
+The same variables you use elsewhere are available here (`self`, `editingContext`, etc.), so you can reuse existing expressions or services.
+
+== Gantt Description
+
+include::partial$common-representation.adoc[]
+
+`GanttDescription` aggregates every configuration entry point for the timeline:
+
+* `taskElementDescriptions`: ordered collection of `TaskDescription` mappings keyed by `name`.
+* `createTool`: `CreateTaskTool` that defines the operations executed when users add a task from the UI.
+* `editTool`: `EditTaskTool` invoked when a task is edited (for example through dialogs or inline actions).
+* `deleteTool`: `DeleteTaskTool` responsible for removing tasks.
+* `dropTool`: `DropTaskTool` triggered when users drag semantic elements into the Gantt to create a task.
+* `createTaskDependencyTool`: tool used to wire dependencies between two tasks.
+* `deleteTaskDependencyTool`: tool that removes existing dependencies.
+* `dateRoundingExpression`: expression (default `12H`) that snaps edited dates to a specific granularity when users drag or resize tasks.
+
+By configuring these references, you decide which task mappings exist.
+You also decide which operations become available in the Gantt toolbar or context menus.
+
+== Task descriptions
+
+`TaskDescription` ties a semantic concept to a row and its activities on the timeline.
+
+* `name`: unique identifier used when referencing the task description from tools.
+* `domainType`: fully qualified semantic type handled by this mapping.
+* `semanticCandidatesExpression`: expression returning the elements shown as tasks (defaults to `aql:self`).
+* `nameExpression`: label displayed in the timeline (defaults to `aql:self.name`).
+* `descriptionExpression`: optional details shown in tooltips or side panels.
+* `startTimeExpression` and `endTimeExpression`: expressions returning date-time values used to position the activity bar.
+* `progressExpression`: value between 0 and 1 rendered as a completion indicator.
+* `computeStartEndDynamicallyExpression`: boolean expression that, when true, lets the runtime compute dates from dependencies instead of static attributes.
+* `taskDependenciesExpression`: expression returning the collection of semantic dependencies for the current task.
+* `subTaskElementDescriptions`: containment list of nested `TaskDescription` entries, enabling hierarchical project structures.
+* `reusedTaskElementDescriptions`: references to other task descriptions, making it easy to reuse existing mappings in multiple parts of the hierarchy.
+
+These attributes ensure each visible task remains synchronized with the semantic data.
+Hierarchy, labels, dates, and dependency links update automatically after model changes.
+
+== Tools and operations
+
+Every task-related tool is built from the `TaskTool` definition, which specifies the tool `name` and a `body` containing the ordered list of operations to run.
+The available tool types map to end-user actions:
+
+* `CreateTaskTool`: creates new semantic tasks or view elements when the user invokes the creation command.
+* `EditTaskTool`: updates semantic data when dates are changed, progress is edited, or a dialog submits new values.
+* `DeleteTaskTool`: removes the selected task from both the semantic model and the timeline.
+* `DropTaskTool`: converts dragged semantic objects into tasks inside the active Gantt.
+* `CreateTaskDependencyTool`: links two tasks by executing the operations defined in its `body`.
+* `DeleteTaskDependencyTool`: removes a dependency and runs optional cleanup logic.
+
+Tool bodies reuse the shared operation language (`ChangeContext`, `CreateInstance`, `SetValue`, `UnsetValue`, `DeleteElement`, `Let`, `If`, `For`), so you can orchestrate complex updates when users interact with the timeline.
+Each tool exposes context-sensitive variables.
+For example, `CreateTaskTool` provides the semantic element referenced by the row (`self`), while `EditTaskTool` adds variables such as `newStartTime`, `newEndTime`, `newProgress`, and `newDescription`.
+Dependency tools expose `sourceObject` and `targetObject`, and the drop tool reports `sourceTask`, `targetTaskOrGantt`, and `indexInTarget`.
+Leverage these values when writing operations so you always operate on the right semantic elements.
+
+image::representations/gantt-task-handlers.png[Task editing handles]
+
+image::representations/gantt-task-relation-tool.png[Dependency creation tool]

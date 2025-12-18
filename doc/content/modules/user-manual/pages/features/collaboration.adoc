@@ -1,0 +1,32 @@
+= Collaborative modeling
+
+Various solutions exist for collaborating with {product}.
+Explore different collaboration methods to enhance your teamwork and communication within {product}.
+
+* *Share Projects, Models, Diagrams*: Collaborating in {product} is a breeze with the ability to xref:user-manual:hands-on/how-tos/project-management.adoc#share-project[share projects], models, and xref:user-manual:hands-on/how-tos/representation-operations.adoc#share-representation[diagrams]. Sharing projects and models is as simple as providing a link, similar to the process of sharing diagrams.
+* xref:developer-guide:interoperability.adoc[*Exchange* Projects or Models].
+
+== Sharing links and permissions
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+Every project page exposes a *Share* action.
+Copy the generated link and send it to teammates who already have access to the same workspace.
+
+TIP: Use descriptive link titles when sending them to collaborators so everyone understands the context (for example, “Review the Architecture diagram in Sprint 5”).
+
+== Working together in real time
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+{product} keeps model changes synchronized for all connected users. When someone edits a property, adds a node, or rearranges a representation, the update is pushed to other clients automatically.
+Coordinate over voice/video or a chat tool and stay mindful of the shared model: avoid editing the exact same element simultaneously unless your environment defines explicit locking.
+
+== Exchanging data with other tools
+
+If teammates do not have access to your environment, export a project archive and share it via your preferred channel. The recipient can upload the archive to their own workspace and continue modeling. See xref:developer-guide:interoperability.adoc[] for workflows that bridge {product} with other systems.
+
+== Version control recommendations
+
+For long-lived collaborations or regulated domains, download project snapshots regularly and store them in an external version control system such as Git.
+Refer to xref:features/cm.adoc[] for guidance on building an audit trail outside {product}.

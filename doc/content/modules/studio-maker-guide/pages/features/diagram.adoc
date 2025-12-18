@@ -1,0 +1,259 @@
+= Diagram
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+This page explains how the View description models diagram editors inside {product}.
+
+== Introduction
+
+The Diagram representation allows you to create rich graphical editors for your domain models.
+As with other representation types, it is part of the view configuration and uses the same foundational expression language and styling concepts.
+
+
+== Diagram Description
+
+include::partial$common-representation.adoc[]
+
+`DiagramDescription` aggregates the global configuration for a diagram:
+
+* `autoLayout`: boolean that turns automatic layout on or off when the representation opens.
+* `layoutConfig`: optional configuration for the layout algorithm (e.g., ELK).
+* `palette`: reference to the diagram-level palette (see below).
+* `nodeDescriptions` and `edgeDescriptions`: child definitions keyed by name for all mappings.
+* `arrangeLayoutDirection`: enum value (`UNDEFINED`, `RIGHT`, `DOWN`, `LEFT`, `UP`) that configures the arrange-all direction.
+* `dropNodeTool` / `dropTools`: optional handlers invoked when users drag semantic elements from the Explorer and drop them on the diagram background. Use them to create new views automatically (for example with the `CreateView` operation).
+
+Create a diagram in four steps:
+
+1. Add a `View` resource to your Studio project.
+2. Create a `Diagram` representation inside the view.
+3. Configure mappings, styles, tools, and palettes.
+4. Save and test; {product} hot-reloads the definition without code generation.
+
+== Layout Configuration
+{product} ships with default layout algorithms and optional ELK integration.
+Pinned elements are ignored by ELK.
+Layout-all resets the origin, and selection-based layouts only affect the chosen elements.
+
+== Mappings
+
+All visible content is created through mappings.
+Each mapping provides:
+
+* `domainType`: mandatory semantic class name.
+* `semanticCandidatesExpression`: interpreted expression evaluated in the current context (defaults to `aql:self.eContents()` for top-level mappings).
+* `preconditionExpression`: optional filter applied to each candidate.
+
+The runtime evaluates these expressions, instantiates mappings for matching semantic elements, and keeps them synchronized after semantic edits.
+
+=== Layers
+
+Each diagram definition must include a default layer and can optionally expose additional or transient layers.
+Layers group mappings, tools, and decorations so end users can toggle contextual content.
+
+=== Synchronization Policy
+The synchronization policy specifies how view elements react to semantic changes:
+
+* *Synchronized*: one view element exists for every matching semantic element.
+* *Unsynchronized*: view elements are created and deleted only when tools request it, leaving manual control to the end user.
+* *Unsynchronizable*: acts like synchronized by default, but the user can toggle unsynchronized mode at runtime.
+
+Use synchronized mappings when diagrams must reflect 100% of the semantic model.
+
+Use unsynchronized mappings when you want the end user to decide which elements appear (for example, in "overview" diagrams that only show the components they explicitly add).
+=== Mapping Reuse
+
+Node mappings expose `reusedChildNodeDescriptions` and `reusedBorderNodeDescriptions`.
+These references let you reuse an existing node definition (defined elsewhere in the same diagram) as a child or border mapping.
+This is useful to share common node definitions across layers or to support recursive containment (for example, packages containing packages indefinitely).
+The recursion depth is limited by the server configuration to prevent infinite loops.
+
+== Palettes
+
+* `ColorPalette` contains `UserColor` entries (currently implemented by `FixedColor.value` storing RGB strings such as `#3498db`).
+* `TextStylePalette` contains `TextStyleDescription` entries with expressions for foreground, background, and boolean font flags.
+* `LabelStyle` is the shared definition for every text style and provides default values for `fontSize`, `italic`, `bold`, `underline`, and `strikeThrough`.
+
+=== Nodes
+
+Node mappings produce rectangular shapes that can act as containers.
+You can reuse an existing node mapping as a bordered node or list item, and you can configure default size as well as label rendering using the associated style.
+Node-specific attributes include:
+
+* `collapsible`: enables the collapse/expand affordance.
+* `palette`: node-level palette containing delete, label edit, and custom tools.
+* `actions`: declarative buttons that run operations (same schema as palette tools).
+* `style` and `conditionalStyles`: references to node styles (see Styling).
+* `childrenDescriptions` and `borderNodesDescriptions`: lists of sub-node mappings owned by this node.
+* `reusedChildNodeDescriptions` and `reusedBorderNodeDescriptions`: references to external mappings reused here.
+* `userResizable`: enum controlling resize direction (`BOTH`, `HORIZONTAL`, `VERTICAL`, `NONE`).
+* `defaultWidthExpression`, `defaultHeightExpression`, `keepAspectRatio`: expressions that set default size and constrain resizing.
+* `isCollapsedByDefaultExpression`, `isHiddenByDefaultExpression`, `isFadedByDefaultExpression`: expressions determining the initial visibility or collapsed state.
+* `insideLabel` and `outsideLabels`: label descriptions for the node (discussed later).
+
+=== Containers
+
+Container mappings host sub-mappings.
+Setting the children presentation to `List` renders child labels vertically, while `HorizontalStack` or `VerticalStack` create compartment-like regions.
+The semantic context of sub-mappings is the parent container's target element.
+The `childrenLayoutStrategy` reference on `NodeStyleDescription` defines the layout behavior.
+It can be one of the following:
+
+* `FreeFormLayoutStrategyDescription`: default, allows free positioning.
+* `ListLayoutStrategyDescription`: provides expressions for `areChildNodesDraggable`, `topGap`, `bottomGap`, and a `growableNodes` list that can stretch to fill available space.
+
+Use these strategies to replicate list containers, compartment stacks, or custom drag behaviors without writing custom frontend code.
+
+=== Bordered nodes
+
+Bordered node mappings appear on the border of another node or container.
+They are commonly used for ports.
+
+=== Edges
+
+Edges connect two mappings.
+Relation-based edges rely on existing references between semantic elements; element-based edges correspond to dedicated model elements and require source and target finder expressions.
+Edge styles control routing, line pattern, width, and start/end decorations, plus optional labels.
+Attributes defined in `diagram.ecore` include:
+
+* `beginLabelExpression`, `centerLabelExpression`, `endLabelExpression`: interpreted expressions for the three possible labels (defaults to empty, `self.name`, empty).
+* `isDomainBasedEdge`: boolean flag that differentiates domain-based vs relation-based edges.
+* `palette`: edge-level palette (delete, label edit, creation, reconnection tools).
+* `sourceDescriptions` and `targetDescriptions`: the mappings allowed as sources/targets.
+* `sourceExpression` and `targetExpression`: expressions used when `isDomainBasedEdge` is true.
+* `style` plus `conditionalStyles`: edge style references (see Styling).
+
+=== Decorations
+
+Decorations add contextual icons to diagram elements.
+They can be mapping-based, semantic-based, or generic; each provides a position, optional tooltip expression, and an image expression that returns either a resource path or an in-memory figure.
+
+Decorations collapse into a single "list" icon when space runs out, and tooltips list the hidden entries.
+== Styling
+
+=== Labels
+
+Label expressions determine the displayed text.
+Additional fields control alignment, font format, visibility, and optional tooltips.
+Workspace image customizations take precedence over conditional styles and remain in place even when new conditional styles evaluate to true.
+`LabelDescription` (base class for inside and outside labels) contributes:
+
+* `labelExpression`: defaults to `aql:self.name`.
+* `overflowStrategy`: enum with values `NONE`, `WRAP`, or `ELLIPSIS`.
+* `textAlign`: enum with values `LEFT`, `RIGHT`, `CENTER`, `JUSTIFY`.
+
+`InsideLabelDescription` adds:
+
+* `position`: enum (TOP/MIDDLE/BOTTOM × LEFT/CENTER/RIGHT).
+* `style`: `InsideLabelStyle`, which has `withHeader` and `headerSeparatorDisplayMode` (`NEVER`, `ALWAYS`, `IF_CHILDREN`).
+
+`OutsideLabelDescription` adds:
+
+* `position`: currently `BOTTOM_CENTER`.
+* `style`: `OutsideLabelStyle`.
+
+Both inside and outside labels support conditional styles referencing `ConditionalInsideLabelStyle` or `ConditionalOutsideLabelStyle`.
+
+Use an inside label when the text is part of the node’s shape (for example the class name inside a UML class box).
+Inside labels follow the node's layout, respect the `InsideLabelPosition` enum, can display headers with separators, and inherit the node's background color.
+Use an outside label when the text must stay outside the node (for example, a caption below an icon or a compartment title).
+Outside labels anchor at `BOTTOM_CENTER` today, use their own `OutsideLabelStyle`, and remain readable even if the node shrinks or is hidden.
+
+Combining both lets you display a primary label inside the node and secondary information outside it, such as descriptions or stereotypes.
+=== Size properties
+Styles expose expressions for preferred width, height, and border thickness.
+Nodes support auto-size (`-1`) to match label length, while containers can auto-size to their contents or use explicit sizes at creation time.
+The `defaultWidthExpression` and `defaultHeightExpression` attributes live on node descriptions, while `borderSize` and `borderRadius` come from `BorderStyle`.
+`userResizable` and `keepAspectRatio` determine how end users can resize the node.
+
+=== Colors
+
+`BorderStyle` attributes include `borderColor`, `borderSize`, `borderRadius`, and `borderLineStyle` (`Solid`, `Dash`, `Dot`, `Dash_Dot`).
+Edge styles additionally define `sourceArrowStyle` and `targetArrowStyle`, whose enum values correspond to the icons listed in `ArrowStyle` (open/closed arrows, diamonds, circles, etc.).
+Setting `showIcon` to true and `labelIcon` to a resource path renders an image next to the edge label.
+
+=== Conditional Styles
+Conditional styles evaluate an expression and override the base style when the condition returns `true`.
+Styles refer to system colors or entries from color palettes defined at the view level.
+Using palettes keeps diagrams consistent and allows dynamic updates from palette expressions.
+
+=== Authorized sides
+
+Bordered node styles define which sides accept node placement.
+Any unauthorized side is blocked during creation or drag-and-drop.
+
+== Tools
+
+Tool sections group palette entries in the UI. Sections can contain nested groups that act like combo boxes, enabling only one tool at a time.
+The view configuration defines three palette containers:
+
+* `DiagramPalette`: global drop tool, drop node tool, generic node tools, quick access tools, and diagram tool sections.
+* `NodePalette`: node-specific delete, label edit, drop node, creation tools, edge tools, quick access entries, and node tool sections.
+* `EdgePalette`: edge-specific delete, label edit tools (center/begin/end), creation tools, reconnection tools, quick access entries, and edge tool sections.
+
+Tool sections (`DiagramToolSection`, `NodeToolSection`, `EdgeToolSection`) hold named groups of `NodeTool` or `EdgeTool` definitions and appear as collapsible sections in the palette.
+
+Node, container, and edge creation tools reference the mappings they instantiate and can define preconditions.
+Default node tools (`defaultDelete`, `defaultEditLabel`, `hide`, `show`) are generated automatically but can be extended or replaced.
+`NodeTool` and `EdgeTool` provide optional `dialogDescription` references (selection dialogs), `iconURLsExpression` for custom icons, and `elementsToSelectExpression` to control selection after execution.
+`NodeTool.withImpactAnalysis` toggles the impact analysis feature.
+`DropNodeTool.acceptedNodeTypes` restricts which mappings can be dropped into a node.
+`EdgeReconnectionTool` has concrete subclasses for source and target reconnections (`SourceEdgeEndReconnectionTool`, `TargetEdgeEndReconnectionTool`).
+`LabelEditTool.initialDirectEditLabelExpression` lets you customize the text shown when direct editing starts.
+
+When implementing an `EdgeReconnectionTool`, the following variables are available inside your operations:
+
+* `edgeSemanticElement`: the semantic element associated with the edge itself.
+* `semanticReconnectionSource` / `semanticReconnectionTarget`: semantic elements of the current source/target before reconnection.
+* `semanticOtherEnd`: the semantic element of the node that receives the new edge end.
+* `edgeView`, `reconnectionSourceView`, `reconnectionTargetView`: the graphical views involved in the reconnection.
+* `diagram`: the in-memory diagram model that contains the edge.
+
+Tool behaviors are modeled with a shared `Operation` language:
+
+* `ChangeContext`: switches semantic scope (`aql:self` by default).
+* `CreateInstance`: creates a semantic object of `typeName`, inserts it via `referenceName`, and stores the result in `variableName`.
+* `SetValue`: assigns `valueExpression` to the specified feature.
+* `UnsetValue`: removes a value resolved by `elementExpression` from the feature.
+* `DeleteElement`: deletes the current semantic element.
+* `Let`: defines a temporary variable for nested operations.
+* `If`: executes child operations when `conditionExpression` is `true`.
+* `For`: iterates over a collection.
+Diagram-specific operations extend this base set:
+
+* `CreateView`: creates a diagram view element associated with a specific `DiagramElementDescription`, possibly as a child node or border node, and stores the created view in `variableName`.
+* `DeleteView`: removes a selected view from the diagram (`viewExpression` defaults to `aql:selectedNode`).
+
+These operations compose palette tools, context menu entries, and validation fixes.
+
+== Filters
+
+Mapping filters hide or collapse instances produced by a mapping when a semantic or view condition is `false`.
+Variable filters introduce temporary variables or user prompts before applying the filter logic.
+
+== Validation Rules
+
+Validation rules live under the diagram description and can target either semantic elements or view elements.
+Each rule defines a severity (`INFO`, `WARNING`, `ERROR`), an audit expression, and optional quick fixes implemented with operations.
+
+== Diagram Extensibility Features
+
+Diagram extensions let you augment a base diagram from another view without editing the original definition.
+They can add layers, tools, filters, or validation rules.
+Mapping imports specialize existing mappings by overriding attributes, adding new sub-mappings, or disabling inherited content via the "hide sub-mappings" flag.
+
+== Enumerations reference
+
+The diagram definition exposes several enums that the runtime translates directly into rendering behavior:
+
+* `ArrowStyle`: controls edge decoration icons (open/closed arrows, diamonds, circles, combinations).
+* `ArrangeLayoutDirection`: `UNDEFINED`, `RIGHT`, `DOWN`, `LEFT`, `UP`.
+* `HeaderSeparatorDisplayMode`: `NEVER`, `ALWAYS`, `IF_CHILDREN`.
+* `InsideLabelPosition` and `OutsideLabelPosition`: label placement enums described above.
+* `LabelOverflowStrategy`: `NONE`, `WRAP`, `ELLIPSIS`.
+* `LabelTextAlign`: `LEFT`, `RIGHT`, `CENTER`, `JUSTIFY`.
+* `LayoutDirection`: reserved for column layouts in specialized strategies.
+* `LineStyle`: stroke pattern (`Solid`, `Dash`, `Dot`, `Dash_Dot`).
+* `NodeContainmentKind`: `CHILD_NODE` or `BORDER_NODE` (used by `CreateView`).
+* `SynchronizationPolicy`: `SYNCHRONIZED` or `UNSYNCHRONIZED`.
+* `UserResizableDirection`: `BOTH`, `HORIZONTAL`, `VERTICAL`, `NONE`.

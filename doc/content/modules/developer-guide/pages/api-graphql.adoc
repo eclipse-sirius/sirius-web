@@ -1,0 +1,69 @@
+= GraphQL APIs
+
+include::ROOT:partial$before-you-start-experimental-developer.adoc[]
+
+GraphQL powers the {product} web client. You can leverage the same endpoint to build custom front ends or automation scripts that need fine-grained access to projects, representations, and view descriptions.
+
+== Endpoint and schema
+
+* The GraphQL endpoint is available at `/graphql`.
+* The schema follows the types used in the UI (projects, representations, view descriptions, operations, etc.).
+* You can introspect the schema using tools such as GraphiQL, Altair, or any GraphQL IDE:
++
+```graphql
+{
+  __schema {
+    types {
+      name
+    }
+  }
+}
+```
+
+== Authentication
+
+The GraphQL endpoint shares the same authentication layer as the REST API and the web UI.
+Send the Bearer token (or the configured security credential) in the `Authorization` header.
+
+== Queries and mutations
+
+* **Queries** fetch data (projects, representations, metadata) and are ideal for building read-only dashboards.
+* **Mutations** trigger actions (create representation, execute tool, update view configuration) and mirror what the UI does.
+* The GraphQL payloads match the concepts defined in the low-code editor, making it straightforward to reuse your domain knowledge.
+
+Example query to list projects:
+
+```graphql
+query Projects {
+  viewer {
+    projects {
+      id
+      name
+    }
+  }
+}
+```
+
+Example mutation to execute a tool:
+
+```graphql
+mutation RunTool($input: RunToolInput!) {
+  runTool(input: $input) {
+    result {
+      __typename
+    }
+  }
+}
+```
+
+== Tooling tips
+
+* Use GraphiQL to auto-complete schema fields when crafting queries.
+* Log requests from the web UI (developer tools / network tab) to see which queries the client uses for a given action.
+* When exposing the GraphQL API to external consumers, consider applying rate limiting or query complexity guards.
+
+== When to choose GraphQL
+
+* You need a single endpoint for rich clients (React, Angular, etc.).
+* You want to request exactly the fields you need without multiple roundtrips.
+* You are building advanced features (custom dashboards, automation UIs) that mirror the {product} client behavior.

@@ -1,0 +1,49 @@
+= Portal
+
+include::ROOT:partial$before-you-start-experimental-studio-maker.adoc[]
+
+Portals let you assemble dashboards that combine multiple representations on a single page. They are ideal for onboarding users, guiding workflows, or surfacing KPI summaries.
+
+[TIP]
+====
+Portal widgets reuse the same AQL variable set as the embedded representations (diagram, table, form, etc.).
+Check xref:studio-maker-guide:features/aql.adoc#_built_in_variables[] if you need to know which variables are provided to each widget’s expressions.
+====
+
+== Use cases
+
+* Provide a project landing page that highlights key diagrams, forms, and decks.
+* Offer navigation shortcuts to frequently used artefacts.
+* Display read-only summaries (metrics, charts) alongside actionable links.
+
+== Portal structure
+
+* *Sections*: columns or rows that define the layout grid.
+* *Widgets*: embed existing representations (diagram, table, form, deck, Gantt, tree) or custom content (markdown, metrics, links).
+* *Context providers*: determine which semantic element is passed to each widget.
+* *Refresh strategy*: decide whether widgets auto-refresh when the context changes.
+
+== Authoring steps
+
+. Add a **Portal** description to your View model and set the semantic root (typically the project or a top-level element).
+. Configure the **layout**:
+.. Choose between column, row, or grid arrangements.
+.. Set widths/heights and responsive rules for each section.
+. Add **widgets**:
+.. Reference existing representation descriptions (diagram, form, deck, etc.).
+.. Inject static content (Markdown, HTML) for textual guidance.
+.. Surface KPIs via charts or counters using computed AQL values.
+. Define the **context** for each widget:
+.. Use AQL to resolve the semantic element presented to the nested representation.
+.. Optionally enable context forwarding so clicking within the portal updates other widgets.
+. Provide **actions**:
+.. Add buttons or links that open representations in the main editor.
+.. Include quick commands triggered via services (e.g., create project artifact, launch validation).
+. Test the portal to ensure widgets load quickly, context updates behave as expected, and the layout adapts to different screen sizes.
+
+== Best practices
+
+* Keep portals lightweight—avoid loading large diagrams or decks simultaneously unless necessary.
+* Add textual guidance near widgets so end users understand what to do next.
+* Use consistent color schemes and iconography to reinforce branding or workflow stages.
+* Validate embedded representations independently to troubleshoot loading issues.

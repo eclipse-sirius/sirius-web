@@ -1,0 +1,15 @@
+= {related-elements}
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+For a more focused exploration, delve into the {related-elements} view.
+
+image::relatedElements-right-sidebar-related-elements.png[{related-elements}]
+
+This feature offers a contextual perspective on the selected element by organizing references into three tabs:
+
+* *Incoming*: elements that point to the current selection. Follow these links to understand which parts of the system depend on it.
+* *Outgoing*: elements that the selection references. Use this to inspect downstream impact or to open related artefacts quickly.
+* *Current*: parents, children, or other structural relationships that place the element within its broader hierarchy.
+
+Click any entry to navigate directly to that element in the editor. Cross-domain links appear when your project contains models from different domains; the view helps you understand those relationships without switching representations.

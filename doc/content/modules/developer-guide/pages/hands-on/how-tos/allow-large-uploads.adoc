@@ -1,0 +1,12 @@
+= Allow larger file uploads
+
+By default, {product} inherits Spring Boot/Tomcat’s upload limit of `1048576` bytes.
+To support bigger files, raise the multipart limits through configuration properties (environment variables, `.properties`, or command-line arguments):
+
+```
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+```
+
+Restart the server after changing the values and the application will accept the new size.
+No change to the {product} JAR is required.

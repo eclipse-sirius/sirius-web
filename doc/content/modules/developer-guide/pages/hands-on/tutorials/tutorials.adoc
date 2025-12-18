@@ -1,0 +1,15 @@
+= Package and deploy a studio
+
+Goal: build and launch the sample studio application.
+
+== Steps:
+
+* Use Maven to assemble the backend and frontend modules.
+* Launch the application locally (see xref:installation-guide:how-tos/install/local_test.adoc[]).
+* Optionally package add-ons (xref:developer-guide:add-ons.adoc[]) to distribute features independently.
+
+TIP: capture build steps in scripts so teammates can rerun them effortlessly.
+
+Expand this track by integrating continuous integration checks, authoring runtime add-ons, or automating deployments once the basics are in place.
+
+TIP: Looking for studio-maker tutorials? Jump to xref:user-manual:hands-on/hands-on.adoc[] where the domain, view, and studio walkthroughs live.

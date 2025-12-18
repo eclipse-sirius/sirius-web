@@ -1,0 +1,49 @@
+= REST APIs
+
+include::ROOT:partial$before-you-start-experimental-developer.adoc[]
+
+Use this page to explore the REST endpoints provided by {product}.
+They are best suited for automation scenarios, CI/CD pipelines, or integration with external systems.
+
+== Endpoint prefix
+
+All endpoints start with `/api/rest/`.
+For example:
+
+* `/api/rest/projects` – list projects.
+* `/api/rest/projects/projectId` – manage a specific project.
+* `/api/rest/libraries` – publish or retrieve libraries.
+
+[NOTE]
+====
+Authentication uses the same mechanism as the web UI (Bearer token or the configured security model).
+====
+
+== OpenAPI and Swagger UI
+
+{product} ships with generated OpenAPI documentation.
+Open `http://<host>:<port>/swagger-ui/index.html` in your deployment to browse all endpoints interactively.
+You can also export the specification from `/_/attachments/sirius-web-openapi.json`.
+
+[TIP]
+====
+The Swagger UI embedded in the documentation disables “Try it out” by default.
+Use your local instance if you want to test requests directly in a browser.
+====
+
+== Supported endpoints
+
+xref:developer-guide:api-details.adoc[API details] contains the complete list.
+Highlights include:
+
+* **Projects**: create, list, delete projects; import/export models.
+* **Sessions**: manage representations and interactions for a project.
+* **Libraries**: publish, list, and consume reusable libraries.
+* **Configuration**: retrieve metadata such as available representation descriptions.
+
+== Usage tips
+
+* Keep commit and branch handling simple: {product} uses a single branch per project today.
+* When uploading files, set the correct `Content-Type` (typically `application/json` for models).
+* Combine the REST API with automation scripts (shell, Python, CI runners) to bootstrap workspaces.
+* For high-frequency or UI-like interactions, consider the GraphQL API instead.

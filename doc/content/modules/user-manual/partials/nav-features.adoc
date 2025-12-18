@@ -1,0 +1,40 @@
+// Reference all the files defined in the features folder
+* xref:user-manual:key-features.adoc[]
+
+* User Manual
+** Projects Management
+*** xref:user-manual:features/homepage.adoc[]
+** Editor
+*** xref:user-manual:features/editor.adoc[]
+*** xref:user-manual:features/explorer.adoc[]
+*** xref:user-manual:features/details.adoc[]
+*** xref:user-manual:features/related-elements.adoc[]
+*** xref:user-manual:features/representations-view.adoc[]
+*** xref:user-manual:features/query-view.adoc[]
+*** xref:user-manual:features/validation.adoc[]
+*** xref:user-manual:features/keyboard-shortcuts.adoc[]
+*** xref:user-manual:features/collaboration.adoc[]
+** Representations Types
+*** xref:user-manual:features/deck.adoc[]
+*** xref:user-manual:features/diagram.adoc[]
+*** xref:user-manual:features/form.adoc[]
+*** xref:user-manual:features/gantt.adoc[]
+*** xref:user-manual:features/portal.adoc[]
+*** xref:user-manual:features/table.adoc[]
+*** xref:user-manual:features/tree.adoc[]
+** xref:user-manual:features/publication.adoc[]
+** xref:user-manual:features/cm.adoc[]
+
+* Studio Maker Guide
+** xref:studio-maker-guide:features/view.adoc[]
+** xref:studio-maker-guide:features/deck.adoc[]
+** xref:studio-maker-guide:features/diagram.adoc[]
+** xref:studio-maker-guide:features/form.adoc[]
+** xref:studio-maker-guide:features/gantt.adoc[]
+** xref:studio-maker-guide:features/portal.adoc[]
+** xref:studio-maker-guide:features/table.adoc[]
+** xref:studio-maker-guide:features/tree.adoc[]
+
+
+* xref:user-manual:features/scaling-limits.adoc[]
+* xref:user-manual:features/security.adoc[]

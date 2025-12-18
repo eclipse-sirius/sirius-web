@@ -1,0 +1,92 @@
+= Deck
+
+include::ROOT:partial$before-you-start-experimental-all.adoc[]
+
+The *Deck* view in {product} provides a card-based interface to browse and interact with model elements.
+Each element is displayed as an individual card, giving users a clean and readable layout to scan through multiple items—especially when focusing on a specific type of data.
+
+image::deck.png[]
+
+Decks are ideal for presenting collections of similar elements, such as a list of components, tasks, stakeholders, or features, in a compact and visual way.
+
+== What You Can Do
+
+In a deck representation, you can:
+
+* View multiple model elements as cards arranged in a grid or list
+* Click a card to open the element in a form, diagram, or detailed view
+* Filter the displayed cards based on attributes or types
+* Sort or group cards (depending on configuration)
+* Trigger custom actions directly from a card (e.g., mark as completed, assign to a user)
+* Drag cards between lanes to reflect status changes or reorganize work
+* Use multi-selection to align, distribute, or batch-edit cards that share the same lane
+
+Each card typically shows key information (like name, status, icon, or color) and may include buttons or links defined by the modeling environment.
+
+=== Lane and card actions
+
+Decks provide contextual tools for both lanes and cards:
+
+* *Lane headers*: rename the lane, create a new card, toggle all cards visible or hidden, and remove cards you no longer need.
+* *Cards*: edit the title, label, or description in place (press `F2` to focus the title and `Tab` to move between editable fields); hide or reveal individual cards; trigger domain-specific commands when they are available.
+* *Drag and drop*: rearrange the order of lanes or move a card to another lane to update its status. When enabled by the configuration, the same card can appear in multiple lanes to surface cross-cutting work.
+
+TIP: Hold `Shift` and drag to lasso-select several cards. A contextual palette appears so you can align or distribute them consistently.
+
+=== Deck toolbar
+
+image::representations/deck-toolbar.png[Deck toolbar]
+
+Use the toolbar at the top of the deck to:
+
+* Toggle full-screen mode.
+* Zoom in/out, reset the zoom, or fit the entire board to the viewport.
+* Generate a shareable link that opens the same deck and selection.
+
+These controls mirror the ones you see on diagrams, so navigation remains consistent across representations.
+
+=== Show or hide cards
+
+image::representations/deck-show-hide.png[Show or hide cards]
+
+Every lane header exposes an expand/collapse action and individual cards provide a hide toggle.
+Use them to focus on the items that matter without deleting the underlying elements.
+
+=== Global palette
+
+Decks reuse the navigation tools available in other representations:
+
+* *Full screen* for distraction-free editing.
+* *Fit to screen* and *Zoom* to adjust the view.
+* *Share* to generate a link to the current deck.
+
+Depending on your configuration, additional options such as *Filter* or *Export* may appear alongside these core actions.
+
+== When to Use It
+
+Use the deck representation when:
+
+* You need to get an overview of multiple similar elements at once
+* You want a quick way to navigate to detailed editors for individual items
+* A grid or list layout is more suitable than a diagram or table
+* You need to scan elements visually with consistent layout and styling
+
+Decks work well for task lists, requirements, tickets, component overviews, and any domain element with concise summaries.
+
+== Example
+
+A project manager might use a deck to view all project milestones as cards. Each card could display:
+
+* The milestone title and status
+* A color-coded priority indicator
+* A due date
+* A button to open the milestone in a form editor
+* A quick-action icon to mark the milestone as “validated”
+
+Decks provide a flexible way to navigate structured data without needing to rely on diagrams or hierarchical trees.
+
+[NOTE]
+====
+The layout and contents of each card are determined by the modeling environment configuration.
+Which properties are shown and which actions are available depends on that configuration.
+====

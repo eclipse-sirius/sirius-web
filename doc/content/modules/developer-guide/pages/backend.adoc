@@ -1,0 +1,53 @@
+= Backend stack
+
+This page summarises the reusable backend components shipped in the monorepo ({product} + Sirius Components) and how they fit together when you embed them in another Spring Boot application.
+
+{product} itself is the opinionated, ready-to-run workbench.
+Sirius Components exposes the building blocks (GraphQL services, collaborative representations, domain services) that you can reuse independently.
+Most adopters consume the components through Spring Boot, but they can also be wired manually in other runtimes.
+
+== Technologies
+
+The backend relies on a small set of core frameworks:
+
+* https://github.com/spring-projects/spring-boot[Spring Boot] and the rest of the Spring ecosystem.
+* https://github.com/reactor[Project Reactor] for asynchronous processing.
+* https://github.com/graphql-java/graphql-java[GraphQL Java] for both HTTP and WebSocket APIs.
+* https://www.eclipse.org/modeling/emf/[Eclipse Modeling Framework] and https://www.eclipse.dev/sirius/[Eclipse Sirius] for metamodels and representations.
+* https://www.eclipse.org/acceleo/documentation/[Acceleo Query Language (AQL)] for expression evaluation.
+
+Spring Boot dictates the concrete version of Spring Framework, Spring MVC, Spring Security, Reactor, etc.
+Refer to the Spring Boot release notes matching your chosen version of {product} if you need the exact dependency matrix.
+
+== GraphQL layer
+
+Although newer community projects exist (Netflix DGS, Spring GraphQL), Sirius Components ships its own GraphQL Java integration because the work predates those initiatives.
+You can still reuse the rest of the platform with another integration if you prefer.
+
+The relevant modules are:
+
+* `sirius-components-graphql` — wires GraphQL Java into Spring’s HTTP and WebSocket stacks (`GraphQLController`, `GraphQLWebSocketHandler`).
+* `sirius-components-graphql-api` and `sirius-components-graphql-utils` — shared interfaces, custom scalars, constants, helper classes (`IDataFetcherWithFieldCoordinates`, etc.).
+* `sirius-components-graphiql` and `sirius-components-graphql-voyager` — optional tooling endpoints to inspect the schema and run ad-hoc queries.
+
+Each collaborative representation ships its own `.graphqls` fragment so that you only load the parts you need:
+
+* Core concepts: `sirius-components-collaborative/src/main/resources/schema/core.graphqls` (required).
+* Diagrams: `sirius-components-collaborative-diagrams/.../diagrams.graphqls`
+* Forms: `sirius-components-collaborative-forms/.../forms.graphqls`
+* Selection: `sirius-components-collaborative-selection/.../selection.graphqls`
+* Trees: `sirius-components-collaborative-trees/.../trees.graphqls`
+* Validation: `sirius-components-collaborative-validation/.../validation.graphqls`
+
+At startup the GraphQL layer scans the classpath for these fragments, merges them into a single schema, and exposes the matching resolvers.
+If your host application only needs diagrams and forms, simply exclude the tree/validation modules and their schema files will never be registered.
+
+== Reuse strategy
+
+You can adopt the stack in several ways:
+
+* Embed the `sirius-web-starter` in your Spring Boot application to get the full workbench.
+* Depend directly on the Sirius Components modules you need (for example diagrams + forms) and contribute your own controllers, security, or persistence layer.
+* Replace the provided GraphQL wiring with another adapter as long as you still invoke the same collaborative services.
+
+All options are valid; choose the one that minimises the amount of glue code you need to maintain.
