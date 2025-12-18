@@ -27,6 +27,7 @@ export interface PanelsProps {
 
 export type PanelState = {
   selectedContributionIds: string[];
+  collapsedContributionIds: string[];
   isOpen: boolean;
 };
 

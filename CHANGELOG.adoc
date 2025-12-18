@@ -124,7 +124,7 @@ Downstream projects can provide their own `IFormCapabilitiesService` primary ser
 - https://github.com/eclipse-sirius/sirius-web/issues/5883[#5883] Make `IProxyRemovalService` extensible
 Downstream applications can now implement `IProxyRemovalServiceDelegate` to customize how proxies are removed.
 - https://github.com/eclipse-sirius/sirius-web/issues/4348[#4348] [diagram] Move default quick tools declaration on the backend
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [sirius-web] Add collapsible view in workbench panels, merge view header and toolbar inside the same bar.
 
 
 == 2025.12.0
