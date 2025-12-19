@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
         InvokeSingleClickOnDiagramElementToolInput inputInvokeSingleClick = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "", "",
                 List.of(), "", 0, 0, List.of());
         assertThat(diagramToolReferencePositionProvider.canHandle(inputInvokeSingleClick)).isTrue();
-        DropNodesInput inputDropNode = new DropNodesInput(UUID.randomUUID(), "", "", List.of(""), "", 0, 0);
+        DropNodesInput inputDropNode = new DropNodesInput(UUID.randomUUID(), "", "", List.of(""), "", List.of());
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDropNode)).isTrue();
         DropOnDiagramInput inputDropOnDiagram = new DropOnDiagramInput(UUID.randomUUID(), "", "", "", List.of(), 0, 0);
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDropOnDiagram)).isTrue();
@@ -92,7 +92,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
         var diagramId = UUID.randomUUID().toString();
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         DropNodesInput dropNodeInput = new DropNodesInput(UUID.randomUUID(), "", "",
-                List.of(""), CONTAINER_ID, 3, 2);
+                List.of(""), CONTAINER_ID, List.of(new Position(3, 2)));
         var result = diagramToolReferencePositionProvider.getReferencePosition(dropNodeInput, diagramContext);
         this.assertResult(result, CONTAINER_ID, new Position(3, 2));
     }
@@ -100,8 +100,8 @@ public class GenericDiagramToolReferencePositionProviderTests {
     private void assertResult(ReferencePosition result, String parentId, Position position) {
         assertThat(result).isNotNull();
         assertThat(result.parentId()).isEqualTo(parentId);
-        assertThat(result.position()).isNotNull();
-        assertThat(result.position().x()).isEqualTo(position.x());
-        assertThat(result.position().y()).isEqualTo(position.y());
+        assertThat(result.positions()).hasSize(1);
+        assertThat(result.positions().get(0).x()).isEqualTo(position.x());
+        assertThat(result.positions().get(0).y()).isEqualTo(position.y());
     }
 }

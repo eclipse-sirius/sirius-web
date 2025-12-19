@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -99,11 +99,11 @@ const useDropNodesMutation = () => {
     }
   }, [dropNodesData, dropNodesError]);
 
-  const invokeMutation = useCallback(
+  return useCallback(
     (
       droppedNodes: Node<NodeData>[],
       targetElementId: string | null,
-      dropPosition: XYPosition,
+      dropPositions: XYPosition[],
       onDragCancelled: (nodes: Node<NodeData>[]) => void
     ): void => {
       const input: GQLDropNodesInput = {
@@ -112,8 +112,7 @@ const useDropNodesMutation = () => {
         representationId: diagramId,
         droppedElementIds: droppedNodes.map((node) => node.id),
         targetElementId,
-        x: dropPosition.x,
-        y: dropPosition.y,
+        dropPositions,
       };
       if (!readOnly) {
         dropMutation({ variables: { input } }).then((result) => {
@@ -125,8 +124,6 @@ const useDropNodesMutation = () => {
     },
     [readOnly]
   );
-
-  return invokeMutation;
 };
 
 export const useDropNodes = (): UseDropNodesValue => {
@@ -299,7 +296,9 @@ export const useDropNodes = (): UseDropNodesValue => {
       const draggedNode: Node<NodeData> | undefined =
         draggedNodes.find((draggedNode) => draggedNode.id === node.id) || undefined;
       if (draggedNode) {
-        const dropPosition = evaluateAbsolutePosition(draggedNode, storeApi.getState().nodeLookup);
+        const dropPositions = draggedNodes.map((draggedNode) =>
+          evaluateAbsolutePosition(draggedNode, storeApi.getState().nodeLookup)
+        );
         const targetNode = getNodes().find((node) => node.data.isDropNodeTarget);
         const isDropOnNode: boolean = !!targetNode;
 
@@ -330,7 +329,7 @@ export const useDropNodes = (): UseDropNodesValue => {
 
         if ((isValidDropOnDiagram && !isDropFromDiagramToDiagram) || (isValidDropOnNode && !isDropOnSameParent)) {
           const target = targetNode?.id || null;
-          onDropNodes(draggedNodes, target, dropPosition, resetInitialPositions);
+          onDropNodes(draggedNodes, target, dropPositions, resetInitialPositions);
         }
         let dropCancelled = false;
         if (!isDropOnNode && !isValidDropOnDiagram && !isDropFromDiagramToDiagram && !isBorderNodeDrop) {

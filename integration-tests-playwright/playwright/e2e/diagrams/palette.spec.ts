@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,9 +46,9 @@ test.describe('diagram - palette', () => {
     await page.getByTestId('Palette').getByTestId('tool-Align bottom').click();
     //Check the last tool used is the one proposed as quick tool (disabled until the layout section is using the reworked palette extension point)
     //await page.getByTestId('Palette').getByTestId('Align bottom').click();
-    const playwrightNodeXYPosition = await playwrightNode.getReactFlowXYPosition('undefined', false);
+    const playwrightNodeXYPosition = await playwrightNode.getReactFlowXYPosition('DataSource1', false);
     const playwrightNode2XYPosition = await playwrightNode2.getReactFlowXYPosition('CompositeProcessor1', false);
-    const playwrightNodeSize = await playwrightNode.getReactFlowSize('undefined', false);
+    const playwrightNodeSize = await playwrightNode.getReactFlowSize('DataSource1', false);
     const playwrightNode2Size = await playwrightNode2.getReactFlowSize('CompositeProcessor1', false);
     expect(playwrightNodeXYPosition.y + playwrightNodeSize.height).toBe(
       playwrightNode2XYPosition.y + playwrightNode2Size.height

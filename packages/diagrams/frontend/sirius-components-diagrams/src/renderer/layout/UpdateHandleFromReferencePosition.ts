@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,7 @@ export const updateHandleFromReferencePosition = (
     referencePosition &&
     isHandleReferencePosition(referencePosition.causedBy) &&
     referencePosition.parentId &&
-    referencePosition.position.x &&
-    referencePosition.position.y
+    referencePosition.positions[0]
   ) {
     const targetedNode = state.nodeLookup.get(referencePosition.parentId);
     if (targetedNode && targetedNode.width && targetedNode.height) {
@@ -37,8 +36,8 @@ export const updateHandleFromReferencePosition = (
         targetedNode.internals.positionAbsolute.y,
         targetedNode.width,
         targetedNode.height,
-        referencePosition.position.x,
-        referencePosition.position.y
+        referencePosition.positions[0].x,
+        referencePosition.positions[0].y
       );
 
       rawDiagram.nodes = rawDiagram.nodes.map((node) => {

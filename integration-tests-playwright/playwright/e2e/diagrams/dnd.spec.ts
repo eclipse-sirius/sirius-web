@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -183,15 +183,94 @@ test.describe('diagram - drag and drop', () => {
 
     await page.waitForFunction(
       () => {
-        return !!document.querySelector(`[data-testid="FreeForm - dropped"]`);
+        return !!document.querySelector(`[data-testid="FreeForm - Entity3-dropped"]`);
       },
       { timeout: 2000 }
     );
     expect(requestTriggered).toBe(true);
 
-    const playwrightNodeAfterDrop = new PlaywrightNode(page, 'dropped');
+    const playwrightNodeAfterDrop = new PlaywrightNode(page, 'Entity3-dropped');
     const reactFlowXYPositionAfter = await playwrightNodeAfterDrop.getReactFlowXYPosition();
     expect(reactFlowXYPositionAfter.y).toBeGreaterThan(15);
     expect(reactFlowXYPositionAfter.x).toBeGreaterThan(50);
+  });
+});
+
+test.describe('diagram - drag and drop', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectNodeMultiDrops.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('multiDrops');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when dropping multi nodes, then a drop is triggered and the relative position of the nodes is preserved', async ({
+    page,
+  }) => {
+    let requestTriggered = false;
+    page.on('request', (request) => {
+      if (
+        request.url().includes('api/graphql') &&
+        request.method() === 'POST' &&
+        JSON.parse(request.postData()).operationName === 'dropNodes'
+      ) {
+        requestTriggered = true;
+      }
+    });
+
+    // Hide Node Panel Info to avoid overlap in diagram
+    const panel = await page.locator('.react-flow__panel.bottom.left');
+    await panel.evaluate((node) => {
+      node.style.visibility = 'hidden';
+    });
+
+    const targetNodeLocator = new PlaywrightNode(page, 'Target');
+    const entity31Node = new PlaywrightNode(page, 'E3-1');
+    const entity32Node = new PlaywrightNode(page, 'E3-2');
+    const entity33Node = new PlaywrightNode(page, 'E3-3');
+    await targetNodeLocator.waitForAnimationToFinish();
+    const entity31Position = await entity31Node.getReactFlowXYPosition('E3-1');
+    const entity32Position = await entity32Node.getReactFlowXYPosition('E3-2');
+    const entity33Position = await entity33Node.getReactFlowXYPosition('E3-3');
+
+    const entity32RelativePositionX = entity32Position.x - entity31Position.x;
+    const entity33RelativePositionX = entity33Position.x - entity31Position.x;
+    const entity32RelativePositionY = entity32Position.y - entity31Position.y;
+    const entity33RelativePositionY = entity33Position.y - entity31Position.y;
+
+    await entity31Node.click();
+    await entity32Node.controlClick();
+    await entity33Node.controlClick();
+
+    const xyTargetPosition = await targetNodeLocator.getDOMXYPosition();
+    await entity31Node.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await entity31Node.page.mouse.down();
+    await entity31Node.page.mouse.move(xyTargetPosition.x + 100, xyTargetPosition.y + 50, { steps: 5 });
+    await entity31Node.page.mouse.up();
+
+    expect(requestTriggered).toBe(true);
+
+    const entity31DroppedNode = new PlaywrightNode(page, 'E3-1-dropped');
+    const entity32DroppedNode = new PlaywrightNode(page, 'E3-2-dropped');
+    const entity33DroppedNode = new PlaywrightNode(page, 'E3-3-dropped');
+
+    const entity31PositionAfter = await entity31DroppedNode.getReactFlowXYPosition('E3-1-dropped');
+    const entity32PositionAfter = await entity32DroppedNode.getReactFlowXYPosition('E3-2-dropped');
+    const entity33PositionAfter = await entity33DroppedNode.getReactFlowXYPosition('E3-3-dropped');
+
+    expect(entity32PositionAfter.x - entity31PositionAfter.x).toBe(entity32RelativePositionX);
+    expect(entity32PositionAfter.y - entity31PositionAfter.y).toBe(entity32RelativePositionY);
+    expect(entity33PositionAfter.x - entity31PositionAfter.x).toBe(entity33RelativePositionX);
+    expect(entity33PositionAfter.y - entity31PositionAfter.y).toBe(entity33RelativePositionY);
   });
 });
