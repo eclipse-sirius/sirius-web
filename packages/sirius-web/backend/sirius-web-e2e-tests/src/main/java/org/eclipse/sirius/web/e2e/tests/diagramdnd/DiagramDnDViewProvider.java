@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -133,26 +133,23 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
                                 .newChangeContext()
                                 .expression("aql:targetElement")
                                 .children(new ViewBuilders()
-                                        .newCreateInstance()
-                                        .typeName(DiagramDnDDomainProvider.DOMAIN_NAME + "::Entity3")
-                                        .referenceName("entity3sOnEntity1")
-                                        .variableName("newInstance")
-                                        .children(new ViewBuilders()
-                                                .newChangeContext()
-                                                .expression("aql:newInstance")
-                                                .children(new ViewBuilders()
-                                                        .newSetValue()
-                                                        .featureName("name")
-                                                        .valueExpression("dropped")
-                                                        .build())
-                                                .build())
+                                        .newSetValue()
+                                        .featureName("entity3sOnEntity1")
+                                        .valueExpression("aql:droppedElements")
                                         .build())
                                 .build(),
                         new ViewBuilders()
-                                .newChangeContext()
-                                .expression("aql:droppedElements->first()")
+                                .newFor()
+                                .expression("aql:droppedElements")
+                                .iteratorName("dropped")
                                 .children(new ViewBuilders()
-                                        .newDeleteElement()
+                                        .newChangeContext()
+                                        .expression("aql:dropped")
+                                        .children(new ViewBuilders()
+                                                .newSetValue()
+                                                .featureName("name")
+                                                .valueExpression("aql:dropped.name + '-dropped'")
+                                                .build())
                                         .build())
                                 .build())
                 .build();

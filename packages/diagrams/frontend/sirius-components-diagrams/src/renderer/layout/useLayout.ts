@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,8 +61,10 @@ export const useLayout = (): UseLayoutValue => {
       if (processedReferencePosition && !isHandleReferencePosition(processedReferencePosition.causedBy)) {
         let parentNode = reactFlowInstance.getNode(processedReferencePosition.parentId ?? '');
         while (parentNode) {
-          processedReferencePosition.position.x -= parentNode.position.x;
-          processedReferencePosition.position.y -= parentNode.position.y;
+          processedReferencePosition.positions.forEach((position) => {
+            position.x -= parentNode?.position.x ?? 0;
+            position.y -= parentNode?.position.y ?? 0;
+          });
           parentNode = reactFlowInstance.getNode(parentNode.parentId ?? '');
         }
       }

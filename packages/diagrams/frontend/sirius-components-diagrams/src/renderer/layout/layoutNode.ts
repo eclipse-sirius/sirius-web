@@ -707,8 +707,14 @@ export const computeNewlyNodePosition = (
         );
       })
       .map((node, index, array) => {
-        const { xOffset, yOffset } = getOffsetFromPreviousNewSibling(node, index, nodes, array, layoutDirection);
-        let newPosition: XYPosition = { ...referencePosition.position };
+        // We only applied offset, if there is no referencePosition for this index
+        const { xOffset, yOffset } = referencePosition.positions[index]
+          ? { xOffset: 0, yOffset: 0 }
+          : getOffsetFromPreviousNewSibling(node, index, nodes, array, layoutDirection);
+        let newPosition: XYPosition = {
+          ...(referencePosition.positions[index] ?? referencePosition.positions[0] ?? { x: 0, y: 0 }),
+        };
+
         if (
           (!node.parentId || referencePosition.parentId !== node.parentId) &&
           referencePosition.parentId &&
@@ -732,7 +738,7 @@ export const computeNewlyNodePosition = (
           getNewlyAddedBorderNodePosition(
             node,
             nodes.find((node) => node.id === node?.parentId),
-            referencePosition
+            newPosition
           );
         }
         newPosition.x += xOffset;

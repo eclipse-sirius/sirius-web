@@ -144,6 +144,7 @@ The GraphQL subscription `representationsEvent` has been renamed to `relatedView
 The representation ID prefix has changed from `representations://` to `relatedviews://`.
 The workbench view ID is now `related-views`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] The method `IEditingDomainFactory#createEditingDomain` will now require the `editingContextId` to be used
+- https://github.com/eclipse-sirius/sirius-web/issues/5910[#5910] [diagram] The `ReferencePosition` now uses a list of positions to take into account multiple drops.
 
 
 === Dependency update
@@ -254,6 +255,7 @@ The node action icons are now a little smaller and only appear after the node ha
 - https://github.com/eclipse-sirius/sirius-web/issues/6022[#6022] [sirius-web] Rename the "Representations" workbench view to "Related Views"
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] Provide access to the `editingContextId`, for migration participants during the loading of the resources, thanks to an adapter on the resource set named `EditingContextAdapter`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6032[#6032] [diagram] Ensure edge handles on border nodes are placed opposite their anchor point
+- https://github.com/eclipse-sirius/sirius-web/issues/5910[#5910] [diagram] Preserve relative layout while dropping multi nodes
 
 
 

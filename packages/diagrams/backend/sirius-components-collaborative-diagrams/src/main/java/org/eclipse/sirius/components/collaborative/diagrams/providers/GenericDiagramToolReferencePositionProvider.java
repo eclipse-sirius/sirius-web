@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.providers;
+
+import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
@@ -42,14 +44,14 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
         ReferencePosition referencePosition = null;
         if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input && !input.diagramElementIds().isEmpty()) {
             String parentId = this.getParentId(diagramContext, input.diagramElementIds().get(0));
-            referencePosition = new ReferencePosition(parentId, new Position(input.startingPositionX(), input.startingPositionY()), input.getClass().getSimpleName());
+            referencePosition = new ReferencePosition(parentId, List.of(new Position(input.startingPositionX(), input.startingPositionY())), input.getClass().getSimpleName());
         } else if (diagramInput instanceof DropNodesInput input) {
-            referencePosition = new ReferencePosition(input.targetElementId(), new Position(input.x(), input.y()), input.getClass().getSimpleName());
+            referencePosition = new ReferencePosition(input.targetElementId(), input.dropPositions(), input.getClass().getSimpleName());
         } else if (diagramInput instanceof DropOnDiagramInput input) {
             String parentId = this.getParentId(diagramContext, input.diagramTargetElementId());
-            referencePosition = new ReferencePosition(parentId, new Position(input.startingPositionX(), input.startingPositionY()), input.getClass().getSimpleName());
+            referencePosition = new ReferencePosition(parentId, List.of(new Position(input.startingPositionX(), input.startingPositionY())), input.getClass().getSimpleName());
         } else if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
-            referencePosition = new ReferencePosition(input.diagramTargetElementId(), new Position(input.targetPositionX(), input.targetPositionY()), input.getClass().getSimpleName());
+            referencePosition = new ReferencePosition(input.diagramTargetElementId(), List.of(new Position(input.targetPositionX(), input.targetPositionY())), input.getClass().getSimpleName());
         }
         return referencePosition;
     }

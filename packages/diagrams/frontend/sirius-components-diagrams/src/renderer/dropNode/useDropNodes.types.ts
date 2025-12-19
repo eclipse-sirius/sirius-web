@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-import { Node, OnNodeDrag } from '@xyflow/react';
+import { Node, OnNodeDrag, XYPosition } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
 
 export interface UseDropNodesValue {
@@ -39,8 +39,7 @@ export interface GQLDropNodesInput {
   representationId: string;
   droppedElementIds: string[];
   targetElementId: string | null;
-  x: number;
-  y: number;
+  dropPositions: XYPosition[];
 }
 
 export interface GQLErrorPayload extends GQLDropNodesPayload {
