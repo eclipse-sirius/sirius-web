@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo and others.
+ * Copyright (c) 2023, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,7 +62,10 @@ export const NodePanelInfos = ({ title, node }: NodePanelInfosProps) => {
           <ListItemText classes={{ root: classes.listItemText }} primary={`Type : Node`} />
         </ListItem>
         <ListItem classes={{ root: classes.listItem }}>
-          <ListItemText classes={{ root: classes.listItemText }} primary={`Label : ${node?.data.insideLabel?.text}`} />
+          <ListItemText
+            classes={{ root: classes.listItemText }}
+            primary={`Label : ${node?.data.insideLabel?.text ?? node?.data.targetObjectLabel}`}
+          />
         </ListItem>
         <ListItem classes={{ root: classes.listItem }}>
           <ListItemText classes={{ root: classes.listItemText }} primary={`Node id : ${node?.id}`} />
@@ -74,7 +77,7 @@ export const NodePanelInfos = ({ title, node }: NodePanelInfosProps) => {
           <ListItemText classes={{ root: classes.listItemText }} primary={`Width : ${node?.width}`} />
         </ListItem>
         <ListItem classes={{ root: classes.listItem }}>
-          <ListItemText classes={{ root: classes.listItemText }} primary={`Extent : ${node?.extent}`} />
+          <ListItemText classes={{ root: classes.listItemText }} primary={`ParentId : ${node?.parentId}`} />
         </ListItem>
         <ListItem classes={{ root: classes.listItem }}>
           <ListItemText classes={{ root: classes.listItemText }} primary={`x : ${node?.position.x}`} />

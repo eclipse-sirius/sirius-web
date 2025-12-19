@@ -24,7 +24,7 @@ enum RefreshCause {
 
 type ReferencePosition {
   parentId: ID
-  position: Position!
+  positions: [Position!]
   causedBy : String!
 }
 
@@ -505,8 +505,7 @@ input DropNodesInput {
   representationId: ID!
   droppedElementIds: [ID!]!
   targetElementId: ID
-  x: Float!
-  y: Float!
+  dropPositions: [PositionInput!]!
 }
 
 input ArrangeAllInput {

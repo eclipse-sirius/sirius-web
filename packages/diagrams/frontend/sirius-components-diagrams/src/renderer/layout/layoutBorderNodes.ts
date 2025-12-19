@@ -12,7 +12,6 @@
  *******************************************************************************/
 import { CoordinateExtent, Edge, InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeLookup } from '@xyflow/system';
-import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { borderNodeGap, borderNodeOffset, borderNodeReferencePositionRatio } from './layoutParams';
@@ -95,16 +94,16 @@ export const findBorderNodePosition = (
 export const getNewlyAddedBorderNodePosition = (
   newlyAddedNode: Node<NodeData, DiagramNodeType>,
   parentNode: Node<NodeData, string> | undefined,
-  referencePosition: GQLReferencePosition
+  newPosition: XYPosition
 ): void => {
   if (parentNode) {
-    if (referencePosition.position.x < (parentNode.width ?? 0) * borderNodeReferencePositionRatio) {
+    if (newPosition.x < (parentNode.width ?? 0) * borderNodeReferencePositionRatio) {
       newlyAddedNode.data.borderNodePosition = BorderNodePosition.WEST;
-    } else if (referencePosition.position.x > (parentNode.width ?? 0) * (1 - borderNodeReferencePositionRatio)) {
+    } else if (newPosition.x > (parentNode.width ?? 0) * (1 - borderNodeReferencePositionRatio)) {
       newlyAddedNode.data.borderNodePosition = BorderNodePosition.EAST;
-    } else if (referencePosition.position.y < (parentNode.height ?? 0) * borderNodeReferencePositionRatio) {
+    } else if (newPosition.y < (parentNode.height ?? 0) * borderNodeReferencePositionRatio) {
       newlyAddedNode.data.borderNodePosition = BorderNodePosition.NORTH;
-    } else if (referencePosition.position.y > (parentNode.height ?? 0) * (1 - borderNodeReferencePositionRatio)) {
+    } else if (newPosition.y > (parentNode.height ?? 0) * (1 - borderNodeReferencePositionRatio)) {
       newlyAddedNode.data.borderNodePosition = BorderNodePosition.SOUTH;
     }
   }
