@@ -63,6 +63,12 @@ public class PaletteQueryRunner implements IQueryRunner {
               id
               label
               iconURL
+              keyBindings {
+                isCtrl
+                isMeta
+                isAlt
+                key
+              }
               ... on SingleClickOnDiagramElementTool {
                 targetDescriptions {
                   id

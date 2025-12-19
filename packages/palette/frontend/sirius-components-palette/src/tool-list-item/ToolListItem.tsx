@@ -17,6 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
+import { getToolTooltip } from '../Palette';
 import { GQLTool } from '../Palette.types';
 import { ToolListItemProps } from './ToolListItem.types';
 
@@ -57,8 +58,10 @@ export const ToolListItem = ({ tool, disabled, onToolClick }: ToolListItemProps)
     onToolClick(tool);
   };
 
+  const tooltip = getToolTooltip(tool);
+
   return (
-    <Tooltip title={tool.label} placement="right">
+    <Tooltip title={tooltip} placement="right">
       <ListItemButton
         className={classes.listItemButton}
         disabled={disabled}
