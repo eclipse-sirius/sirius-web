@@ -11,9 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
-import { PlaywrightExplorer } from '../helpers/PlaywrightExplorer';
-import { PlaywrightNode } from '../helpers/PlaywrightNode';
-import { PlaywrightProject } from '../helpers/PlaywrightProject';
+import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightNode } from '../../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
 test.describe('diagram - delete node', () => {
   let projectId;
@@ -25,9 +25,12 @@ test.describe('diagram - delete node', () => {
     const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
     projectId = project.projectId;
     await page.goto(`/projects/${projectId}/edit`);
-    await page.evaluate(([id]) => {
-      window.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify([id]));
-    }, [projectId]);
+    await page.evaluate(
+      ([id]) => {
+        window.localStorage.setItem('sirius-confirmation-dialog-disabled', JSON.stringify([id]));
+      },
+      [projectId]
+    );
 
     const explorer = await new PlaywrightExplorer(page);
     await explorer.expand('Flow');
