@@ -79,7 +79,7 @@
     "react-resizable-panels": "3.0.2",
     "typescript": "5.4.5",
     "tss-react": "4.9.16",
-    "vite": "7.1.1",
+    "vite": "7.1.11",
     "vitest": "3.2.4"
   }
 }
