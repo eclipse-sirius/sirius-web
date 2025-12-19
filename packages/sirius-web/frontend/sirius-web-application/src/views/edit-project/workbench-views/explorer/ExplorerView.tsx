@@ -344,6 +344,13 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
               return { ...prevState, treeFilters };
             })
           }
+          onFilter={() => {
+            setState((prevState) => {
+              return !prevState.filterBar
+                ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
+                : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+            });
+          }}
           treeToolBarContributionComponents={treeToolBarContributionComponents}>
           {treeDescriptionSelector}
         </TreeToolBar>

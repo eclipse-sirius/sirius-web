@@ -14,6 +14,7 @@
 import React from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { TreeFiltersMenu } from '../views/TreeFiltersMenu';
+import { FilterButton } from './FilterButton';
 import { RevealSelectionButton } from './RevealSelectionButton';
 import { TreeToolBarProps } from './TreeToolBar.types';
 import { TreeToolBarContributionComponentProps } from './TreeToolBarContribution.types';
@@ -38,6 +39,7 @@ export const TreeToolBar = ({
   treeFilters,
   onRevealSelection,
   onTreeFilterMenuItemClick,
+  onFilter,
   treeToolBarContributionComponents,
   readOnly,
   children,
@@ -60,6 +62,7 @@ export const TreeToolBar = ({
           <TreeFiltersMenu filters={treeFilters} onTreeFilterMenuItemClick={onTreeFilterMenuItemClick} />
         ) : null}
         {children}
+        <FilterButton onClick={onFilter} />
         <RevealSelectionButton editingContextId={editingContextId} onClick={onRevealSelection} />
       </div>
     </>

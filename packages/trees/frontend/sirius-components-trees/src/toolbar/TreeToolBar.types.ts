@@ -18,6 +18,7 @@ export interface TreeToolBarProps {
   treeFilters: TreeFilter[];
   onRevealSelection: () => void;
   onTreeFilterMenuItemClick: (filters: TreeFilter[]) => void;
+  onFilter: () => void;
   treeToolBarContributionComponents: ((props: TreeToolBarContributionComponentProps) => JSX.Element)[];
   readOnly: boolean;
   children: React.ReactNode;

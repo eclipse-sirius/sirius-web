@@ -22,5 +22,8 @@
   },
   "treeItemContextMenu": {
     "showInTarget": "Afficher dans {{target}}"
+  },
+  "filterButton": {
+    "filter": "Filtrer"
   }
 }
