@@ -73,6 +73,18 @@ public class LabelEditToolBuilder {
     }
 
     /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public LabelEditToolBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getLabelEditTool().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
+    /**
      * Setter for InitialDirectEditLabelExpression.
      *
      * @generated

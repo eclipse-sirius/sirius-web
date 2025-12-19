@@ -116,4 +116,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnderlineExpression"
         eType="#//InterpretedExpression" defaultValueLiteral="aql:false"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KeyBinding">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="ctrl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alt" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="meta" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
 </ecore:EPackage>

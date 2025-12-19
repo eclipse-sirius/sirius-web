@@ -11,12 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, useQuery } from '@apollo/client';
-import { useContext, useEffect } from 'react';
+import { gql, useLazyQuery } from '@apollo/client';
+import { useEffect } from 'react';
 
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { GQLPalette } from './Palette.types';
 import {
   GQLDiagramDescription,
@@ -32,6 +30,12 @@ export const getPaletteQuery = gql`
     id
     label
     iconURL
+    keyBindings {
+      isCtrl
+      isMeta
+      isAlt
+      key
+    }
     ... on SingleClickOnDiagramElementTool {
       targetDescriptions {
         id
@@ -76,21 +80,13 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const usePaletteContents = (diagramElementIds: string[]): UsePaletteContentValue => {
-  const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
+export const usePaletteContents = (): UsePaletteContentValue => {
   const { addErrorMessage } = useMultiToast();
 
-  const {
-    data: paletteData,
-    loading,
-    error: paletteError,
-  } = useQuery<GQLGetToolSectionsData, GQLGetToolSectionsVariables>(getPaletteQuery, {
-    variables: {
-      editingContextId,
-      diagramId,
-      diagramElementIds,
-    },
-  });
+  const [getPaletteContents, { data: paletteData, loading, error: paletteError }] = useLazyQuery<
+    GQLGetToolSectionsData,
+    GQLGetToolSectionsVariables
+  >(getPaletteQuery);
 
   const description: GQLRepresentationDescription | undefined =
     paletteData?.viewer.editingContext.representation.description;
@@ -102,5 +98,5 @@ export const usePaletteContents = (diagramElementIds: string[]): UsePaletteConte
     }
   }, [paletteError]);
 
-  return { palette, loading };
+  return { getPaletteContents, palette, loading };
 };

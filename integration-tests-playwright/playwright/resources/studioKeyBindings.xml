@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<domain:Domain xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:domain="http://www.eclipse.org/sirius-web/domain" name="domain">
+  <types name="Entity1" />
+</domain:Domain>

@@ -2809,12 +2809,21 @@ public interface DiagramPackage extends EPackage {
     int TOOL__BODY = 2;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL__KEY_BINDINGS = 3;
+
+    /**
      * The number of structural features of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TOOL_FEATURE_COUNT = 3;
+    int TOOL_FEATURE_COUNT = 4;
 
     /**
      * The number of operations of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2859,6 +2868,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TOOL__KEY_BINDINGS = TOOL__KEY_BINDINGS;
 
     /**
      * The number of structural features of the '<em>Delete Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2914,6 +2932,15 @@ public interface DiagramPackage extends EPackage {
     int DROP_TOOL__BODY = TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TOOL__KEY_BINDINGS = TOOL__KEY_BINDINGS;
+
+    /**
      * The number of structural features of the '<em>Drop Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -2965,6 +2992,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL__KEY_BINDINGS = TOOL__KEY_BINDINGS;
 
     /**
      * The feature id for the '<em><b>Target Element Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
@@ -3056,6 +3092,15 @@ public interface DiagramPackage extends EPackage {
     int EDGE_RECONNECTION_TOOL__BODY = TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_RECONNECTION_TOOL__KEY_BINDINGS = TOOL__KEY_BINDINGS;
+
+    /**
      * The number of structural features of the '<em>Edge Reconnection Tool</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -3108,6 +3153,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int LABEL_EDIT_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_EDIT_TOOL__KEY_BINDINGS = TOOL__KEY_BINDINGS;
 
     /**
      * The feature id for the '<em><b>Initial Direct Edit Label Expression</b></em>' attribute. <!-- begin-user-doc -->
@@ -3170,6 +3224,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL__KEY_BINDINGS = TOOL__KEY_BINDINGS;
 
     int NODE_TOOL__DIALOG_DESCRIPTION = TOOL_FEATURE_COUNT;
 
@@ -3244,6 +3307,15 @@ public interface DiagramPackage extends EPackage {
     int SOURCE_EDGE_END_RECONNECTION_TOOL__BODY = EDGE_RECONNECTION_TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SOURCE_EDGE_END_RECONNECTION_TOOL__KEY_BINDINGS = EDGE_RECONNECTION_TOOL__KEY_BINDINGS;
+
+    /**
      * The number of structural features of the '<em>Source Edge End Reconnection Tool</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -3286,6 +3358,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TARGET_EDGE_END_RECONNECTION_TOOL__BODY = EDGE_RECONNECTION_TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TARGET_EDGE_END_RECONNECTION_TOOL__KEY_BINDINGS = EDGE_RECONNECTION_TOOL__KEY_BINDINGS;
 
     /**
      * The number of structural features of the '<em>Target Edge End Reconnection Tool</em>' class. <!-- begin-user-doc
@@ -3744,6 +3825,15 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DROP_NODE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_NODE_TOOL__KEY_BINDINGS = TOOL__KEY_BINDINGS;
 
     /**
      * The feature id for the '<em><b>Accepted Node Types</b></em>' reference list. <!-- begin-user-doc --> <!--
@@ -5713,6 +5803,18 @@ public interface DiagramPackage extends EPackage {
     EReference getTool_Body();
 
     /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.Tool#getKeyBindings <em>Key Bindings</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Key Bindings</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Tool#getKeyBindings()
+     * @see #getTool()
+     * @generated
+     */
+    EReference getTool_KeyBindings();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DeleteTool <em>Delete
      * Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -7644,6 +7746,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference TOOL__BODY = eINSTANCE.getTool_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Key Bindings</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference TOOL__KEY_BINDINGS = eINSTANCE.getTool_KeyBindings();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.DeleteToolImpl

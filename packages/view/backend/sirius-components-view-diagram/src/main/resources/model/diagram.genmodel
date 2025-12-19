@@ -263,6 +263,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Tool/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//Tool/preconditionExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//Tool/body"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//Tool/keyBindings"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//DeleteTool"/>
     <genClasses ecoreClass="diagram.ecore#//DropTool"/>

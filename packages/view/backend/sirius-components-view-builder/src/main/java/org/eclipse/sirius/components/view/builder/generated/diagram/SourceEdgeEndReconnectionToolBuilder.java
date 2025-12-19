@@ -72,6 +72,18 @@ public class SourceEdgeEndReconnectionToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public SourceEdgeEndReconnectionToolBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getSourceEdgeEndReconnectionTool().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
 
 }
 

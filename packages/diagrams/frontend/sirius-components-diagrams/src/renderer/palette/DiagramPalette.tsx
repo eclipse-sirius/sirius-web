@@ -13,7 +13,7 @@
 
 import { PaletteExtensionSection, PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
-import { memo, useCallback, useContext, useMemo } from 'react';
+import { memo, useCallback, useContext, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -33,7 +33,7 @@ import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
 
 export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: DiagramPaletteProps) => {
-  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const { editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x: paletteX, y: paletteY, diagramElementIds, hideDiagramPalette } = useDiagramPalette();
   const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
   const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
@@ -43,7 +43,17 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
 
   const elementId = diagramElementIds[0] ? diagramElementIds[0] : diagramId;
   const elementsIds = diagramElementIds[0] ? diagramElementIds : [diagramId];
-  let { palette }: UsePaletteContentValue = usePaletteContents(elementsIds);
+  let { getPaletteContents, palette }: UsePaletteContentValue = usePaletteContents();
+
+  useEffect(() => {
+    getPaletteContents({
+      variables: {
+        editingContextId,
+        diagramId,
+        diagramElementIds: elementsIds,
+      },
+    });
+  }, []);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<Element>) => {

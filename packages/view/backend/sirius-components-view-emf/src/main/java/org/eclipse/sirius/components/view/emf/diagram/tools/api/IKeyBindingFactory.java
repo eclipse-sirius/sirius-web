@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,22 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
-
-import java.util.List;
+package org.eclipse.sirius.components.view.emf.diagram.tools.api;
 
 import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 
 /**
- * Interface implemented by all tools.
+ * Used to create key bindings.
  *
- * @author mcharfadi
+ * @author gdaniel
  */
-public interface ITool extends IPaletteEntry {
+public interface IKeyBindingFactory {
 
-    String label();
-
-    List<String> iconURL();
-
-    List<KeyBinding> keyBindings();
+    KeyBinding createKeyBinding(org.eclipse.sirius.components.view.KeyBinding viewKeyBinding);
 }

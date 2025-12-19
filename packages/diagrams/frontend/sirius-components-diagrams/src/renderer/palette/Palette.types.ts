@@ -56,6 +56,7 @@ export interface PaletteStyleProps {
 export interface GQLTool extends GQLPaletteEntry {
   label: string;
   iconURL: string[];
+  keyBindings: GQLKeyBinding[];
   __typename: string;
 }
 
@@ -63,6 +64,13 @@ export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   appliesToDiagramRoot: boolean;
   dialogDescriptionId: string;
   withImpactAnalysis: boolean;
+}
+
+export interface GQLKeyBinding {
+  isCtrl: boolean;
+  isMeta: boolean;
+  isAlt: boolean;
+  key: string;
 }
 
 export interface GQLPalette {
