@@ -11,13 +11,15 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVertOutlined';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ManageVisibilityMenuCheckBoxProps } from './ManageVisibilityModalMenuCheckBox.types';
 import { useManageVisibilityActions } from './hooks/useManageVisibilityActions';
 import { GQLManageVisibilityAction } from './hooks/useManageVisibilityActions.types';
@@ -39,6 +41,7 @@ export const ManageVisibilityModalMenuCheckBox = ({
 
   const { actions } = useManageVisibilityActions(diagramElementId);
   const { invokeAction } = useManageVisibilityInvokeAction();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'manageVisibilityModalMenuCheckBox' });
 
   return (
     <Box
@@ -53,9 +56,14 @@ export const ManageVisibilityModalMenuCheckBox = ({
         onChange={(_event, checked) => onCheckingAllElement(checked)}
         data-testid="manage_visibility_checkbox"
       />
-
-      <IconButton aria-label="filter-button" color="primary" onClick={handleClick} data-testid="manage_visibility_menu">
-        <ExpandMoreOutlinedIcon />
+      <Typography>{t('all')}</Typography>
+      <IconButton
+        aria-label="filter-button"
+        color="secondary"
+        size="small"
+        onClick={handleClick}
+        data-testid="manage_visibility_menu">
+        <MoreVertIcon />
       </IconButton>
 
       <Menu id="filter-menu" anchorEl={anchorEl} open={anchorEl !== null} onClose={handleClose}>

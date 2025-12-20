@@ -134,6 +134,9 @@
     "manageVisibility": "Gérer la visibilité",
     "close": "Fermer"
   },
+  "manageVisibilityModalMenuCheckBox": {
+      "all": "Tous"
+  },
   "labelAppearancePart": {
     "hide": "Masquer",
     "fontSize": "Taille de la police",
