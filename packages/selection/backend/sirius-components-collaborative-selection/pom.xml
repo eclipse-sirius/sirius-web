@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.1</version>
+		<version>2025.12.2</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-collaborative-selection</artifactId>
-	<version>2025.12.1</version>
+	<version>2025.12.2</version>
 	<name>sirius-components-collaborative-selection</name>
 	<description>Sirius Components Collaborative Selection</description>
 
@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-selection</artifactId>
-			<version>2025.12.1</version>
+			<version>2025.12.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -45,18 +45,18 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative</artifactId>
-			<version>2025.12.1</version>
+			<version>2025.12.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.12.1</version>
+			<version>2025.12.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2025.12.1</version>
+			<version>2025.12.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -67,7 +67,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-trees</artifactId>
-			<version>2025.12.1</version>
+			<version>2025.12.2</version>
 		</dependency>
 	</dependencies>
 
