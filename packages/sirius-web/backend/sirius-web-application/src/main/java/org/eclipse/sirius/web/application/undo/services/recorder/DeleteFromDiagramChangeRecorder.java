@@ -31,11 +31,13 @@ import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramNodeLayoutEvent;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.undo.services.api.INodeAppearanceChangeUndoRecorder;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramFadeElementChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramHideElementChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeAppearanceChange;
+import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeLayoutChange;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramPinElementChange;
 import org.springframework.stereotype.Service;
 
@@ -81,6 +83,13 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
                     if (previousNode.getState().equals(ViewModifier.Hidden)) {
                         var diagramHideElementChange = new DiagramHideElementChange(deleteFromDiagramInput.id(), deleteFromDiagramInput.representationId(), Set.of(previousNode.getId()), true, false);
                         representationChanges.add(diagramHideElementChange);
+                    }
+
+                    var previousNodeLayoutData = previousDiagram.getLayoutData().nodeLayoutData();
+                    if (previousNodeLayoutData.containsKey(previousNode.getId())) {
+                        var undoPositionEvent = new DiagramNodeLayoutEvent(previousNode.getId(), previousNodeLayoutData.get(previousNode.getId()));
+                        var nodeLayoutChange = new DiagramNodeLayoutChange(deleteFromDiagramInput.id(), deleteFromDiagramInput.representationId(), List.of(undoPositionEvent), List.of());
+                        representationChanges.add(nodeLayoutChange);
                     }
                 }
 

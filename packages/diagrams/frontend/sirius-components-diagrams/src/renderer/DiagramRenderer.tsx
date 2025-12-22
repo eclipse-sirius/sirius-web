@@ -60,8 +60,8 @@ import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
 import { useHandleResizedChange } from './handles/useHandleResizedChange';
 import { HelperLines } from './helper-lines/HelperLines';
-import { HelperLinesContextValue } from './helper-lines/HelperLinesContext.types';
 import { HelperLinesContext } from './helper-lines/HelperLinesContext';
+import { HelperLinesContextValue } from './helper-lines/HelperLinesContext.types';
 import { useHelperLines } from './helper-lines/useHelperLines';
 import { useEdgeHover } from './hover/useEdgeHover';
 import { useNodeHover } from './hover/useNodeHover';
@@ -81,8 +81,8 @@ import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useOnRightClickElement } from './selection/useOnRightClickElement';
-import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
+import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 
 const GRID_STEP: number = 10;
 
@@ -156,7 +156,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         return convertedNode;
       }
     });
-
     const { nodeLookup, edgeLookup } = store.getState();
     if (cause === 'layout') {
       // Apply the new graphical selection, either from the applicable selectionFromTool, or from the previous state of the diagram
@@ -209,6 +208,21 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         nodes,
         edges,
       };
+
+      // If we're refreshing the diagram because of an undo/redo operation we need to update the previous diagram with nodeLayoutData before performing the layout
+      previousDiagram.nodes = previousDiagram.nodes.map((previousNode) => {
+        const nodeLayoutData = diagramRefreshedEventPayload.diagram.layoutData.nodeLayoutData.find(
+          (layoutData) => layoutData.id === previousNode.id
+        );
+        if (nodeLayoutData) {
+          previousNode.position.x = nodeLayoutData.position.x;
+          previousNode.position.y = nodeLayoutData.position.y;
+          previousNode.width = nodeLayoutData.size.width;
+          previousNode.height = nodeLayoutData.size.height;
+        }
+        return previousNode;
+      });
+
       layout(
         previousDiagram,
         convertedDiagram,
