@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
@@ -52,7 +52,7 @@ public class ProjectLibrariesImporter {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
     public void onSemanticDataCreatedEvent(SemanticDataCreatedEvent event) {
-        if (event.causedBy() instanceof ProjectCreatedEvent projectCreatedEvent && projectCreatedEvent.causedBy() instanceof CreateProjectInput createProjectInput) {
+        if (event.causedBy() instanceof ProjectCreatedEvent projectCreatedEvent && projectCreatedEvent.causedBy() instanceof ICreateProjectInput createProjectInput) {
             var projectSemanticData = event.semanticData();
 
             List<Library> libraries = this.librarySearchService.findAllById(createProjectInput.libraryIds().stream()
