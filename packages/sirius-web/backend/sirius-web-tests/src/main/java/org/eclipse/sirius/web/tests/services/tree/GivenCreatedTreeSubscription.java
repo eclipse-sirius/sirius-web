@@ -19,7 +19,6 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTreeSubscription;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -34,16 +33,13 @@ import org.springframework.test.context.transaction.TestTransaction;
 @Service
 public class GivenCreatedTreeSubscription implements IGivenCreatedTreeSubscription {
 
-    private final IGivenCommittedTransaction givenCommittedTransaction;
-
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
     private final TreeEventSubscriptionRunner treeEventSubscriptionRunner;
 
     private final RepresentationIdBuilder representationIdBuilder;
 
-    public GivenCreatedTreeSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, TreeEventSubscriptionRunner treeEventSubscriptionRunner, RepresentationIdBuilder representationIdBuilder) {
-        this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
+    public GivenCreatedTreeSubscription(IGivenCreatedRepresentation givenCreatedRepresentation, TreeEventSubscriptionRunner treeEventSubscriptionRunner, RepresentationIdBuilder representationIdBuilder) {
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
         this.treeEventSubscriptionRunner = Objects.requireNonNull(treeEventSubscriptionRunner);
         this.representationIdBuilder = Objects.requireNonNull(representationIdBuilder);
@@ -51,8 +47,6 @@ public class GivenCreatedTreeSubscription implements IGivenCreatedTreeSubscripti
 
     @Override
     public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
-        this.givenCommittedTransaction.commit();
-
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var treeEventInput = new TreeEventInput(UUID.randomUUID(), input.editingContextId(), this.representationIdBuilder.buildTreeRepresentationId(representationId, List.of()));

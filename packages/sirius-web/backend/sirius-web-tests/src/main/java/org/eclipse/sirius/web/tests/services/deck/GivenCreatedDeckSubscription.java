@@ -18,7 +18,6 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DeckEventInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDeckSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
@@ -32,22 +31,17 @@ import org.springframework.test.context.transaction.TestTransaction;
 @Service
 public class GivenCreatedDeckSubscription implements IGivenCreatedDeckSubscription {
 
-    private final IGivenCommittedTransaction givenCommittedTransaction;
-
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
     private final DeckEventSubscriptionRunner deckEventSubscriptionRunner;
 
-    public GivenCreatedDeckSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, DeckEventSubscriptionRunner deckEventSubscriptionRunner) {
-        this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
+    public GivenCreatedDeckSubscription(IGivenCreatedRepresentation givenCreatedRepresentation, DeckEventSubscriptionRunner deckEventSubscriptionRunner) {
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
         this.deckEventSubscriptionRunner = Objects.requireNonNull(deckEventSubscriptionRunner);
     }
 
     @Override
     public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
-        this.givenCommittedTransaction.commit();
-
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var deckEventInput = new DeckEventInput(UUID.randomUUID(), input.editingContextId(), UUID.fromString(representationId));

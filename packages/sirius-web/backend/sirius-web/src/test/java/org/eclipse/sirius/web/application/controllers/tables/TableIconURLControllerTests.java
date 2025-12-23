@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,9 +88,6 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -101,7 +97,6 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a papaya package, when we subscribe to a table with icon define, then the URL of its icons are valid")
     public void givenPapayaPackageWhenWeSubscribeToTableWithIconThenURLOfItsIconsAreValid() {
-        this.givenCommittedTransaction.commit();
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
@@ -156,7 +151,6 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a papaya package, when we subscribe to a table with icon label cell define, then the URL of its icons are valid")
     public void givenPapayaPackageWhenWeSubscribeToTableWithIconLabelCellThenURLOfItsIconsAreValid() {
-        this.givenCommittedTransaction.commit();
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),

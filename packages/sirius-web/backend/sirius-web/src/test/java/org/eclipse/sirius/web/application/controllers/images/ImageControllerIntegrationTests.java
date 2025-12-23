@@ -39,7 +39,6 @@ import org.eclipse.sirius.web.tests.graphql.DeleteImageMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectImagesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.RenameImageMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.UploadImageMutationRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -73,9 +72,6 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
-    @Autowired
     private ProjectImagesQueryRunner projectImagesQueryRunner;
 
     @Autowired
@@ -99,8 +95,6 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a project, when its images are requested, then the images are returned")
     public void givenProjectWhenItsImagesAreRequestedThenTheImagesAreReturned() {
-        this.givenCommittedTransaction.commit();
-
         Map<String, Object> variables = Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT.toString());
         var result = this.projectImagesQueryRunner.run(variables);
 
@@ -115,8 +109,6 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given the url of an image which exists, when its content is requested, then the image is returned")
     public void givenTheURLOfAnImageWhichExistsWhenItsContentIsRequestedThenTheImageIsReturned() {
-        this.givenCommittedTransaction.commit();
-
         var uri = "http://localhost:" + port + "/api/images/icons/Resource.svg";
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
@@ -128,8 +120,6 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given the url of an image, when its content is requested, then the image is returned")
     public void givenTheURLOfImageWhenItsContentIsRequestedThenTheImageIsReturned() {
-        this.givenCommittedTransaction.commit();
-
         var uri = "http://localhost:" + port + "/api/images/" + TestIdentifiers.SYSML_IMAGE;
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
@@ -151,8 +141,6 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given the url of an image which does not exist, when its content is requested, then a 404 NOT FOUND is returned")
     public void givenTheURLOfAnImageWhichDoesNotExistWhenItsContentIsRequestedThen404NotFoundIsReturned() {
-        this.givenCommittedTransaction.commit();
-
         var uri = "http://localhost:" + port + "/api/images/THIS_IMAGE_DOES_NOT_EXIST";
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
@@ -164,8 +152,6 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given an image, when it is uploaded, then it is available")
     public void givenAnImageWhenItIsUploadedThenItIsAvailable() {
-        this.givenCommittedTransaction.commit();
-
         var content = "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"10px\" height=\"10px\" fill=\"red\" /></svg>";
         var file = new UploadFile("image.svg", new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
 
@@ -197,8 +183,6 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given an invalid image, when it is uploaded, then an error is returned")
     public void givenAnInvalidImageWhenItIsUploadedThenAnErrorIsReturned() {
-        this.givenCommittedTransaction.commit();
-
         var content = "";
         var file = new UploadFile("", new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
 
@@ -215,8 +199,6 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given an image, when it is renamed, then its name is updated")
     public void givenAnImageWhenItIsRenamedThenItsNameIsUpdated() {
-        this.givenCommittedTransaction.commit();
-
         var optionalProjectImage = this.projectImageSearchService.findById(TestIdentifiers.SYSML_IMAGE);
         assertThat(optionalProjectImage)
                 .isPresent()
@@ -240,8 +222,6 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given an image, when its deletion is requested, then the image is not found anymore")
     public void givenAnImageWhenItsDeletionIsRequestedThenTheImageIsNotFoundAnymore() {
-        this.givenCommittedTransaction.commit();
-
         var input = new DeleteImageInput(UUID.randomUUID(), TestIdentifiers.SYSML_IMAGE);
         var result = this.deleteImageMutationRunner.run(input);
         var typename = JsonPath.read(result.data(), "$.data.deleteImage.__typename");

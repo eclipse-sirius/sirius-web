@@ -104,6 +104,8 @@ Core test services relying on this API have thus been modified to return the sam
 In order to be leveragable by most tests, this change also impact the API of `IQueryRunner`, `IMutationRunner` and `ISubscriptionRunner`.
 For tests with calls such as `this.givenCreatedDiagramSubscription.createAndSubscribe(input)`, the change will require you to ask for the flux from the response by using `this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux()`.
 For tests where the result of a query or mutation is parsed using `JsonPath`, the main change should be switching from `JsonPath.read(result, "$.data.viewer...")` to `JsonPath.read(result.data(), "$.data.viewer...")`.
+- Remove `IGivenCommittedTransaction` since it has been replaced a long time ago by a proper initialization of our test state using `@GivenSiriusWebServer`.
+Downstream projects relying on this should switch to a better initialization or their test or use `TestTransaction` directly.
 
 
 === Dependency update

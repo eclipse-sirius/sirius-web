@@ -51,7 +51,6 @@ import org.eclipse.sirius.web.services.TestRepresentationDescription;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.RepresentationMetadataQueryRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -77,9 +76,6 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -121,8 +117,6 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
     @GivenSiriusWebServer
     @DisplayName("Given a representation to create, when the mutation is performed, then the representation has been created")
     public void givenRepresentationToCreateWhenMutationIsPerformedThenTheRepresentationHasBeenCreated() {
-        this.givenCommittedTransaction.commit();
-
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
                 TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(),
@@ -153,8 +147,6 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
     @GivenSiriusWebServer
     @DisplayName("Given a representation to rename, when the mutation is performed, then the representation has been renamed")
     public void givenRepresentationToRenameWhenMutationIsPerformedThenTheRepresentationHasBeenRenamed() {
-        this.givenCommittedTransaction.commit();
-
         var editingContextFlux = this.editingContextEventSubscriptionRunner.run(new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID)).flux();
         var flux = this.portalEventSubscriptionRunner.run(new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString())).flux();
 
@@ -202,8 +194,6 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
     @GivenSiriusWebServer
     @DisplayName("Given a representation to delete, when the mutation is performed, then the representation has been deleted")
     public void givenRepresentationToDeleteWhenMutationIsPerformedThenTheRepresentationHasBeenDeleted() {
-        this.givenCommittedTransaction.commit();
-
         assertThat(this.representationMetadataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isTrue();
 
         var input = new DeleteRepresentationInput(UUID.randomUUID(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());

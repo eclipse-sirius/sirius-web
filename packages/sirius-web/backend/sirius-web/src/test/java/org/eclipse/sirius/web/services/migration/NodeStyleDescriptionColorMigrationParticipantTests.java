@@ -45,7 +45,6 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.data.MigrationIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.UploadDocumentMutationRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,9 +65,6 @@ public class NodeStyleDescriptionColorMigrationParticipantTests extends Abstract
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
@@ -163,8 +159,6 @@ public class NodeStyleDescriptionColorMigrationParticipantTests extends Abstract
     }
 
     private void uploadDocument(String editingContextId, String content) {
-        this.givenCommittedTransaction.commit();
-
         var file = new UploadFile("test_upload", new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
         var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file, false);
         var result = this.uploadDocumentMutationRunner.run(input);

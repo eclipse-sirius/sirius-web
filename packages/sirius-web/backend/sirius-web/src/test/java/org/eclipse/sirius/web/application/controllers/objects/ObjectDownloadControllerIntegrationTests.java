@@ -25,7 +25,6 @@ import java.util.List;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -56,9 +55,6 @@ public class ObjectDownloadControllerIntegrationTests extends AbstractIntegratio
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -68,8 +64,6 @@ public class ObjectDownloadControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the download of a single domain element is requested with text/csv format, then the element is retrieved with the appropriate format")
     public void givenStudioWhenTheDownloadOfASingleDomainElementIsRequestedWithTextCSvThenTheElementIsRetrievedWithTheAppropriateFormat() throws IOException {
-        this.givenCommittedTransaction.commit();
-
         var testRestTemplate = new TestRestTemplate();
 
         var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID + "/objects?contentType=text/csv&objectIds="
@@ -95,8 +89,6 @@ public class ObjectDownloadControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the download of multiple domain elements is requested with text/csv format, then the elements are retrieved with the appropriate format")
     public void givenStudioWhenTheDownloadOfMultipleDomainElementsIsRequestedWithTextCSvThenTheElementsAreRetrievedWithTheAppropriateFormat() throws IOException {
-        this.givenCommittedTransaction.commit();
-
         var testRestTemplate = new TestRestTemplate();
 
         var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID + "/objects?contentType=text/csv&objectIds="

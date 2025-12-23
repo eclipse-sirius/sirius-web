@@ -49,7 +49,6 @@ import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscription
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,9 +89,6 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private ChangeColumnSortMutationRunner changeColumnSortMutationRunner;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private TableEventSubscriptionRunner tableEventSubscriptionRunner;
@@ -289,8 +285,6 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     @GivenSiriusWebServer
     @DisplayName("Given a table with filters, when the existing representation is opened, then persisted filters are preserved")
     public void givenTableWithFiltersWhenRepresentationIsOpenedThenPersistedFiltersArePreserved() {
-        this.givenCommittedTransaction.commit();
-
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
@@ -357,8 +351,6 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
     @GivenSiriusWebServer
     @DisplayName("Given a table persisted, when table configuration query is triggered, then configuration data are returned")
     public void givenTablePersistedWhenTableConfigurationQueryIsTriggeredThenConfigurationDataAreReturned() {
-        this.givenCommittedTransaction.commit();
-
         Map<String, Object> variables = Map.of(
                 "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 "representationId", PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(),

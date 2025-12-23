@@ -18,7 +18,6 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.GanttEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
@@ -32,22 +31,17 @@ import org.springframework.test.context.transaction.TestTransaction;
 @Service
 public class GivenCreatedGanttSubscription implements IGivenCreatedGanttSubscription {
 
-    private final IGivenCommittedTransaction givenCommittedTransaction;
-
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
     private final GanttEventSubscriptionRunner ganttEventSubscriptionRunner;
 
-    public GivenCreatedGanttSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, GanttEventSubscriptionRunner ganttEventSubscriptionRunner) {
-        this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
+    public GivenCreatedGanttSubscription(IGivenCreatedRepresentation givenCreatedRepresentation, GanttEventSubscriptionRunner ganttEventSubscriptionRunner) {
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
         this.ganttEventSubscriptionRunner = Objects.requireNonNull(ganttEventSubscriptionRunner);
     }
 
     @Override
     public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
-        this.givenCommittedTransaction.commit();
-
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var ganttEventInput = new GanttEventInput(UUID.randomUUID(), input.editingContextId(), UUID.fromString(representationId));
