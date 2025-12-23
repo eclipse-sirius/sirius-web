@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.ISemanticDataInitializer;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
@@ -56,7 +56,7 @@ public class ProjectSemanticDataInitializer {
     public void onProjectSemanticDataCreatedEvent(ProjectSemanticDataCreatedEvent event) {
         if (event.causedBy() instanceof SemanticDataCreatedEvent semanticDataCreatedEvent &&
                 semanticDataCreatedEvent.causedBy() instanceof ProjectCreatedEvent projectCreatedEvent &&
-                projectCreatedEvent.causedBy() instanceof CreateProjectInput createProjectInput) {
+                projectCreatedEvent.causedBy() instanceof ICreateProjectInput createProjectInput) {
             var projectId = projectCreatedEvent.project().getId();
 
             var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))

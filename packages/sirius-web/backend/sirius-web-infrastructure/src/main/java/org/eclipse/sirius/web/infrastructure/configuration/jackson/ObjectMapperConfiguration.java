@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.IStdDeserializerProvider;
+import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
+import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +46,14 @@ public class ObjectMapperConfiguration {
         SimpleModule module = new SimpleModule();
         module.setDeserializers(simpleDeserializers);
 
-        return builder -> builder.modulesToInstall(module);
+        return builder -> builder.modulesToInstall(existing -> existing.add(module));
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(name = "createProjectInputModuleJsonCustomizer")
+    public Jackson2ObjectMapperBuilderCustomizer createProjectInputModuleJsonCustomizer() {
+        SimpleModule module = new SimpleModule();
+        module.addAbstractTypeMapping(ICreateProjectInput.class, CreateProjectInput.class);
+        return builder -> builder.modulesToInstall(existing -> existing.add(module));
     }
 }

@@ -16,16 +16,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 
-import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field Mutation#createProject.
@@ -55,7 +56,7 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, CreateProjectInput.class);
+        var input = this.objectMapper.convertValue(argument, ICreateProjectInput.class);
 
         var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.CREATE);
         if (!hasCapability) {

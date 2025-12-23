@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,23 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.project.dto;
+package org.eclipse.sirius.web.application.project.api;
 
 import java.util.List;
-import java.util.UUID;
 
-import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
-
-import jakarta.validation.constraints.NotNull;
+import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * Input used to create a new project.
+ * Interface implemented by all the inputs creating a project.
  *
- * @author sbegaudeau
+ * @author gcoutable
  */
-public record CreateProjectInput(
-        @NotNull UUID id,
-        @NotNull String name,
-        @NotNull String templateId,
-        @NotNull List<String> libraryIds) implements ICreateProjectInput {
+public interface ICreateProjectInput extends IInput {
+    String name();
+    String templateId();
+    List<String> libraryIds();
 }
