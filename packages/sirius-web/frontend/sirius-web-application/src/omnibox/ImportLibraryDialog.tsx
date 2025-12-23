@@ -25,6 +25,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import Typography from '@mui/material/Typography';
 import { useEffect, useRef, useState } from 'react';
+import { LibrariesImportTable } from '../libraryImport/LibrariesImportTable';
 import { useCurrentProject } from '../views/edit-project/useCurrentProject';
 import {
   ImportLibraryDialogProps,
@@ -32,7 +33,6 @@ import {
   ImportStudioSplitButtonProps,
   ImportStudioSplitButtonState,
 } from './ImportLibraryDialog.types';
-import { LibrariesImportTable } from './LibrariesImportTable';
 import { useImportLibraries } from './useImportLibraries';
 
 export const ImportLibraryDialog = ({ open, title, onClose }: ImportLibraryDialogProps) => {

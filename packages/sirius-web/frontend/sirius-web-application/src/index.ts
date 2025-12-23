@@ -38,6 +38,8 @@ export { I18nContextProvider } from './i18n/I18nContext';
 export type { I18NContextProviderProps } from './i18n/I18nContext';
 export { PublishLibraryDialog } from './libraries/PublishLibraryDialog';
 export { type PublishLibraryDialogProps } from './libraries/PublishLibraryDialog.types';
+export { LibrariesImportTable } from './libraryImport/LibrariesImportTable';
+export type { LibrariesImportTableProps } from './libraryImport/LibrariesImportTable.types';
 export { NavigationBar } from './navigationBar/NavigationBar';
 export {
   type NavigationBarIconProps,
@@ -129,6 +131,8 @@ export { type ErrorMessageProvider } from './views/error/ErrorView.types';
 export { errorMessageProvidersExtensionPoint } from './views/error/ErrorViewExtensionPoints';
 export { LibraryBrowserView } from './views/library-browser/LibraryBrowserView';
 export { NewProjectView } from './views/new-project/NewProjectView';
+export { useAllProjectTemplates } from './views/new-project/useAllProjectTemplates';
+export type * from './views/new-project/useAllProjectTemplates.types';
 export { CreateProjectArea } from './views/project-browser/create-projects-area/CreateProjectArea';
 export { type CreateProjectAreaCardProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
 export type { CreateProjectAreaProps } from './views/project-browser/create-projects-area/CreateProjectArea.types';
