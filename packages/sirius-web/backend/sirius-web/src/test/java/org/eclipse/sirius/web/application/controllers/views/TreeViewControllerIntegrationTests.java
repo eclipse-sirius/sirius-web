@@ -25,7 +25,6 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateChildMutationRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -48,9 +47,6 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
-    @Autowired
     private CreateChildMutationRunner createChildMutationRunner;
 
     @BeforeEach
@@ -62,8 +58,6 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
     @GivenSiriusWebServer
     @DisplayName("Given a view, when a tree description is created, then it is created properly")
     public void givenAViewWhenATreeDescriptionIsCreatedThenItIsCreatedProperly() {
-        this.givenCommittedTransaction.commit();
-
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
@@ -126,7 +120,6 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
         assertThat(objectId).isNotBlank();
         objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=tree&entity=FetchTreeItemContextMenuEntry");
-
     }
 
 

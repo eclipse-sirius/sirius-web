@@ -49,7 +49,6 @@ import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateDocumentMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.StereotypesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.UploadDocumentMutationRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -74,9 +73,6 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
-    @Autowired
     private StereotypesQueryRunner stereotypesQueryRunner;
 
     @Autowired
@@ -97,8 +93,6 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the stereotypes are requested, then the studio stereotypes are available")
     public void givenStudioWhenStereotypesAreRequestedThenTheStudioStereotypesAreAvailable() {
-        this.givenCommittedTransaction.commit();
-
         Map<String, Object> variables = Map.of("editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString());
         var result = this.stereotypesQueryRunner.run(variables);
 
@@ -204,8 +198,6 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
 
 
     private void createDocument(String editingContextId, String stereotypeId, String name) {
-        this.givenCommittedTransaction.commit();
-
         var input = new CreateDocumentInput(UUID.randomUUID(), editingContextId, stereotypeId, name);
         var result = this.createDocumentMutationRunner.run(input);
 
@@ -256,8 +248,6 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     }
 
     private void createInvalidDocument(String editingContextId, String stereotypeId, String name) {
-        this.givenCommittedTransaction.commit();
-
         var input = new CreateDocumentInput(UUID.randomUUID(), editingContextId, stereotypeId, name);
         var result = this.createDocumentMutationRunner.run(input);
 
@@ -269,8 +259,6 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
     }
 
     private void uploadDocument(String editingContextId, String name, String content, boolean readOnly, Predicate<Resource> check) {
-        this.givenCommittedTransaction.commit();
-
         var file = new UploadFile(name, new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
         var input = new UploadDocumentInput(UUID.randomUUID(), editingContextId, file, readOnly);
         var result = this.uploadDocumentMutationRunner.run(input);

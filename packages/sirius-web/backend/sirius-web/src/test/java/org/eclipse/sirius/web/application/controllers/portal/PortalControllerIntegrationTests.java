@@ -57,7 +57,6 @@ import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.portals.GivenCreatedPortalSubscription;
@@ -113,9 +112,6 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
     private GivenCreatedPortalSubscription givenCreatedPortalSubscription;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private IRepresentationContentRepository representationContentRepository;
@@ -268,8 +264,6 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a portal, when we add an existing representation to the portal, then an error should be returned")
     public void givenAPortalWhenWeAddAnExistingRepresentationToThePortalThenAnErrorShouldBeReturned() {
-        this.givenCommittedTransaction.commit();
-
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var flux = this.portalEventSubscriptionRunner.run(portalEventInput).flux();
 
@@ -418,17 +412,18 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
         );
 
         var result = this.addPortalViewMutationRunner.run(addPortalViewMutationInput);
-        this.givenCommittedTransaction.commit();
         String typename = JsonPath.read(result.data(), "$.data.addPortalView.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
+        TestTransaction.start();
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a portal, when reloading a previous state after changing the portal layout, then the original layout is reverted")
     public void givenAPortalWhenReloadingPreviousSateAfterLayoutChangeThenPortalLayoutReverted() {
-        this.givenCommittedTransaction.commit();
-
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var flux = this.portalEventSubscriptionRunner.run(portalEventInput).flux();
 

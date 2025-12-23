@@ -18,7 +18,6 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormDescriptionEditorSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
@@ -32,22 +31,17 @@ import org.springframework.test.context.transaction.TestTransaction;
 @Service
 public class GivenCreatedFormDescriptionEditorSubscription implements IGivenCreatedFormDescriptionEditorSubscription {
 
-    private final IGivenCommittedTransaction givenCommittedTransaction;
-
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
     private final FormDescriptionEditorSubscriptionRunner formDescriptionEditorSubscriptionRunner;
 
-    public GivenCreatedFormDescriptionEditorSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, FormDescriptionEditorSubscriptionRunner formDescriptionEditorSubscriptionRunner) {
-        this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
+    public GivenCreatedFormDescriptionEditorSubscription(IGivenCreatedRepresentation givenCreatedRepresentation, FormDescriptionEditorSubscriptionRunner formDescriptionEditorSubscriptionRunner) {
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
         this.formDescriptionEditorSubscriptionRunner = Objects.requireNonNull(formDescriptionEditorSubscriptionRunner);
     }
 
     @Override
     public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
-        this.givenCommittedTransaction.commit();
-
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var formDescriptionEditorEventInput = new FormDescriptionEditorEventInput(UUID.randomUUID(), input.editingContextId(), representationId);

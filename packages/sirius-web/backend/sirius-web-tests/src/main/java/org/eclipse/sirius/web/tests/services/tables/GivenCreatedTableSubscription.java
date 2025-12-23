@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.springframework.stereotype.Service;
@@ -33,23 +32,17 @@ import org.springframework.test.context.transaction.TestTransaction;
 @Service
 public class GivenCreatedTableSubscription implements IGivenCreatedTableSubscription {
 
-    private final IGivenCommittedTransaction givenCommittedTransaction;
-
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
     private final TableEventSubscriptionRunner tableEventSubscriptionRunner;
 
-    public GivenCreatedTableSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation,
-            TableEventSubscriptionRunner tableEventSubscriptionRunner) {
-        this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
+    public GivenCreatedTableSubscription(IGivenCreatedRepresentation givenCreatedRepresentation, TableEventSubscriptionRunner tableEventSubscriptionRunner) {
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
         this.tableEventSubscriptionRunner = Objects.requireNonNull(tableEventSubscriptionRunner);
     }
 
     @Override
     public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
-        this.givenCommittedTransaction.commit();
-
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var tableEventInput = new TableEventInput(UUID.randomUUID(), input.editingContextId(), representationId);

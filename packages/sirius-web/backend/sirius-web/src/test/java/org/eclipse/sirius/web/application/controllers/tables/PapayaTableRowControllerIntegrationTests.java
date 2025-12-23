@@ -42,7 +42,6 @@ import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.papaya.representations.table.PackageTableRowContextMenuProvider;
 import org.eclipse.sirius.web.papaya.representations.table.PackageTableRowFiltersProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
@@ -90,9 +89,6 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
     @Autowired
     private TableEventSubscriptionRunner tableEventSubscriptionRunner;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
@@ -160,8 +156,6 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a table with a resized row, when a reset rows height mutation is triggered, then the representation is refreshed with no row height")
     public void givenTableWithAResizedRowWhenRowAResetRowsHeightMutationIsTriggeredThenTheRepresentationIsRefreshedWithNoRowHeight() {
-        this.givenCommittedTransaction.commit();
-
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
@@ -207,8 +201,6 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a table, when row context menu entries are queried, then the correct entries are returned")
     public void giveATableWhenRowContextMenuEntriesAreQueriedThenTheCorrectEntriesAreReturned() {
-        this.givenCommittedTransaction.commit();
-
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
@@ -297,8 +289,6 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a table, when a row context menu entry is triggered, then the entry is correctly invoked")
     public void giveATableWhenARowContextMenuEntryIsTriggeredThenTheEntryIsCorrectlyInvoked() {
-        this.givenCommittedTransaction.commit();
-
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
         var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 

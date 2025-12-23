@@ -22,7 +22,6 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -54,9 +53,6 @@ public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrat
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -66,8 +62,6 @@ public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrat
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the download of a domain document is requested, then the domain is retrieved")
     public void givenStudioWhenTheDownloadOfDomainDocumentIsRequestedThenTheDomainIsRetrieved() {
-        this.givenCommittedTransaction.commit();
-
         var testRestTemplate = new TestRestTemplate();
 
         var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID + "/documents/" + StudioIdentifiers.DOMAIN_DOCUMENT;
@@ -84,8 +78,6 @@ public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrat
     @GivenSiriusWebServer
     @DisplayName("Given a download document request, when a resource search service is provided, then the good resource is retrieved")
     public void givenDownloadDocumentRequestWhenAResourceSearchServiceIsProvidedThenTheGoodResourceIsRetrieved() throws IOException {
-        this.givenCommittedTransaction.commit();
-
         var testRestTemplate = new TestRestTemplate();
 
         var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID + "/documents/" + PapayaIdentifiers.PROJECT_OBJECT;

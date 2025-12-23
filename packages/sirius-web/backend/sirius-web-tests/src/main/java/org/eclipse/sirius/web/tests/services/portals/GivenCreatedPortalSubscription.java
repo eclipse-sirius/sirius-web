@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.portals.dto.PortalEventInput;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedPortalSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
@@ -33,22 +32,17 @@ import org.springframework.test.context.transaction.TestTransaction;
 @Service
 public class GivenCreatedPortalSubscription implements IGivenCreatedPortalSubscription {
 
-    private final IGivenCommittedTransaction givenCommittedTransaction;
-
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
     private final PortalEventSubscriptionRunner portalEventSubscriptionRunner;
 
-    public GivenCreatedPortalSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, PortalEventSubscriptionRunner portalEventSubscriptionRunner) {
-        this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
+    public GivenCreatedPortalSubscription(IGivenCreatedRepresentation givenCreatedRepresentation, PortalEventSubscriptionRunner portalEventSubscriptionRunner) {
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
         this.portalEventSubscriptionRunner = Objects.requireNonNull(portalEventSubscriptionRunner);
     }
 
     @Override
     public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
-        this.givenCommittedTransaction.commit();
-
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), input.editingContextId(), representationId);

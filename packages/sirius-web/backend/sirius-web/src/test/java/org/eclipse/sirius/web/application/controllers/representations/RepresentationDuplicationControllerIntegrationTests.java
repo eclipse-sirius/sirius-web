@@ -24,7 +24,6 @@ import org.eclipse.sirius.web.application.views.explorer.dto.DuplicateRepresenta
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.DuplicateRepresentationMutationRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,9 +46,6 @@ public class RepresentationDuplicationControllerIntegrationTests extends Abstrac
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
-    @Autowired
     private DuplicateRepresentationMutationRunner duplicateRepresentationMutationRunner;
 
     @BeforeEach
@@ -61,8 +57,6 @@ public class RepresentationDuplicationControllerIntegrationTests extends Abstrac
     @GivenSiriusWebServer
     @DisplayName("Given a representation, when this representation is duplicated, then it is duplicated properly")
     public void givenRepresentationWhenRepresentationIsDuplicatedThenItIsDuplicatedProperly() {
-        this.givenCommittedTransaction.commit();
-
         var input = new DuplicateRepresentationInput(
                 UUID.randomUUID(),
                 PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),

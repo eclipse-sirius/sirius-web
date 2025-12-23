@@ -33,7 +33,6 @@ import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateChildMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -59,9 +58,6 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
     private IGivenInitialServerState givenInitialServerState;
 
     @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
-
-    @Autowired
     private CreateChildMutationRunner createChildMutationRunner;
 
     @Autowired
@@ -79,8 +75,6 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a view, when a text style palette is created, then it is created properly")
     public void givenAViewWhenATextStylePaletteIsCreatedThenItIsCreatedProperly() {
-        this.givenCommittedTransaction.commit();
-
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
@@ -150,8 +144,6 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a view, when a color palette is created, then it is created properly")
     public void givenAViewWhenAColorPaletteIsCreatedThenItIsCreatedProperly() {
-        this.givenCommittedTransaction.commit();
-
         var inputPalette = new CreateChildInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,

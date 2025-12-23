@@ -44,7 +44,6 @@ import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.RepresentationMetadataQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.RepresentationsMetadataQueryRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -83,9 +82,6 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
@@ -313,8 +309,6 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a Portal representation, when we edit its label in the Details view, then the label is changed.")
     public void givenPortalRepresentationWhenWeEditItsLabelInTheDetailsViewThenTheLabelIsChanged() {
-        this.givenCommittedTransaction.commit();
-
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)

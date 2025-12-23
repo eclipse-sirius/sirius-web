@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramEventInpu
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DiagramEventSubscriptionRunner;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
@@ -33,22 +32,17 @@ import org.springframework.test.context.transaction.TestTransaction;
 @Service
 public class GivenCreatedDiagramSubscription implements IGivenCreatedDiagramSubscription {
 
-    private final IGivenCommittedTransaction givenCommittedTransaction;
-
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
     private final DiagramEventSubscriptionRunner diagramEventSubscriptionRunner;
 
-    public GivenCreatedDiagramSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, DiagramEventSubscriptionRunner diagramEventSubscriptionRunner) {
-        this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
+    public GivenCreatedDiagramSubscription(IGivenCreatedRepresentation givenCreatedRepresentation, DiagramEventSubscriptionRunner diagramEventSubscriptionRunner) {
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
         this.diagramEventSubscriptionRunner = Objects.requireNonNull(diagramEventSubscriptionRunner);
     }
 
     @Override
     public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
-        this.givenCommittedTransaction.commit();
-
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var diagramEventInput = new DiagramEventInput(UUID.randomUUID(), input.editingContextId(), representationId);

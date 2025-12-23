@@ -37,7 +37,6 @@ import org.eclipse.sirius.web.tests.graphql.CreateChildMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.CreateRootObjectMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.DomainsQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.RootObjectCreationDescriptionsQueryRunner;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -58,9 +57,6 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
-
-    @Autowired
-    private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
     private DomainsQueryRunner domainsQueryRunner;
@@ -144,8 +140,6 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given a document, when a root object is created, then it is created properly")
     public void givenDocumentWhenRootObjectIsCreatedThenItIsCreatedProperly() {
-        this.givenCommittedTransaction.commit();
-
         var input = new CreateRootObjectInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
@@ -172,8 +166,6 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
     @GivenSiriusWebServer
     @DisplayName("Given an object, when a child object is created, then it is created properly")
     public void givenObjectWhenChildObjectIsCreatedThenItIsCreatedProperly() {
-        this.givenCommittedTransaction.commit();
-
         var input = new CreateChildInput(
                 UUID.randomUUID(),
                 StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),

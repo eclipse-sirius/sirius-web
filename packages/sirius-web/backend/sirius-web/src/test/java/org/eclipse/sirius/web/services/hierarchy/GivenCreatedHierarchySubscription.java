@@ -18,7 +18,6 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.charts.HierarchyEventInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.web.services.api.IGivenCreatedHierarchySubscription;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
@@ -33,22 +32,17 @@ import reactor.core.publisher.Flux;
 @Service
 public class GivenCreatedHierarchySubscription implements IGivenCreatedHierarchySubscription {
 
-    private final IGivenCommittedTransaction givenCommittedTransaction;
-
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
     private final HierarchyEventSubscriptionRunner hierarchyEventSubscriptionRunner;
 
-    public GivenCreatedHierarchySubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, HierarchyEventSubscriptionRunner hierarchyEventSubscriptionRunner) {
-        this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
+    public GivenCreatedHierarchySubscription(IGivenCreatedRepresentation givenCreatedRepresentation, HierarchyEventSubscriptionRunner hierarchyEventSubscriptionRunner) {
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
         this.hierarchyEventSubscriptionRunner = Objects.requireNonNull(hierarchyEventSubscriptionRunner);
     }
 
     @Override
     public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
-        this.givenCommittedTransaction.commit();
-
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var portalEventInput = new HierarchyEventInput(UUID.randomUUID(), input.editingContextId(), UUID.fromString(representationId));

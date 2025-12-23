@@ -19,7 +19,6 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
 import org.eclipse.sirius.components.forms.tests.graphql.FormEventSubscriptionRunner;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
-import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
@@ -33,22 +32,17 @@ import org.springframework.test.context.transaction.TestTransaction;
 @Service
 public class GivenCreatedFormSubscription implements IGivenCreatedFormSubscription {
 
-    private final IGivenCommittedTransaction givenCommittedTransaction;
-
     private final IGivenCreatedRepresentation givenCreatedRepresentation;
 
     private final FormEventSubscriptionRunner formEventSubscriptionRunner;
 
-    public GivenCreatedFormSubscription(IGivenCommittedTransaction givenCommittedTransaction, IGivenCreatedRepresentation givenCreatedRepresentation, FormEventSubscriptionRunner formEventSubscriptionRunner) {
-        this.givenCommittedTransaction = Objects.requireNonNull(givenCommittedTransaction);
+    public GivenCreatedFormSubscription(IGivenCreatedRepresentation givenCreatedRepresentation, FormEventSubscriptionRunner formEventSubscriptionRunner) {
         this.givenCreatedRepresentation = Objects.requireNonNull(givenCreatedRepresentation);
         this.formEventSubscriptionRunner = Objects.requireNonNull(formEventSubscriptionRunner);
     }
 
     @Override
     public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
-        this.givenCommittedTransaction.commit();
-
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var formEventInput = new FormEventInput(UUID.randomUUID(), input.editingContextId(), representationId);
