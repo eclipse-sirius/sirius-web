@@ -114,7 +114,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
                 "Gantt"
         );
-        return this.givenCreatedGanttSubscription.createAndSubscribe(input);
+        return this.givenCreatedGanttSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -170,7 +170,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             );
             var result = this.createTaskMutationRunner.run(createGanttTaskInput);
 
-            String typename = JsonPath.read(result, "$.data.createGanttTask.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.createGanttTask.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -192,7 +192,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                     editGanttTaskDetailInput);
             var result = this.editTaskMutationRunner.run(editGanttTaskInput);
 
-            String typename = JsonPath.read(result, "$.data.editGanttTask.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editGanttTask.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -248,7 +248,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             );
             var result = this.deleteTaskMutationRunner.run(deleteGanttTaskInput);
 
-            String typename = JsonPath.read(result, "$.data.deleteGanttTask.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteGanttTask.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -300,7 +300,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             );
             var result = this.changeTaskCollapseStateMutationRunner.run(changeTaskCollapseStateInput);
 
-            String typename = JsonPath.read(result, "$.data.changeGanttTaskCollapseState.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.changeGanttTaskCollapseState.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -348,7 +348,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                     ganttRef.get().getId(), columnToChange.id(), false, 50);
             var result = this.changeColumnMutationRunner.run(changeColumnInput);
 
-            String typename = JsonPath.read(result, "$.data.changeGanttColumn.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.changeGanttColumn.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -405,7 +405,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                     ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
             var result = this.createTaskDependencyMutationRunner.run(createGanttTaskDependencyInput);
 
-            String typename = JsonPath.read(result, "$.data.createGanttTaskDependency.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.createGanttTaskDependency.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -425,7 +425,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                     ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
             var result = this.deleteTaskDependencyMutationRunner.run(deleteGanttTaskDependencyInput);
 
-            String typename = JsonPath.read(result, "$.data.deleteGanttTaskDependency.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteGanttTaskDependency.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -437,7 +437,6 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                     var task = new GanttNavigator(gantt).findTaskByName(taskName2);
                     assertThat(task.taskDependencyIds()).isEmpty();
                 }, () -> fail(MISSING_GANTT));
-
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialGanttContentConsumer)

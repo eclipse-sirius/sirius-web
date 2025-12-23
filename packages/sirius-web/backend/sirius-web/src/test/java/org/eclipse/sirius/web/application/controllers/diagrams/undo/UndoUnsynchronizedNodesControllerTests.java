@@ -86,7 +86,7 @@ public class UndoUnsynchronizedNodesControllerTests extends AbstractIntegrationT
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "UnsynchronizedDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

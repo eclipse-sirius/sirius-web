@@ -90,7 +90,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EdgeDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -125,7 +125,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                     "targetDiagramElementId", siriusWebApplicationNodeId.get()
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> connectorToolsLabel = JsonPath.read(connectorToolsResult, "$.data.viewer.editingContext.representation.description.connectorTools[*].label");
+            List<String> connectorToolsLabel = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorTools[*].label");
             assertThat(connectorToolsLabel).contains("New dependencies");
         };
 
@@ -175,7 +175,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                     List.of()
             );
             var result = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(input);
-            String payloadTypeName = JsonPath.read(result, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            String payloadTypeName = JsonPath.read(result.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
             assertThat(payloadTypeName).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 
@@ -228,7 +228,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                     ReconnectEdgeKind.SOURCE
             );
             var result = this.reconnectEdgeMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.reconnectEdge.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.reconnectEdge.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -281,7 +281,7 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                     ReconnectEdgeKind.TARGET
             );
             var result = this.reconnectEdgeMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.reconnectEdge.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.reconnectEdge.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

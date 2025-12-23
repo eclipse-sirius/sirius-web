@@ -24,7 +24,6 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
@@ -61,6 +60,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
+import graphql.execution.DataFetcherResult;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -134,10 +135,10 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        String typename = JsonPath.read(result, "$.data.createRepresentation.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createRepresentation.__typename");
         assertThat(typename).isEqualTo(CreateRepresentationSuccessPayload.class.getSimpleName());
 
-        String representationId = JsonPath.read(result, "$.data.createRepresentation.representation.id");
+        String representationId = JsonPath.read(result.data(), "$.data.createRepresentation.representation.id");
         assertThat(representationId).isNotNull();
 
         assertThat(this.domainEventCollector.getDomainEvents())
@@ -154,8 +155,8 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
     public void givenRepresentationToRenameWhenMutationIsPerformedThenTheRepresentationHasBeenRenamed() {
         this.givenCommittedTransaction.commit();
 
-        var editingContextFlux = this.editingContextEventSubscriptionRunner.run(new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID));
-        var flux = this.portalEventSubscriptionRunner.run(new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
+        var editingContextFlux = this.editingContextEventSubscriptionRunner.run(new EditingContextEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID)).flux();
+        var flux = this.portalEventSubscriptionRunner.run(new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString())).flux();
 
         Runnable renameRepresentation = () -> {
             var input = new RenameRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(), "new name");
@@ -165,14 +166,14 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
             TestTransaction.end();
             TestTransaction.start();
 
-            String typename = JsonPath.read(result, "$.data.renameRepresentation.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.renameRepresentation.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
             assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(RepresentationMetadataUpdatedEvent.class::isInstance);
 
             result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, "representationId", TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
-            String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
+            String label = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.label");
             assertThat(label).isEqualTo("new name");
 
             TestTransaction.flagForCommit();
@@ -211,7 +212,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        String typename = JsonPath.read(result, "$.data.deleteRepresentation.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.deleteRepresentation.__typename");
         assertThat(typename).isEqualTo(DeleteRepresentationSuccessPayload.class.getSimpleName());
 
         assertThat(this.representationMetadataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isFalse();
@@ -228,7 +229,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
         assertThat(this.editingContextEventProcessorRegistry.getEditingContextEventProcessors()).isEmpty();
 
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var flux = this.portalEventSubscriptionRunner.run(portalEventInput);
+        var flux = this.portalEventSubscriptionRunner.run(portalEventInput).flux();
 
         assertThat(this.editingContextEventProcessorRegistry.getEditingContextEventProcessors()).hasSize(1);
         var editingContextEventProcessor = this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID).orElse(null);

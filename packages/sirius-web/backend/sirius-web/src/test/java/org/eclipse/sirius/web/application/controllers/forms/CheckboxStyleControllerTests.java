@@ -71,7 +71,7 @@ public class CheckboxStyleControllerTests extends AbstractIntegrationTests {
                 objectId,
                 "FormWithStyledCheckbox"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

@@ -97,7 +97,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
                 StudioIdentifiers.FORM_DESCRIPTION_OBJECT.toString(),
                 "FormDescriptionEditor"
         );
-        return this.givenCreatedFormDescriptionEditorSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormDescriptionEditorSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -266,7 +266,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
                     0
             );
             var result = this.addWidgetMutationRunner.run(addWidgetInput);
-            String typename = JsonPath.read(result, "$.data.addWidget.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.addWidget.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -316,7 +316,7 @@ public class FormDescriptionEditorControllerIntegrationTests extends AbstractInt
                     0
             );
             var result = this.addPageMutationRunner.run(addPageInput);
-            String typename = JsonPath.read(result, "$.data.addPage.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.addPage.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class InvokeSingleClickOnDiagramElementToolMutationRunner implements IMut
     }
 
     @Override
-    public String run(InvokeSingleClickOnDiagramElementToolInput input) {
+    public GraphQLResult run(InvokeSingleClickOnDiagramElementToolInput input) {
         return this.graphQLRequestor.execute(INVOKE_SINGLE_CLICK_ON_DIAGRAM_ELEMENT_TOOL_MUTATION, input);
     }
 }

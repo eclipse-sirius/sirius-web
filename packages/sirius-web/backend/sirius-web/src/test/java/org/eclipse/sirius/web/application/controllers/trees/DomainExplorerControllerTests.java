@@ -88,7 +88,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
     public void givenAnExplorerRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var defaultExplorerInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
-        var defaultFlux = this.explorerEventSubscriptionRunner.run(defaultExplorerInput);
+        var defaultFlux = this.explorerEventSubscriptionRunner.run(defaultExplorerInput).flux();
         var defaultTreeId = new AtomicReference<String>();
 
         Consumer<Object> initialDefaultExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
@@ -107,7 +107,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
 
         representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
 
         var treeId = new AtomicReference<String>();
 
@@ -129,7 +129,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
                     "treeItemId", StudioIdentifiers.DOMAIN_DOCUMENT.toString()
             );
             var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
 
             treeItemIds.set(treeItemIdsToExpand);
@@ -143,7 +143,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
 
         representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), treeItemIds.get(), List.of());
         var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
-        var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
+        var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput).flux();
 
         var settingId = new AtomicReference<String>();
 
@@ -167,7 +167,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
                     "treeItemId", settingId.get()
             );
             var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty().hasSize(4); // Human:superTypes, NamedElement, NamedElement:superType, NamedElement:name
         };
 
@@ -194,7 +194,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
         treeItemIds.add(StudioIdentifiers.DOMAIN_OBJECT.toString());
         var representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), treeItemIds, List.of());
         var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
-        var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
+        var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput).flux();
 
         Consumer<Object> expandedExplorerContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();

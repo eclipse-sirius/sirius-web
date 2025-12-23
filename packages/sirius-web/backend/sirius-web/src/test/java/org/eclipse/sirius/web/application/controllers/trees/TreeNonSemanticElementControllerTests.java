@@ -86,7 +86,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Tree"
         );
-        return this.givenCreatedTreeSubscription.createAndSubscribe(input);
+        return this.givenCreatedTreeSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -110,7 +110,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
                     "treeItemId", ROOT_SETTING_ID
             );
             var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
             assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(DomainTreeRepresentationDescriptionProvider.SETTING)).toList()).hasSize(1);
         };
@@ -122,7 +122,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
                     "treeItemId", StudioIdentifiers.DOMAIN_OBJECT.toString()
             );
             var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
             assertThat(treeItemIdsToExpand.stream().filter(id -> id.startsWith(DomainTreeRepresentationDescriptionProvider.SETTING)).toList()).hasSize(3);
         };
@@ -137,7 +137,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
         String representationId = this.representationIdBuilder.buildTreeRepresentationId(treeId.get().substring(0, treeId.get().indexOf("?expandedIds=")), List.of(StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID));
 
         var expandedTreeInput = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
-        Flux<Object> expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
+        var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput).flux();
 
         Consumer<Object> initialExpandedTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();

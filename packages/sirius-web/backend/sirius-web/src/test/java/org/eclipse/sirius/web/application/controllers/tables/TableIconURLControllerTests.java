@@ -111,7 +111,9 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
         );
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.graphQLRequestor.subscribeToSpecification(TABLE_EVENT_SUBSCRIPTION, tableEventInput);
+        var flux = this.graphQLRequestor.subscribeToSpecification(TABLE_EVENT_SUBSCRIPTION, tableEventInput)
+                .flux()
+                .map(Object::toString);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -164,7 +166,9 @@ public class TableIconURLControllerTests extends AbstractIntegrationTests {
         );
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.graphQLRequestor.subscribeToSpecification(TABLE_EVENT_SUBSCRIPTION, tableEventInput);
+        var flux = this.graphQLRequestor.subscribeToSpecification(TABLE_EVENT_SUBSCRIPTION, tableEventInput)
+                .flux()
+                .map(Object::toString);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();

@@ -88,7 +88,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
         );
-        return this.givenCreatedTableSubscription.createAndSubscribe(input);
+        return this.givenCreatedTableSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -116,7 +116,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                     tableId.get(), tableId.get(), columnToChange.getId().toString(), 50);
             var result = this.resizeTableColumnMutationRunner.run(resizeTableColumnInput);
 
-            String typename = JsonPath.read(result, "$.data.resizeTableColumn.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.resizeTableColumn.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -172,7 +172,7 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                             new ColumnVisibility(columnAnnotationRef.get().getId().toString(), false)));
             var result = this.changeTableColumnVisibilityMutationRunner.run(changeTableColumnVisibilityInput);
 
-            String typename = JsonPath.read(result, "$.data.changeTableColumnVisibility.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.changeTableColumnVisibility.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -224,10 +224,10 @@ public class PapayaTableColumnControllerIntegrationTests extends AbstractIntegra
                     tableId.get(),
                     tableId.get(),
                     ids
-                    );
+            );
             var result = this.reorderTableColumnsMutationRunner.run(changeTableColumnsOrderInput);
 
-            String typename = JsonPath.read(result, "$.data.reorderTableColumns.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.reorderTableColumns.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

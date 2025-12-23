@@ -17,12 +17,12 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormDescriptionEditorSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
-import reactor.core.publisher.Flux;
 
 /**
  * Used to create a form description editor and subscribe to it.
@@ -45,18 +45,18 @@ public class GivenCreatedFormDescriptionEditorSubscription implements IGivenCrea
     }
 
     @Override
-    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
+    public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var formDescriptionEditorEventInput = new FormDescriptionEditorEventInput(UUID.randomUUID(), input.editingContextId(), representationId);
-        var flux = this.formDescriptionEditorSubscriptionRunner.run(formDescriptionEditorEventInput);
+        var result = this.formDescriptionEditorSubscriptionRunner.run(formDescriptionEditorEventInput);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
 
-        return flux;
+        return result;
     }
 }

@@ -73,7 +73,7 @@ public class EditingContextEventProcessorRegistryIntegrationTests extends Abstra
     @DisplayName("Given an editing context, when load it with a initialization hook, then the initialization hook is executed.")
     public void givenAnEditingContextEventWhenWeLoadItWithInitializationHookThenTheInitializationHookIsExecuted() {
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString());
-        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
 
         BiFunction<IEditingContext, IInput, IPayload> checkInitialEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {

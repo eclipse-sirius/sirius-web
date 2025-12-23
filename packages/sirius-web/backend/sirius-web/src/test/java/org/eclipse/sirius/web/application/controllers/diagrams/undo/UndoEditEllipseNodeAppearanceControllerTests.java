@@ -12,7 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams.undo;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+
 import com.jayway.jsonpath.JsonPath;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
@@ -40,17 +50,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 /**
  * Tests for undo redo ellipse node appearance edition.
@@ -96,7 +98,7 @@ public class UndoEditEllipseNodeAppearanceControllerTests extends AbstractIntegr
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EditEllipseNodeAppearanceDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -106,7 +108,6 @@ public class UndoEditEllipseNodeAppearanceControllerTests extends AbstractIntegr
         var flux = this.givenDiagramSubscription();
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
-
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
@@ -205,7 +206,7 @@ public class UndoEditEllipseNodeAppearanceControllerTests extends AbstractIntegr
         Runnable deleteNode = () -> {
             var input = new DeleteFromDiagramInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebApplicationNodeId.get()), List.of());
             var result = this.deleteFromDiagramMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.deleteFromDiagram.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteFromDiagram.__typename");
             assertThat(typename).isEqualTo(DeleteFromDiagramSuccessPayload.class.getSimpleName());
         };
 

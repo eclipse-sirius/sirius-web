@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.graphql;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.appearance.ResetEdgeAppearanceInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * Simulator for the mutation resetting an edge appearance.
@@ -54,7 +55,7 @@ public class ResetEdgeAppearanceMutationRunner implements IMutationRunner<ResetE
     }
 
     @Override
-    public String run(ResetEdgeAppearanceInput input) {
+    public GraphQLResult run(ResetEdgeAppearanceInput input) {
         return this.graphQLRequestor.execute(RESET_EDGE_APPEARANCE_MUTATION, input);
     }
 }

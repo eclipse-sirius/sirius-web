@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.widget.reference.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ClearReferenceInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ReferenceClearMutationRunner implements IMutationRunner<ClearRefere
     }
 
     @Override
-    public String run(ClearReferenceInput input) {
+    public GraphQLResult run(ClearReferenceInput input) {
         return this.graphQLRequestor.execute(CLEAR_REFERENCE_MUTATION, input);
     }
 

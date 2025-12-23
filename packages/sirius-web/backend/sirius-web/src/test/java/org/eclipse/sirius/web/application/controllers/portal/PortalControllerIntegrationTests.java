@@ -151,7 +151,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a portal containing a view, when we delete the portal representation, then it is removed")
     public void givenAPortalContainingAViewWhenWeDeleteThePortalRepresentationThenItIsRemoved() {
         var input = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var flux = this.portalEventSubscriptionRunner.run(input);
+        var flux = this.portalEventSubscriptionRunner.run(input).flux();
 
         var portalViewId = new AtomicReference<String>();
         var portalViewCount = new AtomicReference<Integer>();
@@ -168,7 +168,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             var removePortalViewInput = new RemovePortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(),
                     portalViewId.get());
             var result = this.removePortalViewMutationRunner.run(removePortalViewInput);
-            String typename = JsonPath.read(result, "$.data.removePortalView.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.removePortalView.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -192,7 +192,9 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given a portal containing a view, when we ask the portal view metadata, then metadata are sent")
     public void givenAPortalContainingAViewWhenWeAskThePortalViewMetadataThenMetadataAreSent() {
         var input = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var flux = this.graphQLRequestor.subscribeToSpecification(PORTAL_VIEWS_REPRESENTATION_METADATA_PORTAL_EVENT_SUBSCRIPTION, input);
+        var flux = this.graphQLRequestor.subscribeToSpecification(PORTAL_VIEWS_REPRESENTATION_METADATA_PORTAL_EVENT_SUBSCRIPTION, input)
+                .flux()
+                .map(Object::toString);
 
         Consumer<String> portalRefreshedEventPayloadConsumer = payload -> Optional.of(payload)
                 .ifPresentOrElse(body -> {
@@ -214,9 +216,14 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     @GivenSiriusWebServer
     @DisplayName("Given a portal, when we add a representation to the portal, then the new state is sent with the new representation")
     public void givenAPortalWhenWeAddARepresentationToThePortalThenTheNewStateIsSentWithTheNewRepresentation() {
-        var createRepresentationInput = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, PortalDescriptionProvider.DESCRIPTION_ID,
-                TestIdentifiers.EPACKAGE_OBJECT.toString(), SAMPLE_PORTAL);
-        var flux = this.givenCreatedPortalSubscription.createAndSubscribe(createRepresentationInput);
+        var createRepresentationInput = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
+                PortalDescriptionProvider.DESCRIPTION_ID,
+                TestIdentifiers.EPACKAGE_OBJECT.toString(),
+                SAMPLE_PORTAL
+        );
+        var flux = this.givenCreatedPortalSubscription.createAndSubscribe(createRepresentationInput).flux();
 
         var portalId = new AtomicReference<String>();
 
@@ -231,7 +238,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                     TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString(), 0, 0, 200, 300);
             var result = this.addPortalViewMutationRunner.run(addPortalViewInput);
 
-            String typename = JsonPath.read(result, "$.data.addPortalView.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.addPortalView.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -264,14 +271,14 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
         this.givenCommittedTransaction.commit();
 
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var flux = this.portalEventSubscriptionRunner.run(portalEventInput);
+        var flux = this.portalEventSubscriptionRunner.run(portalEventInput).flux();
 
         Runnable addExistingRepresentation = () -> {
             var addPortalViewInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString(),
                     TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString(), 0, 0, 200, 300);
             var result = this.addPortalViewMutationRunner.run(addPortalViewInput);
 
-            String typename = JsonPath.read(result, "$.data.addPortalView.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.addPortalView.__typename");
             assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
         };
 
@@ -296,10 +303,10 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                         TestIdentifiers.ECLASS_OBJECT.toString()
                 ),
                 List.of());
-        var explorerEventFlux = this.explorerEventSubscriptionRunner.run(new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, explorerId));
+        var explorerEventFlux = this.explorerEventSubscriptionRunner.run(new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, explorerId)).flux();
 
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var portalEventFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
+        var portalEventFlux = this.portalEventSubscriptionRunner.run(portalEventInput).flux();
         var flux = Flux.merge(explorerEventFlux, portalEventFlux);
 
         Consumer<Object> initialPortalContentConsumer = assertRefreshedPortalThat(portal -> {
@@ -321,7 +328,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             TestTransaction.end();
             TestTransaction.start();
 
-            String typename = JsonPath.read(result, "$.data.deleteTreeItem.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteTreeItem.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -352,7 +359,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenAnArbitrarySemanticElementWhenCreatingPortalOnItThenEmptyPortalIsCreated() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, PortalDescriptionProvider.DESCRIPTION_ID,
                 TestIdentifiers.EPACKAGE_OBJECT.toString(), SAMPLE_PORTAL);
-        var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input).flux();
 
         Consumer<Object> initialPortalContentConsumer = assertRefreshedPortalThat(portal -> {
             assertThat(portal.getViews()).isEmpty();
@@ -377,7 +384,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
                 TestIdentifiers.EPACKAGE_OBJECT.toString(), SAMPLE_PORTAL);
 
 
-        var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedPortalSubscription.createAndSubscribe(input).flux();
 
         Consumer<Object> initialPortalContentConsumer = assertRefreshedPortalThat(portal -> {
             representationId.set(portal.getId());
@@ -399,12 +406,20 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
     }
 
     private void addView(String representationId, String viewRepresentationId) {
-        var addPortalViewMutationInput = new AddPortalViewInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
-                representationId, viewRepresentationId, 0, 0, 100, 100);
+        var addPortalViewMutationInput = new AddPortalViewInput(
+                UUID.randomUUID(),
+                TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID,
+                representationId,
+                viewRepresentationId,
+                0,
+                0,
+                100,
+                100
+        );
 
-        String result = this.addPortalViewMutationRunner.run(addPortalViewMutationInput);
+        var result = this.addPortalViewMutationRunner.run(addPortalViewMutationInput);
         this.givenCommittedTransaction.commit();
-        String typename = JsonPath.read(result, "$.data.addPortalView.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.addPortalView.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
     }
 
@@ -415,7 +430,7 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
         this.givenCommittedTransaction.commit();
 
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var flux = this.portalEventSubscriptionRunner.run(portalEventInput);
+        var flux = this.portalEventSubscriptionRunner.run(portalEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();

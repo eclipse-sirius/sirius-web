@@ -70,7 +70,7 @@ public class NodeStyleControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ImageNodeStyleDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -78,7 +78,6 @@ public class NodeStyleControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a node with image style, when the diagram is rendered, then the node style is returned")
     public void givenNodeWithImageStyleWhenTheDiagramIsRenderedThenTheNodeStyleIsReturned() {
         var flux = this.givenDiagramSubscription();
-
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getNodes())

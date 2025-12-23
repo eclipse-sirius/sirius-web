@@ -94,7 +94,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                 "FormWithReferenceWidget"
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
-            .filter(FormRefreshedEventPayload.class::isInstance);
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var groupNavigator = new FormNavigator(form).page("Page").group("Group");
@@ -128,7 +129,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                 "FormWithReferenceWidget"
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
-            .filter(FormRefreshedEventPayload.class::isInstance);
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var referenceWidgetId = new AtomicReference<String>();
@@ -150,7 +152,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
             );
             var result = this.referenceValueOptionsQueryRunner.run(variables);
 
-            List<String> referenceValueOptionLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.referenceValueOptions[*].label");
+            List<String> referenceValueOptionLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.referenceValueOptions[*].label");
             assertThat(referenceValueOptionLabels)
                     .isNotEmpty()
                     .anySatisfy(label -> assertThat(label).isEqualTo("Human"));
@@ -176,7 +178,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                 "FormWithReferenceWidget"
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
-            .filter(FormRefreshedEventPayload.class::isInstance);
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var referenceWidgetId = new AtomicReference<String>();
@@ -195,7 +198,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                     StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get());
             var result = this.referenceClearMutationRunner.run(clearReferenceInput);
 
-            String mutationResult = JsonPath.read(result, "$.data.clearReference.__typename");
+            String mutationResult = JsonPath.read(result.data(), "$.data.clearReference.__typename");
             assertThat(mutationResult).isEqualTo("SuccessPayload");
 
         };
@@ -227,7 +230,8 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                 "FormWithReferenceWidget"
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
-            .filter(FormRefreshedEventPayload.class::isInstance);
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var referenceWidgetId = new AtomicReference<String>();
@@ -248,7 +252,7 @@ public class ReferenceWidgetControllerTests extends AbstractIntegrationTests {
                     StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), referenceWidgetId.get(), referenceValueId.get());
             var result = this.referenceRemoveMutationRunner.run(removeReferenceValueInput);
 
-            String mutationResult = JsonPath.read(result, "$.data.removeReferenceValue.__typename");
+            String mutationResult = JsonPath.read(result.data(), "$.data.removeReferenceValue.__typename");
             assertThat(mutationResult).isEqualTo("SuccessPayload");
 
         };

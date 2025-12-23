@@ -85,7 +85,7 @@ public class EditLabelAppearanceControllerTests extends AbstractIntegrationTests
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EditLabelAppearanceDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

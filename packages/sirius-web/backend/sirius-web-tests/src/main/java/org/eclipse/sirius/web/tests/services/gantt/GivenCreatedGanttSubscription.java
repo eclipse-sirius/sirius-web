@@ -17,12 +17,12 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.GanttEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
-import reactor.core.publisher.Flux;
 
 /**
  * Used to create a gantt and subscribe to it.
@@ -45,18 +45,18 @@ public class GivenCreatedGanttSubscription implements IGivenCreatedGanttSubscrip
     }
 
     @Override
-    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
+    public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var ganttEventInput = new GanttEventInput(UUID.randomUUID(), input.editingContextId(), UUID.fromString(representationId));
-        var flux = this.ganttEventSubscriptionRunner.run(ganttEventInput);
+        var result = this.ganttEventSubscriptionRunner.run(ganttEventInput);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
 
-        return flux;
+        return result;
     }
 }

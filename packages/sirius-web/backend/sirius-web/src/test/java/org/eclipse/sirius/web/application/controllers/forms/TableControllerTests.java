@@ -105,7 +105,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(),
                 "FormWithTable");
         return this.givenCreatedFormSubscription.createAndSubscribe(input)
-            .filter(FormRefreshedEventPayload.class::isInstance);
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
     }
 
     @Test
@@ -166,7 +167,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
             var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), textfieldCellId.get(), "newName");
             var result = this.editTextfieldCellMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editTextfieldCell.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfieldCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -176,7 +177,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
             var input = new EditSelectCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), selectCellId.get(), "P2");
             var result = this.editSelectCellMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editSelectCell.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editSelectCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -187,7 +188,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
                     List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
             var result = this.editMultiSelectCellMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editMultiSelectCell.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editMultiSelectCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -197,7 +198,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
             var input = new EditCheckboxCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), checkboxCellId.get(), true);
             var result = this.editCheckboxCellMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editCheckboxCell.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editCheckboxCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -228,7 +229,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "FormWithViewTable");
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
-            .filter(FormRefreshedEventPayload.class::isInstance);
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
@@ -262,7 +264,8 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "FormWithViewTable");
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
-            .filter(FormRefreshedEventPayload.class::isInstance);
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
         var tableId = new AtomicReference<String>();
@@ -292,7 +295,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
                     "newName");
             var result = this.editTextfieldCellMutationRunner.run(editNameTextfieldCellInput);
 
-            String typename = JsonPath.read(result, "$.data.editTextfieldCell.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfieldCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -305,7 +308,6 @@ public class TableControllerTests extends AbstractIntegrationTests {
             assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("newName");
 
         });
-
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialFormContentConsumer)

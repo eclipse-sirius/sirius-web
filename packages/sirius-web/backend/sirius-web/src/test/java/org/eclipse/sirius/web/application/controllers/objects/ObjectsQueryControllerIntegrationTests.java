@@ -51,8 +51,8 @@ public class ObjectsQueryControllerIntegrationTests extends AbstractIntegrationT
                 "objectIds", inputObjectIds
         );
         var result = this.objectsLabelsQueryRunner.run(variables);
-        List<String> objectIds = JsonPath.read(result, "$.data.viewer.editingContext.objects.*.id");
-        List<String> labels = JsonPath.read(result, "$.data.viewer.editingContext.objects.*.label");
+        List<String> objectIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.objects.*.id");
+        List<String> labels = JsonPath.read(result.data(), "$.data.viewer.editingContext.objects.*.label");
 
         assertThat(objectIds).hasSameElementsAs(inputObjectIds);
         assertThat(labels).hasSameElementsAs(List.of("Form View", "Root Diagram"));

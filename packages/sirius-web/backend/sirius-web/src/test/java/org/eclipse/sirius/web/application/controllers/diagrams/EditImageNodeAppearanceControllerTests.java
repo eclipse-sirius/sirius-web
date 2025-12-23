@@ -84,7 +84,7 @@ public class EditImageNodeAppearanceControllerTests extends AbstractIntegrationT
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EditImageNodeAppearanceDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -180,7 +180,6 @@ public class EditImageNodeAppearanceControllerTests extends AbstractIntegrationT
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
 
-
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
             assertThat(diagram.getNodes())
@@ -194,7 +193,6 @@ public class EditImageNodeAppearanceControllerTests extends AbstractIntegrationT
             var siriusWebApplicationNode = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode();
             siriusWebApplicationNodeId.set(siriusWebApplicationNode.getId());
         });
-
 
         Runnable setNodeCustomAppearance = () -> {
             var appearanceInput = new ImageNodeAppearanceInput("red", 5, null, null);

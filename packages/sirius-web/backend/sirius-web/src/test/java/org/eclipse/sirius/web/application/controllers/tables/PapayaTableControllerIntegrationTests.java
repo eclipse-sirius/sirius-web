@@ -114,7 +114,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
         );
-        return this.givenCreatedTableSubscription.createAndSubscribe(input);
+        return this.givenCreatedTableSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -226,7 +226,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                     tableId.get(), tableId.get(), "New global filter value");
             var result = this.changeGlobalFilterMutationRunner.run(changeGlobalFilterValueInput);
 
-            String typename = JsonPath.read(result, "$.data.changeGlobalFilterValue.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.changeGlobalFilterValue.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -266,7 +266,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                     tableId.get(), tableId.get(), List.of(new ColumnFilter(columnId.get(), "filter value")));
             var result = this.changeColumnFilterMutationRunner.run(changeColumnFilterInput);
 
-            String typename = JsonPath.read(result, "$.data.changeColumnFilter.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.changeColumnFilter.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -292,7 +292,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         this.givenCommittedTransaction.commit();
 
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
-        var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -334,7 +334,7 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
                     tableId.get(), tableId.get(), List.of(new ColumnSort(columnId.get(), true)));
             var result = this.changeColumnSortMutationRunner.run(changeColumnSortInput);
 
-            String typename = JsonPath.read(result, "$.data.changeColumnSort.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.changeColumnSort.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -367,20 +367,20 @@ public class PapayaTableControllerIntegrationTests extends AbstractIntegrationTe
         var result = this.tableConfigurationQueryRunner.run(variables);
 
 
-        String globalFilterResult = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.globalFilter");
+        String globalFilterResult = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.configuration.globalFilter");
         assertThat(globalFilterResult).isEqualTo("PUB");
 
-        List<String> columnFiltersValues = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.columnFilters[*].value");
+        List<String> columnFiltersValues = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.configuration.columnFilters[*].value");
         assertThat(columnFiltersValues)
                 .isNotEmpty()
                 .hasSize(1)
                 .anySatisfy(tableFilterId -> assertThat(tableFilterId).isEqualTo("LIC"));
 
-        List<String> columnSortIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.columnSort[*].id");
+        List<String> columnSortIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.configuration.columnSort[*].id");
         assertThat(columnSortIds)
                 .isEmpty();
 
-        Integer defaultPageSizeResult = JsonPath.read(result, "$.data.viewer.editingContext.representation.configuration.defaultPageSize");
+        Integer defaultPageSizeResult = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.configuration.defaultPageSize");
         assertThat(defaultPageSizeResult).isEqualTo(10);
     }
 

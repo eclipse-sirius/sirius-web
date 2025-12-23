@@ -97,7 +97,7 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
                 StudioIdentifiers.ROOT_OBJECT.toString(),
                 "Table"
         );
-        return this.givenCreatedTableSubscription.createAndSubscribe(input);
+        return this.givenCreatedTableSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -131,9 +131,9 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
             var input = new CreateForkedStudioInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID, representationId.get(), "");
             var result = this.createForkedStudioMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.createForkedStudio.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.createForkedStudio.__typename");
             assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
-            String projectId = JsonPath.read(result, "$.data.createForkedStudio.project.id");
+            String projectId = JsonPath.read(result.data(), "$.data.createForkedStudio.project.id");
             forkStudioProjectId.set(projectId);
         };
 

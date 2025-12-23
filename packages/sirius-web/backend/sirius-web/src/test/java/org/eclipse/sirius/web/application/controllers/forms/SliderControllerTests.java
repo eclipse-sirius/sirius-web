@@ -80,7 +80,7 @@ public class SliderControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.FIRST_TASK_OBJECT.toString(),
                 "FormWithSlider"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -130,7 +130,7 @@ public class SliderControllerTests extends AbstractIntegrationTests {
             var input = new EditSliderInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), sliderId.get(), 5);
             var result = this.editSliderMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editSlider.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editSlider.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

@@ -70,6 +70,7 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
         var relatedElementRepresentationId = this.representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString()));
         var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
@@ -104,6 +105,7 @@ public class RelatedElementsViewControllerIntegrationTests extends AbstractInteg
         var relatedElementRepresentationId = this.representationIdBuilder.buildRelatedElementsRepresentationId(List.of(StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()));
         var input = new RelatedElementsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, relatedElementRepresentationId);
         var flux = this.relatedElementsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {

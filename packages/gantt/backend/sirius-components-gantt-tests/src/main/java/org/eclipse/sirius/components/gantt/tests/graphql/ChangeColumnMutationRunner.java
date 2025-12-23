@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.gantt.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeGanttColumnInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ChangeColumnMutationRunner implements IMutationRunner<ChangeGanttCo
     }
 
     @Override
-    public String run(ChangeGanttColumnInput input) {
+    public GraphQLResult run(ChangeGanttColumnInput input) {
         return this.graphQLRequestor.execute(CHANGE_COLUMN_MUTATION, input);
     }
 }

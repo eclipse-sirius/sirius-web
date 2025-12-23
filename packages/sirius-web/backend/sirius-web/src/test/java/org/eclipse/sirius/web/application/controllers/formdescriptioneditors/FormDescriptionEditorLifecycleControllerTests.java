@@ -96,7 +96,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
                 StudioIdentifiers.FORM_DESCRIPTION_OBJECT.toString(),
                 "FormDescriptionEditor"
         );
-        var flux = this.givenCreatedFormDescriptionEditorSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormDescriptionEditorSubscription.createAndSubscribe(input).flux();
 
         var formDescriptionEditorId = new AtomicReference<String>();
         var representationMetadata = new AtomicReference<RepresentationMetadata>();
@@ -126,7 +126,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
                     0
             );
             var result = this.addWidgetMutationRunner.run(addWidgetInput);
-            String typename = JsonPath.read(result, "$.data.addWidget.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.addWidget.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -148,7 +148,7 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
                     formDescriptionEditorId.get(),
                     newWidgetId.get());
             var result = this.deleteWidgetMutationRunner.run(deleteWidgetInput);
-            String typename = JsonPath.read(result, "$.data.deleteWidget.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteWidget.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();

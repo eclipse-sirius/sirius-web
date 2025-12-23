@@ -71,7 +71,7 @@ public class DateTimeStyleControllerTests extends AbstractIntegrationTests {
                 objectId,
                 "FormWithStyledDateTime"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

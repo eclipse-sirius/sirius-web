@@ -82,8 +82,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
-
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -102,14 +101,13 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                     -1
             );
             var result = this.dropTreeItemMutationRunner.run(dropTreeItemInput);
-            String typename = JsonPath.read(result, "$.data.dropTreeItem.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropTreeItem.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();
             TestTransaction.end();
             TestTransaction.start();
         };
-
 
         Consumer<Object> updateTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -118,7 +116,6 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
             assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
                     .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
         });
-
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
@@ -140,8 +137,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
-
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -160,14 +156,13 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                     1
             );
             var result = this.dropTreeItemMutationRunner.run(dropTreeItemInput);
-            String typename = JsonPath.read(result, "$.data.dropTreeItem.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropTreeItem.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();
             TestTransaction.end();
             TestTransaction.start();
         };
-
 
         Consumer<Object> updateTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -176,7 +171,6 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
             assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
                     .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
         });
-
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
@@ -198,8 +192,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
-
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -217,7 +210,7 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                     -1
             );
             var result = this.dropTreeItemMutationRunner.run(dropTreeItemInput);
-            String typename = JsonPath.read(result, "$.data.dropTreeItem.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropTreeItem.__typename");
             assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();

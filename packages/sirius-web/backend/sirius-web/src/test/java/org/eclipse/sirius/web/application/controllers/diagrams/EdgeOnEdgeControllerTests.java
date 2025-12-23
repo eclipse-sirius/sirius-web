@@ -88,7 +88,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PAPAYA_SIRIUS_WEB_LIFECYCLE_ROOT_OBJECT.toString(),
                 "EdgeOnEdgeDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -152,7 +152,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                     "targetDiagramElementId", subscriptionEdgeId
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> connectorToolsId = JsonPath.read(connectorToolsResult, "$.data.viewer.editingContext.representation.description.connectorTools[*].id");
+            List<String> connectorToolsId = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorTools[*].id");
             assertThat(connectorToolsId).hasSize(1);
             connectorToolId.set(connectorToolsId.get(0));
         };
@@ -172,7 +172,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                     List.of()
             );
             var result = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(input);
-            String payloadTypeName = JsonPath.read(result, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            String payloadTypeName = JsonPath.read(result.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
             assertThat(payloadTypeName).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 
@@ -222,7 +222,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                     "targetDiagramElementId", channelNodeId
             );
             var connectorToolsResult = this.connectorToolsQueryRunner.run(variables);
-            List<String> connectorToolsId = JsonPath.read(connectorToolsResult, "$.data.viewer.editingContext.representation.description.connectorTools[*].id");
+            List<String> connectorToolsId = JsonPath.read(connectorToolsResult.data(), "$.data.viewer.editingContext.representation.description.connectorTools[*].id");
             assertThat(connectorToolsId).hasSize(1);
             connectorToolId.set(connectorToolsId.get(0));
         };
@@ -242,7 +242,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                     List.of()
             );
             var result = this.invokeSingleClickOnTwoDiagramElementsToolMutationRunner.run(input);
-            String payloadTypeName = JsonPath.read(result, "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
+            String payloadTypeName = JsonPath.read(result.data(), "$.data.invokeSingleClickOnTwoDiagramElementsTool.__typename");
             assertThat(payloadTypeName).isEqualTo(InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload.class.getSimpleName());
         };
 
@@ -290,7 +290,7 @@ public class EdgeOnEdgeControllerTests extends AbstractIntegrationTests {
                     ReconnectEdgeKind.SOURCE
             );
             var result = this.reconnectEdgeMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.reconnectEdge.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.reconnectEdge.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

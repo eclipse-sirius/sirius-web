@@ -82,7 +82,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "UnsynchronizedDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -153,7 +153,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
                     0);
             var result = this.dropOnDiagramMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.dropOnDiagram.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropOnDiagram.__typename");
             assertThat(typename).isEqualTo(DropOnDiagramSuccessPayload.class.getSimpleName());
         };
 

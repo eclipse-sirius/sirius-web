@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.tests.graphql;
 
+import java.util.Map;
+import java.util.Objects;
+
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IQueryRunner;
 import org.springframework.stereotype.Service;
-
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Used to get the many representation metadata with the GraphQL API.
@@ -61,7 +62,7 @@ public class RepresentationsMetadataQueryRunner implements IQueryRunner {
     }
 
     @Override
-    public String run(Map<String, Object> variables) {
+    public GraphQLResult run(Map<String, Object> variables) {
         return this.graphQLRequestor.execute(REPRESENTATIONS_METADATA_QUERY, variables);
     }
 

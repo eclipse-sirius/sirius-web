@@ -92,7 +92,7 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.domainsQueryRunner.run(variables);
 
-        List<String> domainIds = JsonPath.read(result, "$.data.viewer.editingContext.domains[*].id");
+        List<String> domainIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.domains[*].id");
         assertThat(domainIds)
                 .isNotEmpty()
                 .contains("domain://buck", EcorePackage.eNS_URI, ViewPackage.eNS_URI, DiagramPackage.eNS_URI, FormPackage.eNS_URI);
@@ -109,12 +109,12 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.rootObjectCreationDescriptionsQueryRunner.run(variables);
 
-        List<String> creationDescriptionIds = JsonPath.read(result, "$.data.viewer.editingContext.rootObjectCreationDescriptions[*].id");
+        List<String> creationDescriptionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.rootObjectCreationDescriptions[*].id");
         assertThat(creationDescriptionIds)
                 .isNotEmpty()
                 .contains("Root");
 
-        List<List<String>> creationDescriptionIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.rootObjectCreationDescriptions[*].iconURL");
+        List<List<String>> creationDescriptionIconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.rootObjectCreationDescriptions[*].iconURL");
         assertThat(creationDescriptionIconURLs).hasSize(2);
         assertThat(creationDescriptionIconURLs.get(0)).isEqualTo(List.of("/api/images/icons/svg/Default.svg"));
         assertThat(creationDescriptionIconURLs.get(1)).isEqualTo(List.of("/api/images/icons/svg/Default.svg"));
@@ -130,12 +130,12 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.childCreationDescriptionsQueryRunner.run(variables);
 
-        List<String> creationDescriptionIds = JsonPath.read(result, "$.data.viewer.editingContext.childCreationDescriptions[*].id");
+        List<String> creationDescriptionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.childCreationDescriptions[*].id");
         assertThat(creationDescriptionIds)
                 .isNotEmpty()
                 .contains("humans-Human");
 
-        List<List<String>> creationDescriptionIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.childCreationDescriptions[*].iconURL");
+        List<List<String>> creationDescriptionIconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.childCreationDescriptions[*].iconURL");
         assertThat(creationDescriptionIconURLs).hasSize(1);
         assertThat(creationDescriptionIconURLs.get(0)).isEqualTo(List.of("/api/images/icons/svg/Default.svg"));
     }
@@ -155,16 +155,16 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.createRootObjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createRootObject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createRootObject.__typename");
         assertThat(typename).isEqualTo(CreateRootObjectSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.createRootObject.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.createRootObject.object.id");
         assertThat(objectId).isNotBlank();
 
-        String objectLabel = JsonPath.read(result, "$.data.createRootObject.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.createRootObject.object.label");
         assertThat(objectLabel).isNotBlank();
 
-        String objectKind = JsonPath.read(result, "$.data.createRootObject.object.kind");
+        String objectKind = JsonPath.read(result.data(), "$.data.createRootObject.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=domain&entity=Entity");
     }
 
@@ -182,16 +182,16 @@ public class ObjectCreationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.createChildMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createChild.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
         assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
 
-        String objectLabel = JsonPath.read(result, "$.data.createChild.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.createChild.object.label");
         assertThat(objectLabel).isNotBlank();
 
-        String objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        String objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=domain&entity=Entity");
     }
 }

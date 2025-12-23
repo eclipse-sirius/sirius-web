@@ -14,13 +14,13 @@ package org.eclipse.sirius.web.tests.services.selection;
 
 import java.util.Objects;
 
-import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogTreeEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
 
-import reactor.core.publisher.Flux;
+import graphql.execution.DataFetcherResult;
 
 /**
  * Used to get the selection dialog tree event subscription with the GraphQL API.
@@ -45,11 +45,13 @@ public class SelectionDialogTreeEventSubscriptionRunner implements ISubscription
     }
 
     @Override
-    public Flux<Object> run(SelectionDialogTreeEventInput input) {
-        return this.graphQLRequestor.subscribe(SELECTION_DIALOG_TREE_EVENT_SUBSCRIPTION, input)
+    public GraphQLSubscriptionResult run(SelectionDialogTreeEventInput input) {
+        var rawResult = this.graphQLRequestor.subscribe(SELECTION_DIALOG_TREE_EVENT_SUBSCRIPTION, input);
+        var flux = rawResult.flux()
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData);
+        return new GraphQLSubscriptionResult(flux, rawResult.errors(), rawResult.extensions());
     }
 
 }

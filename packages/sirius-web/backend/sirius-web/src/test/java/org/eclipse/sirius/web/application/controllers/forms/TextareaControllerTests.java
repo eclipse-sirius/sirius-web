@@ -81,7 +81,7 @@ public class TextareaControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextarea"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -133,7 +133,7 @@ public class TextareaControllerTests extends AbstractIntegrationTests {
             var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textareaId.get(), "A new and very long value");
             var result = this.editTextfieldMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -152,7 +152,7 @@ public class TextareaControllerTests extends AbstractIntegrationTests {
             var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textareaId.get(), "buck");
             var result = this.editTextfieldMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
         };
 

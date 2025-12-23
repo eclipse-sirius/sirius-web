@@ -84,7 +84,7 @@ public class EditRectangularNodeAppearanceControllerTests extends AbstractIntegr
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EditRectangularNodeAppearanceDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

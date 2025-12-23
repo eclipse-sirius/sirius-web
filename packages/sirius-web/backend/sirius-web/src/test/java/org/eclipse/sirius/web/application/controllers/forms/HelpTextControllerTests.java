@@ -115,6 +115,7 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
                 "FormWithTextfield"
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
@@ -137,7 +138,7 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
             );
             var result = this.helpTextQueryRunner.run(variables);
 
-            String helpText = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.helpText");
+            String helpText = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.helpText");
             assertThat(helpText).isEqualTo("The name of the object");
         };
 
@@ -163,6 +164,9 @@ public class HelpTextControllerTests extends AbstractIntegrationTests {
 
         var formEventInput = new FormEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
         var flux = this.graphQLRequestor.subscribeToSpecification(HELP_TEXT_FORM_EVENT_SUBSCRIPTION, formEventInput)
+                .flux()
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
                 .filter(json -> json.contains("FormRefreshedEventPayload"));
 
 

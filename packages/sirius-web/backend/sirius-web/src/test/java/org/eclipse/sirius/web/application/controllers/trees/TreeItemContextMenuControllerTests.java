@@ -100,7 +100,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedItemIds, List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
 
         var treeId = new AtomicReference<String>();
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> treeId.set(tree.getId()));
@@ -113,7 +113,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             );
             var result = this.treeItemContextMenuQueryRunner.run(variables);
 
-            List<String> actionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            List<String> actionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
             assertThat(actionIds).isNotEmpty()
                     .anyMatch(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT::equals)
                     .anyMatch(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT::equals);
@@ -127,7 +127,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             );
             var result = this.treeItemContextMenuQueryRunner.run(variables);
 
-            List<String> actionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            List<String> actionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
             assertThat(actionIds).isNotEmpty()
                     .anyMatch(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT::equals)
                     .anyMatch(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION::equals)
@@ -142,7 +142,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             );
             var result = this.treeItemContextMenuQueryRunner.run(variables);
 
-            List<String> actionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
+            List<String> actionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
             assertThat(actionIds).isNotEmpty()
                     .anyMatch(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION::equals);
         };
@@ -167,7 +167,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()
         );
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
-        List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
+        List<String> explorerIds = JsonPath.read(explorerResult.data(), "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).isNotEmpty().hasSize(2);
         assertThat(explorerIds.get(0)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
         assertThat(explorerIds.get(1)).startsWith("siriusComponents://representationDescription?kind=treeDescription");
@@ -175,7 +175,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
 
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(explorerDescriptionId.get(), List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
 
         // 2- Retrieve the representation id (the id of DSL Domain explorer example tree)
         var treeId = new AtomicReference<String>();
@@ -194,7 +194,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             );
             var result = this.treeItemContextMenuQueryRunner.run(variables);
 
-            Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
+            Object document = Configuration.defaultConfiguration().jsonProvider().parse(result.data());
             List<String> actionLabels = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].label");
             List<String> actionIds = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
             assertThat(actionLabels).isNotEmpty().hasSizeGreaterThanOrEqualTo(3);
@@ -219,7 +219,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             );
             var result = this.treeItemFetchContextActionDataQueryRunner.run(variables);
 
-            Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
+            Object document = Configuration.defaultConfiguration().jsonProvider().parse(result.data());
             String urlToFetch = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.fetchTreeItemContextMenuEntryData.urlToFetch");
             String fetchKind = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.fetchTreeItemContextMenuEntryData.fetchKind");
 
@@ -237,7 +237,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
                     toggleAbstractAction.get()
             );
             var result = this.singleClickTreeItemContexteMenuEntryMutationRunner.run(toggleAbstractActionParameters);
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickTreeItemContextMenuEntry.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickTreeItemContextMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -256,7 +256,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
     public void givenProjectWithDependenciesWhenContextMenuActionsAreRequestedOnImportedResourceThenUpdateAndRemoveActionsAreReturned() {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
 
         var treeId = new AtomicReference<String>();
 
@@ -270,7 +270,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             );
             var result = this.treeItemContextMenuQueryRunner.run(variables);
 
-            Object document = Configuration.defaultConfiguration().jsonProvider().parse(result);
+            Object document = Configuration.defaultConfiguration().jsonProvider().parse(result.data());
 
             List<String> actionIds = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
             assertThat(actionIds).isNotEmpty();

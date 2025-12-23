@@ -101,7 +101,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a domain diagram on a studio, when it is opened, then entities are visible")
     public void givenDomainDiagramOnStudioWhenItIsOpenedThenEntitiesAreVisible() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
-        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             var rootNode = new DiagramNavigator(diagram).nodeWithLabel("Root").getNode();
@@ -125,7 +125,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a domain diagram on a studio, when moving a node and then reloading the previously saved state, then the node is back to its initial position")
     public void givenDomainDiagramOnStudioWhenMovingNodeAndThenReloadingPreviousStateThenNodeBackToInitialPosition() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
-        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
 
         var initialPosition = new Position(50.0, 50.0);
         var initialSize = new Size(100, 100);
@@ -221,7 +221,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a domain diagram on a studio, when moving a label and then reloading the previously saved state, then the label is back to its initial position")
     public void givenDomainDiagramOnStudioWhenMovingLabelAndThenReloadingPreviousStateThenLabelBackToInitialPosition() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
-        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
 
         var initialPosition = new Position(50.0, 50.0);
         var modifiedPosition = new Position(100.0, 100.0);

@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.graphql;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.managevisibility.InvokeManageVisibilityActionInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * Used to invoke manage visibility action on a diagram element.
@@ -42,7 +43,7 @@ public class InvokeManageVisibilityActionMutationRunner implements IMutationRunn
     }
 
     @Override
-    public String run(InvokeManageVisibilityActionInput input) {
+    public GraphQLResult run(InvokeManageVisibilityActionInput input) {
         return this.graphQLRequestor.execute(INVOKE_ACTION_MUTATION, input);
     }
 }

@@ -14,12 +14,13 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
-import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.validation.dto.ValidationEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
+
+import graphql.execution.DataFetcherResult;
 
 /**
  * Used to get the validation event subscription with the GraphQL API.
@@ -51,10 +52,12 @@ public class ValidationEventSubscriptionRunner implements ISubscriptionRunner<Va
     }
 
     @Override
-    public Flux<Object> run(ValidationEventInput input) {
-        return this.graphQLRequestor.subscribe(VALIDATION_EVENT_SUBSCRIPTION, input)
+    public GraphQLSubscriptionResult run(ValidationEventInput input) {
+        var rawResult = this.graphQLRequestor.subscribe(VALIDATION_EVENT_SUBSCRIPTION, input);
+        var flux = rawResult.flux()
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData);
+        return new GraphQLSubscriptionResult(flux, rawResult.errors(), rawResult.extensions());
     }
 }

@@ -99,7 +99,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
     public void givenReferenceWidgetWhenWeAskForTheTreePathToExpandAllThenItsPathInTheExplorerIsReturned() {
         var representationId = TREE_ID + "&expandedIds=[]";
         var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         var treeId = new AtomicReference<String>();
         var objectId = new AtomicReference<String>();
@@ -113,7 +113,6 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
             objectId.set(tree.getChildren().get(0).getId());
         });
 
-
         var treeItemIds = new AtomicReference<List<String>>();
 
         Runnable getTreePath = () -> {
@@ -123,12 +122,11 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
                     "treeItemId", objectId.get()
             );
             var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
 
             treeItemIds.set(treeItemIdsToExpand);
         };
-
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
@@ -138,7 +136,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
 
         var expandedRepresentationId = TREE_ID + "&expandedIds=[" + String.join(",", treeItemIds.get()) + "]";
         var expandedTreeInput = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, expandedRepresentationId);
-        var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput);
+        var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput).flux();
 
         Consumer<Object> initialExpandedTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
@@ -161,7 +159,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
     public void givenStudioWhenWeAskForTheTreePathOfAnObjectInTheModelBrowserThenItsPathInTheModelBrowserIsReturned() {
         var representationId = TREE_ID + "&expandedIds=[]";
         var input = new ModelBrowserEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         var treeId = new AtomicReference<String>();
         var colorObjectId = new AtomicReference<String>();
@@ -200,7 +198,7 @@ public class ModelBrowserExpandAllControllerTests extends AbstractIntegrationTes
                     "selectionEntryIds", List.of(colorObjectId.get())
             );
             var result = this.treePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.treePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.treePath.treeItemIdsToExpand");
             // The first color is inside 1) the studioColorPalettes document, 2) the View container, 3) the "Theme
             // Colors Palette".
             // So we expect to get 3 parents to expand to reveal it.

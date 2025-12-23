@@ -52,7 +52,7 @@ public class ExplorerDescriptionsControllerTests extends AbstractIntegrationTest
         );
         var result = this.explorerDescriptionsQueryRunner.run(variables);
 
-        List<String> explorerIds = JsonPath.read(result, "$.data.viewer.editingContext.explorerDescriptions[*].id");
+        List<String> explorerIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).isNotEmpty().hasSize(1);
         assertThat(explorerIds.get(0)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
     }
@@ -66,7 +66,7 @@ public class ExplorerDescriptionsControllerTests extends AbstractIntegrationTest
         );
         var result = this.explorerDescriptionsQueryRunner.run(variables);
 
-        List<String> explorerIds = JsonPath.read(result, "$.data.viewer.editingContext.explorerDescriptions[*].id");
+        List<String> explorerIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).isNotEmpty().hasSize(2);
         assertThat(explorerIds.get(0)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
         assertThat(explorerIds.get(1)).startsWith("siriusComponents://representationDescription?kind=treeDescription");

@@ -50,7 +50,7 @@ public class ProjectTemplateCapabilitiesControllerTests extends AbstractIntegrat
         Map<String, Object> variables = Map.of("page", 0, "limit", 6, "context", ProjectTemplateContext.PROJECT_BROWSER);
         var result = this.projectTemplatesQueryRunner.run(variables);
 
-        List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[*].node.id");
+        List<String> projectTemplateIds = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.edges[*].node.id");
         assertThat(projectTemplateIds).doesNotContain("browse-all-project-templates");
     }
 

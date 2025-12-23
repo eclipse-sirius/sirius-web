@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,14 +18,13 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTreeSubscription;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
-
-import reactor.core.publisher.Flux;
 
 /**
  * Used to create a tree and subscribe to it.
@@ -51,18 +50,18 @@ public class GivenCreatedTreeSubscription implements IGivenCreatedTreeSubscripti
     }
 
     @Override
-    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
+    public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var treeEventInput = new TreeEventInput(UUID.randomUUID(), input.editingContextId(), this.representationIdBuilder.buildTreeRepresentationId(representationId, List.of()));
-        var flux = this.treeEventSubscriptionRunner.run(treeEventInput);
+        var result = this.treeEventSubscriptionRunner.run(treeEventInput);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
 
-        return flux;
+        return result;
     }
 }

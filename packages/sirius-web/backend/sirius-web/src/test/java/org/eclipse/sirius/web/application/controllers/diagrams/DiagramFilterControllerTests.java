@@ -130,7 +130,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ExpandCollapseDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -142,7 +142,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
             var input = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), List.of(nodeId), collapseToolId, 0, 0, List.of());
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
 
             return null;
@@ -159,7 +159,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
             var input = new FadeDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), Set.of(nodeId), true);
             var result = this.fadeDiagramElementMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.fadeDiagramElement.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.fadeDiagramElement.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             return null;
@@ -176,7 +176,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
             var input = new PinDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), Set.of(nodeId), true);
             var result = this.pinDiagramElementMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.pinDiagramElement.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.pinDiagramElement.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             return null;
@@ -193,7 +193,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
             var input = new HideDiagramElementInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagram.getId(), Set.of(nodeId), true);
             var result = this.hideDiagramElementMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.hideDiagramElement.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.hideDiagramElement.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             return null;
@@ -224,7 +224,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
 
         var diagramFilterRepresentationId = this.representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
         var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramFilterRepresentationId);
-        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput)
+        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput).flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
@@ -343,7 +343,7 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
 
         var diagramFilterRepresentationId = this.representationIdBuilder.buildDiagramFilterRepresentationId(List.of(diagramReference.get().getId()));
         var diagramFilterEventInput = new DiagramFilterEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramFilterRepresentationId);
-        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput)
+        var diagramFilterFlux = this.diagramFilterEventSubscriptionRunner.run(diagramFilterEventInput).flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         AtomicReference<String> formId = new AtomicReference<>();
@@ -415,14 +415,14 @@ public class DiagramFilterControllerTests extends AbstractIntegrationTests {
     private void checkTreeNode(String formId, String treeId, String treeNodeToCheckId) {
         var input = new EditTreeCheckboxInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId, treeId, treeNodeToCheckId, true);
         var editTreeCheckboxMutationResult = this.editTreeCheckboxMutationRunner.run(input);
-        String editTreeCheckboxMutationResultTypename = JsonPath.read(editTreeCheckboxMutationResult, "$.data.editTreeCheckbox.__typename");
+        String editTreeCheckboxMutationResultTypename = JsonPath.read(editTreeCheckboxMutationResult.data(), "$.data.editTreeCheckbox.__typename");
         assertThat(editTreeCheckboxMutationResultTypename).isEqualTo(SuccessPayload.class.getSimpleName());
     }
 
     private void performAction(String formId, String actionId) {
         var input = new PushButtonInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId, actionId);
         var pushButtonMutationResult = this.pushButtonMutationRunner.run(input);
-        String pushButtonMutationResultTypename = JsonPath.read(pushButtonMutationResult, "$.data.pushButton.__typename");
+        String pushButtonMutationResultTypename = JsonPath.read(pushButtonMutationResult.data(), "$.data.pushButton.__typename");
         assertThat(pushButtonMutationResultTypename).isEqualTo(SuccessPayload.class.getSimpleName());
     }
 

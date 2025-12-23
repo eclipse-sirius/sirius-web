@@ -94,7 +94,7 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
         Map<String, Object> variables = Map.of("editingContextId", TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID);
         var result = this.editingContextQueryRunner.run(variables);
 
-        String editingContextId = JsonPath.read(result, "$.data.viewer.editingContext.id");
+        String editingContextId = JsonPath.read(result.data(), "$.data.viewer.editingContext.id");
         assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID);
     }
 
@@ -105,7 +105,7 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
         Map<String, Object> variables = Map.of("projectId", TestIdentifiers.ECORE_SAMPLE_PROJECT);
         var result = this.currentEditingContextQueryRunner.run(variables);
 
-        String editingContextId = JsonPath.read(result, "$.data.viewer.project.currentEditingContext.id");
+        String editingContextId = JsonPath.read(result.data(), "$.data.viewer.project.currentEditingContext.id");
         assertThat(editingContextId).isEqualTo(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID);
     }
 
@@ -120,7 +120,7 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
         Map<String, Object> variables = Map.of("namespace", namespace, "name", name, "version", version);
         var result = this.libraryQueryRunner.run(variables);
 
-        String editingContextId = JsonPath.read(result, "$.data.viewer.library.currentEditingContext.id");
+        String editingContextId = JsonPath.read(result.data(), "$.data.viewer.library.currentEditingContext.id");
         assertThat(editingContextId).isEqualTo(PapayaIdentifiers.PAPAYA_LIBRARY_EDITING_CONTEXT_ID.toString());
     }
 
@@ -131,19 +131,19 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
         Map<String, Object> variables = Map.of("editingContextId", StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID);
         var result = this.editingContextActionsQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.actions.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.actions.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.actions.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.actions.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.editingContext.actions.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.editingContext.actions.pageInfo.count");
         assertThat(count).isGreaterThan(0);
     }
 
@@ -152,7 +152,7 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
     @DisplayName("Given a project, when an editing context action is invoked, then the editing context is modified")
     public void givenProjectWhenAnEditingContextActionIsInvokedThenTheEditingContextIsModified() {
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString());
-        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
 
         Consumer<InvokeEditingContextActionInput> invokeEditingContextActionTask = (input) -> {
             var result = this.invokeEditingContextActionMutationRunner.run(input);
@@ -161,7 +161,7 @@ public class EditingContextControllerIntegrationTests extends AbstractIntegratio
             TestTransaction.end();
             TestTransaction.start();
 
-            String typename = JsonPath.read(result, "$.data.invokeEditingContextAction.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeEditingContextAction.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

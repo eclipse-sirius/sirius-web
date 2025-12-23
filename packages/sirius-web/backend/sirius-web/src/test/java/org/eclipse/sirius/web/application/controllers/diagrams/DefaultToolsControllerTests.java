@@ -101,7 +101,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "DefaultToolDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -128,15 +128,15 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             );
             var result = this.paletteQueryRunner.run(variables);
 
-            List<String> quickToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
+            List<String> quickToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
             assertThat(quickToolsLabels).hasSize(4);
             assertThat(quickToolsLabels).containsSequence("Pin", "Adjust size", "Fade", "Hide");
 
-            List<String> paletteEntriesLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+            List<String> paletteEntriesLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
             assertThat(paletteEntriesLabels).hasSize(1);
             assertThat(paletteEntriesLabels).containsSequence("Edit");
 
-            List<String> paletteEditLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
+            List<String> paletteEditLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
             assertThat(paletteEditLabels).hasSize(2);
             assertThat(paletteEditLabels).containsSequence("Edit", "Delete from model");
         };
@@ -188,15 +188,15 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             );
             var result = this.paletteQueryRunner.run(variables);
 
-            List<String> quickToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
+            List<String> quickToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
             assertThat(quickToolsLabels).hasSize(4);
             assertThat(quickToolsLabels).containsSequence("Unpin", "Adjust size", "Unfade", "Hide");
 
-            List<String> paletteEntriesLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+            List<String> paletteEntriesLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
             assertThat(paletteEntriesLabels).hasSize(1);
             assertThat(paletteEntriesLabels).containsSequence("Edit");
 
-            List<String> paletteEditLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
+            List<String> paletteEditLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
             assertThat(paletteEditLabels).hasSize(2);
             assertThat(paletteEditLabels).containsSequence("Edit", "Delete from model");
         };
@@ -279,15 +279,15 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             );
             var result = this.paletteQueryRunner.run(variables);
 
-            List<String> quickToolsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
+            List<String> quickToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].label");
             assertThat(quickToolsLabels).hasSize(6);
             assertThat(quickToolsLabels).containsSequence("Reset outside labels positions", "Reset labels sizes", "Reset bending points", "Reset handles positions", "Fade", "Hide");
 
-            List<String> paletteEntriesLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+            List<String> paletteEntriesLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
             assertThat(paletteEntriesLabels).hasSize(1);
             assertThat(paletteEntriesLabels).containsSequence("Edit");
 
-            List<String> paletteEditLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
+            List<String> paletteEditLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
             assertThat(paletteEditLabels).hasSize(2);
             assertThat(paletteEditLabels).containsSequence("Edit", "Delete from model");
         };

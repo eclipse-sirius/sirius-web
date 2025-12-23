@@ -108,15 +108,17 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
 
         Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", optionalLibrary.get().getId());
         var result = this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
-        int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
+        int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
         assertThat(nbElementDeleted).isEqualTo(0);
-        int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementModified");
+
+        int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementModified");
         assertThat(nbElementModified).isEqualTo(2);
-        int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
+
+        int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
         assertThat(nbElementCreated).isEqualTo(0);
 
         Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-        DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.impactTree", DataTree.class);
+        DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.impactTree", DataTree.class);
 
         assertThat(dataTree.id()).isEqualTo("impact_tree");
         assertThat(dataTree.nodes()).anySatisfy(node -> {
@@ -126,6 +128,7 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
             List<String> endIconsURL = node.endIconsURLs().get(0);
             assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureDeletion.svg"));
         });
+
         assertThat(dataTree.nodes()).anySatisfy(node -> {
             assertThat(node.label().toString()).isEqualTo("Sirius Web Tests Data (sirius-web-tests-data@3.0.0)");
             assertThat(node.parentId()).isNull();
@@ -133,6 +136,7 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
             List<String> endIconsURL = node.endIconsURLs().get(0);
             assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureAddition.svg"));
         });
+
         assertThat(dataTree.nodes()).anySatisfy(node -> {
             assertThat(node.label().toString()).isEqualTo("annotations: GivenSiriusWebServer");
             assertThat(node.endIconsURLs()).hasSize(1);
@@ -144,6 +148,7 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
                 .get()
                 .returns("AbstractTest", dataTreeNode -> dataTreeNode.label().toString());
         });
+
         assertThat(dataTree.nodes()).anySatisfy(node -> {
             assertThat(node.label().toString()).isEqualTo("annotations: GivenSiriusWebServer");
             assertThat(node.endIconsURLs()).hasSize(1);
@@ -163,19 +168,21 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
     public void givenProjectWithDependenciesWhenImpactAnalysisReportIsRequestedForTheUpdateOfADependencyTheDoesNotExistThenTheReportContainsAnErrorMessage() {
         Map<String, Object> input = Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "libraryId", UUID.nameUUIDFromBytes("failingLibraryId".getBytes()));
         var result = this.editingContextUpdateLibraryImpactAnalysisReportQueryRunner.run(input);
-        int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
+        int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementDeleted");
         assertThat(nbElementDeleted).isEqualTo(0);
-        int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementModified");
+
+        int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementModified");
         assertThat(nbElementModified).isEqualTo(0);
-        int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
+
+        int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.nbElementCreated");
         assertThat(nbElementCreated).isEqualTo(0);
 
-        List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.additionalReports[*]");
+        List<String> additionalReports = JsonPath.read(result.data(), "$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.additionalReports[*]");
         assertThat(additionalReports).hasSize(1);
         assertThat(additionalReports.get(0)).startsWith(this.messageService.operationExecutionFailed(""));
 
         Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-        DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.impactTree", DataTree.class);
+        DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.updateLibraryImpactAnalysisReport.impactTree", DataTree.class);
 
         assertThat(dataTree.id()).isEqualTo("impact_tree");
         assertThat(dataTree.nodes()).hasSize(0);
@@ -189,8 +196,7 @@ public class LibraryUpdateImpactAnalysisControllerIntegrationTests extends Abstr
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
-        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
-
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
 
         BiFunction<IEditingContext, IInput, IPayload> checkEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {

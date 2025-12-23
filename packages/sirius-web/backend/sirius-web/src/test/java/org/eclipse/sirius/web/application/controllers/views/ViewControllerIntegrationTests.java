@@ -89,19 +89,19 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         );
         var result = this.createChildMutationRunner.run(inputPalette);
 
-        String typename = JsonPath.read(result, "$.data.createChild.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
         assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
 
         var paletteId = new AtomicReference<String>();
 
-        String objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
         paletteId.set(objectId);
 
-        String objectLabel = JsonPath.read(result, "$.data.createChild.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.createChild.object.label");
         assertThat(objectLabel).isNotBlank();
 
-        String objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        String objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=view&entity=TextStylePalette");
 
         var inputStyleDescription = new CreateChildInput(
@@ -112,15 +112,16 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         );
         result = this.createChildMutationRunner.run(inputStyleDescription);
 
-        objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
 
-        objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=view&entity=TextStyleDescription");
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
@@ -159,19 +160,19 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         );
         var result = this.createChildMutationRunner.run(inputPalette);
 
-        String typename = JsonPath.read(result, "$.data.createChild.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
         assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
 
         var paletteId = new AtomicReference<String>();
 
-        String objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
         paletteId.set(objectId);
 
-        String objectLabel = JsonPath.read(result, "$.data.createChild.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.createChild.object.label");
         assertThat(objectLabel).isNotBlank();
 
-        String objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        String objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=view&entity=ColorPalette");
 
         var inputFixedColor = new CreateChildInput(
@@ -182,15 +183,16 @@ public class ViewControllerIntegrationTests extends AbstractIntegrationTests {
         );
         result = this.createChildMutationRunner.run(inputFixedColor);
 
-        objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
 
-        objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=view&entity=FixedColor");
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {

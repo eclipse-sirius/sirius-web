@@ -75,15 +75,14 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the tree item labels are requested, then the correct styles are returned")
     public void givenAStudioWhenTheTreeItemLabelsAreRequestedThenTheCorrectStylesAreReturned() {
-
         // 1- retrieve the tree description id of the DSL Domain explorer example
         var explorerDescriptionId = new AtomicReference<String>();
 
         Map<String, Object> explorerVariables = Map.of(
                 "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()
         );
-        var explorerResult = TreeItemLabelDescriptionControllerTests.this.explorerDescriptionsQueryRunner.run(explorerVariables);
-        List<String> explorerIds = JsonPath.read(explorerResult, "$.data.viewer.editingContext.explorerDescriptions[*].id");
+        var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
+        List<String> explorerIds = JsonPath.read(explorerResult.data(), "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).isNotEmpty()
                 .hasSize(2);
         assertThat(explorerIds.get(0)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
@@ -98,7 +97,7 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
         //      - check that the NamedElement entity has the abstract style (if style)
         //      - check that the Human entity has 3 attributes (for style)
         var inputStyle = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
-        var fluxStyle = this.explorerEventSubscriptionRunner.run(inputStyle);
+        var fluxStyle = this.explorerEventSubscriptionRunner.run(inputStyle).flux();
 
         Consumer<Object> styleTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();

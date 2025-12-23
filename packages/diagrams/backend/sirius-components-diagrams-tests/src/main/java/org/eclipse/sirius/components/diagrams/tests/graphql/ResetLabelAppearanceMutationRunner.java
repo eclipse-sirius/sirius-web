@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ResetLabelAppearanceInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ResetLabelAppearanceMutationRunner implements IMutationRunner<Reset
     }
 
     @Override
-    public String run(ResetLabelAppearanceInput input) {
+    public GraphQLResult run(ResetLabelAppearanceInput input) {
         return this.graphQLRequestor.execute(RESET_LABEL_APPEARANCE_MUTATION, input);
     }
 }

@@ -51,11 +51,13 @@ public class ObjectControllerIntegrationTests extends AbstractIntegrationTests {
                 "objectId", PapayaIdentifiers.PAPAYA_SIRIUS_WEB_TESTS_DATA_DOCUMENT.toString()
         );
         var result = this.objectLibraryQueryRunner.run(variables);
-        String namespace = JsonPath.read(result, "$.data.viewer.editingContext.object.library.namespace");
+        String namespace = JsonPath.read(result.data(), "$.data.viewer.editingContext.object.library.namespace");
         assertThat(namespace).isEqualTo("papaya");
-        String name = JsonPath.read(result, "$.data.viewer.editingContext.object.library.name");
+
+        String name = JsonPath.read(result.data(), "$.data.viewer.editingContext.object.library.name");
         assertThat(name).isEqualTo("sirius-web-tests-data");
-        String version = JsonPath.read(result, "$.data.viewer.editingContext.object.library.version");
+
+        String version = JsonPath.read(result.data(), "$.data.viewer.editingContext.object.library.version");
         assertThat(version).isEqualTo("1.0.0");
 
     }

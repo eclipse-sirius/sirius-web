@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,16 +41,16 @@ public class GivenCreatedRepresentation implements IGivenCreatedRepresentation {
 
     @Override
     public String createRepresentation(CreateRepresentationInput input) {
-        var result = this.createRepresentationMutationRunner.run(input);
+        var graphQLResult = this.createRepresentationMutationRunner.run(input);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
 
-        String typename = JsonPath.read(result, "$.data.createRepresentation.__typename");
+        String typename = JsonPath.read(graphQLResult.data(), "$.data.createRepresentation.__typename");
         assertThat(typename).isEqualTo(CreateRepresentationSuccessPayload.class.getSimpleName());
 
-        String representationId = JsonPath.read(result, "$.data.createRepresentation.representation.id");
+        String representationId = JsonPath.read(graphQLResult.data(), "$.data.createRepresentation.representation.id");
         assertThat(representationId).isNotNull();
 
         return representationId;

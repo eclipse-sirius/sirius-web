@@ -85,7 +85,7 @@ public class InvokeSingleClickOnMultipleElementsControllerTests extends Abstract
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "GroupPaletteDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -116,7 +116,7 @@ public class InvokeSingleClickOnMultipleElementsControllerTests extends Abstract
             );
             var result = this.paletteQueryRunner.run(variables);
 
-            List<String> topLevelToolsLabel = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+            List<String> topLevelToolsLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
             assertThat(topLevelToolsLabel)
                     .isNotEmpty();
         };
@@ -162,7 +162,7 @@ public class InvokeSingleClickOnMultipleElementsControllerTests extends Abstract
             );
             var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
             assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
@@ -179,6 +179,5 @@ public class InvokeSingleClickOnMultipleElementsControllerTests extends Abstract
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
-
 
 }

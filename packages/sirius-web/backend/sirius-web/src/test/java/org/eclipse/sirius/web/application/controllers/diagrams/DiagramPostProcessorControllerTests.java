@@ -87,7 +87,7 @@ public class DiagramPostProcessorControllerTests extends AbstractIntegrationTest
     public void givenDiagramWhenItIsOpenedOrMdifiedThenDiagramIsUpdatedWithDiagramPostProcessor() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 DiagramPostProcessorProvider.DIAGRAM_WITH_POST_PROCESSOR_NAME);
-        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
 
         var diagramId = new AtomicReference<String>();
         var currentRevisionId = new AtomicReference<UUID>();
@@ -112,10 +112,6 @@ public class DiagramPostProcessorControllerTests extends AbstractIntegrationTest
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
-
-        Consumer<Object> afterLayoutDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
-            assertThat(diagram.getNodes().get(0).getInsideLabel().getText()).isEqualTo(DiagramPostProcessorProvider.TEXT_AFTER_ARRANGE_ALL);
-        });
 
         Runnable pinDiagramNode = () -> {
             // We use any IDiagramInput so that the diagram is refreshed

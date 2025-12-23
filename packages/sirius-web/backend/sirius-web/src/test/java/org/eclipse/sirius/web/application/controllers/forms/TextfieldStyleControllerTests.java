@@ -71,7 +71,7 @@ public class TextfieldStyleControllerTests extends AbstractIntegrationTests {
                 objectId,
                 "FormWithStyledTextfield"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

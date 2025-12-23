@@ -157,7 +157,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     public void givenProjectWhenWeSubscribeToTreeEventsOfItsExplorerThenTheTreeOfTheExplorerIsSent() {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> projectContentMatcher = assertRefreshedTreeThat(tree -> assertThat(tree).isNotNull());
 
@@ -174,7 +174,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var expandedIds = this.getAllTreeItemIdsForEcoreSampleProject();
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled, this.representationIsAPortal));
         var hasNoMoreRepresentation = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageHasNoRepresentation));
@@ -202,7 +202,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
-        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled));
 
@@ -218,7 +218,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
     @DisplayName("Given the explorer of a project, when we rename a tree item, then the tree is refreshed")
     public void givenExplorerOfProjectWhenWeRenameTreeItemThenTheTreeIsRefreshed() {
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
+        var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput).flux();
 
         Consumer<Object> portalRefreshedEventPayloadMatcher = assertRefreshedPortalThat(portal -> assertThat(portal).isNotNull());
         Consumer<Object> treeRefreshedEventPayloadMatcher = assertRefreshedTreeThat(tree -> assertThat(tree).isNotNull());
@@ -227,7 +227,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
 
         var treeEventInput = new ExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
-        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput);
+        var treeFlux = this.treeEventSubscriptionRunner.run(treeEventInput).flux();
 
         var hasProjectContent = this.getTreeRefreshedEventPayloadMatcher(List.of(this.rootDocumentIsNamedEcore, this.ePackageIsNamedSample, this.ePackageTreeItemIsStyled, this.representationIsAPortal));
         var hasObjectNewLabel = this.getTreeRefreshedEventPayloadMatcher(List.of(this.ePackageIsNamedSampleRenamed));
@@ -277,7 +277,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             var input = new DeleteTreeItemInput(UUID.randomUUID(), editingContextId, treeId, treeItemId);
             var result = this.deleteTreeItemMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.deleteTreeItem.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteTreeItem.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();
@@ -291,7 +291,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             var input = new RenameTreeItemInput(UUID.randomUUID(), editingContextId, treeId, treeItemId, newLabel);
             var result = this.renameTreeItemMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.renameTreeItem.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.renameTreeItem.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();
@@ -309,7 +309,7 @@ public class TreeControllerIntegrationTests extends AbstractIntegrationTests {
             );
             var result = this.initialDirectEditTreeItemLabelQueryRunner.run(variables);
 
-            String initialDirectEditLabel = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel");
+            String initialDirectEditLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.initialDirectEditTreeItemLabel");
             assertThat(initialDirectEditLabel).isEqualTo(expectedLabel);
         };
     }

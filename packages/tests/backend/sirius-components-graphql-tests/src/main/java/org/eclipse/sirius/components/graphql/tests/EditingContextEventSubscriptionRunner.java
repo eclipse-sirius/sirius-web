@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,10 @@ package org.eclipse.sirius.components.graphql.tests;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.dto.EditingContextEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
-
-import reactor.core.publisher.Flux;
 
 /**
  * Used to get the editing context event subscription with the GraphQL API.
@@ -44,7 +43,7 @@ public class EditingContextEventSubscriptionRunner implements ISubscriptionRunne
     }
 
     @Override
-    public Flux<Object> run(EditingContextEventInput input) {
+    public GraphQLSubscriptionResult run(EditingContextEventInput input) {
         return this.graphQLRequestor.subscribe(EDITING_CONTEXT_EVENT_SUBSCRIPTION, input);
     }
 

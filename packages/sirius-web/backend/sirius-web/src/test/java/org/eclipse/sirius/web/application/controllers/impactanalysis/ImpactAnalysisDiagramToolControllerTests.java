@@ -132,7 +132,7 @@ public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegratio
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ModelOperationDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -156,17 +156,17 @@ public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegratio
                     "variables", List.of());
             var result = this.graphQLRequestor.execute(GET_IMPACT_ANALYSIS_REPORT, variables);
 
-            int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementDeleted");
+            int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementDeleted");
             assertThat(nbElementDeleted).isEqualTo(0);
 
-            int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementCreated");
+            int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementCreated");
             assertThat(nbElementCreated).isEqualTo(2);
 
-            int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementModified");
+            int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementModified");
             assertThat(nbElementModified).isEqualTo(3);
 
             Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.impactTree", DataTree.class);
+            DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.impactTree", DataTree.class);
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
             assertThat(dataTree.nodes().stream().filter(node -> node.parentId() == null)).hasSize(1);
@@ -244,21 +244,21 @@ public class ImpactAnalysisDiagramToolControllerTests extends AbstractIntegratio
                     "variables", List.of());
             var result = this.graphQLRequestor.execute(GET_IMPACT_ANALYSIS_REPORT, variables);
 
-            int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementDeleted");
+            int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementDeleted");
             assertThat(nbElementDeleted).isEqualTo(0);
 
-            int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementCreated");
+            int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementCreated");
             assertThat(nbElementCreated).isEqualTo(0);
 
-            int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementModified");
+            int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.nbElementModified");
             assertThat(nbElementModified).isEqualTo(0);
 
-            List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.additionalReports[*]");
+            List<String> additionalReports = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.additionalReports[*]");
             assertThat(additionalReports).hasSize(1);
             assertThat(additionalReports.get(0)).startsWith(this.messageService.operationExecutionFailed(""));
 
             Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.impactTree", DataTree.class);
+            DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.diagramImpactAnalysisReport.impactTree", DataTree.class);
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
             assertThat(dataTree.nodes()).isEmpty();

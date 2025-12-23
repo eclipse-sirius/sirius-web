@@ -110,7 +110,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
         );
-        return this.givenCreatedTableSubscription.createAndSubscribe(input);
+        return this.givenCreatedTableSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -138,7 +138,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                     tableId.get(), tableId.get(), lineToChange.getId().toString(), 100);
             var result = this.resizeTableRowMutationRunner.run(resizeTableRowInput);
 
-            String typename = JsonPath.read(result, "$.data.resizeTableRow.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.resizeTableRow.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -163,7 +163,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         this.givenCommittedTransaction.commit();
 
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
-        var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -185,7 +185,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
                     tableId.get(), tableId.get());
             var result = this.resetTableRowsHeightMutationRunner.run(resetTableRowsHeightInput);
 
-            String typename = JsonPath.read(result, "$.data.resetTableRowsHeight.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.resetTableRowsHeight.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -210,7 +210,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         this.givenCommittedTransaction.commit();
 
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
-        var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -235,7 +235,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
             );
             var result = this.rowContextMenuQueryRunner.run(variables);
 
-            List<String> actionLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
+            List<String> actionLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
             assertThat(actionLabels).isNotEmpty().hasSize(1);
             assertThat(actionLabels.get(0)).isEqualTo("Delete row");
         };
@@ -254,7 +254,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         var representationId = this.representationIdBuilder.buildTableRepresentationId(PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString(),
                 PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString(), "NEXT", 1, List.of(), List.of(), List.of());
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -280,7 +280,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
             );
             var result = this.rowContextMenuQueryRunner.run(variables);
 
-            List<String> actionLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
+            List<String> actionLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
             assertThat(actionLabels).isNotEmpty().hasSize(1);
             assertThat(actionLabels.get(0)).isEqualTo("Delete row");
         };
@@ -300,7 +300,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         this.givenCommittedTransaction.commit();
 
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString());
-        var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var flux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -327,7 +327,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
             );
             var result = this.invokeRowContextMenuEntryMutationRunner.run(invokeRowContextMenuEntryInput);
 
-            String typename = JsonPath.read(result, "$.data.invokeRowContextMenuEntry.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeRowContextMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -367,7 +367,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(PapayaIdentifiers.PAPAYA_FAILURE_CLASS_OBJECT.toString()), List.of(), List.of());
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -410,7 +410,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.rowFiltersQueryRunner.run(variables);
 
-        List<String> tableFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowFilters[*].id");
+        List<String> tableFilterIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowFilters[*].id");
         assertThat(tableFilterIds)
                 .isNotEmpty()
                 .anySatisfy(tableFilterId -> assertThat(tableFilterId).isEqualTo(PackageTableRowFiltersProvider.HIDE_RECORDS_ROW_FILTER_ID));
@@ -439,7 +439,7 @@ public class PapayaTableRowControllerIntegrationTests extends AbstractIntegratio
 
         String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(), List.of(), List.of());
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId + "&expandAll");
-        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();

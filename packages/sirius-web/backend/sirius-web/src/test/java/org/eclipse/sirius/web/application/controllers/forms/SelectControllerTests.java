@@ -71,7 +71,7 @@ public class SelectControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithSelect"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

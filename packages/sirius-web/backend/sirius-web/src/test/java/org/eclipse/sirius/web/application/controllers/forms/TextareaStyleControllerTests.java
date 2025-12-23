@@ -71,7 +71,7 @@ public class TextareaStyleControllerTests extends AbstractIntegrationTests {
                 objectId,
                 "FormWithStyledTextarea"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

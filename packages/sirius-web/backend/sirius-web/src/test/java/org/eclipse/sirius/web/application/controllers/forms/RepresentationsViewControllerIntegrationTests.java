@@ -70,6 +70,7 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
         var representationId = this.representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
         var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, representationId);
         var flux = this.representationsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialformContentConsumer = assertRefreshedFormThat(form -> {
@@ -93,6 +94,7 @@ public class RepresentationsViewControllerIntegrationTests extends AbstractInteg
         var representationId = this.representationIdBuilder.buildRepresentationViewRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var input = new RepresentationsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, representationId);
         var flux = this.representationsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialformContentConsumer = assertRefreshedFormThat(form -> {

@@ -107,9 +107,9 @@ public class ProjectDuplicateControllerIntegrationTests extends AbstractIntegrat
     public void checkProjectDuplication() {
         var input = new DuplicateProjectInput(UUID.randomUUID(), FlowIdentifier.PROJECT_ID);
         var result = this.duplicateProjectMutationRunner.run(input);
-        String typename = JsonPath.read(result, "$.data.duplicateProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.duplicateProject.__typename");
         assertThat(typename).isEqualTo(DuplicateProjectSuccessPayload.class.getSimpleName());
-        String newProjectId = JsonPath.read(result, "$.data.duplicateProject.project.id");
+        String newProjectId = JsonPath.read(result.data(), "$.data.duplicateProject.project.id");
 
         TestTransaction.flagForCommit();
         TestTransaction.end();

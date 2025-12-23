@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.tables.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.tables.dto.ChangeColumnSortInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ChangeColumnSortMutationRunner implements IMutationRunner<ChangeCol
     }
 
     @Override
-    public String run(ChangeColumnSortInput input) {
+    public GraphQLResult run(ChangeColumnSortInput input) {
         return this.graphQLRequestor.execute(CHANGE_COLUMN_SORT_MUTATION, input);
     }
 }

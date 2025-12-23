@@ -71,7 +71,7 @@ public class MultiSelectControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithMultiSelect"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

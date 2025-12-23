@@ -80,7 +80,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.FIRST_TASK_OBJECT.toString(),
                 "FormWithRichText"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -130,7 +130,7 @@ public class RichTextControllerTests extends AbstractIntegrationTests {
             var input = new EditRichTextInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), richTextId.get(), "None");
             var result = this.editRichTextMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editRichText.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editRichText.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

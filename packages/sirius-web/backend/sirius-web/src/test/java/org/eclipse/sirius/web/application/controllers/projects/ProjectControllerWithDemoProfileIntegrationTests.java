@@ -108,10 +108,10 @@ public class ProjectControllerWithDemoProfileIntegrationTests extends AbstractIn
         var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of());
         var result = this.createProjectMutationRunner.run(input);
 
-        String typeName = JsonPath.read(result, "$.data.createProject.__typename");
+        String typeName = JsonPath.read(result.data(), "$.data.createProject.__typename");
         assertThat(typeName).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        String message = JsonPath.read(result, "$.data.createProject.message");
+        String message = JsonPath.read(result.data(), "$.data.createProject.message");
         assertThat(message).isEqualTo(this.messageService.unauthorized());
     }
 
@@ -122,10 +122,10 @@ public class ProjectControllerWithDemoProfileIntegrationTests extends AbstractIn
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.SYSML_SAMPLE_PROJECT);
         var result = this.deleteProjectMutationRunner.run(input);
 
-        String typeName = JsonPath.read(result, "$.data.deleteProject.__typename");
+        String typeName = JsonPath.read(result.data(), "$.data.deleteProject.__typename");
         assertThat(typeName).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        String message = JsonPath.read(result, "$.data.deleteProject.message");
+        String message = JsonPath.read(result.data(), "$.data.deleteProject.message");
         assertThat(message).isEqualTo(this.messageService.unauthorized());
 
         var project = this.projectRepository.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
@@ -224,7 +224,7 @@ public class ProjectControllerWithDemoProfileIntegrationTests extends AbstractIn
         TestTransaction.end();
         TestTransaction.start();
 
-        String typename = JsonPath.read(result, "$.data.renameProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.renameProject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
         var optionalProject = this.projectRepository.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT);

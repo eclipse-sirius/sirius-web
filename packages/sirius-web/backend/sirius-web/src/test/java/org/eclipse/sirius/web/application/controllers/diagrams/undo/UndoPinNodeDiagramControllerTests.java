@@ -88,7 +88,7 @@ public class UndoPinNodeDiagramControllerTests extends AbstractIntegrationTests 
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "VisibilityDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -113,7 +113,7 @@ public class UndoPinNodeDiagramControllerTests extends AbstractIntegrationTests 
         Runnable pinNode = () -> {
             var input = new PinDiagramElementInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), Set.of(nodeId.get()), true);
             var result = this.pinDiagramElementMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.pinDiagramElement.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.pinDiagramElement.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

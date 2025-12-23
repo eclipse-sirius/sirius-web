@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ResetNodeAppearanceInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ResetNodeAppearanceMutationRunner implements IMutationRunner<ResetN
     }
 
     @Override
-    public String run(ResetNodeAppearanceInput input) {
+    public GraphQLResult run(ResetNodeAppearanceInput input) {
         return this.graphQLRequestor.execute(RESET_NODE_APPEARANCE_MUTATION, input);
     }
 }

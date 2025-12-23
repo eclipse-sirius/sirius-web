@@ -122,7 +122,7 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
                 representationId
         );
 
-        var flux = this.explorerEventSubscriptionRunner.run(explorerEventInput);
+        var flux = this.explorerEventSubscriptionRunner.run(explorerEventInput).flux();
 
         Runnable invokeImpactAnalysisReport = () -> {
             Map<String, Object> impactAnalysisInput = Map.of(
@@ -132,16 +132,18 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
                     "menuEntryId", ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY
             );
 
-            String result = this.treeImpactAnalysisReportQueryRunner.run(impactAnalysisInput);
-            int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementDeleted");
+            var result = this.treeImpactAnalysisReportQueryRunner.run(impactAnalysisInput);
+            int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementDeleted");
             assertThat(nbElementDeleted).isEqualTo(0);
-            int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementCreated");
+
+            int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementCreated");
             assertThat(nbElementCreated).isEqualTo(0);
-            int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
+
+            int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
             assertThat(nbElementModified).isEqualTo(2);
 
             Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
+            DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
             assertThat(dataTree.nodes()).anySatisfy(node -> {
@@ -151,6 +153,7 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
                 List<String> endIconsURL = node.endIconsURLs().get(0);
                 assertThat(endIconsURL).anyMatch(endIconURL -> endIconURL.contains("FeatureDeletion.svg"));
             });
+
             assertThat(dataTree.nodes()).anySatisfy(node -> {
                 assertThat(node.label().toString()).isEqualTo("annotations: GivenSiriusWebServer");
                 assertThat(node.endIconsURLs()).hasSize(1);
@@ -162,6 +165,7 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
                     .get()
                     .returns("AbstractTest", dataTreeNode -> dataTreeNode.label().toString());
             });
+
             assertThat(dataTree.nodes()).anySatisfy(node -> {
                 assertThat(node.label().toString()).isEqualTo("annotations: GivenSiriusWebServer");
                 assertThat(node.endIconsURLs()).hasSize(1);
@@ -190,7 +194,7 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
-        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
 
         BiFunction<IEditingContext, IInput, IPayload> checkEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {

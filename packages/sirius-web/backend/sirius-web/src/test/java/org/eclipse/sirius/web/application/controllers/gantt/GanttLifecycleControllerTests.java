@@ -94,7 +94,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
                 "Gantt"
         );
-        return this.givenCreatedGanttSubscription.createAndSubscribe(input);
+        return this.givenCreatedGanttSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -135,7 +135,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
             );
             var result = this.deleteTaskMutationRunner.run(deleteGanttTaskInput);
 
-            String typename = JsonPath.read(result, "$.data.deleteGanttTask.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteGanttTask.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

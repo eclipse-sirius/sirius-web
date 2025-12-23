@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.graphql;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.appearance.EditEdgeAppearanceInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * Used to edit an edge appearance.
@@ -54,7 +55,7 @@ public class EditEdgeAppearanceMutationRunner implements IMutationRunner<EditEdg
     }
 
     @Override
-    public String run(EditEdgeAppearanceInput input) {
+    public GraphQLResult run(EditEdgeAppearanceInput input) {
         return this.graphQLRequestor.execute(EDIT_EDGE_APPEARANCE_MUTATION, input);
     }
 }

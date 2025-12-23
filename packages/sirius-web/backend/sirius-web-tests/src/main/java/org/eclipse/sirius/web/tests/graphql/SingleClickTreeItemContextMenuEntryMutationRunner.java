@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.tests.graphql;
 
-import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.trees.dto.InvokeSingleClickTreeItemContextMenuEntryInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -50,15 +50,7 @@ public class SingleClickTreeItemContextMenuEntryMutationRunner implements IMutat
     }
 
     @Override
-    public String run(InvokeSingleClickTreeItemContextMenuEntryInput input) {
-        Map<String, Object> inputMap = Map.of(
-                "id", input.id(),
-                "editingContextId", input.editingContextId(),
-                "representationId", input.representationId(),
-                "treeItemId", input.treeItemId(),
-                "menuEntryId", input.menuEntryId()
-        );
-        Map<String, Object> variables = Map.of("input", inputMap);
-        return this.graphQLRequestor.execute(INVOKE_SINGLE_CLICK_CONTEXT_MENU_ENTRY, variables);
+    public GraphQLResult run(InvokeSingleClickTreeItemContextMenuEntryInput input) {
+        return this.graphQLRequestor.execute(INVOKE_SINGLE_CLICK_CONTEXT_MENU_ENTRY, input);
     }
 }

@@ -86,7 +86,7 @@ public class EditEdgeAppearanceControllerTests extends AbstractIntegrationTests 
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EdgeDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

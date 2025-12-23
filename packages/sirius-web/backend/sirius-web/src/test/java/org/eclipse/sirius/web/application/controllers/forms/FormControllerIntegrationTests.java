@@ -104,7 +104,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 TestIdentifiers.EPACKAGE_OBJECT.toString(),
                 "Master Details Form"
         );
-        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
 
         var formId = new AtomicReference<String>();
         var selectId = new AtomicReference<String>();
@@ -126,7 +126,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
             var editSelectInput = new EditSelectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, formId.get(), selectId.get(), "second");
 
             var editSelectResult = this.editSelectMutationRunner.run(editSelectInput);
-            String editSelectResultTypename = JsonPath.read(editSelectResult, "$.data.editSelect.__typename");
+            String editSelectResultTypename = JsonPath.read(editSelectResult.data(), "$.data.editSelect.__typename");
             assertThat(editSelectResultTypename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();
@@ -162,6 +162,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 "Shared Variables Form"
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
@@ -191,6 +192,7 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
                 "Shared Variables Form"
         );
         var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId =  new AtomicReference<String>();

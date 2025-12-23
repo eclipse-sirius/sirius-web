@@ -15,12 +15,12 @@ package org.eclipse.sirius.components.forms.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.forms.dto.FormEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
 
 import graphql.execution.DataFetcherResult;
-import reactor.core.publisher.Flux;
 
 /**
  * Used to get the form event subscription with the GraphQL API.
@@ -55,11 +55,13 @@ public class FormEventSubscriptionRunner implements ISubscriptionRunner<FormEven
     }
 
     @Override
-    public Flux<Object> run(FormEventInput input) {
-        return this.graphQLRequestor.subscribe(FORM_EVENT_SUBSCRIPTION, input)
+    public GraphQLSubscriptionResult run(FormEventInput input) {
+        var rawResult = this.graphQLRequestor.subscribe(FORM_EVENT_SUBSCRIPTION, input);
+        var flux = rawResult.flux()
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData);
+        return new GraphQLSubscriptionResult(flux, rawResult.errors(), rawResult.extensions());
     }
 
 }

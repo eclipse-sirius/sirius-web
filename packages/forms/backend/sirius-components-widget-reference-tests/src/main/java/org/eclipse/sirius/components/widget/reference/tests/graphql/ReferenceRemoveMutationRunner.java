@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.widget.reference.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.RemoveReferenceValueInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ReferenceRemoveMutationRunner implements IMutationRunner<RemoveRefe
     }
 
     @Override
-    public String run(RemoveReferenceValueInput input) {
+    public GraphQLResult run(RemoveReferenceValueInput input) {
         return this.graphQLRequestor.execute(REMOVE_REFERENCE_MUTATION, input);
     }
 

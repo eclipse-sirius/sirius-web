@@ -91,10 +91,10 @@ public class RepresentationLifecycleControllerWithDemoProfileIntegrationTests ex
         );
         var result = this.createRepresentationMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createRepresentation.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createRepresentation.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        var errorMessage = JsonPath.read(result, "$.data.createRepresentation.message");
+        var errorMessage = JsonPath.read(result.data(), "$.data.createRepresentation.message");
         assertThat(errorMessage).isEqualTo(this.messageService.unauthorized());
     }
 
@@ -104,7 +104,7 @@ public class RepresentationLifecycleControllerWithDemoProfileIntegrationTests ex
     public void givenLibraryWithDemoProfileWhenSubscribeToExplorerRepresentationThenFluxStreamsAnErrorPayload() {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_LIBRARY_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> initialExplorerConsumer = object -> Optional.of(object)
                 .filter(ErrorPayload.class::isInstance)

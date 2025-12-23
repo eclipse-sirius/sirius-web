@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.graphql.tests;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,7 @@ public class CreateRepresentationMutationRunner implements IMutationRunner<Creat
     }
 
     @Override
-    public String run(CreateRepresentationInput input) {
+    public GraphQLResult run(CreateRepresentationInput input) {
         return this.graphQLRequestor.execute(CREATE_REPRESENTATION_MUTATION, input);
     }
 

@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.trees.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.trees.dto.DeleteTreeItemInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,7 @@ public class DeleteTreeItemMutationRunner implements IMutationRunner<DeleteTreeI
     }
 
     @Override
-    public String run(DeleteTreeItemInput input) {
+    public GraphQLResult run(DeleteTreeItemInput input) {
         return this.graphQLRequestor.execute(DELETE_TREE_ITEM_MUTATION, input);
     }
 

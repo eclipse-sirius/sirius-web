@@ -75,7 +75,7 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "FormWithTitleExpression"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -87,7 +87,7 @@ public class TitleExpressionControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             var result = this.representationMetadataQueryRunner.run(Map.of("editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, "representationId", form.getId()));
-            String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
+            String label = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.label");
             assertThat(label).isEqualTo("FormWithTitleExpression");
         });
 
