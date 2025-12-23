@@ -69,7 +69,7 @@ public class AncestorsVariableDiagramControllerTests extends AbstractIntegration
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "AncestorsVariableDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

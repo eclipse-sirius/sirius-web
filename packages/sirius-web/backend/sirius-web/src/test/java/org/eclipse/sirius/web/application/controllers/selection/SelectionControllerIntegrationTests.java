@@ -149,8 +149,8 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 "variables", variablesParameter);
         var result = this.graphQLRequestor.execute(GET_SELECTION_DESCRIPTION, variables);
 
-        String message = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.message");
-        String treeDescriptionId = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeDescription.id");
+        String message = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.message");
+        String treeDescriptionId = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeDescription.id");
 
         assertThat(message).isEqualTo("Select the objects to consider");
         assertThat(treeDescriptionId).isEqualTo(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId());
@@ -162,7 +162,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheSelectionIsSent() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
         var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
+        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input).flux();
 
         var hasResourceRootContent = assertRefreshedTreeThat(tree -> {
             assertThat(tree.getChildren()).hasSize(1);
@@ -182,7 +182,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     public void givenSelectionDialogTreeWhenWeExpandTheFirstItemThenChildrenAreSent() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
         var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
+        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input).flux();
 
         var treeItemId = new AtomicReference<String>();
 
@@ -201,7 +201,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
         var representationIdExpanded = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of(treeItemId.get()));
         var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationIdExpanded);
-        var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
+        var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput).flux();
 
         var treeRefreshedEventPayloadExpandMatcher = assertRefreshedTreeThat(tree -> {
             assertThat(tree.getChildren()).hasSize(1);
@@ -221,7 +221,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     public void givenSelectionDialogTreeWhenWePerformExpandAllOnTheFirstItemThenChildrenAreSent() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
         var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
+        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input).flux();
 
         var treeItemId = new AtomicReference<String>();
         var treeInstanceId = new AtomicReference<String>();
@@ -243,7 +243,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                     "treeItemId", treeItemId.get()
             );
             var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
 
             treeItemIds.set(treeItemIdsToExpand);
@@ -264,7 +264,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
         var representationIdExpanded = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), treeItemIds.get());
         var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationIdExpanded);
-        var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
+        var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput).flux();
 
         StepVerifier.create(expandedTreeFlux)
                 .consumeNextWith(initialExpandedTreeContentConsumer)
@@ -278,7 +278,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     public void givenSelectionDialogTreeWhenWePerformExpandAllOnTheSecondItemThenChildrenAreSent() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
         var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input);
+        var flux = this.selectionDialogTreeEventSubscriptionRunner.run(input).flux();
 
         var rootTreeItemId = new AtomicReference<String>();
         var treeInstanceId = new AtomicReference<String>();
@@ -299,7 +299,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         //We expand the first tree item (representing the resource)
         var representationIdExpandedFirstTreeItem = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of(rootTreeItemId.get()));
         var expandedFirstTreeItemInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationIdExpandedFirstTreeItem);
-        var expandedFirstTreeItemFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedFirstTreeItemInput);
+        var expandedFirstTreeItemFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedFirstTreeItemInput).flux();
 
         //Used to retrieve the Papaya Root Project tree item
         var rootProjectTreeItemId = new AtomicReference<String>();
@@ -320,7 +320,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                     "treeItemId", rootProjectTreeItemId.get()
                     );
             var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
             treeItemIdsToExpand.add(0, rootTreeItemId.get());
             treeItemIds.set(treeItemIdsToExpand);
@@ -343,7 +343,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
 
         var representationIdExpanded = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), treeItemIds.get());
         var expandedTreeInput = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationIdExpanded);
-        var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput);
+        var expandedTreeFlux = this.selectionDialogTreeEventSubscriptionRunner.run(expandedTreeInput).flux();
         // We now verify the expandAll result
         StepVerifier.create(expandedTreeFlux)
                 .consumeNextWith(initialExpandedTreeContentConsumer)
@@ -357,7 +357,9 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     public void givenSemanticObjectWhenWeSubscribeToItsSelectionEventsThenTheURLOfItsObjectsIsValid() {
         var representationId = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), List.of());
         var input = new SelectionDialogTreeEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var flux = this.graphQLRequestor.subscribeToSpecification(GET_TREE_EVENT_SUBSCRIPTION, input);
+        var flux = this.graphQLRequestor.subscribeToSpecification(GET_TREE_EVENT_SUBSCRIPTION, input)
+                .flux()
+                .map(Object::toString);
 
         Consumer<String> treeContentConsumer = payload -> Optional.of(payload)
                 .ifPresentOrElse(body -> {

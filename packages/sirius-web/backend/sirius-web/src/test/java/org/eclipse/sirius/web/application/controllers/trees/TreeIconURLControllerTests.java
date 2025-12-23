@@ -88,7 +88,9 @@ public class TreeIconURLControllerTests extends AbstractIntegrationTests {
     public void givenSemanticObjectWhenWeSubscribeToItsTreeEventsThenTheURLOfItsObjectsIsValid() {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
-        var flux = this.graphQLRequestor.subscribeToSpecification(GET_EXPLORER_EVENT_SUBSCRIPTION, input);
+        var flux = this.graphQLRequestor.subscribeToSpecification(GET_EXPLORER_EVENT_SUBSCRIPTION, input)
+                .flux()
+                .map(Object::toString);
 
         Consumer<String> treeContentConsumer = payload -> Optional.of(payload)
                 .ifPresentOrElse(body -> {

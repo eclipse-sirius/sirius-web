@@ -77,7 +77,7 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         );
         var result = this.containmentFeatureNamesQueryRunner.run(variables);
 
-        List<Map<String, String>> containmentFeatureNames = JsonPath.read(result, "$.data.viewer.editingContext" + ".containmentFeatureNames[*]");
+        List<Map<String, String>> containmentFeatureNames = JsonPath.read(result.data(), "$.data.viewer.editingContext" + ".containmentFeatureNames[*]");
         assertThat(containmentFeatureNames)
                 .isNotEmpty()
                 .contains(Map.of("id", "attributes", "label", "Add in attributes"));
@@ -99,16 +99,15 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         );
         var result = this.duplicateObjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(DuplicateObjectSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.duplicateObject.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.duplicateObject.object.id");
         assertThat(objectId).isNotBlank();
 
-        String objectLabel = JsonPath.read(result, "$.data.duplicateObject.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.duplicateObject.object.label");
         assertThat(objectLabel).isNotBlank();
         assertThat(objectLabel).isEqualTo("label");
-
     }
 
     @Test
@@ -123,7 +122,7 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
 
         var result = this.containmentFeatureNamesQueryRunner.run(variables);
 
-        List<Map<String, String>> containmentFeatureNames = JsonPath.read(result, "$.data.viewer.editingContext.containmentFeatureNames[*]");
+        List<Map<String, String>> containmentFeatureNames = JsonPath.read(result.data(), "$.data.viewer.editingContext.containmentFeatureNames[*]");
         assertThat(containmentFeatureNames)
                 .isNotEmpty()
                 .contains(Map.of(
@@ -147,19 +146,19 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         );
         var result = this.duplicateObjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(DuplicateObjectSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.duplicateObject.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.duplicateObject.object.id");
         assertThat(objectId).isNotBlank();
 
-        String objectLabel = JsonPath.read(result, "$.data.duplicateObject.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.duplicateObject.object.label");
         assertThat(objectLabel).isNotBlank();
         assertThat(objectLabel).isEqualTo("NamedElement");
 
         var expression = "aql:self.attributes";
         var queryResult = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, expression, List.of(objectId)));
-        List<String> attributes = JsonPath.read(queryResult, "$.data.evaluateExpression.result.objectsValue[*]");
+        List<String> attributes = JsonPath.read(queryResult.data(), "$.data.evaluateExpression.result.objectsValue[*]");
         assertThat(attributes).hasSize(1);
     }
 
@@ -179,19 +178,19 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         );
         var result = this.duplicateObjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(DuplicateObjectSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.duplicateObject.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.duplicateObject.object.id");
         assertThat(objectId).isNotBlank();
 
-        String objectLabel = JsonPath.read(result, "$.data.duplicateObject.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.duplicateObject.object.label");
         assertThat(objectLabel).isNotBlank();
         assertThat(objectLabel).isEqualTo("Human");
 
         var expression = "aql:self.superTypes";
         var queryResult = this.evaluateExpressionMutationRunner.run(new EvaluateExpressionInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, expression, List.of(objectId)));
-        List<String> attributes = JsonPath.read(queryResult, "$.data.evaluateExpression.result.objectsValue[*]");
+        List<String> attributes = JsonPath.read(queryResult.data(), "$.data.evaluateExpression.result.objectsValue[*]");
         assertThat(attributes).hasSize(1);
     }
 
@@ -211,10 +210,10 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         );
         var result = this.duplicateObjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        String errorMessage = JsonPath.read(result, "$.data.duplicateObject.message");
+        String errorMessage = JsonPath.read(result.data(), "$.data.duplicateObject.message");
         assertThat(errorMessage).isNotBlank();
     }
 
@@ -234,10 +233,10 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         );
         var result = this.duplicateObjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        String errorMessage = JsonPath.read(result, "$.data.duplicateObject.message");
+        String errorMessage = JsonPath.read(result.data(), "$.data.duplicateObject.message");
         assertThat(errorMessage).isNotBlank();
     }
 
@@ -257,16 +256,15 @@ public class ObjectDuplicationControllerIntegrationTests extends AbstractIntegra
         );
         var result = this.duplicateObjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.duplicateObject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.duplicateObject.__typename");
         assertThat(typename).isEqualTo(DuplicateObjectSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.duplicateObject.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.duplicateObject.object.id");
         assertThat(objectId).isNotBlank();
 
-        String objectLabel = JsonPath.read(result, "$.data.duplicateObject.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.duplicateObject.object.label");
         assertThat(objectLabel).isNotBlank();
         assertThat(objectLabel).isEqualTo("sirius-web-domain (copy)");
-
     }
 
 }

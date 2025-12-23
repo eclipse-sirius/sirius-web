@@ -80,7 +80,7 @@ public class RelationBasedEdgeControllerTests extends AbstractIntegrationTests {
                 objectId,
                 "RelationBasedEdgeDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

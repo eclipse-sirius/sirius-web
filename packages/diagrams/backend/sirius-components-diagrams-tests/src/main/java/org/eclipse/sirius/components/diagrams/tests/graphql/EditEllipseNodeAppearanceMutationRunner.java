@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.graphql;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 /**
  * Used to edit an ellipse node's appearance.
@@ -54,7 +55,7 @@ public class EditEllipseNodeAppearanceMutationRunner implements IMutationRunner<
     }
 
     @Override
-    public String run(IInput input) {
+    public GraphQLResult run(IInput input) {
         return this.graphQLRequestor.execute(EDIT_ELLIPSE_NODE_APPEARANCE_MUTATION, input);
     }
 }

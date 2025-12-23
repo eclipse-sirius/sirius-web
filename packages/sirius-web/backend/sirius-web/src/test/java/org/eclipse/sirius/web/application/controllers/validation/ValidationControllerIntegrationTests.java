@@ -87,7 +87,7 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     @DisplayName("Given an editing context, when we subscribe to its validation events, then the validation data are sent")
     public void givenAnEditingContextWhenWeSubscribeToItsValidationEventsThenTheValidationDataAreSent() {
         var input = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());
-        var flux = this.validationEventSubscriptionRunner.run(input);
+        var flux = this.validationEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> validationContentConsumer = payload -> Optional.of(payload)
                 .filter(ValidationRefreshedEventPayload.class::isInstance)
@@ -108,11 +108,12 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
     @DisplayName("Given a validation representation, when we edit the details of an object, then its validation status is updated")
     public void givenValidationRepresentationWhenWeEditTheDetailsOfAnObjectThenItsValidationStatusIsUpdated() {
         var validationEventInput = new ValidationEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.representationIdBuilder.buildValidationRepresentationId());
-        var validationFlux = this.validationEventSubscriptionRunner.run(validationEventInput);
+        var validationFlux = this.validationEventSubscriptionRunner.run(validationEventInput).flux();
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
         var detailsFlux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
@@ -141,7 +142,7 @@ public class ValidationControllerIntegrationTests extends AbstractIntegrationTes
             var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textareaId.get(), "");
             var result = this.editTextfieldMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

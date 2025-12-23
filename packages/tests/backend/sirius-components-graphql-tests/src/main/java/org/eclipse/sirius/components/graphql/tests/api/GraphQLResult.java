@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.tests.services.api;
+package org.eclipse.sirius.components.graphql.tests.api;
 
-import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
+import java.util.List;
+import java.util.Map;
+
+import graphql.GraphQLError;
 
 /**
- * Used to create a form description editor and subscribe to it.
+ * Used to retrieve the result of a query or mutation.
  *
  * @author sbegaudeau
  */
-public interface IGivenCreatedFormDescriptionEditorSubscription {
-    GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input);
+public record GraphQLResult(String data, List<GraphQLError> errors, Map<Object, Object> extensions) {
 }

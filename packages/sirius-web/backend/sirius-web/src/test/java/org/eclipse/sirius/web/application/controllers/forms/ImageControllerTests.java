@@ -71,7 +71,7 @@ public class ImageControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithImage"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

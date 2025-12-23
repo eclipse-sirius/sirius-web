@@ -80,22 +80,22 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         Map<String, Object> variables = Map.of("page", 0, "limit", 10, "context", ProjectTemplateContext.PROJECT_TEMPLATE_MODAL);
         var result = this.projectTemplatesQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.count");
         assertThat(count).isGreaterThan(0);
 
-        List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[*].node.id");
+        List<String> projectTemplateIds = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.edges[*].node.id");
         assertThat(projectTemplateIds).hasSizeGreaterThan(0);
     }
 
@@ -106,22 +106,22 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         Map<String, Object> variables = Map.of("page", 0, "limit", 6, "context", ProjectTemplateContext.PROJECT_BROWSER);
         var result = this.projectTemplatesQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
         assertThat(hasNextPage).isTrue();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.count");
         assertThat(count).isGreaterThan(6);
 
-        List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[-3:].node.id");
+        List<String> projectTemplateIds = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.edges[-3:].node.id");
         assertThat(projectTemplateIds.get(0)).isEqualTo(BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID);
         assertThat(projectTemplateIds.get(1)).isEqualTo("upload-project");
         assertThat(projectTemplateIds.get(2)).isEqualTo("browse-all-project-templates");
@@ -137,10 +137,10 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         var input = new CreateProjectInput(UUID.randomUUID(), "Studio", StudioProjectTemplateProvider.STUDIO_TEMPLATE_ID, List.of());
         var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
         assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
@@ -168,10 +168,10 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
         var input = new CreateProjectInput(UUID.randomUUID(), "Papaya - Performance", PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID, List.of());
         var result = this.createProjectMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
         assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
         assertThat(projectId).isNotBlank();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))

@@ -114,7 +114,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
     public void givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned(BiFunction<IEditingContext, IInput, IPayload> objectInjector) {
         var explorerReprsentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), explorerReprsentationId);
-        var flux = this.explorerEventSubscriptionRunner.run(input);
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
 
         var treeId = new AtomicReference<String>();
         var objectId = new AtomicReference<String>();
@@ -173,7 +173,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
                     "treeItemId", objectId.get()
             );
             var result = this.expandAllTreePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.expandAllTreePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
 
             treeItemIds.set(treeItemIdsToExpand);
@@ -189,7 +189,7 @@ public class ExplorerExpandAllControllerTests extends AbstractIntegrationTests {
 
         var explorerExpendedReprsentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, treeItemIds.get(), List.of());
         var expandedTreeInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), explorerExpendedReprsentationId);
-        var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput);
+        var expandedTreeFlux = this.explorerEventSubscriptionRunner.run(expandedTreeInput).flux();
 
         Consumer<Object> initialExpandedTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();

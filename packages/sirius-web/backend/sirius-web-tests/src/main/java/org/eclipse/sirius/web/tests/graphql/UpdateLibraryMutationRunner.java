@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.eclipse.sirius.web.application.library.dto.UpdateLibraryInput;
@@ -55,7 +56,7 @@ public class UpdateLibraryMutationRunner implements IMutationRunner<UpdateLibrar
     }
 
     @Override
-    public String run(UpdateLibraryInput input) {
+    public GraphQLResult run(UpdateLibraryInput input) {
         return this.graphQLRequestor.execute(UPDATE_LIBRARY, input);
     }
 

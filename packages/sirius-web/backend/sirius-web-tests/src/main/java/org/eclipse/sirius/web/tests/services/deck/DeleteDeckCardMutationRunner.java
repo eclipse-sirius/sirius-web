@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.tests.services.deck;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DeleteDeckCardInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class DeleteDeckCardMutationRunner implements IMutationRunner<DeleteDeckC
     }
 
     @Override
-    public String run(DeleteDeckCardInput input) {
+    public GraphQLResult run(DeleteDeckCardInput input) {
         return this.graphQLRequestor.execute(DELETE_DECK_CARD_MUTATION, input);
     }
 }

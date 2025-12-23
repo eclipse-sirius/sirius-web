@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,10 @@ package org.eclipse.sirius.web.services.hierarchy;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.charts.HierarchyEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
-
-import reactor.core.publisher.Flux;
 
 /**
  * Used to get the hierarchy event subscription with the GraphQL API.
@@ -44,7 +43,7 @@ public class HierarchyEventSubscriptionRunner implements ISubscriptionRunner<Hie
     }
 
     @Override
-    public Flux<Object> run(HierarchyEventInput input) {
+    public GraphQLSubscriptionResult run(HierarchyEventInput input) {
         return this.graphQLRequestor.subscribe(HIERARCHY_EVENT_SUBSCRIPTION, input);
     }
 

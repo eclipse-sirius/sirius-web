@@ -172,7 +172,7 @@ public class NodeStyleDescriptionColorMigrationParticipantTests extends Abstract
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        String typename = JsonPath.read(result, "$.data.uploadDocument.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.uploadDocument.__typename");
         assertThat(typename).isEqualTo(UploadDocumentSuccessPayload.class.getSimpleName());
 
         Predicate<IPayload> predicate = payload -> Optional.of(payload)

@@ -67,19 +67,19 @@ public class LibraryControllerWithDemoProfileIntegrationTests extends AbstractIn
         Map<String, Object> variables = Map.of("page", 0, "limit", 10);
         var result = this.librariesQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.startCursor");
         assertThat(startCursor).isBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.endCursor");
         assertThat(endCursor).isBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.count");
         assertThat(count).isZero();
     }
 
@@ -97,7 +97,7 @@ public class LibraryControllerWithDemoProfileIntegrationTests extends AbstractIn
         Map<String, Object> variables = Map.of("namespace", namespace, "name", name, "version", version);
         var result = this.libraryQueryRunner.run(variables);
 
-        var library = JsonPath.read(result, "$.data.viewer.library");
+        var library = JsonPath.read(result.data(), "$.data.viewer.library");
         assertThat(library).isNull();
     }
 

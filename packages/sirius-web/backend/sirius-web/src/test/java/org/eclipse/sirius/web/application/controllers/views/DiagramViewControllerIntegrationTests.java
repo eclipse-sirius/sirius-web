@@ -90,19 +90,19 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
         );
         var result = this.createChildMutationRunner.run(inputPalette);
 
-        String typename = JsonPath.read(result, "$.data.createChild.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
         assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
 
         var diagramDescriptionId = new AtomicReference<String>();
 
-        String objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
         diagramDescriptionId.set(objectId);
 
-        String objectLabel = JsonPath.read(result, "$.data.createChild.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.createChild.object.label");
         assertThat(objectLabel).isNotBlank();
 
-        String objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        String objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=diagram&entity=DiagramDescription");
 
         var nodeDescription = new CreateChildInput(
@@ -113,10 +113,10 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
         );
         result = this.createChildMutationRunner.run(nodeDescription);
 
-        objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
 
-        objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=diagram&entity=NodeDescription");
 
         var conditionalStyle = new CreateChildInput(
@@ -127,15 +127,16 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
         );
         result = this.createChildMutationRunner.run(conditionalStyle);
 
-        objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
 
-        objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=diagram&entity=ConditionalNodeStyle");
 
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {

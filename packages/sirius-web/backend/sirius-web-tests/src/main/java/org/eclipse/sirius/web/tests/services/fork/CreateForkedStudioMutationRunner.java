@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.tests.services.fork;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
@@ -50,7 +51,7 @@ public class CreateForkedStudioMutationRunner implements IMutationRunner<CreateF
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
     @Override
-    public String run(CreateForkedStudioInput input) {
+    public GraphQLResult run(CreateForkedStudioInput input) {
         return this.graphQLRequestor.execute(CREATE_FORK_MUTATION, input);
     }
 }

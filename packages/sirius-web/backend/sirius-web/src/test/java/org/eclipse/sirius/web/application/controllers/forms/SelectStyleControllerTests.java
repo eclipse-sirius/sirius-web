@@ -71,7 +71,7 @@ public class SelectStyleControllerTests extends AbstractIntegrationTests {
                 objectId,
                 "FormWithStyledSelect"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

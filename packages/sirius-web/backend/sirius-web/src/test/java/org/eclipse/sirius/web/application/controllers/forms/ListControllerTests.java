@@ -80,7 +80,7 @@ public class ListControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithList"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -112,7 +112,7 @@ public class ListControllerTests extends AbstractIntegrationTests {
             var input = new DeleteListItemInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), listId.get(), listItemId.get());
             var result = this.deleteListItemMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.deleteListItem.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteListItem.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

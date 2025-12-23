@@ -119,10 +119,10 @@ public class LibraryLifecycleIntegrationTests extends AbstractIntegrationTests {
                 "FormWithViewTable");
         var result = this.createRepresentationMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.createRepresentation.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createRepresentation.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
-        var errorMessage = JsonPath.read(result, "$.data.createRepresentation.message");
+        var errorMessage = JsonPath.read(result.data(), "$.data.createRepresentation.message");
         assertThat(errorMessage).isEqualTo(this.messageService.unauthorized());
     }
 

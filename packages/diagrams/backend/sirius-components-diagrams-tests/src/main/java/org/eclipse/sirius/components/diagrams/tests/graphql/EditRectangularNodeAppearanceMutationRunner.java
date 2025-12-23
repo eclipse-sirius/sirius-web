@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditRectangularNodeAppearanceInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class EditRectangularNodeAppearanceMutationRunner implements IMutationRun
     }
 
     @Override
-    public String run(EditRectangularNodeAppearanceInput input) {
+    public GraphQLResult run(EditRectangularNodeAppearanceInput input) {
         return this.graphQLRequestor.execute(EDIT_RECTANGULAR_NODE_APPEARANCE_MUTATION, input);
     }
 }

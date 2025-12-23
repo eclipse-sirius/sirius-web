@@ -13,20 +13,14 @@
 package org.eclipse.sirius.web.application.controllers.projects;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.core.api.IInput;
-import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.services.ExceptionInjectionTransformer;
@@ -44,10 +38,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
 import graphql.ExceptionWhileDataFetching;
-import graphql.ExecutionInput;
 import graphql.GraphQL;
 import graphql.GraphQLError;
-import reactor.core.publisher.Flux;
 
 /**
  * Test the behavior when a data fetcher throws an exception.
@@ -72,6 +64,9 @@ public class ProjectControllerFailureIntegrationTests extends AbstractIntegratio
     @Autowired
     private IProjectSearchService projectSearchService;
 
+    @Autowired
+    private RenameProjectMutationRunner renameProjectMutationRunner;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -79,54 +74,21 @@ public class ProjectControllerFailureIntegrationTests extends AbstractIntegratio
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a data fetcher which throws an exception, when it is inboked, then a proper error is returned")
+    @DisplayName("Given a data fetcher which throws an exception, when it is invoked, then a proper error is returned")
     public void givenDataFetcherThrowingExceptionWhenInvokedThenProperErrorReturned() {
         assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isTrue();
 
         List<GraphQLError> errors = new ArrayList<>();
         var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT, "New Name");
-        RenameProjectMutationRunner renameProjectMutationRunner = new RenameProjectMutationRunner(new IGraphQLRequestor() {
-
-            @Override
-            public Flux<String> subscribeToSpecification(String query, IInput input) {
-                return Flux.empty();
-            }
-
-            @Override
-            public Flux<Object> subscribe(String query, IInput input) {
-                return Flux.empty();
-            }
-
-            @Override
-            public String execute(String query, IInput input) {
-                Map<String, Object> variables = Map.of("input", ProjectControllerFailureIntegrationTests.this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { }));
-                return this.execute(query, variables);
-            }
-
-            @Override
-            public String execute(String query, Map<String, Object> variables) {
-                var executionInput = ExecutionInput.newExecutionInput()
-                        .query(query)
-                        .variables(variables)
-                        .build();
-
-                var executionResult = ProjectControllerFailureIntegrationTests.this.graphQL.execute(executionInput);
-                errors.addAll(executionResult.getErrors());
-                try {
-                    return ProjectControllerFailureIntegrationTests.this.objectMapper.writeValueAsString(executionResult.toSpecification());
-                } catch (JsonProcessingException exception) {
-                    fail(exception.getMessage());
-                }
-                return null;
-            }
-        });
-        var jsonResult = renameProjectMutationRunner.run(input);
-        var data = JsonPath.read(jsonResult, "$.data");
+        var result = this.renameProjectMutationRunner.run(input);
+        var data = JsonPath.read(result.data(), "$.data");
         assertThat(data).isNull();
-        List<String> errorMessages = JsonPath.read(jsonResult, "$.errors[*].message");
+
+        List<String> errorMessages = JsonPath.read(result.data(), "$.errors[*].message");
         assertThat(errorMessages).isEqualTo(List.of("Exception while fetching data (/renameProject) : injected fault"));
-        assertThat(errors).hasSize(1);
-        assertThat(errors.get(0)).isInstanceOf(ExceptionWhileDataFetching.class);
-        assertThat(((ExceptionWhileDataFetching) errors.get(0)).getMessage()).isEqualTo("Exception while fetching data (/renameProject) : injected fault");
+
+        assertThat(result.errors()).hasSize(1);
+        assertThat(result.errors().get(0)).isInstanceOf(ExceptionWhileDataFetching.class);
+        assertThat(result.errors().get(0).getMessage()).isEqualTo("Exception while fetching data (/renameProject) : injected fault");
     }
 }

@@ -81,7 +81,7 @@ public class RadioControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.HUMAN_ENTITY_OBJECT.toString(),
                 "FormWithCheckbox"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -150,7 +150,7 @@ public class RadioControllerTests extends AbstractIntegrationTests {
             var input = new EditRadioInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), radioId.get(), optionId.get());
             var result = this.editRadioMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editRadio.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editRadio.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

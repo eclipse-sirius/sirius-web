@@ -60,22 +60,22 @@ public final class Workbench {
     }
 
     public Flux<Object> asFlux() {
-        var editingContextEventFlux = this.editingContextEventSubscriptionRunner.run(new EditingContextEventInput(UUID.randomUUID(), this.editingContextId));
+        var editingContextEventFlux = this.editingContextEventSubscriptionRunner.run(new EditingContextEventInput(UUID.randomUUID(), this.editingContextId)).flux();
 
         var representationIdBuilder = new RepresentationIdBuilder();
         var explorerId = representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
-        var explorerEventFlux = this.explorerEventSubscriptionRunner.run(new ExplorerEventInput(UUID.randomUUID(), this.editingContextId, explorerId));
+        var explorerEventFlux = this.explorerEventSubscriptionRunner.run(new ExplorerEventInput(UUID.randomUUID(), this.editingContextId, explorerId)).flux();
 
-        var validationEventFlux = this.validationEventSubscriptionRunner.run(new ValidationEventInput(UUID.randomUUID(), this.editingContextId, representationIdBuilder.buildValidationRepresentationId()));
+        var validationEventFlux = this.validationEventSubscriptionRunner.run(new ValidationEventInput(UUID.randomUUID(), this.editingContextId, representationIdBuilder.buildValidationRepresentationId())).flux();
 
         var detailsId = representationIdBuilder.buildDetailsRepresentationId(this.selectedObjectIds);
-        var detailsEventFlux = this.detailsEventSubscriptionRunner.run(new DetailsEventInput(UUID.randomUUID(), this.editingContextId, detailsId));
+        var detailsEventFlux = this.detailsEventSubscriptionRunner.run(new DetailsEventInput(UUID.randomUUID(), this.editingContextId, detailsId)).flux();
 
         var relatedElementId = representationIdBuilder.buildRelatedElementsRepresentationId(this.selectedObjectIds);
-        var relatedElementsEventFlux = this.relatedElementsEventSubscriptionRunner.run(new RelatedElementsEventInput(UUID.randomUUID(), this.editingContextId, relatedElementId));
+        var relatedElementsEventFlux = this.relatedElementsEventSubscriptionRunner.run(new RelatedElementsEventInput(UUID.randomUUID(), this.editingContextId, relatedElementId)).flux();
 
         var representationsId = representationIdBuilder.buildRepresentationViewRepresentationId(this.selectedObjectIds);
-        var representationsEventFlux = this.representationsEventSubscriptionRunner.run(new RepresentationsEventInput(UUID.randomUUID(), this.editingContextId, representationsId));
+        var representationsEventFlux = this.representationsEventSubscriptionRunner.run(new RepresentationsEventInput(UUID.randomUUID(), this.editingContextId, representationsId)).flux();
 
         return Flux.merge(
                 editingContextEventFlux,

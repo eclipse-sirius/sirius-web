@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.tables.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.tables.dto.ReorderTableColumnsInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ReorderTableColumnsMutationRunner implements IMutationRunner<Reorde
     }
 
     @Override
-    public String run(ReorderTableColumnsInput input) {
+    public GraphQLResult run(ReorderTableColumnsInput input) {
         return this.graphQLRequestor.execute(REORDER_COLUMNS_MUTATION, input);
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.tables.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.tables.dto.ResizeTableColumnInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class ResizeTableColumnMutationRunner implements IMutationRunner<ResizeTa
     }
 
     @Override
-    public String run(ResizeTableColumnInput input) {
+    public GraphQLResult run(ResizeTableColumnInput input) {
         return this.graphQLRequestor.execute(RESIZE_COLUMN_MUTATION, input);
     }
 }

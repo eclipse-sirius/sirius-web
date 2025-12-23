@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
@@ -49,7 +50,7 @@ public class RenameProjectMutationRunner implements IMutationRunner<RenameProjec
     }
 
     @Override
-    public String run(RenameProjectInput input) {
+    public GraphQLResult run(RenameProjectInput input) {
         return this.graphQLRequestor.execute(RENAME_PROJECT_MUTATION, input);
     }
 }

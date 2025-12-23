@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.tests;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +22,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.springframework.stereotype.Service;
 
@@ -51,16 +52,16 @@ public class GraphQLRequestor implements IGraphQLRequestor {
     }
 
     @Override
-    public String execute(String query, Map<String, Object> variables) {
+    public GraphQLResult execute(String query, Map<String, Object> variables) {
         var executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
                 .variables(variables)
                 .build();
 
         var executionResult = this.graphQL.execute(executionInput);
-        assertThat(executionResult.getErrors()).isEmpty();
         try {
-            return this.objectMapper.writeValueAsString(executionResult.toSpecification());
+            var result = this.objectMapper.writeValueAsString(executionResult.toSpecification());
+            return new GraphQLResult(result, executionResult.getErrors(), executionResult.getExtensions());
         } catch (JsonProcessingException exception) {
             fail(exception.getMessage());
         }
@@ -68,13 +69,13 @@ public class GraphQLRequestor implements IGraphQLRequestor {
     }
 
     @Override
-    public String execute(String query, IInput input) {
+    public GraphQLResult execute(String query, IInput input) {
         Map<String, Object> variables = Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { }));
         return this.execute(query, variables);
     }
 
     @Override
-    public Flux<Object> subscribe(String query, IInput input) {
+    public GraphQLSubscriptionResult subscribe(String query, IInput input) {
         Map<String, Object> variables = Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { }));
 
         var executionInput = ExecutionInput.newExecutionInput()
@@ -83,14 +84,15 @@ public class GraphQLRequestor implements IGraphQLRequestor {
                 .build();
 
         var executionResult = this.graphQL.execute(executionInput);
-        assertThat(executionResult.getErrors()).isEmpty();
 
         SubscriptionPublisher result = executionResult.getData();
-        return Flux.from(result.getUpstreamPublisher());
+        var flux = Flux.from(result.getUpstreamPublisher());
+
+        return new GraphQLSubscriptionResult(flux, executionResult.getErrors(), executionResult.getExtensions());
     }
 
     @Override
-    public Flux<String> subscribeToSpecification(String query, IInput input) {
+    public GraphQLSubscriptionResult subscribeToSpecification(String query, IInput input) {
         Map<String, Object> variables = Map.of("input", this.objectMapper.convertValue(input, new TypeReference<Map<String, Object>>() { }));
 
         var executionInput = ExecutionInput.newExecutionInput()
@@ -99,12 +101,14 @@ public class GraphQLRequestor implements IGraphQLRequestor {
                 .build();
 
         var executionResult = this.graphQL.execute(executionInput);
-        assertThat(executionResult.getErrors()).isEmpty();
 
         SubscriptionPublisher publisher = executionResult.getData();
-        return Flux.from(publisher)
+        var flux = Flux.from(publisher)
                 .map(ExecutionResult::toSpecification)
-                .flatMap(this::toString);
+                .flatMap(this::toString)
+                .map(Object.class::cast);
+
+        return new GraphQLSubscriptionResult(flux, executionResult.getErrors(), executionResult.getExtensions());
     }
 
     private Flux<String> toString(Map<String, Object> response) {

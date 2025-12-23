@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,13 +17,13 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.tables.TableEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.tables.tests.graphql.TableEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedTableSubscription;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
-import reactor.core.publisher.Flux;
 
 /**
  * Used to create a table and subscribe to it.
@@ -47,18 +47,18 @@ public class GivenCreatedTableSubscription implements IGivenCreatedTableSubscrip
     }
 
     @Override
-    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
+    public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var tableEventInput = new TableEventInput(UUID.randomUUID(), input.editingContextId(), representationId);
-        var flux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var result = this.tableEventSubscriptionRunner.run(tableEventInput);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
 
-        return flux;
+        return result;
     }
 }

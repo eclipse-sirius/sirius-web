@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,7 @@
 package org.eclipse.sirius.web.tests.services.api;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-
-import reactor.core.publisher.Flux;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 
 /**
  * Used to create a portal and subscribe to it.
@@ -22,5 +21,5 @@ import reactor.core.publisher.Flux;
  * @author pcdavid
  */
 public interface IGivenCreatedPortalSubscription {
-    Flux<Object> createAndSubscribe(CreateRepresentationInput input);
+    GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input);
 }

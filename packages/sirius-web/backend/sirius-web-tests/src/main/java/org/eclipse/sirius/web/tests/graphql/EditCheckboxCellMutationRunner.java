@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.eclipse.sirius.web.application.table.customcells.EditCheckboxCellInput;
@@ -54,7 +55,7 @@ public class EditCheckboxCellMutationRunner implements IMutationRunner<EditCheck
     }
 
     @Override
-    public String run(EditCheckboxCellInput input) {
+    public GraphQLResult run(EditCheckboxCellInput input) {
         return this.graphQLRequestor.execute(EDIT_CHECKBOX_CELL_MUTATION, input);
     }
 

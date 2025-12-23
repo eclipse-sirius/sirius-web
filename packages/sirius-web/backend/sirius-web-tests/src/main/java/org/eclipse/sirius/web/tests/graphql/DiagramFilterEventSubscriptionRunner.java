@@ -14,13 +14,13 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
-import graphql.execution.DataFetcherResult;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.eclipse.sirius.web.application.diagram.dto.DiagramFilterEventInput;
 import org.springframework.stereotype.Service;
 
-import reactor.core.publisher.Flux;
+import graphql.execution.DataFetcherResult;
 
 /**
  * Used to get the related elements event subscription with the GraphQL API.
@@ -52,10 +52,12 @@ public class DiagramFilterEventSubscriptionRunner implements ISubscriptionRunner
     }
 
     @Override
-    public Flux<Object> run(DiagramFilterEventInput input) {
-        return this.graphQLRequestor.subscribe(DIAGRAM_FILTER_EVENT_SUBSCRIPTION, input)
+    public GraphQLSubscriptionResult run(DiagramFilterEventInput input) {
+        var rawResult = this.graphQLRequestor.subscribe(DIAGRAM_FILTER_EVENT_SUBSCRIPTION, input);
+        var flux = rawResult.flux()
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData);
+        return new GraphQLSubscriptionResult(flux, rawResult.errors(), rawResult.extensions());
     }
 }

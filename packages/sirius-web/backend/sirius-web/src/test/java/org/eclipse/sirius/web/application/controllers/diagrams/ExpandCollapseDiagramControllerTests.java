@@ -77,7 +77,7 @@ public class ExpandCollapseDiagramControllerTests extends AbstractIntegrationTes
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ExpandCollapseDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

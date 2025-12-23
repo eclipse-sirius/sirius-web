@@ -13,6 +13,8 @@
 package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
+
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.eclipse.sirius.web.application.project.dto.DuplicateProjectInput;
@@ -45,7 +47,7 @@ public class DuplicateProjectMutationRunner implements IMutationRunner<Duplicate
     }
 
     @Override
-    public String run(DuplicateProjectInput input) {
+    public GraphQLResult run(DuplicateProjectInput input) {
         return this.graphQLRequestor.execute(DUPLICATE_PROJECT_MUTATION, input);
     }
 }

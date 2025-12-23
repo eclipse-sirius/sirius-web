@@ -64,7 +64,7 @@ public class DomainExplorerRepresentationControllerTests extends AbstractIntegra
     public void givenAnDomainExplorerRepresentationWhenWeSubscribeToItsEventThenTheRepresentationDataAreReceived() {
         var representationId = new RepresentationIdBuilder().buildExplorerRepresentationId(DomainExplorerRepresentationDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var defaultExplorerInput = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
-        var defaultFlux = this.explorerEventSubscriptionRunner.run(defaultExplorerInput);
+        var defaultFlux = this.explorerEventSubscriptionRunner.run(defaultExplorerInput).flux();
         var defaultTreeId = new AtomicReference<String>();
 
         Consumer<Object> initialDefaultExplorerContentConsumer = assertRefreshedTreeThat(tree -> {

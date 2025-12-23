@@ -72,6 +72,7 @@ public class LabelStyleDetailsViewControllerTests extends AbstractIntegrationTes
         var detailRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.HUMAN_INSIDE_LABEL_STYLE_OBJECT.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {

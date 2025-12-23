@@ -124,10 +124,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT);
         var result = this.projectQueryRunner.run(variables);
 
-        String projectId = JsonPath.read(result, "$.data.viewer.project.id");
+        String projectId = JsonPath.read(result.data(), "$.data.viewer.project.id");
         assertThat(projectId).isEqualTo(TestIdentifiers.SYSML_SAMPLE_PROJECT);
 
-        String projectName = JsonPath.read(result, "$.data.viewer.project.name");
+        String projectName = JsonPath.read(result.data(), "$.data.viewer.project.name");
         assertThat(projectName).isEqualTo("SysML Sample");
     }
 
@@ -138,7 +138,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("projectId", TestIdentifiers.INVALID_PROJECT);
         var result = this.projectQueryRunner.run(variables);
 
-        Object value = JsonPath.read(result, "$.data.viewer.project");
+        Object value = JsonPath.read(result.data(), "$.data.viewer.project");
         assertThat(value).isEqualTo(null);
     }
 
@@ -149,25 +149,25 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("first", 2);
         var result = this.projectsQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasNextPage");
         assertThat(hasNextPage).isTrue();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.count");
         assertThat(count).isEqualTo(2);
 
-        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds).hasSize(2);
 
-        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        List<String> natures = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.natures[*].name");
         assertThat(natures).hasSize(2);
     }
 
@@ -178,25 +178,25 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("last", 2);
         var result = this.projectsQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasNextPage");
         assertThat(hasNextPage).isTrue();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.count");
         assertThat(count).isEqualTo(2);
 
-        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds).hasSize(2);
 
-        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        List<String> natures = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.natures[*].name");
         assertThat(natures).hasSize(2);
     }
 
@@ -207,19 +207,19 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("first", 0);
         var result = this.projectsQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.startCursor");
         assertThat(startCursor).isBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.endCursor");
         assertThat(endCursor).isBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.count");
         assertThat(count).isEqualTo(0);
     }
 
@@ -230,19 +230,19 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("last", 0);
         var result = this.projectsQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.startCursor");
         assertThat(startCursor).isBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.endCursor");
         assertThat(endCursor).isBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.count");
         assertThat(count).isEqualTo(0);
     }
 
@@ -254,25 +254,25 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("after", cursorProjectId);
         var result = this.projectsQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isTrue();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.count");
         assertThat(count).isGreaterThan(0);
 
-        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isGreaterThan(0);
 
-        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        List<String> natures = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.natures[*].name");
         assertThat(natures.size()).isGreaterThan(0);
     }
 
@@ -284,25 +284,25 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("before", cursorProjectId);
         var result = this.projectsQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasNextPage");
         assertThat(hasNextPage).isTrue();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.count");
         assertThat(count).isGreaterThan(0);
 
-        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isGreaterThan(0);
 
-        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        List<String> natures = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.natures[*].name");
         assertThat(natures.size()).isGreaterThan(0);
     }
 
@@ -313,25 +313,25 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("filter", Map.of("name", Map.of("contains", "UML Sample")));
         var result = this.projectsQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projects.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projects.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projects.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projects.pageInfo.count");
         assertThat(count).isEqualTo(1);
 
-        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds.size()).isEqualTo(1);
 
-        List<String> natures = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.natures[*].name");
+        List<String> natures = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.natures[*].name");
         assertThat(natures).hasSize(1);
     }
 
@@ -346,10 +346,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         TestTransaction.end();
         TestTransaction.start();
 
-        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
         assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
 
         var optionalProject = this.projectSearchService.findById(projectId);
         assertThat(optionalProject).isPresent();
@@ -416,10 +416,10 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         var event = this.domainEventCollector.getDomainEvents().get(0);
         assertThat(event).isInstanceOf(ProjectCreatedEvent.class);
 
-        String typename = JsonPath.read(result, "$.data.createProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
         assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
 
-        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
 
         var exists = this.projectSearchService.existsById(projectId);
         assertThat(exists).isTrue();
@@ -440,7 +440,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(this.domainEventCollector.getDomainEvents()).hasSizeGreaterThan(0);
         assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(event -> expectedEvent.contains(event.getClass()));
 
-        String projectId = JsonPath.read(result, "$.data.createProject.project.id");
+        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
         var projectDependencies = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
                 .map(ProjectSemanticData::getSemanticData)
                 .map(AggregateReference::getId)
@@ -474,7 +474,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         TestTransaction.end();
         TestTransaction.start();
 
-        String typename = JsonPath.read(result, "$.data.deleteProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.deleteProject.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
         assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isFalse();
@@ -498,7 +498,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         TestTransaction.end();
         TestTransaction.start();
 
-        String typename = JsonPath.read(result, "$.data.renameProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.renameProject.__typename");
         assertThat(typename).isEqualTo(RenameProjectSuccessPayload.class.getSimpleName());
 
         var optionalProject = this.projectSearchService.findById(TestIdentifiers.UML_SAMPLE_PROJECT);
@@ -521,7 +521,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         TestTransaction.end();
         TestTransaction.start();
 
-        String typename = JsonPath.read(result, "$.data.renameProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.renameProject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
     }
 
@@ -538,7 +538,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         TestTransaction.end();
         TestTransaction.start();
 
-        String typename = JsonPath.read(result, "$.data.renameProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.renameProject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
     }
 
@@ -553,7 +553,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         TestTransaction.end();
         TestTransaction.start();
 
-        String typename = JsonPath.read(result, "$.data.deleteProject.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.deleteProject.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
@@ -564,18 +564,19 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @DisplayName("Given a project, when the project is renamed, then a project event is emitted")
     public void givenProjectWhenTheProjectIsRenamedThenProjectEventIsEmitted() {
         var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
-        var flux = this.projectEventSubscriptionRunner.run(projectEventInput);
+        var flux = this.projectEventSubscriptionRunner.run(projectEventInput).flux();
 
         var input = new RenameProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT, "New Name");
         Runnable renameProjectTask = () -> {
             var result = this.renameProjectMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.renameProject.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.renameProject.__typename");
             assertThat(typename).isEqualTo(RenameProjectSuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();
             TestTransaction.end();
             TestTransaction.start();
         };
+
         StepVerifier.create(flux)
                 .then(renameProjectTask)
                 .expectNextMatches(payload -> {
@@ -592,18 +593,19 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     @DisplayName("Given a project, when the project is deleted, then the project event is completed")
     public void givenProjectWhenTheProjectIsDeletedThenTheProjectEventIsCompleted() {
         var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
-        var flux = this.projectEventSubscriptionRunner.run(projectEventInput);
+        var flux = this.projectEventSubscriptionRunner.run(projectEventInput).flux();
 
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
         Runnable deleteProjectTask = () -> {
             var result = this.deleteProjectMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.deleteProject.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteProject.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
             TestTransaction.flagForCommit();
             TestTransaction.end();
             TestTransaction.start();
         };
+
         StepVerifier.create(flux)
                 .then(deleteProjectTask)
                 .expectComplete()

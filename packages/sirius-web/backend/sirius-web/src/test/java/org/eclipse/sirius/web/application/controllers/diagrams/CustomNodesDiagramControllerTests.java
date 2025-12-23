@@ -64,7 +64,7 @@ public class CustomNodesDiagramControllerTests extends AbstractIntegrationTests 
     @DisplayName("Given a diagram with nodes using a custom node style, when it is opened, then the nodes have the expected style")
     public void givenDiagramWithNodesUsingCustomNodeStyleWhenItIsOpenedThenTheNodesHaveTheExpectedStyle() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), this.customNodesDiagramDescriptionProvider.getRepresentationDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), "ExpandCollapseDiagram");
-        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getNodes())

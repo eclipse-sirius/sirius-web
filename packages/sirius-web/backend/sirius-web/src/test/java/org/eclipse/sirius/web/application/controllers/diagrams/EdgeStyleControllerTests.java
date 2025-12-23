@@ -83,7 +83,7 @@ public class EdgeStyleControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EdgeDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -148,7 +148,7 @@ public class EdgeStyleControllerTests extends AbstractIntegrationTests {
                     ReconnectEdgeKind.TARGET
             );
             var result = this.reconnectEdgeMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.reconnectEdge.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.reconnectEdge.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeActionInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class InvokeActionMutationRunner implements IMutationRunner<InvokeActionI
     }
 
     @Override
-    public String run(InvokeActionInput input) {
+    public GraphQLResult run(InvokeActionInput input) {
         return this.graphQLRequestor.execute(INVOKE_ACTION_MUTATION, input);
     }
 }

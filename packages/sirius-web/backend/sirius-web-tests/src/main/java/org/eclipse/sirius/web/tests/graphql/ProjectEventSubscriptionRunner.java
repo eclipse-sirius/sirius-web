@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,11 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.springframework.stereotype.Service;
-
-import reactor.core.publisher.Flux;
 
 /**
  * Used to get the project event subscription from the GraphQL API.
@@ -46,7 +45,7 @@ public class ProjectEventSubscriptionRunner implements ISubscriptionRunner<Proje
     }
 
     @Override
-    public Flux<Object> run(ProjectEventInput input) {
+    public GraphQLSubscriptionResult run(ProjectEventInput input) {
         return this.graphQLRequestor.subscribe(PROJECT_EVENT_SUBSCRIPTION, input);
     }
 

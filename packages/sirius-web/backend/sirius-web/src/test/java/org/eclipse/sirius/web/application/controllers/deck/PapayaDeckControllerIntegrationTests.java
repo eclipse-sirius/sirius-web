@@ -84,7 +84,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
                 PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
                 "Deck"
         );
-        return this.givenCreatedDeckSubscription.createAndSubscribe(input);
+        return this.givenCreatedDeckSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -140,7 +140,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
                     "description"
             );
             var result = this.createDeckCardMutationRunner.run(createDeckCardInput);
-            String typename = JsonPath.read(result, "$.data.createDeckCard.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.createDeckCard.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -194,7 +194,7 @@ public class PapayaDeckControllerIntegrationTests extends AbstractIntegrationTes
                     cardId.get()
             );
             var result = this.deleteDeckCardMutationRunner.run(deleteDeckCardInput);
-            String typename = JsonPath.read(result, "$.data.deleteDeckCard.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.deleteDeckCard.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

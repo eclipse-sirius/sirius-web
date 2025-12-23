@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -64,7 +65,7 @@ public class InvokeSingleClickOnTwoDiagramElementsToolMutationRunner implements 
     }
 
     @Override
-    public String run(InvokeSingleClickOnTwoDiagramElementsToolInput input) {
+    public GraphQLResult run(InvokeSingleClickOnTwoDiagramElementsToolInput input) {
         return this.graphQLRequestor.execute(INVOKE_SINGLE_CLICK_ON_TWO_DIAGRAM_ELEMENTS_TOOL_MUTATION, input);
     }
 }

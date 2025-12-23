@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2025 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,7 @@
 package org.eclipse.sirius.web.tests.services.api;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-
-import reactor.core.publisher.Flux;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 
 /**
  * Used to create a table and subscribe to it.
@@ -23,5 +22,5 @@ import reactor.core.publisher.Flux;
  */
 public interface IGivenCreatedTableSubscription {
 
-    Flux<Object> createAndSubscribe(CreateRepresentationInput input);
+    GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input);
 }

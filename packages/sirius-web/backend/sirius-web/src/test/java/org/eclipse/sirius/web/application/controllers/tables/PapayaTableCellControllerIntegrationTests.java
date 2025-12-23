@@ -75,7 +75,7 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "Table"
         );
-        return this.givenCreatedTableSubscription.createAndSubscribe(input);
+        return this.givenCreatedTableSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -107,7 +107,7 @@ public class PapayaTableCellControllerIntegrationTests extends AbstractIntegrati
                     "new description");
             var result = this.editTextareaCellMutationRunner.run(editTextareaCellInput);
 
-            String typename = JsonPath.read(result, "$.data.editTextareaCell.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextareaCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

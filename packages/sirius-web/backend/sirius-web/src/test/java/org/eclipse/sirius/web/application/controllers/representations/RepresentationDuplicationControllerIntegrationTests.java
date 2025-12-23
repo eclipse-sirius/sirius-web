@@ -70,18 +70,18 @@ public class RepresentationDuplicationControllerIntegrationTests extends Abstrac
         );
         var result = this.duplicateRepresentationMutationRunner.run(input);
 
-        String typename = JsonPath.read(result, "$.data.duplicateRepresentation.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.duplicateRepresentation.__typename");
         assertThat(typename).isEqualTo(DuplicateRepresentationSuccessPayload.class.getSimpleName());
 
-        String objectId = JsonPath.read(result, "$.data.duplicateRepresentation.representationMetadata.id");
+        String objectId = JsonPath.read(result.data(), "$.data.duplicateRepresentation.representationMetadata.id");
         assertThat(objectId).isNotBlank();
 
-        String objectLabel = JsonPath.read(result, "$.data.duplicateRepresentation.representationMetadata.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.duplicateRepresentation.representationMetadata.label");
         assertThat(objectLabel)
                 .isNotBlank()
                 .isEqualTo("_copy");
 
-        String objectKind = JsonPath.read(result, "$.data.duplicateRepresentation.representationMetadata.kind");
+        String objectKind = JsonPath.read(result.data(), "$.data.duplicateRepresentation.representationMetadata.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://representation?type=Table");
     }
 

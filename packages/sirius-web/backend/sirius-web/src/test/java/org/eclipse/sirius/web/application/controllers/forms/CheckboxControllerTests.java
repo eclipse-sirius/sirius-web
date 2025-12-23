@@ -80,7 +80,7 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithCheckbox"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -130,7 +130,7 @@ public class CheckboxControllerTests extends AbstractIntegrationTests {
             var input = new EditCheckboxInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), checkboxId.get(), false);
             var result = this.editCheckboxMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editCheckbox.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editCheckbox.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

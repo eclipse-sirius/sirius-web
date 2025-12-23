@@ -17,12 +17,12 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DeckEventInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDeckSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedRepresentation;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.transaction.TestTransaction;
-import reactor.core.publisher.Flux;
 
 /**
  * Used to create a deck and subscribe to it.
@@ -45,18 +45,18 @@ public class GivenCreatedDeckSubscription implements IGivenCreatedDeckSubscripti
     }
 
     @Override
-    public Flux<Object> createAndSubscribe(CreateRepresentationInput input) {
+    public GraphQLSubscriptionResult createAndSubscribe(CreateRepresentationInput input) {
         this.givenCommittedTransaction.commit();
 
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var deckEventInput = new DeckEventInput(UUID.randomUUID(), input.editingContextId(), UUID.fromString(representationId));
-        var flux = this.deckEventSubscriptionRunner.run(deckEventInput);
+        var result = this.deckEventSubscriptionRunner.run(deckEventInput);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
 
-        return flux;
+        return result;
     }
 }

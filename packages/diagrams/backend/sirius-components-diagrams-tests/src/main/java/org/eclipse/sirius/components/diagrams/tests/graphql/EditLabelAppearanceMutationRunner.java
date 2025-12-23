@@ -16,6 +16,7 @@ package org.eclipse.sirius.components.diagrams.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelAppearanceInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,7 @@ public class EditLabelAppearanceMutationRunner implements IMutationRunner<EditLa
     }
 
     @Override
-    public String run(EditLabelAppearanceInput input) {
+    public GraphQLResult run(EditLabelAppearanceInput input) {
         return this.graphQLRequestor.execute(EDIT_LABEL_APPEARANCE_MUTATION, input);
     }
 }

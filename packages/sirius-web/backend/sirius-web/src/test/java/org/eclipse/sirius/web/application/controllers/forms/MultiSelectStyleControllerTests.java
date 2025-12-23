@@ -71,7 +71,7 @@ public class MultiSelectStyleControllerTests extends AbstractIntegrationTests {
                 objectId,
                 "FormWithStyledMultiSelect"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

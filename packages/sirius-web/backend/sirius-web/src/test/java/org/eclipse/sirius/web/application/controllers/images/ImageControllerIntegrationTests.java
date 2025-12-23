@@ -40,6 +40,8 @@ import org.eclipse.sirius.web.tests.graphql.ProjectImagesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.RenameImageMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.UploadImageMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenCommittedTransaction;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +70,9 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     private int port;
 
     @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
     private IGivenCommittedTransaction givenCommittedTransaction;
 
     @Autowired
@@ -85,6 +90,11 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
     @Autowired
     private IProjectImageSearchService projectImageSearchService;
 
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
+
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a project, when its images are requested, then the images are returned")
@@ -94,10 +104,10 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
         Map<String, Object> variables = Map.of("projectId", TestIdentifiers.SYSML_SAMPLE_PROJECT.toString());
         var result = this.projectImagesQueryRunner.run(variables);
 
-        List<String> imageLabels = JsonPath.read(result, "$.data.viewer.project.images[*].label");
+        List<String> imageLabels = JsonPath.read(result.data(), "$.data.viewer.project.images[*].label");
         assertThat(imageLabels).contains("Placeholder");
 
-        List<String> imageURLs = JsonPath.read(result, "$.data.viewer.project.images[*].url");
+        List<String> imageURLs = JsonPath.read(result.data(), "$.data.viewer.project.images[*].url");
         assertThat(imageURLs).contains("/api/images/" + TestIdentifiers.SYSML_IMAGE);
     }
 
@@ -161,13 +171,13 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
 
         var input = new UploadImageInput(UUID.randomUUID(), TestIdentifiers.SYSML_SAMPLE_PROJECT, "New image", file);
         var result = this.uploadImageMutationRunner.run(input);
-        var typename = JsonPath.read(result, "$.data.uploadImage.__typename");
+        var typename = JsonPath.read(result.data(), "$.data.uploadImage.__typename");
         assertThat(typename).isEqualTo(UploadImageSuccessPayload.class.getSimpleName());
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        var imageId = JsonPath.read(result, "$.data.uploadImage.imageId");
+        var imageId = JsonPath.read(result.data(), "$.data.uploadImage.imageId");
         var uri = "http://localhost:" + port + "/api/images/" + imageId;
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
@@ -194,7 +204,7 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
 
         var input = new UploadImageInput(UUID.randomUUID(), TestIdentifiers.SYSML_SAMPLE_PROJECT, "New image", file);
         var result = this.uploadImageMutationRunner.run(input);
-        var typename = JsonPath.read(result, "$.data.uploadImage.__typename");
+        var typename = JsonPath.read(result.data(), "$.data.uploadImage.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
 
         TestTransaction.flagForCommit();
@@ -214,7 +224,7 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
 
         var input = new RenameImageInput(UUID.randomUUID(), TestIdentifiers.SYSML_IMAGE, "New label");
         var result = this.renameImageMutationRunner.run(input);
-        var typename = JsonPath.read(result, "$.data.renameImage.__typename");
+        var typename = JsonPath.read(result.data(), "$.data.renameImage.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
         TestTransaction.flagForCommit();
@@ -234,7 +244,7 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
 
         var input = new DeleteImageInput(UUID.randomUUID(), TestIdentifiers.SYSML_IMAGE);
         var result = this.deleteImageMutationRunner.run(input);
-        var typename = JsonPath.read(result, "$.data.deleteImage.__typename");
+        var typename = JsonPath.read(result.data(), "$.data.deleteImage.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
         TestTransaction.flagForCommit();

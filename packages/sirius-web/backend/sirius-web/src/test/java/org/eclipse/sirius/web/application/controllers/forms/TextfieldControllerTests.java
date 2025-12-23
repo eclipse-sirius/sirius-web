@@ -86,7 +86,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithTextfield"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -139,7 +139,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
             var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textfieldId.get(), "A new and very long value");
             var result = this.editTextfieldMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -158,7 +158,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
             var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textfieldId.get(), "buck");
             var result = this.editTextfieldMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
         };
 
@@ -179,7 +179,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithReadOnlyTextfield"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -207,7 +207,7 @@ public class TextfieldControllerTests extends AbstractIntegrationTests {
             var input = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textfieldId.get(), "buck");
             var result = this.editTextfieldMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
         };
 

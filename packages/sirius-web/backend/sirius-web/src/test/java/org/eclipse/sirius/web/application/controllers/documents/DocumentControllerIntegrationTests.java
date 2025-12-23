@@ -102,7 +102,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         Map<String, Object> variables = Map.of("editingContextId", StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString());
         var result = this.stereotypesQueryRunner.run(variables);
 
-        List<String> stereotypeIds = JsonPath.read(result, "$.data.viewer.editingContext.stereotypes.edges[*].node.id");
+        List<String> stereotypeIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.stereotypes.edges[*].node.id");
         assertThat(stereotypeIds).containsAll(List.of(
                 StudioStereotypeProvider.DOMAIN_STEREOTYPE,
                 StudioStereotypeProvider.VIEW_STEREOTYPE
@@ -212,7 +212,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        String typename = JsonPath.read(result, "$.data.createDocument.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createDocument.__typename");
         assertThat(typename).isEqualTo(CreateDocumentSuccessPayload.class.getSimpleName());
 
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
@@ -264,7 +264,7 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        String typename = JsonPath.read(result, "$.data.createDocument.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createDocument.__typename");
         assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
     }
 
@@ -278,10 +278,10 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
-        String typename = JsonPath.read(result, "$.data.uploadDocument.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.uploadDocument.__typename");
         assertThat(typename).isEqualTo(UploadDocumentSuccessPayload.class.getSimpleName());
 
-        String report = JsonPath.read(result, "$.data.uploadDocument.report");
+        String report = JsonPath.read(result.data(), "$.data.uploadDocument.report");
         assertThat(report).isEqualTo("This is a test report");
 
         this.validateDocument(editingContextId, name, check);

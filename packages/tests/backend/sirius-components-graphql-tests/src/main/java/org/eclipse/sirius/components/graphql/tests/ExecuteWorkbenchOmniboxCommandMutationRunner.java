@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.graphql.tests;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.omnibox.dto.ExecuteWorkbenchOmniboxCommandInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class ExecuteWorkbenchOmniboxCommandMutationRunner implements IMutationRu
     }
 
     @Override
-    public String run(ExecuteWorkbenchOmniboxCommandInput input) {
+    public GraphQLResult run(ExecuteWorkbenchOmniboxCommandInput input) {
         return this.graphQLRequestor.execute(EXECUTE_WORKBENCH_OMNIBOX_COMMAND, input);
     }
 

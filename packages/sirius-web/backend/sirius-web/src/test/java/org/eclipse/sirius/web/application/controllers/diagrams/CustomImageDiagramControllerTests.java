@@ -59,7 +59,7 @@ public class CustomImageDiagramControllerTests extends AbstractIntegrationTests 
     @DisplayName("Given a view based diagram, when nodes are using custom images, then the style is computed properly")
     public void givenViewBasedDiagramWhenNodesAreUsingCustomImagesThenTheStyleIsComputedProperly() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID.toString(), StudioIdentifiers.DIAGRAM_DESCRIPTION_ID, StudioIdentifiers.ROOT_OBJECT.toString(), "");
-        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getNodes())

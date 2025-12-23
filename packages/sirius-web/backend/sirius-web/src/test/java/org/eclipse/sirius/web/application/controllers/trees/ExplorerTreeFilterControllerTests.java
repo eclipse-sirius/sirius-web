@@ -81,7 +81,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
         );
         var result = this.treeFiltersQueryRunner.run(variables);
 
-        List<String> treeFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescription.filters[*].id");
+        List<String> treeFilterIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescription.filters[*].id");
         assertThat(treeFilterIds)
                 .isNotEmpty()
                 .anySatisfy(treeFilterId -> assertThat(treeFilterId).isEqualTo(StudioExplorerTreeFilterProvider.HIDE_STUDIO_COLOR_PALETTES_TREE_FILTER_ID));
@@ -97,7 +97,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
         );
         var result = this.treeFiltersQueryRunner.run(variables);
 
-        List<String> treeFilterIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescription.filters[*].id");
+        List<String> treeFilterIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescription.filters[*].id");
         assertThat(treeFilterIds).isEmpty();
     }
 
@@ -107,7 +107,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     public void givenStudioWhenFilterToHideDefaultColorPaletteIsActiveThenTheDefaultColorPaletteIsHidden() {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of(StudioExplorerTreeFilterProvider.HIDE_STUDIO_COLOR_PALETTES_TREE_FILTER_ID));
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> projectContentConsumer = assertRefreshedTreeThat(tree -> assertThat(tree.getChildren()).isEmpty());
 
@@ -123,7 +123,7 @@ public class ExplorerTreeFilterControllerTests extends AbstractIntegrationTests 
     public void givenStudioWhenFilterToHideDefaultColorPaletteIsInactiveThenTheDefaultColorPaletteIsHidden() {
         var treeRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), treeRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         var defaultPaletteTreeItemId = ColorPaletteService.SIRIUS_STUDIO_COLOR_PALETTES_URI.substring((IEMFEditingContext.RESOURCE_SCHEME + ":///").length());
 

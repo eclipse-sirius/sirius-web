@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,6 @@ package org.eclipse.sirius.components.graphql.tests.api;
 
 import org.eclipse.sirius.components.core.api.IInput;
 
-import reactor.core.publisher.Flux;
-
 /**
  * Interface used to run GraphQL subscriptions.
  *
@@ -25,6 +23,6 @@ import reactor.core.publisher.Flux;
  */
 public interface ISubscriptionRunner<T extends IInput> {
 
-    Flux<Object> run(T input);
+    GraphQLSubscriptionResult run(T input);
 
 }

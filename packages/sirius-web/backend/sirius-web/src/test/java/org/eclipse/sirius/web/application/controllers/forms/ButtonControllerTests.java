@@ -81,7 +81,7 @@ public class ButtonControllerTests extends AbstractIntegrationTests {
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "FormWithCheckbox"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -141,7 +141,7 @@ public class ButtonControllerTests extends AbstractIntegrationTests {
             var input = new PushButtonInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), buttonId.get());
             var result = this.pushButtonMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.pushButton.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.pushButton.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

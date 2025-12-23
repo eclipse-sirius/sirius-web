@@ -100,7 +100,7 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
     public void givenStudioWhenWeAskForTheTreePathOfAnObjectThenItsPathInTheExplorerIsReturned() {
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, List.of(), List.of());
         var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         var treeId = new AtomicReference<String>();
         var objectId = new AtomicReference<String>();
@@ -143,7 +143,7 @@ public class ExplorerTreePathControllerTests extends AbstractIntegrationTests {
                     "selectionEntryIds", List.of(objectId.get())
             );
             var result = this.treePathQueryRunner.run(variables);
-            List<String> treeItemIdsToExpand = JsonPath.read(result, "$.data.viewer.editingContext.treePath.treeItemIdsToExpand");
+            List<String> treeItemIdsToExpand = JsonPath.read(result.data(), "$.data.viewer.editingContext.treePath.treeItemIdsToExpand");
             assertThat(treeItemIdsToExpand).isNotEmpty();
         };
 

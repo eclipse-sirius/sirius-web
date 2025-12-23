@@ -101,7 +101,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "ViewTableDescription"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     private Flux<Object> givenSubscriptionToMinimalViewTableRepresentation() {
@@ -112,7 +112,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "MinimalViewTableDescription"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -174,11 +174,11 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
                     "rowId", rowId.get().toString());
 
             var result = this.rowContextMenuQueryRunner.run(variables);
-            List<String> actionLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
+            List<String> actionLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].label");
             assertThat(actionLabels).isNotEmpty().hasSize(1);
             assertThat(actionLabels.get(0)).isEqualTo("Change name");
 
-            List<String> actionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].id");
+            List<String> actionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.rowContextMenuEntries[*].id");
             actionId.set(actionIds.get(0));
         };
 
@@ -193,7 +193,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
             );
             var result = this.invokeRowContextMenuEntryMutationRunner.run(invokeRowContextMenuEntryInput);
 
-            String typename = JsonPath.read(result, "$.data.invokeRowContextMenuEntry.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeRowContextMenuEntry.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -299,7 +299,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
         var representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 1, List.of(), List.of(ViewTableDescriptionProvider.HIDE_FAILURE_ROW_FILTER_ID),
                 List.of());
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var rowFilterFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var rowFilterFlux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -348,7 +348,7 @@ public class PapayaViewTableControllerIntegrationTests extends AbstractIntegrati
 
         String representationId = this.representationIdBuilder.buildTableRepresentationId(tableId.get(), null, "NEXT", 10, List.of(), List.of(), List.of(new ColumnSort(columnNameId.get(), true)));
         var tableEventInput = new TableEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), representationId);
-        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput);
+        var expandedFlux = this.tableEventSubscriptionRunner.run(tableEventInput).flux();
 
         TestTransaction.flagForCommit();
         TestTransaction.end();

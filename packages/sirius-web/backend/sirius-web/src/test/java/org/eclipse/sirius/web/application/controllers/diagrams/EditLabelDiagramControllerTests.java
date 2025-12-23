@@ -81,7 +81,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "EditableLabelDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -108,7 +108,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
             );
             var initialDirectEditElementLabelResult = this.initialDirectEditElementLabelQueryRunner.run(variables);
 
-            String initialDirectEditElementLabel = JsonPath.read(initialDirectEditElementLabelResult, "$.data.viewer.editingContext.representation.description.initialDirectEditElementLabel");
+            String initialDirectEditElementLabel = JsonPath.read(initialDirectEditElementLabelResult.data(), "$.data.viewer.editingContext.representation.description.initialDirectEditElementLabel");
             assertThat(initialDirectEditElementLabel).isEqualTo("sirius-web-domain");
         };
 
@@ -141,7 +141,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
             var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "new label");
             var result = this.editLabelMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 
@@ -180,7 +180,7 @@ public class EditLabelDiagramControllerTests extends AbstractIntegrationTests {
             var input = new EditLabelInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), labelId.get(), "sirius-web-application-renamed");
             var result = this.editLabelMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editLabel.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editLabel.__typename");
             assertThat(typename).isEqualTo(EditLabelSuccessPayload.class.getSimpleName());
         };
 

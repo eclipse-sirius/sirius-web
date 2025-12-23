@@ -109,16 +109,16 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.representationMetadataQueryRunner.run(variables);
 
-        String representationId = JsonPath.read(result, "$.data.viewer.editingContext.representation.id");
+        String representationId = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.id");
         assertThat(representationId).isEqualTo(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
 
-        String kind = JsonPath.read(result, "$.data.viewer.editingContext.representation.kind");
+        String kind = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.kind");
         assertThat(kind).isEqualTo("siriusComponents://representation?type=Portal");
 
-        String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
+        String label = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.label");
         assertThat(label).isEqualTo("EPackage Portal");
 
-        List<String> iconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.iconURLs");
+        List<String> iconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.iconURLs");
         assertThat(iconURLs)
                 .isNotEmpty()
                 .allSatisfy(iconURL -> assertThat(iconURL).isEqualTo("/api/images/portal-images/portal.svg"));
@@ -135,16 +135,16 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.representationMetadataQueryRunner.run(variables);
 
-        String representationId = JsonPath.read(result, "$.data.viewer.editingContext.representation.id");
+        String representationId = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.id");
         assertThat(representationId).isEqualTo(initialExplorerId);
 
-        String kind = JsonPath.read(result, "$.data.viewer.editingContext.representation.kind");
+        String kind = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.kind");
         assertThat(kind).isEqualTo("siriusComponents://representation?type=Tree");
 
-        String label = JsonPath.read(result, "$.data.viewer.editingContext.representation.label");
+        String label = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.label");
         assertThat(label).isEqualTo("Explorer");
 
-        List<String> iconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.iconURLs");
+        List<String> iconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.iconURLs");
         assertThat(iconURLs)
                 .isNotEmpty()
                 .satisfiesOnlyOnce(iconURL -> assertThat(iconURL).isEqualTo("/api/images/explorer/explorer.svg"));
@@ -159,26 +159,26 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.representationsMetadataQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.count");
         assertThat(count).isPositive();
 
-        List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
+        List<String> representationIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.edges[*].node.id");
         assertThat(representationIds)
                 .contains(TestIdentifiers.EPACKAGE_EMPTY_PORTAL_REPRESENTATION.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
 
-        List<List<String>> allIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.iconURLs");
+        List<List<String>> allIconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.edges[*].node.iconURLs");
         assertThat(allIconURLs)
                 .isNotEmpty()
                 .allSatisfy(iconURLs -> assertThat(iconURLs)
@@ -197,31 +197,31 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.representationsMetadataQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.editingContext.representations.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.pageInfo.count");
         assertThat(count).isEqualTo(1);
 
-        List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.id");
+        List<String> representationIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.edges[*].node.id");
         assertThat(representationIds).containsExactly(initialExplorerId);
 
-        String label = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[0].node.label");
+        String label = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.edges[0].node.label");
         assertThat(label).isEqualTo(ExplorerDescriptionProvider.REPRESENTATION_NAME);
 
-        String kind = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[0].node.kind");
+        String kind = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.edges[0].node.kind");
         assertThat(kind).isEqualTo(Tree.KIND);
 
-        List<String> iconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[0].node.iconURLs");
+        List<String> iconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.edges[0].node.iconURLs");
         assertThat(iconURLs).containsExactly("/api/images/explorer/explorer.svg");
     }
 
@@ -235,12 +235,12 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.representationsMetadataQueryRunner.run(variables);
 
-        List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.label");
+        List<String> representationIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.edges[*].node.label");
         assertThat(representationIds)
                 .isNotEmpty()
                 .containsSequence("EPackage Portal", "Portal");
 
-        List<List<String>> allIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representations.edges[*].node.iconURLs");
+        List<List<String>> allIconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.representations.edges[*].node.iconURLs");
         assertThat(allIconURLs)
                 .isNotEmpty()
                 .allSatisfy(iconURLs -> assertThat(iconURLs)
@@ -258,22 +258,22 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         );
         var result = this.representationDescriptionsQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.pageInfo.count");
         assertThat(count).isEqualTo(3);
 
-        List<String> representationIds = JsonPath.read(result, "$.data.viewer.editingContext.representationDescriptions.edges[*].node.id");
+        List<String> representationIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.edges[*].node.id");
         assertThat(representationIds).hasSize(3);
     }
 
@@ -284,6 +284,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
@@ -317,6 +318,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
@@ -327,7 +329,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
             var editLabelInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, formId.get(), "metadata.label", "NewPortal");
             var result = this.editTextfieldMutationRunner.run(editLabelInput);
 
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -354,6 +356,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
@@ -364,7 +367,7 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
             var editDocumentationInput = new EditTextfieldInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, formId.get(), "metadata.documentation", "This is a documentation");
             var result = this.editTextfieldMutationRunner.run(editDocumentationInput);
 
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.tables.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.tables.dto.InvokeRowContextMenuEntryInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,7 @@ public class InvokeRowContextMenuEntryMutationRunner implements IMutationRunner<
     }
 
     @Override
-    public String run(InvokeRowContextMenuEntryInput input) {
+    public GraphQLResult run(InvokeRowContextMenuEntryInput input) {
         return this.graphQLRequestor.execute(INVOKE_ROW_CONTEXT_MENU_ENTRY_MUTATION, input);
     }
 }

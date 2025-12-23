@@ -72,7 +72,7 @@ public class EdgePaletteControllerTests extends AbstractIntegrationTests {
     @DisplayName("Given a domain diagram, when the palette is requested for an edge element, then the relevant tools are available")
     public void givenDomainDiagramWhenPaletteIsRequestedOnEdgeElementThenToolsAreAvailable() {
         var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.edgePaletteDiagramDescriptionProvider.getRepresentationDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
-        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
 
         var diagramId = new AtomicReference<String>();
         var edgeId = new AtomicReference<String>();
@@ -90,7 +90,7 @@ public class EdgePaletteControllerTests extends AbstractIntegrationTests {
             );
             var result = this.paletteQueryRunner.run(variables);
 
-            List<String> topLevelToolsLabel = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+            List<String> topLevelToolsLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
             assertThat(topLevelToolsLabel).hasSize(3);
             assertThat(topLevelToolsLabel)
                     .element(0)

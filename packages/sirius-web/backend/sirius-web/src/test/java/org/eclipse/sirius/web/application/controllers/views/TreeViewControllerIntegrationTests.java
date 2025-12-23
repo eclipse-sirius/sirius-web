@@ -72,19 +72,19 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
         );
         var result = this.createChildMutationRunner.run(inputPalette);
 
-        String typename = JsonPath.read(result, "$.data.createChild.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.createChild.__typename");
         assertThat(typename).isEqualTo(CreateChildSuccessPayload.class.getSimpleName());
 
         var treeDescriptionId = new AtomicReference<String>();
 
-        String objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        String objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
         treeDescriptionId.set(objectId);
 
-        String objectLabel = JsonPath.read(result, "$.data.createChild.object.label");
+        String objectLabel = JsonPath.read(result.data(), "$.data.createChild.object.label");
         assertThat(objectLabel).isNotBlank();
 
-        String objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        String objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=tree&entity=TreeDescription");
 
         var treeItemLabelDescription = new CreateChildInput(
@@ -95,10 +95,10 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
         );
         result = this.createChildMutationRunner.run(treeItemLabelDescription);
 
-        objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
 
-        objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=tree&entity=TreeItemLabelDescription");
 
         var singleClickTreeItemContextMenuEntry = new CreateChildInput(
@@ -109,9 +109,9 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
         );
         result = this.createChildMutationRunner.run(singleClickTreeItemContextMenuEntry);
 
-        objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
-        objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=tree&entity=SingleClickTreeItemContextMenuEntry");
 
         var fetchTreeItemContextMenuEntry = new CreateChildInput(
@@ -122,9 +122,9 @@ public class TreeViewControllerIntegrationTests extends AbstractIntegrationTests
         );
         result = this.createChildMutationRunner.run(fetchTreeItemContextMenuEntry);
 
-        objectId = JsonPath.read(result, "$.data.createChild.object.id");
+        objectId = JsonPath.read(result.data(), "$.data.createChild.object.id");
         assertThat(objectId).isNotBlank();
-        objectKind = JsonPath.read(result, "$.data.createChild.object.kind");
+        objectKind = JsonPath.read(result.data(), "$.data.createChild.object.kind");
         assertThat(objectKind).isEqualTo("siriusComponents://semantic?domain=tree&entity=FetchTreeItemContextMenuEntry");
 
     }

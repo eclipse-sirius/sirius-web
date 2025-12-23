@@ -12,7 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams.undo;
 
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.NODE;
+
 import com.jayway.jsonpath.JsonPath;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -34,20 +47,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
-import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
-import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramInstanceOfAssertFactories.NODE;
 
 /**
  * Integration tests of undo redo for the hide / fade / reveal diagrams.
@@ -90,7 +92,7 @@ public class UndoVisibilityDiagramControllerTests extends AbstractIntegrationTes
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "VisibilityDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

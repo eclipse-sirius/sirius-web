@@ -74,6 +74,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
         var detailRepresentationId =  "details://?objectIds=[" + String.join(",", StudioIdentifiers.DIAGRAM_DESCRIPTION_OBJECT.toString()) + "]";
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
@@ -96,7 +97,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
                     "cursorPosition", 0
             );
             var result = this.completionProposalsQueryRunner.run(variables);
-            List<String> resultTextToInsert = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.completionProposals[*].textToInsert");
+            List<String> resultTextToInsert = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.completionProposals[*].textToInsert");
             assertThat(resultTextToInsert)
                     .isNotEmpty()
                     .containsAll(List.of(
@@ -120,6 +121,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
         var detailRepresentationId =  "details://?objectIds=[" + String.join(",", StudioIdentifiers.HUMAN_NODE_DESCRIPTION_OBJECT.toString()) + "]";
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
@@ -142,7 +144,7 @@ public class CompletionProposalsControllerTests extends AbstractIntegrationTests
                     "cursorPosition", "aql:self.".length()
             );
             var result = this.completionProposalsQueryRunner.run(variables);
-            List<String> resultTextToInsert = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.completionProposals[*].textToInsert");
+            List<String> resultTextToInsert = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.completionProposals[*].textToInsert");
             assertThat(resultTextToInsert)
                     .isNotEmpty()
                     .containsAll(List.of(

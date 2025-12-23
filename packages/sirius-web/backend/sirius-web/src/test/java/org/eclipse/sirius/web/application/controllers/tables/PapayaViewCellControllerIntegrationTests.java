@@ -84,7 +84,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
                 PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
                 "ViewTableDescription"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -110,7 +110,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
             var input = new EditTextfieldCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), tableId.get(), tableId.get(), cellId.get(), "newName");
             var result = this.editTextfieldCellMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editTextfieldCell.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfieldCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -151,7 +151,7 @@ public class PapayaViewCellControllerIntegrationTests extends AbstractIntegratio
             var input = new EditCheckboxCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), tableId.get(), tableId.get(), cellId.get(), true);
             var result = this.editCheckboxCellMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editCheckboxCell.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editCheckboxCell.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

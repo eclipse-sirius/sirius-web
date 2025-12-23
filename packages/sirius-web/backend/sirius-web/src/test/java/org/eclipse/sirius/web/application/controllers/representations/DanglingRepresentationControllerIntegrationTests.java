@@ -73,7 +73,7 @@ public class DanglingRepresentationControllerIntegrationTests extends AbstractIn
     @DisplayName("Given a project, when we delete an object with a child representation, then the representation is deleted")
     public void givenProjectWhenWeDeleteAnObjectWithChildRepresentationThenTheRepresentationIsDeleted() {
         var portalEventInput = new PortalEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID.toString(), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
-        var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput);
+        var portalFlux = this.portalEventSubscriptionRunner.run(portalEventInput).flux();
 
         Consumer<Object> portalContentMatcher = assertRefreshedPortalThat(portal -> assertThat(portal).isNotNull());
 

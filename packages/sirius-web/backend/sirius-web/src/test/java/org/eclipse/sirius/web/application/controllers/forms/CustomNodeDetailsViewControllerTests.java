@@ -80,6 +80,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
         var detailRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> formContentMatcher = assertRefreshedFormThat(form -> {
@@ -102,6 +103,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
         var detailRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(StudioIdentifiers.ELLIPSE_NODE_STYLE_DESCRIPTION_OBJECT.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
@@ -120,7 +122,7 @@ public class CustomNodeDetailsViewControllerTests extends AbstractIntegrationTes
             var editTextfieldInput = new EditTextfieldInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, formId.get(), textfieldId.get(), "3");
             var result = this.editTextfieldMutationRunner.run(editTextfieldInput);
 
-            String typename = JsonPath.read(result, "$.data.editTextfield.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editTextfield.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

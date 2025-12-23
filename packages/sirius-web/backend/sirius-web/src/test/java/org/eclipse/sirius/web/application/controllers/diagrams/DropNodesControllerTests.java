@@ -84,7 +84,7 @@ public class DropNodesControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "DropNodeDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -122,7 +122,7 @@ public class DropNodesControllerTests extends AbstractIntegrationTests {
                     0
             );
             var result = this.dropNodesMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.dropNodes.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropNodes.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -172,7 +172,7 @@ public class DropNodesControllerTests extends AbstractIntegrationTests {
                     0
             );
             var result = this.dropNodesMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.dropNodes.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.dropNodes.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -204,7 +204,7 @@ public class DropNodesControllerTests extends AbstractIntegrationTests {
                     "representationId", diagramId.get()
             );
             var result = this.dropNodeCompatibilityQueryRunner.run(variables);
-            List<String> droppedNodeDescriptionIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.dropNodeCompatibility[*].droppedNodeDescriptionId");
+            List<String> droppedNodeDescriptionIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dropNodeCompatibility[*].droppedNodeDescriptionId");
             assertThat(droppedNodeDescriptionIds).isNotNull();
         };
 

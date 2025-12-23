@@ -87,7 +87,7 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
             PapayaIdentifiers.PROJECT_OBJECT.toString(),
             "ActionDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -114,8 +114,8 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
                     "diagramElementId", nodeId.get()
             );
             var result = this.getActionsQueryRunner.run(variables);
-            List<String> actionsIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.manageVisibilityActions[*].id");
-            List<String> actionsLabels = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.manageVisibilityActions[*].label");
+            List<String> actionsIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.manageVisibilityActions[*].id");
+            List<String> actionsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.manageVisibilityActions[*].label");
 
             assertThat(actionsIds)
                     .isNotEmpty()
@@ -155,14 +155,14 @@ public class ManageVisibilityActionControllerTests extends AbstractIntegrationTe
         Runnable invokeHideAction = () -> {
             var input = new InvokeManageVisibilityActionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeId.get(), ManageVisibilityHideAllAction.ACTION_ID);
             var result = this.invokeActionMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.invokeManageVisibilityAction.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeManageVisibilityAction.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
         Runnable invokeRevealAction = () -> {
             var input = new InvokeManageVisibilityActionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeId.get(), ManageVisibilityRevealAllAction.ACTION_ID);
             var result = this.invokeActionMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.invokeManageVisibilityAction.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeManageVisibilityAction.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

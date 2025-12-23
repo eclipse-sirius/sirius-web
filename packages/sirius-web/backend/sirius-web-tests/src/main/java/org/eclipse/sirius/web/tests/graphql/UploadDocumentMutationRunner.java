@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.tests.graphql;
 import java.util.Map;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.eclipse.sirius.web.application.document.dto.UploadDocumentInput;
@@ -53,7 +54,7 @@ public class UploadDocumentMutationRunner implements IMutationRunner<UploadDocum
     }
 
     @Override
-    public String run(UploadDocumentInput input) {
+    public GraphQLResult run(UploadDocumentInput input) {
         Map<String, Object> inputMap = Map.of(
                 "id", input.id(),
                 "editingContextId", input.editingContextId(),

@@ -14,13 +14,13 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.springframework.stereotype.Service;
 
 import graphql.execution.DataFetcherResult;
-import reactor.core.publisher.Flux;
 
 /**
  * Used to get the properties event subscription with the GraphQL API.
@@ -57,11 +57,13 @@ public class DetailsEventSubscriptionRunner implements ISubscriptionRunner<Detai
     }
 
     @Override
-    public Flux<Object> run(DetailsEventInput input) {
-        return this.graphQLRequestor.subscribe(DETAILS_EVENT_SUBSCRIPTION, input)
+    public GraphQLSubscriptionResult run(DetailsEventInput input) {
+        var rawResult = this.graphQLRequestor.subscribe(DETAILS_EVENT_SUBSCRIPTION, input);
+        var flux = rawResult.flux()
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData);
+        return new GraphQLSubscriptionResult(flux, rawResult.errors(), rawResult.extensions());
     }
 
 }

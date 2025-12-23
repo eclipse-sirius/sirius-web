@@ -44,7 +44,7 @@ public class InvokeSingleClickOnDiagramElementToolExecutor {
                 startingPositionX,
                 startingPositionY,
                 variables);
-        String result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+        String result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input).data();
         return new InvokeSingleClickOnDiagramElementToolAssert(result);
     }
 }

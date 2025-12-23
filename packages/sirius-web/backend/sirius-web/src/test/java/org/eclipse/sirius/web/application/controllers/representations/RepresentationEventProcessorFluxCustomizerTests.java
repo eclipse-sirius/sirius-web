@@ -64,7 +64,7 @@ public class RepresentationEventProcessorFluxCustomizerTests extends AbstractInt
     public void givenFormRepresentationWhenWeCustomizeItsOuputEventsThenAdditionalPayloadsAreReceived() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(TestIdentifiers.EPACKAGE_OBJECT.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, detailsRepresentationId);
-        var flux = this.detailsEventSubscriptionRunner.run(input);
+        var flux = this.detailsEventSubscriptionRunner.run(input).flux();
 
         Predicate<Object> formCapabilitiesMatcher = object -> Optional.of(object)
                 .filter(FormCapabilitiesRefreshedEventPayload.class::isInstance)

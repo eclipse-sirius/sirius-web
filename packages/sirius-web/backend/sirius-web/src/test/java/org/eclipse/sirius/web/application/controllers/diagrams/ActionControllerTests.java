@@ -84,7 +84,7 @@ public class ActionControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ActionDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -111,9 +111,9 @@ public class ActionControllerTests extends AbstractIntegrationTests {
                     "diagramElementId", nodeId.get()
             );
             var result = this.getActionsQueryRunner.run(variables);
-            List<String> actionsIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].id");
-            List<String> actionsTooltips = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].tooltip");
-            List<List<String>> actionsIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].iconURLs");
+            List<String> actionsIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.actions[*].id");
+            List<String> actionsTooltips = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.actions[*].tooltip");
+            List<List<String>> actionsIconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.actions[*].iconURLs");
             assertThat(actionsTooltips)
                     .isNotEmpty()
                     .contains("Hide", "Fade");
@@ -156,9 +156,9 @@ public class ActionControllerTests extends AbstractIntegrationTests {
                     "diagramElementId", nodeId.get()
             );
             var result = this.getActionsQueryRunner.run(variables);
-            List<String> actionsIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].id");
-            List<String> actionsTooltips = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].tooltip");
-            List<List<String>> actionsIconURLs = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.actions[*].iconURLs");
+            List<String> actionsIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.actions[*].id");
+            List<String> actionsTooltips = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.actions[*].tooltip");
+            List<List<String>> actionsIconURLs = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.actions[*].iconURLs");
             assertThat(actionsTooltips)
                     .isNotEmpty()
                     .contains("Hide")
@@ -201,7 +201,7 @@ public class ActionControllerTests extends AbstractIntegrationTests {
             String actionId = UUID.nameUUIDFromBytes("HideAction".getBytes()).toString();
             var input = new InvokeActionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), nodeId.get(), actionId);
             var result = this.invokeActionMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.invokeAction.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.invokeAction.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

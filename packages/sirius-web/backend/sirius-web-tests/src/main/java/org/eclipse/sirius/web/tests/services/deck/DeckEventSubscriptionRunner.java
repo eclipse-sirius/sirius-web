@@ -14,13 +14,13 @@ package org.eclipse.sirius.web.tests.services.deck;
 
 import java.util.Objects;
 
-import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DeckEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
 
-import reactor.core.publisher.Flux;
+import graphql.execution.DataFetcherResult;
 
 /**
  * Used to get the form event subscription with the GraphQL API.
@@ -45,10 +45,12 @@ public class DeckEventSubscriptionRunner implements ISubscriptionRunner<DeckEven
     }
 
     @Override
-    public Flux<Object> run(DeckEventInput input) {
-        return this.graphQLRequestor.subscribe(DECK_EVENT_SUBSCRIPTION, input)
+    public GraphQLSubscriptionResult run(DeckEventInput input) {
+        var rawResult = this.graphQLRequestor.subscribe(DECK_EVENT_SUBSCRIPTION, input);
+        var flux = rawResult.flux()
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData);
+        return new GraphQLSubscriptionResult(flux, rawResult.errors(), rawResult.extensions());
     }
 }

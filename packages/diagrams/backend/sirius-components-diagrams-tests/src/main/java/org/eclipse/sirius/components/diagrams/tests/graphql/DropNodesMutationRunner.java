@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.diagrams.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class DropNodesMutationRunner implements IMutationRunner<DropNodesInput> 
     }
 
     @Override
-    public String run(DropNodesInput input) {
+    public GraphQLResult run(DropNodesInput input) {
         return this.graphQLRequestor.execute(DROP_NODE_MUTATION, input);
     }
 }

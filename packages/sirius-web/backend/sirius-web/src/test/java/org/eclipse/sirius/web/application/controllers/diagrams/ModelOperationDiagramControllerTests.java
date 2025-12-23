@@ -79,7 +79,7 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "ModelOperationDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

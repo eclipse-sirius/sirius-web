@@ -97,7 +97,7 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
                 representationId
         );
 
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Runnable invokeImpactAnalysisReport = () -> {
             Map<String, Object> invokeImpactAnalysisReportVariables = Map.of(
@@ -105,20 +105,23 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
                     "representationId", representationId,
                     "treeItemId", StudioIdentifiers.ROOT_ENTITY_OBJECT,
                     "menuEntryId", this.domainViewTreeDescriptionProvider.getToggleAbstractMenuEntryId()
-                    );
-            String result = this.treeImpactAnalysisReportQueryRunner.run(invokeImpactAnalysisReportVariables);
+            );
+            var result = this.treeImpactAnalysisReportQueryRunner.run(invokeImpactAnalysisReportVariables);
 
-            int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementDeleted");
+            int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementDeleted");
             assertThat(nbElementDeleted).isEqualTo(0);
-            int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementCreated");
+
+            int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementCreated");
             assertThat(nbElementCreated).isEqualTo(0);
-            int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
+
+            int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
             assertThat(nbElementModified).isEqualTo(1);
-            List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.additionalReports[*]");
+
+            List<String> additionalReports = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.additionalReports[*]");
             assertThat(additionalReports).isEmpty();
 
             Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
+            DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
 
@@ -158,7 +161,7 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
                 representationId
         );
 
-        var flux = this.treeEventSubscriptionRunner.run(input);
+        var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Runnable invokeImpactAnalysisReport = () -> {
             Map<String, Object> invokeImpactAnalysisReportVariables = Map.of(
@@ -167,20 +170,23 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
                     "treeItemId", StudioIdentifiers.ROOT_ENTITY_OBJECT,
                     "menuEntryId", "failingNodeToolId"
             );
-            String result = this.treeImpactAnalysisReportQueryRunner.run(invokeImpactAnalysisReportVariables);
+            var result = this.treeImpactAnalysisReportQueryRunner.run(invokeImpactAnalysisReportVariables);
 
-            int nbElementDeleted = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementDeleted");
+            int nbElementDeleted = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementDeleted");
             assertThat(nbElementDeleted).isEqualTo(0);
-            int nbElementCreated = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementCreated");
+
+            int nbElementCreated = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementCreated");
             assertThat(nbElementCreated).isEqualTo(0);
-            int nbElementModified = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
+
+            int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
             assertThat(nbElementModified).isEqualTo(0);
-            List<String> additionalReports = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.additionalReports[*]");
+
+            List<String> additionalReports = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.additionalReports[*]");
             assertThat(additionalReports).hasSize(1);
             assertThat(additionalReports.get(0)).startsWith(this.messageService.operationExecutionFailed(""));
 
             Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            DataTree dataTree = JsonPath.parse(result, configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
+            DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
             assertThat(dataTree.nodes()).isEmpty();

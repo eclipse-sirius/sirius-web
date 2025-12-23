@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,12 +52,12 @@ public class GivenCreatedHierarchySubscription implements IGivenCreatedHierarchy
         String representationId = this.givenCreatedRepresentation.createRepresentation(input);
 
         var portalEventInput = new HierarchyEventInput(UUID.randomUUID(), input.editingContextId(), UUID.fromString(representationId));
-        var flux = this.hierarchyEventSubscriptionRunner.run(portalEventInput);
+        var result = this.hierarchyEventSubscriptionRunner.run(portalEventInput);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
 
-        return flux;
+        return result.flux();
     }
 }

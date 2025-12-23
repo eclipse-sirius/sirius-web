@@ -126,22 +126,22 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         Map<String, Object> variables = Map.of("page", 0, "limit", 10);
         var result = this.librariesQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.startCursor");
         assertThat(startCursor).isNotBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.endCursor");
         assertThat(endCursor).isNotBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.libraries.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.libraries.pageInfo.count");
         assertThat(count).isPositive();
 
-        List<String> libraryNamespaces = JsonPath.read(result, "$.data.viewer.libraries.edges[*].node.namespace");
+        List<String> libraryNamespaces = JsonPath.read(result.data(), "$.data.viewer.libraries.edges[*].node.namespace");
         assertThat(libraryNamespaces)
                 .isNotEmpty()
                 .anySatisfy(namespace -> assertThat(namespace).isEqualTo("papaya"));
@@ -163,7 +163,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         TestTransaction.end();
         TestTransaction.start();
 
-        String typename = JsonPath.read(result, "$.data.publishLibraries.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.publishLibraries.__typename");
         assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
 
         long updatedLibraryCount = this.librarySearchService.findAll(PageRequest.of(1, 1)).getTotalElements();
@@ -212,7 +212,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
-        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
 
         BiFunction<IEditingContext, IInput, IPayload> checkInitialEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {
@@ -244,7 +244,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         Runnable updateLibrary = () -> {
             var input = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), optionalLibrary.get().getId());
             var result = this.updateLibraryMutationRunner.run(input);
-            String typename = JsonPath.read(result, "$.data.updateLibrary.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.updateLibrary.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -294,7 +294,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
-        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
 
         AtomicReference<Integer> initialResourceCount = new AtomicReference<>();
 
@@ -381,7 +381,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(optionalLibrary).isPresent();
 
         var editingContextEventInput = new EditingContextEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString());
-        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput);
+        var flux = this.editingContextEventSubscriptionRunner.run(editingContextEventInput).flux();
 
         BiFunction<IEditingContext, IInput, IPayload> checkInitialEditingContextFunction = (editingContext, executeEditingContextFunctionInput) -> {
             if (editingContext instanceof IEMFEditingContext emfEditingContext) {
@@ -412,7 +412,7 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         Runnable updateLibrary = () -> {
             var updateLibraryInput = new UpdateLibraryInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), optionalLibrary.get().getId());
             var result = this.updateLibraryMutationRunner.run(updateLibraryInput);
-            String typename = JsonPath.read(result, "$.data.updateLibrary.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.updateLibrary.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

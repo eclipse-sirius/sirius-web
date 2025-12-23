@@ -12,7 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+
 import com.jayway.jsonpath.JsonPath;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -27,18 +38,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
-
-import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Consumer;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 /**
  * Integration tests for the group palette.
@@ -74,7 +76,7 @@ public class GroupPaletteControllerTests extends AbstractIntegrationTests {
                 FlowIdentifier.FLOW_ROOT_SYSTEM_OBJECT,
                 "Topography"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -103,7 +105,7 @@ public class GroupPaletteControllerTests extends AbstractIntegrationTests {
             );
             var result = this.paletteQueryRunner.run(variables);
 
-            List<String> groupToolIds = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].id");
+            List<String> groupToolIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].id");
             assertThat(groupToolIds)
                     .hasSize(2);
         };

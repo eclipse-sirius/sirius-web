@@ -91,7 +91,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString(),
                 "FormWithDateTime"
         );
-        return this.givenCreatedFormSubscription.createAndSubscribe(input);
+        return this.givenCreatedFormSubscription.createAndSubscribe(input).flux();
     }
 
     @Test
@@ -141,7 +141,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
             var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), dateTimeId.get(), "2024-02-02T18:00:00.00Z");
             var result = this.editDateTimeMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editDateTime.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editDateTime.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -165,6 +165,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.FIRST_ITERATION_OBJECT.toString()));
         var detailsEventInput = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(detailsEventInput)
+                .flux()
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         var formId = new AtomicReference<String>();
@@ -183,7 +184,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
             var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), startDate.get(), "2024-02-11T09:00:00Z");
             var result = this.editDateTimeMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editDateTime.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editDateTime.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
@@ -196,7 +197,7 @@ public class DateTimeControllerTests extends AbstractIntegrationTests {
             var input = new EditDateTimeInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), startDate.get(), "");
             var result = this.editDateTimeMutationRunner.run(input);
 
-            String typename = JsonPath.read(result, "$.data.editDateTime.__typename");
+            String typename = JsonPath.read(result.data(), "$.data.editDateTime.__typename");
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 

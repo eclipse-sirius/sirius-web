@@ -120,7 +120,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "query", ""
         );
         var firstQueryResult = this.workbenchOmniboxCommandsQueryRunner.run(firstQueryVariables);
-        List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
+        List<String> allCommandLabels = JsonPath.read(firstQueryResult.data(), "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
         assertThat(allCommandLabels).hasSize(3).contains("Search", "Publish Studio", "Import studio libraries");
 
         Map<String, Object> secondQueryVariables = Map.of(
@@ -129,7 +129,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "query", "Sea"
         );
         var secondQueryResult = this.workbenchOmniboxCommandsQueryRunner.run(secondQueryVariables);
-        List<String> seaFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
+        List<String> seaFilteredCommandsLabels = JsonPath.read(secondQueryResult.data(), "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
         assertThat(seaFilteredCommandsLabels).hasSize(1).contains("Search");
 
         Map<String, Object> thirdQueryVariables = Map.of(
@@ -138,7 +138,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "query", "yello"
         );
         var thirdQueryResult = this.workbenchOmniboxCommandsQueryRunner.run(thirdQueryVariables);
-        List<String> yelloFilteredCommandsLabels = JsonPath.read(thirdQueryResult, "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
+        List<String> yelloFilteredCommandsLabels = JsonPath.read(thirdQueryResult.data(), "$.data.viewer.workbenchOmniboxCommands.edges[*].node.label");
         assertThat(yelloFilteredCommandsLabels).isEmpty();
     }
 
@@ -152,7 +152,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "query", ""
         );
         var emptyQueryResult = this.workbenchOmniboxSearchQueryRunner.run(emptyQueryVariables);
-        List<String> emptyQueryObjectLabels = JsonPath.read(emptyQueryResult, "$.data.viewer.workbenchOmniboxSearch.edges[*].node.label");
+        List<String> emptyQueryObjectLabels = JsonPath.read(emptyQueryResult.data(), "$.data.viewer.workbenchOmniboxSearch.edges[*].node.label");
         assertThat(emptyQueryObjectLabels).isNotEmpty();
 
         String filterQuery = "yello";
@@ -162,7 +162,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "query", filterQuery
         );
         var filterQueryResult = this.workbenchOmniboxSearchQueryRunner.run(filterQueryVariables);
-        List<String> filterQueryObjectLabels = JsonPath.read(filterQueryResult, "$.data.viewer.workbenchOmniboxSearch.edges[*].node.label");
+        List<String> filterQueryObjectLabels = JsonPath.read(filterQueryResult.data(), "$.data.viewer.workbenchOmniboxSearch.edges[*].node.label");
         assertThat(filterQueryObjectLabels).isNotEmpty().allMatch(label -> label.toLowerCase().contains(filterQuery.toLowerCase()));
     }
 
@@ -171,7 +171,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
     @DisplayName("Given an workbench omnibox command id, when the mutation is performed, then the command is executed")
     public void givenAnOmniboxCommandIdWhenTheMutationIsPerformedThenTheCommandIsExecuted() {
         var result = this.executeWorkbenchOmniboxCommandMutationRunner.run(new ExecuteWorkbenchOmniboxCommandInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), List.of(), PapayaCreateSampleProjectCommandProvider.CREATE_SAMPLE_PROJECT_COMMAND_ID));
-        String typename = JsonPath.read(result, "$.data.executeWorkbenchOmniboxCommand.__typename");
+        String typename = JsonPath.read(result.data(), "$.data.executeWorkbenchOmniboxCommand.__typename");
         assertThat(typename).isEqualTo(ExecuteWorkbenchOmniboxCommandSuccessPayload.class.getSimpleName());
 
         BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
@@ -199,21 +199,21 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "query", ""
         );
         var firstQueryResult = this.projectsOmniboxCommandsQueryRunner.run(firstQueryVariables);
-        List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
+        List<String> allCommandLabels = JsonPath.read(firstQueryResult.data(), "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
         assertThat(allCommandLabels).hasSize(2).contains("Blank project", "Search across projects");
 
         Map<String, Object> secondQueryVariables = Map.of(
                 "query", "Blank"
         );
         var secondQueryResult = this.projectsOmniboxCommandsQueryRunner.run(secondQueryVariables);
-        List<String> blankFilteredCommandsLabels = JsonPath.read(secondQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
+        List<String> blankFilteredCommandsLabels = JsonPath.read(secondQueryResult.data(), "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
         assertThat(blankFilteredCommandsLabels).hasSize(1).contains("Blank project");
 
         Map<String, Object> thirdQueryVariables = Map.of(
                 "query", "yello"
         );
         var thirdQueryResult = this.projectsOmniboxCommandsQueryRunner.run(thirdQueryVariables);
-        List<String> yelloFilteredCommandsLabels = JsonPath.read(thirdQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
+        List<String> yelloFilteredCommandsLabels = JsonPath.read(thirdQueryResult.data(), "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
         assertThat(yelloFilteredCommandsLabels).isEmpty();
     }
 
@@ -226,7 +226,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
                 "query", ""
         );
         var firstQueryResult = this.projectsOmniboxCommandsQueryRunner.run(firstQueryVariables);
-        List<String> allCommandLabels = JsonPath.read(firstQueryResult, "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
+        List<String> allCommandLabels = JsonPath.read(firstQueryResult.data(), "$.data.viewer.projectsOmniboxCommands.edges[*].node.label");
         assertThat(allCommandLabels).doesNotContain("Search across projects");
     }
 
@@ -250,7 +250,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         );
 
         var emptyQueryResult = this.projectsOmniboxSearchQueryRunner.run(emptyQueryVariables);
-        List<String> emptyQueryObjectLabels = JsonPath.read(emptyQueryResult, "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        List<String> emptyQueryObjectLabels = JsonPath.read(emptyQueryResult.data(), "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
         assertThat(emptyQueryObjectLabels).isEmpty();
 
         Map<String, Object> filterQueryVariables = Map.of(
@@ -258,7 +258,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         );
 
         var filterQueryResult = this.projectsOmniboxSearchQueryRunner.run(filterQueryVariables);
-        List<String> filterQueryObjectLabels = JsonPath.read(filterQueryResult, "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        List<String> filterQueryObjectLabels = JsonPath.read(filterQueryResult.data(), "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
         assertThat(filterQueryObjectLabels).contains("fooOperation(fooParameter) (project: Papaya Sample)", "fooParameter (project: Papaya Sample)");
 
         Map<String, Object> complexQueryVariables = Map.of(
@@ -266,7 +266,7 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         );
 
         var complexQueryResult = this.projectsOmniboxSearchQueryRunner.run(complexQueryVariables);
-        List<String> complexQueryObjectLabels = JsonPath.read(complexQueryResult, "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        List<String> complexQueryObjectLabels = JsonPath.read(complexQueryResult.data(), "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
         assertThat(complexQueryObjectLabels).isNotEmpty()
             .anyMatch(label -> label.contains("org.eclipse.sirius.web.tests.data"))
             .anyMatch(label -> label.contains("Success"));

@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.tests.graphql;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.eclipse.sirius.web.application.views.query.dto.EvaluateExpressionInput;
@@ -79,7 +80,7 @@ public class EvaluateExpressionMutationRunner implements IMutationRunner<Evaluat
     }
 
     @Override
-    public String run(EvaluateExpressionInput input) {
+    public GraphQLResult run(EvaluateExpressionInput input) {
         return this.graphQLRequestor.execute(EVALUATE_EXPRESSION_MUTATION, input);
     }
 }

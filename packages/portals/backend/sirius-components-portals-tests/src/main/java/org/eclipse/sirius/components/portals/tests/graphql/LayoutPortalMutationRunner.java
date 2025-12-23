@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.portals.tests.graphql;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.portals.dto.LayoutPortalInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class LayoutPortalMutationRunner implements IMutationRunner<LayoutPortalI
     }
 
     @Override
-    public String run(LayoutPortalInput input) {
+    public GraphQLResult run(LayoutPortalInput input) {
         return this.graphQLRequestor.execute(LAYOUT_PORTAL_MUTATION, input);
     }
 

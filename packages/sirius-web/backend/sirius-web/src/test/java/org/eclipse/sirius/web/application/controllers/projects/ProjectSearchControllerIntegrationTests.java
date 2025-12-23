@@ -60,7 +60,7 @@ public class ProjectSearchControllerIntegrationTests extends AbstractIntegration
         Map<String, Object> variables = Map.of("first", 20);
         var result = this.projectsQueryRunner.run(variables);
 
-        List<String> projectIds = JsonPath.read(result, "$.data.viewer.projects.edges[*].node.id");
+        List<String> projectIds = JsonPath.read(result.data(), "$.data.viewer.projects.edges[*].node.id");
         assertThat(projectIds)
                 .hasSizeLessThan(20)
                 .contains(TestIdentifiers.ECORE_SAMPLE_PROJECT.toString())

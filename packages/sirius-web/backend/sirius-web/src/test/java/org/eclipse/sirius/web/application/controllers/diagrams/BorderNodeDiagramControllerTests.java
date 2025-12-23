@@ -71,7 +71,7 @@ public class BorderNodeDiagramControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PROJECT_OBJECT.toString(),
                 "BorderNodeDiagram"
         );
-        return this.givenCreatedDiagramSubscription.createAndSubscribe(input);
+        return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
     }
 
     @Test

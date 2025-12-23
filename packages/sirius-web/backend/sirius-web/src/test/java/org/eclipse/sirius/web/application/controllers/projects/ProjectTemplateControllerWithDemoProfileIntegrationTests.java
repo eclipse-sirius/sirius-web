@@ -62,19 +62,19 @@ public class ProjectTemplateControllerWithDemoProfileIntegrationTests extends Ab
         Map<String, Object> variables = Map.of("page", 0, "limit", 10, "context", ProjectTemplateContext.PROJECT_TEMPLATE_MODAL);
         var result = this.projectTemplatesQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.startCursor");
         assertThat(startCursor).isBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.endCursor");
         assertThat(endCursor).isBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.count");
         assertThat(count).isZero();
     }
 
@@ -85,19 +85,19 @@ public class ProjectTemplateControllerWithDemoProfileIntegrationTests extends Ab
         Map<String, Object> variables = Map.of("page", 0, "limit", 6, "context", ProjectTemplateContext.PROJECT_BROWSER);
         var result = this.projectTemplatesQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.startCursor");
         assertThat(startCursor).isBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.endCursor");
         assertThat(endCursor).isBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.count");
         assertThat(count).isZero();
     }
 
@@ -108,22 +108,22 @@ public class ProjectTemplateControllerWithDemoProfileIntegrationTests extends Ab
         Map<String, Object> variables = Map.of("page", 0, "limit", 6, "context", ProjectTemplateContext.PROJECT_BROWSER);
         var result = this.projectTemplatesQueryRunner.run(variables);
 
-        boolean hasPreviousPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
+        boolean hasPreviousPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasPreviousPage");
         assertThat(hasPreviousPage).isFalse();
 
-        boolean hasNextPage = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
+        boolean hasNextPage = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.hasNextPage");
         assertThat(hasNextPage).isFalse();
 
-        String startCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.startCursor");
+        String startCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.startCursor");
         assertThat(startCursor).isBlank();
 
-        String endCursor = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.endCursor");
+        String endCursor = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.endCursor");
         assertThat(endCursor).isBlank();
 
-        int count = JsonPath.read(result, "$.data.viewer.projectTemplates.pageInfo.count");
+        int count = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.pageInfo.count");
         assertThat(count).isZero();
 
-        List<String> projectTemplateIds = JsonPath.read(result, "$.data.viewer.projectTemplates.edges[-3:].node.id");
+        List<String> projectTemplateIds = JsonPath.read(result.data(), "$.data.viewer.projectTemplates.edges[-3:].node.id");
         assertThat(projectTemplateIds).doesNotContain(BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, "upload-project", "browse-all-project-templates");
     }
 }

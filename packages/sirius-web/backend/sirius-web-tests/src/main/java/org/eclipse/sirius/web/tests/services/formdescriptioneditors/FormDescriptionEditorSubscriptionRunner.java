@@ -14,13 +14,13 @@ package org.eclipse.sirius.web.tests.services.formdescriptioneditors;
 
 import java.util.Objects;
 
-import graphql.execution.DataFetcherResult;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorEventInput;
+import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
 import org.springframework.stereotype.Service;
 
-import reactor.core.publisher.Flux;
+import graphql.execution.DataFetcherResult;
 
 /**
  * Used to get the form description editor event subscription with the GraphQL API.
@@ -45,10 +45,12 @@ public class FormDescriptionEditorSubscriptionRunner implements ISubscriptionRun
     }
 
     @Override
-    public Flux<Object> run(FormDescriptionEditorEventInput input) {
-        return this.graphQLRequestor.subscribe(FORM_DESCRIPTION_EDITOR_EVENT_SUBSCRIPTION, input)
+    public GraphQLSubscriptionResult run(FormDescriptionEditorEventInput input) {
+        var rawResult = this.graphQLRequestor.subscribe(FORM_DESCRIPTION_EDITOR_EVENT_SUBSCRIPTION, input);
+        var flux = rawResult.flux()
                 .filter(DataFetcherResult.class::isInstance)
                 .map(DataFetcherResult.class::cast)
                 .map(DataFetcherResult::getData);
+        return new GraphQLSubscriptionResult(flux, rawResult.errors(), rawResult.extensions());
     }
 }
