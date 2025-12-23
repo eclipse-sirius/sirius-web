@@ -95,6 +95,7 @@ public AdapterFactory papayaAdapterFactory() {
 - https://github.com/eclipse-sirius/sirius-web/issues/5715[#5715] [table] In table, `RowDescription` must now declare a `hasChildrenExpression` if `subRows` is enabled.
 - https://github.com/eclipse-sirius/sirius-web/issues/5884[#5884] [diagram] The `ReactFlow.css` has been updated to reduce the size of edge handles.
 - https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] All mutations related to the update of the appearance of an edge or node (`EditxxxAppearanceInput` && `ResetxxxAppearanceInput`) have been modified to take a list of elements instead of only one.
+- https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] `isLastNodeSelected` should be set when converting custom nodes.
 
 
 === Dependency update
@@ -145,6 +146,7 @@ https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the c
 - https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] Add `toolSections` to groupPalette in the view dsl.
 - https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] Support multiple elements with diagram appearance tools
 - https://github.com/eclipse-sirius/sirius-web/issues/5893[#5893] [diagram] Add a new quick tool to reset label resizing
+- https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] Highlight the last selected elements with custom resize handles, this can be useful when executing a layout group tool.
 
 
 === Improvements
