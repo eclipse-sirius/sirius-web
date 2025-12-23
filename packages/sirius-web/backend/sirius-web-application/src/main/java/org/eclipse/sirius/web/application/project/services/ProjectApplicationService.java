@@ -21,7 +21,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
@@ -90,7 +90,7 @@ public class ProjectApplicationService implements IProjectApplicationService {
 
     @Override
     @Transactional
-    public IPayload createProject(CreateProjectInput input) {
+    public IPayload createProject(ICreateProjectInput input) {
         IPayload payload = null;
 
         var optionalProjectTemplate = this.projectTemplateProviders.stream()

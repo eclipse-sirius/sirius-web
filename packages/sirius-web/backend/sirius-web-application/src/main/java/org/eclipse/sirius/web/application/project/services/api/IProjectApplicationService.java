@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
 import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
@@ -33,7 +33,7 @@ public interface IProjectApplicationService {
 
     Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit, Map<String, Object> filter);
 
-    IPayload createProject(CreateProjectInput input);
+    IPayload createProject(ICreateProjectInput input);
 
     IPayload renameProject(RenameProjectInput input);
 

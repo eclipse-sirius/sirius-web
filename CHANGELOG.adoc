@@ -160,6 +160,8 @@ https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the c
 - https://github.com/eclipse-sirius/sirius-web/issues/5893[#5893] [diagram] Add a new quick tool to reset label resizing
 - https://github.com/eclipse-sirius/sirius-web/issues/5765[#5765] [diagram] Add the possibility to interpret expressions in the style of a node.
 An example has been added in Sirius-Web with the new _opacity_ field in the custom _ellipse_ node.
+- https://github.com/eclipse-sirius/sirius-web/issues/6004[#6004] [sirius-web] Lower the coupling between `CreateProjectInput` and its data fetcher.
+Event listeners reacting to a event caused by a `CreateProjectInput` should instead rely on `ICreateProjectInput`.
 
 
 === Improvements
