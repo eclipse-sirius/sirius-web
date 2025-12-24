@@ -13,9 +13,7 @@
 package org.eclipse.sirius.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.util.Objects;
 
@@ -41,14 +39,12 @@ public class RestResponseSerializationCustomizer implements ResponseBodyAdvice<O
 
     private final ObjectMapper customObjectMapper;
 
-    public RestResponseSerializationCustomizer(MappingJackson2HttpMessageConverter converter) {
+    public RestResponseSerializationCustomizer(MappingJackson2HttpMessageConverter converter, ObjectMapper objectMapper) {
         this.converter = Objects.requireNonNull(converter);
-        this.customObjectMapper = new ObjectMapper();
+        this.customObjectMapper = objectMapper.copyWith(null);
         SimpleModule module = new SimpleModule();
         module.addSerializer(EObject.class, new EObjectJsonSerializer());
         this.customObjectMapper.registerModule(module);
-        this.customObjectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        this.customObjectMapper.registerModule(new JavaTimeModule());
     }
 
     @Override
