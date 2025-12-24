@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.IMutationRunner;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
+import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
  * @author gdaniel
  */
 @Service
-public class CreateProjectMutationRunner implements IMutationRunner<CreateProjectInput> {
+public class CreateProjectMutationRunner implements IMutationRunner<ICreateProjectInput> {
 
     private static final String CREATE_PROJECT = """
             mutation createProject($input: CreateProjectInput!) {
@@ -54,7 +54,7 @@ public class CreateProjectMutationRunner implements IMutationRunner<CreateProjec
     }
 
     @Override
-    public String run(CreateProjectInput input) {
+    public String run(ICreateProjectInput input) {
         return this.graphQLRequestor.execute(CREATE_PROJECT, input);
     }
 

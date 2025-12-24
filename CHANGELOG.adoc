@@ -145,7 +145,24 @@ https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the c
 - https://github.com/eclipse-sirius/sirius-web/issues/5863[#5863] Add `toolSections` to groupPalette in the view dsl.
 - https://github.com/eclipse-sirius/sirius-web/issues/5934[#5934] [diagram] Support multiple elements with diagram appearance tools
 - https://github.com/eclipse-sirius/sirius-web/issues/5893[#5893] [diagram] Add a new quick tool to reset label resizing
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6004[#6004] [sirius-web] Downstream project are able to contribute their own implementation of `ICreateProjectInput` in order to add new attributes that fit their needs.
+** They have to update their GraphQL schema:
+[source,graphql]
+----
+extend input CreateProjectInput {
+  newAttribute: String!
+}
+----
+** They have to declare a Java Bean named `createProjectInputModuleJsonCustomizer` with something like this:
+[source,java]
+----
+@Bean(name = "createProjectInputModuleJsonCustomizer")
+public Jackson2ObjectMapperBuilderCustomizer customCreateProjectInputModuleJsonCustomizer() {
+    SimpleModule module = new SimpleModule();
+    module.addAbstractTypeMapping(ICreateProjectInput.class, CustomProjectInput.class);
+    return builder -> builder.modules(existing -> existing.add(module));
+}
+----
 
 === Improvements
 
