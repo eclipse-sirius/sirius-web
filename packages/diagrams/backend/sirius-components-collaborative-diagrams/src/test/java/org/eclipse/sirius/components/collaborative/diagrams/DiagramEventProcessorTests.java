@@ -12,13 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.function.Predicate;
-
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
@@ -34,8 +30,11 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.junit.jupiter.api.Test;
-
 import reactor.test.StepVerifier;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 /**
  * Unit tests of the diagram event processor.
@@ -148,7 +147,7 @@ public class DiagramEventProcessorTests {
                 .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
                 .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
                 .representationSearchService(new IRepresentationSearchService.NoOp())
-                .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
+                .representationPersistenceStrategy(new IRepresentationPersistenceStrategy.NoOp())
                 .diagramEventConsumers(List.of())
                 .diagramInputReferencePositionProviders(List.of())
                 .build();

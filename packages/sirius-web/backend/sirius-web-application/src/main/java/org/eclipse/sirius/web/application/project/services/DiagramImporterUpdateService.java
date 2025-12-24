@@ -14,20 +14,6 @@ package org.eclipse.sirius.web.application.project.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationService;
@@ -84,6 +70,18 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service used to update imported diagram representation.
@@ -129,13 +127,13 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         Diagram oldRepresentation = (Diagram) representationImportData.representation();
         var editingContext = this.editingContextSearchService.findById(editingContextId);
         if (editingContext.isPresent()) {
-            var newRepresentation = this.representationSearchService.findById(editingContext.get(), newRepresentationId, Diagram.class);
+            var optionalNewRepresentation = this.representationSearchService.findById(editingContext.get(), newRepresentationId, Diagram.class);
             var diagramDescription = this.representationDescriptionSearchService.findById(editingContext.get(), oldRepresentation.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
 
-            if (diagramDescription.isPresent() && newRepresentation.isPresent()) {
-                var diagramContext = new DiagramContext(newRepresentation.get());
+            if (diagramDescription.isPresent() && optionalNewRepresentation.isPresent()) {
+                var diagramContext = new DiagramContext(optionalNewRepresentation.get());
                 Map<String, String> nodeElementOldNewIds = new HashMap<>();
                 Map<String, String> edgeElementOldNewIds = new HashMap<>();
                 Map<String, String> labelElementOldNewIds = new HashMap<>();

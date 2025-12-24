@@ -12,10 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
-import java.util.List;
-import java.util.Objects;
-
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
@@ -25,6 +22,9 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInputReferencePositionProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Parameters of the diagram event processor.
@@ -44,7 +44,7 @@ public record DiagramEventProcessorParameters(
         IDiagramCreationService diagramCreationService,
         IRepresentationDescriptionSearchService representationDescriptionSearchService,
         IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
-        IRepresentationPersistenceService representationPersistenceService,
+        IRepresentationPersistenceStrategy representationPersistenceStrategy,
         IRepresentationSearchService representationSearchService,
         List<IDiagramInputReferencePositionProvider> diagramInputReferencePositionProviders,
         List<IDiagramEventConsumer> diagramEventConsumers
@@ -57,8 +57,8 @@ public record DiagramEventProcessorParameters(
         Objects.requireNonNull(subscriptionManager);
         Objects.requireNonNull(diagramCreationService);
         Objects.requireNonNull(representationDescriptionSearchService);
+        Objects.requireNonNull(representationPersistenceStrategy);
         Objects.requireNonNull(representationRefreshPolicyRegistry);
-        Objects.requireNonNull(representationPersistenceService);
         Objects.requireNonNull(representationSearchService);
         Objects.requireNonNull(diagramInputReferencePositionProviders);
         Objects.requireNonNull(diagramEventConsumers);
@@ -91,7 +91,7 @@ public record DiagramEventProcessorParameters(
 
         private IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
 
-        private IRepresentationPersistenceService representationPersistenceService;
+        private IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
         private IRepresentationSearchService representationSearchService;
 
@@ -138,8 +138,8 @@ public record DiagramEventProcessorParameters(
             return this;
         }
 
-        public Builder representationPersistenceService(IRepresentationPersistenceService representationPersistenceService) {
-            this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        public Builder representationPersistenceStrategy(IRepresentationPersistenceStrategy representationPersistenceStrategy) {
+            this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
             return this;
         }
 
@@ -167,7 +167,7 @@ public record DiagramEventProcessorParameters(
                     this.diagramCreationService,
                     this.representationDescriptionSearchService,
                     this.representationRefreshPolicyRegistry,
-                    this.representationPersistenceService,
+                    this.representationPersistenceStrategy,
                     this.representationSearchService,
                     this.diagramInputReferencePositionProviders,
                     this.diagramEventConsumers

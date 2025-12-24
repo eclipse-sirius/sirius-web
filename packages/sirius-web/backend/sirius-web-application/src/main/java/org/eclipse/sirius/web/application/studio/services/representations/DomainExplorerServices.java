@@ -12,12 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services.representations;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature.Setting;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -36,6 +30,11 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * AQL Services used inside trees descriptions.
@@ -101,9 +100,13 @@ public class DomainExplorerServices {
 
     public List<Object> getElements(IEditingContext editingContext) {
         List<Object> elements = new ArrayList<>();
-        this.explorerServices.getDefaultElements(editingContext).stream()
-                .filter(resource -> resource.getContents().stream().anyMatch(Domain.class::isInstance))
-                .forEach(elements::add);
+        this.contentService.getContents(editingContext).stream()
+            .filter(Resource.class::isInstance)
+            .map(Resource.class::cast)
+            .filter(resource -> resource.getContents().stream().anyMatch(Domain.class::isInstance))
+            .forEach(elements::add);
+        //We sort the elements as it was done by the former IExplorerServices#getDefaultElements service.
+        elements.sort(Comparator.nullsLast(Comparator.comparing(resource -> this.labelService.getStyledLabel(resource).toString(), String.CASE_INSENSITIVE_ORDER)));
         return elements;
     }
 
