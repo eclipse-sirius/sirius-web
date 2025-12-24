@@ -21,9 +21,9 @@ import { DiagramNodeType } from '../../node/NodeTypes.types';
 import { useOverlap } from '../../overlap/useOverlap';
 import { RawDiagram } from '../layout.types';
 import { labelHorizontalPadding, labelVerticalPadding } from '../layoutParams';
-import { UseArrangeAllValue } from './useArrangeAll.types';
 import { useLayout } from '../useLayout';
 import { useSynchronizeLayoutData } from '../useSynchronizeLayoutData';
+import { UseArrangeAllValue } from './useArrangeAll.types';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
@@ -32,8 +32,13 @@ function reverseOrdreMap<K, V>(map: Map<K, V>): Map<K, V> {
   return new Map<K, V>(reversedNodes);
 }
 
-const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
-  const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
+const getSubNodes = (
+  nodes: Node<NodeData, string | undefined>[]
+): Map<string, Node<NodeData, string | undefined>[]> => {
+  const subNodes: Map<string, Node<NodeData, string | undefined>[]> = new Map<
+    string,
+    Node<NodeData, string | undefined>[]
+  >();
   for (const node of nodes.filter((n) => !n.hidden)) {
     const parentNodeId: string = node.parentId ?? 'root';
     if (!subNodes.has(parentNodeId)) {
@@ -155,11 +160,11 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   };
 
   const applyElkOnSubNodes = async (
-    subNodes: Map<string, Node<NodeData, string>[]>,
-    allNodes: Node<NodeData, string>[],
+    subNodes: Map<string, Node<NodeData, string | undefined>[]>,
+    allNodes: Node<NodeData, string | undefined>[],
     layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
-    let layoutedAllNodes: Node<NodeData, string>[] = [];
+  ): Promise<Node<NodeData, string | undefined>[]> => {
+    let layoutedAllNodes: Node<NodeData, string | undefined>[] = [];
     const parentNodeWithNewSize: Node<NodeData>[] = [];
     const edges: Edge<EdgeData>[] = getEdges();
     for (const [parentNodeId, nodes] of subNodes) {
@@ -215,67 +220,69 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
   };
 
   const arrangeAll = async (layoutOptions: LayoutOptions): Promise<void> => {
-    const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
-    const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
-    await applyElkOnSubNodes(subNodes, nodes, layoutOptions).then(async (nodes: Node<NodeData, string>[]) => {
-      const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
-      laidOutNodesWithElk.filter((laidOutNode) => {
-        const parentNode = nodes.find((node) => node.id === laidOutNode.parentId);
-        return !parentNode || !isListData(parentNode);
-      });
-
-      const laidOutMovedNodeIds = laidOutNodesWithElk
-        .filter((node) => !node.data.isBorderNode && !node.data.pinned)
-        .map((node) => node.id);
-      const edges = getEdges();
-      edges
-        .filter((edge) => laidOutMovedNodeIds.includes(edge.source) || laidOutMovedNodeIds.includes(edge.target))
-        .forEach((edge: Edge<EdgeData, string>) => {
-          if (edge.data?.bendingPoints) {
-            edge.data.bendingPoints = null;
-          }
+    const nodes: Node<NodeData, string | undefined>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
+    const subNodes: Map<string, Node<NodeData, string | undefined>[]> = reverseOrdreMap(getSubNodes(nodes));
+    await applyElkOnSubNodes(subNodes, nodes, layoutOptions).then(
+      async (nodes: Node<NodeData, string | undefined>[]) => {
+        const laidOutNodesWithElk: Node<NodeData, string | undefined>[] = nodes.reverse();
+        laidOutNodesWithElk.filter((laidOutNode) => {
+          const parentNode = nodes.find((node) => node.id === laidOutNode.parentId);
+          return !parentNode || !isListData(parentNode);
         });
 
-      const diagramToLayout: RawDiagram = {
-        nodes: laidOutNodesWithElk,
-        edges: edges,
-      };
-      const layoutPromise = new Promise<void>((resolve) => {
-        layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-          const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
-            laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
-            'horizontal'
-          ) as Node<NodeData, DiagramNodeType>[];
-          laidOutNodesWithElk.map((node) => {
-            const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
-            if (existingNode) {
-              return {
-                ...node,
-                position: existingNode.position,
-                width: existingNode.width,
-                height: existingNode.height,
-                style: {
-                  ...node.style,
-                  width: `${existingNode.width}px`,
-                  height: `${existingNode.height}px`,
-                },
-              };
+        const laidOutMovedNodeIds = laidOutNodesWithElk
+          .filter((node) => !node.data.isBorderNode && !node.data.pinned)
+          .map((node) => node.id);
+        const edges = getEdges();
+        edges
+          .filter((edge) => laidOutMovedNodeIds.includes(edge.source) || laidOutMovedNodeIds.includes(edge.target))
+          .forEach((edge: Edge<EdgeData, string | undefined>) => {
+            if (edge.data?.bendingPoints) {
+              edge.data.bendingPoints = null;
             }
-            return node;
           });
-          setNodes(laidOutNodesWithElk);
-          setEdges(laidOutDiagram.edges);
-          const finalDiagram: RawDiagram = {
-            nodes: laidOutNodesWithElk,
-            edges: laidOutDiagram.edges,
-          };
-          fitView({ duration: 200, nodes: laidOutNodesWithElk });
-          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
-          resolve();
+
+        const diagramToLayout: RawDiagram = {
+          nodes: laidOutNodesWithElk,
+          edges: edges,
+        };
+        const layoutPromise = new Promise<void>((resolve) => {
+          layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
+            const overlapFreeLaidOutNodes: Node<NodeData, string | undefined>[] = resolveNodeOverlap(
+              laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
+              'horizontal'
+            ) as Node<NodeData, DiagramNodeType>[];
+            laidOutNodesWithElk.map((node) => {
+              const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
+              if (existingNode) {
+                return {
+                  ...node,
+                  position: existingNode.position,
+                  width: existingNode.width,
+                  height: existingNode.height,
+                  style: {
+                    ...node.style,
+                    width: `${existingNode.width}px`,
+                    height: `${existingNode.height}px`,
+                  },
+                };
+              }
+              return node;
+            });
+            setNodes(laidOutNodesWithElk);
+            setEdges(laidOutDiagram.edges);
+            const finalDiagram: RawDiagram = {
+              nodes: laidOutNodesWithElk,
+              edges: laidOutDiagram.edges,
+            };
+            fitView({ duration: 200, nodes: laidOutNodesWithElk });
+            synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+            resolve();
+          });
         });
-      });
-      await layoutPromise;
-    });
+        await layoutPromise;
+      }
+    );
   };
 
   return {

@@ -24,9 +24,9 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const adjustSize = (nodeId: string): void => {
-    const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
-    const targetedNode: Node<NodeData, string> | undefined = nodes.find((node) => node.id === nodeId);
-    const childNodes: Node<NodeData, string>[] | [] = nodes
+    const nodes: Node<NodeData, string | undefined>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
+    const targetedNode: Node<NodeData, string | undefined> | undefined = nodes.find((node) => node.id === nodeId);
+    const childNodes: Node<NodeData, string | undefined>[] | [] = nodes
       .filter((node) => node.parentId === nodeId)
       .map((node) => {
         node.data.resizedByUser = true;
