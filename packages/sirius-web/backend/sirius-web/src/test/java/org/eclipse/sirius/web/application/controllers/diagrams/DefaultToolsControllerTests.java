@@ -137,8 +137,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(paletteEntriesLabels).containsSequence("Edit");
 
             List<String> paletteEditLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
-            assertThat(paletteEditLabels).hasSize(2);
-            assertThat(paletteEditLabels).containsSequence("Edit", "Delete from model");
+            assertThat(paletteEditLabels).hasSize(0);
         };
 
         StepVerifier.create(flux)
@@ -197,8 +196,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(paletteEntriesLabels).containsSequence("Edit");
 
             List<String> paletteEditLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
-            assertThat(paletteEditLabels).hasSize(2);
-            assertThat(paletteEditLabels).containsSequence("Edit", "Delete from model");
+            assertThat(paletteEditLabels).hasSize(0);
         };
 
         Consumer<Object> unFadedNodeDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -288,8 +286,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(paletteEntriesLabels).containsSequence("Edit");
 
             List<String> paletteEditLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
-            assertThat(paletteEditLabels).hasSize(2);
-            assertThat(paletteEditLabels).containsSequence("Edit", "Delete from model");
+            assertThat(paletteEditLabels).hasSize(0);
         };
 
         StepVerifier.create(flux)
