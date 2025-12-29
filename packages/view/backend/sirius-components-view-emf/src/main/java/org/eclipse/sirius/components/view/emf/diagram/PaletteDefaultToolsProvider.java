@@ -61,7 +61,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
         List<ToolSection> extraToolSections = new ArrayList<>();
 
         if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
-            List<ITool> extraTools = this.createExtraTools(diagramContext, diagramElement);
+            List<ITool> extraTools = this.createExtraTools(diagramElementDescription, diagramElement);
             var editToolSection = ToolSection.newToolSection("edit-section")
                     .label("Edit")
                     .iconURL(List.of())
@@ -340,14 +340,12 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
     }
 
     private boolean hasLabelEditTool(Object diagramElementDescription) {
-        boolean result = true;
+        boolean result = false;
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {
             result = nodeDescription.getLabelEditHandler() != null;
         } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
             if (edgeDescription.getLabelEditHandler() instanceof IViewEdgeLabelEditHandler viewEdgeLabelEditHandler) {
                 result = viewEdgeLabelEditHandler.hasLabelEditTool(EdgeLabelKind.CENTER_LABEL);
-            } else {
-                result = false;
             }
         }
         return result;
@@ -366,7 +364,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
     }
 
     private boolean hasDeleteTool(Object diagramElementDescription) {
-        boolean result = true;
+        boolean result = false;
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {
             result = nodeDescription.getDeleteHandler() != null;
         } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
