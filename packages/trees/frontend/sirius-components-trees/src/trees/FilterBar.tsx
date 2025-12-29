@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,11 +27,8 @@ const useFilterBarStyles = makeStyles()((theme: Theme) => ({
     overflow: 'hidden',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  textfield: {
-    height: theme.spacing(3),
-    fontSize: theme.typography.fontSize,
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
   },
 }));
 export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: FilterBarProps) => {
@@ -57,24 +54,28 @@ export const FilterBar = ({ onTextChange, onFilterButtonClick, onClose }: Filter
         multiline={false}
         fullWidth
         onChange={onTextChange}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                data-testid="filterbar-filter-button"
-                aria-label="filter"
-                size="small"
-                onClick={() => {
-                  onFilterButtonClick(!state.filterEnabled);
-                  setState((prevState) => {
-                    return { filterEnabled: !prevState.filterEnabled };
-                  });
-                }}>
-                <FilterList fontSize="small" color={state.filterEnabled ? 'primary' : 'secondary'} />
-              </IconButton>
-            </InputAdornment>
-          ),
-          className: classes.textfield,
+        slotProps={{
+          input: {
+            sx: (theme) => ({
+              height: theme.spacing(3),
+            }),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  data-testid="filterbar-filter-button"
+                  aria-label="filter"
+                  size="small"
+                  onClick={() => {
+                    onFilterButtonClick(!state.filterEnabled);
+                    setState((prevState) => {
+                      return { filterEnabled: !prevState.filterEnabled };
+                    });
+                  }}>
+                  <FilterList fontSize="small" color={state.filterEnabled ? 'primary' : 'secondary'} />
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
       />
       <IconButton
