@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,8 +56,8 @@ export const DraggableEdgeLabels = ({
   const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
 
   let labelCenterOffset = {
-    x: edgeCenter?.x ?? 0,
-    y: edgeCenter?.y ?? 0,
+    x: edgeCenter.x,
+    y: edgeCenter.y,
   };
   if (data.label?.width) {
     labelCenterOffset.x = labelCenterOffset.x - data.label.width / 2;
@@ -83,7 +83,7 @@ export const DraggableEdgeLabels = ({
           transform={sourceLabelTranslation}
         />
       )}
-      {label && edgeCenter && (!label.style.visibility || label.style.visibility === 'visible') && (
+      {label && (!label.style.visibility || label.style.visibility === 'visible') && (
         <DraggableResizableLabel
           id={id}
           label={label}

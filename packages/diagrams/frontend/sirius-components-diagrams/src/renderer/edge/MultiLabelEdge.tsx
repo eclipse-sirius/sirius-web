@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,11 +20,11 @@ import { DraggableEdgeLabels } from './DraggableEdgeLabels';
 import { MultiLabelEdgeData, MultiLabelEdgeProps } from './MultiLabelEdge.types';
 import { buildCrossingDashArray } from './crossings/buildCrossingDashArray';
 
-const multiLabelEdgeStyle = (
+export const multiLabelEdgeStyle = (
   theme: Theme,
   style: React.CSSProperties | undefined,
   selected: boolean | undefined,
-  faded: boolean | undefined
+  faded: boolean
 ): React.CSSProperties => {
   const multiLabelEdgeStyle: React.CSSProperties = {
     opacity: faded ? '0.4' : '',
@@ -57,7 +57,7 @@ export const MultiLabelEdge = memo(
     edgeCenterY,
     svgPathString,
   }: MultiLabelEdgeProps<Edge<MultiLabelEdgeData>>) => {
-    const { faded } = data || {};
+    const faded = !!data?.faded;
     const theme = useTheme();
     const { setEdges } = useStore();
     const baseEdgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
@@ -119,7 +119,7 @@ export const MultiLabelEdge = memo(
             sourceY={sourceY}
             targetX={targetX}
             targetY={targetY}
-            edgeCenter={edgeCenterX && edgeCenterY ? { x: edgeCenterX, y: edgeCenterY } : undefined}
+            edgeCenter={edgeCenterX && edgeCenterY ? { x: edgeCenterX, y: edgeCenterY } : { x: 0, y: 0 }}
           />
         ) : null}
       </>

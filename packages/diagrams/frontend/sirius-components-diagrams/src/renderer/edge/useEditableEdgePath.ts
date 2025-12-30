@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,14 +35,21 @@ export const useEditableEdgePath = (): UseEditableEdgePathValue => {
   );
 
   const removeEdgeLayoutData = useCallback(
-    (edgeId: string): void => {
-      const edges = getEdges();
-      const edge = edges.find((edge) => edge.id === edgeId);
-      if (edge?.data) {
-        edge.data.bendingPoints = null;
-      }
-      setEdges(edges);
-      synchronizeEdgeLayoutData(edges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
+    (edgeIds: string[]): void => {
+      const updatedEdges: Edge<EdgeData>[] = getEdges().map((edge) => {
+        if (edgeIds.find((edgeId) => edgeId === edge.id) && edge.data) {
+          return {
+            ...edge,
+            data: {
+              ...edge.data,
+              bendingPoints: null,
+            },
+          };
+        }
+        return edge;
+      });
+      setEdges(updatedEdges);
+      synchronizeEdgeLayoutData(updatedEdges, [...getNodes()] as Node<NodeData, DiagramNodeType>[]);
     },
     [setEdges, getEdges]
   );

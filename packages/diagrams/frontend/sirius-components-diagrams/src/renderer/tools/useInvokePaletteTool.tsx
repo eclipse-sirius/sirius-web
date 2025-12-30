@@ -79,10 +79,7 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
         }
         break;
       case 'reset-bending-points':
-        if (diagramElementIds.length === 1 && diagramElementIds[0]) {
-          removeEdgeLayoutData(diagramElementIds[0]);
-        }
-
+        removeEdgeLayoutData(diagramElementIds);
         break;
       case 'reset-handles-position':
         if (diagramElementIds.length === 1 && diagramElementIds[0]) {

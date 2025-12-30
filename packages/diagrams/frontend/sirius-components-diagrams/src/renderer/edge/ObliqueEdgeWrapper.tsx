@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, EdgeProps, getStraightPath, InternalNode, Node, useInternalNode, Position } from '@xyflow/react';
+import { Edge, EdgeProps, InternalNode, Node, useInternalNode, Position } from '@xyflow/react';
 import { useContext, memo } from 'react';
 import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
@@ -18,11 +18,20 @@ import { NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
-import { MultiLabelEdge } from './MultiLabelEdge';
+import { MultiLabelObliqueEditableEdge } from './oblique-edge/MultiLabelObliqueEditableEdge';
 
 export const ObliqueEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
-  const { source, target, markerEnd, markerStart, sourcePosition, targetPosition, sourceHandleId, targetHandleId } =
-    props;
+  const {
+    source,
+    target,
+    markerEnd,
+    markerStart,
+    sourcePosition,
+    targetPosition,
+    sourceHandleId,
+    targetHandleId,
+    data,
+  } = props;
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
 
   const sourceNode: InternalNode<Node<NodeData>> | undefined = useInternalNode<Node<NodeData>>(source);
@@ -87,23 +96,14 @@ export const ObliqueEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData
       break;
   }
 
-  const [edgePath, edgeCenterX, edgeCenterY] = getStraightPath({
-    sourceX,
-    sourceY,
-    targetX,
-    targetY,
-  });
-
   return (
-    <MultiLabelEdge
+    <MultiLabelObliqueEditableEdge
       {...props}
       sourceX={sourceX}
       sourceY={sourceY}
       targetX={targetX}
       targetY={targetY}
-      edgeCenterX={edgeCenterX}
-      edgeCenterY={edgeCenterY}
-      svgPathString={edgePath}
+      bendingPoints={data?.bendingPoints ?? []}
     />
   );
 });

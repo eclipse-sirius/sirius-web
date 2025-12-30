@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import { useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../../../contexts/DiagramContext.types';
-import { useDiagramPalette } from '../../useDiagramPalette';
+import { useEditableEdgePath } from '../../../edge/useEditableEdgePath';
 import { AppearanceColorPicker } from '../widget/AppearanceColorPicker';
 import { AppearanceNumberTextfield } from '../widget/AppearanceNumberTextfield ';
 import { AppearanceSelect } from '../widget/AppearanceSelect';
@@ -70,7 +70,7 @@ export const EdgeAppearancePart = ({ edgeIds, style, customizedStyleProperties }
 
   const { updateEdgeAppearance } = useEditEdgeAppearance();
   const { resetEdgeStyleProperties } = useResetEdgeAppearance();
-  const { hideDiagramPalette } = useDiagramPalette();
+  const { removeEdgeLayoutData } = useEditableEdgePath();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'edgeAppearancePart' });
   const lineStyleOptions = useMemo(() => getLineStyleOptions(t), [t]);
   const arrowOptions = useMemo(() => getArrowOption(t), [t]);
@@ -141,11 +141,11 @@ export const EdgeAppearancePart = ({ edgeIds, style, customizedStyleProperties }
           disabled={isDisabled('EDGE_TYPE')}
           onEdit={(newValue) => {
             handleEditProperty({ edgeType: newValue });
-            hideDiagramPalette(); //Changing the edge type creates a new edge, so we explicitly close the palette to avoid a glitch.
+            removeEdgeLayoutData(edgeIds); //Reset custom bending points when changing the edge type.
           }}
           onReset={() => {
             handleResetProperty('EDGE_TYPE');
-            hideDiagramPalette(); //Changing the edge type creates a new edge, so we explicitly close the palette to avoid a glitch.
+            removeEdgeLayoutData(edgeIds); //Reset custom bending points when changing the edge type.
           }}></AppearanceSelect>
       </Box>
     </ListItem>
