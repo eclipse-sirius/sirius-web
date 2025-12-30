@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import { BendPointProps, TemporaryMovingLineProps } from './BendPoint.types';
 
 const zoomSelector = (state: ReactFlowState) => state.panZoom?.getViewport().zoom || 1;
 
-export const BendPoint = ({ x, y, index, direction, onDrag, onDragStop }: BendPointProps) => {
+export const BendPoint = ({ x, y, index, direction, onDrag, onDragStop, temporary }: BendPointProps) => {
   const zoom = useStore(zoomSelector);
   const nodeRef = useRef<SVGCircleElement>(null);
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -37,7 +37,12 @@ export const BendPoint = ({ x, y, index, direction, onDrag, onDragStop }: BendPo
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>
       <g ref={nodeRef} data-testid={`bend-point-${index}`}>
         <circle style={{ pointerEvents: 'all' }} r={20} fill={'transparent'} />
-        <circle style={{ pointerEvents: 'none' }} r={3} fill={'black'} />
+        <circle
+          style={{ pointerEvents: 'none' }}
+          r={3}
+          fill={temporary ? 'white' : 'black'}
+          stroke={temporary ? 'black' : 'none'}
+        />
       </g>
     </Draggable>
   );

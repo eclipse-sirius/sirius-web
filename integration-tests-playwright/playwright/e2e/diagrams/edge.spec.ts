@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -174,6 +174,14 @@ test.describe('edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
     await new PlaywrightProject(request).uploadProject(page, 'projectFlowForBendPointsDeletion.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('NewSystem');
+    await playwrightExplorer.select('Topography');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
   });
 
   test.afterEach(async ({ request }) => {
@@ -181,11 +189,6 @@ test.describe('edge', () => {
   });
 
   test('when source and target handles are aligned, then bend point are removed', async ({ page }) => {
-    const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.expand('Flow');
-    await playwrightExplorer.expand('NewSystem');
-    await playwrightExplorer.select('Topography');
-
     const playwrightEdge = new PlaywrightEdge(page);
 
     await playwrightEdge.click();
@@ -312,6 +315,14 @@ test.describe('edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
     await new PlaywrightProject(request).uploadProject(page, 'projectEdgeCrossFadeTunnel.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('CrossFadeTunnels');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagramEdges diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
   });
 
   test.afterEach(async ({ request }) => {
@@ -319,11 +330,6 @@ test.describe('edge', () => {
   });
 
   test('when an edge is hide, then the cross fade tunnel is removed', async ({ page }) => {
-    const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.expand('CrossFadeTunnels');
-    await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagramEdges diagram');
-
     // Helper function to check for cross fade tunnels count
     const waitForCrossFadeTunnelCount = async (expectedCount: number) => {
       await page.waitForFunction(
@@ -358,5 +364,61 @@ test.describe('edge', () => {
     await expect(a2Node.nodeLocator).toBeVisible();
 
     await waitForCrossFadeTunnelCount(1);
+  });
+});
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeWithBendingPoints.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('NewSystem');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a manhattan edge has bending points, then changing its type reset these bending point', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.select('ManhattanEdgeWithBendingPoints');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightEdge.edgeLocator.locator('path').first().click({ button: 'right' });
+    await page.getByTestId('toolSection-Appearance').click();
+    await page.locator('[data-testid="toolSection-Appearance-Edge Type"]').click();
+    await page.waitForSelector('.MuiMenu-paper');
+    await page.locator('[data-value="Oblique"]').click();
+
+    await page.waitForFunction(
+      () => {
+        const edgePath = document.querySelector('[data-testid^="rf__edge-"] path')?.getAttribute('d');
+        return edgePath?.trim().match(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
+      },
+      { timeout: 2000 }
+    );
+  });
+
+  test('when a oblique edge has one bending point, then path is composed of two lines', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.select('ObliqueEdgeWithBendingPoints');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.waitForFunction(
+      () => {
+        const edgePath = document.querySelector('[data-testid^="rf__edge-"] path')?.getAttribute('d');
+        return edgePath?.trim().match(/^M\s?[\d.-]+\s?[\d.-]+(\s?L\s?[\d.-]+\s[\d.-]+){2}$/);
+      },
+      { timeout: 2000 }
+    );
   });
 });

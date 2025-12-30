@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,10 @@ import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeData } from '../../DiagramRenderer.types';
 import { edgeBendPointOffset } from '../../layout/layoutParams';
 import { BendPointData } from './useBendingPoints.types';
+
+export const isMultipleOfTwo = (num: number): boolean => {
+  return num % 2 === 0;
+};
 
 export const getMiddlePoint = (p1: XYPosition, p2: XYPosition): XYPosition => {
   return { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, Node } from '@xyflow/react';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { Edge, XYPosition, EdgeProps } from '@xyflow/react';
 
-export interface UseEditableEdgePathValue {
-  synchronizeEdgeLayoutData: (edges: Edge<EdgeData>[], nodes: Node<NodeData>[]) => void;
-  removeEdgeLayoutData: (edgeIds: string[]) => void;
-}
+export type MultiLabelObliqueEditableEdgeProps<T extends Edge<Record<string, unknown>, string | undefined>> = {
+  bendingPoints: XYPosition[];
+} & EdgeProps<T>;

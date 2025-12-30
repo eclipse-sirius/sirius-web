@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,6 +57,6 @@ test.describe('diagram - edgeStyle', () => {
     await playwrightNode.move({ x: 0, y: -50 });
 
     const edgePath = await playwrightEdge.getEdgePath();
-    expect(edgePath.trim()).toMatch(/^M\s?[\d.-]+,[\d.-]+\s?L\s?[\d.-]+,[\d.-]+$/); // check it's a straight path
+    expect(edgePath?.trim()).toMatch(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/); // check it's a straight path
   });
 });
