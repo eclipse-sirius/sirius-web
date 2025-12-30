@@ -118,19 +118,23 @@ public class EMFValidationService implements IValidationService {
         return new Diagnostician(this.eValidatorRegistry) {
             @Override
             public String getObjectLabel(EObject eObject) {
+                String objectLabel = "";
+
                 List<AdapterFactory> adapterFactories = EMFValidationService.this.composedAdapterFactoryDescriptors.stream()
                         .map(ComposedAdapterFactory.Descriptor::createAdapterFactory)
                         .toList();
                 var composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
 
-                IItemLabelProvider itemLabelProvider = (IItemLabelProvider) composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
-                if (itemLabelProvider != null) {
-                    return itemLabelProvider.getText(eObject);
+                var adapter = composedAdapterFactory.adapt(eObject, IItemLabelProvider.class);
+                if (adapter instanceof IItemLabelProvider itemLabelProvider) {
+                    objectLabel = itemLabelProvider.getText(eObject);
+                } else {
+                    objectLabel = super.getObjectLabel(eObject);
                 }
 
                 composedAdapterFactory.dispose();
 
-                return super.getObjectLabel(eObject);
+                return objectLabel;
             }
         };
     }
