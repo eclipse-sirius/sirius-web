@@ -29,3 +29,4 @@ export const verticalLayoutDirectionGap = 50;
 export const horizontalLayoutDirectionGap = 50;
 export const edgeBendPointOffset = 25;
 export const borderNodeGap = 10;
+export const maxOverflowIteration = 10;
