@@ -82,6 +82,7 @@ export const TreeDescriptionsMenu = ({
         {treeDescriptions.map((td) => (
           <MenuItem
             key={td.id}
+            data-testid={`tree-descriptions-menu-item-${td.label}`}
             selected={td.id === activeTreeDescriptionId}
             onClick={() => updateActiveTreeDescription(td)}>
             <ListItemIcon

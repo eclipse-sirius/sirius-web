@@ -65,6 +65,12 @@ export class PlaywrightExplorer {
     await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).dblclick();
   }
 
+  async expandAll(treeItemLabel: string) {
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.page.getByTestId('expand-all').isVisible();
+    await this.page.getByTestId('expand-all').click({ force: true });
+  }
+
   async uploadDocument(fileName: string) {
     await this.page.getByTestId('upload-document-icon').click();
     await this.page.locator('input[name="file"]').setInputFiles(`./playwright/resources/${fileName}`);
