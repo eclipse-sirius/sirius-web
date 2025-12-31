@@ -86,7 +86,7 @@ test.describe('diagram - arrange all', () => {
     expect(targetPosition.x).toBeGreaterThan(sourcePosition.x + sourceSize.width);
   });
 
-  test('when a arrange all is triggered on a digram with edge between child on parent node, then the layout applied without error', async ({
+  test('when a arrange all is triggered on a diagram with edge between child on parent node, then the layout applied without error', async ({
     page,
   }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
