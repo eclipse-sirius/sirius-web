@@ -144,6 +144,7 @@ INSERT INTO representation_metadata (
 
 INSERT INTO representation_content (
   id,
+  semantic_data_id,
   content,
   last_migration_performed,
   migration_version,
@@ -151,6 +152,7 @@ INSERT INTO representation_content (
   last_modified_on
 ) VALUES (
   '40569b77-1967-46cc-99da-c526f5ffbc85',
+  '6dfe736e-c582-4148-8dcf-9b1baa6e3a12',
   '{
     "id": "40569b77-1967-46cc-99da-c526f5ffbc85",
     "kind": "siriusComponents://representation?type=Diagram",

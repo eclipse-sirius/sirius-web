@@ -314,8 +314,10 @@ INSERT INTO representation_metadata (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO representation_content (
   id,
+  semantic_data_id,
   content,
   created_on,
   last_modified_on,
@@ -323,6 +325,7 @@ INSERT INTO representation_content (
   migration_version
 ) VALUES (
   '35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
+  '89d67892-0cc9-4ca4-b30e-28688470c0d4',
   '{
     "id": "35f1cd7b-e5bb-443d-95ef-bab372a92b0f",
     "descriptionId": "siriusComponents://representation?type=TreeMap",
@@ -356,6 +359,7 @@ INSERT INTO project (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -363,6 +367,7 @@ INSERT INTO nature (
   'a5441b64-83a5-4754-8794-57227bf8a322',
   'siriusComponents://nature?kind=studio'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -372,6 +377,7 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -387,6 +393,7 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -394,6 +401,7 @@ INSERT INTO semantic_data_domain (
   'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
   'http://www.eclipse.org/sirius-web/view'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -401,6 +409,7 @@ INSERT INTO semantic_data_domain (
   'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
   'http://www.eclipse.org/sirius-web/diagram'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -522,8 +531,10 @@ INSERT INTO representation_metadata (
   '2024-07-04 9:42:0.000',
   '2024-07-04 9:42:0.000'
 );
+
 INSERT INTO representation_content (
   id,
+  semantic_data_id,
   content,
   created_on,
   last_modified_on,
@@ -531,6 +542,7 @@ INSERT INTO representation_content (
   migration_version
 ) VALUES (
   '9698833e-ffd4-435a-9aec-765622ce524e',
+  'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
   '{
     "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=e932123d-b916-3537-84d2-86a4f5873d93",
     "edges": [
@@ -731,6 +743,7 @@ INSERT INTO project (
   '2024-07-01 15:00:0.000',
   '2024-07-01 15:00:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -738,6 +751,7 @@ INSERT INTO nature (
   '8ce6147e-1f5b-426f-b1be-dfeabd37a50a',
   'siriusComponents://nature?kind=studio'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -747,6 +761,7 @@ INSERT INTO semantic_data (
   '2024-07-01 15:00:0.000',
   '2024-07-01 15:00:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -762,6 +777,7 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -769,6 +785,7 @@ INSERT INTO semantic_data_domain (
   '65edc1f2-989c-4001-971b-29981179ebfa',
   'http://www.eclipse.org/sirius-web/view'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -776,6 +793,7 @@ INSERT INTO semantic_data_domain (
   '65edc1f2-989c-4001-971b-29981179ebfa',
   'http://www.eclipse.org/sirius-web/diagram'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -927,6 +945,7 @@ INSERT INTO project (
   '2024-07-18 15:00:0.000',
   '2024-07-18 15:00:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -934,6 +953,7 @@ INSERT INTO nature (
   '8e4dc281-b458-4354-b2c8-a03b426b6966',
   'siriusComponents://nature?kind=studio'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -943,6 +963,7 @@ INSERT INTO semantic_data (
   '2024-07-01 15:00:0.000',
   '2024-07-01 15:00:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -958,6 +979,7 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -965,6 +987,7 @@ INSERT INTO semantic_data_domain (
   '6d89dded-c843-475f-91b4-e2c91b9a883a',
   'http://www.eclipse.org/sirius-web/view'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -972,6 +995,7 @@ INSERT INTO semantic_data_domain (
   '6d89dded-c843-475f-91b4-e2c91b9a883a',
   'http://www.eclipse.org/sirius-web/diagram'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -1087,6 +1111,7 @@ INSERT INTO project (
   '2024-07-18 15:00:0.000',
   '2024-07-18 15:00:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -1094,6 +1119,7 @@ INSERT INTO nature (
   '19d73d38-3de2-4d03-a8f1-ce36c2ed36db',
   'siriusComponents://nature?kind=studio'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -1103,6 +1129,7 @@ INSERT INTO semantic_data (
   '2024-07-01 15:00:0.000',
   '2024-07-01 15:00:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -1118,6 +1145,7 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1125,6 +1153,7 @@ INSERT INTO semantic_data_domain (
   '06d828d9-c2c6-46d0-a9c4-7fabd588755b',
   'http://www.eclipse.org/sirius-web/view'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1132,6 +1161,7 @@ INSERT INTO semantic_data_domain (
   '06d828d9-c2c6-46d0-a9c4-7fabd588755b',
   'http://www.eclipse.org/sirius-web/diagram'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -1206,6 +1236,7 @@ INSERT INTO project (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -1213,6 +1244,7 @@ INSERT INTO nature (
   '590949b9-5d48-46ba-b206-29ad2473e5a5',
   'siriusComponents://nature?kind=studio'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -1222,6 +1254,7 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -1237,6 +1270,7 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1244,6 +1278,7 @@ INSERT INTO semantic_data_domain (
   'dc9643f8-b1ce-4c93-a176-379063d42b32',
   'http://www.eclipse.org/sirius-web/view'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1251,6 +1286,7 @@ INSERT INTO semantic_data_domain (
   'dc9643f8-b1ce-4c93-a176-379063d42b32',
   'http://www.eclipse.org/sirius-web/diagram'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -1392,6 +1428,7 @@ INSERT INTO project (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -1399,6 +1436,7 @@ INSERT INTO nature (
   'fc56cb7e-a2a4-477f-89a7-58bb34a2a4b3',
   'siriusComponents://nature?kind=studio'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -1408,6 +1446,7 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -1423,6 +1462,7 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1430,6 +1470,7 @@ INSERT INTO semantic_data_domain (
   '21d28dd9-1675-4873-a39a-678b19b23ed6',
   'http://www.eclipse.org/sirius-web/view'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1437,6 +1478,7 @@ INSERT INTO semantic_data_domain (
   '21d28dd9-1675-4873-a39a-678b19b23ed6',
   'http://www.eclipse.org/sirius-web/form'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -1618,6 +1660,7 @@ INSERT INTO document (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 -- Test project for TreeDescriptionIconURLExpressionMigrationParticipantTests 
 INSERT INTO project (
   id,
@@ -1630,6 +1673,7 @@ INSERT INTO project (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -1637,6 +1681,7 @@ INSERT INTO nature (
   '718868e6-de6d-4b00-b84f-56802aa6d5d0',
   'siriusComponents://nature?kind=studio'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -1646,6 +1691,7 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -1661,6 +1707,7 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1668,6 +1715,7 @@ INSERT INTO semantic_data_domain (
   '340026b5-1363-4c93-8c2b-7f11188cca8b',
   'http://www.eclipse.org/sirius-web/tree'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1675,6 +1723,7 @@ INSERT INTO semantic_data_domain (
   '340026b5-1363-4c93-8c2b-7f11188cca8b',
   'http://www.eclipse.org/sirius-web/view'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -1804,6 +1853,7 @@ INSERT INTO project (
   '2025-05-26 10:00:0.000',
   '2025-05-26 10:00:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -1811,6 +1861,7 @@ INSERT INTO nature (
   'b1f064d3-b928-319d-8853-022b0c5dd63a',
   'siriusComponents://nature?kind=studio'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -1820,6 +1871,7 @@ INSERT INTO semantic_data (
   '2025-05-26 10:00:0.000',
   '2025-05-26 10:00:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -1835,6 +1887,7 @@ INSERT INTO project_semantic_data (
   '2025-05-26 10:00:0.000',
   '2025-05-26 10:00:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1842,6 +1895,7 @@ INSERT INTO semantic_data_domain (
   'c81968f1-73c8-3973-bdae-7a2997132706',
   'http://www.eclipse.org/sirius-web/diagram'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -1849,6 +1903,7 @@ INSERT INTO semantic_data_domain (
   'c81968f1-73c8-3973-bdae-7a2997132706',
   'http://www.eclipse.org/sirius-web/view'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -2080,6 +2135,7 @@ INSERT INTO project (
   '2025-05-14 12:00:0.000',
   '2025-05-14 12:00:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -2087,6 +2143,7 @@ INSERT INTO nature (
   'c951f08b-e0c7-4367-975c-ef236ead2100',
   'siriusComponents://nature?kind=studio'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -2096,6 +2153,7 @@ INSERT INTO semantic_data (
   '2025-05-14 12:00:0.000',
   '2025-05-14 12:00:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -2111,6 +2169,7 @@ INSERT INTO project_semantic_data (
   '2025-05-14 12:00:0.000',
   '2025-05-14 12:00:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -2118,6 +2177,7 @@ INSERT INTO semantic_data_domain (
   '402f51c9-96df-46f2-b39b-35ebd506ff31',
   'http://www.eclipse.org/sirius-web/view'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -2125,6 +2185,7 @@ INSERT INTO semantic_data_domain (
   '402f51c9-96df-46f2-b39b-35ebd506ff31',
   'http://www.eclipse.org/sirius-web/diagram'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -2235,6 +2296,7 @@ INSERT INTO document (
   '2025-05-14 12:00:0.000',
   '2025-05-14 12:00:0.000'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
