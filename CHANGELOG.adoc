@@ -114,7 +114,8 @@ The optional editing context id argument has been removed since it can be comput
 These should not have axisted in the first place and have now been replaced with transaction event listeners.
 As a consequence, additional domain events can now be fired while using Sirius Web giving downstream projects additional insights into the consequences of an action.
 - https://github.com/eclipse-sirius/sirius-web/issues/5502[#5502] [sirius-web] Align the identity of representation content to match the one of representation metadata.
-As a result, creating representation content will now require the `semantic_data_id` just like creating representation metadata
+As a result, creating representation content will now require the `semantic_data_id` just like creating representation metadata.
+On top of that, the link between representation content and representation metadata is now more explicit with a proper column `representation_content#representation_metadata_id` to link the two.
 
 
 === Dependency update

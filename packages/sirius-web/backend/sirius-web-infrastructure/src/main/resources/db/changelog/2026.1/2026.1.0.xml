@@ -18,4 +18,5 @@
     <include file="db/changelog/2026.1/01-drop-fks-project-semantic-data.xml" />
     <include file="db/changelog/2026.1/02-drop-additional-foreign-keys.xml" />
     <include file="db/changelog/2026.1/03-align-representation-content-identity-to-representation-metadata.xml" />
+    <include file="db/changelog/2026.1/04-make-more-explicit-the-relation-between-representation-content-and-representation-metadata.xml" />
 </databaseChangeLog>

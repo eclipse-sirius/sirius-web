@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2026 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="04-make-more-explicit-the-relation-between-representation-content-and-representation-metadata" author="sbegaudeau">
+        <addColumn tableName="representation_content">
+            <column name="representation_metadata_id" type="UUID">
+            </column>
+        </addColumn>
+        <sql>
+            UPDATE representation_content
+            SET representation_metadata_id = representationMetadata.id
+            FROM representation_metadata representationMetadata
+            WHERE representation_content.id = representationMetadata.id
+        </sql>
+        <addNotNullConstraint tableName="representation_content" columnName="representation_metadata_id" />
+        <addForeignKeyConstraint
+                baseTableName="representation_content"
+                baseColumnNames="representation_metadata_id"
+                constraintName="fk_representation_content_representation_metadata_id"
+                referencedTableName="representation_metadata"
+                referencedColumnNames="id"
+                onDelete="CASCADE" />
+
+        <dropForeignKeyConstraint baseTableName="representation_content" constraintName="fk_representation_content_id"/>
+    </changeSet>
+</databaseChangeLog>

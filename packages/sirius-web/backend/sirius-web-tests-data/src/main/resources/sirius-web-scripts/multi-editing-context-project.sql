@@ -273,6 +273,7 @@ INSERT INTO representation_metadata (
 
 INSERT INTO representation_content (
   id,
+  representation_metadata_id,
   semantic_data_id,
   content,
   last_migration_performed,
@@ -280,6 +281,7 @@ INSERT INTO representation_content (
   created_on,
   last_modified_on
 ) VALUES (
+  '4e4a4c0e-9a24-48a5-a52a-97bbdc35fcf9',
   '4e4a4c0e-9a24-48a5-a52a-97bbdc35fcf9',
   '4e7e526f-b0c3-45f3-82d3-1148c99de300',
   '{
@@ -649,6 +651,7 @@ INSERT INTO representation_content (
 
 INSERT INTO representation_content (
   id,
+  representation_metadata_id,
   semantic_data_id,
   content,
   last_migration_performed,
@@ -656,6 +659,7 @@ INSERT INTO representation_content (
   created_on,
   last_modified_on
 ) VALUES (
+  '4687c6ae-e968-4680-a4ad-5db22dd7f6ef',
   '4687c6ae-e968-4680-a4ad-5db22dd7f6ef',
   '3f155db4-6771-459a-9fec-6a3a77238d31',
   '{

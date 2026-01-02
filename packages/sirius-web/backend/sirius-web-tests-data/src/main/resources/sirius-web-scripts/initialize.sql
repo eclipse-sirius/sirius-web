@@ -244,6 +244,7 @@ INSERT INTO representation_metadata_icon_url (
 
 INSERT INTO representation_content (
   id,
+  representation_metadata_id,
   semantic_data_id,
   content,
   created_on,
@@ -251,6 +252,7 @@ INSERT INTO representation_content (
   last_migration_performed,
   migration_version
 ) VALUES (
+  'e81eec5c-42d6-491c-8bcc-9beb951356f8',
   'e81eec5c-42d6-491c-8bcc-9beb951356f8',
   'cb133bf0-d7aa-4a83-a277-0972919dd46a',
   '{
@@ -304,6 +306,7 @@ INSERT INTO representation_metadata (
 
 INSERT INTO representation_content (
   id,
+  representation_metadata_id,
   semantic_data_id,
   content,
   created_on,
@@ -311,6 +314,7 @@ INSERT INTO representation_content (
   last_migration_performed,
   migration_version
 ) VALUES (
+  '05e44ccc-9363-443f-a816-25fc73e3e7f7',
   '05e44ccc-9363-443f-a816-25fc73e3e7f7',
   'cb133bf0-d7aa-4a83-a277-0972919dd46a',
   '{
