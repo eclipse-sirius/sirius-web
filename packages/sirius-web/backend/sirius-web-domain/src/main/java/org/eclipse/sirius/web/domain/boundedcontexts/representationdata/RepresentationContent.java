@@ -43,6 +43,9 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
     @Id
     private UUID id;
 
+    @Column("representation_metadata_id")
+    private AggregateReference<RepresentationMetadata, UUID> representationMetadata;
+
     @Column("semantic_data_id")
     private AggregateReference<SemanticData, UUID> semanticData;
 
@@ -59,6 +62,10 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
     @Override
     public UUID getId() {
         return this.id;
+    }
+
+    public AggregateReference<RepresentationMetadata, UUID> getRepresentationMetadata() {
+        return this.representationMetadata;
     }
 
     public AggregateReference<SemanticData, UUID> getSemanticData() {
@@ -123,6 +130,8 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
 
         private final UUID id;
 
+        private AggregateReference<RepresentationMetadata, UUID> representationMetadata;
+
         private AggregateReference<SemanticData, UUID> semanticData;
 
         private String content;
@@ -133,6 +142,11 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
 
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder representationMetadata(AggregateReference<RepresentationMetadata, UUID> representationMetadata) {
+            this.representationMetadata = Objects.requireNonNull(representationMetadata);
+            return this;
         }
 
         public Builder semanticData(AggregateReference<SemanticData, UUID> semanticData) {
@@ -159,6 +173,7 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
             var representationContent = new RepresentationContent();
             representationContent.isNew = true;
             representationContent.id = Objects.requireNonNull(this.id);
+            representationContent.representationMetadata = Objects.requireNonNull(this.representationMetadata);
             representationContent.semanticData = Objects.requireNonNull(this.semanticData);
             representationContent.content = Objects.requireNonNull(this.content);
             representationContent.lastMigrationPerformed = Objects.requireNonNull(this.lastMigrationPerformed);

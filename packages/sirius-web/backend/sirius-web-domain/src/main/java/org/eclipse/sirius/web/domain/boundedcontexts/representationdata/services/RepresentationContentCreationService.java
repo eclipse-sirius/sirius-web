@@ -40,8 +40,8 @@ public class RepresentationContentCreationService implements IRepresentationCont
 
     @Override
     public IResult<RepresentationContent> create(ICause cause, UUID representationId, UUID semanticDataId, String content, String lastMigrationPerformed, String migrationVersion) {
-
         var representationContent = RepresentationContent.newRepresentationContent(representationId)
+                .representationMetadata(AggregateReference.to(representationId))
                 .semanticData(AggregateReference.to(semanticDataId))
                 .content(content)
                 .lastMigrationPerformed(lastMigrationPerformed)
