@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.reposito
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentCreationService;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,9 +39,10 @@ public class RepresentationContentCreationService implements IRepresentationCont
     }
 
     @Override
-    public IResult<RepresentationContent> create(ICause cause, UUID representationId, String content, String lastMigrationPerformed, String migrationVersion) {
+    public IResult<RepresentationContent> create(ICause cause, UUID representationId, UUID semanticDataId, String content, String lastMigrationPerformed, String migrationVersion) {
 
         var representationContent = RepresentationContent.newRepresentationContent(representationId)
+                .semanticData(AggregateReference.to(semanticDataId))
                 .content(content)
                 .lastMigrationPerformed(lastMigrationPerformed)
                 .migrationVersion(migrationVersion)

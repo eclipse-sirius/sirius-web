@@ -113,6 +113,8 @@ The optional editing context id argument has been removed since it can be comput
 - https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] Additional foreign keys set up between bounded contexts have been deleted.
 These should not have axisted in the first place and have now been replaced with transaction event listeners.
 As a consequence, additional domain events can now be fired while using Sirius Web giving downstream projects additional insights into the consequences of an action.
+- https://github.com/eclipse-sirius/sirius-web/issues/5502[#5502] [sirius-web] Align the identity of representation content to match the one of representation metadata.
+As a result, creating representation content will now require the `semantic_data_id` just like creating representation metadata
 
 
 === Dependency update

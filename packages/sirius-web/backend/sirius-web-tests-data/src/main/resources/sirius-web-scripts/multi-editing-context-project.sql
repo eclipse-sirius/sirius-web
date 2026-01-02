@@ -273,6 +273,7 @@ INSERT INTO representation_metadata (
 
 INSERT INTO representation_content (
   id,
+  semantic_data_id,
   content,
   last_migration_performed,
   migration_version,
@@ -280,6 +281,7 @@ INSERT INTO representation_content (
   last_modified_on
 ) VALUES (
   '4e4a4c0e-9a24-48a5-a52a-97bbdc35fcf9',
+  '4e7e526f-b0c3-45f3-82d3-1148c99de300',
   '{
      "id":"4e4a4c0e-9a24-48a5-a52a-97bbdc35fcf9",
      "kind":"siriusComponents://representation?type=Diagram",
@@ -647,6 +649,7 @@ INSERT INTO representation_content (
 
 INSERT INTO representation_content (
   id,
+  semantic_data_id,
   content,
   last_migration_performed,
   migration_version,
@@ -654,6 +657,7 @@ INSERT INTO representation_content (
   last_modified_on
 ) VALUES (
   '4687c6ae-e968-4680-a4ad-5db22dd7f6ef',
+  '3f155db4-6771-459a-9fec-6a3a77238d31',
   '{
      "id":"4687c6ae-e968-4680-a4ad-5db22dd7f6ef",
      "kind":"siriusComponents://representation?type=Diagram",

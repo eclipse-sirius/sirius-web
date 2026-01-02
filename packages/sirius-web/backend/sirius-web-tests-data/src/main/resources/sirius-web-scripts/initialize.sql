@@ -10,6 +10,7 @@ INSERT INTO project (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -17,6 +18,7 @@ INSERT INTO nature (
   '7ba7bda7-13b9-422a-838b-e45a3597e952',
   'uml'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -26,6 +28,7 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -54,6 +57,7 @@ INSERT INTO project (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -61,6 +65,7 @@ INSERT INTO nature (
   '4164c661-e0cb-4071-b25d-8516440bb8e8',
   'sysml'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -70,6 +75,7 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -85,6 +91,7 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO project_image (
   id,
   project_id,
@@ -116,6 +123,7 @@ INSERT INTO project (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO nature (
   project_id,
   name
@@ -123,6 +131,7 @@ INSERT INTO nature (
   '99d336a2-3049-439a-8853-b104ffb22653',
   'ecore'
 );
+
 INSERT INTO semantic_data (
   id,
   created_on,
@@ -132,6 +141,7 @@ INSERT INTO semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO project_semantic_data (
   id,
   project_id,
@@ -147,6 +157,7 @@ INSERT INTO project_semantic_data (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO semantic_data_domain (
   semantic_data_id,
   uri
@@ -154,6 +165,7 @@ INSERT INTO semantic_data_domain (
   'cb133bf0-d7aa-4a83-a277-0972919dd46a',
   'http://www.eclipse.org/emf/2002/Ecore'
 );
+
 INSERT INTO document (
   id,
   semantic_data_id,
@@ -197,6 +209,7 @@ INSERT INTO document (
   '2024-01-01 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO representation_metadata (
   id,
   semantic_data_id,
@@ -218,6 +231,7 @@ INSERT INTO representation_metadata (
   '2024-01-02 9:42:0.000',
   '2024-01-02 9:42:0.000'
 );
+
 INSERT INTO representation_metadata_icon_url (
   representation_metadata_id,
   url,
@@ -227,8 +241,10 @@ INSERT INTO representation_metadata_icon_url (
   '/portal-images/portal.svg',
   0
 );
+
 INSERT INTO representation_content (
   id,
+  semantic_data_id,
   content,
   created_on,
   last_modified_on,
@@ -236,6 +252,7 @@ INSERT INTO representation_content (
   migration_version
 ) VALUES (
   'e81eec5c-42d6-491c-8bcc-9beb951356f8',
+  'cb133bf0-d7aa-4a83-a277-0972919dd46a',
   '{
     "id":"e81eec5c-42d6-491c-8bcc-9beb951356f8",
     "kind":"siriusComponents://representation?type=Portal",
@@ -262,6 +279,7 @@ INSERT INTO representation_content (
   'none',
   '0'
 );
+
 INSERT INTO representation_metadata (
   id,
   semantic_data_id,
@@ -283,8 +301,10 @@ INSERT INTO representation_metadata (
   '2024-01-01 9:42:0.000',
   '2024-01-03 9:42:0.000'
 );
+
 INSERT INTO representation_content (
   id,
+  semantic_data_id,
   content,
   created_on,
   last_modified_on,
@@ -292,6 +312,7 @@ INSERT INTO representation_content (
   migration_version
 ) VALUES (
   '05e44ccc-9363-443f-a816-25fc73e3e7f7',
+  'cb133bf0-d7aa-4a83-a277-0972919dd46a',
   '{
     "id":"05e44ccc-9363-443f-a816-25fc73e3e7f7",
     "kind":"siriusComponents://representation?type=Portal",
