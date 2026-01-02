@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,9 +21,12 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentUpdatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.domain.Persistable;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 /**
@@ -40,6 +43,12 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
     @Id
     private UUID id;
 
+    @Column("representation_metadata_id")
+    private AggregateReference<RepresentationMetadata, UUID> representationMetadata;
+
+    @Column("semantic_data_id")
+    private AggregateReference<SemanticData, UUID> semanticData;
+
     private String content;
 
     private String lastMigrationPerformed;
@@ -53,6 +62,14 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
     @Override
     public UUID getId() {
         return this.id;
+    }
+
+    public AggregateReference<RepresentationMetadata, UUID> getRepresentationMetadata() {
+        return this.representationMetadata;
+    }
+
+    public AggregateReference<SemanticData, UUID> getSemanticData() {
+        return this.semanticData;
     }
 
     public String getContent() {
@@ -113,6 +130,10 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
 
         private final UUID id;
 
+        private AggregateReference<RepresentationMetadata, UUID> representationMetadata;
+
+        private AggregateReference<SemanticData, UUID> semanticData;
+
         private String content;
 
         private String lastMigrationPerformed;
@@ -121,6 +142,16 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
 
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder representationMetadata(AggregateReference<RepresentationMetadata, UUID> representationMetadata) {
+            this.representationMetadata = Objects.requireNonNull(representationMetadata);
+            return this;
+        }
+
+        public Builder semanticData(AggregateReference<SemanticData, UUID> semanticData) {
+            this.semanticData = Objects.requireNonNull(semanticData);
+            return this;
         }
 
         public Builder content(String content) {
@@ -142,6 +173,8 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
             var representationContent = new RepresentationContent();
             representationContent.isNew = true;
             representationContent.id = Objects.requireNonNull(this.id);
+            representationContent.representationMetadata = Objects.requireNonNull(this.representationMetadata);
+            representationContent.semanticData = Objects.requireNonNull(this.semanticData);
             representationContent.content = Objects.requireNonNull(this.content);
             representationContent.lastMigrationPerformed = Objects.requireNonNull(this.lastMigrationPerformed);
             representationContent.migrationVersion = Objects.requireNonNull(this.migrationVersion);
