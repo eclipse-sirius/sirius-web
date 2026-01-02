@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -272,16 +272,25 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
     }
 
     private IStatus deleteItem(VariableManager variableManager) {
-        return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
+        var optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                .map(IEditingContext::getId);
+        var optionalRepresentationId = variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                 .map(RepresentationMetadata::getId)
-                .map(UUID::toString)
-                .map(this::deleteRepresentation)
-                .orElse(new Failure(""));
+                .map(UUID::toString);
+
+        if (optionalEditingContextId.isPresent() && optionalRepresentationId.isPresent()) {
+            var editingContextId = optionalEditingContextId.get();
+            var representationId = optionalRepresentationId.get();
+
+            return this.deleteRepresentation(editingContextId, representationId);
+        }
+
+        return new Failure("");
     }
 
-    private IStatus deleteRepresentation(String representationId) {
+    private IStatus deleteRepresentation(String editingContextId, String representationId) {
         var optionalRepresentationUUID = new UUIDParser().parse(representationId);
-        var input = new DeleteRepresentationInput(UUID.randomUUID(), representationId);
+        var input = new DeleteRepresentationInput(UUID.randomUUID(), editingContextId, representationId);
         if (optionalRepresentationUUID.isPresent()) {
             var representationUUID = optionalRepresentationUUID.get();
             var result = this.representationMetadataDeletionService.delete(input, representationUUID);
