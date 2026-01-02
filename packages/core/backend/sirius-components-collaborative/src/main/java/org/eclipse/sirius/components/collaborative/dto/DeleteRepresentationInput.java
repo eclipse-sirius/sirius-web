@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,5 +21,5 @@ import org.eclipse.sirius.components.core.api.IInput;
  *
  * @author lfasani
  */
-public record DeleteRepresentationInput(UUID id, String representationId) implements IInput {
+public record DeleteRepresentationInput(UUID id, String editingContextId, String representationId) implements IInput {
 }

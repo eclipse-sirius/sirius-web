@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,7 +54,7 @@ public class DeleteRepresentationTreeItemEventHandler implements IDeleteTreeItem
     @Override
     public IStatus handle(IEditingContext editingContext, TreeItem treeItem, Tree tree) {
         var optionalRepresentationUUID = new UUIDParser().parse(treeItem.getId());
-        var input = new DeleteRepresentationInput(UUID.randomUUID(), treeItem.getId());
+        var input = new DeleteRepresentationInput(UUID.randomUUID(), editingContext.getId(), treeItem.getId());
         if (optionalRepresentationUUID.isPresent()) {
             var representationUUID = optionalRepresentationUUID.get();
             var result = this.representationMetadataDeletionService.delete(input, representationUUID);

@@ -116,6 +116,10 @@ As a consequence, additional domain events can now be fired while using Sirius W
 - https://github.com/eclipse-sirius/sirius-web/issues/5502[#5502] [sirius-web] Align the identity of representation content to match the one of representation metadata.
 As a result, creating representation content will now require the `semantic_data_id` just like creating representation metadata.
 On top of that, the link between representation content and representation metadata is now more explicit with a proper column `representation_content#representation_metadata_id` to link the two.
+- https://github.com/eclipse-sirius/sirius-web/issues/6013[#6013] [sirius-web] We will now request the `editingContextId` for the deletion of representations.
+We could previously derived this piece of information from the id of the representation but it was quite different from every other mutation and with the change to the internal identity of representation it would not work anymore.
+Methods like `IRepresentationApplicationService#findEditingContextIdFromRepresentationId`, `IRepresentationMetadataSearchService#findSemanticDataByRepresentationId` or `IRepresentationMetadataRepository#findSemanticDataIdFromRepresentationId` have thus been removed since they will not make any sense in the very near future.
+Sirius Web will not be able to figure out the context in which you are working from using only the id of a representation, you will have to provide the editing context id just like for any other operation.
 
 
 === Dependency update

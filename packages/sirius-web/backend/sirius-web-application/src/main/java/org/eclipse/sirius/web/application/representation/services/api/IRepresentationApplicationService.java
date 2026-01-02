@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,6 @@ import org.springframework.data.domain.KeysetScrollPosition;
 public interface IRepresentationApplicationService {
 
     Window<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, KeysetScrollPosition position, int limit);
-
-    Optional<String> findEditingContextIdFromRepresentationId(String representationId);
 
     Optional<RepresentationMetadataDTO> findRepresentationMetadataById(String representationMetadataId);
 }

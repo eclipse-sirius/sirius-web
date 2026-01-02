@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * Repository used to persist the representation metadata aggregate.
@@ -110,13 +110,6 @@ public interface IRepresentationMetadataRepository extends ListPagingAndSortingR
         AND representationMetadata.target_object_id = :targetObjectId
         """)
     List<RepresentationMetadata> findAllRepresentationMetadataBySemanticDataIdAndTargetObjectId(UUID semanticDataId, String targetObjectId);
-
-    @Query("""
-        SELECT representationMetadata.semantic_data_id
-        FROM representation_metadata representationMetadata
-        WHERE representationMetadata.id = :representationId
-        """)
-    Optional<UUID> findSemanticDataIdFromRepresentationId(UUID representationId);
 
     @Query("""
         SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END

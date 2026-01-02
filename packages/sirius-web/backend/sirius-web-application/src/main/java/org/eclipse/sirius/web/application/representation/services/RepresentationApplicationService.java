@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,15 +63,6 @@ public class RepresentationApplicationService implements IRepresentationApplicat
             return new Window<>(window.map(this.representationMetadataMapper::toDTO), window.hasPrevious());
         }
         return new Window<>(List.of(), index -> position, false, false);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<String> findEditingContextIdFromRepresentationId(String representationId) {
-        return new UUIDParser().parse(representationId)
-                .flatMap(this.representationMetadataSearchService::findSemanticDataByRepresentationId)
-                .map(AggregateReference::getId)
-                .map(UUID::toString);
     }
 
     @Override
