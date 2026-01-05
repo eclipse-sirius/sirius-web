@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,9 @@ import {
   ServerContext,
   ServerContextValue,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -43,6 +46,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { List as FixedSizeList, RowComponentProps } from 'react-window';
 import { makeStyles } from 'tss-react/mui';
 import { useCurrentProject } from '../../useCurrentProject';
@@ -68,29 +72,8 @@ import {
 } from './useEvaluateExpression.types';
 import { useExpression } from './useExpression';
 import { useQueryViewHandle } from './useQueryViewHandle';
-import { useTranslation } from 'react-i18next';
 
-const useQueryViewStyles = makeStyles()((theme) => ({
-  view: {
-    display: 'grid',
-    gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto 1fr',
-    justifyItems: 'stretch',
-    overflow: 'auto',
-  },
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    overflow: 'hidden',
-    height: theme.spacing(4),
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    justifyContent: 'right',
-    alignItems: 'center',
-    borderBottomColor: theme.palette.divider,
-  },
+const useQueryViewStyles = makeStyles()(() => ({
   content: {
     overflow: 'auto',
     display: 'grid',
@@ -124,6 +107,8 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
         objectIds: newObjetIds,
       }));
     };
+
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'queryView' });
 
     const expressionAreaRef: RefObject<ExpressionAreaHandle | null> = useRef<ExpressionAreaHandle | null>(null);
     useQueryViewHandle(id, expressionAreaRef, applySelection, ref);
@@ -163,10 +148,12 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
       </Box>
     );
     return (
-      <div className={classes.view}>
-        <div className={classes.toolbar}>{toolbar}</div>
-        <div className={classes.content}>{contents}</div>
-      </div>
+      <ViewAccordion id={id} title={t('queryTitle')}>
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+        <ViewAccordionContent>
+          <div className={classes.content}>{contents}</div>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );
