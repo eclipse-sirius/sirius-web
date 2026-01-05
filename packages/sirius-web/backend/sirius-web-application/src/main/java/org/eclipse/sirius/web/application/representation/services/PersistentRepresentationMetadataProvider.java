@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,21 +40,33 @@ public class PersistentRepresentationMetadataProvider implements IRepresentation
     }
 
     @Override
-    public Optional<RepresentationMetadata> getMetadata(String representationId) {
+    public Optional<RepresentationMetadata> getMetadata(String editingContextId, String representationId) {
         var cleanRepresentationId = representationId;
         if (representationId.indexOf(URL_PARAM) > 0) {
             cleanRepresentationId = representationId.substring(0, representationId.indexOf(URL_PARAM));
         }
-        return new UUIDParser().parse(cleanRepresentationId)
-                .flatMap(this.representationMetadataSearchService::findMetadataById)
-                .map(representation -> RepresentationMetadata.newRepresentationMetadata(representation.getId().toString())
-                        .kind(representation.getKind())
-                        .label(representation.getLabel())
-                        .descriptionId(representation.getDescriptionId())
-                        .iconURLs(representation.getIconURLs().stream()
+
+        var optionalSemanticDataId = new UUIDParser().parse(editingContextId);
+        var optionalRepresentationMetadataId = new UUIDParser().parse(cleanRepresentationId);
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var representationMetadataId = optionalRepresentationMetadataId.get();
+
+            var optionalRepresentationMetadata = this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), representationMetadataId);
+            if (optionalRepresentationMetadata.isPresent()) {
+                var representationMetadata = optionalRepresentationMetadata.get();
+
+                return Optional.of(RepresentationMetadata.newRepresentationMetadata(representationMetadata.getId().toString())
+                        .kind(representationMetadata.getKind())
+                        .label(representationMetadata.getLabel())
+                        .descriptionId(representationMetadata.getDescriptionId())
+                        .iconURLs(representationMetadata.getIconURLs().stream()
                                 .map(RepresentationIconURL::url)
                                 .toList())
                         .build());
+            }
+        }
+        return Optional.empty();
     }
 
 }

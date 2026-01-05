@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,9 +24,11 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.events.ArrangeAllEvent;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.services.OnStudioTests;
 import org.springframework.context.annotation.Conditional;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -50,10 +52,15 @@ public class DiagramPostProcessorProvider implements IDiagramPostProcessor {
 
     @Override
     public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext) {
-        return this.representationMetadataSearchService.findMetadataById(UUID.fromString(diagramContext.getDiagram().getId()))
-                .map(representationMetadata -> representationMetadata.getLabel())
-                .filter(label -> DIAGRAM_WITH_POST_PROCESSOR_NAME.equals(label))
-                .isPresent();
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        if (optionalSemanticDataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            return this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), UUID.fromString(diagramContext.diagram().getId()))
+                    .map(representationMetadata -> representationMetadata.getLabel())
+                    .filter(label -> DIAGRAM_WITH_POST_PROCESSOR_NAME.equals(label))
+                    .isPresent();
+        }
+        return false;
     }
 
     @Override
@@ -64,9 +71,9 @@ public class DiagramPostProcessorProvider implements IDiagramPostProcessor {
                 .map(de -> TEXT_AFTER_ARRANGE_ALL)
                 .orElse(TEXT_AFTER_REFRESH);
 
-        return Optional.of(Diagram.newDiagram(diagramContext.getDiagram())
-                .nodes(List.of(Node.newNode(diagramContext.getDiagram().getNodes().get(0))
-                        .insideLabel(InsideLabel.newInsideLabel(diagramContext.getDiagram().getNodes().get(0).getInsideLabel())
+        return Optional.of(Diagram.newDiagram(diagramContext.diagram())
+                .nodes(List.of(Node.newNode(diagramContext.diagram().getNodes().get(0))
+                        .insideLabel(InsideLabel.newInsideLabel(diagramContext.diagram().getNodes().get(0).getInsideLabel())
                                 .text(nodeLabel)
                                 .build())
                         .build()))

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -69,11 +70,13 @@ public class DeleteRepresentationEventHandler implements IEditingContextEventHan
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
         if (input instanceof DeleteRepresentationInput deleteRepresentationInput) {
+            var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
             var optionalRepresentationId = new UUIDParser().parse(deleteRepresentationInput.representationId());
-            if (optionalRepresentationId.isPresent()) {
+            if (optionalSemanticDataId.isPresent() && optionalRepresentationId.isPresent()) {
+                var semanticDataId = optionalSemanticDataId.get();
                 var representationId = optionalRepresentationId.get();
 
-                this.representationMetadataDeletionService.delete(deleteRepresentationInput, representationId);
+                this.representationMetadataDeletionService.delete(deleteRepresentationInput, AggregateReference.to(semanticDataId), representationId);
 
                 payload = new DeleteRepresentationSuccessPayload(input.id(), deleteRepresentationInput.representationId());
                 changeDescription = new ChangeDescription(ChangeKind.REPRESENTATION_DELETION, editingContext.getId(), input);

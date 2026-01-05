@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -181,11 +181,17 @@ public class ProjectWithUnsynchronizedDiagramUploadControllerTests extends Abstr
         assertThat(optionalProjectSemanticData).isPresent();
         var semanticDataId = optionalProjectSemanticData.get().getSemanticData().getId();
 
-        var representationMetaDatas = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(semanticDataId));
-        assertThat(representationMetaDatas).hasSize(1);
-        assertThat(representationMetaDatas.get(0)).extracting("label").isEqualTo("Topography unsynchronized");
+        var allRepresentationMetaData = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(semanticDataId));
+        assertThat(allRepresentationMetaData).hasSize(1);
+        assertThat(allRepresentationMetaData.get(0)).extracting("label").isEqualTo("Topography unsynchronized");
 
-        var optionalDiagram = this.representationSearchService.findById(new IEditingContext.NoOp(), representationMetaDatas.get(0).getId().toString(), Diagram.class);
+        var editingContext = new IEditingContext() {
+            @Override
+            public String getId() {
+                return semanticDataId.toString();
+            }
+        };
+        var optionalDiagram = this.representationSearchService.findById(editingContext, allRepresentationMetaData.get(0).getId().toString(), Diagram.class);
         assertThat(optionalDiagram).isPresent();
 
         var diagram = optionalDiagram.get();

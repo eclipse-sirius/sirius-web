@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
@@ -78,7 +79,8 @@ public class ForkedStudioSemanticDataCreationService {
     }
 
     private void updateDocument(ICause cause, AggregateReference<Project, String> projectId, String editingContextId, String representationId) {
-        var optionalRepresentationMetadata = representationMetadataSearchService.findMetadataById(UUID.fromString(representationId));
+        var optionalRepresentationMetadata = new UUIDParser().parse(editingContextId)
+                .flatMap(semanticDataId -> representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), UUID.fromString(representationId)));
         var optionalEditingContext = editingContextSearchService.findById(editingContextId);
 
         if (optionalRepresentationMetadata.isPresent() && optionalEditingContext.isPresent()) {

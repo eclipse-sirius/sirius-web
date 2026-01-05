@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public class DomainTreeRepresentationMetadataProvider implements IRepresentation
     }
 
     @Override
-    public Optional<RepresentationMetadata> getMetadata(String representationId) {
+    public Optional<RepresentationMetadata> getMetadata(String editingContextId, String representationId) {
         var domainViewTreeDescriptionId = this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId();
         if (this.getTreeDescriptionIdFromRepresentationId(representationId).equals(domainViewTreeDescriptionId)) {
             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)

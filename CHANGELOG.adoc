@@ -120,6 +120,13 @@ On top of that, the link between representation content and representation metad
 We could previously derived this piece of information from the id of the representation but it was quite different from every other mutation and with the change to the internal identity of representation it would not work anymore.
 Methods like `IRepresentationApplicationService#findEditingContextIdFromRepresentationId`, `IRepresentationMetadataSearchService#findSemanticDataByRepresentationId` or `IRepresentationMetadataRepository#findSemanticDataIdFromRepresentationId` have thus been removed since they will not make any sense in the very near future.
 Sirius Web will not be able to figure out the context in which you are working from using only the id of a representation, you will have to provide the editing context id just like for any other operation.
+- https://github.com/eclipse-sirius/sirius-web/issues/6014[#6014] [sirius-web] Ask for the semantic data id anytime we manipulate representation metadata.
+This will help align the manipulation of representation on the manipulation of other objects since the semantic data id will be available.
+Multiple methods used to manipulate representation metadata will now either require the semantic data id (in Sirius Web modules) or editing context id (in the Sirius Components modules).
+This will mainly affect `IRepresentationMetadataSearchService`, `IRepresentationMetadataUpdateService` and `IRepresentationMetadataDeletionService`, which will require an argument `AggregateReference<SemanticData, UUID> semanticData`, and services calling them.
+* `IRepresentationSearchService#existByIdAndKind` will now require the `IEditingContext``
+* `IRepresentationMetadataProvider#getMetadata` will now require the `editingContextId`
+* `IRepresentationApplicationService#findRepresentationMetadataById` will not require the `editingContextId`
 
 
 === Dependency update

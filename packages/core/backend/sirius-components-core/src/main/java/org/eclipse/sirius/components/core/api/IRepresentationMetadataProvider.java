@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.core.RepresentationMetadata;
  * @author pcdavid
  */
 public interface IRepresentationMetadataProvider {
-    Optional<RepresentationMetadata> getMetadata(String representationId);
+    Optional<RepresentationMetadata> getMetadata(String editingContextId, String representationId);
 
     /**
      * Empty implementation, used for mocks in unit tests.
@@ -33,7 +33,7 @@ public interface IRepresentationMetadataProvider {
     class NoOp implements IRepresentationMetadataProvider {
 
         @Override
-        public Optional<RepresentationMetadata> getMetadata(String representationId) {
+        public Optional<RepresentationMetadata> getMetadata(String editingContextId, String representationId) {
             return Optional.empty();
         }
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchServiceDelegate;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,14 +38,27 @@ public class RepresentationObjectSearchServiceDelegate implements IObjectSearchS
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String objectId) {
-        return new UUIDParser().parse(objectId)
-                .map(this.representationMetadataSearchService::existsById)
-                .orElse(Boolean.FALSE);
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        var optionalRepresentationMetadataId = new UUIDParser().parse(objectId);
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var representationMetadataId = optionalRepresentationMetadataId.get();
+            return this.representationMetadataSearchService.existsBySemanticDataAndRepresentationMetadataId(AggregateReference.to(semanticDataId), representationMetadataId);
+        }
+        return false;
     }
 
     @Override
     public Optional<Object> getObject(IEditingContext editingContext, String objectId) {
-        return new UUIDParser().parse(objectId)
-                .flatMap(this.representationMetadataSearchService::findMetadataById);
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        var optionalRepresentationMetadataId = new UUIDParser().parse(objectId);
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var representationMetadataId = optionalRepresentationMetadataId.get();
+
+            return this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), representationMetadataId)
+                    .map(Object.class::cast);
+        }
+        return Optional.empty();
     }
 }

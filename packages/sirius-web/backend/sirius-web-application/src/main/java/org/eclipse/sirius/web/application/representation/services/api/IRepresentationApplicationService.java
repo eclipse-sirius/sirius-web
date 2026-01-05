@@ -27,5 +27,5 @@ public interface IRepresentationApplicationService {
 
     Window<RepresentationMetadataDTO> findAllByEditingContextId(String editingContextId, KeysetScrollPosition position, int limit);
 
-    Optional<RepresentationMetadataDTO> findRepresentationMetadataById(String representationMetadataId);
+    Optional<RepresentationMetadataDTO> findRepresentationMetadataById(String editingContextId, String representationMetadataId);
 }

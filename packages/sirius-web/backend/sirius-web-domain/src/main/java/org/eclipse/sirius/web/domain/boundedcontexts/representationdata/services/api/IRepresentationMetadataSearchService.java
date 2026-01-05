@@ -29,11 +29,11 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
  */
 public interface IRepresentationMetadataSearchService {
 
-    boolean existsById(UUID id);
+    boolean existsBySemanticDataAndRepresentationMetadataId(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId);
 
-    Optional<RepresentationMetadata> findMetadataById(UUID id);
+    Optional<RepresentationMetadata> findMetadataById(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId);
 
-    boolean existsByIdAndKind(UUID id, List<String> kinds);
+    boolean existsByIdAndKind(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, List<String> kinds);
 
     List<RepresentationMetadata> findAllRepresentationMetadataBySemanticData(AggregateReference<SemanticData, UUID> semanticData);
 

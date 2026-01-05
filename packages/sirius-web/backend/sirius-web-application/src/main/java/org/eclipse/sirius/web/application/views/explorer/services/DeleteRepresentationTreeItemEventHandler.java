@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -53,11 +54,15 @@ public class DeleteRepresentationTreeItemEventHandler implements IDeleteTreeItem
 
     @Override
     public IStatus handle(IEditingContext editingContext, TreeItem treeItem, Tree tree) {
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationUUID = new UUIDParser().parse(treeItem.getId());
+
         var input = new DeleteRepresentationInput(UUID.randomUUID(), editingContext.getId(), treeItem.getId());
-        if (optionalRepresentationUUID.isPresent()) {
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationUUID.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
             var representationUUID = optionalRepresentationUUID.get();
-            var result = this.representationMetadataDeletionService.delete(input, representationUUID);
+
+            var result = this.representationMetadataDeletionService.delete(input, AggregateReference.to(semanticDataId), representationUUID);
             if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
                 Map<String, Object> parameters = new HashMap<>();
                 parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, treeItem.getId());

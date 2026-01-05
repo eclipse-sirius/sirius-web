@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,7 +82,7 @@ public class FormEventProcessorFactory implements IRepresentationEventProcessorF
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String representationId) {
-        return this.representationSearchService.existByIdAndKind(representationId, List.of(Form.KIND));
+        return this.representationSearchService.existByIdAndKind(editingContext, representationId, List.of(Form.KIND));
     }
 
     @Override

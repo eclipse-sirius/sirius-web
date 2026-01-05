@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -307,11 +307,18 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         Object result = null;
 
         if (self instanceof RepresentationMetadata && optionalTreeItemId.isPresent() && optionalEditingContext.isPresent()) {
-            var optionalRepresentationMetadata = new UUIDParser().parse(optionalTreeItemId.get()).flatMap(this.representationMetadataSearchService::findMetadataById);
-            var repId = optionalRepresentationMetadata.map(RepresentationMetadata::getTargetObjectId).orElse(null);
-            var optionalObject = this.objectSearchService.getObject(optionalEditingContext.get(), repId);
-            if (optionalObject.isPresent()) {
-                result = optionalObject.get();
+            var editingContext = optionalEditingContext.get();
+            var treeItemId = optionalTreeItemId.get();
+
+            var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+            var optionalRepresentationMetadataId = new UUIDParser().parse(treeItemId);
+            if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+                var semanticDataId = optionalSemanticDataId.get();
+                var representationMetadataId = optionalRepresentationMetadataId.get();
+                result = this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), representationMetadataId)
+                        .map(RepresentationMetadata::getTargetObjectId)
+                        .flatMap(targetObjectId -> this.objectSearchService.getObject(editingContext, targetObjectId))
+                        .orElse(null);
             }
         } else if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();

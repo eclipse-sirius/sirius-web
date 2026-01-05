@@ -41,18 +41,18 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
     }
 
     @Override
-    public boolean existsById(UUID id) {
-        return this.representationMetadataRepository.existsById(id);
+    public boolean existsBySemanticDataAndRepresentationMetadataId(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId) {
+        return this.representationMetadataRepository.existsById(representationMetadataId);
     }
 
     @Override
-    public Optional<RepresentationMetadata> findMetadataById(UUID id) {
-        return this.representationMetadataRepository.findMetadataById(id);
+    public Optional<RepresentationMetadata> findMetadataById(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId) {
+        return this.representationMetadataRepository.findMetadataById(representationMetadataId);
     }
 
     @Override
-    public boolean existsByIdAndKind(UUID id, List<String> kinds) {
-        return this.representationMetadataRepository.existsByIdAndKind(id, kinds);
+    public boolean existsByIdAndKind(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, List<String> kinds) {
+        return this.representationMetadataRepository.existsByIdAndKind(representationMetadataId, kinds);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
         if (limit > 0) {
             var cursorKey = position.getKeys().get("id");
             if (cursorKey instanceof UUID cursorId) {
-                if (this.existsById(cursorId)) {
+                if (this.existsBySemanticDataAndRepresentationMetadataId(semanticData, cursorId)) {
                     if (position.scrollsForward()) {
                         window = this.findAllForwardBySemanticData(semanticData, position, cursorId, limit);
                     } else if (position.scrollsBackward()) {

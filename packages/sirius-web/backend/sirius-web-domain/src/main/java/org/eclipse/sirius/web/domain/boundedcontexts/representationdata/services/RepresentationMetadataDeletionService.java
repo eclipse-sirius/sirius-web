@@ -18,10 +18,12 @@ import java.util.UUID;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -42,7 +44,7 @@ public class RepresentationMetadataDeletionService implements IRepresentationMet
     }
 
     @Override
-    public IResult<Void> delete(ICause cause, UUID representationMetadataId) {
+    public IResult<Void> delete(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId) {
         IResult<Void> result = null;
 
         var optionalRepresentationMetadata = this.representationMetadataRepository.findById(representationMetadataId);
@@ -59,8 +61,8 @@ public class RepresentationMetadataDeletionService implements IRepresentationMet
     }
 
     @Override
-    public IResult<Void> deleteRepresentationMetadata(ICause cause, UUID semanticDataId) {
-        var allRepresentationMetadata = this.representationMetadataRepository.findAllRepresentationMetadataBySemanticDataId(semanticDataId);
+    public IResult<Void> deleteAllRepresentationMetadata(ICause cause, AggregateReference<SemanticData, UUID> semanticData) {
+        var allRepresentationMetadata = this.representationMetadataRepository.findAllRepresentationMetadataBySemanticDataId(semanticData.getId());
         allRepresentationMetadata.forEach(representationMetadata -> representationMetadata.dispose(cause));
         this.representationMetadataRepository.deleteAll(allRepresentationMetadata);
 

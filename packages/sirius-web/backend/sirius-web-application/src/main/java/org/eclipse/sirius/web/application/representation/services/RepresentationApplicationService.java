@@ -67,18 +67,28 @@ public class RepresentationApplicationService implements IRepresentationApplicat
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<RepresentationMetadataDTO> findRepresentationMetadataById(String representationMetadataId) {
-        var result = new UUIDParser().parse(representationMetadataId)
-                .flatMap(this.representationMetadataSearchService::findMetadataById)
-                .map(this.representationMetadataMapper::toDTO);
-        if (result.isEmpty()) {
+    public Optional<RepresentationMetadataDTO> findRepresentationMetadataById(String editingContextId, String representationMetadataId) {
+        Optional<RepresentationMetadataDTO> optionalRepresentationMetadataDTO = Optional.empty();
+
+        var optionalSemanticData = new UUIDParser().parse(editingContextId)
+                .map(AggregateReference::<SemanticData, UUID>to);
+        var optionalRepresentationMetadataId = new UUIDParser().parse(representationMetadataId);
+        if (optionalSemanticData.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+            var semanticData = optionalSemanticData.get();
+            var id = optionalRepresentationMetadataId.get();
+
+            optionalRepresentationMetadataDTO = this.representationMetadataSearchService.findMetadataById(semanticData, id)
+                    .map(this.representationMetadataMapper::toDTO);
+        }
+
+        if (optionalRepresentationMetadataDTO.isEmpty()) {
             // If not found through IRepresentationMetadataSearchService, then ask the IRepresentationMetadataProvider
-            result = this.representationMetadataProviders.stream()
-                .flatMap(provider -> provider.getMetadata(representationMetadataId).stream())
+            optionalRepresentationMetadataDTO = this.representationMetadataProviders.stream()
+                .flatMap(provider -> provider.getMetadata(editingContextId, representationMetadataId).stream())
                 .map(this::toDTO)
                 .findFirst();
         }
-        return result;
+        return optionalRepresentationMetadataDTO;
     }
 
     private RepresentationMetadataDTO toDTO(RepresentationMetadata representationMetadata) {

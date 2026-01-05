@@ -38,6 +38,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -91,7 +92,7 @@ public class DuplicateRepresentationEventHandler implements IEditingContextEvent
         IPayload payload = new ErrorPayload(input.id(), messages);
 
         if (input instanceof DuplicateRepresentationInput duplicateRepresentationInput) {
-            var optionalRepresentationMetadata = this.duplicateRepresentation(duplicateRepresentationInput.representationId(), duplicateRepresentationInput);
+            var optionalRepresentationMetadata = this.duplicateRepresentation(editingContext, duplicateRepresentationInput.representationId(), duplicateRepresentationInput);
             if (optionalRepresentationMetadata.isPresent()) {
                 var duplicatedRepresentationMetadata = optionalRepresentationMetadata.get();
                 payload = new DuplicateRepresentationSuccessPayload(input.id(), duplicatedRepresentationMetadata, List.of());
@@ -105,9 +106,18 @@ public class DuplicateRepresentationEventHandler implements IEditingContextEvent
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
 
-    private Optional<org.eclipse.sirius.components.core.RepresentationMetadata> duplicateRepresentation(String representationId, DuplicateRepresentationInput duplicateRepresentationInput) {
-        var optionalRepresentationMetadata = new UUIDParser().parse(representationId)
-                .flatMap(this.representationMetadataSearchService::findMetadataById);
+    private Optional<org.eclipse.sirius.components.core.RepresentationMetadata> duplicateRepresentation(IEditingContext editingContext, String representationId, DuplicateRepresentationInput duplicateRepresentationInput) {
+        Optional<RepresentationMetadata> optionalRepresentationMetadata = Optional.empty();
+
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        var optionalRepresentationMetadataId = new UUIDParser().parse(representationId);
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var representationMetadataId = optionalRepresentationMetadataId.get();
+
+            optionalRepresentationMetadata = this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), representationMetadataId);
+        }
+
         var optionalRepresentationContent = optionalRepresentationMetadata.map(RepresentationMetadata::getId)
                 .flatMap(this.representationContentSearchService::findContentById);
 

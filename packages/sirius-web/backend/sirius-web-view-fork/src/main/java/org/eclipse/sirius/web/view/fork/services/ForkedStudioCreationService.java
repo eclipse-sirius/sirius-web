@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST and others.
+ * Copyright (c) 2024, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import static org.eclipse.sirius.web.application.studio.services.StudioProjectTe
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -26,6 +25,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.dto.NatureDTO;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
@@ -36,6 +36,7 @@ import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
 import org.eclipse.sirius.web.view.fork.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.view.fork.services.api.IForkedStudioCreationService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,18 +68,21 @@ public class ForkedStudioCreationService implements IForkedStudioCreationService
     public IPayload create(IInput input, IEditingContext editingContext) {
         IPayload payload = new ErrorPayload(input.id(), this.messageService.invalidInput(CreateForkedStudioInput.class.getSimpleName(), input.getClass().getSimpleName()));
 
-        if (input instanceof CreateForkedStudioInput representationInput && getRepresentationId(representationInput.representationId()).isPresent()) {
-            var representationMetadata = this.getRepresentationId(representationInput.representationId())
-                    .map(UUID::fromString)
-                    .flatMap(this.representationMetadataSearchService::findMetadataById);
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        if (optionalSemanticDataId.isPresent() && input instanceof CreateForkedStudioInput representationInput && this.getRepresentationId(representationInput.representationId()).isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var optionalRepresentationMetadataId = this.getRepresentationId(representationInput.representationId())
+                    .flatMap(new UUIDParser()::parse);
+            var optionalRepresentationMetadata = optionalRepresentationMetadataId
+                    .flatMap(representationMetadataId -> this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), representationMetadataId));
 
-            if (representationMetadata.isPresent()) {
-                var representationDescriptionId = representationMetadata.get().getDescriptionId();
+            if (optionalRepresentationMetadata.isPresent()) {
+                var representationDescriptionId = optionalRepresentationMetadata.get().getDescriptionId();
                 var sourceElementId = getSourceElementId(representationDescriptionId);
                 var sourceId = getSourceId(representationDescriptionId);
 
                 if (sourceElementId.isPresent() && sourceId.isPresent()) {
-                    var currentName = representationMetadata.get().getLabel();
+                    var currentName = optionalRepresentationMetadata.get().getLabel();
                     var newName = "Forked " + currentName;
                     var optionalForkedProject = this.createStudioProject(representationInput, newName);
 

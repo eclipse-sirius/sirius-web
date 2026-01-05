@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -31,6 +30,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -60,11 +60,18 @@ public class RepresentationSearchService implements IRepresentationSearchService
 
     @Override
     public <T extends IRepresentation> Optional<T> findById(IEditingContext editingContext, String representationId, Class<T> representationClass) {
-        return new UUIDParser().parse(representationId)
-                .flatMap(this.representationMetadataSearchService::findMetadataById)
-                .flatMap(representationMetadata -> this.getRepresentation(editingContext, representationMetadata))
-                .filter(representationClass::isInstance)
-                .map(representationClass::cast);
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        var optionalRepresentationMetadataId = new UUIDParser().parse(representationId);
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var representationMetadataId = optionalRepresentationMetadataId.get();
+
+            return this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), representationMetadataId)
+                    .flatMap(representationMetadata -> this.getRepresentation(editingContext, representationMetadata))
+                    .filter(representationClass::isInstance)
+                    .map(representationClass::cast);
+        }
+        return Optional.empty();
     }
 
     private Optional<IRepresentation> getRepresentation(IEditingContext editingContext, RepresentationMetadata representationMetadata) {
@@ -74,9 +81,16 @@ public class RepresentationSearchService implements IRepresentationSearchService
     }
 
     @Override
-    public boolean existByIdAndKind(String representationId, List<String> kinds) {
-        Optional<UUID> uuid = new UUIDParser().parse(representationId);
-        return uuid.filter(value -> this.representationMetadataSearchService.existsByIdAndKind(value, kinds)).isPresent();
+    public boolean existByIdAndKind(IEditingContext editingContext, String representationId, List<String> kinds) {
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        var optionalRepresentationMetadataId = new UUIDParser().parse(representationId);
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var representationMetadataId = optionalRepresentationMetadataId.get();
+
+            return this.representationMetadataSearchService.existsByIdAndKind(AggregateReference.to(semanticDataId), representationMetadataId, kinds);
+        }
+        return false;
     }
 
     private Optional<IRepresentation> toRepresentation(String content) {

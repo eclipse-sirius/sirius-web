@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
@@ -43,18 +44,23 @@ public class PortalViewRepresentationMetadataDataFetcher implements IDataFetcher
 
     @Override
     public DataFetcherResult<RepresentationMetadata> get(DataFetchingEnvironment environment) throws Exception {
+        Map<String, Object> localContext = environment.getLocalContext();
+        String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID))
+                .map(Object::toString)
+                .orElse(null);
+
         PortalView portalView = environment.getSource();
         var optionalRepresentationMetadata = this.representationMetadataProviders.stream()
-                .flatMap(provider -> provider.getMetadata(portalView.getRepresentationId()).stream())
+                .flatMap(provider -> provider.getMetadata(editingContextId, portalView.getRepresentationId()).stream())
                 .findFirst();
 
         return optionalRepresentationMetadata.map(representationMetadata -> {
-            Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
-            localContext.put(LocalContextConstants.REPRESENTATION_ID, representationMetadata.id());
+            Map<String, Object> newLocalContext = new HashMap<>(environment.getLocalContext());
+            newLocalContext.put(LocalContextConstants.REPRESENTATION_ID, representationMetadata.id());
 
             return DataFetcherResult.<RepresentationMetadata>newResult()
                     .data(representationMetadata)
-                    .localContext(localContext)
+                    .localContext(newLocalContext)
                     .build();
         }).orElse(null);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 public class ValidationMetadataProvider implements IRepresentationMetadataProvider {
 
     @Override
-    public Optional<RepresentationMetadata> getMetadata(String representationId) {
+    public Optional<RepresentationMetadata> getMetadata(String editingContextId, String representationId) {
         if (Objects.equals(representationId, Validation.PREFIX)) {
             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
                     .kind(Validation.KIND)

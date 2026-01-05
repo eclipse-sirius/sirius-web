@@ -47,7 +47,6 @@ import org.eclipse.sirius.components.forms.description.ListDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.portals.Portal;
-import org.eclipse.sirius.components.portals.PortalView;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -289,11 +288,14 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
     }
 
     private IStatus deleteRepresentation(String editingContextId, String representationId) {
+        var optionalSemanticDataId = new UUIDParser().parse(editingContextId);
         var optionalRepresentationUUID = new UUIDParser().parse(representationId);
         var input = new DeleteRepresentationInput(UUID.randomUUID(), editingContextId, representationId);
-        if (optionalRepresentationUUID.isPresent()) {
+
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationUUID.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
             var representationUUID = optionalRepresentationUUID.get();
-            var result = this.representationMetadataDeletionService.delete(input, representationUUID);
+            var result = this.representationMetadataDeletionService.delete(input, AggregateReference.to(semanticDataId), representationUUID);
             if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
                 Map<String, Object> parameters = new HashMap<>();
                 parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, representationId);
@@ -315,7 +317,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
                 if (object instanceof RepresentationMetadata representationMetadata && Portal.KIND.equals(representationMetadata.getKind())) {
                     var optionalPortal = this.representationSearchService.findById(editingContext, representationMetadata.getId().toString(), Portal.class);
                     if (optionalPortal.isPresent()) {
-                        items = this.getPortalChildren(optionalPortal.get());
+                        items = this.getPortalChildren(editingContext, optionalPortal.get());
                     }
                 } else if (id != null) {
                     var optionalSemanticDataId = optionalEditingContext
@@ -330,12 +332,20 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
         return items;
     }
 
-    private List<RepresentationMetadata> getPortalChildren(Portal portal) {
-        return portal.getViews().stream()
-                .map(PortalView::getRepresentationId)
-                .flatMap(representationId -> new UUIDParser().parse(representationId).stream())
-                .flatMap(representationId -> this.representationMetadataSearchService.findMetadataById(representationId).stream())
-                .toList();
+    private List<RepresentationMetadata> getPortalChildren(IEditingContext editingContext, Portal portal) {
+        List<RepresentationMetadata> viewRepresentationMetadata = new ArrayList<>();
+
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        if (optionalSemanticDataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            for (var view: portal.getViews()) {
+                new UUIDParser().parse(view.getRepresentationId())
+                        .flatMap(representationMetadataId -> this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), representationMetadataId))
+                        .ifPresent(viewRepresentationMetadata::add);
+            }
+        }
+
+        return viewRepresentationMetadata;
     }
 
     private String getNodeId(VariableManager variableManager) {

@@ -15,7 +15,9 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.service
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.services.IResult;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
  * Used to delete representation metadata.
@@ -24,7 +26,7 @@ import org.eclipse.sirius.web.domain.services.IResult;
  */
 public interface IRepresentationMetadataDeletionService {
 
-    IResult<Void> delete(ICause cause, UUID representationMetadataId);
+    IResult<Void> delete(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId);
 
-    IResult<Void> deleteRepresentationMetadata(ICause cause, UUID semanticDataId);
+    IResult<Void> deleteAllRepresentationMetadata(ICause cause, AggregateReference<SemanticData, UUID> semanticData);
 }
