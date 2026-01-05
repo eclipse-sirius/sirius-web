@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -92,7 +93,7 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
                     .orElse(List.of());
 
             for (var representationMetadata : allRepresentationMetadata) {
-                var optionalRepresentationContentNode = this.representationContentSearchService.findContentById(representationMetadata.getId())
+                var optionalRepresentationContentNode = this.representationContentSearchService.findContentById(AggregateReference.to(UUID.fromString(editingContext.getId())), AggregateReference.to(representationMetadata.getId()))
                         .flatMap(representationContent -> this.representationContentMigrationService.getMigratedContent(editingContext, representationMetadata, representationContent));
 
                 if (optionalRepresentationContentNode.isPresent()) {

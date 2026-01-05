@@ -41,12 +41,14 @@ import org.eclipse.sirius.components.graphql.tests.RenameRepresentationMutationR
 import org.eclipse.sirius.components.portals.tests.graphql.PortalEventSubscriptionRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.TestIdentifiers;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.services.TestRepresentationDescription;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -140,8 +142,11 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
                 .hasSize(2)
                 .satisfiesExactlyInAnyOrder(event -> assertThat(event).isInstanceOf(RepresentationMetadataCreatedEvent.class), event -> assertThat(event).isInstanceOf(RepresentationContentCreatedEvent.class));
         var representationUUID = UUID.fromString(representationId);
-        assertThat(this.representationMetadataSearchService.existsBySemanticDataAndRepresentationMetadataId(AggregateReference.to(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID)), representationUUID)).isTrue();
-        assertThat(this.representationContentSearchService.findContentById(representationUUID)).isPresent();
+
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID));
+        var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(representationUUID);
+        assertThat(this.representationMetadataSearchService.existsBySemanticDataAndRepresentationMetadataId(semanticData, representationMetadata.getId())).isTrue();
+        assertThat(this.representationContentSearchService.findContentById(semanticData, representationMetadata)).isPresent();
     }
 
     @Test

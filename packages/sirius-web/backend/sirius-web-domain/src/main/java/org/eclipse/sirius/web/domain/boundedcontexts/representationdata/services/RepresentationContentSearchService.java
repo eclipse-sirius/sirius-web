@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,8 +18,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -37,12 +40,12 @@ public class RepresentationContentSearchService implements IRepresentationConten
     }
 
     @Override
-    public Optional<RepresentationContent> findContentById(UUID representationId) {
-        return this.representationContentRepository.findById(representationId);
+    public Optional<RepresentationContent> findContentById(AggregateReference<SemanticData, UUID> semanticData, AggregateReference<RepresentationMetadata, UUID> representationMetadata) {
+        return this.representationContentRepository.findById(representationMetadata.getId());
     }
 
     @Override
-    public boolean existsById(UUID representationId) {
-        return this.representationContentRepository.existsById(representationId);
+    public boolean existsById(AggregateReference<SemanticData, UUID> semanticData, AggregateReference<RepresentationMetadata, UUID> representationMetadata) {
+        return this.representationContentRepository.existsById(representationMetadata.getId());
     }
 }

@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -75,7 +76,7 @@ public class RepresentationSearchService implements IRepresentationSearchService
     }
 
     private Optional<IRepresentation> getRepresentation(IEditingContext editingContext, RepresentationMetadata representationMetadata) {
-        return this.representationContentSearchService.findContentById(representationMetadata.getId())
+        return this.representationContentSearchService.findContentById(AggregateReference.to(UUID.fromString(editingContext.getId())), AggregateReference.to(representationMetadata.getId()))
                 .map(representationContent -> this.migratedContent(editingContext, representationMetadata, representationContent))
                 .flatMap(this::toRepresentation);
     }

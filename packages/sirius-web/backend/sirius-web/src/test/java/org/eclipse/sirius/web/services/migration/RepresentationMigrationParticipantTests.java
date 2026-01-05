@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.Option;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
@@ -27,7 +28,9 @@ import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.MigrationIdentifiers;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,6 +38,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,7 +68,10 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     @GivenSiriusWebServer
     @DisplayName("Given a project with an old hierarchy representation, when the representation is loaded, then its child nodes are migrated correctly")
     public void givenProjectWithAnOldHierarchyRepresentationWhenTheRepresentationIsLoadedThenItsChildNodesAreMigratedCorrectly() {
-        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(MigrationIdentifiers.MIGRATION_STUDIO_EDITING_CONTEXT_ID));
+        var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
+
+        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(representationContentBeforeMigration).isPresent();
 
         // Returns output path to access to attribute value instead of returning the value
@@ -86,7 +93,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         TestTransaction.end();
         TestTransaction.start();
 
-        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(optionalUpdatedRepresentationContent).isPresent();
 
         var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
@@ -102,7 +109,10 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     @GivenSiriusWebServer
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the position of diagram, nodes and edges have been removed, but not from layout data")
     public void testRemovePositionFromDiagramPresentOnDiagramAndNodesAndEdges() {
-        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(MigrationIdentifiers.MIGRATION_STUDIO_EDITING_CONTEXT_ID));
+        var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+
+        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(representationContentBeforeMigration).isPresent();
 
         // Returns output path to access to attribute value instead of returning the value and prevent exception to be thrown when the path does not match.
@@ -131,7 +141,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         TestTransaction.end();
         TestTransaction.start();
 
-        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(optionalUpdatedRepresentationContent).isPresent();
 
         var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
@@ -154,7 +164,10 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     @GivenSiriusWebServer
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the size and size of diagram, nodes and edges have been removed, but not from layout data")
     public void testRemoveSizeFromDiagramPresentOnDiagramAndNodesAndEdges() {
-        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(MigrationIdentifiers.MIGRATION_STUDIO_EDITING_CONTEXT_ID));
+        var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+
+        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(representationContentBeforeMigration).isPresent();
 
         // Returns output path to access to attribute value instead of returning the value and prevent exception to be thrown when the path does not match.
@@ -183,7 +196,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         TestTransaction.end();
         TestTransaction.start();
 
-        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(optionalUpdatedRepresentationContent).isPresent();
 
         var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
@@ -207,7 +220,10 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     @ValueSource(strings = { "alignment", "routingPoints", "sourceAnchorRelativePosition", "targetAnchorRelativePosition", "userResizable", "customizedProperties" })
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the position and size of diagram and nodes have been removed, but not from layout data")
     public void testRemoveAttributeFromDiagramContent(String attribute) {
-        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(MigrationIdentifiers.MIGRATION_STUDIO_EDITING_CONTEXT_ID));
+        var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+
+        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(representationContentBeforeMigration).isPresent();
 
         // Returns output path to access to attribute value instead of returning the value and prevent exception to be thrown when the path does not match.
@@ -227,7 +243,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         TestTransaction.end();
         TestTransaction.start();
 
-        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(optionalUpdatedRepresentationContent).isPresent();
 
         var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
@@ -240,7 +256,10 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     @GivenSiriusWebServer
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the size of label is added to the layout data")
     public void testLabelLayoutDataSizeMigration() {
-        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(MigrationIdentifiers.MIGRATION_STUDIO_EDITING_CONTEXT_ID));
+        var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+
+        var representationContentBeforeMigration = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(representationContentBeforeMigration).isPresent();
 
         // Returns output path to access to attribute value instead of returning the value and prevent exception to be thrown when the path does not match.
@@ -257,7 +276,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
         TestTransaction.end();
         TestTransaction.start();
 
-        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(optionalUpdatedRepresentationContent).isPresent();
 
         var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();

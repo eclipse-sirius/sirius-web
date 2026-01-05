@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,13 +15,17 @@ package org.eclipse.sirius.web.view.fork.listeners;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
 import org.eclipse.sirius.web.view.fork.dto.ForkSemanticDataUpdatedEvent;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,14 +65,21 @@ public class ForkedStudioRepresentationMetadataUpdater {
                     .replace(previousSourceId, newSourceId)
                     .replace(previousSourceElementId, newSourceElementId);
 
-            var representationContent = this.representationContentSearchService.findContentById(UUID.fromString(representationId));
-            if (representationContent.isPresent()) {
-                //  Update the descriptionId of the current representation
-                var newContent = representationContent.get().getContent()
-                        .replace(previousDescriptionId, newDescriptionId)
-                        .replace(previousSourceId, newSourceId);
+            var optionalRepresentationMetadataId = new UUIDParser().parse(representationId);
+            if (optionalRepresentationMetadataId.isPresent()) {
+                var representationMetadataId = optionalRepresentationMetadataId.get();
 
-                this.representationContentUpdateService.updateContentByRepresentationId(representationMetadataUpdatedEvent, UUID.fromString(representationId), newContent);
+                var semanticData = AggregateReference.<SemanticData, UUID> to(semanticDataUpdatedEvent.semanticData().getId());
+                var representationMetadata = AggregateReference.<RepresentationMetadata, UUID> to(representationMetadataId);
+                var representationContent = this.representationContentSearchService.findContentById(semanticData, AggregateReference.to(representationMetadata.getId()));
+                if (representationContent.isPresent()) {
+                    //  Update the descriptionId of the current representation
+                    var newContent = representationContent.get().getContent()
+                            .replace(previousDescriptionId, newDescriptionId)
+                            .replace(previousSourceId, newSourceId);
+
+                    this.representationContentUpdateService.updateContentByRepresentationId(representationMetadataUpdatedEvent, semanticData, representationMetadata, newContent);
+                }
             }
         }
     }
