@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,12 +29,14 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.data.MigrationIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,19 +72,23 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
         var optionalEditingContext = this.editingContextSearchService.findById(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_LABEL_EXPRESSION_STUDIO.toString());
         assertThat(optionalEditingContext).isPresent();
 
-        var optionalRepresentation = this.representationSearchService.findById(optionalEditingContext.get(), MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY.toString(), Hierarchy.class);
+        var editingContext = optionalEditingContext.get();
+
+        var optionalRepresentation = this.representationSearchService.findById(editingContext, MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY.toString(), Hierarchy.class);
         assertThat(optionalRepresentation).isPresent();
 
         Hierarchy hierarchy = optionalRepresentation.get();
         assertThat(hierarchy.getChildNodes()).hasSize(1);
 
-        this.representationPersistenceService.save(null, optionalEditingContext.get(), optionalRepresentation.get());
+        this.representationPersistenceService.save(null, editingContext, optionalRepresentation.get());
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
 
-        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(editingContext.getId()));
+        var representationMetadata = AggregateReference.<org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY);
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(optionalUpdatedRepresentationContent).isPresent();
 
         var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
@@ -99,7 +105,9 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
         var optionalEditingContext = this.editingContextSearchService.findById(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_LABEL_EXPRESSION_STUDIO.toString());
         assertThat(optionalEditingContext).isPresent();
 
-        var optionalRepresentation = this.representationSearchService.findById(optionalEditingContext.get(), MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY.toString(), Hierarchy.class);
+        var editingContext = optionalEditingContext.get();
+
+        var optionalRepresentation = this.representationSearchService.findById(editingContext, MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM_HIERARCHY.toString(), Hierarchy.class);
         assertThat(optionalRepresentation).isPresent();
         var representation = optionalRepresentation.get();
         var newHierarchy = new Hierarchy(UUID.randomUUID().toString(), representation.getDescriptionId(), representation.getTargetObjectId(), representation.getKind(), representation.getChildNodes());
@@ -111,14 +119,16 @@ public class MigrationParticipantOrderTests extends AbstractIntegrationTests {
                 .iconURLs(List.of())
                 .build();
 
-        this.representationMetadataPersistenceService.save(null, optionalEditingContext.get(), representationMetadata, newHierarchy.getTargetObjectId());
-        this.representationPersistenceService.save(null, optionalEditingContext.get(), newHierarchy);
+        this.representationMetadataPersistenceService.save(null, editingContext, representationMetadata, newHierarchy.getTargetObjectId());
+        this.representationPersistenceService.save(null, editingContext, newHierarchy);
 
         TestTransaction.flagForCommit();
         TestTransaction.end();
         TestTransaction.start();
 
-        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(UUID.fromString(newHierarchy.getId()));
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(editingContext.getId()));
+
+        var optionalUpdatedRepresentationContent = this.representationContentSearchService.findContentById(semanticData, AggregateReference.to(UUID.fromString(newHierarchy.getId())));
         assertThat(optionalUpdatedRepresentationContent).isPresent();
         var updatedRepresentationContent = optionalUpdatedRepresentationContent.get();
 

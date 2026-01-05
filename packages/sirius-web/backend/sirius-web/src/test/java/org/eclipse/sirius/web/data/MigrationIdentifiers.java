@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,8 @@ public final class MigrationIdentifiers {
     public static final String MIGRATION_NODE_STYLE_DESCRIPTION_COLOR_STUDIO_DIAGRAM = "NodeStyleDescription#color migration";
 
     public static final String MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO_DIAGRAM = "NodeDescription#userResizable migration";
+
+    public static final String MIGRATION_STUDIO_EDITING_CONTEXT_ID = "89d67892-0cc9-4ca4-b30e-28688470c0d4";
 
     public static final UUID MIGRATION_STUDIO_DIAGRAM_HIERARCHY = UUID.fromString("35f1cd7b-e5bb-443d-95ef-bab372a92b0f");
 

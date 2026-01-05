@@ -16,7 +16,10 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.services.IResult;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**
  * Used to create new representation content.
@@ -24,5 +27,5 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author gcoutable
  */
 public interface IRepresentationContentCreationService {
-    IResult<RepresentationContent> create(ICause cause, UUID representationId, UUID semanticDataId, String content, String lastMigrationPerformed, String migrationVersion);
+    IResult<RepresentationContent> create(ICause cause, AggregateReference<SemanticData, UUID> semanticData, AggregateReference<RepresentationMetadata, UUID> representationMetadata, String content, String lastMigrationPerformed, String migrationVersion);
 }

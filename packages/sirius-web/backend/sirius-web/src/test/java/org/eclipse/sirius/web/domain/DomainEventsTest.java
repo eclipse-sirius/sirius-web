@@ -27,6 +27,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectNameU
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationContentUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
@@ -227,7 +228,11 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @DisplayName("Given a representations, updating its content with a different value produces a domain event")
     public void givenRepresentationWhenContentModifiedDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        var optionalRepresentationContent = this.representationContentSearchService.findContentById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID));
+        var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+
+        var optionalRepresentationContent = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(optionalRepresentationContent).isPresent();
 
         var representationContent = optionalRepresentationContent.get();
@@ -235,7 +240,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var originalContent = representationContent.getContent();
         var newContent = originalContent + "modified";
 
-        this.representationContentUpdateService.updateContentByRepresentationId(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
+        this.representationContentUpdateService.updateContentByRepresentationId(null, semanticData, representationMetadata, newContent);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -249,13 +254,17 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     @DisplayName("Given a representations, updating its content with the same value does not produce a domain event")
     public void givenRepresentationWhenContentNotModifiedNoDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-        var optionalRepresentationContent = this.representationContentSearchService.findContentById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+
+        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID));
+        var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+
+        var optionalRepresentationContent = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
         assertThat(optionalRepresentationContent).isPresent();
 
         var representationContent = optionalRepresentationContent.get();
 
         var newContent = representationContent.getContent();
-        this.representationContentUpdateService.updateContentByRepresentationId(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newContent);
+        this.representationContentUpdateService.updateContentByRepresentationId(null, semanticData, representationMetadata, newContent);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 

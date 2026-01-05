@@ -31,6 +31,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.dto.DuplicateObjectInput;
 import org.eclipse.sirius.web.application.views.explorer.dto.DuplicateRepresentationInput;
 import org.eclipse.sirius.web.application.views.explorer.dto.DuplicateRepresentationSuccessPayload;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentCreationService;
@@ -108,6 +109,7 @@ public class DuplicateRepresentationEventHandler implements IEditingContextEvent
 
     private Optional<org.eclipse.sirius.components.core.RepresentationMetadata> duplicateRepresentation(IEditingContext editingContext, String representationId, DuplicateRepresentationInput duplicateRepresentationInput) {
         Optional<RepresentationMetadata> optionalRepresentationMetadata = Optional.empty();
+        Optional<RepresentationContent> optionalRepresentationContent = Optional.empty();
 
         var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
         var optionalRepresentationMetadataId = new UUIDParser().parse(representationId);
@@ -116,10 +118,9 @@ public class DuplicateRepresentationEventHandler implements IEditingContextEvent
             var representationMetadataId = optionalRepresentationMetadataId.get();
 
             optionalRepresentationMetadata = this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), representationMetadataId);
+            optionalRepresentationContent = this.representationContentSearchService.findContentById(AggregateReference.to(semanticDataId), AggregateReference.to(representationMetadataId));
         }
 
-        var optionalRepresentationContent = optionalRepresentationMetadata.map(RepresentationMetadata::getId)
-                .flatMap(this.representationContentSearchService::findContentById);
 
         if (optionalRepresentationMetadata.isPresent() && optionalRepresentationContent.isPresent()) {
             var representationMetadataToDuplicate = optionalRepresentationMetadata.get();
@@ -138,7 +139,14 @@ public class DuplicateRepresentationEventHandler implements IEditingContextEvent
             this.representationMetadataCreationService.create(duplicatedRepresentationMetadata);
 
             var duplicatedContent = representationContentToDuplicate.getContent().replace(representationId, duplicatedRepresentationId.toString());
-            this.representationContentCreationService.create(duplicateRepresentationInput, duplicatedRepresentationId, representationMetadataToDuplicate.getSemanticData().getId(), duplicatedContent, representationContentToDuplicate.getLastMigrationPerformed(), representationContentToDuplicate.getMigrationVersion());
+            this.representationContentCreationService.create(
+                    duplicateRepresentationInput,
+                    representationMetadataToDuplicate.getSemanticData(),
+                    AggregateReference.to(duplicatedRepresentationId),
+                    duplicatedContent,
+                    representationContentToDuplicate.getLastMigrationPerformed(),
+                    representationContentToDuplicate.getMigrationVersion()
+            );
 
             var iconURLs = duplicatedRepresentationMetadata.getIconURLs().stream()
                     .map(RepresentationIconURL::url)

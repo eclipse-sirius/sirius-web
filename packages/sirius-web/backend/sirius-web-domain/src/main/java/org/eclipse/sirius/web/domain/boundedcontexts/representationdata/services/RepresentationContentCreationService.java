@@ -17,8 +17,10 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentCreationService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -39,10 +41,10 @@ public class RepresentationContentCreationService implements IRepresentationCont
     }
 
     @Override
-    public IResult<RepresentationContent> create(ICause cause, UUID representationId, UUID semanticDataId, String content, String lastMigrationPerformed, String migrationVersion) {
-        var representationContent = RepresentationContent.newRepresentationContent(representationId)
-                .representationMetadata(AggregateReference.to(representationId))
-                .semanticData(AggregateReference.to(semanticDataId))
+    public IResult<RepresentationContent> create(ICause cause, AggregateReference<SemanticData, UUID> semanticData, AggregateReference<RepresentationMetadata, UUID> representationMetadata, String content, String lastMigrationPerformed, String migrationVersion) {
+        var representationContent = RepresentationContent.newRepresentationContent(representationMetadata.getId())
+                .representationMetadata(representationMetadata)
+                .semanticData(semanticData)
                 .content(content)
                 .lastMigrationPerformed(lastMigrationPerformed)
                 .migrationVersion(migrationVersion)

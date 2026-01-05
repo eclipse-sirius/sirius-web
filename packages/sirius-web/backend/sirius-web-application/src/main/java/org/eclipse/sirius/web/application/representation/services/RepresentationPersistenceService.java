@@ -32,6 +32,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,14 +77,14 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
             String content = this.toString(representation);
 
-            var exists = this.representationContentSearchService.existsById(representationId);
+            var exists = this.representationContentSearchService.existsById(AggregateReference.to(semanticDataId), AggregateReference.to(representationId));
 
             if (exists) {
                 var migrationData = this.getLastMigrationData(representation.getKind());
-                this.representationContentUpdateService.updateContentByRepresentationIdWithMigrationData(cause, representationId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
+                this.representationContentUpdateService.updateContentByRepresentationIdWithMigrationData(cause, AggregateReference.to(semanticDataId), AggregateReference.to(representationId), content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
             } else {
                 var migrationData = this.getInitialMigrationData(representation.getKind());
-                this.representationContentCreationService.create(cause, representationId, semanticDataId, content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
+                this.representationContentCreationService.create(cause, AggregateReference.to(semanticDataId), AggregateReference.to(representationId), content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
             }
         }
     }
