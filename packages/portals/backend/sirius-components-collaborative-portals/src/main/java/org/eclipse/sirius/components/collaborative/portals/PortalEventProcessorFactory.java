@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,7 @@ public class PortalEventProcessorFactory implements IRepresentationEventProcesso
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String representationId) {
-        return this.representationSearchService.existByIdAndKind(representationId , List.of(Portal.KIND));
+        return this.representationSearchService.existByIdAndKind(editingContext, representationId , List.of(Portal.KIND));
     }
 
     @Override

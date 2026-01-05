@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,7 @@ public class GetRepresentationDescriptionEventHandler implements IEditingContext
     public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
         if (input instanceof GetRepresentationDescriptionInput getRepresentationDescriptionInput) {
             IRepresentationDescription representationDescription = this.representationMetadataProviders.stream()
-                    .flatMap(provider -> provider.getMetadata(getRepresentationDescriptionInput.representationId()).stream())
+                    .flatMap(provider -> provider.getMetadata(editingContext.getId(), getRepresentationDescriptionInput.representationId()).stream())
                     .findFirst()
                     .map(RepresentationMetadata::descriptionId)
                     .flatMap(representationDescriptionId -> this.representationDescriptionSearchService.findById(editingContext, representationDescriptionId))

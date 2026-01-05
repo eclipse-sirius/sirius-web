@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -144,9 +145,16 @@ public class ExplorerServices implements IExplorerServices {
         Object result = null;
 
         if (self instanceof RepresentationMetadata && treeItemId != null && editingContext != null) {
-            var optionalRepresentationMetadata = new UUIDParser().parse(treeItemId).flatMap(this.representationMetadataSearchService::findMetadataById);
-            var targetObjectId = optionalRepresentationMetadata.map(RepresentationMetadata::getTargetObjectId).orElse(null);
-            result = this.objectSearchService.getObject(editingContext, targetObjectId).orElse(null);
+            var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+            var optionalRepresentationMetadataId = new UUIDParser().parse(treeItemId);
+            if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+                var semanticDataId = optionalSemanticDataId.get();
+                var representationMetadataId = optionalRepresentationMetadataId.get();
+                result = this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), representationMetadataId)
+                        .map(RepresentationMetadata::getTargetObjectId)
+                        .flatMap(targetObjectId -> this.objectSearchService.getObject(editingContext, targetObjectId))
+                        .orElse(null);
+            }
         } else if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();
             if (semanticContainer == null) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,7 +61,7 @@ public class FormDescriptionEditorEventProcessorFactory implements IRepresentati
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String representationId) {
-        return this.representationSearchService.existByIdAndKind(representationId, List.of(FormDescriptionEditor.KIND));
+        return this.representationSearchService.existByIdAndKind(editingContext, representationId, List.of(FormDescriptionEditor.KIND));
     }
 
     @Override

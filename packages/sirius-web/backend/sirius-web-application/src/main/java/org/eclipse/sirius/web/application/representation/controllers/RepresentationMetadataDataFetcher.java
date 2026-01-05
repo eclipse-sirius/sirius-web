@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.components.representations.IRepresentation;
 
 import graphql.execution.DataFetcherResult;
@@ -61,17 +63,22 @@ public class RepresentationMetadataDataFetcher implements IDataFetcherWithFieldC
 
     @Override
     public DataFetcherResult<RepresentationMetadata> get(DataFetchingEnvironment environment) throws Exception {
+        Map<String, Object> localContext = environment.getLocalContext();
+        String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID))
+                .map(Object::toString)
+                .orElse(null);
+
         IRepresentation representation = environment.getSource();
         var metadata = this.representationMetadataProviders.stream()
-                .flatMap(provider -> provider.getMetadata(representation.getId()).stream())
+                .flatMap(provider -> provider.getMetadata(editingContextId, representation.getId()).stream())
                 .findFirst()
                 .orElse(null);
 
-        Map<String, Object> localContext = new HashMap<>(environment.getLocalContext());
+        Map<String, Object> newLocalContext = new HashMap<>(environment.getLocalContext());
 
         return DataFetcherResult.<RepresentationMetadata>newResult()
                 .data(metadata)
-                .localContext(localContext)
+                .localContext(newLocalContext)
                 .build();
     }
 }

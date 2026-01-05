@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ public class PortalServicesTests {
         }
 
         @Override
-        public boolean existByIdAndKind(String representationId, List<String> kinds) {
+        public boolean existByIdAndKind(IEditingContext editingContext, String representationId, List<String> kinds) {
             return false;
         }
     };
@@ -142,7 +142,7 @@ public class PortalServicesTests {
             }
 
             @Override
-            public boolean existByIdAndKind(String representationId, List<String> kinds) {
+            public boolean existByIdAndKind(IEditingContext editingContext, String representationId, List<String> kinds) {
                 return true;
             }
         };
@@ -173,7 +173,7 @@ public class PortalServicesTests {
             }
 
             @Override
-            public boolean existByIdAndKind(String representationId, List<String> kinds) {
+            public boolean existByIdAndKind(IEditingContext editingContext, String representationId, List<String> kinds) {
                 return true;
             }
         };

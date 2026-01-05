@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataDeletionService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataDeletedEvent;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,6 @@ public class RepresentationMetadataCleaner {
     @TransactionalEventListener
     public void onSemanticDataDeletedEvent(SemanticDataDeletedEvent event) {
         var semanticDataId = event.semanticData().getId();
-        this.representationMetadataDeletionService.deleteRepresentationMetadata(event, semanticDataId);
+        this.representationMetadataDeletionService.deleteAllRepresentationMetadata(event, AggregateReference.to(semanticDataId));
     }
 }

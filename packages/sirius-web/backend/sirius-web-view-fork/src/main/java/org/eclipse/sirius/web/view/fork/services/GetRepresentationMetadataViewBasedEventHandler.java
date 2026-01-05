@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,8 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
@@ -32,10 +30,15 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.view.fork.dto.GetRepresentationMetadataViewBasedInput;
 import org.eclipse.sirius.web.view.fork.dto.GetRepresentationMetadataViewBasedPayload;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -81,10 +84,13 @@ public class GetRepresentationMetadataViewBasedEventHandler implements IEditingC
         this.counter.increment();
 
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
-        IPayload payload;
-        if (input instanceof GetRepresentationMetadataViewBasedInput getRepresentationMetadataViewBasedInput) {
+        String message = this.messageService.invalidInput(input.getClass().getSimpleName(), GetRepresentationMetadataViewBasedInput.class.getSimpleName());
+        IPayload payload = new ErrorPayload(input.id(), message);
 
-            boolean isViewBased = this.representationMetadataSearchService.findMetadataById(UUID.fromString(getRepresentationMetadataViewBasedInput.representationId()))
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        if (input instanceof GetRepresentationMetadataViewBasedInput getRepresentationMetadataViewBasedInput && optionalSemanticDataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            boolean isViewBased = this.representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), UUID.fromString(getRepresentationMetadataViewBasedInput.representationId()))
                     .map(representationMetadata -> {
                         var sourceId = this.getSourceId(representationMetadata.getDescriptionId());
                         var sourceElementId = this.getSourceElementId(representationMetadata.getDescriptionId());
@@ -98,9 +104,6 @@ public class GetRepresentationMetadataViewBasedEventHandler implements IEditingC
                     })
                     .orElse(false);
             payload = new GetRepresentationMetadataViewBasedPayload(input.id(), isViewBased);
-        } else {
-            String message = this.messageService.invalidInput(input.getClass().getSimpleName(), GetRepresentationMetadataViewBasedInput.class.getSimpleName());
-            payload = new ErrorPayload(input.id(), message);
         }
 
         payloadSink.tryEmitValue(payload);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.controllers;
 
-import graphql.execution.DataFetcherResult;
-import graphql.relay.Connection;
-import graphql.relay.ConnectionCursor;
-import graphql.relay.DefaultConnection;
-import graphql.relay.DefaultConnectionCursor;
-import graphql.relay.DefaultEdge;
-import graphql.relay.Edge;
-import graphql.relay.Relay;
-import graphql.schema.DataFetchingEnvironment;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.core.graphql.dto.RepresentationMetadataDTO;
@@ -33,11 +30,15 @@ import org.eclipse.sirius.web.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.domain.ScrollPosition;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import graphql.execution.DataFetcherResult;
+import graphql.relay.Connection;
+import graphql.relay.ConnectionCursor;
+import graphql.relay.DefaultConnection;
+import graphql.relay.DefaultConnectionCursor;
+import graphql.relay.DefaultEdge;
+import graphql.relay.Edge;
+import graphql.relay.Relay;
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field EditingContext#representations.
@@ -75,7 +76,7 @@ public class EditingContextRepresentationsDataFetcher implements IDataFetcherWit
         List<String> representationIds = environment.getArgument(REPRESENTATION_IDS_ARGUMENT);
         if (representationIds != null) {
             List<RepresentationMetadataDTO> allRepresentationMetadata = representationIds.stream()
-                    .map(this.representationApplicationService::findRepresentationMetadataById)
+                    .map(representationMetadataId -> this.representationApplicationService.findRepresentationMetadataById(editingContextId, representationMetadataId))
                     .flatMap(Optional::stream)
                     .toList();
             connection = this.toConnection(environment, allRepresentationMetadata);

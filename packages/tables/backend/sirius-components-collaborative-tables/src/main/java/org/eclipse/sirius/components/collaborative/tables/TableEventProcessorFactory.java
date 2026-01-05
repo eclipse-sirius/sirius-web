@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -89,7 +89,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String representationId) {
-        return this.representationSearchService.existByIdAndKind(this.getTableIdFromRepresentationId(representationId), List.of(Table.KIND));
+        return this.representationSearchService.existByIdAndKind(editingContext, this.getTableIdFromRepresentationId(representationId), List.of(Table.KIND));
     }
 
     @Override

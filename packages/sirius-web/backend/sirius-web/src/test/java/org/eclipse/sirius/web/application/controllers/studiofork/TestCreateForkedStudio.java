@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST and others.
+ * Copyright (c) 2024, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -138,29 +138,30 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
         };
 
         Runnable doesProjectContainsOldDocument = () -> {
-            //Check if the new project exist with an updated new name
+            // Check if the new project exist with an updated new name
             var project = this.projectSearchService.findById(forkStudioProjectId.get());
             assertThat(project).isPresent();
             assertThat(project.get().getName()).isEqualTo("Forked Table");
 
-            //Check if the representation have been updated to use the new view
-            var representationMetadata = this.representationMetadataSearchService.findMetadataById(UUID.fromString(representationId.get()));
-            assertThat(representationMetadata).isPresent();
-            var newRepresentationId = representationMetadata.get().getDescriptionId();
-            assertThat(newRepresentationId).isNotEqualTo(StudioIdentifiers.TABLE_DESCRIPTION_ID);
-            var sourceId = this.getSourceId(newRepresentationId);
-            var sourceElementId = this.getSourceElementId(newRepresentationId);
-            assertThat(sourceId).isPresent();
-            assertThat(sourceElementId).isPresent();
-
-
-            //Check that the content of the project contains a copy of the view
+            // Check that the content of the project contains a copy of the view
             var optionalProjectSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(forkStudioProjectId.get()));
             assertThat(optionalProjectSemanticData).isPresent();
 
             var projectSemanticData = optionalProjectSemanticData.get();
             var semanticData = this.semanticDataRepository.findById(projectSemanticData.getSemanticData().getId());
             assertThat(semanticData).isPresent();
+
+            // Check if the representation have been updated to use the new view
+            var representationMetadata = this.representationMetadataSearchService.findMetadataById(projectSemanticData.getSemanticData(), UUID.fromString(representationId.get()));
+            assertThat(representationMetadata).isPresent();
+            var newRepresentationId = representationMetadata.get().getDescriptionId();
+            assertThat(newRepresentationId).isNotEqualTo(StudioIdentifiers.TABLE_DESCRIPTION_ID);
+
+            var sourceId = this.getSourceId(newRepresentationId);
+            var sourceElementId = this.getSourceElementId(newRepresentationId);
+            assertThat(sourceId).isPresent();
+            assertThat(sourceElementId).isPresent();
+
             var documents = semanticData.get().getDocuments();
             var forkedDocument = documents.stream().filter(document -> document.getId().equals(UUID.fromString(sourceId.get()))).findFirst();
             assertThat(forkedDocument).isPresent();

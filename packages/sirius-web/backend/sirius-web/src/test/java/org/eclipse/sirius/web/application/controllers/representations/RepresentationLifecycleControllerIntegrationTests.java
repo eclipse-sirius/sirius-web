@@ -57,6 +57,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -139,7 +140,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
                 .hasSize(2)
                 .satisfiesExactlyInAnyOrder(event -> assertThat(event).isInstanceOf(RepresentationMetadataCreatedEvent.class), event -> assertThat(event).isInstanceOf(RepresentationContentCreatedEvent.class));
         var representationUUID = UUID.fromString(representationId);
-        assertThat(this.representationMetadataSearchService.existsById(representationUUID)).isTrue();
+        assertThat(this.representationMetadataSearchService.existsBySemanticDataAndRepresentationMetadataId(AggregateReference.to(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID)), representationUUID)).isTrue();
         assertThat(this.representationContentSearchService.findContentById(representationUUID)).isPresent();
     }
 
@@ -194,7 +195,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
     @GivenSiriusWebServer
     @DisplayName("Given a representation to delete, when the mutation is performed, then the representation has been deleted")
     public void givenRepresentationToDeleteWhenMutationIsPerformedThenTheRepresentationHasBeenDeleted() {
-        assertThat(this.representationMetadataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isTrue();
+        assertThat(this.representationMetadataSearchService.existsBySemanticDataAndRepresentationMetadataId(AggregateReference.to(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID)), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isTrue();
 
         var input = new DeleteRepresentationInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION.toString());
         var result = this.deleteRepresentationMutationRunner.run(input);
@@ -205,7 +206,7 @@ public class RepresentationLifecycleControllerIntegrationTests extends AbstractI
         String typename = JsonPath.read(result.data(), "$.data.deleteRepresentation.__typename");
         assertThat(typename).isEqualTo(DeleteRepresentationSuccessPayload.class.getSimpleName());
 
-        assertThat(this.representationMetadataSearchService.existsById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isFalse();
+        assertThat(this.representationMetadataSearchService.existsBySemanticDataAndRepresentationMetadataId(AggregateReference.to(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID)), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION)).isFalse();
 
         assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
         var event = this.domainEventCollector.getDomainEvents().get(0);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST and others.
+ * Copyright (c) 2024, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,9 +44,11 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -134,13 +136,18 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
                 .orElse("");
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var self = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
-            if (self.isPresent()) {
-                var representationMetadata = self.get();
-                var editingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-                if (editingContext.isPresent()) {
-                    var input = new RenameRepresentationInput(UUID.randomUUID(), editingContext.get().getId(), representationMetadata.getId().toString(), newValue);
-                    var result = this.representationMetadataUpdateService.updateLabel(input, representationMetadata.getId(), newValue);
+            var optionalRepresentationMetadata = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
+            if (optionalRepresentationMetadata.isPresent()) {
+                var representationMetadata = optionalRepresentationMetadata.get();
+                var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+
+                var optionalSemanticDataId = optionalEditingContext.map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
+                if (optionalEditingContext.isPresent() && optionalSemanticDataId.isPresent()) {
+                    var editingContext = optionalEditingContext.get();
+                    var semanticDataId = optionalSemanticDataId.get();
+
+                    var input = new RenameRepresentationInput(UUID.randomUUID(), editingContext.getId(), representationMetadata.getId().toString(), newValue);
+                    var result = this.representationMetadataUpdateService.updateLabel(input, AggregateReference.to(semanticDataId), representationMetadata.getId(), newValue);
                     if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
                         Map<String, Object> parameters = new HashMap<>();
                         parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, representationMetadata.getId().toString());
@@ -171,10 +178,15 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
                 .orElse("");
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var self = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
-            if (self.isPresent()) {
-                var representationMetadata = self.get();
-                return Optional.of(this.representationMetadataUpdateService.updateDocumentation(null, representationMetadata.getId(), newValue))
+            var optionalSemanticDataId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                    .map(IEditingContext::getId)
+                    .flatMap(new UUIDParser()::parse);
+            var optionalRepresentationMetadata = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
+            if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadata.isPresent()) {
+                var semanticDataId = optionalSemanticDataId.get();
+                var representationMetadata = optionalRepresentationMetadata.get();
+
+                return Optional.of(this.representationMetadataUpdateService.updateDocumentation(null, AggregateReference.to(semanticDataId), representationMetadata.getId(), newValue))
                         .filter(org.eclipse.sirius.web.domain.services.Success.class::isInstance)
                         .map(success -> (IStatus) new Success(ChangeKind.REPRESENTATION_METADATA_UPDATE, Map.of()))
                         .orElseGet(() -> new Failure(""));

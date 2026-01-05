@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -186,7 +186,13 @@ public class ProjectWithUnsynchronizedDiagramWithCustomNodeUploadControllerTests
         assertThat(representationMetaDatas).hasSize(1);
         assertThat(representationMetaDatas.get(0)).extracting("label").isEqualTo("Component component diagram");
 
-        var optionalDiagram = this.representationSearchService.findById(new IEditingContext.NoOp(), representationMetaDatas.get(0).getId().toString(), Diagram.class);
+        var editingContext = new IEditingContext() {
+            @Override
+            public String getId() {
+                return semanticDataId.toString();
+            }
+        };
+        var optionalDiagram = this.representationSearchService.findById(editingContext, representationMetaDatas.get(0).getId().toString(), Diagram.class);
         assertThat(optionalDiagram).isPresent();
 
         var diagram = optionalDiagram.get();

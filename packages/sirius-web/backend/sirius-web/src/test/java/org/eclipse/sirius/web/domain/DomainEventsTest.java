@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.Document;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDomain;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
@@ -266,12 +268,14 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     public void givenARepresentationMetadataWhenItsTargetObjectIdIsUpdatedThenADomainEventIsPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
 
-        var optionalMetadata = this.representationMetadataSearchService.findMetadataById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+        var semanticData = AggregateReference.<SemanticData, UUID> to(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID));
+
+        var optionalMetadata = this.representationMetadataSearchService.findMetadataById(semanticData, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
         assertTrue(optionalMetadata.isPresent());
         assertEquals(TestIdentifiers.EPACKAGE_OBJECT.toString(), optionalMetadata.get().getTargetObjectId());
 
         var newTargetObjectId = TestIdentifiers.ECLASS_OBJECT.toString();
-        this.representationMetadataUpdateService.updateTargetObjectId(null, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newTargetObjectId);
+        this.representationMetadataUpdateService.updateTargetObjectId(null, semanticData, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION, newTargetObjectId);
         TestTransaction.flagForCommit();
         TestTransaction.end();
 
@@ -279,7 +283,7 @@ public class DomainEventsTest extends AbstractIntegrationTests {
         var event = this.domainEventCollector.getDomainEvents().get(0);
         assertThat(event instanceof RepresentationMetadataUpdatedEvent representationMetadataUpdatedEvent && newTargetObjectId.equals(representationMetadataUpdatedEvent.representationMetadata().getTargetObjectId())).isTrue();
 
-        optionalMetadata = this.representationMetadataSearchService.findMetadataById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+        optionalMetadata = this.representationMetadataSearchService.findMetadataById(semanticData, TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
         assertTrue(optionalMetadata.isPresent());
         assertEquals(TestIdentifiers.ECLASS_OBJECT.toString(), optionalMetadata.get().getTargetObjectId());
     }

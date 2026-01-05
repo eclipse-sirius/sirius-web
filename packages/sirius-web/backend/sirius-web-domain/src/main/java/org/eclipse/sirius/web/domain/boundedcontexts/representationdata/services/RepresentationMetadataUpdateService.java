@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,12 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -43,7 +45,7 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
     }
 
     @Override
-    public IResult<Void> updateLabel(ICause cause, UUID representationMetadataId, String label) {
+    public IResult<Void> updateLabel(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, String label) {
         IResult<Void> result = new Failure<>(this.messageService.notFound());
 
         var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
@@ -59,7 +61,7 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
     }
 
     @Override
-    public IResult<Void> updateDescriptionId(ICause cause, UUID representationMetadataId, String descriptionId) {
+    public IResult<Void> updateDescriptionId(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, String descriptionId) {
         IResult<Void> result = new Failure<>(this.messageService.notFound());
 
         var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
@@ -75,7 +77,7 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
     }
 
     @Override
-    public IResult<RepresentationMetadata> updateDocumentation(ICause cause, UUID representationMetadataId, String documentation) {
+    public IResult<RepresentationMetadata> updateDocumentation(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, String documentation) {
         IResult<RepresentationMetadata> result = new Failure<>(this.messageService.notFound());
 
         var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
@@ -91,7 +93,7 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
     }
 
     @Override
-    public IResult<Void> updateTargetObjectId(ICause cause, UUID representationMetadataId, String targetObjectId) {
+    public IResult<Void> updateTargetObjectId(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, String targetObjectId) {
         IResult<Void> result = new Failure<>(this.messageService.notFound());
 
         var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);

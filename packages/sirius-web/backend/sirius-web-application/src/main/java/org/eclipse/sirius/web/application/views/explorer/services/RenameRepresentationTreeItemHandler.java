@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
+import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -58,12 +59,14 @@ public class RenameRepresentationTreeItemHandler implements IRenameTreeItemHandl
 
     @Override
     public IStatus handle(IEditingContext editingContext, TreeItem treeItem, String newLabel, Tree tree) {
-        var optionalRepresentationUUID = new UUIDParser().parse(treeItem.getId());
-        if (optionalRepresentationUUID.isPresent()) {
-            var representationUUID = optionalRepresentationUUID.get();
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        var optionalRepresentationMetadataId = new UUIDParser().parse(treeItem.getId());
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var representationMetadataId = optionalRepresentationMetadataId.get();
 
-            var input = new RenameTreeItemInput(UUID.randomUUID(), editingContext.getId(), tree.getId(), representationUUID, newLabel);
-            var result = this.representationMetadataUpdateService.updateLabel(input, representationUUID, newLabel);
+            var input = new RenameTreeItemInput(UUID.randomUUID(), editingContext.getId(), tree.getId(), representationMetadataId, newLabel);
+            var result = this.representationMetadataUpdateService.updateLabel(input, AggregateReference.to(semanticDataId), representationMetadataId, newLabel);
             if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
                 Map<String, Object> parameters = new HashMap<>();
                 parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, treeItem.getId());
