@@ -54,6 +54,7 @@
     <genClasses image="false" ecoreClass="tree.ecore#//TreeItemContextMenuEntry">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemContextMenuEntry/preconditionExpression"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//TreeItemContextMenuEntry/keyBindings"/>
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//SingleClickTreeItemContextMenuEntry">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//SingleClickTreeItemContextMenuEntry/body"/>

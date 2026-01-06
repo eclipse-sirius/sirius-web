@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,6 +65,7 @@ import { HelperLinesContextValue } from './helper-lines/HelperLinesContext.types
 import { useHelperLines } from './helper-lines/useHelperLines';
 import { useEdgeHover } from './hover/useEdgeHover';
 import { useNodeHover } from './hover/useNodeHover';
+import { useDiagramKeyBinding } from './key-binding/useDiagramKeyBinding';
 import { useFilterReadOnlyChanges } from './layout-events/useFilterReadOnlyChanges';
 import { useLayoutOnBoundsChange } from './layout-events/useLayoutOnBoundsChange';
 import { RawDiagram } from './layout/layout.types';
@@ -97,6 +98,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
+  const { onKeyBinding } = useDiagramKeyBinding(diagramRefreshedEventPayload.diagram.targetObjectId);
 
   const ref = useRef<HTMLDivElement | null>(null);
   const { layout } = useLayout();
@@ -378,6 +380,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const onKeyDown = useCallback((event: React.KeyboardEvent<Element>) => {
     onDirectEdit(event);
     onDelete(event);
+    onKeyBinding(event);
   }, []);
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescript
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
+import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -30,6 +31,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewToolImageProvider;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IEdgeToolFactory;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.IKeyBindingFactory;
 import org.eclipse.sirius.components.view.emf.form.converters.MultiValueProvider;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +47,12 @@ public class EdgeToolFactory implements IEdgeToolFactory {
 
     private final IDiagramDescriptionService diagramDescriptionService;
 
-    public EdgeToolFactory(IDiagramIdProvider diagramIdProvider, IDiagramDescriptionService diagramDescriptionService) {
+    private final IKeyBindingFactory keyBindingFactory;
+
+    public EdgeToolFactory(IDiagramIdProvider diagramIdProvider, IDiagramDescriptionService diagramDescriptionService, IKeyBindingFactory keyBindingFactory) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
+        this.keyBindingFactory = Objects.requireNonNull(keyBindingFactory);
     }
 
     @Override
@@ -67,11 +72,16 @@ public class EdgeToolFactory implements IEdgeToolFactory {
                         .toList())
                 .build());
 
+        List<KeyBinding> keyBindings = viewEdgeTool.getKeyBindings().stream()
+                .map(this.keyBindingFactory::createKeyBinding)
+                .toList();
+
         return SingleClickOnTwoDiagramElementsTool.newSingleClickOnTwoDiagramElementsTool(toolId)
                 .label(viewEdgeTool.getName())
                 .iconURL(iconURLs)
                 .candidates(candidates)
                 .dialogDescriptionId(dialogDescriptionId)
+                .keyBindings(keyBindings)
                 .build();
     }
 

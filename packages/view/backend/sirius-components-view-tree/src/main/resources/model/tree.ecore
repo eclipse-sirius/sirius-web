@@ -49,6 +49,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="keyBindings" upperBound="-1"
+        eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//KeyBinding"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SingleClickTreeItemContextMenuEntry"
       eSuperTypes="#//TreeItemContextMenuEntry">
