@@ -1,0 +1,256 @@
+= ADR-098 - WIP API view creation
+
+== Context
+
+We can create representations programmatically, with the view model and with the compatibility layer that converts odesign files in representation descriptions.
+
+Another use case is to create a view model programmatically but we don't have an API to create complex models easily.
+
+Such an API would allow us to generate view diagram description, edges, nodes and tools based on a metamodel description.
+
+This API would also offer default behaviors for the created view concepts.
+
+These default behaviors can be altered to generate a more specific view dsl.
+
+== Decision
+
+=== Organization of the code creating and linking elements
+
+==== Builder pattern : Creating the elements
+
+The builder pattern allows us to configure a builder with some specific behaviors or values and reuse this configured builder to create several descriptions.
+
+This implies that the API should offer the methods to set default behaviors during the instantiation of the builder.
+
+The builder pattern allows us to chain the setters, implement behaviors other than the default one provided during the builder instantiation, and is easily readable.
+
+We will implement builders for creating : 
+
+* diagramDescription
+* nodeDescription
+* edgeDescription
+* styleDescription
+* toolDecription
+
+==== Provider interfaces : Organization of the code creating and linking elements
+
+The provider interface makes the implementation more explicit and allow us to organize the code.
+
+We will expose these interfaces :
+
+* IDiagramElementDescriptionProvider
+* IEdgeDescriptionProvider
+* INodeDescriptionProvider
+* INodeToolProvider
+* IStyleProvider
+
+The implementation of these interfaces will be in charge of creating elements (preferably with the builders but not necessarily) and linking them together.
+
+For linking elements together we will offer a cache mechanism (see section) (change wording 'cache').
+
+==== Based on String, EMF model, Domain model ?
+
+The current API in papaya retrieves the name of an Entity to help set the DomainType attribute of EdgeDescription and NodeDescription.
+
+Using EClass to instantiate EdgeDescription and NodeDescription will allow the implementation of complex behaviors.
+
+But if we use EClass some model created with Domain would not match the specification and would need to be converted to EMF model.
+
+Since there are many different scenarios, we would probably end up with an API asking for strings (the lowest common denominator) but some utilities could be provided to create those strings from EObjects (see AQL section).
+
+==== Example
+
+```
+public class ClassDiagramAttributeNodeDescriptionProvider implements INodeDescriptionProvider {
+    @Override
+    public NodeDescription create() {
+        // Create a builder with some default settings, we could retrieve such builder from anywhere else
+        var builder = NodeDescriptionBuilder.withDefaults()
+            .withDeleteTool(true)
+            .withDefaultStyle(style)
+            .initialize();
+
+        // Use it to create a node description while changing some values for this specific use case
+        var nodeDescription = builder.name("CD papaya::Attribute")
+            .labelExpression("aql:self.name")
+            .domainType("papaya::Attribute")
+            .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
+            .childrenLayoutStrategy(ViewFactory.eINSTANCE.createListLayoutStrategyDescription())
+            .build();
+
+        return nodeDescription;
+    }
+}
+```
+
+==== Helpers
+
+===== Basic helpers
+
+In the example above, I had to mention that my domain type is EPACKAGE_NAME::ECLASS_NAME so it would be helpful to have access to something to simplify that for example something like that:
+
+```
+    EClass papayaAttributeEClass = ...
+    IEcoreViewBuilderHelper helper = ...
+    String domainType = helper.domainType(papayaAttributeEClass);
+
+    var nodeDescription = builder.name("CD papaya::Attribute")
+        .domainType(domainType)
+        .build();
+```
+
+In a similar manner, it is important to be able to define your naming convention and apply it easily. Something like this could help:
+
+```
+      INodeDescriptionNamingConvention namingConvention = domainType -> {
+            return "CD " + domainType;
+        };
+
+        var builder = NodeDescriptionBuilder.withDefaults()
+            .withNamingConvention(namingConvention)
+            .withDeleteTool(true)
+            .withDefaultStyle(style)
+            .initialize();
+```
+
+===== Advanced helpers (AQL services)
+
+We need to set AQL expressions for description attributes like semanticCandidateExpression.
+
+We could offer some AQL services to be used as semanticCandidateExpression.
+
+```
+    EClass papayaAttributeEClass = ...
+    IEcoreViewBuilderHelper helper = ...
+    String domainType = helper.domainType(papayaAttributeEClass);
+
+    var nodeDescription = builder.name("CD papaya::Attribute")
+        .domainType(domainType)
+        // queryAllReachable retrieves all elements of a given type in the current ResourceSet.
+        .semanticCandidateExpression(helper.getServices().queryAllReachable(papayaAttributeEClass))
+        .build();
+```
+
+==== ID map
+
+The API will implement a mechanism to be able to easily find previously created nodes, edges and style. This will be useful to create an edge from previously created nodes for example.
+
+One implementation used in Papaya could be reused but with an enriched description for the keys.
+
+```
+public class IdBuilderMap {
+    private final Map<String, List<EObject>> data = new HashMap<>();
+
+    public void put(EObject eObject) {
+        var eObjects = this.data.getOrDefault(eObject.eClass().getName(), new ArrayList<>());
+        eObjects.add(eObject);
+        this.data.put(eObject.eClass().getName(), eObjects);
+    }
+
+    public NodeDescription getNodeDescription(String name) {
+        // @formatter:off
+        return this.data.getOrDefault("NodeDescription", List.of()).stream()
+                .filter(NodeDescription.class::isInstance)
+                .map(NodeDescription.class::cast)
+                .filter(nodeDescription -> nodeDescription.getName().equals(name))
+                .findFirst()
+                .orElse(null);
+        // @formatter:on
+    }
+
+    public EdgeDescription getEdgeDescription(String name) {
+        // @formatter:off
+        return this.data.getOrDefault("EdgeDescription", List.of()).stream()
+                .filter(EdgeDescription.class::isInstance)
+                .map(EdgeDescription.class::cast)
+                .filter(edgeDescription -> edgeDescription.getName().equals(name))
+                .findFirst()
+                .orElse(null);
+        // @formatter:on
+    }
+}
+```
+==== Naming Convention
+
+We need to specify a naming convention.
+
+=== WIP Detailled providers
+
+==== View Provider
+
+The role of the view provider is to instantiate a list of DiagramDescription providers and associate it to the view.
+
+==== DiagramDescription Provider
+
+```
+public interface IRepresentationDescriptionProvider {
+    RepresentationDescription create();
+}
+```
+
+The role of the DiagramDescription provider is to instantiate a list of NodeDescription && EdgeDescription providers and associate it to the view.
+
+We can also instantiate a list of tools and associate it to the palette of the diagramDescription.
+
+In the create() method implementation, we also create the cache used to store all futurs created elements references.
+
+==== DiagramElementDescriptionProvider Provider
+
+```
+public interface IDiagramElementDescriptionProvider<T extends DiagramElementDescription> {
+    EObject create();
+
+    default void link(DiagramDescription diagramDescription, IdBuilderMap idMap) {
+        // Do nothing by default
+    }
+}
+```
+
+==== NodeDescription Provider
+
+```
+public interface INodeDescriptionProvider extends IDiagramElementDescriptionProvider<NodeDescription> {}
+```
+
+===== NodeStyle Provider
+
+==== EdgeDescription Provider
+
+```
+public interface IEdgeDescriptionProvider extends IDiagramElementDescriptionProvider<EdgeDescription> {}
+```
+
+===== EdgeStyle Provider
+
+==== Palette Provider
+
+note : create one palette provider type for each type (node, edge diagram ?) we can do nodeDescription.getPalette().getEdgeTools() and that's not relevant
+
+The role of the PaletteDescription provider is to instantiate a list of Tools provider and associate it to the palette.
+
+A palette is always created when creating a diagramDescription, nodeDescription or edgeDescription provider.
+
+We can provide an option to create default delete and creation tools on nodeDescription and edgeDescription.
+
+==== Tools Provider
+
+==== CreationTool & DeleteTool
+
+```
+public void addDefaultCreationTool(IDiagramElementDescription diagramElementDescription) {}
+public void addDefaultDeleteTool(IDiagramElementDescription diagramElementDescription) {}
+```
+
+==== ReconnectionTools
+
+```
+public void addDefaultEdgeCreationTools(EdgeDescription edgeDescription) {}
+public void addDefaultReconnectionTools(EdgeDescription edgeDescription) {}
+```
+== Status
+
+Draft.
+
+== Consequences
+
+== References
