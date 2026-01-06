@@ -387,6 +387,7 @@ interface Tool {
   id: ID!
   label: String!
   iconURL: [String!]!
+  keyBindings: [KeyBinding!]!
 }
 
 type SingleClickOnDiagramElementTool implements Tool {
@@ -397,6 +398,7 @@ type SingleClickOnDiagramElementTool implements Tool {
   dialogDescriptionId: String
   targetDescriptions: [DiagramElementDescription!]!
   withImpactAnalysis: Boolean!
+  keyBindings: [KeyBinding!]!
 }
 
 type SingleClickOnTwoDiagramElementsTool implements Tool {
@@ -405,6 +407,7 @@ type SingleClickOnTwoDiagramElementsTool implements Tool {
   iconURL: [String!]!
   dialogDescriptionId: String
   candidates: [SingleClickOnTwoDiagramElementsCandidate]!
+  keyBindings: [KeyBinding!]!
 }
 
 type SingleClickOnTwoDiagramElementsCandidate {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,22 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+export interface UseDiagramKeyBindingValue {
+  onKeyBinding: (event: React.KeyboardEvent<Element>) => void;
+}
 
-import java.util.List;
-
-import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
-
-/**
- * Interface implemented by all tools.
- *
- * @author mcharfadi
- */
-public interface ITool extends IPaletteEntry {
-
-    String label();
-
-    List<String> iconURL();
-
-    List<KeyBinding> keyBindings();
+export interface UseDiagramKeyBindingState {
+  currentEvent: React.KeyboardEvent<Element> | null;
 }

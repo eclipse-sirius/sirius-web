@@ -190,6 +190,13 @@ With the workbench configuration, downstream projects can give the representatio
 In conjonction of the `workbenchViewContributionExtensionPoint` frontend extension point, downstream projects can add custom views with their workbench configuration.
 - https://github.com/eclipse-sirius/sirius-web/issues/5815[#5815] [diagram] Highlight the last selected elements with custom resize handles, this can be useful when executing a layout group tool.
 - https://github.com/eclipse-sirius/sirius-web/issues/5585[#5585] [sirius-web] Replace use of foreign keys between different bounded contexts with proper events
+- https://github.com/eclipse-sirius/sirius-web/issues/1626[#1626] [diagram] Add the ability to trigger tools using key bindings
+It is now possible to add `KeyBinding` instances to any tool in a diagram (see `NoteToolBuilder#keyBindings`), and specify the keys to press to trigger the tool.
+Note that for the moment only `SingleClickOnDiagramElementTool` can be triggered with key bindings, although it is possible to define key bindings for any tool.
+The key bindings that can be triggered at a given time are computed from the palette of the selected diagram elements.
+For example, the the tools contained in a given `NodeDescription` can only be triggered via key bindings if the selected diagram element is a node with the given `NodeDescription`.
+The key bindings are visible in the tooltip of the tools in the palette.
+A key binding needs to contain at least one of `Control`, `Alt`, or `Meta` to be executed by the frontend.
 
 
 === Improvements
