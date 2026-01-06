@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,12 +59,7 @@ export interface EdgeParameters {
 export type GetNodeCenter = (
   node: InternalNode<Node<NodeData>>,
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
-) => NodeCenter;
-
-export interface NodeCenter {
-  x: number;
-  y: number;
-}
+) => XYPosition;
 
 export type GetHandlePositionWithOffSet = (handleXYPosition: XYPosition, handlePosition: Position) => XYPosition;
 
