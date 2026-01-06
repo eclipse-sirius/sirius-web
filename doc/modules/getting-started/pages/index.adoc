@@ -1,0 +1,8 @@
+= Getting Started
+
+If you already have a running instance of {sw}, you can skip this chapter.
+
+Otherwise, follow these steps to get started with {sw}:
+
+* Ensure your system meets all xref:getting-started:requirements.adoc[requirements] for running {sw}.
+* xref:getting-started:setup.adoc[Setup] your own {sw} instance.

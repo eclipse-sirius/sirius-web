@@ -1,0 +1,10 @@
+= Studio Development
+
+#TODO: In this chapter the focus is on the APIs we use to define a custom studio.
+I think we need an architecture diagram that shows the dependencies between studio definitions, the studio runtime, data model and view model, etc.#
+
+In the xref:maker-manual:studio-definitions.adoc[Studio Maker Manual], we have documented the *low-code* approach of {sw} to create _{stddefs}_. This approach works well for simpler modeling studios and does not require programming knowledge from the {stdmkr}. However, it focuses on supporting the most common {stddef} use cases, so more complex studio may be hard or impossible to express.
+
+In this chapter, we focus on using the full power of the {sw} APIs in order to implement highly customized modeling studios.
+
+include::partial$studio-development/nav.adoc[]
