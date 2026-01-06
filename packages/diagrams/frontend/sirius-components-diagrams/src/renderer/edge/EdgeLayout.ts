@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,12 @@ import parse from 'svg-path-parser';
 import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
-import { horizontalLayoutDirectionGap, verticalLayoutDirectionGap } from '../layout/layoutParams';
+import {
+  verticalLayoutAngleMin,
+  verticalLayoutAngleMax,
+  horizontalLayoutAngleMin,
+  horizontalLayoutAngleMax,
+} from '../layout/layoutParams';
 import {
   GetEdgeParameters,
   GetEdgeParametersWhileMoving,
@@ -25,7 +30,6 @@ import {
   GetHandlePositionWithOffSet,
   GetNodeCenter,
   GetUpdatedConnectionHandlesParameters,
-  NodeCenter,
   SegmentDirection,
 } from './EdgeLayout.types';
 
@@ -123,7 +127,7 @@ export const getHandlePositionFromNodeAndPath = (
   xyPosition: XYPosition,
   fromNode: InternalNode<Node<NodeData>> | Node<NodeData>
 ): Position => {
-  let position = Position.Right;
+  let position: Position;
   if (getSegmentDirection(edgePath, xyPosition) === 'x') {
     if (fromNode.position.y > xyPosition.y) {
       position = Position.Bottom;
@@ -318,31 +322,8 @@ const getHandlePositionFromBendingPoint = (
   bendingPointToUse: XYPosition
 ): Position => {
   const centerA = getNodeCenter(node, nodeLookup);
-  const centerB = bendingPointToUse;
 
-  const horizontalDifference = Math.abs(centerA.x - centerB.x);
-  const verticalDifference = Math.abs(centerA.y - centerB.y);
-  let position: Position;
-  if (isVerticalLayoutDirection(layoutDirection)) {
-    if (Math.abs(centerA.y - centerB.y) < verticalLayoutDirectionGap) {
-      position = centerA.x <= centerB.x ? Position.Right : Position.Left;
-    } else {
-      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
-    }
-  } else if (isHorizontalLayoutDirection(layoutDirection)) {
-    if (Math.abs(centerA.x - centerB.x) < horizontalLayoutDirectionGap) {
-      position = centerA.y <= centerB.y ? Position.Bottom : Position.Top;
-    } else {
-      position = centerA.x > centerB.x ? Position.Left : Position.Right;
-    }
-  } else {
-    if (horizontalDifference > verticalDifference) {
-      position = centerA.x > centerB.x ? Position.Left : Position.Right;
-    } else {
-      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
-    }
-  }
-  return position;
+  return computeHandlePosition(centerA, bendingPointToUse, false, layoutDirection);
 };
 
 const isVerticalLayoutDirection = (layoutDirection: string): boolean =>
@@ -374,7 +355,7 @@ const getHandlePosition = (nodePositionChange, nodeA, nodeB, nodeLookup, layoutD
     return computeBorderNodeHandlePosition(nodeA.data.borderNodePosition, isInside);
   }
 
-  let centerA: NodeCenter;
+  let centerA: XYPosition;
   if (nodePositionChange && nodePositionChange.id === nodeA.id) {
     const nodePositionAbsolute = getPositionAbsoluteFromNodeChange(nodePositionChange, nodeLookup);
     centerA = {
@@ -385,7 +366,7 @@ const getHandlePosition = (nodePositionChange, nodeA, nodeB, nodeLookup, layoutD
     centerA = getNodeCenter(nodeA, nodeLookup);
   }
 
-  let centerB: NodeCenter;
+  let centerB: XYPosition;
   if (nodePositionChange && nodePositionChange.id === nodeB.id) {
     const nodePositionAbsolute = getPositionAbsoluteFromNodeChange(nodePositionChange, nodeLookup);
     centerB = {
@@ -402,31 +383,55 @@ const getHandlePosition = (nodePositionChange, nodeA, nodeB, nodeLookup, layoutD
 };
 
 export const computeHandlePosition = (
-  centerA: NodeCenter,
-  centerB: NodeCenter,
+  centerA: XYPosition,
+  centerB: XYPosition,
   isDescendant: boolean,
   layoutDirection: string
 ): Position => {
   let position: Position;
-  const horizontalDifference = Math.abs(centerA.x - centerB.x);
-  const verticalDifference = Math.abs(centerA.y - centerB.y);
   if (isVerticalLayoutDirection(layoutDirection)) {
-    if (Math.abs(centerA.y - centerB.y) < verticalLayoutDirectionGap) {
-      position = centerA.x <= centerB.x ? Position.Right : Position.Left;
-    } else if (isDescendant) {
-      position = centerA.y <= centerB.y ? Position.Top : Position.Bottom;
+    const angle = Math.atan2(centerB.y - centerA.y, centerB.x - centerA.x) * (180 / Math.PI);
+    const normalizedAngle = (angle + 360) % 360;
+
+    if (
+      (normalizedAngle >= verticalLayoutAngleMin && normalizedAngle <= verticalLayoutAngleMax) ||
+      (normalizedAngle >= verticalLayoutAngleMin + 180 && normalizedAngle <= verticalLayoutAngleMax + 180)
+    ) {
+      if (isDescendant) {
+        position = centerA.y <= centerB.y ? Position.Top : Position.Bottom;
+      } else {
+        position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+      }
     } else {
-      position = centerA.y > centerB.y ? Position.Top : Position.Bottom;
+      if (isDescendant) {
+        position = centerA.y > centerB.y ? Position.Right : Position.Left;
+      } else {
+        position = centerA.x <= centerB.x ? Position.Right : Position.Left;
+      }
     }
   } else if (isHorizontalLayoutDirection(layoutDirection)) {
-    if (Math.abs(centerA.x - centerB.x) < horizontalLayoutDirectionGap) {
-      position = centerA.y <= centerB.y ? Position.Bottom : Position.Top;
-    } else if (isDescendant) {
-      position = centerA.x <= centerB.x ? Position.Left : Position.Right;
+    const angle = Math.atan2(centerB.y - centerA.y, centerB.x - centerA.x) * (180 / Math.PI);
+    const normalizedAngle = (angle + 360) % 360;
+    if (
+      normalizedAngle <= horizontalLayoutAngleMax ||
+      normalizedAngle >= horizontalLayoutAngleMin ||
+      (normalizedAngle >= horizontalLayoutAngleMin - 180 && normalizedAngle <= horizontalLayoutAngleMax + 180)
+    ) {
+      if (isDescendant) {
+        position = centerA.x <= centerB.x ? Position.Left : Position.Right;
+      } else {
+        position = centerA.x > centerB.x ? Position.Left : Position.Right;
+      }
     } else {
-      position = centerA.x > centerB.x ? Position.Left : Position.Right;
+      if (isDescendant) {
+        position = centerA.y > centerB.y ? Position.Bottom : Position.Top;
+      } else {
+        position = centerA.y <= centerB.y ? Position.Bottom : Position.Top;
+      }
     }
   } else {
+    const horizontalDifference = Math.abs(centerA.x - centerB.x);
+    const verticalDifference = Math.abs(centerA.y - centerB.y);
     if (horizontalDifference > verticalDifference) {
       if (isDescendant) {
         position = centerA.x <= centerB.x ? Position.Left : Position.Right;

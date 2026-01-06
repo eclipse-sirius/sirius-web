@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,5 +91,59 @@ test.describe('edge-handle', () => {
       'background-color',
       'rgb(0, 0, 0)'
     );
+  });
+});
+
+test.describe('edge-handle', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeHandlesPosition.zip');
+    await expect(page.locator('[data-testid^="explorer://"]')).toBeAttached();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a diagram has a layout direction to undefined, then there is no unique edge direction', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('handlesPosition');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('UNDEFINED');
+
+    await expect(page.locator('.source_handle_left')).toHaveCount(1);
+    await expect(page.locator('.source_handle_right')).toHaveCount(0);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(0);
+    await expect(page.locator('.source_handle_top')).toHaveCount(1);
+  });
+
+  test('when a diagram has a layout direction to right, then all edge directions are horizontal', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('handlesPosition');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('RIGHT');
+
+    await expect(page.locator('.source_handle_left')).toHaveCount(1);
+    await expect(page.locator('.source_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(0);
+    await expect(page.locator('.source_handle_top')).toHaveCount(0);
+  });
+
+  test('when a diagram has a layout direction to down, then all edge directions are vertical', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('handlesPosition');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('DOWN');
+
+    await expect(page.locator('.source_handle_left')).toHaveCount(0);
+    await expect(page.locator('.source_handle_right')).toHaveCount(0);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.source_handle_top')).toHaveCount(1);
   });
 });

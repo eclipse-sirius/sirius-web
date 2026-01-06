@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,9 @@ export const labelHorizontalPadding = 16;
 export const borderNodeReferencePositionRatio = 0.2;
 export const verticalHelperLinesSnapGap = 10;
 export const horizontalHelperLinesSnapGap = 10;
-export const verticalLayoutDirectionGap = 50;
-export const horizontalLayoutDirectionGap = 50;
+export const verticalLayoutAngleMin = 30;
+export const verticalLayoutAngleMax = 150;
+export const horizontalLayoutAngleMin = 300;
+export const horizontalLayoutAngleMax = 60;
 export const edgeBendPointOffset = 25;
 export const borderNodeGap = 10;
