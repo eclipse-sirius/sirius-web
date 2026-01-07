@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo and others.
+ * Copyright (c) 2021, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,14 +34,14 @@ import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { SynchronizationButton } from '../SynchronizationButton';
-import { RepresentationsViewState } from './RepresentationsView.types';
-import { useRepresentationsViewHandle } from './useRepresentationsViewHandle';
-import { useRepresentationsViewSubscription } from './useRepresentationsViewSubscription';
+import { RelatedViewsViewState } from './RelatedViewsView.types';
+import { useRelatedViewsViewHandle } from './useRelatedViewsViewHandle';
+import { useRelatedViewsViewSubscription } from './useRelatedViewsViewSubscription';
 import {
   GQLFormCapabilitiesRefreshedEventPayload,
   GQLFormRefreshedEventPayload,
-  GQLRepresentationsEventPayload,
-} from './useRepresentationsViewSubscription.types';
+  GQLRelatedViewsEventPayload,
+} from './useRelatedViewsViewSubscription.types';
 
 const useRepresentationsViewStyles = makeStyles()((theme) => ({
   idle: {
@@ -75,19 +75,18 @@ const useRepresentationsViewStyles = makeStyles()((theme) => ({
 
 const isList = (widget: GQLWidget | undefined): widget is GQLList => widget && widget.__typename === 'List';
 const isTree = (widget: GQLWidget | undefined): widget is GQLTree => widget && widget.__typename === 'TreeWidget';
-const isFormRefreshedEventPayload = (
-  payload: GQLRepresentationsEventPayload
-): payload is GQLFormRefreshedEventPayload => payload.__typename === 'FormRefreshedEventPayload';
+const isFormRefreshedEventPayload = (payload: GQLRelatedViewsEventPayload): payload is GQLFormRefreshedEventPayload =>
+  payload.__typename === 'FormRefreshedEventPayload';
 
 const isFormCapabilitiesRefreshedEventPayload = (
-  payload: GQLRepresentationsEventPayload
+  payload: GQLRelatedViewsEventPayload
 ): payload is GQLFormCapabilitiesRefreshedEventPayload =>
   payload.__typename === 'FormCapabilitiesRefreshedEventPayload';
 
-export const RepresentationsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
+export const RelatedViewsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
   ({ id, editingContextId }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
-    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'representationsView' });
-    const [state, setState] = useState<RepresentationsViewState>({
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'relatedViewsView' });
+    const [state, setState] = useState<RelatedViewsViewState>({
       form: null,
       canEdit: false,
       objectIds: [],
@@ -103,7 +102,7 @@ export const RepresentationsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     };
 
     const formBasedViewRef: MutableRefObject<FormHandle | null> = useRef<FormHandle | null>(null);
-    useRepresentationsViewHandle(id, formBasedViewRef, applySelection, ref);
+    useRelatedViewsViewHandle(id, formBasedViewRef, applySelection, ref);
 
     const { selection } = useSelection();
     useEffect(() => {
@@ -113,7 +112,7 @@ export const RepresentationsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     }, [selection, state.pinned]);
 
     const skip = state.objectIds.length === 0;
-    const { payload, complete, loading } = useRepresentationsViewSubscription(editingContextId, state.objectIds, skip);
+    const { payload, complete, loading } = useRelatedViewsViewSubscription(editingContextId, state.objectIds, skip);
     useEffect(() => {
       if (payload && isFormRefreshedEventPayload(payload)) {
         setState((prevState) => ({ ...prevState, form: payload.form }));

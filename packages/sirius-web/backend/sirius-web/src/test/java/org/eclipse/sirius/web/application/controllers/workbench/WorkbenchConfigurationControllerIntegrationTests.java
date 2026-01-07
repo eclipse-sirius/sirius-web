@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,7 +75,7 @@ public class WorkbenchConfigurationControllerIntegrationTests extends AbstractIn
         List<Object> rightPanelViews = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='right')].views[*]");
         List<String> rightPanelViewsIDs = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='right')].views[*].id");
         assertThat(rightPanelViews.size()).isPositive();
-        assertThat(rightPanelViewsIDs).containsExactlyInAnyOrder("details", "query", "representations", "related-elements");
+        assertThat(rightPanelViewsIDs).containsExactlyInAnyOrder("details", "query", "related-views", "related-elements");
     }
 
     @Test
@@ -96,7 +96,7 @@ public class WorkbenchConfigurationControllerIntegrationTests extends AbstractIn
         List<Object> rightPanelViews = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='right')].views[*]");
         List<String> rightPanelViewsIDs = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='right')].views[*].id");
         assertThat(rightPanelViews.size()).isPositive();
-        assertThat(rightPanelViewsIDs).containsExactlyInAnyOrder("details", "query", "representations", "related-elements", "papaya-view");
+        assertThat(rightPanelViewsIDs).containsExactlyInAnyOrder("details", "query", "related-views", "related-elements", "papaya-view");
     }
 
 }

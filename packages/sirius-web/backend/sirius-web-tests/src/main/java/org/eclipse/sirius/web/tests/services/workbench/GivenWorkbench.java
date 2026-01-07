@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.tests.services.workbench;
 import org.eclipse.sirius.components.graphql.tests.EditingContextEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.RelatedElementsEventSubscriptionRunner;
-import org.eclipse.sirius.web.tests.graphql.RepresentationsEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.graphql.RelatedViewsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.ValidationEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class GivenWorkbench {
     private RelatedElementsEventSubscriptionRunner relatedElementsEventSubscriptionRunner;
 
     @Autowired
-    private RepresentationsEventSubscriptionRunner representationsEventSubscriptionRunner;
+    private RelatedViewsEventSubscriptionRunner relatedViewsEventSubscriptionRunner;
 
     public Workbench.Builder onEditingContext(String editingContextId) {
         return new Workbench.Builder(editingContextId)
@@ -54,6 +54,6 @@ public class GivenWorkbench {
                 .validationEventSubscriptionRunner(validationEventSubscriptionRunner)
                 .detailsEventSubscriptionRunner(detailsEventSubscriptionRunner)
                 .relatedElementsEventSubscriptionRunner(relatedElementsEventSubscriptionRunner)
-                .representationsEventSubscriptionRunner(representationsEventSubscriptionRunner);
+                .representationsEventSubscriptionRunner(relatedViewsEventSubscriptionRunner);
     }
 }

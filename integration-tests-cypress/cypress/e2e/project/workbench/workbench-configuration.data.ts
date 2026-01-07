@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ export const workbenchConfigurationWithClosedPanels: WorkbenchConfiguration = {
       views: [
         { id: 'details', isActive: true },
         { id: 'query', isActive: true },
-        { id: 'representations', isActive: true },
+        { id: 'related-views', isActive: true },
         { id: 'related-elements', isActive: true },
       ],
     },
@@ -54,7 +54,7 @@ export const workbenchConfigurationWithExpandedPanels: WorkbenchConfiguration = 
       views: [
         { id: 'details', isActive: true },
         { id: 'query', isActive: true },
-        { id: 'representations', isActive: true },
+        { id: 'related-views', isActive: true },
         { id: 'related-elements', isActive: true },
       ],
     },

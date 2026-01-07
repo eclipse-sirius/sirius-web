@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,13 +23,14 @@ import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.application.views.relatedelements.dto.RelatedElementsEventInput;
-import org.eclipse.sirius.web.application.views.representations.dto.RepresentationsEventInput;
+import org.eclipse.sirius.web.application.views.relatedviews.dto.RelatedViewsEventInput;
 import org.eclipse.sirius.web.tests.graphql.DetailsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.RelatedElementsEventSubscriptionRunner;
-import org.eclipse.sirius.web.tests.graphql.RepresentationsEventSubscriptionRunner;
+import org.eclipse.sirius.web.tests.graphql.RelatedViewsEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.ValidationEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
+
 import reactor.core.publisher.Flux;
 
 /**
@@ -53,7 +54,7 @@ public final class Workbench {
 
     private RelatedElementsEventSubscriptionRunner relatedElementsEventSubscriptionRunner;
 
-    private RepresentationsEventSubscriptionRunner representationsEventSubscriptionRunner;
+    private RelatedViewsEventSubscriptionRunner relatedViewsEventSubscriptionRunner;
 
     private Workbench() {
         // Prevent instantiation
@@ -75,7 +76,7 @@ public final class Workbench {
         var relatedElementsEventFlux = this.relatedElementsEventSubscriptionRunner.run(new RelatedElementsEventInput(UUID.randomUUID(), this.editingContextId, relatedElementId)).flux();
 
         var representationsId = representationIdBuilder.buildRepresentationViewRepresentationId(this.selectedObjectIds);
-        var representationsEventFlux = this.representationsEventSubscriptionRunner.run(new RepresentationsEventInput(UUID.randomUUID(), this.editingContextId, representationsId)).flux();
+        var representationsEventFlux = this.relatedViewsEventSubscriptionRunner.run(new RelatedViewsEventInput(UUID.randomUUID(), this.editingContextId, representationsId)).flux();
 
         return Flux.merge(
                 editingContextEventFlux,
@@ -109,7 +110,7 @@ public final class Workbench {
 
         private RelatedElementsEventSubscriptionRunner relatedElementsEventSubscriptionRunner;
 
-        private RepresentationsEventSubscriptionRunner representationsEventSubscriptionRunner;
+        private RelatedViewsEventSubscriptionRunner relatedViewsEventSubscriptionRunner;
 
         public Builder(String editingContextId) {
             this.editingContextId = Objects.requireNonNull(editingContextId);
@@ -146,8 +147,8 @@ public final class Workbench {
             return this;
         }
 
-        public Builder representationsEventSubscriptionRunner(RepresentationsEventSubscriptionRunner representationsEventSubscriptionRunner) {
-            this.representationsEventSubscriptionRunner = Objects.requireNonNull(representationsEventSubscriptionRunner);
+        public Builder representationsEventSubscriptionRunner(RelatedViewsEventSubscriptionRunner relatedViewsEventSubscriptionRunner) {
+            this.relatedViewsEventSubscriptionRunner = Objects.requireNonNull(relatedViewsEventSubscriptionRunner);
             return this;
         }
 
@@ -161,7 +162,7 @@ public final class Workbench {
             workbench.validationEventSubscriptionRunner = Objects.requireNonNull(this.validationEventSubscriptionRunner);
             workbench.detailsEventSubscriptionRunner = Objects.requireNonNull(this.detailsEventSubscriptionRunner);
             workbench.relatedElementsEventSubscriptionRunner = Objects.requireNonNull(this.relatedElementsEventSubscriptionRunner);
-            workbench.representationsEventSubscriptionRunner = Objects.requireNonNull(this.representationsEventSubscriptionRunner);
+            workbench.relatedViewsEventSubscriptionRunner = Objects.requireNonNull(this.relatedViewsEventSubscriptionRunner);
 
             return workbench;
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.representations.services;
+package org.eclipse.sirius.web.application.views.relatedviews.services;
 
 import java.util.List;
 import java.util.Map;
@@ -41,12 +41,12 @@ import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to create the representations event processors.
+ * Used to create the related views event processors.
  *
  * @author gcoutable
  */
 @Service
-public class RepresentationsEventProcessorFactory implements IRepresentationEventProcessorFactory {
+public class RelatedViewsEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
     private final IRepresentationsDescriptionProvider representationsDescriptionProvider;
 
@@ -72,7 +72,7 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
 
     private final IURLParser urlParser;
 
-    public RepresentationsEventProcessorFactory(IRepresentationsDescriptionProvider representationsDescriptionProvider, RepresentationEventProcessorFactoryConfiguration configuration,
+    public RelatedViewsEventProcessorFactory(IRepresentationsDescriptionProvider representationsDescriptionProvider, RepresentationEventProcessorFactoryConfiguration configuration,
             List<IWidgetDescriptor> widgetDescriptors, FormEventProcessorFactoryConfiguration formConfiguration, IURLParser urlParser) {
         this.representationsDescriptionProvider = Objects.requireNonNull(representationsDescriptionProvider);
         this.objectService = Objects.requireNonNull(formConfiguration.getObjectService());
@@ -90,7 +90,7 @@ public class RepresentationsEventProcessorFactory implements IRepresentationEven
 
     @Override
     public boolean canHandle(IEditingContext editingContext, String representationId) {
-        return representationId.startsWith("representations://");
+        return representationId.startsWith("relatedviews://");
     }
 
     @Override

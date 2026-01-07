@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,22 +17,22 @@ import java.util.Objects;
 import org.eclipse.sirius.components.graphql.tests.api.GraphQLSubscriptionResult;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.graphql.tests.api.ISubscriptionRunner;
-import org.eclipse.sirius.web.application.views.representations.dto.RepresentationsEventInput;
+import org.eclipse.sirius.web.application.views.relatedviews.dto.RelatedViewsEventInput;
 import org.springframework.stereotype.Service;
 
 import graphql.execution.DataFetcherResult;
 
 /**
- * Used to get the representations event subscription with the GraphQL API.
+ * Used to get the related views event subscription with the GraphQL API.
  *
  * @author sbegaudeau
  */
 @Service
-public class RepresentationsEventSubscriptionRunner implements ISubscriptionRunner<RepresentationsEventInput> {
+public class RelatedViewsEventSubscriptionRunner implements ISubscriptionRunner<RelatedViewsEventInput> {
 
     private static final String REPRESENTATIONS_EVENT_SUBSCRIPTION = """
-            subscription representationsEvent($input: RepresentationsEventInput!) {
-              representationsEvent(input: $input) {
+            subscription relatedViewsEvent($input: RelatedViewsEventInput!) {
+              relatedViewsEvent(input: $input) {
                 __typename
               }
             }
@@ -40,12 +40,12 @@ public class RepresentationsEventSubscriptionRunner implements ISubscriptionRunn
 
     private final IGraphQLRequestor graphQLRequestor;
 
-    public RepresentationsEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
+    public RelatedViewsEventSubscriptionRunner(IGraphQLRequestor graphQLRequestor) {
         this.graphQLRequestor = Objects.requireNonNull(graphQLRequestor);
     }
 
     @Override
-    public GraphQLSubscriptionResult run(RepresentationsEventInput input) {
+    public GraphQLSubscriptionResult run(RelatedViewsEventInput input) {
         var rawResult = this.graphQLRequestor.subscribe(REPRESENTATIONS_EVENT_SUBSCRIPTION, input);
         var flux = rawResult.flux()
                 .filter(DataFetcherResult.class::isInstance)

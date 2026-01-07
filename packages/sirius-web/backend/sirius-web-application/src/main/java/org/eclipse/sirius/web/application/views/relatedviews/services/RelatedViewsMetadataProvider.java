@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.representations.services;
+package org.eclipse.sirius.web.application.views.relatedviews.services;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,26 +22,26 @@ import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 
 /**
- * Provides the metadata for the "Representations" representation.
+ * Provides the metadata for the "Related views" representation.
  *
  * @author pcdavid
  */
-public class RepresentationsMetadataProvider implements IRepresentationMetadataProvider {
+public class RelatedViewsMetadataProvider implements IRepresentationMetadataProvider {
 
     private final IMessageService messageService;
 
-    public RepresentationsMetadataProvider(IMessageService messageService) {
+    public RelatedViewsMetadataProvider(IMessageService messageService) {
         this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
     public Optional<RepresentationMetadata> getMetadata(String editingContextId, String representationId) {
-        if (representationId.startsWith(RepresentationsFormDescriptionProvider.PREFIX)) {
+        if (representationId.startsWith(RelatedViewsFormDescriptionProvider.PREFIX)) {
             var representationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
                     .kind(Form.KIND)
-                    .label(this.messageService.representationsViewTitle())
-                    .descriptionId(RepresentationsFormDescriptionProvider.FORM_DESCRIPTION_ID)
-                    .iconURLs(List.of("representations/representations.svg"))
+                    .label(this.messageService.relatedViewsLabel())
+                    .descriptionId(RelatedViewsFormDescriptionProvider.FORM_DESCRIPTION_ID)
+                    .iconURLs(List.of("related-views/related-views.svg"))
                     .build();
 
             return Optional.of(representationMetadata);

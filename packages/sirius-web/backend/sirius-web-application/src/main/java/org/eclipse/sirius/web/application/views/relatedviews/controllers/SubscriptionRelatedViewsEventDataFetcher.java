@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.representations.controllers;
+package org.eclipse.sirius.web.application.views.relatedviews.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -24,19 +24,19 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.components.graphql.api.IEventProcessorSubscriptionProvider;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
-import org.eclipse.sirius.web.application.views.representations.dto.RepresentationsEventInput;
+import org.eclipse.sirius.web.application.views.relatedviews.dto.RelatedViewsEventInput;
 import org.reactivestreams.Publisher;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher used to send the content of the representations view subscription.
+ * The data fetcher used to send the content of the "related views" view subscription.
  *
  * @author gcoutable
  */
-@SubscriptionDataFetcher(type = "Subscription", field = "representationsEvent")
-public class SubscriptionRepresentationsEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
+@SubscriptionDataFetcher(type = "Subscription", field = "relatedViewsEvent")
+public class SubscriptionRelatedViewsEventDataFetcher implements IDataFetcherWithFieldCoordinates<Publisher<DataFetcherResult<IPayload>>> {
 
     private static final String INPUT_ARGUMENT = "input";
 
@@ -46,7 +46,7 @@ public class SubscriptionRepresentationsEventDataFetcher implements IDataFetcher
 
     private final IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider;
 
-    public SubscriptionRepresentationsEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
+    public SubscriptionRelatedViewsEventDataFetcher(ObjectMapper objectMapper, IExceptionWrapper exceptionWrapper, IEventProcessorSubscriptionProvider eventProcessorSubscriptionProvider) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.exceptionWrapper = Objects.requireNonNull(exceptionWrapper);
         this.eventProcessorSubscriptionProvider = Objects.requireNonNull(eventProcessorSubscriptionProvider);
@@ -55,7 +55,7 @@ public class SubscriptionRepresentationsEventDataFetcher implements IDataFetcher
     @Override
     public Publisher<DataFetcherResult<IPayload>> get(DataFetchingEnvironment environment) throws Exception {
         Object argument = environment.getArgument(INPUT_ARGUMENT);
-        var input = this.objectMapper.convertValue(argument, RepresentationsEventInput.class);
+        var input = this.objectMapper.convertValue(argument, RelatedViewsEventInput.class);
 
         Map<String, Object> localContext = new HashMap<>();
         localContext.put(LocalContextConstants.EDITING_CONTEXT_ID, input.editingContextId());
