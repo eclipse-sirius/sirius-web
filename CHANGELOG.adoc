@@ -12,6 +12,7 @@
 - [ADR-218] Ensure Elasticsearch query results contain enough information
 - [ADR-219] Add a way to customize the tree displayed to select the candidates in a Reference Widget
 - [ADR-220] Add support for key bindings in diagram and tree tools
+- [ADR-221] Add migration version to exported representation
 
 
 === Deprecation warning

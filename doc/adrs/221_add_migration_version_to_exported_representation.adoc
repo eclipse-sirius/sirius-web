@@ -1,0 +1,66 @@
+= ADR-221 - Add migration version to exported representation
+
+== Context
+
+When importing a representation, we assign it for current migration the version of the newest migration participant.
+Therefore, we cannot migrate a representation when new participants have been added to Sirius Web after exporting it.
+
+== Decision
+
+=== Backend
+
+We must add migration metadata to the exported representation, just like it is done for ecore-based documents.
+This metadata will take the form of a new key placed at the root of the JSON document:
+
+[source,json]
+----
+{
+  "migration": {
+    "lastMigrationPerformed": "...",
+    "migrationVersion": "..."
+  }
+}
+----
+
+They will be added to the JSON by the `ProjectRepresentationDataExportParticipant#exportData` method,
+which currently serialize the representation.
+The migration metadata will be obtained using `IRepresentationContentMigrationService#getLatestMigrationData`,
+which returns a MigrationData of the newest migration participant for the given representation kind.
+This method will be added to the migration service interface to avoid coupling with the persistence layer.
+
+=== Import
+
+`RepresentationProjectContentImportParticipant#getRepresentationImportData` will extract migration data from the JSON and place it into `RepresentationImportData`.
+Those data are nullable, enabling import of projects created with Sirius Web versions older than the one implementing the migration for representation.
+
+In `DiagramImporterUpdateService:171`, `this.representationContentUpdateService.updateContentByRepresentationIdWithMigrationData` will be used when the migration data are present in the `RepresentationImportData` given in parameters.
+When migration data are null, three scenarios are possible:
+
+==== Option 1: No Version Tracking (Current Behavior)
+Call `updateContentByRepresentationId()` without migration data.
+- Behavior depends on how `RepresentationContentMigrationService` handles NULL
+
+==== Option 2: Use Implementation Version
+Call `updateContentByRepresentationIdWithMigrationData(..., "none", "2026.X.X-...")`
+where `2026.X.X` is the version when migration tracking was introduced.
+- Result: Only migrations after 2026.X.X are applied on load
+- Old exports already had earlier migrations applied, may miss migrations if assumption is wrong
+
+==== Option 3: Full Migration
+Call `updateContentByRepresentationIdWithMigrationData(..., "none", "0")`
+- Result: All migration participants are applied on first load
+- Slight performance cost during load
+
+== Consequences
+
+- JSON of exported representations now has a new field: migration.
+We will keep a support for JSON with not such a field to avoid breaking changes at this level.
+- `RepresentationImportData` as a new attribute typed by `MigrationData`.
+
+== Cutting backs
+
+/
+
+== Status
+
+Proposed.
