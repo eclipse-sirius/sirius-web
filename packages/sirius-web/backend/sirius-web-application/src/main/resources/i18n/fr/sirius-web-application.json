@@ -341,7 +341,7 @@
   "exportResultButton": {
     "exportAsCsv": "Exporter en CSV"
   },
-  "representationsView": {
+  "relatedViewsView": {
     "noObjectSelected": "Aucun objet sélectionné"
   },
   "expandAllTreeItemContextMenuContribution": {

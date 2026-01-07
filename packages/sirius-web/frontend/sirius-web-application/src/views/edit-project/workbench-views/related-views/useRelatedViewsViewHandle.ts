@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,13 +15,13 @@ import { Selection, WorkbenchViewHandle } from '@eclipse-sirius/sirius-component
 import { FormHandle } from '@eclipse-sirius/sirius-components-forms';
 import { ForwardedRef, MutableRefObject, useImperativeHandle } from 'react';
 
-export const useRepresentationsViewHandle = (
+export const useRelatedViewsViewHandle = (
   id: string,
   formBasedViewRef: MutableRefObject<FormHandle | null>,
   applySelection: (selection: Selection) => void,
   ref: ForwardedRef<WorkbenchViewHandle>
 ) => {
-  const representationsViewHandleProvider = () => {
+  const relatedViewsViewHandleProvider = () => {
     return {
       id,
       getWorkbenchViewConfiguration: () => {
@@ -30,5 +30,5 @@ export const useRepresentationsViewHandle = (
       applySelection,
     };
   };
-  useImperativeHandle(ref, representationsViewHandleProvider, [id, formBasedViewRef]);
+  useImperativeHandle(ref, relatedViewsViewHandleProvider, [id, formBasedViewRef]);
 };

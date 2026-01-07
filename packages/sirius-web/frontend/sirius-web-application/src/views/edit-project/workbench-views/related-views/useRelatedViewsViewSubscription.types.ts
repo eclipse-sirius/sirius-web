@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,42 +13,42 @@
 
 import { GQLForm } from '@eclipse-sirius/sirius-components-forms';
 
-export interface UseRepresentationsViewSubscriptionValue {
+export interface UseRelatedViewsViewSubscriptionValue {
   loading: boolean;
-  payload: GQLRepresentationsEventPayload | null;
+  payload: GQLRelatedViewsEventPayload | null;
   complete: boolean;
 }
 
-export interface UseRepresentationsViewSubscriptionState {
+export interface UseRelatedViewsViewSubscriptionState {
   id: string;
-  payload: GQLRepresentationsEventPayload | null;
+  payload: GQLRelatedViewsEventPayload | null;
   complete: boolean;
 }
 
-export interface GQLRepresentationsEventInput {
+export interface GQLRelatedViewsEventInput {
   id: string;
   editingContextId: string;
   representationId: string;
 }
 
-export interface GQLRepresentationsEventVariables {
-  input: GQLRepresentationsEventInput;
+export interface GQLRelatedViewsEventVariables {
+  input: GQLRelatedViewsEventInput;
 }
 
-export interface GQLRepresentationsEventSubscription {
-  representationsEvent: GQLRepresentationsEventPayload;
+export interface GQLRelatedViewsEventSubscription {
+  relatedViewsEvent: GQLRelatedViewsEventPayload;
 }
 
-export interface GQLRepresentationsEventPayload {
+export interface GQLRelatedViewsEventPayload {
   __typename: string;
 }
 
-export interface GQLFormRefreshedEventPayload extends GQLRepresentationsEventPayload {
+export interface GQLFormRefreshedEventPayload extends GQLRelatedViewsEventPayload {
   __typename: 'FormRefreshedEventPayload';
   form: GQLForm;
 }
 
-export interface GQLFormCapabilitiesRefreshedEventPayload extends GQLRepresentationsEventPayload {
+export interface GQLFormCapabilitiesRefreshedEventPayload extends GQLRelatedViewsEventPayload {
   __typename: 'FormCapabilitiesRefreshedEventPayload';
   capabilities: GQLFormCapabilities;
 }

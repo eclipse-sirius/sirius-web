@@ -1,0 +1,11 @@
+extend type Subscription {
+  relatedViewsEvent(input: RelatedViewsEventInput!): RelatedViewsEventPayload!
+}
+
+input RelatedViewsEventInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: String!
+}
+
+union RelatedViewsEventPayload = ErrorPayload | FormRefreshedEventPayload | FormCapabilitiesRefreshedEventPayload
