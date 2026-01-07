@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,11 +20,14 @@ import { useInvokeAction } from './useInvokeAction';
 
 const useStyles = makeStyles()((theme) => ({
   actionIcon: {
+    alignSelf: 'start',
     '&:hover': {
       backgroundColor: theme.palette.action.selected,
     },
   },
 }));
+
+export const ACTION_ICON_SIZE = 10;
 
 export const Action = ({ action, diagramElementId }: ActionProps) => {
   const { classes } = useStyles();
@@ -45,7 +48,13 @@ export const Action = ({ action, diagramElementId }: ActionProps) => {
   } else {
     return (
       <IconButton className={classes.actionIcon} size="small" onClick={() => invokeAction(action)}>
-        <IconOverlay iconURLs={action.iconURLs} title={action.tooltip} alt={action.tooltip} />
+        <IconOverlay
+          iconURLs={action.iconURLs}
+          customIconWidth={ACTION_ICON_SIZE}
+          customIconHeight={ACTION_ICON_SIZE}
+          title={action.tooltip}
+          alt={action.tooltip}
+        />
       </IconButton>
     );
   }

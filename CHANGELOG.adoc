@@ -228,7 +228,8 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/5946[#5946] [diagram] Prevent the border node label from overlapping the parent node by adjusting its position based on the position of the border node.
 - https://github.com/eclipse-sirius/sirius-web/issues/5969[#5969] [diagram] Prevent label to overflow child node during resize
 - https://github.com/eclipse-sirius/sirius-web/issues/6016[#6016] [diagram] Improve edge handles positioning logic
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5974[#5974] [diagram] Tweak the node actions UI to reduce the risk of invoking them by mistake.
+The node action icons are now a little smaller and only appear after the node has been hovered for 0.5s.
 
 == 2025.12.0
 

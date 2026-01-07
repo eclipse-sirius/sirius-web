@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const useActions = (diagramElementId: string): UseActionsValue => {
+export const useActions = (diagramElementId: string, skip: boolean): UseActionsValue => {
   const { addErrorMessage } = useMultiToast();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
 
@@ -59,6 +59,7 @@ export const useActions = (diagramElementId: string): UseActionsValue => {
       diagramId,
       diagramElementId,
     },
+    skip,
   });
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,13 @@ export type { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from './graph
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
 export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
+export { Action, ACTION_ICON_SIZE } from './renderer/actions/Action';
+export type { ActionProps } from './renderer/actions/Action.types';
+export { ActionsContainer } from './renderer/actions/ActionsContainer';
+export type { ActionsContainerProps } from './renderer/actions/ActionsContainer.types';
 export { diagramNodeActionOverrideContributionExtensionPoint } from './renderer/actions/DiagramNodeActionExtensionPoints';
 export type { DiagramNodeActionOverrideContribution } from './renderer/actions/DiagramNodeActionExtensionPoints.types';
+export { useActions } from './renderer/actions/useActions';
 export { ManageVisibilityContext } from './renderer/actions/visibility/ManageVisibilityContextProvider';
 export type { ManageVisibilityContextValue } from './renderer/actions/visibility/ManageVisibilityContextProvider.types';
 export { useConnectionLineNodeStyle } from './renderer/connector/useConnectionLineNodeStyle';
@@ -66,12 +71,15 @@ export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
+export { EdgeAppearanceSection } from './renderer/palette/appearance/edge/EdgeAppearanceSection';
 export type {
   PaletteAppearanceSectionContributionComponentProps,
   PaletteAppearanceSectionContributionProps,
 } from './renderer/palette/appearance/extensions/PaletteAppearanceSectionContribution.types';
 export { paletteAppearanceSectionExtensionPoint } from './renderer/palette/appearance/extensions/PaletteAppearanceSectionExtensionPoints';
+export { ImageNodeAppearanceSection } from './renderer/palette/appearance/ImageNodeAppearanceSection';
 export { LabelAppearancePart } from './renderer/palette/appearance/label/LabelAppearancePart';
+export { RectangularNodeAppearanceSection } from './renderer/palette/appearance/RectangularNodeAppearanceSection';
 export { useResetNodeAppearance } from './renderer/palette/appearance/useResetNodeAppearance';
 export { AppearanceColorPicker } from './renderer/palette/appearance/widget/AppearanceColorPicker';
 export { AppearanceNumberTextfield } from './renderer/palette/appearance/widget/AppearanceNumberTextfield ';
@@ -89,11 +97,3 @@ export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/pane
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
-export { ImageNodeAppearanceSection } from './renderer/palette/appearance/ImageNodeAppearanceSection';
-export { RectangularNodeAppearanceSection } from './renderer/palette/appearance/RectangularNodeAppearanceSection';
-export { EdgeAppearanceSection } from './renderer/palette/appearance/edge/EdgeAppearanceSection';
-export { ActionsContainer } from './renderer/actions/ActionsContainer';
-export type { ActionsContainerProps } from './renderer/actions/ActionsContainer.types';
-export { Action } from './renderer/actions/Action';
-export type { ActionProps } from './renderer/actions/Action.types';
-export { useActions } from './renderer/actions/useActions';
