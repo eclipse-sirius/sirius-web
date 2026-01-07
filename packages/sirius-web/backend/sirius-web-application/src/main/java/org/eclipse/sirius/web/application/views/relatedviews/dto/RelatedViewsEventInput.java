@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.representations.dto;
+package org.eclipse.sirius.web.application.views.relatedviews.dto;
 
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IInput;
 
 /**
- * The input of the representations view subscription.
+ * The input of the "related views" view subscription.
  *
  * @author sbegaudeau
  */
-public record RepresentationsEventInput(UUID id, String editingContextId, String representationId) implements IInput {
+public record RelatedViewsEventInput(UUID id, String editingContextId, String representationId) implements IInput {
 }

@@ -74,7 +74,7 @@ public class StudioWorkbenchConfigurationProvider implements IWorkbenchConfigura
                         new WorkbenchSidePanelConfiguration("right", true, List.of(
                                 new DefaultViewConfiguration("details", true),
                                 new DefaultViewConfiguration("query", false),
-                                new DefaultViewConfiguration("representations", false),
+                                new DefaultViewConfiguration("related-views", false),
                                 new DefaultViewConfiguration("related-elements", false)
                         ))
                 )

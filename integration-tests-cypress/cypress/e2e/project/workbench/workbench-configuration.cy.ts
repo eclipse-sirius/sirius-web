@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -95,7 +95,7 @@ describe('Workbench Configuration Resolution', () => {
         it('Then, the view should not be displayed at all', () => {
           workbench.checkPanelContent('right', ['Details']);
           workbench.isIconHighlighted('right', 'Query', false);
-          workbench.isIconHighlighted('right', 'Representations', false);
+          workbench.isIconHighlighted('right', 'Related Views', false);
           workbench.isIconHighlighted('right', 'Related Elements', false);
           cy.getByTestId(`sidebar-right`).findByTestId(`viewselector-Papaya view`).should('not.exist');
         });
@@ -120,11 +120,11 @@ describe('Workbench Configuration Resolution', () => {
         cy.getByTestId('site-left').should('not.exist');
       });
 
-      it('Then, the right panel is collapsed and all views ("Details", "Query", "Representations", "Related Elements") are highlighted and active', () => {
+      it('Then, the right panel is collapsed and all views ("Details", "Query", "Related Views", "Related Elements") are highlighted and active', () => {
         workbench.checkPanelState('right', 'collapsed');
         workbench.isIconHighlighted('right', 'Details');
         workbench.isIconHighlighted('right', 'Query');
-        workbench.isIconHighlighted('right', 'Representations');
+        workbench.isIconHighlighted('right', 'Related Views');
         workbench.isIconHighlighted('right', 'Related Elements');
         cy.getByTestId('site-right').should('not.exist');
       });
@@ -156,13 +156,13 @@ describe('Workbench Configuration Resolution', () => {
         workbench.checkPanelContent('left', ['Explorer', 'Validation']);
       });
 
-      it('Then, the right panel is expanded and all views ("Details", "Query", "Representations", "Related Elements") are highlighted and active', () => {
+      it('Then, the right panel is expanded and all views ("Details", "Query", "Related Views", "Related Elements") are highlighted and active', () => {
         workbench.checkPanelState('right', 'expanded');
         workbench.isIconHighlighted('right', 'Details');
         workbench.isIconHighlighted('right', 'Query');
-        workbench.isIconHighlighted('right', 'Representations');
+        workbench.isIconHighlighted('right', 'Related Views');
         workbench.isIconHighlighted('right', 'Related Elements');
-        workbench.checkPanelContent('right', ['Details', 'Query', 'Representations', 'Related Elements']);
+        workbench.checkPanelContent('right', ['Details', 'Query', 'Related Views', 'Related Elements']);
       });
 
       it('Then, in the URL, the "workbenchConfiguration" search param is removed', () => {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ public class PapayaWorkbenchConfigurationProvider implements IWorkbenchConfigura
                         new WorkbenchSidePanelConfiguration("right", true, List.of(
                                 new DefaultViewConfiguration("details", true),
                                 new DefaultViewConfiguration("query", false),
-                                new DefaultViewConfiguration("representations", false),
+                                new DefaultViewConfiguration("related-views", false),
                                 new DefaultViewConfiguration("related-elements", false),
                                 new DefaultViewConfiguration("papaya-view", true)
                         ))

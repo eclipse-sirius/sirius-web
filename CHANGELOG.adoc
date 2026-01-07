@@ -138,6 +138,10 @@ Do not try to parse it or leverage it at all.
 This new identifier is also used by `representation_metadata_icon_url#representation_metadata_id`.
 The previous value of `representation_metadata#id` can now be found in `representation_metadata#representation_metadata_id`.
 These changes have been introduced due to a limitation of Spring Boot 3.x, once we will upgrade to Spring Boot 4.x, we will move away from this hack in favor of a proper composite identifier involving `representation_metadata#id` and `representation_metadata#semantic_data_id`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6022[#6022] [sirius-web] The "Representations" view has been renamed to "Related Views" to better reflect its purpose.
+The GraphQL subscription `representationsEvent` has been renamed to `relatedViewsEvent`, and the input type `RepresentationsEventInput` has been renamed to `RelatedViewsEventInput`.
+The representation ID prefix has changed from `representations://` to `relatedviews://`.
+The workbench view ID is now `related-views`.
 
 
 === Dependency update
@@ -243,6 +247,9 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/6016[#6016] [diagram] Improve edge handles positioning logic
 - https://github.com/eclipse-sirius/sirius-web/issues/5974[#5974] [diagram] Tweak the node actions UI to reduce the risk of invoking them by mistake.
 The node action icons are now a little smaller and only appear after the node has been hovered for 0.5s.
+- https://github.com/eclipse-sirius/sirius-web/issues/6022[#6022] [sirius-web] Rename the "Representations" workbench view to "Related Views"
+
+
 
 == 2025.12.0
 
@@ -4295,7 +4302,7 @@ Sirius Components will soon be independent from any persistence layer, from the 
 - https://github.com/eclipse-sirius/sirius-components/issues/569[#569] [emf] Move document-related code out of `sirius-web-emf`
 - https://github.com/eclipse-sirius/sirius-components/issues/569[#569] [core] Remove the last dependency to `sirius-web-services` from `sirius-web-emf`. As a result, the `ObjectService` does not need to know about representations anymore
 - https://github.com/eclipse-sirius/sirius-components/issues/562[#562] [graphql] Remove references to `projectId` from the subscriptions and use `editingContextId` instead
-- https://github.com/eclipse-sirius/sirius-components/issues/562[#562] [graphql] Move the `representation` and `representations` fields from `Project` to `EditingContext`
+- https://github.com/eclipse-sirius/sirius-components/issues/562[#562] [graphql] Move the `representation` and `relatedviews` fields from `Project` to `EditingContext`
 - https://github.com/eclipse-sirius/sirius-components/issues/562[#562] [core] Remove multiple references to `projectId` from the collaborative parts. This will impact various concepts such as the input used to edit forms
 - https://github.com/eclipse-sirius/sirius-components/issues/584[#584] [graphql] Remove all the GraphQL projects from `sirius-web-spring-starter`. As such, projects consuming Sirius Components will now have to explicitly depend to those projects. They will soon be removed entirely from Sirius Components to go Sirius Web
 - https://github.com/eclipse-sirius/sirius-components/issues/584[#584] [core] Remove the need to perform some access control and remove the `IDataFetcherEnvironmentService` in favor of `ObjectMapper`
