@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  ACTION_ICON_SIZE,
   ActionProps,
   ManageVisibilityContext,
   ManageVisibilityContextValue,
@@ -24,6 +25,7 @@ import { makeStyles } from 'tss-react/mui';
 
 const useToolStyle = makeStyles()((theme: Theme) => ({
   actionIcon: {
+    alignSelf: 'start',
     '&:hover': {
       backgroundColor: theme.palette.action.selected,
     },
@@ -43,7 +45,7 @@ export const SiriusWebManageVisibilityNodeAction = ({ diagramElementId }: Action
       title={t('manageVisibility')}
       onClick={(event) => openDialog(event, diagramElementId)}
       data-testid="manage-visibility">
-      <VisibilityIcon sx={{ fontSize: 16 }} />
+      <VisibilityIcon sx={{ fontSize: ACTION_ICON_SIZE }} />
     </IconButton>
   );
 };
