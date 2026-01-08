@@ -230,6 +230,7 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/6016[#6016] [diagram] Improve edge handles positioning logic
 - https://github.com/eclipse-sirius/sirius-web/issues/5974[#5974] [diagram] Tweak the node actions UI to reduce the risk of invoking them by mistake.
 The node action icons are now a little smaller and only appear after the node has been hovered for 0.5s.
+- https://github.com/eclipse-sirius/sirius-web/issues/6027[#6027] [diagram] Improve visual feedback when dragging a node to show which targets are compatible/valid/invalid for a drop
 
 == 2025.12.0
 
