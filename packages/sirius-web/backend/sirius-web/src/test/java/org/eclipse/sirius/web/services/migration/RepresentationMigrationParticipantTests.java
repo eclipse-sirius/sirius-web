@@ -109,7 +109,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     @GivenSiriusWebServer
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the position of diagram, nodes and edges have been removed, but not from layout data")
     public void testRemovePositionFromDiagramPresentOnDiagramAndNodesAndEdges() {
-        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(MigrationIdentifiers.MIGRATION_STUDIO_EDITING_CONTEXT_ID));
+        var semanticData = AggregateReference.<SemanticData, UUID>to(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO);
         var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
 
         var representationContentBeforeMigration = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
@@ -164,7 +164,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     @GivenSiriusWebServer
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the size and size of diagram, nodes and edges have been removed, but not from layout data")
     public void testRemoveSizeFromDiagramPresentOnDiagramAndNodesAndEdges() {
-        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(MigrationIdentifiers.MIGRATION_STUDIO_EDITING_CONTEXT_ID));
+        var semanticData = AggregateReference.<SemanticData, UUID>to(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO);
         var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
 
         var representationContentBeforeMigration = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
@@ -220,7 +220,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     @ValueSource(strings = { "alignment", "routingPoints", "sourceAnchorRelativePosition", "targetAnchorRelativePosition", "userResizable", "customizedProperties" })
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the position and size of diagram and nodes have been removed, but not from layout data")
     public void testRemoveAttributeFromDiagramContent(String attribute) {
-        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(MigrationIdentifiers.MIGRATION_STUDIO_EDITING_CONTEXT_ID));
+        var semanticData = AggregateReference.<SemanticData, UUID>to(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO);
         var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
 
         var representationContentBeforeMigration = this.representationContentSearchService.findContentById(semanticData, representationMetadata);
@@ -256,7 +256,7 @@ public class RepresentationMigrationParticipantTests extends AbstractIntegration
     @GivenSiriusWebServer
     @DisplayName("Given a project with an old diagram representation, when the representation is loaded, then the size of label is added to the layout data")
     public void testLabelLayoutDataSizeMigration() {
-        var semanticData = AggregateReference.<SemanticData, UUID>to(UUID.fromString(MigrationIdentifiers.MIGRATION_STUDIO_EDITING_CONTEXT_ID));
+        var semanticData = AggregateReference.<SemanticData, UUID>to(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO);
         var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(MigrationIdentifiers.MIGRATION_STUDIO_DIAGRAM);
 
         var representationContentBeforeMigration = this.representationContentSearchService.findContentById(semanticData, representationMetadata);

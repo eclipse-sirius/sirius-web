@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories;
 
-import java.util.UUID;
-
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.springframework.data.repository.ListCrudRepository;
 import org.springframework.data.repository.ListPagingAndSortingRepository;
@@ -25,5 +23,5 @@ import org.springframework.stereotype.Repository;
  * @author gcoutable
  */
 @Repository
-public interface IRepresentationContentRepository extends ListPagingAndSortingRepository<RepresentationContent, UUID>, ListCrudRepository<RepresentationContent, UUID> {
+public interface IRepresentationContentRepository extends ListPagingAndSortingRepository<RepresentationContent, String>, ListCrudRepository<RepresentationContent, String> {
 }

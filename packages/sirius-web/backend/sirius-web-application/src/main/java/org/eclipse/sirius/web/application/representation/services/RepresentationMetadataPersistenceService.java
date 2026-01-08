@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.RepresentationCompositeIdProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
@@ -49,7 +50,9 @@ public class RepresentationMetadataPersistenceService implements IRepresentation
             var semanticDataId = optionalSemanticDataId.get();
             var representationId = optionalRepresentationId.get();
 
-            var boundedRepresentationMetadata = RepresentationMetadata.newRepresentationMetadata(representationId)
+            var id = new RepresentationCompositeIdProvider().getId(semanticDataId, representationId);
+            var boundedRepresentationMetadata = RepresentationMetadata.newRepresentationMetadata(id)
+                    .representationMetadataId(representationId)
                     .semanticData(AggregateReference.to(semanticDataId))
                     .label(representationMetadata.label())
                     .kind(representationMetadata.kind())

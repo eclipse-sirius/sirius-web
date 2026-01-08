@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,7 +57,7 @@ public class StudioWorkbenchConfigurationProvider implements IWorkbenchConfigura
         var allRepresentationMetadata = new UUIDParser().parse(editingContextId).map(id -> this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(id))).orElse(List.of());
         var optionalRepresentationIdToOpen = allRepresentationMetadata.stream()
                 .filter(representationMetadata -> "Domain".equals(representationMetadata.getLabel()))
-                .map(RepresentationMetadata::getId)
+                .map(RepresentationMetadata::getRepresentationMetadataId)
                 .findFirst();
         var representationToOpen = optionalRepresentationIdToOpen.stream()
                 .map(representationMetadata -> new WorkbenchRepresentationEditorConfiguration(representationMetadata.toString(), true))

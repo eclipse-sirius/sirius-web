@@ -42,17 +42,20 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
 
     @Override
     public boolean existsBySemanticDataAndRepresentationMetadataId(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId) {
-        return this.representationMetadataRepository.existsById(representationMetadataId);
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadataId);
+        return this.representationMetadataRepository.existsById(id);
     }
 
     @Override
     public Optional<RepresentationMetadata> findMetadataById(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId) {
-        return this.representationMetadataRepository.findMetadataById(representationMetadataId);
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadataId);
+        return this.representationMetadataRepository.findById(id);
     }
 
     @Override
     public boolean existsByIdAndKind(AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, List<String> kinds) {
-        return this.representationMetadataRepository.existsByIdAndKind(representationMetadataId, kinds);
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadataId);
+        return this.representationMetadataRepository.existsByIdAndKind(id, kinds);
     }
 
     @Override
@@ -89,7 +92,7 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
         boolean hasPrevious = false;
 
         if (!allRepresentationMetadata.isEmpty()) {
-            var firstRepresentationMetadataId = allRepresentationMetadata.get(0).getId();
+            var firstRepresentationMetadataId = allRepresentationMetadata.get(0).getSemanticData().getId();
             hasPrevious = !this.representationMetadataRepository.findAllRepresentationMetadataBySemanticDataIdBefore(semanticData.getId(), firstRepresentationMetadataId, 1).isEmpty();
         }
 
@@ -102,7 +105,7 @@ public class RepresentationMetadataSearchService implements IRepresentationMetad
         boolean hasNext = false;
 
         if (!allRepresentationMetadata.isEmpty()) {
-            var lastRepresentationMetadataId = allRepresentationMetadata.get(allRepresentationMetadata.size() - 1).getId();
+            var lastRepresentationMetadataId = allRepresentationMetadata.get(allRepresentationMetadata.size() - 1).getSemanticData().getId();
             hasNext = !this.representationMetadataRepository.findAllRepresentationMetadataBySemanticDataIdAfter(semanticData.getId(), lastRepresentationMetadataId, 1).isEmpty();
         }
 

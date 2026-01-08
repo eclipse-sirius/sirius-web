@@ -35,16 +35,15 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author gcoutable
  */
 @Table("representation_content")
-public class RepresentationContent extends AbstractValidatingAggregateRoot<RepresentationContent> implements Persistable<UUID> {
+public class RepresentationContent extends AbstractValidatingAggregateRoot<RepresentationContent> implements Persistable<String> {
 
     @Transient
     private boolean isNew;
 
     @Id
-    private UUID id;
+    private String id;
 
-    @Column("representation_metadata_id")
-    private AggregateReference<RepresentationMetadata, UUID> representationMetadata;
+    private UUID representationMetadataId;
 
     @Column("semantic_data_id")
     private AggregateReference<SemanticData, UUID> semanticData;
@@ -59,13 +58,25 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
 
     private Instant lastModifiedOn;
 
+    /**
+     * Returns the identifier of the representation content. This identifier is unique for the entire server.
+     *
+     * @return The identifier for the representation content
+     *
+     * @technical-debt This identifier has been switched from a UUID to a String which encapsulates two pieces of data
+     * the semantic data id and the representation metadata id in order to satisfy a limitation that we have with Spring
+     * Boot 3.x. Part of this limitation will not exist in Spring Boot 4.x and this identifier will then be modified again.
+     * This previous value of this identifier can now be found in {@code getRepresentationMetadata}. This identifier
+     * should not be used at all unless you know exactly what you are doing.
+     */
+    @Deprecated(forRemoval = true)
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
     }
 
-    public AggregateReference<RepresentationMetadata, UUID> getRepresentationMetadata() {
-        return this.representationMetadata;
+    public UUID getRepresentationMetadataId() {
+        return this.representationMetadataId;
     }
 
     public AggregateReference<SemanticData, UUID> getSemanticData() {
@@ -116,7 +127,7 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
         return this.isNew;
     }
 
-    public static Builder newRepresentationContent(UUID id) {
+    public static Builder newRepresentationContent(String id) {
         return new Builder(id);
     }
 
@@ -128,9 +139,9 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private final UUID id;
+        private final String id;
 
-        private AggregateReference<RepresentationMetadata, UUID> representationMetadata;
+        private UUID representationMetadataId;
 
         private AggregateReference<SemanticData, UUID> semanticData;
 
@@ -140,12 +151,12 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
 
         private String migrationVersion;
 
-        public Builder(UUID id) {
+        public Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
 
-        public Builder representationMetadata(AggregateReference<RepresentationMetadata, UUID> representationMetadata) {
-            this.representationMetadata = Objects.requireNonNull(representationMetadata);
+        public Builder representationMetadataId(UUID representationMetadataId) {
+            this.representationMetadataId = Objects.requireNonNull(representationMetadataId);
             return this;
         }
 
@@ -173,7 +184,7 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
             var representationContent = new RepresentationContent();
             representationContent.isNew = true;
             representationContent.id = Objects.requireNonNull(this.id);
-            representationContent.representationMetadata = Objects.requireNonNull(this.representationMetadata);
+            representationContent.representationMetadataId = Objects.requireNonNull(this.representationMetadataId);
             representationContent.semanticData = Objects.requireNonNull(this.semanticData);
             representationContent.content = Objects.requireNonNull(this.content);
             representationContent.lastMigrationPerformed = Objects.requireNonNull(this.lastMigrationPerformed);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.RepresentationCompositeIdProvider;
 import org.eclipse.sirius.web.services.gantt.PapayaGanttDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
@@ -121,7 +122,8 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
                     taskId.set(task.id());
 
                     var representationId = new UUIDParser().parse(gantt.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid identifier"));
-                    this.representationContentRepository.findById(representationId)
+                    var id = new RepresentationCompositeIdProvider().getId(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, representationId);
+                    this.representationContentRepository.findById(id)
                             .ifPresentOrElse(representationContent::set, () -> fail("Missing representation data"));
                 }, () -> fail("Missing gantt"));
 

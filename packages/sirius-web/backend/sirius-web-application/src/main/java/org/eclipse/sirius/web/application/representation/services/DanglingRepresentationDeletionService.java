@@ -65,7 +65,7 @@ public class DanglingRepresentationDeletionService implements IDanglingRepresent
                 .ifPresent(semanticData ->
                         this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(semanticData).stream()
                                 .filter(representationMetadata -> this.objectSearchService.getObject(editingContext, representationMetadata.getTargetObjectId()).isEmpty())
-                                .map(RepresentationMetadata::getId)
+                                .map(RepresentationMetadata::getRepresentationMetadataId)
                                 .forEach(representationId -> this.representationMetadataDeletionService.delete(cause, semanticData, representationId)));
     }
 }

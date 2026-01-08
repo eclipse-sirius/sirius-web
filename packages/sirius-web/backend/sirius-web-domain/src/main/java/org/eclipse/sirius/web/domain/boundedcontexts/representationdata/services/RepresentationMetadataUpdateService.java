@@ -48,7 +48,8 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
     public IResult<Void> updateLabel(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, String label) {
         IResult<Void> result = new Failure<>(this.messageService.notFound());
 
-        var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadataId);
+        var optionalRepresentationMetadata = this.representationMetadataRepository.findById(id);
         if (optionalRepresentationMetadata.isPresent()) {
             var representationMetadata = optionalRepresentationMetadata.get();
             representationMetadata.updateLabel(cause, label);
@@ -64,7 +65,8 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
     public IResult<Void> updateDescriptionId(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, String descriptionId) {
         IResult<Void> result = new Failure<>(this.messageService.notFound());
 
-        var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadataId);
+        var optionalRepresentationMetadata = this.representationMetadataRepository.findById(id);
         if (optionalRepresentationMetadata.isPresent()) {
             var representationMetadata = optionalRepresentationMetadata.get();
             representationMetadata.updateDescriptionId(cause, descriptionId);
@@ -80,7 +82,8 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
     public IResult<RepresentationMetadata> updateDocumentation(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, String documentation) {
         IResult<RepresentationMetadata> result = new Failure<>(this.messageService.notFound());
 
-        var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadataId);
+        var optionalRepresentationMetadata = this.representationMetadataRepository.findById(id);
         if (optionalRepresentationMetadata.isPresent()) {
             var representationMetadata = optionalRepresentationMetadata.get();
             representationMetadata.updateDocumentation(cause, documentation);
@@ -96,7 +99,8 @@ public class RepresentationMetadataUpdateService implements IRepresentationMetad
     public IResult<Void> updateTargetObjectId(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId, String targetObjectId) {
         IResult<Void> result = new Failure<>(this.messageService.notFound());
 
-        var optionalRepresentationMetadata = this.representationMetadataRepository.findMetadataById(representationMetadataId);
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadataId);
+        var optionalRepresentationMetadata = this.representationMetadataRepository.findById(id);
         if (optionalRepresentationMetadata.isPresent()) {
             var representationMetadata = optionalRepresentationMetadata.get();
             representationMetadata.updateTargetObjectId(cause, targetObjectId);

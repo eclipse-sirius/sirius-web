@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2026 Obeo.
+  ~ This program and the accompanying materials
+  ~ are made available under the terms of the Eclipse Public License v2.0
+  ~ which accompanies this distribution, and is available at
+  ~ https://www.eclipse.org/legal/epl-2.0/
+  ~
+  ~ SPDX-License-Identifier: EPL-2.0
+  ~
+  ~ Contributors:
+  ~     Obeo - initial API and implementation
+  -->
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+    <changeSet id="05-make-representations-identifiers-semantic-data-aware" author="sbegaudeau">
+        <dropForeignKeyConstraint baseTableName="representation_content" constraintName="fk_representation_content_representation_metadata_id" />
+        <dropForeignKeyConstraint baseTableName="representation_metadata_icon_url" constraintName="fk_representation_metadata_id" />
+
+        <addColumn tableName="representation_metadata">
+            <column name="representation_metadata_id" type="UUID">
+            </column>
+        </addColumn>
+        <sql>
+            UPDATE representation_metadata
+            SET representation_metadata_id = id
+        </sql>
+        <addNotNullConstraint tableName="representation_metadata" columnName="representation_metadata_id" />
+
+        <sql>
+            ALTER TABLE representation_metadata
+            ALTER COLUMN id TYPE TEXT
+            USING CONCAT_WS('#', semantic_data_id::text, representation_metadata_id::text);
+        </sql>
+
+        <addColumn tableName="representation_metadata_icon_url">
+            <column name="semantic_data_id" type="UUID">
+            </column>
+        </addColumn>
+        <sql>
+            UPDATE representation_metadata_icon_url
+            SET semantic_data_id = representationMetadata.semantic_data_id
+            FROM representation_metadata representationMetadata
+            WHERE representation_metadata_icon_url.representation_metadata_id = representationMetadata.representation_metadata_id
+        </sql>
+        <addNotNullConstraint tableName="representation_metadata_icon_url" columnName="semantic_data_id" />
+
+        <sql>
+            ALTER TABLE representation_metadata_icon_url
+            ALTER COLUMN representation_metadata_id TYPE TEXT
+            USING CONCAT_WS('#', semantic_data_id::text, representation_metadata_id::text);
+        </sql>
+
+        <dropColumn tableName="representation_metadata_icon_url" columnName="semantic_data_id" />
+
+        <sql>
+            ALTER TABLE representation_content
+            ALTER COLUMN id TYPE TEXT
+            USING CONCAT_WS('#', semantic_data_id::text, representation_metadata_id::text);
+        </sql>
+
+        <addForeignKeyConstraint
+                baseTableName="representation_content"
+                baseColumnNames="id"
+                constraintName="fk_representation_content_id"
+                referencedTableName="representation_metadata"
+                referencedColumnNames="id"
+                onDelete="CASCADE" />
+
+        <addForeignKeyConstraint
+                baseTableName="representation_metadata_icon_url"
+                baseColumnNames="representation_metadata_id"
+                constraintName="fk_representation_metadata_icon_url_representation_metadata_id"
+                referencedTableName="representation_metadata"
+                referencedColumnNames="id"
+                onDelete="CASCADE" />
+    </changeSet>
+</databaseChangeLog>

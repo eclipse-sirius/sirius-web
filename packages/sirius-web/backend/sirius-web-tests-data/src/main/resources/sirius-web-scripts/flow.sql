@@ -122,6 +122,7 @@ INSERT INTO project_semantic_data (
 
 INSERT INTO representation_metadata (
   id,
+  representation_metadata_id,
   target_object_id,
   description_id,
   label,
@@ -131,6 +132,7 @@ INSERT INTO representation_metadata (
   documentation,
   semantic_data_id
 ) VALUES (
+  '6dfe736e-c582-4148-8dcf-9b1baa6e3a12#40569b77-1967-46cc-99da-c526f5ffbc85',
   '40569b77-1967-46cc-99da-c526f5ffbc85',
   '5b75dcbe-10af-452a-af98-4461ee13ea40',
   'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38',
@@ -152,7 +154,7 @@ INSERT INTO representation_content (
   created_on,
   last_modified_on
 ) VALUES (
-  '40569b77-1967-46cc-99da-c526f5ffbc85',
+  '6dfe736e-c582-4148-8dcf-9b1baa6e3a12#40569b77-1967-46cc-99da-c526f5ffbc85',
   '40569b77-1967-46cc-99da-c526f5ffbc85',
   '6dfe736e-c582-4148-8dcf-9b1baa6e3a12',
   '{

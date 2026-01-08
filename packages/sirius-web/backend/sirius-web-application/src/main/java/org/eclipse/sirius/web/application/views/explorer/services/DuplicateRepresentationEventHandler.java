@@ -34,6 +34,7 @@ import org.eclipse.sirius.web.application.views.explorer.dto.DuplicateRepresenta
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationIconURL;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.RepresentationCompositeIdProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
@@ -127,7 +128,9 @@ public class DuplicateRepresentationEventHandler implements IEditingContextEvent
             var representationContentToDuplicate = optionalRepresentationContent.get();
 
             var duplicatedRepresentationId = UUID.randomUUID();
-            var duplicatedRepresentationMetadata = RepresentationMetadata.newRepresentationMetadata(duplicatedRepresentationId)
+            var id = new RepresentationCompositeIdProvider().getId(representationMetadataToDuplicate.getSemanticData().getId(), duplicatedRepresentationId);
+            var duplicatedRepresentationMetadata = RepresentationMetadata.newRepresentationMetadata(id)
+                    .representationMetadataId(duplicatedRepresentationId)
                     .semanticData(representationMetadataToDuplicate.getSemanticData())
                     .targetObjectId(representationMetadataToDuplicate.getTargetObjectId())
                     .descriptionId(representationMetadataToDuplicate.getDescriptionId())
@@ -151,7 +154,7 @@ public class DuplicateRepresentationEventHandler implements IEditingContextEvent
             var iconURLs = duplicatedRepresentationMetadata.getIconURLs().stream()
                     .map(RepresentationIconURL::url)
                     .toList();
-            return Optional.of(new org.eclipse.sirius.components.core.RepresentationMetadata(duplicatedRepresentationMetadata.getId().toString(), duplicatedRepresentationMetadata.getKind(), duplicatedRepresentationMetadata.getLabel(), duplicatedRepresentationMetadata.getDescriptionId(), iconURLs));
+            return Optional.of(new org.eclipse.sirius.components.core.RepresentationMetadata(duplicatedRepresentationMetadata.getRepresentationMetadataId().toString(), duplicatedRepresentationMetadata.getKind(), duplicatedRepresentationMetadata.getLabel(), duplicatedRepresentationMetadata.getDescriptionId(), iconURLs));
 
         }
         return Optional.empty();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.RepresentationCompositeIdProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedFormDescriptionEditorSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -112,7 +113,8 @@ public class FormDescriptionEditorLifecycleControllerTests extends AbstractInteg
                     assertThat(firstGroup.getWidgets()).hasSize(4);
 
                     var representationId = new UUIDParser().parse(formDescriptionEditor.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid identifier"));
-                    this.representationMetadataRepository.findById(representationId)
+                    var id = new RepresentationCompositeIdProvider().getId(UUID.fromString(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID), representationId);
+                    this.representationMetadataRepository.findById(id)
                             .ifPresentOrElse(representationMetadata::set, () -> fail("Missing representation data"));
                 }, () -> fail("Missing form description editor"));
 

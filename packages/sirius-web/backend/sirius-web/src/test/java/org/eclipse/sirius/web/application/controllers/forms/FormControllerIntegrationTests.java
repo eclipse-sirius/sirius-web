@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,7 @@ import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.RepresentationCompositeIdProvider;
 import org.eclipse.sirius.web.services.forms.FormVariableViewPreEditingContextProcessor;
 import org.eclipse.sirius.web.services.forms.MasterDetailsFormDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -208,7 +209,10 @@ public class FormControllerIntegrationTests extends AbstractIntegrationTests {
 
             var representationId = new UUIDParser().parse(form.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid identifier"));
             formId.set(form.getId());
-            this.representationMetadataRepository.findById(representationId).ifPresentOrElse(representationMetadata::set, () -> fail("Missing representation data"));
+
+            var id = new RepresentationCompositeIdProvider().getId(UUID.fromString(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID), representationId);
+            this.representationMetadataRepository.findById(id)
+                    .ifPresentOrElse(representationMetadata::set, () -> fail("Missing representation data"));
         });
 
         Runnable reloadForm = () -> {

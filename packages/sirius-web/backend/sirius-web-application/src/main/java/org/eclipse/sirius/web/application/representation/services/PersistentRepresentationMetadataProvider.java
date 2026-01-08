@@ -56,7 +56,7 @@ public class PersistentRepresentationMetadataProvider implements IRepresentation
             if (optionalRepresentationMetadata.isPresent()) {
                 var representationMetadata = optionalRepresentationMetadata.get();
 
-                return Optional.of(RepresentationMetadata.newRepresentationMetadata(representationMetadata.getId().toString())
+                return Optional.of(RepresentationMetadata.newRepresentationMetadata(representationMetadata.getRepresentationMetadataId().toString())
                         .kind(representationMetadata.getKind())
                         .label(representationMetadata.getLabel())
                         .descriptionId(representationMetadata.getDescriptionId())

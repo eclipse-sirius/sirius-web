@@ -93,14 +93,14 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
                     .orElse(List.of());
 
             for (var representationMetadata : allRepresentationMetadata) {
-                var optionalRepresentationContentNode = this.representationContentSearchService.findContentById(AggregateReference.to(UUID.fromString(editingContext.getId())), AggregateReference.to(representationMetadata.getId()))
+                var optionalRepresentationContentNode = this.representationContentSearchService.findContentById(AggregateReference.to(UUID.fromString(editingContext.getId())), AggregateReference.to(representationMetadata.getRepresentationMetadataId()))
                         .flatMap(representationContent -> this.representationContentMigrationService.getMigratedContent(editingContext, representationMetadata, representationContent));
 
                 if (optionalRepresentationContentNode.isPresent()) {
                     var representationContentNode = optionalRepresentationContentNode.get();
 
                     var exportData = new RepresentationSerializedExportData(
-                            representationMetadata.getId(),
+                            representationMetadata.getRepresentationMetadataId(),
                             project.getId(),
                             representationMetadata.getDescriptionId(),
                             representationMetadata.getTargetObjectId(),
@@ -129,12 +129,12 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
                             "descriptionURI", representationMetadata.getDescriptionId(),
                             "targetObjectURI", uriFragment
                     );
-                    representationManifests.put(representationMetadata.getId().toString(), representationManifest);
+                    representationManifests.put(representationMetadata.getRepresentationMetadataId().toString(), representationManifest);
 
                     try {
                         byte[] bytes = this.objectMapper.writeValueAsBytes(exportData);
 
-                        String name = project.getName() + "/representations/" + representationMetadata.getId() + "." + JsonResourceFactoryImpl.EXTENSION;
+                        String name = project.getName() + "/representations/" + representationMetadata.getRepresentationMetadataId() + "." + JsonResourceFactoryImpl.EXTENSION;
 
                         ZipEntry zipEntry = new ZipEntry(name);
                         zipEntry.setSize(bytes.length);

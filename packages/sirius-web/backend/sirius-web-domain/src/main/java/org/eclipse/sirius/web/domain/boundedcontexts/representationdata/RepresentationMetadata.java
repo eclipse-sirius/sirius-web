@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,13 +39,15 @@ import org.springframework.data.relational.core.mapping.Table;
  * @author sbegaudeau
  */
 @Table("representation_metadata")
-public class RepresentationMetadata extends AbstractValidatingAggregateRoot<RepresentationMetadata> implements Persistable<UUID> {
+public class RepresentationMetadata extends AbstractValidatingAggregateRoot<RepresentationMetadata> implements Persistable<String> {
 
     @Transient
     private boolean isNew;
 
     @Id
-    private UUID id;
+    private String id;
+
+    private UUID representationMetadataId;
 
     @Column("semantic_data_id")
     private AggregateReference<SemanticData, UUID> semanticData;
@@ -67,9 +69,25 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
 
     private String documentation;
 
+    /**
+     * Returns the identifier of the representation metadata. This identifier is unique for the entire server.
+     *
+     * @return The identifier for the representation metadata
+     *
+     * @technical-debt This identifier has been switched from a UUID to a String which encapsulates two pieces of data
+     * the semantic data id and the representation metadata id in order to satisfy a limitation that we have with Spring
+     * Boot 3.x. Part of this limitation will not exist in Spring Boot 4.x and this identifier will then be modified again.
+     * This previous value of this identifier can now be found in {@code getRepresentationMetadataId}. This identifier
+     * should not be used at all unless you know exactly what you are doing.
+     */
+    @Deprecated(forRemoval = true)
     @Override
-    public UUID getId() {
+    public String getId() {
         return this.id;
+    }
+
+    public UUID getRepresentationMetadataId() {
+        return this.representationMetadataId;
     }
 
     public AggregateReference<SemanticData, UUID> getSemanticData() {
@@ -161,7 +179,7 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
         return this.isNew;
     }
 
-    public static Builder newRepresentationMetadata(UUID id) {
+    public static Builder newRepresentationMetadata(String id) {
         return new Builder(id);
     }
 
@@ -173,7 +191,9 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private final UUID id;
+        private final String id;
+
+        private UUID representationMetadataId;
 
         private AggregateReference<SemanticData, UUID> semanticData;
 
@@ -189,8 +209,13 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
 
         private String documentation;
 
-        public Builder(UUID id) {
+        public Builder(String id) {
             this.id = Objects.requireNonNull(id);
+        }
+
+        public Builder representationMetadataId(UUID representationMetadataId) {
+            this.representationMetadataId = Objects.requireNonNull(representationMetadataId);
+            return this;
         }
 
         public Builder semanticData(AggregateReference<SemanticData, UUID> semanticData) {
@@ -232,6 +257,7 @@ public class RepresentationMetadata extends AbstractValidatingAggregateRoot<Repr
             var representationMetadata = new RepresentationMetadata();
             representationMetadata.isNew = true;
             representationMetadata.id = Objects.requireNonNull(this.id);
+            representationMetadata.representationMetadataId = Objects.requireNonNull(this.representationMetadataId);
             representationMetadata.semanticData = Objects.requireNonNull(this.semanticData);
             representationMetadata.targetObjectId = Objects.requireNonNull(this.targetObjectId);
             representationMetadata.descriptionId = Objects.requireNonNull(this.descriptionId);

@@ -47,6 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -152,7 +153,7 @@ public class TestCreateForkedStudio extends AbstractIntegrationTests {
             assertThat(semanticData).isPresent();
 
             // Check if the representation have been updated to use the new view
-            var representationMetadata = this.representationMetadataSearchService.findMetadataById(projectSemanticData.getSemanticData(), UUID.fromString(representationId.get()));
+            var representationMetadata = this.representationMetadataSearchService.findMetadataById(AggregateReference.to(UUID.fromString(StudioIdentifiers.INSTANCE_EDITING_CONTEXT_ID)), UUID.fromString(representationId.get()));
             assertThat(representationMetadata).isPresent();
             var newRepresentationId = representationMetadata.get().getDescriptionId();
             assertThat(newRepresentationId).isNotEqualTo(StudioIdentifiers.TABLE_DESCRIPTION_ID);

@@ -47,6 +47,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.RepresentationCompositeIdProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -171,11 +172,13 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     assertThat(humanNodeLayout).isNotNull();
                     assertThat(humanNodeLayout.position()).isEqualTo(initialPosition);
                     assertThat(humanNodeLayout.size()).isEqualTo(initialSize);
-                    var optionalRepresentationMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get()));
+
+                    var id = new RepresentationCompositeIdProvider().getId(UUID.fromString(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID), UUID.fromString(diagramId.get()));
+                    var optionalRepresentationMetadata = this.representationMetadataRepository.findById(id);
                     if (optionalRepresentationMetadata.isPresent()) {
                         var representationMetadata = optionalRepresentationMetadata.get();
                         initialDiagramMetadata.set(representationMetadata);
-                        this.representationContentRepository.findById(representationMetadata.getId()).ifPresent(initialDiagramContent::set);
+                        this.representationContentRepository.findById(id).ifPresent(initialDiagramContent::set);
                     }
                 }, () -> fail("Missing diagram"));
 
@@ -199,8 +202,9 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     assertThat(humanNodeLayout.position()).isEqualTo(modifiedPosition);
                     assertThat(humanNodeLayout.size()).isEqualTo(modifiedSize);
 
-                    var modifiedDiagramMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get())).get();
-                    var modifiedDiagramContent = this.representationContentRepository.findById(modifiedDiagramMetadata.getId()).get();
+                    var id = new RepresentationCompositeIdProvider().getId(UUID.fromString(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID), UUID.fromString(diagramId.get()));
+                    var modifiedDiagramMetadata = this.representationMetadataRepository.findById(id).get();
+                    var modifiedDiagramContent = this.representationContentRepository.findById(id).get();
                     assertThat(modifiedDiagramContent.getContent()).isNotEqualTo(initialDiagramContent.get().getContent());
                 }, () -> fail("Missing diagram"));
 
@@ -266,11 +270,13 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     var humansLabelLayout = diagram.getLayoutData().labelLayoutData().get(humansEdgeCenterLabelId.get());
                     assertThat(humansLabelLayout).isNotNull();
                     assertThat(humansLabelLayout.position()).isEqualTo(initialPosition);
-                    var optionalRepresentationMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get()));
+
+                    var id = new RepresentationCompositeIdProvider().getId(UUID.fromString(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID), UUID.fromString(diagramId.get()));
+                    var optionalRepresentationMetadata = this.representationMetadataRepository.findById(id);
                     if (optionalRepresentationMetadata.isPresent()) {
                         var representationMetadata = optionalRepresentationMetadata.get();
                         initialDiagramMetadata.set(representationMetadata);
-                        this.representationContentRepository.findById(representationMetadata.getId()).ifPresent(initialDiagramContent::set);
+                        this.representationContentRepository.findById(id).ifPresent(initialDiagramContent::set);
                     }
                 }, () -> fail("Missing diagram"));
 
@@ -294,8 +300,9 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
                     assertThat(humansLabelLayout.position()).isEqualTo(modifiedPosition);
                     assertThat(humansLabelLayout.size()).isEqualTo(modifiedSize);
 
-                    var modifiedDiagramMetadata = this.representationMetadataRepository.findById(UUID.fromString(diagramId.get())).get();
-                    var modifiedDiagramContent = this.representationContentRepository.findById(modifiedDiagramMetadata.getId()).get();
+                    var id = new RepresentationCompositeIdProvider().getId(UUID.fromString(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID), UUID.fromString(diagramId.get()));
+                    var modifiedDiagramMetadata = this.representationMetadataRepository.findById(id).get();
+                    var modifiedDiagramContent = this.representationContentRepository.findById(id).get();
                     assertThat(modifiedDiagramContent.getContent()).isNotEqualTo(initialDiagramContent.get().getContent());
                 }, () -> fail("Missing diagram"));
 

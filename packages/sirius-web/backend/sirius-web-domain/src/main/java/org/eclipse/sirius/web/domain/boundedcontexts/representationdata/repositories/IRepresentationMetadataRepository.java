@@ -13,7 +13,6 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
@@ -28,14 +27,7 @@ import org.springframework.stereotype.Repository;
  * @author sbegaudeau
  */
 @Repository
-public interface IRepresentationMetadataRepository extends ListPagingAndSortingRepository<RepresentationMetadata, UUID>, ListCrudRepository<RepresentationMetadata, UUID> {
-
-    @Query("""
-        SELECT representationMetadata.*
-        FROM representation_metadata representationMetadata
-        WHERE representationMetadata.id = :id
-        """)
-    Optional<RepresentationMetadata> findMetadataById(UUID id);
+public interface IRepresentationMetadataRepository extends ListPagingAndSortingRepository<RepresentationMetadata, String>, ListCrudRepository<RepresentationMetadata, String> {
 
     @Query("""
         SELECT representationMetadata.*
@@ -47,17 +39,17 @@ public interface IRepresentationMetadataRepository extends ListPagingAndSortingR
     @Query("""
         WITH
         filtered_representation_metadata as (
-            SELECT row_number() over ( ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.id asc), representationMetadata.*
+            SELECT row_number() over ( ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.representation_metadata_id asc), representationMetadata.*
             FROM representation_metadata representationMetadata
             WHERE representationMetadata.semantic_data_id = :semanticDataId
-            ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.id asc
+            ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.representation_metadata_id asc
         ),
         cursor_index as (
             SELECT coalesce(
                 (
                     SELECT representationMetadata.row_number
                     FROM filtered_representation_metadata representationMetadata
-                    WHERE representationMetadata.id = :cursorId
+                    WHERE representationMetadata.representation_metadata_id = :cursorId
                     LIMIT 1
                 ),
                 (
@@ -76,17 +68,17 @@ public interface IRepresentationMetadataRepository extends ListPagingAndSortingR
     @Query("""
         WITH
         filtered_representation_metadata as (
-            SELECT row_number() over ( ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.id asc), representationMetadata.*
+            SELECT row_number() over ( ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.representation_metadata_id asc), representationMetadata.*
             FROM representation_metadata representationMetadata
             WHERE representationMetadata.semantic_data_id = :semanticDataId
-            ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.id asc
+            ORDER BY representationMetadata.created_on desc, representationMetadata.label asc, representationMetadata.representation_metadata_id asc
         ),
         cursor_index as (
             SELECT coalesce(
                 (
                     SELECT representationMetadata.row_number
                     FROM filtered_representation_metadata representationMetadata
-                    WHERE representationMetadata.id = :cursorId
+                    WHERE representationMetadata.representation_metadata_id = :cursorId
                     LIMIT 1
                 ),
                 0
@@ -121,8 +113,8 @@ public interface IRepresentationMetadataRepository extends ListPagingAndSortingR
     @Query("""
         SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END
         FROM representation_metadata representationMetadata
-        WHERE representationMetadata.id = :representationId
+        WHERE representationMetadata.id = :id
         AND representationMetadata.kind IN (:kinds)
         """)
-    boolean existsByIdAndKind(UUID representationId, List<String> kinds);
+    boolean existsByIdAndKind(String id, List<String> kinds);
 }
