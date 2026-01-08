@@ -12,13 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramPostProcessor;
@@ -53,8 +48,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Service used to create diagrams.
@@ -103,7 +102,7 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .map(DiagramDescription.class::cast)
                 .toList();
 
-        return this.doRender(targetObject, editingContext, diagramDescription, allDiagramDescriptions, Optional.empty());
+        return this.doRender(targetObject, editingContext, diagramDescription, allDiagramDescriptions, null);
     }
 
     @Override
@@ -112,20 +111,20 @@ public class DiagramCreationService implements IDiagramCreationService {
 
         var optionalObject = this.objectSearchService.getObject(editingContext, previousDiagram.getTargetObjectId());
         var optionalDiagramDescription = this.representationDescriptionSearchService.findById(editingContext, previousDiagram.getDescriptionId())
-                .filter(DiagramDescription.class::isInstance)
-                .map(DiagramDescription.class::cast);
+            .filter(DiagramDescription.class::isInstance)
+            .map(DiagramDescription.class::cast);
 
         var allDiagramDescriptions = this.representationDescriptionSearchService.findAll(editingContext)
-                .values()
-                .stream()
-                .filter(DiagramDescription.class::isInstance)
-                .map(DiagramDescription.class::cast)
-                .toList();
+            .values()
+            .stream()
+            .filter(DiagramDescription.class::isInstance)
+            .map(DiagramDescription.class::cast)
+            .toList();
 
         if (optionalObject.isPresent() && optionalDiagramDescription.isPresent()) {
             Object object = optionalObject.get();
             DiagramDescription diagramDescription = optionalDiagramDescription.get();
-            Diagram diagram = this.doRender(object, editingContext, diagramDescription, allDiagramDescriptions, Optional.of(diagramContext));
+            Diagram diagram = this.doRender(object, editingContext, diagramDescription, allDiagramDescriptions, diagramContext);
 
             for (var diagramPostProcessor : this.diagramPostProcessors) {
                 DiagramContext currentDiagramContext = new DiagramContext(diagram);
@@ -133,15 +132,14 @@ public class DiagramCreationService implements IDiagramCreationService {
                     diagram = diagramPostProcessor.postProcess(editingContext, currentDiagramContext).orElse(diagram);
                 }
             }
-
             return Optional.of(diagram);
         }
         return Optional.empty();
     }
 
-    private Diagram doRender(Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, Optional<DiagramContext> optionalDiagramContext) {
+    private Diagram doRender(Object targetObject, IEditingContext editingContext, DiagramDescription diagramDescription, List<DiagramDescription> allDiagramDescriptions, DiagramContext diagramContext) {
         long start = System.currentTimeMillis();
-
+        var optionalDiagramContext = Optional.ofNullable(diagramContext);
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
