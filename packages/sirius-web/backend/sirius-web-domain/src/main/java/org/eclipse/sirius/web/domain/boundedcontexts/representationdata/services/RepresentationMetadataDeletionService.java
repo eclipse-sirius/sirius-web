@@ -47,7 +47,8 @@ public class RepresentationMetadataDeletionService implements IRepresentationMet
     public IResult<Void> delete(ICause cause, AggregateReference<SemanticData, UUID> semanticData, UUID representationMetadataId) {
         IResult<Void> result = null;
 
-        var optionalRepresentationMetadata = this.representationMetadataRepository.findById(representationMetadataId);
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadataId);
+        var optionalRepresentationMetadata = this.representationMetadataRepository.findById(id);
         if (optionalRepresentationMetadata.isPresent()) {
             var representationMetadata = optionalRepresentationMetadata.get();
             representationMetadata.dispose(cause);

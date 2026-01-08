@@ -21,7 +21,6 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.events.RepresentationMetadataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
 import org.eclipse.sirius.web.view.fork.dto.ForkSemanticDataUpdatedEvent;
@@ -50,7 +49,7 @@ public class ForkedStudioRepresentationMetadataUpdater {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
-    public void onSemanticDataUpdatedEvent(RepresentationMetadataUpdatedEvent representationMetadataUpdatedEvent) {
+    public void onRepresentationMetadataUpdatedEvent(RepresentationMetadataUpdatedEvent representationMetadataUpdatedEvent) {
         if (representationMetadataUpdatedEvent.causedBy() instanceof  SemanticDataUpdatedEvent semanticDataUpdatedEvent
                 && semanticDataUpdatedEvent.causedBy() instanceof ForkSemanticDataUpdatedEvent forkSemanticDataUpdatedEvent
                 && forkSemanticDataUpdatedEvent.causedBy() instanceof ProjectCreatedEvent projectCreatedEvent
@@ -69,12 +68,12 @@ public class ForkedStudioRepresentationMetadataUpdater {
             if (optionalRepresentationMetadataId.isPresent()) {
                 var representationMetadataId = optionalRepresentationMetadataId.get();
 
-                var semanticData = AggregateReference.<SemanticData, UUID> to(semanticDataUpdatedEvent.semanticData().getId());
+                var semanticData = representationMetadataUpdatedEvent.representationMetadata().getSemanticData();
                 var representationMetadata = AggregateReference.<RepresentationMetadata, UUID> to(representationMetadataId);
-                var representationContent = this.representationContentSearchService.findContentById(semanticData, AggregateReference.to(representationMetadata.getId()));
-                if (representationContent.isPresent()) {
+                var optionalRepresentationContent = this.representationContentSearchService.findContentById(semanticData, AggregateReference.to(representationMetadata.getId()));
+                if (optionalRepresentationContent.isPresent()) {
                     //  Update the descriptionId of the current representation
-                    var newContent = representationContent.get().getContent()
+                    var newContent = optionalRepresentationContent.get().getContent()
                             .replace(previousDescriptionId, newDescriptionId)
                             .replace(previousSourceId, newSourceId);
 

@@ -67,7 +67,7 @@ public class ForkedStudioSemanticDataCreationService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @TransactionalEventListener
-    public void onProjectCreatedEvent(SemanticDataCreatedEvent semanticDataCreatedEvent) {
+    public void onSemanticDataCreatedEvent(SemanticDataCreatedEvent semanticDataCreatedEvent) {
         if (semanticDataCreatedEvent.causedBy() instanceof ProjectCreatedEvent projectCreatedEvent
                 && projectCreatedEvent.causedBy() instanceof CreateForkedStudioInput createdForkedStudioInput) {
             AggregateReference<Project, String> projectId = AggregateReference.to(projectCreatedEvent.project().getId());

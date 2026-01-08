@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,6 +56,7 @@ import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescri
 import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.RepresentationCompositeIdProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.explorer.ExplorerEventSubscriptionRunner;
@@ -444,7 +445,8 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             assertThat(layoutData.getWidth()).isEqualTo(500);
             assertThat(layoutData.getHeight()).isEqualTo(200);
 
-            var optionalRepresentationMetadata = this.representationContentRepository.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+            var id = new RepresentationCompositeIdProvider().getId(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+            var optionalRepresentationMetadata = this.representationContentRepository.findById(id);
             assertThat(optionalRepresentationMetadata).isPresent();
             initialPortalState.set(optionalRepresentationMetadata.get());
         });
@@ -465,7 +467,8 @@ public class PortalControllerIntegrationTests extends AbstractIntegrationTests {
             assertThat(layoutData.getWidth()).isEqualTo(300);
             assertThat(layoutData.getHeight()).isEqualTo(300);
 
-            var optionalRepresentationMetadata = this.representationContentRepository.findById(TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+            var id = new RepresentationCompositeIdProvider().getId(UUID.fromString(TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID), TestIdentifiers.EPACKAGE_PORTAL_REPRESENTATION);
+            var optionalRepresentationMetadata = this.representationContentRepository.findById(id);
             assertThat(optionalRepresentationMetadata).isPresent();
         });
 

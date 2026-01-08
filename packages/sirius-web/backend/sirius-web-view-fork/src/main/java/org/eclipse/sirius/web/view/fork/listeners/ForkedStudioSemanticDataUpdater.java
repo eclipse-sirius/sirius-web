@@ -15,7 +15,9 @@ package org.eclipse.sirius.web.view.fork.listeners;
 import java.util.Objects;
 import java.util.UUID;
 
+import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
@@ -35,11 +37,14 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Service
 public class ForkedStudioSemanticDataUpdater {
 
+    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
     private final IRepresentationMetadataSearchService representationMetadataSearchService;
 
     private final IRepresentationMetadataUpdateService representationMetadataUpdateService;
 
-    public ForkedStudioSemanticDataUpdater(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataUpdateService representationMetadataUpdateService) {
+    public ForkedStudioSemanticDataUpdater(IProjectSemanticDataSearchService projectSemanticDataSearchService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataUpdateService representationMetadataUpdateService) {
+        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
         this.representationMetadataUpdateService = Objects.requireNonNull(representationMetadataUpdateService);
     }
@@ -53,8 +58,12 @@ public class ForkedStudioSemanticDataUpdater {
             var representationId = createdForkedStudioInput.representationId();
             var newDescriptionId = this.getNewRepresentationDescriptionId(forkSemanticDataUpdatedEvent);
 
-            var representationMetadata = representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataUpdatedEvent.semanticData().getId()), UUID.fromString(representationId));
-            representationMetadata.ifPresent(metadata -> this.representationMetadataUpdateService.updateDescriptionId(semanticDataUpdatedEvent, AggregateReference.to(semanticDataUpdatedEvent.semanticData().getId()), metadata.getId(), newDescriptionId));
+            var optionalSemanticDataId = new UUIDParser().parse(createdForkedStudioInput.editingContextId());
+            if (optionalSemanticDataId.isPresent()) {
+                var semanticDataId = optionalSemanticDataId.get();
+                var representationMetadata = representationMetadataSearchService.findMetadataById(AggregateReference.to(semanticDataId), UUID.fromString(representationId));
+                representationMetadata.ifPresent(metadata -> this.representationMetadataUpdateService.updateDescriptionId(semanticDataUpdatedEvent, AggregateReference.to(semanticDataId), metadata.getRepresentationMetadataId(), newDescriptionId));
+            }
         }
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -145,15 +145,14 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a Flow project with more than one editing context, when the download of the project is requested with a specific editing context id, then the correct semantic data are " +
-            "retrieved")
+    @DisplayName("Given a Flow project with more than one editing context, when the download of the project is requested with a specific editing context id, then the correct semantic data are retrieved")
     public void givenMultiContextFlowProjectWhenTheDownloadOfProjectIsRequestedThenTheSemanticDataAreRetrieved() {
         // Test the main editing context
         var response = this.download(MultiEditingContextFlowIdentifiers.PROJECT_ID, "main");
 
         try (var inputStream = new ZipInputStream(response.getBody().getInputStream())) {
             HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
-            String domainDocumentPath = "MultiContextFlowProject/documents/" + MultiEditingContextFlowIdentifiers.MAIN_SEMANTIC_DOCUMENT + ".json";
+            String domainDocumentPath = "MultiContextFlowProject/documents/" + MultiEditingContextFlowIdentifiers.FLOW_DOCUMENT_ID + ".json";
             assertThat(zipEntries).isNotEmpty().containsKey(domainDocumentPath);
 
             var objectMapper = new ObjectMapper();
@@ -170,7 +169,10 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
 
         try (var inputStream = new ZipInputStream(response2.getBody().getInputStream())) {
             HashMap<String, ByteArrayOutputStream> zipEntries = this.toZipEntries(inputStream);
-            String domainDocumentPath = "MultiContextFlowProject/documents/" + MultiEditingContextFlowIdentifiers.MAIN_2_SEMANTIC_DOCUMENT + ".json";
+            String domainDocumentPath = "MultiContextFlowProject/documents/" + MultiEditingContextFlowIdentifiers.FLOW_DOCUMENT_ID + ".json";
+            assertThat(zipEntries).isNotEmpty().containsKey(domainDocumentPath);
+
+            domainDocumentPath = "MultiContextFlowProject/documents/" + MultiEditingContextFlowIdentifiers.ALTERNATE_DOCUMENT_ID + ".json";
             assertThat(zipEntries).isNotEmpty().containsKey(domainDocumentPath);
 
             var objectMapper = new ObjectMapper();
@@ -301,114 +303,64 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
     private String getExpectedMultiEditingContextFlowMainDocumentContent() {
         return """
                 {
-                     "json": { "version": "1.0", "encoding": "utf-8" },
-                     "ns": { "flow": "http://www.obeo.fr/dsl/designer/sample/flow" },
-                     "content": [
-                       {
-                         "id": "ff66bbf7-be79-4b89-8c32-d1603c9966af",
-                         "eClass": "flow:System",
-                         "data": {
-                           "name": "NewSystem",
-                           "elements": [
-                             {
-                               "id": "89d67776-6687-436f-8469-88a685053638",
-                               "eClass": "flow:CompositeProcessor",
-                               "data": {
-                                 "name": "CompositeProcessor1",
-                                 "elements": [
-                                   {
-                                     "id": "d5f4a659-904e-4135-9947-de298b0cbaf4",
-                                     "eClass": "flow:Processor",
-                                     "data": {
-                                       "incomingFlows": ["d4a7f861-c178-47f3-abfc-ed171398e1e7"],
-                                       "name": "Processor1"
-                                     }
-                                   }
-                                 ]
-                               }
-                             },
-                             {
-                               "id": "d0bc85f6-d597-4f36-bd1e-0980f7fb0fe4",
-                               "eClass": "flow:DataSource",
-                               "data": {
-                                 "outgoingFlows": [
-                                   {
-                                     "id": "d4a7f861-c178-47f3-abfc-ed171398e1e7",
-                                     "eClass": "flow:DataFlow",
-                                     "data": {
-                                       "usage": "standard",
-                                       "capacity": 6,
-                                       "load": 6,
-                                       "target": "d5f4a659-904e-4135-9947-de298b0cbaf4"
-                                     }
-                                   }
-                                 ],
-                                 "name": "DataSource1",
-                                 "volume": 6
-                               }
-                             }
-                           ]
-                         }
-                       }
-                     ]
-                   }
+                  "json":{
+                    "version":"1.0",
+                    "encoding":"utf-8"
+                  },
+                  "ns":{
+                    "flow":"http://www.obeo.fr/dsl/designer/sample/flow"
+                  },
+                  "content":[
+                    {
+                      "id":"01791d50-5f04-4a41-9e24-7833bd081051",
+                      "eClass":"flow:System",
+                      "data":{
+                        "name":"NewSystem",
+                        "elements":[
+                          {
+                            "id":"59e2326d-768b-45f2-abfa-51fb8e4cc377",
+                            "eClass":"flow:CompositeProcessor",
+                            "data":{
+                              "name":"CompositeProcessor"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
                 """;
     }
 
     private String getExpectedMultiEditingContextFlowMain2DocumentContent() {
         return """
                 {
-                     "json": { "version": "1.0", "encoding": "utf-8" },
-                     "ns": { "flow": "http://www.obeo.fr/dsl/designer/sample/flow" },
-                     "content": [
-                       {
-                         "id": "f926f2ec-681b-434c-b3e6-0fda47388768",
-                         "eClass": "flow:System",
-                         "data": {
-                           "name": "NewSystem2",
-                           "elements": [
-                             {
-                               "id": "ed151a41-6f24-4aea-83a2-79ece2bcec4a",
-                               "eClass": "flow:CompositeProcessor",
-                               "data": {
-                                 "name": "CompositeProcessor2",
-                                 "elements": [
-                                   {
-                                     "id": "dafeb7c5-de89-463e-8950-e322ec619b45",
-                                     "eClass": "flow:Processor",
-                                     "data": {
-                                       "incomingFlows": ["562e726e-207f-4c16-a2b4-e1f47828283c"],
-                                       "name": "Processor2"
-                                     }
-                                   }
-                                 ]
-                               }
-                             },
-                             {
-                               "id": "7fc90016-bb2e-428e-b99e-2fc813ca8a06",
-                               "eClass": "flow:DataSource",
-                               "data": {
-                                 "outgoingFlows": [
-                                   {
-                                     "id": "562e726e-207f-4c16-a2b4-e1f47828283c",
-                                     "eClass": "flow:DataFlow",
-                                     "data": {
-                                       "usage": "standard",
-                                       "capacity": 6,
-                                       "load": 6,
-                                       "target": "dafeb7c5-de89-463e-8950-e322ec619b45"
-                                     }
-                                   }
-                                 ],
-                                 "name": "DataSource2",
-                                 "volume": 6
-                               }
-                             }
-                           ]
-                         }
-                       }
-                     ]
-                   }
+                  "json":{
+                    "version":"1.0",
+                    "encoding":"utf-8"
+                  },
+                  "ns":{
+                    "flow":"http://www.obeo.fr/dsl/designer/sample/flow"
+                  },
+                  "content":[
+                    {
+                      "id":"01791d50-5f04-4a41-9e24-7833bd081051",
+                      "eClass":"flow:System",
+                      "data":{
+                        "name":"NewSystem2",
+                        "elements":[
+                          {
+                            "id":"59e2326d-768b-45f2-abfa-51fb8e4cc377",
+                            "eClass":"flow:CompositeProcessor",
+                            "data":{
+                              "name":"CompositeProcessor2"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
                 """;
     }
 

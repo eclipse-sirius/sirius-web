@@ -126,7 +126,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
-            id = representationMetadata.getId().toString();
+            id = representationMetadata.getRepresentationMetadataId().toString();
         } else if (self instanceof Resource || self instanceof EObject) {
             id = this.identityService.getId(self);
         } else if (self instanceof Setting setting) {

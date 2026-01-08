@@ -185,7 +185,7 @@ public class ProjectUploadControllerTests extends AbstractIntegrationTests {
                 return semanticDataId.toString();
             }
         };
-        var optionalDiagram = this.representationSearchService.findById(editingContext, representationMetaDatas.get(0).getId().toString(), Diagram.class);
+        var optionalDiagram = this.representationSearchService.findById(editingContext, representationMetaDatas.get(0).getRepresentationMetadataId().toString(), Diagram.class);
         assertThat(optionalDiagram).isPresent();
 
         var diagram = optionalDiagram.get();

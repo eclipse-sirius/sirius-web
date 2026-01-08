@@ -76,7 +76,7 @@ public class RepresentationSearchService implements IRepresentationSearchService
     }
 
     private Optional<IRepresentation> getRepresentation(IEditingContext editingContext, RepresentationMetadata representationMetadata) {
-        return this.representationContentSearchService.findContentById(AggregateReference.to(UUID.fromString(editingContext.getId())), AggregateReference.to(representationMetadata.getId()))
+        return this.representationContentSearchService.findContentById(AggregateReference.to(UUID.fromString(editingContext.getId())), AggregateReference.to(representationMetadata.getRepresentationMetadataId()))
                 .map(representationContent -> this.migratedContent(editingContext, representationMetadata, representationContent))
                 .flatMap(this::toRepresentation);
     }

@@ -42,8 +42,9 @@ public class RepresentationContentCreationService implements IRepresentationCont
 
     @Override
     public IResult<RepresentationContent> create(ICause cause, AggregateReference<SemanticData, UUID> semanticData, AggregateReference<RepresentationMetadata, UUID> representationMetadata, String content, String lastMigrationPerformed, String migrationVersion) {
-        var representationContent = RepresentationContent.newRepresentationContent(representationMetadata.getId())
-                .representationMetadata(representationMetadata)
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadata.getId());
+        var representationContent = RepresentationContent.newRepresentationContent(id)
+                .representationMetadataId(representationMetadata.getId())
                 .semanticData(semanticData)
                 .content(content)
                 .lastMigrationPerformed(lastMigrationPerformed)

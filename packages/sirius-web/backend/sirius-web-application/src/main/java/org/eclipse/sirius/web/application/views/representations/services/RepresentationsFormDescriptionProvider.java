@@ -230,7 +230,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
     private String getItemId(VariableManager variableManager) {
         return variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
-                .map(RepresentationMetadata::getId)
+                .map(RepresentationMetadata::getRepresentationMetadataId)
                 .map(UUID::toString)
                 .orElse(null);
     }
@@ -274,7 +274,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
         var optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
                 .map(IEditingContext::getId);
         var optionalRepresentationId = variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
-                .map(RepresentationMetadata::getId)
+                .map(RepresentationMetadata::getRepresentationMetadataId)
                 .map(UUID::toString);
 
         if (optionalEditingContextId.isPresent() && optionalRepresentationId.isPresent()) {
@@ -315,7 +315,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
                 var object = optionalObject.get();
                 String id = this.identityService.getId(object);
                 if (object instanceof RepresentationMetadata representationMetadata && Portal.KIND.equals(representationMetadata.getKind())) {
-                    var optionalPortal = this.representationSearchService.findById(editingContext, representationMetadata.getId().toString(), Portal.class);
+                    var optionalPortal = this.representationSearchService.findById(editingContext, representationMetadata.getRepresentationMetadataId().toString(), Portal.class);
                     if (optionalPortal.isPresent()) {
                         items = this.getPortalChildren(editingContext, optionalPortal.get());
                     }
@@ -350,7 +350,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
     private String getNodeId(VariableManager variableManager) {
         return variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
-                .map(RepresentationMetadata::getId)
+                .map(RepresentationMetadata::getRepresentationMetadataId)
                 .map(UUID::toString)
                 .orElse(null);
     }

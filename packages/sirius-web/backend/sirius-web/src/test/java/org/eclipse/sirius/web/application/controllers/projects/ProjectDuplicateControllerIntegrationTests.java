@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -151,12 +151,12 @@ public class ProjectDuplicateControllerIntegrationTests extends AbstractIntegrat
         // Check that the representation is available.
         Notifier newSystem = this.searchByLabel(newProjectEditingContext.getDomain().getResourceSet(), "NewSystem");
 
-        List<RepresentationMetadata> representations = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticDataAndTargetObjectId(
+        List<RepresentationMetadata> representationMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticDataAndTargetObjectId(
                 AggregateReference.to(UUID.fromString(newProjectEditingContext.getId())), this.identityService.getId(newSystem));
-        assertThat(representations).hasSize(1);
+        assertThat(representationMetadata).hasSize(1);
 
         // Check that all targetObjectIds have been updated
-        Optional<Diagram> diagram = this.representationSearchService.findById(newProjectEditingContext, representations.get(0).getId().toString(), Diagram.class);
+        Optional<Diagram> diagram = this.representationSearchService.findById(newProjectEditingContext, representationMetadata.get(0).getRepresentationMetadataId().toString(), Diagram.class);
         assertThat(diagram).isPresent();
         assertThat(diagram.get().getNodes()).allMatch(node -> this.objectSearchService.getObject(newProjectEditingContext, node.getTargetObjectId()).isPresent());
     }

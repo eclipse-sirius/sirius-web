@@ -530,6 +530,7 @@ INSERT INTO document (
 
 INSERT INTO representation_metadata (
     id,
+    representation_metadata_id,
     semantic_data_id,
     target_object_id,
     description_id,
@@ -539,6 +540,7 @@ INSERT INTO representation_metadata (
     created_on,
     last_modified_on
 ) VALUES (
+    'cc89c500-c27e-4968-9c67-15cf767c6ef0#dd0080f8-430d-441f-99a4-f46c7d9b28ef',
     'dd0080f8-430d-441f-99a4-f46c7d9b28ef',
     'cc89c500-c27e-4968-9c67-15cf767c6ef0',
     '569d3f9b-2a43-4254-b609-511258251d96',
@@ -559,7 +561,7 @@ INSERT INTO representation_content (
     created_on,
     last_modified_on
 ) VALUES (
-    'dd0080f8-430d-441f-99a4-f46c7d9b28ef',
+    'cc89c500-c27e-4968-9c67-15cf767c6ef0#dd0080f8-430d-441f-99a4-f46c7d9b28ef',
     'dd0080f8-430d-441f-99a4-f46c7d9b28ef',
     'cc89c500-c27e-4968-9c67-15cf767c6ef0',
     '{

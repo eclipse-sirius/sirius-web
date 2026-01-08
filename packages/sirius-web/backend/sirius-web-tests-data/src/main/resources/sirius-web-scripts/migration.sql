@@ -295,6 +295,7 @@ INSERT INTO document (
 
 INSERT INTO representation_metadata (
   id,
+  representation_metadata_id,
   semantic_data_id,
   target_object_id,
   description_id,
@@ -304,6 +305,7 @@ INSERT INTO representation_metadata (
   created_on,
   last_modified_on
 ) VALUES (
+  '89d67892-0cc9-4ca4-b30e-28688470c0d4#35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
   '35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
   '89d67892-0cc9-4ca4-b30e-28688470c0d4',
   '719d2b8f-ab70-438d-a999-306de10654a7',
@@ -325,7 +327,7 @@ INSERT INTO representation_content (
   last_migration_performed,
   migration_version
 ) VALUES (
-  '35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
+  '89d67892-0cc9-4ca4-b30e-28688470c0d4#35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
   '35f1cd7b-e5bb-443d-95ef-bab372a92b0f',
   '89d67892-0cc9-4ca4-b30e-28688470c0d4',
   '{
@@ -514,6 +516,7 @@ INSERT INTO document (
 
 INSERT INTO representation_metadata (
   id,
+  representation_metadata_id,
   semantic_data_id,
   target_object_id,
   description_id,
@@ -523,6 +526,7 @@ INSERT INTO representation_metadata (
   created_on,
   last_modified_on
 ) VALUES (
+  'e4a1dfda-81dd-481c-be93-63d96c6e7eb1#9698833e-ffd4-435a-9aec-765622ce524e',
   '9698833e-ffd4-435a-9aec-765622ce524e',
   'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
   '79752a18-c7d8-41c0-8a27-a79ea9de09d8',
@@ -544,7 +548,7 @@ INSERT INTO representation_content (
   last_migration_performed,
   migration_version
 ) VALUES (
-  '9698833e-ffd4-435a-9aec-765622ce524e',
+  'e4a1dfda-81dd-481c-be93-63d96c6e7eb1#9698833e-ffd4-435a-9aec-765622ce524e',
   '9698833e-ffd4-435a-9aec-765622ce524e',
   'e4a1dfda-81dd-481c-be93-63d96c6e7eb1',
   '{

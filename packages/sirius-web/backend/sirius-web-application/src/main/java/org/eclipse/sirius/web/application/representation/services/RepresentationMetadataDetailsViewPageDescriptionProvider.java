@@ -146,11 +146,11 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
                     var editingContext = optionalEditingContext.get();
                     var semanticDataId = optionalSemanticDataId.get();
 
-                    var input = new RenameRepresentationInput(UUID.randomUUID(), editingContext.getId(), representationMetadata.getId().toString(), newValue);
-                    var result = this.representationMetadataUpdateService.updateLabel(input, AggregateReference.to(semanticDataId), representationMetadata.getId(), newValue);
+                    var input = new RenameRepresentationInput(UUID.randomUUID(), editingContext.getId(), representationMetadata.getRepresentationMetadataId().toString(), newValue);
+                    var result = this.representationMetadataUpdateService.updateLabel(input, AggregateReference.to(semanticDataId), representationMetadata.getRepresentationMetadataId(), newValue);
                     if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
                         Map<String, Object> parameters = new HashMap<>();
-                        parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, representationMetadata.getId().toString());
+                        parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, representationMetadata.getRepresentationMetadataId().toString());
                         parameters.put(ChangeDescriptionParameters.REPRESENTATION_LABEL, newValue);
                         return new Success(ChangeKind.REPRESENTATION_RENAMING, parameters);
                     }
@@ -186,7 +186,7 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
                 var semanticDataId = optionalSemanticDataId.get();
                 var representationMetadata = optionalRepresentationMetadata.get();
 
-                return Optional.of(this.representationMetadataUpdateService.updateDocumentation(null, AggregateReference.to(semanticDataId), representationMetadata.getId(), newValue))
+                return Optional.of(this.representationMetadataUpdateService.updateDocumentation(null, AggregateReference.to(semanticDataId), representationMetadata.getRepresentationMetadataId(), newValue))
                         .filter(org.eclipse.sirius.web.domain.services.Success.class::isInstance)
                         .map(success -> (IStatus) new Success(ChangeKind.REPRESENTATION_METADATA_UPDATE, Map.of()))
                         .orElseGet(() -> new Failure(""));

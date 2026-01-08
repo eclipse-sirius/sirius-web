@@ -76,7 +76,7 @@ public class ExplorerServices implements IExplorerServices {
     public String getTreeItemId(Object self) {
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
-            id = representationMetadata.getId().toString();
+            id = representationMetadata.getRepresentationMetadataId().toString();
         } else if (self instanceof Resource || self instanceof EObject) {
             id = this.identityService.getId(self);
         }

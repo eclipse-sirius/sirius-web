@@ -41,11 +41,13 @@ public class RepresentationContentSearchService implements IRepresentationConten
 
     @Override
     public Optional<RepresentationContent> findContentById(AggregateReference<SemanticData, UUID> semanticData, AggregateReference<RepresentationMetadata, UUID> representationMetadata) {
-        return this.representationContentRepository.findById(representationMetadata.getId());
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadata.getId());
+        return this.representationContentRepository.findById(id);
     }
 
     @Override
     public boolean existsById(AggregateReference<SemanticData, UUID> semanticData, AggregateReference<RepresentationMetadata, UUID> representationMetadata) {
-        return this.representationContentRepository.existsById(representationMetadata.getId());
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadata.getId());
+        return this.representationContentRepository.existsById(id);
     }
 }

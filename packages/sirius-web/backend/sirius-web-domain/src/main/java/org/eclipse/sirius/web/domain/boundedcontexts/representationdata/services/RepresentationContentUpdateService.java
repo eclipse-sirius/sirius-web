@@ -48,7 +48,8 @@ public class RepresentationContentUpdateService implements IRepresentationConten
     public IResult<Void> updateContentByRepresentationId(ICause cause, AggregateReference<SemanticData, UUID> semanticData, AggregateReference<RepresentationMetadata, UUID> representationMetadata, String content) {
         IResult<Void> result = null;
 
-        var optionalRepresentationContent = this.representationContentRepository.findById(representationMetadata.getId());
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadata.getId());
+        var optionalRepresentationContent = this.representationContentRepository.findById(id);
         if (optionalRepresentationContent.isPresent()) {
             var representationContent = optionalRepresentationContent.get();
             representationContent.updateContent(cause, content);
@@ -66,7 +67,8 @@ public class RepresentationContentUpdateService implements IRepresentationConten
     public IResult<Void> updateContentByRepresentationIdWithMigrationData(ICause cause, AggregateReference<SemanticData, UUID> semanticData, AggregateReference<RepresentationMetadata, UUID> representationMetadata, String content, String lastMigrationPerformed, String migrationVersion) {
         IResult<Void> result = null;
 
-        var optionalRepresentationContent = this.representationContentRepository.findById(representationMetadata.getId());
+        var id = new RepresentationCompositeIdProvider().getId(semanticData.getId(), representationMetadata.getId());
+        var optionalRepresentationContent = this.representationContentRepository.findById(id);
         if (optionalRepresentationContent.isPresent()) {
             var representationContent = optionalRepresentationContent.get();
             representationContent.updateContent(cause, content);
