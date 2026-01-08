@@ -275,6 +275,7 @@ The only difference is that this new marker has a second range of two dots after
 - https://github.com/eclipse-sirius/sirius-web/issues/6044[#6044] [sirius-web] Properly catch `ElasticsearchException`
 - https://github.com/eclipse-sirius/sirius-web/issues/5881[#5881] [sirius-web] Add an interface to configure ignored inputs by the `UndoRedoRecorder`.
 Downstream applications can now implement `IUndoRedoIgnoreInputPredicate` to ignore additional inputs from the `UndoRedoRecorder`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6027[#6027] [diagram] Improve visual feedback when dragging a node to show which targets are compatible/valid/invalid for a drop
 
 
 
