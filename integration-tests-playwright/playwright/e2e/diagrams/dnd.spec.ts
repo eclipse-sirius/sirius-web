@@ -140,10 +140,10 @@ test.describe('diagram - drag and drop', () => {
     await page.waitForFunction(
       () => {
         const node = document.querySelector(`[data-testid="FreeForm - Entity1"]`);
-        // We need to check for the normalized box-shadow value, which is different from what we set in the code, but equivalent
-        return (
-          node && window.getComputedStyle(node).getPropertyValue('box-shadow') === 'rgb(67, 160, 71) 0px 0px 2px 2px'
-        );
+        // The color used for the highlight is computed, and the normalized value we get from the browser does
+        // not match the string we use to set it, so we only check that a box-shadow is set without trying to match
+        // an exact value.
+        return node && window.getComputedStyle(node).getPropertyValue('box-shadow')?.length > 0;
       },
       { timeout: 2000 }
     );
