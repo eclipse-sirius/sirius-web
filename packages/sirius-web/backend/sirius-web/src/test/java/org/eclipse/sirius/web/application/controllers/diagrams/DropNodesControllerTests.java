@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DropNodesMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.GetDropNodeCompatibilityQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
@@ -118,8 +119,7 @@ public class DropNodesControllerTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     List.of(siriusWebApplicationNodeId.get()),
                     siriusWebInfrastructureNodeId.get(),
-                    0,
-                    0
+                    List.of(new Position(0, 0))
             );
             var result = this.dropNodesMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.dropNodes.__typename");
@@ -168,8 +168,7 @@ public class DropNodesControllerTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     List.of(servicesNodeId.get()),
                     null,
-                    0,
-                    0
+                    List.of(new Position(0, 0))
             );
             var result = this.dropNodesMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.dropNodes.__typename");

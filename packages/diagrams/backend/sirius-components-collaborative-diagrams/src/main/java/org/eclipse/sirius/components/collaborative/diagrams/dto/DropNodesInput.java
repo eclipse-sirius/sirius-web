@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,13 +17,15 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 
 /**
  * The input for the "drop nodes" mutation.
  *
  * @author pcdavid
  */
-public record DropNodesInput(UUID id, String editingContextId, String representationId, List<String> droppedElementIds, String targetElementId, double x, double y) implements IDiagramInput {
+public record DropNodesInput(UUID id, String editingContextId, String representationId, List<String> droppedElementIds, String targetElementId, List<Position> dropPositions) implements IDiagramInput {
+
     public DropNodesInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);
