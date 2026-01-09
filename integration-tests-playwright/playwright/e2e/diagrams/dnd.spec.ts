@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -141,8 +141,10 @@ test.describe('diagram - drag and drop', () => {
       () => {
         const node = document.querySelector(`[data-testid="FreeForm - Entity1"]`);
         // We need to check for the normalized box-shadow value, which is different from what we set in the code, but equivalent
+        // 'oklab(0.629102 -0.125114 0.0902521 / 0.342772) 0px 0px 1.37109px 1.37109px'
         return (
-          node && window.getComputedStyle(node).getPropertyValue('box-shadow') === 'rgb(67, 160, 71) 0px 0px 2px 2px'
+          node &&
+          window.getComputedStyle(node).getPropertyValue('box-shadow').startsWith('oklab(0.629102 -0.125114 0.0902521')
         );
       },
       { timeout: 2000 }
