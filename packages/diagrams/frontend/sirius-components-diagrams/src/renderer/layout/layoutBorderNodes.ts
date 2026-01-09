@@ -125,6 +125,21 @@ export const convertPositionToBorderNodePosition = (position: Position): BorderN
   }
 };
 
+export const convertBorderNodePositionToPosition = (borderNodePosition: BorderNodePosition | null): Position => {
+  switch (borderNodePosition) {
+    case BorderNodePosition.NORTH:
+      return Position.Top;
+    case BorderNodePosition.EAST:
+      return Position.Right;
+    case BorderNodePosition.SOUTH:
+      return Position.Bottom;
+    case BorderNodePosition.WEST:
+      return Position.Left;
+    default:
+      return Position.Right;
+  }
+};
+
 export const getBorderNodeParentIfExist = (
   node: InternalNode<Node<NodeData>>,
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>

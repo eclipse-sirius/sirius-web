@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,12 @@ import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeLookup } from '@xyflow/system';
 import { GQLDiagramDescription } from '../../representation/DiagramRepresentation.types';
 import { NodeData } from '../DiagramRenderer.types';
-import { getEdgeParameters, getNodeCenter, getUpdatedConnectionHandles } from '../edge/EdgeLayout';
+import {
+  getEdgeParameters,
+  getNodeCenter,
+  getUpdatedConnectionHandle,
+  getUpdatedConnectionHandles,
+} from '../edge/EdgeLayout';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import {
   GetUpdatedConnectionHandlesIndexByPosition,
@@ -23,9 +28,10 @@ import {
 import { evaluateAbsolutePosition } from '../node/NodeUtils';
 import { RawDiagram } from './layout.types';
 import {
-  getBorderNodeParentIfExist,
-  convertPositionToBorderNodePosition,
   computeBorderNodeXYPositionFromBorderNodePosition,
+  convertPositionToBorderNodePosition,
+  convertBorderNodePositionToPosition,
+  getBorderNodeParentIfExist,
 } from './layoutBorderNodes';
 
 const getHandlesIdsFromNode = (node: Node<NodeData>): string[] => {
@@ -197,38 +203,68 @@ const layoutHandlePosition = (
           (updatedNodes: Node<NodeData>[], node: Node<NodeData>, _index, nodeArray) => {
             if (edge.source && edge.target) {
               if (edge.source === node.id) {
-                if (node.data.isBorderNode && !node.data.movedByUser) {
-                  const newBorderNodePosition = convertPositionToBorderNodePosition(sourcePosition);
-                  const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
-                    node,
-                    nodeArray,
-                    updatedNodes,
-                    newBorderNodePosition,
-                    nodeLookup
-                  );
-                  if (newXYPosition) {
-                    node.position = newXYPosition;
+                if (node.data.isBorderNode) {
+                  if (!node.data.movedByUser) {
+                    const newBorderNodePosition = convertPositionToBorderNodePosition(sourcePosition);
+                    const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
+                      node,
+                      nodeArray,
+                      updatedNodes,
+                      newBorderNodePosition,
+                      nodeLookup
+                    );
+                    if (newXYPosition) {
+                      node.position = newXYPosition;
+                    }
+                    node.data = {
+                      ...node.data,
+                      borderNodePosition: newBorderNodePosition,
+                      connectionHandles: sourceConnectionHandles,
+                    };
+                  } else {
+                    const borderNodeConnectionHandles = getUpdatedConnectionHandle(
+                      sourceNode,
+                      convertBorderNodePositionToPosition(node.data.borderNodePosition),
+                      sourceHandle,
+                      'source'
+                    );
+                    node.data = { ...node.data, connectionHandles: borderNodeConnectionHandles };
                   }
-                  node.data = { ...node.data, borderNodePosition: newBorderNodePosition };
+                } else {
+                  node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
                 }
-                node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
               }
               if (edge.target === node.id) {
-                if (node.data.isBorderNode && !node.data.movedByUser) {
-                  const newBorderNodePosition = convertPositionToBorderNodePosition(targetPosition);
-                  const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
-                    node,
-                    nodeArray,
-                    updatedNodes,
-                    newBorderNodePosition,
-                    nodeLookup
-                  );
-                  if (newXYPosition) {
-                    node.position = newXYPosition;
+                if (node.data.isBorderNode) {
+                  if (!node.data.movedByUser) {
+                    const newBorderNodePosition = convertPositionToBorderNodePosition(targetPosition);
+                    const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
+                      node,
+                      nodeArray,
+                      updatedNodes,
+                      newBorderNodePosition,
+                      nodeLookup
+                    );
+                    if (newXYPosition) {
+                      node.position = newXYPosition;
+                    }
+                    node.data = {
+                      ...node.data,
+                      borderNodePosition: newBorderNodePosition,
+                      connectionHandles: targetConnectionHandles,
+                    };
+                  } else {
+                    const borderNodeConnectionHandles = getUpdatedConnectionHandle(
+                      targetNode,
+                      convertBorderNodePositionToPosition(node.data.borderNodePosition),
+                      targetHandle,
+                      'target'
+                    );
+                    node.data = { ...node.data, connectionHandles: borderNodeConnectionHandles };
                   }
-                  node.data = { ...node.data, borderNodePosition: convertPositionToBorderNodePosition(targetPosition) };
+                } else {
+                  node.data = { ...node.data, connectionHandles: targetConnectionHandles };
                 }
-                node.data = { ...node.data, connectionHandles: targetConnectionHandles };
               }
             }
             return [...updatedNodes, node];
