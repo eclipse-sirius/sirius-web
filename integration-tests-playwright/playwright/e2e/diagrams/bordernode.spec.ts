@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,5 +96,28 @@ test.describe('diagram - borderNode', () => {
 
     const reactFlowXYPositionEastAfterTopLeft = await playwrightBorderNodeEast.getReactFlowXYPosition();
     expect(reactFlowXYPositionEastAfterTopLeft.x).toBe(parentSizeAfterTopLeft.width - borderNodeGap);
+  });
+});
+test.describe('diagram - borderNode', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectBorderNodeHandlePosition.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('handlePosition');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('When an edge is on a border node, then its handle is on the opposite', async ({ page }) => {
+    await expect(page.locator('.target_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_top')).toHaveCount(1);
   });
 });

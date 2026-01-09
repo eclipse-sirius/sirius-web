@@ -250,6 +250,7 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 The node action icons are now a little smaller and only appear after the node has been hovered for 0.5s.
 - https://github.com/eclipse-sirius/sirius-web/issues/6022[#6022] [sirius-web] Rename the "Representations" workbench view to "Related Views"
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] Provide access to the `editingContextId`, for migration participants during the loading of the resources, thanks to an adapter on the resource set named `EditingContextAdapter`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6032[#6032] [diagram] Ensure edge handles on border nodes are placed opposite their anchor point
 
 
 
