@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -115,7 +115,7 @@ import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-proj
 import { ExplorerView } from '../views/edit-project/workbench-views/explorer/ExplorerView';
 import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
-import { RepresentationsView } from '../views/edit-project/workbench-views/representations/RepresentationsView';
+import { RelatedViewsView } from '../views/edit-project/workbench-views/related-views/RelatedViewsView';
 import { SearchView } from '../views/edit-project/workbench-views/search/SearchView';
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
@@ -192,10 +192,10 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     component: QueryView,
   },
   {
-    id: 'representations',
-    title: 'Representations',
+    id: 'related-views',
+    title: 'Related Views',
     icon: <Filter />,
-    component: RepresentationsView,
+    component: RelatedViewsView,
   },
   {
     id: 'related-elements',

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.representations.services;
+package org.eclipse.sirius.web.application.views.relatedviews.services;
 
 import java.util.Set;
 
@@ -22,12 +22,12 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.springframework.stereotype.Service;
 
 /**
- * The representation refresh policy provider for the representation representations.
+ * The representation refresh policy provider for the "related views" view.
  *
  * @author gcoutable
  */
 @Service
-public class RepresentationsViewRefreshPolicyProvider implements IRepresentationRefreshPolicyProvider {
+public class RelatedViewsRefreshPolicyProvider implements IRepresentationRefreshPolicyProvider {
 
     private static final Set<String> IMPACTING_CHANGES = Set.of(
             ChangeKind.REPRESENTATION_CREATION,
@@ -39,7 +39,7 @@ public class RepresentationsViewRefreshPolicyProvider implements IRepresentation
 
     @Override
     public boolean canHandle(IRepresentationDescription representationDescription) {
-        return RepresentationsFormDescriptionProvider.FORM_DESCRIPTION_ID.equals(representationDescription.getId());
+        return RelatedViewsFormDescriptionProvider.FORM_DESCRIPTION_ID.equals(representationDescription.getId());
     }
 
     @Override

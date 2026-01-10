@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,21 +47,21 @@ describe('Explorer', () => {
       workbench.checkPanelContent('right', ['Details', 'Query']);
       workbench.isIconHighlighted('right', 'Details');
       workbench.isIconHighlighted('right', 'Query');
-      workbench.isIconHighlighted('right', 'Representations', false);
+      workbench.isIconHighlighted('right', 'Related Views', false);
       workbench.isIconHighlighted('right', 'Related Elements', false);
 
-      workbench.selectPanelView('right', 'Representations');
-      workbench.checkPanelContent('right', ['Details', 'Query', 'Representations']);
+      workbench.selectPanelView('right', 'Related Views');
+      workbench.checkPanelContent('right', ['Details', 'Query', 'Related Views']);
       workbench.isIconHighlighted('right', 'Details');
       workbench.isIconHighlighted('right', 'Query');
-      workbench.isIconHighlighted('right', 'Representations');
+      workbench.isIconHighlighted('right', 'Related Views');
       workbench.isIconHighlighted('right', 'Related Elements', false);
 
       workbench.selectPanelView('right', 'Related Elements');
-      workbench.checkPanelContent('right', ['Details', 'Query', 'Representations', 'Related Elements']);
+      workbench.checkPanelContent('right', ['Details', 'Query', 'Related Views', 'Related Elements']);
       workbench.isIconHighlighted('right', 'Details');
       workbench.isIconHighlighted('right', 'Query');
-      workbench.isIconHighlighted('right', 'Representations');
+      workbench.isIconHighlighted('right', 'Related Views');
       workbench.isIconHighlighted('right', 'Related Elements');
     });
 

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.views.representations.services;
+package org.eclipse.sirius.web.application.views.relatedviews.services;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -61,20 +61,20 @@ import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
- * Provides the form description for the representations view.
+ * Provides the form description for the "related views" view.
  *
  * @author gcoutable
  */
 @Service
-public class RepresentationsFormDescriptionProvider implements IRepresentationsDescriptionProvider {
+public class RelatedViewsFormDescriptionProvider implements IRepresentationsDescriptionProvider {
 
-    public static final String PREFIX = "representations://";
+    public static final String PREFIX = "relatedviews://";
 
-    public static final String FORM_DESCRIPTION_ID = "representations_form_description";
+    public static final String FORM_DESCRIPTION_ID = "related_views_form_description";
 
-    public static final String PAGE_LABEL = "Representations Page";
+    public static final String PAGE_LABEL = "Related Views Page";
 
-    public static final String GROUP_LABEL = "Representations Group";
+    public static final String GROUP_LABEL = "Related Views Group";
 
     private final IIdentityService identityService;
 
@@ -90,7 +90,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
 
     private final IMessageService messageService;
 
-    public RepresentationsFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataDeletionService representationMetadataDeletionService, IRepresentationSearchService representationSearchService, List<IRepresentationImageProvider> representationImageProviders, IMessageService messageService) {
+    public RelatedViewsFormDescriptionProvider(IIdentityService identityService, ILabelService labelService, IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationMetadataDeletionService representationMetadataDeletionService, IRepresentationSearchService representationSearchService, List<IRepresentationImageProvider> representationImageProviders, IMessageService messageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
         this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
@@ -105,10 +105,10 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
         Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(this.labelService::getStyledLabel)
                 .map(Object::toString)
-                .orElse(this.messageService.representationsViewTitle());
+                .orElse(this.messageService.relatedViewsLabel());
 
         return FormDescription.newFormDescription(FORM_DESCRIPTION_ID)
-                .label("Representations default form description")
+                .label("Related views default form description")
                 .idProvider(this::getRepresentationsFormId)
                 .labelProvider(labelProvider)
                 .targetObjectIdProvider(this::getTargetObjectId)
@@ -140,9 +140,9 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
     private GroupDescription getGroupDescription() {
         List<AbstractControlDescription> controlDescriptions = new ArrayList<>();
 
-        ListDescription listDescription = ListDescription.newListDescription("RepresentationsList")
+        ListDescription listDescription = ListDescription.newListDescription("relatedViewsList")
                 .idProvider(new WidgetIdProvider())
-                .labelProvider(variableManager -> this.messageService.representationsViewTitle())
+                .labelProvider(variableManager -> this.messageService.relatedViewsLabel())
                 .itemsProvider(this::getItems)
                 .itemIdProvider(this::getItemId)
                 .itemLabelProvider(this::getItemLabel)
@@ -200,7 +200,7 @@ public class RepresentationsFormDescriptionProvider implements IRepresentationsD
                 .build();
         controlDescriptions.add(ifPortalDescription);
 
-        return GroupDescription.newGroupDescription("representationsGroupId")
+        return GroupDescription.newGroupDescription("relatedViewsGroupId")
                 .idProvider(variableManager -> GROUP_LABEL)
                 .labelProvider(variableManager -> GROUP_LABEL)
                 .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))

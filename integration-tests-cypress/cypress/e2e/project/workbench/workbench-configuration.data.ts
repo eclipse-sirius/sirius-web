@@ -30,7 +30,7 @@ export const workbenchConfigurationWithClosedPanels: WorkbenchConfiguration = {
       views: [
         { id: 'details', isActive: true },
         { id: 'query', isActive: true },
-        { id: 'representations', isActive: true },
+        { id: 'related-views', isActive: true },
         { id: 'related-elements', isActive: true },
       ],
     },
@@ -54,7 +54,7 @@ export const workbenchConfigurationWithExpandedPanels: WorkbenchConfiguration = 
       views: [
         { id: 'details', isActive: true },
         { id: 'query', isActive: true },
-        { id: 'representations', isActive: true },
+        { id: 'related-views', isActive: true },
         { id: 'related-elements', isActive: true },
       ],
     },
