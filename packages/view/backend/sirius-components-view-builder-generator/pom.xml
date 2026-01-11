@@ -18,12 +18,12 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.2</version>
+		<version>2025.12.3</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-builder-generator</artifactId>
-	<version>2025.12.2</version>
+	<version>2025.12.3</version>
 	<name>sirius-components-view-builder-generator</name>
 	<description>Sirius View Builder Generator</description>
 
@@ -68,57 +68,57 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-diagram-customnodes</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-form</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-gantt</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-tree</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference-view</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-table-view</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-table-customcells</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
