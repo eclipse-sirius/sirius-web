@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.2</version>
+		<version>2025.12.3</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-representations</artifactId>
-	<version>2025.12.2</version>
+	<version>2025.12.3</version>
 	<name>sirius-components-representations</name>
 	<description>Sirius Components Representations</description>
 
@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-annotations</artifactId>
-			<version>2025.12.2</version>
+			<version>2025.12.3</version>
 		</dependency>
 	</dependencies>
 

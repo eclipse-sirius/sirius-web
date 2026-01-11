@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.2</version>
+		<version>2025.12.3</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-domain</artifactId>
-	<version>2025.12.2</version>
+	<version>2025.12.3</version>
 	<name>sirius-components-domain</name>
 	<description>Sirius Components Domain Definition DSL</description>
 
