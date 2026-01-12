@@ -73,6 +73,9 @@
   },
   "newProjectView": {
     "description": "Enter a name and optionally configure a template and libraries",
+	"descriptionNameOnly": "Enter a name",
+	"descriptionNameAndTemplate": "Enter a name and optionally configure a template",
+	"descriptionNameAndLibraries": "Enter a name and optionally configure libraries",
     "submit": "Create",
     "title": "Create a new project",
     "name": "Name",
