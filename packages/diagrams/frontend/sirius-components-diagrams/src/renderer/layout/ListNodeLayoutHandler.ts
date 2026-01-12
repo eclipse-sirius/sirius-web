@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -153,7 +153,10 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     if (node.data.resizedByUser) {
       previousChildrenContentBoxWidthToConsider = (previousNode?.width ?? node.width ?? 0) - borderWidth * 2;
       previousChildrenContentBoxHeightToConsider =
-        (previousNode?.height ?? node.height ?? 0) - borderWidth * 2 - headerHeightFootprint;
+        (previousNode?.height ?? node.height ?? 0) -
+        borderWidth * 2 -
+        headerHeightFootprint -
+        heightLostSincePrevDiagram;
     }
     const fixedWidth: number = Math.max(
       directNodesChildren.reduce<number>(

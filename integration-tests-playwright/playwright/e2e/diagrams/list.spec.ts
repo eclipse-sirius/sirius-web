@@ -109,11 +109,7 @@ test.describe('diagram - list', () => {
     const detailsView = new PlaywrightDetails(page);
     await detailsView.setText('Name', 'Test with a very large name that can be wrap');
 
-    await playwrightExplorer.createRepresentation(
-      'Root',
-      'diagramGrowableList - multiple growable list nodes',
-      'diagram'
-    );
+    await playwrightExplorer.createRepresentation('Root', 'diagramList - multiple growable list nodes', 'diagram');
   });
 
   test.afterEach(async ({ request }) => {
