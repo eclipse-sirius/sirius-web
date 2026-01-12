@@ -17,7 +17,7 @@
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-papaya-root</artifactId>
-	<version>2025.12.3</version>
+	<version>2025.12.4</version>
 
 	<name>sirius-components-view-root</name>
 	<description>Sirius Components Papaya Root</description>
