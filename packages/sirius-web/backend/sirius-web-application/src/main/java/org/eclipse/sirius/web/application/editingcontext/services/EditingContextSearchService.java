@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -84,8 +84,9 @@ public class EditingContextSearchService implements IEditingContextSearchService
     private IEditingContext toEditingContext(SemanticData semanticData) {
         long start = System.currentTimeMillis();
 
-        AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain();
-        EditingContext editingContext = new EditingContext(semanticData.getId().toString(), editingDomain, new HashMap<>(), new ArrayList<>());
+        var editingContextId = semanticData.getId().toString();
+        AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain(editingContextId);
+        EditingContext editingContext = new EditingContext(editingContextId, editingDomain, new HashMap<>(), new ArrayList<>());
         this.editingContextLoader.load(editingContext, semanticData);
 
         long end = System.currentTimeMillis();

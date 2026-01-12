@@ -142,6 +142,7 @@ These changes have been introduced due to a limitation of Spring Boot 3.x, once 
 The GraphQL subscription `representationsEvent` has been renamed to `relatedViewsEvent`, and the input type `RepresentationsEventInput` has been renamed to `RelatedViewsEventInput`.
 The representation ID prefix has changed from `representations://` to `relatedviews://`.
 The workbench view ID is now `related-views`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] The method `IEditingDomainFactory#createEditingDomain` will now require the `editingContextId` to be used
 
 
 === Dependency update
@@ -248,6 +249,7 @@ Downstream applications can now implement `IProxyRemovalServiceDelegate` to cust
 - https://github.com/eclipse-sirius/sirius-web/issues/5974[#5974] [diagram] Tweak the node actions UI to reduce the risk of invoking them by mistake.
 The node action icons are now a little smaller and only appear after the node has been hovered for 0.5s.
 - https://github.com/eclipse-sirius/sirius-web/issues/6022[#6022] [sirius-web] Rename the "Representations" workbench view to "Related Views"
+- https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] Provide access to the `editingContextId`, for migration participants during the loading of the resources, thanks to an adapter on the resource set named `EditingContextAdapter`.
 
 
 
