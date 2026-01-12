@@ -1,0 +1,53 @@
+= ADR-221 - Add migration version to exported representation
+
+== Context
+
+When importing a representation, we assign it the version of the newest migration participant for the current migration.
+Therefore, we cannot migrate a representation when new participants have been added to Sirius Web after exporting it.
+
+== Decision
+
+=== Backend
+
+We must keep track of the latest migration version applied on the representation.
+Such a metadata can be directly stored inside the exported `manifest.json`:
+
+[source,json]
+----
+{
+  "representations": {
+    "<representationId>": {
+      "lastMigrationPerformed": "<migrationName>",
+      "migrationVersion": "<version>"
+    }
+  }
+}
+----
+
+=== Import
+
+The migration data will be obtained by `RepresentationProjectContentImportParticipant#getRepresentationManifest` in `RepresentationProjectContentImportParticipant#createRepresentations`.
+If the data does not exist, `0` and `none` will be used as default value to apply all migration participants over the representation.
+`IRepresentationImporterUpdateService#update` will be updated to take the migration data as parameters.
+
+As all representations will now have migration data `IRepresentationContentUpdateService#updateContentByRepresentationId` will be removed and `IRepresentationContentUpdateService#updateContentByRepresentationIdWithMigrationData` will be renamed to `update`.
+
+=== Export
+
+`ProjectRepresentationDataExportParticipant#exportData` will be updated to put the migration data into the representation manifest.
+
+== Consequences
+
+- Representation metadata in the exported JSON manifest now have two new keys `migrationVersion` and `lastMigrationPerformed`.
+We will keep support for JSON without such fields to avoid breaking changes at this level.
+- `IRepresentationImporterUpdateService#update` has two new parameters: `migrationVersion` and `lastMigrationPerformed`.
+- `IRepresentationContentUpdateService#updateContentByRepresentationId` is removed.
+- `IRepresentationContentUpdateService#updateContentByRepresentationIdWithMigrationData` is renamed to `update`.
+
+== Cutting backs
+
+/
+
+== Status
+
+Proposed.
