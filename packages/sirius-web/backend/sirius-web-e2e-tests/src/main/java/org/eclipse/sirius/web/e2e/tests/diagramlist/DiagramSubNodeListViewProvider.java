@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.sirius.web.e2e.tests.diagramlist;
 
 import java.util.List;
@@ -29,7 +28,6 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
-import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -44,14 +42,14 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
- * The view provider for the diagram-growable-list.cy.ts test suite.
+ * The view provider for the diagram-subnode-list test suite.
  *
  * @author frouene
  */
 @Profile("test")
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-public class DiagramGrowableListViewProvider implements IE2EViewProvider {
+public class DiagramSubNodeListViewProvider implements IE2EViewProvider {
 
     @Override
     public List<View> createViews() {
@@ -67,13 +65,11 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                 )
                 .build();
 
-        view.eAllContents().forEachRemaining(eObject -> {
-            eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
-        });
+        view.eAllContents().forEachRemaining(eObject -> eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes()))));
 
-        String resourcePath = UUID.nameUUIDFromBytes("DiagramGrowableView".getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes("DiagramSubNodeListView".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter("DiagramGrowableView"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("DiagramSubNodeList"));
         resource.getContents().add(view);
 
         return List.of(view);
@@ -82,7 +78,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramListDomainProvider.DOMAIN_NAME + " - multiple growable list nodes")
+                .name(DiagramListDomainProvider.DOMAIN_NAME + " - list with subnode")
                 .domainType(DiagramListDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramListDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -94,9 +90,10 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
 
     private NodeDescription getNodeDescription(IColorProvider colorProvider) {
 
-        var list1Description = this.getList1Description(colorProvider);
-        var list2Description = this.getList2Description(colorProvider);
-        var list3Description = this.getList3Description(colorProvider);
+        var subNode1Description = this.getSubNodeDescription(colorProvider, 1);
+        var subNode2Description = this.getSubNodeDescription(colorProvider, 2);
+        var subNode3Description = this.getSubNodeDescription(colorProvider, 3);
+        var subNode4Description = this.getSubNodeDescription(colorProvider, 4);
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Entity Node 1")
@@ -115,14 +112,13 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                                 .borderRadius(3)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().growableNodes(list1Description, list3Description).build())
+                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().growableNodes(subNode2Description, subNode3Description).build())
                                 .build()
                 )
                 .insideLabel(
                         new DiagramBuilders()
                                 .newInsideLabelDescription()
                                 .labelExpression("aql:self.name")
-                                .overflowStrategy(LabelOverflowStrategy.WRAP)
                                 .textAlign(LabelTextAlign.LEFT)
                                 .position(InsideLabelPosition.TOP_CENTER)
                                 .style(
@@ -145,21 +141,20 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                                 )
                                 .build()
                 )
-                .childrenDescriptions(list1Description, list2Description, list3Description)
+                .childrenDescriptions(subNode1Description, subNode2Description, subNode3Description, subNode4Description)
                 .build();
     }
 
-    private NodeDescription getList1Description(IColorProvider colorProvider) {
-        var subList1Description = this.getSubList1Description(colorProvider);
-        var subList2Description = this.getSubList2Description(colorProvider);
+    private NodeDescription getSubNodeDescription(IColorProvider colorProvider, int index) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("CompartmentList1")
+                .name("Compartment" + index)
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
                 .userResizable(UserResizableDirection.BOTH)
                 .keepAspectRatio(false)
+                .defaultHeightExpression("50")
                 .style(
                         new DiagramBuilders()
                                 .newRectangularNodeStyleDescription()
@@ -168,11 +163,10 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                                 .borderRadius(0)
                                 .borderSize(1)
                                 .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().growableNodes(subList1Description, subList2Description).build())
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                                 .build()
                 )
-                .insideLabel(this.getInsideLabelDescription("List 1", colorProvider))
-                .childrenDescriptions(subList1Description, subList2Description)
+                .insideLabel(this.getInsideLabelDescription("Compartment " + index, colorProvider))
                 .palette(this.getPaletteWithHideTool())
                 .build();
     }
@@ -189,109 +183,6 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
 
     }
 
-    private NodeDescription getList2Description(IColorProvider colorProvider) {
-        return new DiagramBuilders()
-                .newNodeDescription()
-                .name("CompartmentList2")
-                .semanticCandidatesExpression("aql:self")
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .collapsible(false)
-                .userResizable(UserResizableDirection.BOTH)
-                .keepAspectRatio(false)
-                .style(
-                        new DiagramBuilders()
-                                .newRectangularNodeStyleDescription()
-                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_RED))
-                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
-                                .borderRadius(0)
-                                .borderSize(1)
-                                .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
-                                .build()
-                )
-                .insideLabel(this.getInsideLabelDescription("List 2", colorProvider))
-                .childrenDescriptions()
-                .palette(this.getPaletteWithHideTool())
-                .build();
-    }
-
-    private NodeDescription getList3Description(IColorProvider colorProvider) {
-        return new DiagramBuilders()
-                .newNodeDescription()
-                .name("CompartmentList3")
-                .semanticCandidatesExpression("aql:self")
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .collapsible(false)
-                .userResizable(UserResizableDirection.BOTH)
-                .keepAspectRatio(false)
-                .style(
-                        new DiagramBuilders()
-                                .newRectangularNodeStyleDescription()
-                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_PINK))
-                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
-                                .borderRadius(0)
-                                .borderSize(1)
-                                .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newListLayoutStrategyDescription().build())
-                                .build()
-                )
-                .insideLabel(this.getInsideLabelDescription("List 3", colorProvider))
-                .childrenDescriptions()
-                .palette(this.getPaletteWithHideTool())
-                .build();
-    }
-
-    private NodeDescription getSubList1Description(IColorProvider colorProvider) {
-        return new DiagramBuilders()
-                .newNodeDescription()
-                .name("CompartmentSubList1")
-                .semanticCandidatesExpression("aql:self")
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .collapsible(false)
-                .userResizable(UserResizableDirection.BOTH)
-                .keepAspectRatio(false)
-                .style(
-                        new DiagramBuilders()
-                                .newRectangularNodeStyleDescription()
-                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_YELLOW))
-                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
-                                .borderRadius(0)
-                                .borderSize(1)
-                                .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
-                                .build()
-                )
-                .insideLabel(this.getInsideLabelDescription("SubList A", colorProvider))
-                .childrenDescriptions()
-                .palette(this.getPaletteWithHideTool())
-                .build();
-    }
-
-    private NodeDescription getSubList2Description(IColorProvider colorProvider) {
-        return new DiagramBuilders()
-                .newNodeDescription()
-                .name("CompartmentSubList2")
-                .semanticCandidatesExpression("aql:self")
-                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .collapsible(false)
-                .userResizable(UserResizableDirection.BOTH)
-                .keepAspectRatio(false)
-                .style(
-                        new DiagramBuilders()
-                                .newRectangularNodeStyleDescription()
-                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_ORANGE))
-                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
-                                .borderRadius(0)
-                                .borderSize(1)
-                                .borderLineStyle(LineStyle.SOLID)
-                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
-                                .build()
-                )
-                .insideLabel(this.getInsideLabelDescription("SubList B", colorProvider))
-                .childrenDescriptions()
-                .palette(this.getPaletteWithHideTool())
-                .build();
-    }
 
     private InsideLabelDescription getInsideLabelDescription(String label, IColorProvider colorProvider) {
         return new DiagramBuilders()
@@ -300,8 +191,9 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
                 .style(
                         new DiagramBuilders()
                                 .newInsideLabelStyle()
-                                .withHeader(true)
-                                .headerSeparatorDisplayMode(HeaderSeparatorDisplayMode.ALWAYS)
+                                .fontSize(10)
+                                .italic(true)
+                                .borderRadius(0)
                                 .borderSize(0)
                                 .build()
                 )
