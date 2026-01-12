@@ -73,6 +73,9 @@
   },
   "newProjectView": {
     "description": "Entrez un nom et configurez éventuellement un modèle et des bibliothèques",
+	"descriptionNameOnly": "Entrez un nom",
+	"descriptionNameAndTemplate": "Entrez un nom et configurez éventuellement un modèle",
+	"descriptionNameAndLibraries": "Entrez un nom et configurez éventuellement des bibliothèques",
     "submit": "Créer",
     "title": "Créer un nouveau projet",
     "name": "Nom",
