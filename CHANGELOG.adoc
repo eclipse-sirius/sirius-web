@@ -173,6 +173,7 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/5931[#5931] [diagram] Prevent label resize handles from being visible when labels are hidden
 - https://github.com/eclipse-sirius/sirius-web/issues/5975[#5975] [diagram] Prevent newly created nodes from stacking in the same position
 - https://github.com/eclipse-sirius/sirius-web/issues/6048[#6048] [sirius-web] Display the default workbench configuration for libraries.
+- https://github.com/eclipse-sirius/sirius-web/issues/6045[#6045] [diagram] Prevent misplacement of a subnode after hiding another list subnode
 
 
 === New Features
