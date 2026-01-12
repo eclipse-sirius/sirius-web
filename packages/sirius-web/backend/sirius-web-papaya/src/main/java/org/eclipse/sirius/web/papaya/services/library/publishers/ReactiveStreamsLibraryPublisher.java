@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,16 +18,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
@@ -48,15 +46,12 @@ public class ReactiveStreamsLibraryPublisher implements IPapayaLibraryPublisher 
 
     private final ILibrarySearchService librarySearchService;
 
-    private final IEditingDomainFactory editingDomainFactory;
-
     private final IResourceToDocumentService resourceToDocumentService;
 
     private final ISemanticDataCreationService semanticDataCreationService;
 
-    public ReactiveStreamsLibraryPublisher(ILibrarySearchService librarySearchService, IEditingDomainFactory editingDomainFactory, IResourceToDocumentService resourceToDocumentService, ISemanticDataCreationService semanticDataCreationService) {
+    public ReactiveStreamsLibraryPublisher(ILibrarySearchService librarySearchService, IResourceToDocumentService resourceToDocumentService, ISemanticDataCreationService semanticDataCreationService) {
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
-        this.editingDomainFactory = Objects.requireNonNull(editingDomainFactory);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.semanticDataCreationService = Objects.requireNonNull(semanticDataCreationService);
     }
@@ -72,15 +67,14 @@ public class ReactiveStreamsLibraryPublisher implements IPapayaLibraryPublisher 
             return;
         }
 
-        AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain();
-        var packageRegistry = editingDomain.getResourceSet().getPackageRegistry();
-        packageRegistry.put(PapayaPackage.eNS_URI, PapayaPackage.eINSTANCE);
+        var resourceSet = new ResourceSetImpl();
+        resourceSet.getPackageRegistry().put(PapayaPackage.eNS_URI, PapayaPackage.eINSTANCE);
 
         var documentId = UUID.nameUUIDFromBytes((command.namespace() + ":" + command.name() + ":" + command.version()).getBytes(StandardCharsets.UTF_8)).toString();
         var resource = new JSONResourceFactory().createResourceFromPath(documentId);
         var resourceMetadataAdapter = new ResourceMetadataAdapter(command.name());
         resource.eAdapters().add(resourceMetadataAdapter);
-        editingDomain.getResourceSet().getResources().add(resource);
+        resourceSet.getResources().add(resource);
 
         var optionalJava001Library = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.1");
         var optionalJava002Library = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.2");
@@ -88,16 +82,13 @@ public class ReactiveStreamsLibraryPublisher implements IPapayaLibraryPublisher 
 
         if (command.version().equals("0.0.1") && optionalJava001Library.isPresent()) {
             var java001Library = optionalJava001Library.get();
-            this.createReactiveStreams(command, editingDomain.getResourceSet(), java001Library);
+            this.createReactiveStreams(command, resourceSet, java001Library);
         } else if (command.version().equals("0.0.2") && optionalJava002Library.isPresent()) {
             var java002Library = optionalJava002Library.get();
-            this.createReactiveStreams(command, editingDomain.getResourceSet(), java002Library);
+            this.createReactiveStreams(command, resourceSet, java002Library);
         } else if (command.version().equals("0.0.3") && optionalJava003Library.isPresent()) {
             var java003Library = optionalJava003Library.get();
-            this.createReactiveStreams(command, editingDomain.getResourceSet(), java003Library);
-        }
-        if (editingDomain.getAdapterFactory() instanceof IDisposable disposable) {
-            disposable.dispose();
+            this.createReactiveStreams(command, resourceSet, java003Library);
         }
     }
 

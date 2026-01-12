@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,16 +18,14 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
-import org.eclipse.emf.edit.provider.IDisposable;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
-import org.eclipse.sirius.web.application.editingcontext.services.api.IEditingDomainFactory;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
@@ -51,15 +49,12 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
 
     private final ILibrarySearchService librarySearchService;
 
-    private final IEditingDomainFactory editingDomainFactory;
-
     private final IResourceToDocumentService resourceToDocumentService;
 
     private final ISemanticDataCreationService semanticDataCreationService;
 
-    public JavaStandardLibraryPublisher(ILibrarySearchService librarySearchService, IEditingDomainFactory editingDomainFactory, IResourceToDocumentService resourceToDocumentService, ISemanticDataCreationService semanticDataCreationService) {
+    public JavaStandardLibraryPublisher(ILibrarySearchService librarySearchService, IResourceToDocumentService resourceToDocumentService, ISemanticDataCreationService semanticDataCreationService) {
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
-        this.editingDomainFactory = Objects.requireNonNull(editingDomainFactory);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.semanticDataCreationService = Objects.requireNonNull(semanticDataCreationService);
     }
@@ -75,19 +70,15 @@ public class JavaStandardLibraryPublisher implements IPapayaLibraryPublisher {
             return;
         }
 
-        AdapterFactoryEditingDomain editingDomain = this.editingDomainFactory.createEditingDomain();
-        var packageRegistry = editingDomain.getResourceSet().getPackageRegistry();
-        packageRegistry.put(PapayaPackage.eNS_URI, PapayaPackage.eINSTANCE);
+        var resourceSet = new ResourceSetImpl();
+        resourceSet.getPackageRegistry().put(PapayaPackage.eNS_URI, PapayaPackage.eINSTANCE);
 
         if (command.version().equals("0.0.1")) {
-            this.createJava001(command, editingDomain.getResourceSet());
+            this.createJava001(command, resourceSet);
         } else if (command.version().equals("0.0.2")) {
-            this.createJava002(command, editingDomain.getResourceSet());
+            this.createJava002(command, resourceSet);
         } else if (command.version().equals("0.0.3")) {
-            this.createJava003(command, editingDomain.getResourceSet());
-        }
-        if (editingDomain.getAdapterFactory() instanceof IDisposable disposable) {
-            disposable.dispose();
+            this.createJava003(command, resourceSet);
         }
     }
 

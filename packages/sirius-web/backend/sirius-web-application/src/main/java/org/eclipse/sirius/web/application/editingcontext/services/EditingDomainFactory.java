@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,14 +47,17 @@ public class EditingDomainFactory implements IEditingDomainFactory {
     }
 
     @Override
-    public AdapterFactoryEditingDomain createEditingDomain() {
+    public AdapterFactoryEditingDomain createEditingDomain(String editingContextId) {
         List<AdapterFactory> adapterFactories = this.composedAdapterFactoryDescriptors.stream()
                 .map(Descriptor::createAdapterFactory)
                 .toList();
         var composedAdapterFactory = new ComposedAdapterFactory(adapterFactories);
 
         AdapterFactoryEditingDomain editingDomain = new AdapterFactoryEditingDomain(composedAdapterFactory, new BasicCommandStack());
+
         ResourceSet resourceSet = editingDomain.getResourceSet();
+        resourceSet.eAdapters().add(new EditingContextAdapter(editingContextId));
+
         resourceSet.getLoadOptions().put(JsonResource.OPTION_EXTENDED_META_DATA, new BasicExtendedMetaData(resourceSet.getPackageRegistry()));
         resourceSet.getLoadOptions().put(JsonResource.OPTION_SCHEMA_LOCATION, true);
 
