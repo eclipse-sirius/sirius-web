@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { ResizerProps } from './Resizer.types';
 
 const resizeLineStyle = (theme: Theme): React.CSSProperties => {
-  return { borderWidth: theme.spacing(0.15), borderColor: theme.palette.primary.light, zIndex: 1 };
+  return { borderWidth: theme.spacing(0.15), borderColor: theme.palette.selected, zIndex: 1 };
 };
 
 const resizeControlLineStyle = (theme: Theme): React.CSSProperties => {
@@ -32,7 +32,7 @@ const resizeHandleStyle = (theme: Theme, isLastNodeSelected: boolean, isResizabl
     height: theme.spacing(1),
     borderRadius: '100%',
     zIndex: 3,
-    backgroundColor: isLastNodeSelected ? theme.palette.primary.light : '#FFFFFF',
+    backgroundColor: isLastNodeSelected ? theme.palette.selected : '#FFFFFF',
     border: '1px solid black',
   };
   return isResizable ? style : { ...style, pointerEvents: 'none' };
