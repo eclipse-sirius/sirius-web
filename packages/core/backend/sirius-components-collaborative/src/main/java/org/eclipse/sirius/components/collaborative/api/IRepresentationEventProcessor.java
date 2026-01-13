@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.api;
 
+import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationRefresher;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
@@ -31,6 +32,16 @@ public interface IRepresentationEventProcessor extends IDisposablePublisher {
 
     void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IRepresentationInput representationInput);
 
+    /**
+     * Used to refresh a representation event processor.
+     *
+     * @param changeDescription The change description
+     *
+     * @technical-debt This method will be removed in order to extract the behavior of the refresh from the event processor
+     * since this step can be entirely stateless. As a result, representation event processors will need to have a
+     * dedicated {@link IRepresentationRefresher}.
+     */
+    @Deprecated(forRemoval = true)
     void refresh(ChangeDescription changeDescription);
 
     ISubscriptionManager getSubscriptionManager();
