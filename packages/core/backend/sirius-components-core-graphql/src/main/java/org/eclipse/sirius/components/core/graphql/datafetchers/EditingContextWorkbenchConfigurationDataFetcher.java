@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,10 +32,10 @@ import graphql.schema.DataFetchingEnvironment;
 @QueryDataFetcher(type = "EditingContext", field = "workbenchConfiguration")
 public class EditingContextWorkbenchConfigurationDataFetcher implements IDataFetcherWithFieldCoordinates<WorkbenchConfiguration> {
 
-    private final IWorkbenchConfigurationProvider workbenchConfigurationworkbenchConfigurationProvider;
+    private final IWorkbenchConfigurationProvider workbenchConfigurationProvider;
 
-    public EditingContextWorkbenchConfigurationDataFetcher(IWorkbenchConfigurationProvider workbenchConfigurationworkbenchConfigurationProvider) {
-        this.workbenchConfigurationworkbenchConfigurationProvider = Objects.requireNonNull(workbenchConfigurationworkbenchConfigurationProvider);
+    public EditingContextWorkbenchConfigurationDataFetcher(IWorkbenchConfigurationProvider workbenchConfigurationProvider) {
+        this.workbenchConfigurationProvider = Objects.requireNonNull(workbenchConfigurationProvider);
     }
 
     @Override
@@ -44,6 +44,6 @@ public class EditingContextWorkbenchConfigurationDataFetcher implements IDataFet
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID))
                 .map(Object::toString)
                 .orElse("");
-        return this.workbenchConfigurationworkbenchConfigurationProvider.getWorkbenchConfiguration(editingContextId);
+        return this.workbenchConfigurationProvider.getWorkbenchConfiguration(editingContextId);
     }
 }

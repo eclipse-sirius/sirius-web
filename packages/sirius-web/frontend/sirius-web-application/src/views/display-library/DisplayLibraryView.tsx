@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import { RepresentationPathContext, SelectionContextProvider, Workbench } from '
 import { Navigate, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
+import { useInitialWorkbenchConfiguration } from '../edit-project/useInitialWorkbenchConfiguration';
 import { DisplayLibraryNavbar } from './DisplayLibraryNavbar';
 import { DisplayLibraryViewParams } from './DisplayLibraryView.types';
 import { useLibrary } from './useLibrary';
@@ -36,6 +37,9 @@ export const DisplayLibraryView = () => {
     decodeURIComponent(name ?? ''),
     decodeURIComponent(version ?? '')
   );
+  const { workbenchConfiguration } = useInitialWorkbenchConfiguration(
+    data?.viewer?.library ? data.viewer.library.currentEditingContext.id : null
+  );
 
   const getRepresentationPath = (representationId: string) => {
     // Note that this should match the corresponding route configuration
@@ -49,7 +53,7 @@ export const DisplayLibraryView = () => {
   return (
     <div className={classes.displayLibraryView}>
       {loading ? <NavigationBar /> : null}
-      {data && data.viewer.library ? (
+      {data && workbenchConfiguration ? (
         <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
           <SelectionContextProvider initialSelection={{ entries: [] }}>
             <DisplayLibraryNavbar library={data.viewer.library} />
@@ -58,7 +62,7 @@ export const DisplayLibraryView = () => {
               initialRepresentationSelected={null}
               onRepresentationSelected={null}
               readOnly
-              initialWorkbenchConfiguration={null}
+              initialWorkbenchConfiguration={workbenchConfiguration}
               ref={null}
             />
           </SelectionContextProvider>
