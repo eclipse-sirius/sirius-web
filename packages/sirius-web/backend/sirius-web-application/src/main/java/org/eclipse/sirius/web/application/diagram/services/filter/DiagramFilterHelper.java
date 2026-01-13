@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,9 @@
 package org.eclipse.sirius.web.application.diagram.services.filter;
 
 import java.text.MessageFormat;
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -23,9 +24,12 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationRefresher;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.api.variables.CommonVariables;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -48,13 +52,19 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class DiagramFilterHelper implements IDiagramFilterHelper {
 
+    private final List<IRepresentationRefresher> representationRefreshers;
+
     private final Logger logger = LoggerFactory.getLogger(DiagramFilterHelper.class);
+
+    public DiagramFilterHelper(List<IRepresentationRefresher> representationRefreshers) {
+        this.representationRefreshers = Objects.requireNonNull(representationRefreshers);
+    }
 
     @Override
     public Set<String> getSelectedElementIds(VariableManager variableManager) {
         return variableManager.get(DiagramFilterDescriptionProvider.SELECTED_TREE_NODES, Map.class)
                 .map(checkMap -> ((Map<String, Boolean>) checkMap).entrySet().stream()
-                        .filter(e -> e.getValue().equals(Boolean.TRUE))
+                        .filter(entry -> entry.getValue().equals(Boolean.TRUE))
                         .map(Map.Entry::getKey)
                         .collect(Collectors.toSet())
                         )
@@ -63,42 +73,56 @@ public class DiagramFilterHelper implements IDiagramFilterHelper {
 
     @Override
     public IStatus sendDiagramEvent(VariableManager variableManager, IDiagramInput diagramInput) {
-        Optional<IRepresentationEventProcessor> representationEventProcessor = variableManager.get(DiagramFilterDescriptionProvider.DIAGRAM_EVENT_PROCESSOR, IRepresentationEventProcessor.class);
-        Optional<IEditingContextEventProcessor> editingContextEventProcessor = variableManager.get(DiagramFilterDescriptionProvider.EDITING_CONTEXT_EVENT_PROCESSOR, IEditingContextEventProcessor.class);
+        var optionalEditingContext = variableManager.get(CommonVariables.EDITING_CONTEXT.name(), IEditingContext.class);
+        var optionalRepresentationEventProcessor = variableManager.get(DiagramFilterDescriptionProvider.DIAGRAM_EVENT_PROCESSOR, IRepresentationEventProcessor.class);
+        var optionalEditingContextEventProcessor = variableManager.get(DiagramFilterDescriptionProvider.EDITING_CONTEXT_EVENT_PROCESSOR, IEditingContextEventProcessor.class);
 
-        if (representationEventProcessor.isEmpty() || editingContextEventProcessor.isEmpty()) {
-            String errorMessage = "Cannot find the diagramEventProcessor or the editingContextEventProcessor";
-            this.logger.warn(errorMessage);
-            return new Failure(errorMessage);
-        }
+        if (optionalEditingContext.isPresent() && optionalRepresentationEventProcessor.isPresent() && optionalEditingContextEventProcessor.isPresent()) {
+            var editingContext = optionalEditingContext.get();
+            var representationEventProcessor = optionalRepresentationEventProcessor.get();
+            var editingContextEventProcessor = optionalEditingContextEventProcessor.get();
 
-        One<IPayload> payloadSink = Sinks.one();
-        Many<ChangeDescription> changeDescriptions = Sinks.many().unicast().onBackpressureBuffer();
-        Consumer<Throwable> errorConsumer = throwable -> this.logger.warn(throwable.getMessage(), throwable);
-        changeDescriptions.asFlux().subscribe(changeDescription -> {
-            editingContextEventProcessor.get().getRepresentationEventProcessors().forEach(ep -> ep.refresh(changeDescription));
-        }, errorConsumer);
+            One<IPayload> payloadSink = Sinks.one();
+            Many<ChangeDescription> changeDescriptions = Sinks.many().unicast().onBackpressureBuffer();
+            Consumer<Throwable> errorConsumer = throwable -> this.logger.warn(throwable.getMessage(), throwable);
+            changeDescriptions.asFlux().subscribe(changeDescription -> {
+                editingContextEventProcessor.getRepresentationEventProcessors().forEach(eventProcessor -> {
+                    var optionalRefresher = this.representationRefreshers.stream()
+                            .filter(refresher -> refresher.canHandle(editingContext, eventProcessor, changeDescription))
+                            .findFirst();
+                    if (optionalRefresher.isPresent()) {
+                        var refresher = optionalRefresher.get();
+                        refresher.refresh(editingContext, eventProcessor, changeDescription);
+                    } else {
+                        // Temporary fallback to the existing behavior
+                        eventProcessor.refresh(changeDescription);
+                    }
+                });
+            }, errorConsumer);
 
-        representationEventProcessor.get().handle(payloadSink, changeDescriptions, diagramInput);
-        IPayload handlerResult = payloadSink.asMono().block();
+            representationEventProcessor.handle(payloadSink, changeDescriptions, diagramInput);
+            IPayload handlerResult = payloadSink.asMono().block();
 
-        IStatus result;
+            IStatus result = new Failure("Unknown error");
 
-        EmitResult changeDescriptionEmitResult = changeDescriptions.tryEmitComplete();
-        if (changeDescriptionEmitResult.isFailure()) {
-            String errorMessage = MessageFormat.format("An error has occurred while marking the publisher as complete: {0}", changeDescriptionEmitResult);
-            this.logger.warn(errorMessage);
-            result = new Failure(errorMessage);
-        } else {
-            if (handlerResult instanceof SuccessPayload) {
-                result = new Success();
-            } else if (handlerResult instanceof ErrorPayload errorPayload) {
-                result = new Failure(errorPayload.message());
+            EmitResult changeDescriptionEmitResult = changeDescriptions.tryEmitComplete();
+            if (changeDescriptionEmitResult.isFailure()) {
+                String errorMessage = MessageFormat.format("An error has occurred while marking the publisher as complete: {0}", changeDescriptionEmitResult);
+                this.logger.warn(errorMessage);
+                result = new Failure(errorMessage);
             } else {
-                result = new Failure("Unknown error");
+                if (handlerResult instanceof SuccessPayload) {
+                    result = new Success();
+                } else if (handlerResult instanceof ErrorPayload errorPayload) {
+                    result = new Failure(errorPayload.message());
+                }
             }
+            return result;
         }
-        return result;
+
+        String errorMessage = "Cannot find the diagramEventProcessor or the editingContextEventProcessor";
+        this.logger.warn(errorMessage);
+        return new Failure(errorMessage);
     }
 
 }
