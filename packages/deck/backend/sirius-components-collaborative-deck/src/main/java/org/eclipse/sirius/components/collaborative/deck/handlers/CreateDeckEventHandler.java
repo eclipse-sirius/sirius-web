@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -113,7 +113,7 @@ public class CreateDeckEventHandler implements IEditingContextEventHandler {
                 String label = deckDescription.labelProvider().apply(variableManager);
                 List<String> iconURLs = deckDescription.getIconURLsProvider().apply(variableManager);
 
-                Deck deckDiagram = this.deckCreationService.create(object, deckDescription, editingContext);
+                Deck deckDiagram = this.deckCreationService.create(editingContext, deckDescription, object, null);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(deckDiagram.id())
                         .kind(deckDiagram.getKind())
                         .label(label)

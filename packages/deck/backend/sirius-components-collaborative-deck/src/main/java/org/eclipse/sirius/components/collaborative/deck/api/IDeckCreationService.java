@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck.api;
 
-import java.util.Optional;
-
 import org.eclipse.sirius.components.collaborative.deck.DeckContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.deck.Deck;
@@ -29,32 +27,17 @@ public interface IDeckCreationService {
     /**
      * Creates a new deck representation using the given parameters.
      *
-     * @param targetObject
-     *            The object used as the target
+     * @param editingContext
+     *            The editing context
      * @param deckDescription
      *            The description of the deck representation
-     * @param editingContext
-     *            The editing context
+     * @param targetObject
+     *            The object used as the target
+     * @param deckContext
+     *           The context of the deck representation
      * @return A new deck representation
      */
-    Deck create(Object targetObject, DeckDescription deckDescription, IEditingContext editingContext);
-
-    /**
-     * Refresh an existing deck.
-     *
-     * <p>
-     * Refreshing a deck seems to always be possible but it may not be the case. In some situation, the semantic element
-     * on which the previous deck has been created may not exist anymore, and thus we can return an empty optional if we
-     * are unable to refresh the deck.
-     * </p>
-     *
-     * @param editingContext
-     *            The editing context
-     * @param deckContext
-     *            The deck representation context
-     * @return An updated deck if we have been able to refresh it.
-     */
-    Optional<Deck> refresh(IEditingContext editingContext, DeckContext deckContext);
+    Deck create(IEditingContext editingContext, DeckDescription deckDescription, Object targetObject, DeckContext deckContext);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -64,13 +47,8 @@ public interface IDeckCreationService {
     class NoOp implements IDeckCreationService {
 
         @Override
-        public Deck create(Object targetObject, DeckDescription deckDescription, IEditingContext editingContext) {
+        public Deck create(IEditingContext editingContext, DeckDescription deckDescription, Object targetObject, DeckContext deckContext) {
             return null;
-        }
-
-        @Override
-        public Optional<Deck> refresh(IEditingContext editingContext, DeckContext deckContext) {
-            return Optional.empty();
         }
     }
 

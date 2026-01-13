@@ -18,19 +18,16 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventProcessor;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
-import org.eclipse.sirius.components.collaborative.deck.service.DeckCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.deck.Deck;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,12 +48,6 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     private final ISubscriptionManager subscriptionManager;
 
-    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
-
-    private final IRepresentationSearchService representationSearchService;
-
-    private final DeckCreationService deckCreationService;
-
     private final DeckEventFlux deckEventFlux;
 
     private final List<IDeckEventHandler> deckEventHandlers;
@@ -65,35 +56,27 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     private final Logger logger = LoggerFactory.getLogger(DeckEventProcessor.class);
 
-    public DeckEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, DeckCreationService deckCreationService,
-            List<IDeckEventHandler> deckEventHandlers, DeckContext deckContext, IRepresentationPersistenceStrategy representationPersistenceStrategy,
-            IRepresentationSearchService representationSearchService) {
+    public DeckEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, List<IDeckEventHandler> deckEventHandlers, DeckContext deckContext) {
         this.editingContext = Objects.requireNonNull(editingContext);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
-        this.deckCreationService = Objects.requireNonNull(deckCreationService);
         this.deckEventHandlers = Objects.requireNonNull(deckEventHandlers);
         this.deckContext = Objects.requireNonNull(deckContext);
-        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
-        this.representationSearchService = Objects.requireNonNull(representationSearchService);
-
-        String id = this.deckContext.deck().getId();
-        this.logger.atTrace()
-                .setMessage("Creating the deck event processor {}")
-                .addArgument(id)
-                .log();
-
-        // We automatically refresh the representation before using it since things may have changed since the moment it
-        // has been saved in the database.
-        Deck deck = this.deckCreationService.refresh(this.editingContext, deckContext).orElse(null);
-        this.deckContext = new DeckContext(deck, deckContext.deckEvents());
-
-        this.deckEventFlux = new DeckEventFlux(deck);
-
+        this.deckEventFlux = new DeckEventFlux(deckContext.deck());
     }
 
     @Override
     public IRepresentation getRepresentation() {
         return this.deckContext.deck();
+    }
+
+    public DeckContext getDeckContext() {
+        return this.deckContext;
+    }
+
+    @Override
+    public void update(ICause cause, Deck deck) {
+        this.deckContext = new DeckContext(deck, new ArrayList<>());
+        this.deckEventFlux.deckRefreshed(cause, deck);
     }
 
     @Override
@@ -122,32 +105,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     @Override
     public void refresh(ChangeDescription changeDescription) {
-        if (this.shouldRefresh(changeDescription)) {
-            Deck refreshedDeckRepresentation = this.deckCreationService.refresh(this.editingContext, this.deckContext).orElse(null);
-            this.deckContext = new DeckContext(refreshedDeckRepresentation, new ArrayList<>());
-            if (refreshedDeckRepresentation != null) {
-                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, refreshedDeckRepresentation);
-                this.logger.atTrace()
-                        .setMessage("Deck refreshed: {}")
-                        .addArgument(refreshedDeckRepresentation.getId())
-                        .log();
-            }
-            this.deckEventFlux.deckRefreshed(changeDescription.getCause(), this.deckContext.deck());
-        } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.deckContext.deck().getId())) {
-            Optional<Deck> optionalReloadedDeck = this.representationSearchService.findById(this.editingContext, this.deckContext.deck().getId(), Deck.class);
-            if (optionalReloadedDeck.isPresent()) {
-                this.deckContext = new DeckContext(optionalReloadedDeck.get(), new ArrayList<>());
-                this.deckEventFlux.deckRefreshed(changeDescription.getCause(), this.deckContext.deck());
-            }
-        }
-    }
-
-    /**
-     * A deck representation is refreshed if there is a semantic change.
-     */
-    private boolean shouldRefresh(ChangeDescription changeDescription) {
-        String kind = changeDescription.getKind();
-        return ChangeKind.SEMANTIC_CHANGE.equals(kind) || DeckChangeKind.DECK_REPRESENTATION_UPDATE.equals(kind);
+        // Do nothing
     }
 
     @Override
