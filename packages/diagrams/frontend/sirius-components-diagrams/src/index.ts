@@ -71,6 +71,7 @@ export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
 export type { DiagramNodeType } from './renderer/node/NodeTypes.types';
+export { Resizer } from './renderer/node/Resizer';
 export { EdgeAppearanceSection } from './renderer/palette/appearance/edge/EdgeAppearanceSection';
 export type {
   PaletteAppearanceSectionContributionComponentProps,
