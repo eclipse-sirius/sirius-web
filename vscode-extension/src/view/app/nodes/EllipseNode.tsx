@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,9 +16,8 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
-  DiagramContext,
-  DiagramContextValue,
   Label,
+  Resizer,
   useConnectionLineNodeStyle,
   useConnectorNodeStyle,
   useDrop,
@@ -26,8 +25,8 @@ import {
   useRefreshConnectionHandles,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Theme, useTheme } from '@mui/material/styles';
-import { Node, NodeProps, NodeResizer } from '@xyflow/react';
-import React, { memo, useContext } from 'react';
+import { Node, NodeProps } from '@xyflow/react';
+import React, { memo } from 'react';
 import { EllipseNodeData, NodeComponentsMap } from './EllipseNode.types';
 
 const ellipseNodeStyle = (
@@ -56,26 +55,13 @@ const ellipseNodeStyle = (
   return ellipseNodeStyle;
 };
 
-const resizeLineStyle = (theme: Theme): React.CSSProperties => {
-  return { borderWidth: theme.spacing(0.15) };
-};
-
-const resizeHandleStyle = (theme: Theme): React.CSSProperties => {
-  return {
-    width: theme.spacing(1),
-    height: theme.spacing(1),
-    borderRadius: '100%',
-  };
-};
-
 export const EllipseNode: NodeComponentsMap['ellipseNode'] = memo(
   ({ data, id, selected, dragging }: NodeProps<Node<EllipseNodeData>>) => {
-    const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
     const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
-    const { style: connectionLineActiveNodeStlye } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
+    const { style: connectionLineActiveNodeStyle } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
 
     const handleOnDrop = (event: React.DragEvent) => {
       onDrop(event, id);
@@ -85,24 +71,13 @@ export const EllipseNode: NodeComponentsMap['ellipseNode'] = memo(
 
     return (
       <>
-        {data.nodeDescription?.userResizable !== 'NONE' && !readOnly ? (
-          <NodeResizer
-            handleStyle={{ ...resizeHandleStyle(theme) }}
-            lineStyle={{ ...resizeLineStyle(theme) }}
-            color={theme.palette.selected}
-            isVisible={!!selected}
-            shouldResize={() => !data.isBorderNode}
-            keepAspectRatio={data.nodeDescription?.keepAspectRatio}
-            minWidth={data.minComputedWidth ?? undefined}
-            minHeight={data.minComputedHeight ?? undefined}
-          />
-        ) : null}
+        <Resizer data={data} selected={!!selected} />
         <div
           style={{
             ...ellipseNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),
             ...connectionFeedbackStyle,
             ...dropFeedbackStyle,
-            ...connectionLineActiveNodeStlye,
+            ...connectionLineActiveNodeStyle,
           }}
           data-svg="rect"
           onDragOver={onDragOver}
