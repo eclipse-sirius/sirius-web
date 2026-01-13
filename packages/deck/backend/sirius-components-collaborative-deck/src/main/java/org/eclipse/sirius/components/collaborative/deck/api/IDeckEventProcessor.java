@@ -13,6 +13,9 @@
 package org.eclipse.sirius.components.collaborative.deck.api;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
+import org.eclipse.sirius.components.collaborative.deck.DeckContext;
+import org.eclipse.sirius.components.deck.Deck;
+import org.eclipse.sirius.components.events.ICause;
 
 /**
  * Interface implemented by the deck event processor.
@@ -22,11 +25,21 @@ import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProce
 public interface IDeckEventProcessor extends IRepresentationEventProcessor {
 
     /**
-     * Implementation which does nothing, used for mocks in unit tests.
+     * Returns the current deck context.
      *
-     * @author fbarbin
+     * @return The current deck context
+     * @since v2026.9.0
      */
-    class NoOp extends IRepresentationEventProcessor.NoOp implements IDeckEventProcessor {
+    DeckContext getDeckContext();
 
-    }
+    /**
+     * Used to update the content of the representation event processor.
+     *
+     * @param cause The cause which has triggered the update
+     * @param deck The new version of the representation
+     *
+     * @technical-debt This API should not be considered stable for the moment, it is still being evaluated against the
+     * various use cases of our event processors
+     */
+    void update(ICause cause, Deck deck);
 }
