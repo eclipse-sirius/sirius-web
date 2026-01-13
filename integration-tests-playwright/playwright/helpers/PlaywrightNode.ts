@@ -129,19 +129,19 @@ export class PlaywrightNode {
   async isLastOneSelected() {
     expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
       'background-color',
-      'rgb(203, 71, 147)'
+      'rgb(190, 26, 120)'
     );
     expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.right.handle')).toHaveCSS(
       'background-color',
-      'rgb(203, 71, 147)'
+      'rgb(190, 26, 120)'
     );
     expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.left.handle')).toHaveCSS(
       'background-color',
-      'rgb(203, 71, 147)'
+      'rgb(190, 26, 120)'
     );
     expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.right.handle')).toHaveCSS(
       'background-color',
-      'rgb(203, 71, 147)'
+      'rgb(190, 26, 120)'
     );
   }
 
