@@ -1,0 +1,166 @@
+= 001 - Migrating a representation to the stateless refresh lifecycle
+
+This post-mortem records the migration first performed for Hierarchy and then for Deck.
+It is a playbook for representation maintainers: use it when a representation event processor still renders, persists, or searches for its representation during `refresh`.
+
+== Why the lifecycle changed
+
+Historically, an event processor combined two different concerns:
+
+* stateful collaboration concerns: subscriptions, event handlers, the current representation and its output flux;
+* stateless refresh concerns: finding the representation description and target object, rendering, persisting and publishing a replacement representation.
+
+The latter does not belong in a long-lived processor.
+Extracting it makes a refresh independently testable, makes the processor's state explicit, and provides one core dispatch point for every representation.
+
+== Target lifecycle
+
+The lifecycle has five stages:
+
+. A subscription factory asks a representation-specific initializer to render the initial representation from the persisted representation, its description and its target object.
+. The factory creates the event processor from that initial representation.
+The processor creates its representation event flux from this same snapshot.
+. A `ChangeDescription` reaches `RepresentationEventProcessorRefresher`.
+. The core refresher selects the first `IRepresentationRefresher` whose `canHandle` method accepts the processor and change.
+That refresher rebuilds or reloads the representation, persists it when appropriate, and asks the processor to publish it with the change cause.
+. The processor replaces only its current representation state and emits the refreshed representation.
+It does not search, render, or persist it.
+
+`IRepresentationEventProcessor#refresh` remains temporarily as a deprecated fallback for representations that have not migrated.
+A migrated processor must retain the override as a no-op until this compatibility path is removed; otherwise the fallback can reintroduce the old lifecycle.
+
+== New shared and representation-specific services
+
+The migration introduced the following services and boundaries.
+
+|===
+|Service |Responsibility
+
+|`IRepresentationRefresher`
+|Shared contract for a stateless, representation-specific refresher.
+It declares whether it handles a processor/change pair and performs the refresh.
+
+|`RepresentationEventProcessorRefresher`
+|Core dispatcher.
+It receives all changes, selects a matching `IRepresentationRefresher`, keeps monitoring around the operation, and uses the deprecated processor method only when no refresher matches.
+
+|`<Representation>EventProcessorInitializer`
+|Per-representation initial-render service.
+It looks up the persisted representation, description and target object, then calls the creation service.
+It returns empty if any prerequisite has disappeared.
+
+|`<Representation>Refresher`
+|Per-representation refresh service.
+It owns refresh trigger selection, regular re-rendering, targeted reloads, persistence and publication through the processor.
+
+|`I<Representation>CreationService`
+|A stateless renderer API.
+It receives the editing context, description, target object and representation context instead of retaining those values in a processor or service instance.
+|===
+
+Spring discovers representation refreshers as services and injects them as a list into the core dispatcher.
+A new representation therefore needs its refresher registered as a Spring service; it does not need a central `if` branch.
+
+== Responsibility transfer
+
+The following table is the essential refactoring map.
+
+|===
+|Before |After
+
+|Event processor searches for description, target object and persisted representation.
+|Initializer searches the persisted representation for the first render; refresher searches the description and target for ordinary updates, and the persisted representation for reloads.
+
+|Event processor calls the renderer/creation service.
+|Initializer and refresher call the stateless creation service.
+
+|Event processor applies `IRepresentationPersistenceStrategy`.
+|Refresher persists ordinary rendered updates with `applyPersistenceStrategy(changeDescription.getCause(), editingContext, representation)`.
+
+|Event processor decides refresh kinds.
+|Refresher's `canHandle` and private predicates define the supported semantic, representation-specific and targeted-reload triggers.
+
+|Event processor publishes a replacement without an explicit cause.
+|`update(ICause, Representation)` resets transient state as needed and publishes with the cause.
+
+|Factory constructs a fully capable processor, then refreshes it.
+|Factory obtains the initial render from the initializer first, then constructs the minimal processor from that result.
+|===
+
+Keep the processor limited to its durable collaboration state: event handlers, subscription manager, current representation/context and representation event flux.
+Its `update` method is deliberately small. This separation is the main outcome of the migration.
+
+== What changed for Hierarchy
+
+Hierarchy established the pattern in commit `725cdad3`:
+
+* `HierarchyContext` became an immutable value passed to the creation service.
+* `HierarchyCreationService` became a renderer instead of holding refresh orchestration.
+* `HierarchyEventProcessorInitializer` performs the initial lookup and render.
+* `HierarchyRefresher` handles semantic refreshes and targeted reloads, persists rendered content, and calls the processor's cause-aware update method.
+* `HierarchyEventProcessorFactory` invokes the initializer before constructing the processor.
+
+This made the hierarchy processor responsible only for event processing and publication, which is the baseline other representations should follow.
+
+== Deck-specific lessons
+
+Deck follows the same structure but has additional transient renderer state. `DeckContext` carries both the previous `Deck` and the renderer-generated `IDeckEvent` list.
+
+On an ordinary Deck refresh, `DeckRefresher` must construct the new context from:
+
+* the processor's current Deck, so rendering retains Deck state such as visibility and layout-dependent information; and
+* the processor's accumulated Deck events, so the next render sees events raised by mutation handlers.
+
+After the replacement is published, `DeckEventProcessor#update` clears the transient event list.
+This makes renderer events one-shot: they influence exactly the next render and cannot be applied again on later unrelated semantic changes.
+
+`DeckComponentProps` had to receive these values in the corrected order: renderer events and the optional previous Deck must both be preserved when the creation service delegates to the renderer.
+Components reading optional card-visibility state must also tolerate a missing event value; otherwise an incomplete transient event can turn a refresh into a runtime failure.
+
+Deck's refresher recognizes three classes of change:
+
+* semantic changes;
+* `DeckChangeKind.DECK_REPRESENTATION_UPDATE`, used by Deck interaction state such as card visibility or lane collapse;
+* a `RELOAD_REPRESENTATION` change whose source is the Deck being refreshed.
+
+Only the first two rerender and persist.
+A targeted reload reads the persisted Deck and publishes it with the incoming cause; it must not render or persist again.
+
+== Migration procedure for another representation
+
+. Inventory the current processor's `refresh` method.
+Classify every dependency and branch as stateful handling, ordinary rerendering, or reload.
+. Define an immutable (or deliberately controlled) `<Representation>Context` containing every previous-representation value and transient renderer input required to render correctly.
+. Change the creation-service API to `create(IEditingContext, Description, Object, Context)`.
+Move rendering into that service and remove its dependency on the processor.
+. Add an initializer. It should look up the persisted representation by id, find its description and target object, construct an initial context, render once, and return `Optional.empty()` when the representation can no longer be resolved.
+. Change the factory to call the initializer before constructing the event processor.
+Initialize the processor's event flux from the initial rendered representation.
+. Add a refresher implementing `IRepresentationRefresher`. Keep trigger logic in `canHandle`; in `refresh`, perform an ordinary rerender or a targeted reload as separate paths.
+. For ordinary rerenders, carry forward the old representation and transient events, apply persistence with the exact `ChangeDescription` cause, then call the processor's `update(cause, refreshedRepresentation)`.
+. Add a cause-aware `update` method to the representation processor API.
+Reset only one-shot transient state there, replace the current representation, and publish through the event flux with the same cause.
+. Remove search, creation and persistence dependencies from the event processor.
+Keep its deprecated `refresh` override as a no-op while the shared fallback exists.
+. Register the initializer and refresher as services, clean imports and copied declarations, and update public API changelog or migration notes when the representation API is consumable outside its module.
+
+== Verification and coverage checklist
+
+Compile and check the representation module first, then execute focused controller integration tests through the reactor so the changed representation module is built from source.
+Use the Maven coverage report to inspect the initializer and refresher branch coverage, rather than relying only on the aggregate percentage.
+
+At minimum, add or keep tests for:
+
+* subscription creation and the first rendered representation;
+* each semantic mutation that changes the model, including create, edit and delete where the representation supports them;
+* each representation-state mutation that produces a representation-specific change kind, such as Deck card-visibility and lane-collapse changes;
+* interaction paths such as lane/card drops when they use dedicated handlers;
+* targeted reload, asserting that persisted content is emitted;
+* two consecutive refreshes, asserting that one-shot renderer events are cleared after the first update;
+* unresolved description or target object, asserting that the refresher safely produces no update.
+
+Use the existing GraphQL mutation runners in integration tests and assert both the successful mutation payload and the next emitted representation.
+This verifies the complete path: mutation, change description, refresher selection, rendering or reload, persistence, and cause-aware publication.
+
+The key review question is simple: after migration, can the event processor be instantiated and tested without object search, description search, creation or persistence services?
+If not, some stateless refresh responsibility is still in the processor.

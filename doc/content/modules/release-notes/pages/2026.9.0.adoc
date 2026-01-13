@@ -34,6 +34,8 @@ This makes it possible to reliably retrieve a relevant cause even when intermedi
 * Studio makers can now use the `diagramServices.deleteViews(nodes)` AQL service to configure group palette actions that remove multiple selected unsynchronized nodes from a diagram without deleting their semantic elements.
 * Rectangle selection in diagrams now excludes the node where the selection starts and its containers, making it easier to select nested elements without selecting their containers.
 * The group selection has been improved: now when several nodes are selected at the exact same time with the lasso, only the node the closest to the cursor is marked as "last selected" (pink round angles) instead of all of them.
+* Deck representation integration tests now use dedicated mutation executors for card creation, deletion, visibility changes, and lane-collapse changes.
+
 
 == Technical details
 

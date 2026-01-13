@@ -27,12 +27,12 @@ import org.eclipse.sirius.components.representations.VariableManager;
  *
  * @author fbarbin
  */
-public record DeckComponentProps(VariableManager variableManager, DeckDescription deckDescription, Optional<Deck> optionalPreviousDeck, List<IDeckEvent> deckEvents) implements IProps {
+public record DeckComponentProps(VariableManager variableManager, DeckDescription deckDescription, List<IDeckEvent> deckEvents, Optional<Deck> optionalPreviousDeck) implements IProps {
 
     public DeckComponentProps {
         Objects.requireNonNull(variableManager);
         Objects.requireNonNull(deckDescription);
-        Objects.requireNonNull(optionalPreviousDeck);
         Objects.requireNonNull(deckEvents);
+        Objects.requireNonNull(optionalPreviousDeck);
     }
 }
