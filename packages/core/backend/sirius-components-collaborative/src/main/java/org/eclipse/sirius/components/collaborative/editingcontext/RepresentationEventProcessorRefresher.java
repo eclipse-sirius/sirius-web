@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,20 +12,23 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.editingcontext;
 
+import java.util.List;
 import java.util.Objects;
 
-import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IChangeDescriptionConsumer;
+import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationRefresher;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import reactor.core.publisher.Sinks;
 
 /**
@@ -41,12 +44,15 @@ public class RepresentationEventProcessorRefresher implements IChangeDescription
 
     private final IRepresentationEventProcessorRegistry representationEventProcessorRegistry;
 
+    private final List<IRepresentationRefresher> representationRefreshers;
+
     private final MeterRegistry meterRegistry;
 
     private final Logger logger = LoggerFactory.getLogger(RepresentationEventProcessorRefresher.class);
 
-    public RepresentationEventProcessorRefresher(IRepresentationEventProcessorRegistry representationEventProcessorRegistry, MeterRegistry meterRegistry) {
+    public RepresentationEventProcessorRefresher(IRepresentationEventProcessorRegistry representationEventProcessorRegistry, List<IRepresentationRefresher> representationRefreshers, MeterRegistry meterRegistry) {
         this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
+        this.representationRefreshers = Objects.requireNonNull(representationRefreshers);
         this.meterRegistry = Objects.requireNonNull(meterRegistry);
     }
 
@@ -59,18 +65,7 @@ public class RepresentationEventProcessorRefresher implements IChangeDescription
             RepresentationEventProcessorEntry representationEventProcessorEntry = this.representationEventProcessorRegistry.get(editingContext.getId(), changeDescription.getSourceId());
             if (representationEventProcessorEntry != null) {
                 IRepresentationEventProcessor representationEventProcessor = representationEventProcessorEntry.getRepresentationEventProcessor();
-
-                long start = System.currentTimeMillis();
-                representationEventProcessor.refresh(changeDescription);
-                long end = System.currentTimeMillis();
-
-                this.logger.atDebug()
-                        .setMessage("EditingContext {}: {}ms to refresh the {} with id {}")
-                        .addArgument(editingContext.getId())
-                        .addArgument(() -> String.format(LOG_TIMING_FORMAT, end - start))
-                        .addArgument(representationEventProcessor.getClass().getSimpleName())
-                        .addArgument(representationEventProcessor.getRepresentation().getId())
-                        .log();
+                this.refresh(editingContext, representationEventProcessor, changeDescription);
             }
             this.refreshOtherRepresentations(editingContext, changeDescription);
         } catch (Exception exception) {
@@ -90,18 +85,31 @@ public class RepresentationEventProcessorRefresher implements IChangeDescription
     private void refreshOtherRepresentations(IEditingContext editingContext, ChangeDescription changeDescription) {
         this.representationEventProcessorRegistry.values(editingContext.getId()).stream()
                 .filter(registry -> !Objects.equals(changeDescription.getSourceId(), registry.getRepresentation().getId()))
-                .forEach(representationEventProcessor -> {
-                    long start = System.currentTimeMillis();
-                    representationEventProcessor.refresh(changeDescription);
-                    long end = System.currentTimeMillis();
+                .forEach(representationEventProcessor -> this.refresh(editingContext, representationEventProcessor, changeDescription));
+    }
 
-                    this.logger.atDebug()
-                            .setMessage("EditingContext {}: {}ms to refresh the {} with id {}")
-                            .addArgument(editingContext.getId())
-                            .addArgument(() -> String.format(LOG_TIMING_FORMAT, end - start))
-                            .addArgument(representationEventProcessor.getClass().getSimpleName())
-                            .addArgument(representationEventProcessor.getRepresentation().getId())
-                            .log();
-                });
+    private void refresh(IEditingContext editingContext, IRepresentationEventProcessor representationEventProcessor, ChangeDescription changeDescription) {
+        long start = System.currentTimeMillis();
+        var optionalRefresher = this.representationRefreshers.stream()
+                .filter(refresher -> refresher.canHandle(editingContext, representationEventProcessor, changeDescription))
+                .findFirst();
+        if (optionalRefresher.isPresent()) {
+            var refresher = optionalRefresher.get();
+            refresher.refresh(editingContext, representationEventProcessor, changeDescription);
+        } else {
+            // Temporary fallback to the existing behavior
+            representationEventProcessor.refresh(changeDescription);
+        }
+
+
+        long end = System.currentTimeMillis();
+
+        this.logger.atDebug()
+                .setMessage("EditingContext {}: {}ms to refresh the {} with id {}")
+                .addArgument(editingContext.getId())
+                .addArgument(() -> String.format(LOG_TIMING_FORMAT, end - start))
+                .addArgument(representationEventProcessor.getClass().getSimpleName())
+                .addArgument(representationEventProcessor.getRepresentation().getId())
+                .log();
     }
 }
