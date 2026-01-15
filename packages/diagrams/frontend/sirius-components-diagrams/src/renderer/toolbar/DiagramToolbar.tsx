@@ -48,12 +48,12 @@ import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { SnapToGridContextValue } from '../snap-to-grid/SnapToGridContext.types';
 import { SnapToGridContext } from '../snap-to-grid/SnapToGridContext';
 import { ArrangeAllButton } from './ArrangeAllButton';
-import { DiagramToolbarActionProps, DiagramToolbarProps, DiagramToolbarState } from './DiagramToolbar.types';
+import { DiagramToolbarActionProps, DiagramToolbarState } from './DiagramToolbar.types';
 import { diagramToolbarActionExtensionPoint } from './DiagramToolbarExtensionPoints';
 import { ExportImageButton } from './ExportImageButton';
 import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
 
-export const DiagramToolbar = memo(({ reactFlowWrapper }: DiagramToolbarProps) => {
+export const DiagramToolbar = memo(() => {
   const [state, setState] = useState<DiagramToolbarState>({
     dialogOpen: null,
     arrangeAllDone: false,
@@ -209,7 +209,7 @@ export const DiagramToolbar = memo(({ reactFlowWrapper }: DiagramToolbarProps) =
               </span>
             </Tooltip>
           )}
-          <ArrangeAllButton reactFlowWrapper={reactFlowWrapper} disabled={readOnly} />
+          <ArrangeAllButton disabled={readOnly} />
           <Tooltip title={t('revealHidden')}>
             <span>
               <IconButton

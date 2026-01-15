@@ -118,6 +118,8 @@ export interface InsideLabel {
   headerSeparatorStyle: React.CSSProperties;
   headerPosition: HeaderPosition | undefined;
   appearanceData: LabelAppearanceData;
+  width: number;
+  height: number;
 }
 
 export type HeaderPosition = 'TOP' | 'BOTTOM';

@@ -48,8 +48,11 @@ test.describe('diagram - freeform layout', () => {
     const controllerSize = await controllerNode.getReactFlowSize('Controller');
     const controllerPosition = await controllerNode.getReactFlowXYPosition('Controller');
     const nodePadding = 8;
+    const borderWidth = 1;
 
-    expect(applicationLayerSize.height).toBe(controllerPosition.y + controllerSize.height + nodePadding);
-    expect(controllerPosition.x).toBe(nodePadding);
+    expect(applicationLayerSize.height).toBe(
+      controllerPosition.y + controllerSize.height + nodePadding + 3 * borderWidth
+    );
+    expect(controllerPosition.x).toBe(nodePadding + borderWidth);
   });
 });

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -109,6 +109,7 @@ const toImageNode = (
 
   data.insideLabel = convertInsideLabel(
     insideLabel,
+    gqlDiagram.layoutData.labelLayoutData,
     data,
     `${style.borderSize}px ${style.borderStyle} ${style.borderColor}`,
     gqlNode.childNodes?.some((child) => child.state !== GQLViewModifier.Hidden)
