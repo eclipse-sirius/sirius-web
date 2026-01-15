@@ -342,6 +342,7 @@ enum ArrowStyle {
   CrossedCircle
   ClosedArrowWithVerticalBar
   ClosedArrowWithDots
+  ClosedArrowWith4Dots
 }
 
 enum EdgeType {

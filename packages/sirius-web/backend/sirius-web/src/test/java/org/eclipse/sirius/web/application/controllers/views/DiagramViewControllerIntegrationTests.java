@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,12 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.dto.CreateChildInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateChildSuccessPayload;
+import org.eclipse.sirius.components.collaborative.forms.dto.EditSelectInput;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
+import org.eclipse.sirius.components.forms.Select;
+import org.eclipse.sirius.components.forms.tests.graphql.EditSelectMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.details.dto.DetailsEventInput;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
@@ -60,6 +64,9 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private CreateChildMutationRunner createChildMutationRunner;
+
+    @Autowired
+    private EditSelectMutationRunner editSelectMutationRunner;
 
     @Autowired
     private DetailsEventSubscriptionRunner detailsEventSubscriptionRunner;
@@ -149,4 +156,96 @@ public class DiagramViewControllerIntegrationTests extends AbstractIntegrationTe
     }
 
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram description, when an edge style is edited, then it is possible to select the ClosedArrowWith4Dots arrow style")
+    public void givenADiagramDescriptionWhenAEdgeStyleIsEditedThenItIsPossibleToSelectTheClosedArrowWith4DotsArrowStyle() {
+        var objectId = "a2a3713f-57bc-422b-92e8-b22ed69e94a8"; // The edge style of the sample studio
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(objectId));
+        var input = new DetailsEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input)
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
+
+        var sourceArrowStyleWidgetId = new AtomicReference<String>();
+        var targetArrowStyleWidgetId = new AtomicReference<String>();
+        var closedArrowWith4DotsValue = new AtomicReference<String>();
+
+        Consumer<Object> formContentBeforeEdit = assertRefreshedFormThat(form -> {
+            var firstPage = form.getPages().get(0);
+            var firstGroup = firstPage.getGroups().get(0);
+            var sourceArrowStyleWidget = firstGroup.getWidgets().stream()
+                    .filter(Select.class::isInstance)
+                    .map(Select.class::cast)
+                    .filter(selectWidget -> Objects.equals("Source Arrow Style", selectWidget.getLabel()))
+                    .findFirst();
+            assertThat(sourceArrowStyleWidget).isPresent();
+            assertThat(sourceArrowStyleWidget.get().getValue()).isEqualTo("0");
+            var sourceArrowStyleWidgetOptions = sourceArrowStyleWidget.get().getOptions();
+            var optClosedArrowWith4Dots = sourceArrowStyleWidgetOptions.stream()
+                .filter(selectOption -> Objects.equals("ClosedArrowWith4Dots", selectOption.getLabel()))
+                .findFirst();
+            assertThat(optClosedArrowWith4Dots).isPresent();
+            sourceArrowStyleWidgetId.set(sourceArrowStyleWidget.get().getId());
+            closedArrowWith4DotsValue.set(optClosedArrowWith4Dots.get().getId());
+
+            var targetArrowStyleWidget = firstGroup.getWidgets().stream()
+                    .filter(Select.class::isInstance)
+                    .map(Select.class::cast)
+                    .filter(selectWidget -> Objects.equals("Target Arrow Style", selectWidget.getLabel()))
+                    .findFirst();
+            assertThat(targetArrowStyleWidget).isPresent();
+            assertThat(targetArrowStyleWidget.get().getValue()).isEqualTo("2");
+            assertThat(targetArrowStyleWidget.get().getOptions()).anyMatch(selectOption -> Objects.equals("ClosedArrowWith4Dots", selectOption.getLabel()));
+            targetArrowStyleWidgetId.set(targetArrowStyleWidget.get().getId());
+        });
+
+        Runnable editSourceArrowStyle = () -> {
+            var editSelectSourceArrowStyleInput = new EditSelectInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId, sourceArrowStyleWidgetId.get(), closedArrowWith4DotsValue.get());
+            var result = this.editSelectMutationRunner.run(editSelectSourceArrowStyleInput);
+            var typename = JsonPath.read(result.data(), "$.data.editSelect.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> formContentAfterSourceArrowStyleEdit = assertRefreshedFormThat(form -> {
+            var firstPage = form.getPages().get(0);
+            var firstGroup = firstPage.getGroups().get(0);
+            var sourceArrowStyleWidget = firstGroup.getWidgets().stream()
+                    .filter(Select.class::isInstance)
+                    .map(Select.class::cast)
+                    .filter(selectWidget -> Objects.equals("Source Arrow Style", selectWidget.getLabel()))
+                    .findFirst();
+            assertThat(sourceArrowStyleWidget).isPresent();
+            assertThat(sourceArrowStyleWidget.get().getValue()).isEqualTo(closedArrowWith4DotsValue.get());
+        });
+
+        Runnable editTargetArrowStyle = () -> {
+            var editSelectTargetArrowStyleInput = new EditSelectInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, detailsRepresentationId, targetArrowStyleWidgetId.get(), closedArrowWith4DotsValue.get());
+            var result = this.editSelectMutationRunner.run(editSelectTargetArrowStyleInput);
+            var typename = JsonPath.read(result.data(), "$.data.editSelect.__typename");
+            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> formContentAfterTargetArrowStyleEdit = assertRefreshedFormThat(form -> {
+            var firstPage = form.getPages().get(0);
+            var firstGroup = firstPage.getGroups().get(0);
+
+            var targetArrowStyleWidget = firstGroup.getWidgets().stream()
+                    .filter(Select.class::isInstance)
+                    .map(Select.class::cast)
+                    .filter(selectWidget -> Objects.equals("Target Arrow Style", selectWidget.getLabel()))
+                    .findFirst();
+            assertThat(targetArrowStyleWidget).isPresent();
+            assertThat(targetArrowStyleWidget.get().getValue()).isEqualTo(closedArrowWith4DotsValue.get());
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(formContentBeforeEdit)
+                .then(editSourceArrowStyle)
+                .consumeNextWith(formContentAfterSourceArrowStyleEdit)
+                .then(editTargetArrowStyle)
+                .consumeNextWith(formContentAfterTargetArrowStyleEdit)
+                .thenCancel()
+                .verify(Duration.ofSeconds(100));
+    }
 }
