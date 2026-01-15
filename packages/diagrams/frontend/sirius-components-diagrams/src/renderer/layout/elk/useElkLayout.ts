@@ -11,13 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, useStoreApi } from '@xyflow/react';
+import { Edge, Node } from '@xyflow/react';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import { UseElkLayoutValue } from './useElkLayout.types';
 import { NodeData, EdgeData } from '../../DiagramRenderer.types';
 import { ListNodeData } from '../../node/ListNode.types';
-import { labelHorizontalPadding, labelVerticalPadding } from '../layoutParams';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
@@ -38,93 +37,76 @@ const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData
   return subNodes;
 };
 
-const computeHeaderVerticalFootprint = (
-  node: Node<NodeData, string> | undefined,
-  viewportZoom: number,
-  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>
-): number => {
+const computeHeaderVerticalFootprint = (node: Node<NodeData, string> | undefined): number => {
   if (node && node.data.insideLabel?.isHeader) {
-    const label = reactFlowWrapper?.current?.querySelector<HTMLDivElement>(
-      `[data-id="${node.data.insideLabel.id}-content"]`
-    );
-    if (label) {
-      return label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2;
-    }
+    return node.data.insideLabel.height;
   }
   return 0;
 };
 
-const computeLabels = (
-  node,
-  viewportZoom: number,
-  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>
-): ElkLabel[] => {
+const computeLabels = (node: Node<NodeData, string>): ElkLabel[] => {
   const labels: ElkLabel[] = [];
   if (node && node.data.insideLabel) {
-    const label = reactFlowWrapper?.current?.querySelector<HTMLDivElement>(
-      `[data-id="${node.data.insideLabel.id}-content"]`
-    );
-    if (label) {
-      const elkLabel: ElkLabel = {
-        id: node.data.insideLabel.id,
-        width: label.getBoundingClientRect().width / viewportZoom + labelHorizontalPadding * 2,
-        height: label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2,
-        text: node.data.insideLabel.text,
-        x: 0,
-        y: 0,
-      };
-      labels.push(elkLabel);
-    }
+    const elkLabel: ElkLabel = {
+      id: node.data.insideLabel.id,
+      width: node.data.insideLabel.width,
+      height: node.data.insideLabel.height,
+      text: node.data.insideLabel.text,
+      x: 0,
+      y: 0,
+    };
+    labels.push(elkLabel);
   }
   if (node && node.data.outsideLabels.BOTTOM_MIDDLE) {
-    const label = reactFlowWrapper?.current?.querySelector<HTMLDivElement>(
-      `[data-id="${node.data.outsideLabels.BOTTOM_MIDDLE.id}-content"]`
-    );
-    if (label) {
-      const elkLabel: ElkLabel = {
-        id: node.data.outsideLabels.BOTTOM_MIDDLE.id,
-        width: label.getBoundingClientRect().width / viewportZoom + labelHorizontalPadding * 2,
-        height: label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2,
-        text: node.data.outsideLabels.BOTTOM_MIDDLE.text,
-        x: 0,
-        y: node.height,
-      };
-      labels.push(elkLabel);
-    }
+    const elkLabel: ElkLabel = {
+      id: node.data.outsideLabels.BOTTOM_MIDDLE.id,
+      width: node.data.outsideLabels.BOTTOM_MIDDLE.width,
+      height: node.data.outsideLabels.BOTTOM_MIDDLE.height,
+      text: node.data.outsideLabels.BOTTOM_MIDDLE.text,
+      x: 0,
+      y: node.height,
+    };
+    labels.push(elkLabel);
   }
   return labels;
 };
 
-export const useElkLayout = (reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>): UseElkLayoutValue => {
-  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+export const useElkLayout = (): UseElkLayoutValue => {
   const { addErrorMessage } = useMultiToast();
   const elk = new ELK();
 
   const getELKLayout = async (
-    nodes,
-    edges,
+    nodes: Node<NodeData>[],
+    edges: Edge<EdgeData>[],
     options: LayoutOptions = {},
     parentNodeId: string,
     headerVerticalFootprint: number
   ): Promise<any> => {
-    const zoom = store.getState().transform[2];
     const graph: ElkNode = {
       id: parentNodeId,
       layoutOptions: options,
       children: nodes.map((node) => ({
-        labels: computeLabels(node, zoom, reactFlowWrapper),
+        labels: computeLabels(node),
         ...node,
       })),
-      edges: edges.filter(
-        (edge) => nodes.some((node) => node.id === edge.source) && nodes.some((node) => node.id === edge.target)
-      ),
+      edges: edges
+        .filter(
+          (edge) => nodes.some((node) => node.id === edge.source) && nodes.some((node) => node.id === edge.target)
+        )
+        .map((edge) => {
+          return {
+            id: edge.id,
+            sources: [edge.source],
+            targets: [edge.target],
+          };
+        }),
     };
     try {
       const layoutGraph = await elk.layout(graph);
       return {
         nodes:
           layoutGraph?.children?.map((node) => {
-            const originalNode = nodes.find((node_1) => node_1.id === node.id);
+            const originalNode = nodes.find((n) => n.id === node.id);
             if (originalNode && originalNode.data.pinned) {
               return { ...node };
             } else {
@@ -171,8 +153,7 @@ export const useElkLayout = (reactFlowWrapper: React.MutableRefObject<HTMLDivEle
         layoutAllNodes = [...layoutAllNodes, ...nodes.reverse()];
         continue;
       }
-      const zoom = store.getState().transform[2];
-      const headerVerticalFootprint: number = computeHeaderVerticalFootprint(parentNode, zoom, reactFlowWrapper);
+      const headerVerticalFootprint: number = computeHeaderVerticalFootprint(parentNode);
       const subGroupNodes: Node<NodeData>[] = nodes
         .filter((node) => !node.data.isBorderNode)
         .map((node) => {
