@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,272 +10,82 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, useReactFlow, useStoreApi } from '@xyflow/react';
+import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
-import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { useFitView } from '../../fit-to-screen/useFitView';
-import { ListNodeData } from '../../node/ListNode.types';
 import { DiagramNodeType } from '../../node/NodeTypes.types';
 import { useOverlap } from '../../overlap/useOverlap';
 import { RawDiagram } from '../layout.types';
-import { labelHorizontalPadding, labelVerticalPadding } from '../layoutParams';
 import { UseArrangeAllValue } from './useArrangeAll.types';
 import { useLayout } from '../useLayout';
 import { useSynchronizeLayoutData } from '../useSynchronizeLayoutData';
-
-const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
-
-function reverseOrdreMap<K, V>(map: Map<K, V>): Map<K, V> {
-  const reversedNodes = Array.from(map.entries()).reverse();
-  return new Map<K, V>(reversedNodes);
-}
-
-const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
-  const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
-  for (const node of nodes.filter((n) => !n.hidden)) {
-    const parentNodeId: string = node.parentId ?? 'root';
-    if (!subNodes.has(parentNodeId)) {
-      subNodes.set(parentNodeId, []);
-    }
-    subNodes.get(parentNodeId)?.push(node);
-  }
-  return subNodes;
-};
-
-const computeHeaderVerticalFootprint = (
-  node,
-  viewportZoom: number,
-  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>
-): number => {
-  if (node && node.data.insideLabel?.isHeader) {
-    const label = reactFlowWrapper?.current?.querySelector<HTMLDivElement>(
-      `[data-id="${node.data.insideLabel.id}-content"]`
-    );
-    if (label) {
-      return label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2;
-    }
-  }
-  return 0;
-};
-
-const computeLabels = (
-  node,
-  viewportZoom: number,
-  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>
-): ElkLabel[] => {
-  const labels: ElkLabel[] = [];
-  if (node && node.data.insideLabel) {
-    const label = reactFlowWrapper?.current?.querySelector<HTMLDivElement>(
-      `[data-id="${node.data.insideLabel.id}-content"]`
-    );
-    if (label) {
-      const elkLabel: ElkLabel = {
-        id: node.data.insideLabel.id,
-        width: label.getBoundingClientRect().width / viewportZoom + labelHorizontalPadding * 2,
-        height: label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2,
-        text: node.data.insideLabel.text,
-        x: 0,
-        y: 0,
-      };
-      labels.push(elkLabel);
-    }
-  }
-  if (node && node.data.outsideLabels.BOTTOM_MIDDLE) {
-    const label = reactFlowWrapper?.current?.querySelector<HTMLDivElement>(
-      `[data-id="${node.data.outsideLabels.BOTTOM_MIDDLE.id}-content"]`
-    );
-    if (label) {
-      const elkLabel: ElkLabel = {
-        id: node.data.outsideLabels.BOTTOM_MIDDLE.id,
-        width: label.getBoundingClientRect().width / viewportZoom + labelHorizontalPadding * 2,
-        height: label.getBoundingClientRect().height / viewportZoom + labelVerticalPadding * 2,
-        text: node.data.outsideLabels.BOTTOM_MIDDLE.text,
-        x: 0,
-        y: node.height,
-      };
-      labels.push(elkLabel);
-    }
-  }
-  return labels;
-};
+import { useElkLayout } from '../elk/useElkLayout';
 
 export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { resolveNodeOverlap } = useOverlap();
-  const { addErrorMessage } = useMultiToast();
   const { fitView } = useFitView();
-
-  const elk = new ELK();
-
-  const getELKLayout = async (
-    nodes,
-    edges,
-    options: LayoutOptions = {},
-    parentNodeId: string,
-    headerVerticalFootprint: number
-  ): Promise<any> => {
-    const zoom = store.getState().transform[2];
-    const graph: ElkNode = {
-      id: parentNodeId,
-      layoutOptions: options,
-      children: nodes.map((node) => ({
-        labels: computeLabels(node, zoom, reactFlowWrapper),
-        ...node,
-      })),
-      edges: edges.filter(
-        (edge) => nodes.some((node) => node.id === edge.source) && nodes.some((node) => node.id === edge.target)
-      ),
-    };
-    try {
-      const layoutedGraph = await elk.layout(graph);
-      return {
-        nodes:
-          layoutedGraph?.children?.map((node) => {
-            const originalNode = nodes.find((node_1) => node_1.id === node.id);
-            if (originalNode && originalNode.data.pinned) {
-              return { ...node };
-            } else {
-              return {
-                ...node,
-                position: { x: node.x ?? 0, y: (node.y ?? 0) + headerVerticalFootprint },
-              };
-            }
-          }) ?? [],
-        layoutReturn: layoutedGraph,
-      };
-    } catch (message) {
-      addErrorMessage('An error occurred during the arrange all elements ');
-      return [];
-    }
-  };
-
-  const applyElkOnSubNodes = async (
-    subNodes: Map<string, Node<NodeData, string>[]>,
-    allNodes: Node<NodeData, string>[],
-    layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
-    let layoutedAllNodes: Node<NodeData, string>[] = [];
-    const parentNodeWithNewSize: Node<NodeData>[] = [];
-    const edges: Edge<EdgeData>[] = getEdges();
-    for (const [parentNodeId, nodes] of subNodes) {
-      const parentNode = allNodes.find((node) => node.id === parentNodeId);
-      const subGroupEdges: Edge<EdgeData>[] = [];
-      edges.forEach((edge) => {
-        const isTargetInside = nodes.some((node) => node.id === edge.target);
-        const isSourceInside = nodes.some((node) => node.id === edge.source);
-        if (isTargetInside && isSourceInside) {
-          subGroupEdges.push(edge);
-        }
-        if (isTargetInside && !isSourceInside) {
-          edge.target = parentNodeId;
-        }
-        if (!isTargetInside && isSourceInside) {
-          edge.source = parentNodeId;
-        }
-      });
-      if ((parentNode && isListData(parentNode)) || nodes.every((node) => node.data.isBorderNode)) {
-        // No elk layout for child of container list or for border node
-        layoutedAllNodes = [...layoutedAllNodes, ...nodes.reverse()];
-        continue;
-      }
-      const zoom = store.getState().transform[2];
-      const headerVerticalFootprint: number = computeHeaderVerticalFootprint(parentNode, zoom, reactFlowWrapper);
-      const subGroupNodes: Node<NodeData>[] = nodes
-        .filter((node) => !node.data.isBorderNode)
-        .map((node) => {
-          return parentNodeWithNewSize.find((layoutNode) => layoutNode.id === node.id) ?? node;
-        });
-      await getELKLayout(subGroupNodes, subGroupEdges, layoutOptions, parentNodeId, headerVerticalFootprint).then(
-        ({ nodes: layoutedSubNodes, layoutReturn }) => {
-          const parentNode = allNodes.find((node) => node.id === parentNodeId);
-          if (layoutReturn) {
-            if (parentNode) {
-              parentNode.width = layoutReturn.width;
-              parentNode.height = layoutReturn.height + headerVerticalFootprint;
-              parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
-              parentNodeWithNewSize.push(parentNode);
-            }
-            layoutedAllNodes = [
-              ...layoutedAllNodes,
-              ...layoutedSubNodes,
-              ...nodes.filter((node) => node.data.isBorderNode),
-            ];
-          } else {
-            layoutedAllNodes = nodes;
-          }
-        }
-      );
-    }
-    return layoutedAllNodes;
-  };
+  const { elkLayout } = useElkLayout(reactFlowWrapper);
 
   const arrangeAll = async (layoutOptions: LayoutOptions): Promise<void> => {
-    const nodes: Node<NodeData, string>[] = [...getNodes()] as Node<NodeData, DiagramNodeType>[];
-    const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
-    await applyElkOnSubNodes(subNodes, nodes, layoutOptions).then(async (nodes: Node<NodeData, string>[]) => {
-      const laidOutNodesWithElk: Node<NodeData, string>[] = nodes.reverse();
-      laidOutNodesWithElk.filter((laidOutNode) => {
-        const parentNode = nodes.find((node) => node.id === laidOutNode.parentId);
-        return !parentNode || !isListData(parentNode);
-      });
-
-      const laidOutMovedNodeIds = laidOutNodesWithElk
-        .filter((node) => !node.data.isBorderNode && !node.data.pinned)
-        .map((node) => node.id);
-      const edges = getEdges();
-      edges
-        .filter((edge) => laidOutMovedNodeIds.includes(edge.source) || laidOutMovedNodeIds.includes(edge.target))
-        .forEach((edge: Edge<EdgeData, string>) => {
-          if (edge.data?.bendingPoints) {
-            edge.data.bendingPoints = null;
-          }
-        });
-
-      const diagramToLayout: RawDiagram = {
-        nodes: laidOutNodesWithElk,
-        edges: edges,
-      };
-      const layoutPromise = new Promise<void>((resolve) => {
-        layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-          const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
-            laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
-            'horizontal'
-          ) as Node<NodeData, DiagramNodeType>[];
-          laidOutNodesWithElk.map((node) => {
-            const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
-            if (existingNode) {
-              return {
-                ...node,
-                position: existingNode.position,
-                width: existingNode.width,
-                height: existingNode.height,
-                style: {
-                  ...node.style,
-                  width: `${existingNode.width}px`,
-                  height: `${existingNode.height}px`,
-                },
-              };
+    await elkLayout(getNodes(), getEdges(), layoutOptions).then(
+      async (laidOutNodesWithElk: Node<NodeData, string>[]) => {
+        const laidOutMovedNodeIds = laidOutNodesWithElk
+          .filter((node) => !node.data.isBorderNode && !node.data.pinned)
+          .map((node) => node.id);
+        const edges = getEdges();
+        edges
+          .filter((edge) => laidOutMovedNodeIds.includes(edge.source) || laidOutMovedNodeIds.includes(edge.target))
+          .forEach((edge: Edge<EdgeData, string>) => {
+            if (edge.data?.bendingPoints) {
+              edge.data.bendingPoints = null;
             }
-            return node;
           });
-          setNodes(laidOutNodesWithElk);
-          setEdges(laidOutDiagram.edges);
-          const finalDiagram: RawDiagram = {
-            nodes: laidOutNodesWithElk,
-            edges: laidOutDiagram.edges,
-          };
-          fitView({ duration: 200, nodes: laidOutNodesWithElk });
-          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
-          resolve();
+
+        const diagramToLayout: RawDiagram = {
+          nodes: laidOutNodesWithElk,
+          edges: edges,
+        };
+        const layoutPromise = new Promise<void>((resolve) => {
+          layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
+            const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
+              laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
+              'horizontal'
+            ) as Node<NodeData, DiagramNodeType>[];
+            laidOutNodesWithElk.map((node) => {
+              const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
+              if (existingNode) {
+                return {
+                  ...node,
+                  position: existingNode.position,
+                  width: existingNode.width,
+                  height: existingNode.height,
+                  style: {
+                    ...node.style,
+                    width: `${existingNode.width}px`,
+                    height: `${existingNode.height}px`,
+                  },
+                };
+              }
+              return node;
+            });
+            setNodes(laidOutNodesWithElk);
+            setEdges(laidOutDiagram.edges);
+            const finalDiagram: RawDiagram = {
+              nodes: laidOutNodesWithElk,
+              edges: laidOutDiagram.edges,
+            };
+            fitView({ duration: 200, nodes: laidOutNodesWithElk });
+            synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+            resolve();
+          });
         });
-      });
-      await layoutPromise;
-    });
+        await layoutPromise;
+      }
+    );
   };
 
   return {
