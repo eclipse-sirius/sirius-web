@@ -105,7 +105,14 @@ const toIconLabelNode = (
     isLastNodeSelected: false,
   };
 
-  data.insideLabel = convertInsideLabel(insideLabel, data, '', false, '0 8px 0 8px');
+  data.insideLabel = convertInsideLabel(
+    insideLabel,
+    gqlDiagram.layoutData.labelLayoutData,
+    data,
+    '',
+    false,
+    '0 8px 0 8px'
+  );
 
   const node: Node<IconLabelNodeData> = {
     id,

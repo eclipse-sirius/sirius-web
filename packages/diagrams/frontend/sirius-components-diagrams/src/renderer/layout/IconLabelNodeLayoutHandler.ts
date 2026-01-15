@@ -29,24 +29,17 @@ export class IconLabelNodeLayoutHandler implements INodeLayoutHandler<IconLabelN
     _layoutEngine: ILayoutEngine,
     _previousDiagram: RawDiagram | null,
     node: Node<IconLabelNodeData>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    _visibleNodes: Node<NodeData, DiagramNodeType>[],
     _directChildren: Node<NodeData, DiagramNodeType>[],
     _newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
-    const nodeIndex = this.findNodeIndex(visibleNodes, node.id);
-    const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-
-    const insideLabelWidthConstraint = getInsideLabelWidthConstraint(node.data.insideLabel, labelElement);
+    const insideLabelWidthConstraint = getInsideLabelWidthConstraint(node.data.insideLabel);
 
     node.width = forceDimensions?.width ?? insideLabelWidthConstraint + rectangularNodePadding * 2;
-    node.height = labelElement?.getBoundingClientRect().height;
+    node.height = node.data.insideLabel?.height;
 
     node.data.minComputedWidth = insideLabelWidthConstraint + rectangularNodePadding * 2;
     node.data.minComputedHeight = node.height ?? 0;
-  }
-
-  private findNodeIndex(nodes: Node<NodeData>[], nodeId: string): number {
-    return nodes.findIndex((node) => node.id === nodeId);
   }
 }

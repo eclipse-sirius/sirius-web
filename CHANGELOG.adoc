@@ -49,6 +49,11 @@ A toolbar will be added by a migration participant for existing diagram descript
 - https://github.com/eclipse-sirius/sirius-web/issues/5941[#5941] [tree] Custom tree descriptions will not have any tooltip by default.
 The tooltip is now configurable using either the view based tree description or using an instance of `ITreeItemTooltipProvider`.
 The default tooltip used in the explorer can be reused thanks to `IExplorerTooltipService` and it can be customized for any tree item using `IExplorerTooltipServiceDelegate`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] During node converter, `InsideLabel` must declare a width and height, for that `convertInsideLabel` changed.
+An example of this impact could be found in `EllipseNodeConverter.ts`.
+In the node layout, we no longer need to retrieve the label element, as the size is now present in the label data.
+This means that the following methods `getHeaderHeightFootprint` and `getInsideLabelWidthConstraint` have changed their signature by removing the label element.
+An example of this impact could be found in `EllipseNodeLayoutHandler.ts`.
 
 
 === Dependency update
@@ -79,7 +84,6 @@ If present, the toolbar will be enabled, disabled otherwise.
 - https://github.com/eclipse-sirius/sirius-web/issues/6203[#6203] [selection] Update the selection dialog according to the changes made in the selection dialog description.
 
 
-
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
@@ -107,6 +111,7 @@ It is now possible to implement `ITreeItemTooltipProvider` to provide tooltips f
 Trees defined via the view DSL can alternatively provide a tooltip expression via `TreeDescription#setTreeItemTooltipExpression`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Rework the _New Project_ creation page to improve the UX
 - https://github.com/eclipse-sirius/sirius-web/issues/6110[#6110] [diagram] Preserve custom position for the handle during edge reconnection
+- https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] Retrieve the label size from data rather than dom element for elk layout
 
 
 

@@ -82,9 +82,6 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
 
@@ -93,7 +90,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNodes.find((n) => n.id === child.id);
-      const headerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP', borderWidth);
+      const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
 
       if (!!createdNode) {
         child.position = createdNode.position;
@@ -126,14 +123,12 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     // Update node to layout size
     // WARN: We suppose label are always on top of children (that wrong)
     const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren); // WARN: The current content box algorithm does not take the margin of direct children (it should)
-    const footerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'BOTTOM', borderWidth);
+    const footerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'BOTTOM', borderWidth);
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width + rectangularNodePadding;
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const labelOnlyWidth =
-      rectangularNodePadding +
-      getInsideLabelWidthConstraint(node.data.insideLabel, labelElement) +
-      rectangularNodePadding;
+      rectangularNodePadding + getInsideLabelWidthConstraint(node.data.insideLabel) + rectangularNodePadding;
 
     const nodeMinComputeWidth =
       Math.max(
@@ -157,7 +152,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
-    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
     if (node.data.resizedByUser && !forceDimensions?.width) {
       if (nodeMinComputeWidth > previousDimensions.width) {
@@ -196,25 +191,18 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
   private handleLeafNode(
     previousDiagram: RawDiagram | null,
     node: Node<FreeFormNodeData, 'freeFormNode'>,
-    visibleNodes: Node<NodeData, DiagramNodeType>[],
+    _visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceDimensions?: ForcedDimensions
   ) {
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
+    const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel) + borderWidth * 2;
 
-    const nodeMinComputeWidth =
-      rectangularNodePadding +
-      getInsideLabelWidthConstraint(node.data.insideLabel, labelElement) +
-      rectangularNodePadding +
-      borderWidth * 2;
-    const nodeMinComputeHeight =
-      rectangularNodePadding + (labelElement?.getBoundingClientRect().height ?? 0) + rectangularNodePadding;
+    const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
 
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
-    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
     if (node.data.resizedByUser && !forceDimensions?.width) {

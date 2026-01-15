@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 export interface ArrangeAllButtonProps {
-  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
   disabled: boolean;
 }
 

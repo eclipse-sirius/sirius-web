@@ -101,7 +101,7 @@ test.describe('diagram - resize smaller than default', () => {
     await resizableNode.resize({ width: -198, height: -98 });
 
     const resizableNodeSizeAfter = await resizableNode.getReactFlowSize();
-    expect(resizableNodeSizeAfter.width).toBeGreaterThanOrEqual(100);
+    expect(resizableNodeSizeAfter.width).toBeGreaterThanOrEqual(95);
     expect(resizableNodeSizeAfter.width).toBeLessThanOrEqual(150);
     expect(resizableNodeSizeAfter.height).toBeGreaterThanOrEqual(20);
     expect(resizableNodeSizeAfter.height).toBeLessThanOrEqual(70);
