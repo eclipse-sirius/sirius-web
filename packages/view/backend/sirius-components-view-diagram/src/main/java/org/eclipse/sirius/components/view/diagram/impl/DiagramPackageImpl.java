@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -3425,6 +3425,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CROSSED_CIRCLE);
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH_VERTICAL_BAR);
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH_DOTS);
+        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH4_DOTS);
 
         this.initEEnum(this.layoutDirectionEEnum, LayoutDirection.class, "LayoutDirection");
         this.addEEnumLiteral(this.layoutDirectionEEnum, LayoutDirection.COLUMN);

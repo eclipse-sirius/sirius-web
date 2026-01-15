@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,6 +94,8 @@ const getMarker = (markerProps: MarkerProps) => {
       return <ClosedArrowWithVerticalBar {...markerProps} key={markerProps.id} />;
     case 'ClosedArrowWithDots':
       return <ClosedArrowWithDots {...markerProps} key={markerProps.id} />;
+    case 'ClosedArrowWith4Dots':
+      return <ClosedArrowWith4Dots {...markerProps} key={markerProps.id} />;
     default:
       return <InputFillClosedArrow {...markerProps} key={markerProps.id} />;
   }
@@ -287,6 +289,25 @@ const ClosedArrowWithDots = ({ id, edgeColor }: MarkerProps) => {
       />
       <circle r={1} cx={1} cy={2} fill={strokeColor} stroke={'none'} />
       <circle r={1} cx={1} cy={8} fill={strokeColor} stroke={'none'} />
+    </marker>
+  );
+};
+
+const ClosedArrowWith4Dots = ({ id, edgeColor }: MarkerProps) => {
+  const theme = useTheme();
+  const strokeColor: string = getSelectedColor(id, edgeColor, theme);
+  return (
+    <marker {...buildMarkerAttributes(id, 15, 10, 14, 5)}>
+      <path
+        strokeWidth={1}
+        fill={theme.palette.background.default}
+        d={'m 7 1 L 14 5 L 7 9 L 7 1 z'}
+        stroke={strokeColor}
+      />
+      <circle r={1} cx={1} cy={2} fill={strokeColor} stroke={'none'} />
+      <circle r={1} cx={1} cy={8} fill={strokeColor} stroke={'none'} />
+      <circle r={1} cx={4} cy={2} fill={strokeColor} stroke={'none'} />
+      <circle r={1} cx={4} cy={8} fill={strokeColor} stroke={'none'} />
     </marker>
   );
 };

@@ -135,7 +135,7 @@
     "close": "Close"
   },
   "manageVisibilityModalMenuCheckBox": {
-      "all": "All"
+    "all": "All"
   },
   "labelAppearancePart": {
     "hide": "Hide",
@@ -201,7 +201,8 @@
     "fillCircle": "Fill Circle",
     "crossedCircle": "Crossed Circle",
     "closedArrowWithVerticalBar": "Closed Arrow with Vertical Bar",
-    "closedArrowWithDots": "Closed Arrow with Dots",
+    "closedArrowWithDots": "Closed Arrow with two Dots",
+    "closedArrowWith4Dots": "Closed Arrow with four Dots",
     "manhattan": "Manhattan",
     "smartManhattan": "Smart Manhattan",
     "oblique": "Oblique",
