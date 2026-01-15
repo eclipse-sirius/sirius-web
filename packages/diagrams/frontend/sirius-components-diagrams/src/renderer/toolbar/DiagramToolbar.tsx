@@ -56,7 +56,7 @@ import { diagramToolbarActionExtensionPoint } from './DiagramToolbarExtensionPoi
 import { ExportImageButton } from './ExportImageButton';
 import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
 
-export const DiagramToolbar = memo(({ reactFlowWrapper, diagramToolbar }: DiagramToolbarProps) => {
+export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => {
   const [state, setState] = useState<DiagramToolbarState>({
     dialogOpen: null,
     arrangeAllDone: false,
@@ -235,7 +235,7 @@ export const DiagramToolbar = memo(({ reactFlowWrapper, diagramToolbar }: Diagra
                 </span>
               </Tooltip>
             )}
-            <ArrangeAllButton reactFlowWrapper={reactFlowWrapper} disabled={readOnly} />
+            <ArrangeAllButton disabled={readOnly} />
             <Tooltip title={t('revealHidden')}>
               <span>
                 <IconButton

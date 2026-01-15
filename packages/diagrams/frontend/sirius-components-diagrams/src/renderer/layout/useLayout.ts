@@ -18,7 +18,7 @@ import { NodeTypeContext } from '../../contexts/NodeContext';
 import { NodeTypeContextValue } from '../../contexts/NodeContext.types';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { cleanLayoutArea, layout, prepareLayoutArea } from './layout';
+import { cleanLayoutArea, layout, prepareLayoutArea, prepareLayoutLabels } from './layout';
 import { RawDiagram } from './layout.types';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
 import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
@@ -91,6 +91,7 @@ export const useLayout = (): UseLayoutValue => {
         root: root,
       }));
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
+      prepareLayoutLabels(state.previousDiagram, state.diagramToLayout);
       const laidoutDiagram = layout(
         state.previousDiagram,
         state.diagramToLayout,

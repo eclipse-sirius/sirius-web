@@ -143,6 +143,22 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
           },
         });
       }
+      const insideLabel = node.data.insideLabel;
+      if (insideLabel) {
+        labelLayoutData.push({
+          id: insideLabel.id,
+          position: {
+            x: 0,
+            y: 0,
+          },
+          size: {
+            width: insideLabel.width,
+            height: insideLabel.height,
+          },
+          resizedByUser: false,
+          movedByUser: false,
+        });
+      }
       const outsideLabelPosition = Object.values(node.data.outsideLabels)[0];
       if (outsideLabelPosition) {
         labelLayoutData.push({

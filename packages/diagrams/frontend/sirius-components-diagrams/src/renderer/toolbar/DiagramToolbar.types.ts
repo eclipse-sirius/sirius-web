@@ -13,7 +13,6 @@
 import { GQLDiagramToolbar } from '../../representation/DiagramRepresentation.types';
 
 export interface DiagramToolbarProps {
-  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
   diagramToolbar: GQLDiagramToolbar;
 }
 
