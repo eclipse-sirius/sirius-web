@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.charts;
-
-import java.util.Objects;
+package org.eclipse.sirius.components.collaborative.charts.api;
 
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
+import org.eclipse.sirius.components.charts.hierarchy.descriptions.HierarchyDescription;
+import org.eclipse.sirius.components.collaborative.charts.HierarchyContext;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
- * Used to keep the hierarchy representation in memory.
+ * Used to create hierarchy representations.
  *
  * @author sbegaudeau
  */
-public record HierarchyContext(Hierarchy hierarchy) {
-    public HierarchyContext {
-        Objects.requireNonNull(hierarchy);
-    }
+public interface IHierarchyCreationService {
+    Hierarchy create(IEditingContext editingContext, HierarchyDescription hierarchyDescription, Object targetObject, HierarchyContext hierarchyContext);
 }

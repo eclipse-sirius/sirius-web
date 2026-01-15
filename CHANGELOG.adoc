@@ -29,6 +29,7 @@ Other representations will follow the same patterns.
 Those new APIs and constants are still subject to various changes but once the API will be stable, existing variables will be marked as deprecated.
 New variables will only be available thanks to the new API such as `DiagramVariables.SELECTED_NODES` or `DiagramVariables.SELECTED_EDGES` for group tools.
 The current constants and the new ones can be mixed without issues.
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [core] The method `IRepresentationEventProcessor#refresh` will be removed and it will be replaced by dedicated stateless services implementing `IRepresentationRefresher`
 
 
 === Breaking changes
@@ -144,6 +145,9 @@ The GraphQL subscription `representationsEvent` has been renamed to `relatedView
 The representation ID prefix has changed from `representations://` to `relatedviews://`.
 The workbench view ID is now `related-views`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] The method `IEditingDomainFactory#createEditingDomain` will now require the `editingContextId` to be used
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [charts] The mutable class `HierarchyContext` has been transformed into an immutable record.
+The service `HierarchyCreationService` is now implementing an interface `IHierarchyCreationService` and its two methods `HierarchyCreationService#create` and `HierarchyCreationService#render` have been merged into a single method with a new signature `IHierarchyCreationService#create`.
+This will be used as an inspiration for the evolution of other similar services like `DiagramCreationService`.
 
 
 === Dependency update
@@ -254,6 +258,9 @@ The node action icons are now a little smaller and only appear after the node ha
 - https://github.com/eclipse-sirius/sirius-web/issues/6022[#6022] [sirius-web] Rename the "Representations" workbench view to "Related Views"
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] Provide access to the `editingContextId`, for migration participants during the loading of the resources, thanks to an adapter on the resource set named `EditingContextAdapter`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6032[#6032] [diagram] Ensure edge handles on border nodes are placed opposite their anchor point
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [charts] Perform the refresh of the hierarchy representation outside of the representation event processor.
+To perform the refresh of the representation event processor, an instance of `IRepresentationRefresher` will be required.
+A new method `IHierarchyEventProcessor#update` is available to update the state of the hierarchy event processor and publish a new hierarchy to the subscribers.
 
 
 

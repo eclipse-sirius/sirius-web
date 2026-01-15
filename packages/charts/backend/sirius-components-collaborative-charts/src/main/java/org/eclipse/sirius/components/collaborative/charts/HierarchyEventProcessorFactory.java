@@ -19,9 +19,9 @@ import java.util.Optional;
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
+import org.eclipse.sirius.components.collaborative.charts.api.IHierarchyEventProcessorInitializer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.springframework.stereotype.Service;
@@ -34,19 +34,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class HierarchyEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IHierarchyEventProcessorInitializer hierarchyEventProcessorInitializer;
 
     private final IRepresentationSearchService representationSearchService;
 
-    private final HierarchyCreationService hierarchyCreationService;
-
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
-    public HierarchyEventProcessorFactory(IRepresentationPersistenceService representationPersistenceService, IRepresentationSearchService representationSearchService, HierarchyCreationService hierarchyCreationService,
-            ISubscriptionManagerFactory subscriptionManagerFactory) {
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+    public HierarchyEventProcessorFactory(IHierarchyEventProcessorInitializer hierarchyEventProcessorInitializer, IRepresentationSearchService representationSearchService, ISubscriptionManagerFactory subscriptionManagerFactory) {
+        this.hierarchyEventProcessorInitializer = Objects.requireNonNull(hierarchyEventProcessorInitializer);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
-        this.hierarchyCreationService = Objects.requireNonNull(hierarchyCreationService);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
     }
 
@@ -61,13 +57,11 @@ public class HierarchyEventProcessorFactory implements IRepresentationEventProce
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
-        var optionalHierarchy = this.representationSearchService.findById(editingContext, representationId, Hierarchy.class);
+        var optionalHierarchy = this.hierarchyEventProcessorInitializer.getRefreshedRepresentation(editingContext, representationId);
         if (optionalHierarchy.isPresent()) {
             Hierarchy hierarchy = optionalHierarchy.get();
-
             HierarchyContext hierarchyContext = new HierarchyContext(hierarchy);
-            IRepresentationEventProcessor hierarchyEventProcessor = new HierarchyEventProcessor(editingContext, hierarchyContext,
-                    this.subscriptionManagerFactory.create(), this.hierarchyCreationService, this.representationPersistenceService, this.representationSearchService);
+            IRepresentationEventProcessor hierarchyEventProcessor = new HierarchyEventProcessor(hierarchyContext, this.subscriptionManagerFactory.create());
 
             return Optional.of(hierarchyEventProcessor);
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandl
 import org.eclipse.sirius.components.collaborative.api.IRepresentationMetadataPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
+import org.eclipse.sirius.components.collaborative.charts.api.IHierarchyCreationService;
 import org.eclipse.sirius.components.collaborative.charts.messages.ICollaborativeChartsMessageService;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
@@ -60,13 +61,13 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
 
     private final ICollaborativeChartsMessageService messageService;
 
-    private final HierarchyCreationService hierarchyCreationService;
+    private final IHierarchyCreationService hierarchyCreationService;
 
     private final Counter counter;
 
     public CreateHierarchyEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationMetadataPersistenceService representationMetadataPersistenceService,
             IRepresentationPersistenceService representationPersistenceService, IObjectSearchService objectSearchService, ICollaborativeChartsMessageService messageService,
-            HierarchyCreationService hierarchyCreationService, MeterRegistry meterRegistry) {
+            IHierarchyCreationService hierarchyCreationService, MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
         this.representationMetadataPersistenceService = Objects.requireNonNull(representationMetadataPersistenceService);
@@ -114,7 +115,7 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
                 String label = representationDescription.getLabelProvider().apply(variableManager);
                 List<String> iconURLs = representationDescription.getIconURLsProvider().apply(variableManager);
 
-                Hierarchy hierarchy = this.hierarchyCreationService.create(object, representationDescription, editingContext);
+                Hierarchy hierarchy = this.hierarchyCreationService.create(editingContext, representationDescription, object, null);
                 var representationMetadata = RepresentationMetadata.newRepresentationMetadata(hierarchy.getId())
                         .kind(hierarchy.getKind())
                         .label(label)
