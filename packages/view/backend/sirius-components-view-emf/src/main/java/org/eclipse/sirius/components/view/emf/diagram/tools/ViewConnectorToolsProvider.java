@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,7 +76,7 @@ public class ViewConnectorToolsProvider implements IConnectorToolsProvider {
     }
 
     @Override
-    public List<ITool> getConnectorTools(IEditingContext editingContext, Diagram diagram, Object sourceDiagramElement, Object targetDiagramElement) {
+    public List<ITool> getConnectorTools(IEditingContext editingContext, Diagram diagram, Object sourceDiagramElement) {
         List<ITool> tools = new ArrayList<>();
 
         var optionalViewDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagram.getDescriptionId());
@@ -90,10 +90,10 @@ public class ViewConnectorToolsProvider implements IConnectorToolsProvider {
             if (optionalViewDiagramConversionData.isPresent()) {
                 var viewDiagramConversionData = optionalViewDiagramConversionData.get();
 
-                var edgeTools =  this.getSingleClickOnTwoDiagramElementsTool(editingContext, interpreter, viewDiagramConversionData, sourceDiagramElement, targetDiagramElement);
+                var edgeTools =  this.getSingleClickOnTwoDiagramElementsTool(editingContext, interpreter, viewDiagramConversionData, sourceDiagramElement);
 
                 tools = edgeTools.stream()
-                        .filter(ITool.class::isInstance)
+                        .filter(Objects::nonNull)
                         .map(ITool.class::cast)
                         .toList();
             }
@@ -101,7 +101,7 @@ public class ViewConnectorToolsProvider implements IConnectorToolsProvider {
         return tools;
     }
 
-    private List<SingleClickOnTwoDiagramElementsTool> getSingleClickOnTwoDiagramElementsTool(IEditingContext editingContext, AQLInterpreter interpreter, ViewDiagramConversionData viewDiagramConversionData, Object sourceDiagramElement, Object targetDiagramElement) {
+    private List<SingleClickOnTwoDiagramElementsTool> getSingleClickOnTwoDiagramElementsTool(IEditingContext editingContext, AQLInterpreter interpreter, ViewDiagramConversionData viewDiagramConversionData, Object sourceDiagramElement) {
         List<SingleClickOnTwoDiagramElementsTool> tools = new ArrayList<>();
 
         var optionalSourceDiagramElementDescriptionId = this.getDiagramElementDescriptionId(sourceDiagramElement);
@@ -118,38 +118,11 @@ public class ViewConnectorToolsProvider implements IConnectorToolsProvider {
 
                 tools = new ToolFinder().findEdgeTools(diagramElementDescription).stream()
                         .map(edgeTool -> this.createEdgeTool(interpreter, edgeTool, diagramElementDescription, viewDiagramConversionData))
-                        .filter(edgeTool -> this.isEdgeToolCandidate(edgeTool.candidates(), sourceDiagramElement, targetDiagramElement))
                         .toList();
             }
         }
 
         return tools;
-    }
-
-    private boolean isEdgeToolCandidate(List<SingleClickOnTwoDiagramElementsCandidate> candidates, Object sourceDiagramElement, Object targetDiagramElement) {
-        var optionalSourceDiagramElementDescriptionId = this.getDiagramElementDescriptionId(sourceDiagramElement);
-        var optionalTargetDiagramElementDescriptionId = this.getDiagramElementDescriptionId(targetDiagramElement);
-
-        if (optionalSourceDiagramElementDescriptionId.isPresent() && optionalTargetDiagramElementDescriptionId.isPresent()) {
-            var sourceDiagramElementDescriptionId = optionalSourceDiagramElementDescriptionId.get();
-            var targetDiagramElementDescriptionId = optionalTargetDiagramElementDescriptionId.get();
-
-            return candidates.stream()
-                    .anyMatch(candidate -> this.isEdgeToolCandidate(candidate, sourceDiagramElementDescriptionId, targetDiagramElementDescriptionId));
-        }
-        return false;
-    }
-
-    private boolean isEdgeToolCandidate(SingleClickOnTwoDiagramElementsCandidate candidate, String sourceDiagramElementDescriptionId, String targetDiagramElementDescriptionId) {
-        var isSourceMatching = candidate.sources().stream()
-                .map(IDiagramElementDescription::getId)
-                .anyMatch(id -> id.equals(sourceDiagramElementDescriptionId));
-
-        var isTargetMatching = candidate.targets().stream()
-                .map(IDiagramElementDescription::getId)
-                .anyMatch(id -> id.equals(targetDiagramElementDescriptionId));
-
-        return isSourceMatching && isTargetMatching;
     }
 
     private Optional<String> getDiagramElementDescriptionId(Object object) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,31 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Connection, OnConnect, OnConnectEnd, OnConnectStart, XYPosition } from '@xyflow/react';
+import { OnConnect, OnConnectEnd, OnConnectStart } from '@xyflow/react';
 import { GQLTool } from '../palette/Palette.types';
 
 export interface UseConnectorValue {
-  onConnect: OnConnect;
   onConnectStart: OnConnectStart;
+  onConnect: OnConnect;
   onConnectEnd: OnConnectEnd;
-  onConnectorContextualMenuClose: () => void;
-  onConnectionStartElementClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  addTempConnectionLine: () => void;
-  removeTempConnectionLine: () => void;
-  connection: Connection | null;
-  position: XYPosition | null;
-  isConnectionInProgress: () => boolean;
-  isReconnectionInProgress: () => boolean;
-  candidates: GQLNodeDescription[];
-}
-
-export interface GQLGetToolSectionsData {
-  viewer: GQLViewer;
-}
-export interface GQLGetToolSectionsVariables {
-  editingContextId: string;
-  diagramId: string;
-  diagramElementIds: string[];
 }
 export interface GQLViewer {
   editingContext: GQLEditingContext;
@@ -55,31 +37,22 @@ export interface GQLRepresentationDescription {
 }
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  palette: GQLPalette;
+  connectorToolsCandidates: GQConnectorToolsDescriptionCandidates;
 }
 
-export interface GQLPalette {
+export interface GQConnectorToolsDescriptionCandidates {
   id: string;
-  paletteEntries: GQLPaletteEntry[];
-}
-
-export interface GQLPaletteEntry {
-  id: string;
+  candidateDescriptionIds: string[];
   __typename: string;
 }
-export interface GQLPaletteDivider extends GQLPaletteEntry {}
 
-export interface GQLToolSection extends GQLPaletteEntry {
-  label: string;
-  iconURL: string[];
-  tools: GQLTool[];
+export interface GQLGetToolSectionsData {
+  viewer: GQLViewer;
 }
-
-export interface GQLToolSection {
-  id: string;
-  label: string;
-  tools: GQLTool[];
-  __typename: string;
+export interface GQLGetToolSectionsVariables {
+  editingContextId: string;
+  diagramId: string;
+  sourceDiagramElementId: string;
 }
 export interface GQLSingleClickOnTwoDiagramElementsTool extends GQLTool {
   candidates: GQLSingleClickOnTwoDiagramElementsCandidate[];

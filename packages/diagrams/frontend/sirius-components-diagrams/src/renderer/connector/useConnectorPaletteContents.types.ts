@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,28 +11,29 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPalette } from './Palette.types';
+import { GQLPalette } from './../palette/Palette.types';
 
-export interface UsePaletteContentValue {
-  palette: GQLPalette | null;
+export interface UseConnectorPaletteContentValue {
+  connectorPalette: GQLPalette | null;
   loading: boolean;
 }
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  palette: GQLPalette;
+  connectorPalette: GQLPalette;
 }
 
 export interface GQLRepresentationDescription {
   __typename: string;
 }
 
-export interface GQLGetPaletteVariables {
+export interface GQLGetConnectorPaletteVariables {
   editingContextId: string;
   diagramId: string;
-  diagramElementIds: string[];
+  sourceDiagramElementId: string | null;
+  targetDiagramElementId: string | null;
 }
 
-export interface GQLGetPaletteData {
+export interface GQLGetConnectorPaletteData {
   viewer: GQLViewer;
 }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,57 +12,59 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.graphql.datafetchers.diagram;
 
+import graphql.schema.DataFetchingEnvironment;
+import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorPaletteInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.GetPaletteSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
+import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
+import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
+import reactor.core.publisher.Mono;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ConnectorToolsDescriptionCandidates;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsCandidatesSuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsInput;
-import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
-import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
-
-import graphql.schema.DataFetchingEnvironment;
-import reactor.core.publisher.Mono;
-
 /**
- * Datafetcher to retrieve the connector tools.
+ * The data fetcher used to retrieve the connector palette from the diagram description.
  *
- * @author sbegaudeau
+ * @author mcharfadi
  */
-@QueryDataFetcher(type = "DiagramDescription", field = "connectorToolsCandidates")
-public class DiagramDescriptionConnectorToolsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<ConnectorToolsDescriptionCandidates>> {
+@QueryDataFetcher(type = "DiagramDescription", field = "connectorPalette")
+public class DiagramDescriptionConnectorPaletteDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Palette>> {
 
     private static final String SOURCE_DIAGRAM_ELEMENT_ID = "sourceDiagramElementId";
 
+    private static final String TARGET_DIAGRAM_ELEMENT_ID = "targetDiagramElementId";
+
     private final IEditingContextDispatcher editingContextDispatcher;
 
-    public DiagramDescriptionConnectorToolsDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
+    public DiagramDescriptionConnectorPaletteDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
     }
 
     @Override
-    public CompletableFuture<ConnectorToolsDescriptionCandidates> get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<Palette> get(DataFetchingEnvironment environment) throws Exception {
         Map<String, Object> localContext = environment.getLocalContext();
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);
         String representationId = Optional.ofNullable(localContext.get(LocalContextConstants.REPRESENTATION_ID)).map(Object::toString).orElse(null);
         String sourceDiagramElementId = environment.getArgument(SOURCE_DIAGRAM_ELEMENT_ID);
+        String targetDiagramElementId = environment.getArgument(TARGET_DIAGRAM_ELEMENT_ID);
 
         if (editingContextId != null && representationId != null) {
-            GetConnectorToolsInput input = new GetConnectorToolsInput(UUID.randomUUID(), editingContextId, representationId, sourceDiagramElementId);
+            GetConnectorPaletteInput input = new GetConnectorPaletteInput(UUID.randomUUID(), editingContextId, representationId, sourceDiagramElementId, targetDiagramElementId);
 
             return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
-                    .filter(GetConnectorToolsCandidatesSuccessPayload.class::isInstance)
-                    .map(GetConnectorToolsCandidatesSuccessPayload.class::cast)
-                    .map(GetConnectorToolsCandidatesSuccessPayload::candidateDescriptionIds)
+                    .filter(GetPaletteSuccessPayload.class::isInstance)
+                    .map(GetPaletteSuccessPayload.class::cast)
+                    .map(GetPaletteSuccessPayload::palette)
                     .toFuture();
         }
 
-        return Mono.<ConnectorToolsDescriptionCandidates> empty().toFuture();
+        return Mono.<Palette>empty().toFuture();
     }
 
 }

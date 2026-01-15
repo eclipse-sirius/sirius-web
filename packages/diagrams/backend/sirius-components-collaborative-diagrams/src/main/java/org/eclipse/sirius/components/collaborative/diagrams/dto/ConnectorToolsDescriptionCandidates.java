@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,20 +13,11 @@
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
-
-import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
- * The payload of the "Get Connector Tools" query returned on success.
+ * DTO for the connector tools candidates.
  *
- * @author nvannier
+ * @author mcharfadi
  */
-public record GetConnectorToolsSuccessPayload(UUID id, List<ITool> connectorTools) implements IPayload {
-    public GetConnectorToolsSuccessPayload {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(connectorTools);
-    }
-
+public record ConnectorToolsDescriptionCandidates(List<String> candidateDescriptionIds) {
 }

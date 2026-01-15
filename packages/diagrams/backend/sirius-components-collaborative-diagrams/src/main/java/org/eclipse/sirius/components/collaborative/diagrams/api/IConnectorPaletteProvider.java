@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2026 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,21 +12,20 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.api;
 
-import java.util.List;
-
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 
+
 /**
- * Provides candidates connector ITool for a given sourceDiagramElement.
+ * Provide the connector palette for a sourceDiagramElementId & targetDiagramElementId.
  *
- * @author nvannier
+ * @author mcharfadi
  */
-public interface IConnectorToolsProvider {
+public interface IConnectorPaletteProvider {
 
     boolean canHandle(DiagramDescription diagramDescription);
 
-    List<ITool> getConnectorTools(IEditingContext editingContext, Diagram diagram, Object sourceDiagramElement);
+    Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object sourceDiagramElement, Object targetDiagramElement, Object sourceElementDescription, Object targetElementDescription);
 }

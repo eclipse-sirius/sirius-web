@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IConnectorToolsProvider;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsCandidatesSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorToolsSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsCandidate;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
@@ -161,7 +161,7 @@ public class GetConnectorToolsEventHandlerTests {
         IConnectorToolsProvider connectorToolsProvider = new IConnectorToolsProvider() {
 
             @Override
-            public List<ITool> getConnectorTools(IEditingContext editingContext, Diagram diagram, Object sourceDiagramElement, Object targetDiagramElement) {
+            public List<ITool> getConnectorTools(IEditingContext editingContext, Diagram diagram, Object sourceDiagramElement) {
                 SingleClickOnTwoDiagramElementsCandidate candidates = SingleClickOnTwoDiagramElementsCandidate.newSingleClickOnTwoDiagramElementsCandidate()
                         .sources(List.of(nodeDescription))
                         .targets(List.of(nodeDescription))
@@ -181,12 +181,12 @@ public class GetConnectorToolsEventHandlerTests {
             }
         };
 
-        var handler = new GetConnectorToolsEventHandler(representationDescriptionSearchService, new DiagramQueryService(), List.of(connectorToolsProvider), messageService, new SimpleMeterRegistry());
+        var handler = new GetConnectorToolsEventHandler(representationDescriptionSearchService, new DiagramQueryService(), messageService, List.of(connectorToolsProvider), new SimpleMeterRegistry());
 
         /*
          * Testing the valid tool.
          */
-        var input = new GetConnectorToolsInput(UUID.randomUUID(), UUID.randomUUID().toString(), DIAGRAM_ID, SOURCE_NODE_ID, TARGET_NODE_ID);
+        var input = new GetConnectorToolsInput(UUID.randomUUID(), UUID.randomUUID().toString(), DIAGRAM_ID, SOURCE_NODE_ID);
 
         assertThat(handler.canHandle(null, input)).isTrue();
 
@@ -197,9 +197,9 @@ public class GetConnectorToolsEventHandlerTests {
         handler.handle(payloadSink, changeDescriptionSink, editingContext, new DiagramContext(diagram), input);
 
         IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(GetConnectorToolsSuccessPayload.class);
-        List<ITool> connectorTools = ((GetConnectorToolsSuccessPayload) payload).connectorTools();
-        assertThat(connectorTools.size()).isEqualTo(1);
+        assertThat(payload).isInstanceOf(GetConnectorToolsCandidatesSuccessPayload.class);
+        List<String> candidates = ((GetConnectorToolsCandidatesSuccessPayload) payload).candidateDescriptionIds().candidateDescriptionIds();
+        assertThat(candidates.size()).isEqualTo(1);
     }
 
     private Diagram getDiagram(String id, List<Node> nodes) {

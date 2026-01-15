@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo and others.
+ * Copyright (c) 2023, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,9 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Handle, Position } from '@xyflow/react';
-import React, { memo, useMemo } from 'react';
-import { useConnector } from '../connector/useConnector';
+import { Edge, Handle, Node, Position, useStoreApi } from '@xyflow/react';
+import React, { memo } from 'react';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionTargetHandleProps } from './ConnectionTargetHandle.types';
 import { useRefreshTargetHandles } from './useRefreshTargetHandles';
 
@@ -36,17 +36,13 @@ const targetTempHandleStyle: React.CSSProperties = {
 };
 
 export const ConnectionTargetHandle = memo(({ nodeId }: ConnectionTargetHandleProps) => {
-  const { isConnectionInProgress, isReconnectionInProgress } = useConnector();
+  const { connection } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
 
-  const shouldRender = useMemo(() => {
-    return isConnectionInProgress() || isReconnectionInProgress();
-  }, [isConnectionInProgress(), isReconnectionInProgress()]);
-
-  useRefreshTargetHandles(nodeId, shouldRender);
+  useRefreshTargetHandles(nodeId, connection.inProgress);
 
   return (
     <>
-      {shouldRender ? (
+      {connection.inProgress ? (
         <>
           <Handle
             id={`handle--${nodeId}--temp--top`}
@@ -87,6 +83,7 @@ export const ConnectionTargetHandle = memo(({ nodeId }: ConnectionTargetHandlePr
             style={targetHandleNodeStyle}
             isConnectableEnd={true}
             isConnectableStart={false}
+            data-testid={`targethandle-${nodeId}`}
           />
         </>
       ) : null}

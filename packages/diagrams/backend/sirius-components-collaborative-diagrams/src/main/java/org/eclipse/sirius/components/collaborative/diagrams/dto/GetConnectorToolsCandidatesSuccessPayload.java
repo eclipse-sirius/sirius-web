@@ -12,14 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.Objects;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
- * Input for "get connector tools" query.
+ * The payload of the "Get Connector Tools" query returned on success.
  *
  * @author nvannier
  */
-public record GetConnectorToolsInput(UUID id, String editingContextId, String representationId, String sourceDiagramElementId) implements IDiagramInput {
+public record GetConnectorToolsCandidatesSuccessPayload(UUID id, ConnectorToolsDescriptionCandidates candidateDescriptionIds) implements IPayload {
+    public GetConnectorToolsCandidatesSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(candidateDescriptionIds);
+    }
 }
