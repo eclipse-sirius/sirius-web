@@ -144,6 +144,11 @@ The GraphQL subscription `representationsEvent` has been renamed to `relatedView
 The representation ID prefix has changed from `representations://` to `relatedviews://`.
 The workbench view ID is now `related-views`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] The method `IEditingDomainFactory#createEditingDomain` will now require the `editingContextId` to be used
+- https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] During node converter, `InsideLabel` must declare a width and height, for that `convertInsideLabel` changed.
+An example of this impact could be found in `EllipseNodeConverter.ts`.
+In the node layout, we no longer need to retrieve the label element, as the size is now present in the label data.
+This means that the following methods `getHeaderHeightFootprint` and `getInsideLabelWidthConstraint` have changed their signature by removing the label element.
+An example of this impact could be found in `EllipseNodeLayoutHandler.ts`.
 
 
 === Dependency update
@@ -254,7 +259,7 @@ The node action icons are now a little smaller and only appear after the node ha
 - https://github.com/eclipse-sirius/sirius-web/issues/6022[#6022] [sirius-web] Rename the "Representations" workbench view to "Related Views"
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] Provide access to the `editingContextId`, for migration participants during the loading of the resources, thanks to an adapter on the resource set named `EditingContextAdapter`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6032[#6032] [diagram] Ensure edge handles on border nodes are placed opposite their anchor point
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] Retrieve the label size from data rather than dom element for elk layout
 
 
 == 2025.12.0

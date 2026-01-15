@@ -23,6 +23,7 @@ import { AlignmentMap } from './convertDiagram.types';
 
 export const convertInsideLabel = (
   gqlInsideLabel: GQLInsideLabel | undefined,
+  gqlLabelLayoutData: GQLLabelLayoutData[],
   data: NodeData,
   borderStyle: string,
   hasVisibleChild: boolean = true,
@@ -31,6 +32,7 @@ export const convertInsideLabel = (
   if (!gqlInsideLabel) {
     return null;
   }
+  const labelLayoutData = gqlLabelLayoutData.find((labelLayoutData) => labelLayoutData.id === gqlInsideLabel.id);
   const labelStyle = gqlInsideLabel.style;
   const insideLabel: InsideLabel = {
     id: gqlInsideLabel.id,
@@ -60,6 +62,8 @@ export const convertInsideLabel = (
       customizedStyleProperties: gqlInsideLabel.customizedStyleProperties,
       gqlStyle: gqlInsideLabel.style,
     },
+    width: labelLayoutData?.size.width ?? 0,
+    height: labelLayoutData?.size.height ?? 0,
   };
 
   const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
