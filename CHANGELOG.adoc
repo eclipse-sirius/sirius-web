@@ -144,6 +144,11 @@ The GraphQL subscription `representationsEvent` has been renamed to `relatedView
 The representation ID prefix has changed from `representations://` to `relatedviews://`.
 The workbench view ID is now `related-views`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] The method `IEditingDomainFactory#createEditingDomain` will now require the `editingContextId` to be used
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] `IExplorerServices#getDefaultElements` has been removed. Use `DefaultContentService#getContents` instead by passing the `IEditingContext`.
+*Note* that `DefaultContentService#getContents` will not return a sorted list as it was before by `IExplorerServices#getDefaultElements`.
+- A new API `org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy` has been added to delegate persistence decisions for representations (used to support transient diagrams).
+Several event-processor-related constructors now accept an additional `IRepresentationPersistenceStrategy` parameter (for example: `DiagramEventProcessorFactory`, `PapayaDashboardEventProcessorFactory`, and related `DiagramEventProcessor`/`DiagramEventProcessorParameters` builders).
+If you directly instantiate or extend those factories in downstream code or tests, update the constructors to provide an `IRepresentationPersistenceStrategy` implementation.
 
 
 === Dependency update
@@ -254,6 +259,7 @@ The node action icons are now a little smaller and only appear after the node ha
 - https://github.com/eclipse-sirius/sirius-web/issues/6022[#6022] [sirius-web] Rename the "Representations" workbench view to "Related Views"
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] Provide access to the `editingContextId`, for migration participants during the loading of the resources, thanks to an adapter on the resource set named `EditingContextAdapter`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6032[#6032] [diagram] Ensure edge handles on border nodes are placed opposite their anchor point
+- https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] [diagram] Make it possible to have transient diagrams: delegate the save operation to a new `IRepresentationPersistenceStrategy` service which persists only when the representation exists in the database, and add a transient diagram sample in Papaya.
 
 
 
