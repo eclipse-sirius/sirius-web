@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,12 +48,12 @@ import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { SnapToGridContextValue } from '../snap-to-grid/SnapToGridContext.types';
 import { SnapToGridContext } from '../snap-to-grid/SnapToGridContext';
 import { ArrangeAllButton } from './ArrangeAllButton';
-import { DiagramPanelActionProps, DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
+import { DiagramPanelActionProps, DiagramPanelState } from './DiagramPanel.types';
 import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints';
 import { ExportImageButton } from './ExportImageButton';
 import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
 
-export const DiagramPanel = memo(({ reactFlowWrapper }: DiagramPanelProps) => {
+export const DiagramPanel = memo(() => {
   const [state, setState] = useState<DiagramPanelState>({
     dialogOpen: null,
     arrangeAllDone: false,
@@ -209,7 +209,7 @@ export const DiagramPanel = memo(({ reactFlowWrapper }: DiagramPanelProps) => {
               </span>
             </Tooltip>
           )}
-          <ArrangeAllButton reactFlowWrapper={reactFlowWrapper} disabled={readOnly} />
+          <ArrangeAllButton disabled={readOnly} />
           <Tooltip title={t('revealHidden')}>
             <span>
               <IconButton

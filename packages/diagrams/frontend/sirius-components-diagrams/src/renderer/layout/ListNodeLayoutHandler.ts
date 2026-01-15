@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,7 +80,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   ) {
     const labelElement = document.getElementById(`${node.id}-label-${findNodeIndex(visibleNodes, node.id)}`);
 
-    const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel, labelElement) + borderWidth * 2;
+    const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel) + borderWidth * 2;
     const nodeMinComputeHeight = (labelElement?.getBoundingClientRect().height ?? 0) + borderWidth * 2;
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
@@ -128,9 +128,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   ) {
     layoutEngine.layoutNodes(previousDiagram, visibleNodes, directChildren, newlyAddedNodes);
 
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
-    const headerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP', borderWidth);
+    const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -158,7 +156,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const fixedWidth: number = Math.max(
       directNodesChildren.reduce<number>(
         (widerWidth, child) => Math.max(child.width ?? 0, widerWidth),
-        getInsideLabelWidthConstraint(node.data.insideLabel, labelElement)
+        getInsideLabelWidthConstraint(node.data.insideLabel)
       ),
       northBorderNodeFootprintWidth,
       southBorderNodeFootprintWidth,
@@ -204,7 +202,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
     const childrenContentBox = computeNodesBox(visibleNodes, directNodesChildren);
 
-    const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel, labelElement);
+    const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel);
     const nodeMinComputeWidth = Math.max(childrenContentBox.width, labelOnlyWidth) + borderWidth * 2;
 
     const directChildrenAwareNodeHeight =

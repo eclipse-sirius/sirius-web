@@ -123,7 +123,6 @@ export const getChildNodePosition = (
 };
 
 export const getHeaderHeightFootprint = (
-  labelElement: HTMLElement | null,
   insideLabel: InsideLabel | null,
   headerPosition: string | null,
   borderWith: number = 0
@@ -132,11 +131,8 @@ export const getHeaderHeightFootprint = (
   const withHeader: boolean = insideLabel?.isHeader ?? false;
   const displayHeaderSeparator: boolean = insideLabel?.displayHeaderSeparator ?? false;
 
-  if (!labelElement) {
-    return headerHeightFootprint;
-  }
   if (withHeader && insideLabel?.headerPosition === headerPosition) {
-    headerHeightFootprint = labelElement.getBoundingClientRect().height;
+    headerHeightFootprint = insideLabel.height;
     if (displayHeaderSeparator) {
       headerHeightFootprint += borderWith;
     }
@@ -147,14 +143,11 @@ export const getHeaderHeightFootprint = (
   return headerHeightFootprint;
 };
 
-export const getInsideLabelWidthConstraint = (
-  insideLabel: InsideLabel | null,
-  labelElement: HTMLElement | null
-): number => {
-  if (insideLabel && labelElement) {
+export const getInsideLabelWidthConstraint = (insideLabel: InsideLabel | null): number => {
+  if (insideLabel) {
     // for other strategies, label width has no effect on node size
     if (insideLabel.overflowStrategy === 'NONE') {
-      return labelElement?.getBoundingClientRect().width ?? 0;
+      return insideLabel.width ?? 0;
     }
   }
   return 0;

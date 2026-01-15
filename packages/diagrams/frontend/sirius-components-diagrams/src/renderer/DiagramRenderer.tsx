@@ -479,7 +479,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         ) : (
           <Background style={{ backgroundColor }} color={backgroundColor} />
         )}
-        <DiagramPanel reactFlowWrapper={ref} />
+        <DiagramPanel />
 
         {isOpened ? (
           <DiagramPalette

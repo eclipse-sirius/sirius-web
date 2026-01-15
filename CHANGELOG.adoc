@@ -145,6 +145,11 @@ The representation ID prefix has changed from `representations://` to `relatedvi
 The workbench view ID is now `related-views`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] The method `IEditingDomainFactory#createEditingDomain` will now require the `editingContextId` to be used
 - https://github.com/eclipse-sirius/sirius-web/issues/5910[#5910] [diagram] The `ReferencePosition` now uses a list of positions to take into account multiple drops.
+- https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] During node converter, `InsideLabel` must declare a width and height, for that `convertInsideLabel` changed.
+An example of this impact could be found in `EllipseNodeConverter.ts`.
+In the node layout, we no longer need to retrieve the label element, as the size is now present in the label data.
+This means that the following methods `getHeaderHeightFootprint` and `getInsideLabelWidthConstraint` have changed their signature by removing the label element.
+An example of this impact could be found in `EllipseNodeLayoutHandler.ts`.
 
 
 === Dependency update
@@ -259,8 +264,8 @@ The node action icons are now a little smaller and only appear after the node ha
 - https://github.com/eclipse-sirius/sirius-web/issues/5910[#5910] [diagram] Preserve relative layout while dropping multi nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/6060[#6060] [diagram] Add a new edge marker named _ClosedArrowWith4Dots_ which is very similar to the existing _ClosedArrowWithDots_.
 The only difference is that this new marker has a second range of two dots after the first range.
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6032[#6032] [diagram] Ensure edge handles on border nodes are placed opposite their anchor point
+- https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] Retrieve the label size from data rather than dom element for elk layout
 
 
 == 2025.12.0

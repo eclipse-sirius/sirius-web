@@ -22,13 +22,13 @@ import { useLayout } from '../useLayout';
 import { useSynchronizeLayoutData } from '../useSynchronizeLayoutData';
 import { useElkLayout } from '../elk/useElkLayout';
 
-export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>): UseArrangeAllValue => {
+export const useArrangeAll = (): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { resolveNodeOverlap } = useOverlap();
   const { fitView } = useFitView();
-  const { elkLayout } = useElkLayout(reactFlowWrapper);
+  const { elkLayout } = useElkLayout();
 
   const arrangeAll = async (layoutOptions: LayoutOptions): Promise<void> => {
     await elkLayout(getNodes(), getEdges(), layoutOptions).then(
