@@ -29,6 +29,12 @@ const getAllContextMenuEntriesQuery = gql`
           description {
             ... on TreeDescription {
               contextMenu(treeItemId: $treeItemId) {
+                keyBindings {
+                  isCtrl
+                  isMeta
+                  isAlt
+                  key
+                }
                 ... on SingleClickTreeItemContextMenuEntry {
                   __typename
                   id
@@ -54,7 +60,8 @@ const getAllContextMenuEntriesQuery = gql`
 export const useContextMenuEntries = (
   editingContextId: string,
   treeId: string,
-  treeItemId: string
+  treeItemId: string,
+  skip: boolean
 ): UseContextMenuEntriesValue => {
   const { loading, data, error } = useQuery<GQLGetAllContextMenuEntriesData, GQLGetAllContextMenuEntriesVariables>(
     getAllContextMenuEntriesQuery,
@@ -64,6 +71,7 @@ export const useContextMenuEntries = (
         representationId: treeId,
         treeItemId,
       },
+      skip,
     }
   );
 

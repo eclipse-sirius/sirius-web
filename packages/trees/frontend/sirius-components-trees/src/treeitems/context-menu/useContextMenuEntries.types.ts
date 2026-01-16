@@ -48,4 +48,12 @@ export interface GQLTreeItemContextMenuEntry {
   label: string;
   iconURL: string[];
   withImpactAnalysis: boolean;
+  keyBindings: GQLKeyBinding[];
+}
+
+export interface GQLKeyBinding {
+  isCtrl: boolean;
+  isMeta: boolean;
+  isAlt: boolean;
+  key: string;
 }
