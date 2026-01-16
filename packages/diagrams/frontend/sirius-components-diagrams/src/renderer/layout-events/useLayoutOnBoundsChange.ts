@@ -93,7 +93,7 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
         };
 
         layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-          updatedNodes.map((node) => {
+          const updatedNodesAfterLayout = updatedNodes.map((node) => {
             const existingNode = laidOutDiagram.nodes.find((laidoutNode) => laidoutNode.id === node.id);
             if (existingNode) {
               return {
@@ -112,7 +112,7 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
           });
 
           const finalDiagram: RawDiagram = {
-            nodes: updatedNodes,
+            nodes: updatedNodesAfterLayout,
             edges: laidOutDiagram.edges,
           };
 

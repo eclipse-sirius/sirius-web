@@ -302,9 +302,17 @@ export const layout = (
   diagram: RawDiagram,
   referencePosition: GQLReferencePosition | null,
   layoutDirection: GQLArrangeLayoutDirection,
-  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
+  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[],
+  autoLayout: boolean
 ): RawDiagram => {
-  layoutDiagram(previousDiagram, diagram, referencePosition, layoutDirection, nodeLayoutHandlerContributions);
+  layoutDiagram(
+    previousDiagram,
+    diagram,
+    referencePosition,
+    layoutDirection,
+    nodeLayoutHandlerContributions,
+    autoLayout
+  );
   return diagram;
 };
 
@@ -313,7 +321,8 @@ const layoutDiagram = (
   diagram: RawDiagram,
   referencePosition: GQLReferencePosition | null,
   layoutDirection: GQLArrangeLayoutDirection,
-  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
+  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[],
+  autoLayout: boolean
 ) => {
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
   const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
@@ -333,43 +342,46 @@ const layoutDiagram = (
 
   layoutEngine.layoutNodes(previousDiagram, allVisibleNodes, nodesToLayout, newlyAddedNodes);
 
-  // Update position of root nodes
-  nodesToLayout.forEach((node, index) => {
-    const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
-    const previousPosition = computePreviousPosition(previousNode, node);
+  // With autoLayout, positions are already computed
+  if (!autoLayout) {
+    // Update position of root nodes
+    nodesToLayout.forEach((node, index) => {
+      const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
+      const previousPosition = computePreviousPosition(previousNode, node);
 
-    const createdNode = newlyAddedNodes.find((n) => n.id === node.id);
+      const createdNode = newlyAddedNodes.find((n) => n.id === node.id);
 
-    if (!!createdNode) {
-      node.position = createdNode.position;
-    } else if (previousPosition) {
-      node.position = previousPosition;
-    } else {
-      const maxBorderNodeWidthWest = getChildren(node, allVisibleNodes)
-        .filter(isWestBorderNode)
-        .map((borderNode) => borderNode.width || 0)
-        .reduce((a, b) => Math.max(a, b), 0);
-
-      node.position = { x: 0, y: 0 };
-      const previousSibling = nodesToLayout[index - 1];
-      if (previousSibling) {
-        const previousSiblingMaxBorderNodeWidthEast = getChildren(previousSibling, allVisibleNodes)
-          .filter(isEastBorderNode)
+      if (!!createdNode) {
+        node.position = createdNode.position;
+      } else if (previousPosition) {
+        node.position = previousPosition;
+      } else {
+        const maxBorderNodeWidthWest = getChildren(node, allVisibleNodes)
+          .filter(isWestBorderNode)
           .map((borderNode) => borderNode.width || 0)
           .reduce((a, b) => Math.max(a, b), 0);
 
-        node.position = {
-          x:
-            previousSibling.position.x +
-            maxBorderNodeWidthWest +
-            previousSiblingMaxBorderNodeWidthEast +
-            (previousSibling.width ?? 0) +
-            gap,
-          y: 0,
-        };
+        node.position = { x: 0, y: 0 };
+        const previousSibling = nodesToLayout[index - 1];
+        if (previousSibling) {
+          const previousSiblingMaxBorderNodeWidthEast = getChildren(previousSibling, allVisibleNodes)
+            .filter(isEastBorderNode)
+            .map((borderNode) => borderNode.width || 0)
+            .reduce((a, b) => Math.max(a, b), 0);
+
+          node.position = {
+            x:
+              previousSibling.position.x +
+              maxBorderNodeWidthWest +
+              previousSiblingMaxBorderNodeWidthEast +
+              (previousSibling.width ?? 0) +
+              gap,
+            y: 0,
+          };
+        }
       }
-    }
-  });
+    });
+  }
 };
 
 export const prepareLayoutLabels = (previousDiagram: RawDiagram | null, diagram: RawDiagram): void => {
