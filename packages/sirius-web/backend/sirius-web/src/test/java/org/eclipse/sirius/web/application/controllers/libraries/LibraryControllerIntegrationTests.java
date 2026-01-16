@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -149,15 +149,15 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a valid studio project ID, when the publication mutation is performed, then the libraries are published")
-    public void givenValidStudioProjectIdWhenPublicationMutationIsPerformedThenLibrariesArePublished() {
+    @DisplayName("Given a valid studio editing context ID, when the publication mutation is performed, then the libraries are published")
+    public void givenValidStudioEditingContextIdWhenPublicationMutationIsPerformedThenLibrariesArePublished() {
         var page = this.librarySearchService.findAll(PageRequest.of(0, 10));
         long initialLibraryCount = page.getTotalElements();
 
         String version = "0.0.1";
         String description = "Initial version";
 
-        var input = new PublishLibrariesInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "studio-all", version, description);
+        var input = new PublishLibrariesInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "studio-all", version, description);
         var result = this.publishLibrariesMutationRunner.run(input);
         TestTransaction.flagForCommit();
         TestTransaction.end();
@@ -169,36 +169,36 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         long updatedLibraryCount = this.librarySearchService.findAll(PageRequest.of(1, 1)).getTotalElements();
         assertThat(updatedLibraryCount).isEqualTo(initialLibraryCount + 7);
 
-        Optional<Library> optionalSharedComponentsLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "shared_components", version);
+        Optional<Library> optionalSharedComponentsLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "shared_components", version);
         assertThat(optionalSharedComponentsLibrary).isPresent();
 
         var sharedComponentsLibrary = optionalSharedComponentsLibrary.get();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(sharedComponentsLibrary, description, List.of());
         this.assertThatLibraryDocumentsAreReadOnly(sharedComponentsLibrary);
 
-        Optional<Library> optionalBuckLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "buck", version);
+        Optional<Library> optionalBuckLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "buck", version);
         assertThat(optionalBuckLibrary).isPresent();
 
         var buckLibrary = optionalBuckLibrary.get();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(buckLibrary, description, List.of());
         this.assertThatLibraryDocumentsAreReadOnly(buckLibrary);
 
-        Optional<Library> humanFormLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Human Form", version);
+        Optional<Library> humanFormLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "Human Form", version);
         assertThat(humanFormLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(humanFormLibrary.get(), description, List.of(buckLibrary));
         this.assertThatLibraryDocumentsAreReadOnly(humanFormLibrary.get());
 
-        Optional<Library> newTableDescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "New Table Description", version);
+        Optional<Library> newTableDescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "New Table Description", version);
         assertThat(newTableDescriptionLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(newTableDescriptionLibrary.get(), description, List.of(buckLibrary));
         this.assertThatLibraryDocumentsAreReadOnly(newTableDescriptionLibrary.get());
 
-        Optional<Library> rootDiagramDescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Root Diagram0", version);
+        Optional<Library> rootDiagramDescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "Root Diagram0", version);
         assertThat(rootDiagramDescriptionLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(rootDiagramDescriptionLibrary.get(), description, List.of(buckLibrary, sharedComponentsLibrary));
         this.assertThatLibraryDocumentsAreReadOnly(rootDiagramDescriptionLibrary.get());
 
-        Optional<Library> rootDiagram1DescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Root Diagram1", version);
+        Optional<Library> rootDiagram1DescriptionLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "Root Diagram1", version);
         assertThat(rootDiagram1DescriptionLibrary).isPresent();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(rootDiagram1DescriptionLibrary.get(), description, List.of(buckLibrary, sharedComponentsLibrary));
         this.assertThatLibraryDocumentsAreReadOnly(rootDiagram1DescriptionLibrary.get());
