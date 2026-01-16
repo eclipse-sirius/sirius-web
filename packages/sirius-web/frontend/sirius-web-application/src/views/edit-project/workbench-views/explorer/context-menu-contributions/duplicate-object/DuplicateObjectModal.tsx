@@ -119,6 +119,11 @@ export const DuplicateObjectModal = ({
       open={true}
       onClose={onClose}
       aria-labelledby="dialog-title"
+      // Menu Items from MUI have a text based navigation, when the first letter of a menu item is hit (keydown event) the menu item gain the focus.
+      // When the user writes in a input text contained by a dialog, when he presses a the first letter of a menu item also opened, the input lose the focus.
+      // onKeyDown={(e) => e.stopPropagation()} on the dialog prevents any input present in the dialog to lose the focus
+      // See comments in https://github.com/eclipse-sirius/sirius-web/issues/5230
+      onKeyDown={(e) => e.stopPropagation()}
       maxWidth="md"
       fullWidth
       data-testid="duplicate-object-dialog">
