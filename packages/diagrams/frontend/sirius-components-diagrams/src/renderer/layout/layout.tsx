@@ -78,7 +78,7 @@ export const prepareLayoutArea = (
 
   // Render all label first
   const labelElements: JSX.Element[] = [];
-  visibleNodes.forEach((node, index) => {
+  visibleNodes.forEach((node) => {
     const borderWidth: number = getNodeBorderWidth(node, visibleNodes) ?? 0;
     let insideLabelConstraintWidth = (node.width ?? 0) - borderWidth * 2;
     if (node.parentId) {
@@ -97,8 +97,8 @@ export const prepareLayoutArea = (
         }),
       ];
       const element: JSX.Element = createElement('div', {
-        id: `${node.id}-label-${index}`,
-        key: `${node.id}-label-${index}`,
+        id: `${node.data.insideLabel.id}-label`,
+        key: `${node.data.insideLabel.id}-label`,
         role: 'button', // role applied by react flow
         style: {
           maxWidth: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : insideLabelConstraintWidth,
@@ -302,9 +302,17 @@ export const layout = (
   diagram: RawDiagram,
   referencePosition: GQLReferencePosition | null,
   layoutDirection: GQLArrangeLayoutDirection,
-  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
+  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[],
+  autoLayout: boolean
 ): RawDiagram => {
-  layoutDiagram(previousDiagram, diagram, referencePosition, layoutDirection, nodeLayoutHandlerContributions);
+  layoutDiagram(
+    previousDiagram,
+    diagram,
+    referencePosition,
+    layoutDirection,
+    nodeLayoutHandlerContributions,
+    autoLayout
+  );
   return diagram;
 };
 
@@ -313,10 +321,9 @@ const layoutDiagram = (
   diagram: RawDiagram,
   referencePosition: GQLReferencePosition | null,
   layoutDirection: GQLArrangeLayoutDirection,
-  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
+  nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[],
+  autoLayout: boolean
 ) => {
-  layoutEdges(previousDiagram, diagram.edges);
-
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
   const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
 
@@ -335,46 +342,79 @@ const layoutDiagram = (
 
   layoutEngine.layoutNodes(previousDiagram, allVisibleNodes, nodesToLayout, newlyAddedNodes);
 
-  // Update position of root nodes
-  nodesToLayout.forEach((node, index) => {
-    const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
-    const previousPosition = computePreviousPosition(previousNode, node);
+  // With autoLayout, positions are already computed
+  if (!autoLayout) {
+    // Update position of root nodes
+    nodesToLayout.forEach((node, index) => {
+      const previousNode = (previousDiagram?.nodes ?? []).find((previousNode) => previousNode.id === node.id);
+      const previousPosition = computePreviousPosition(previousNode, node);
 
-    const createdNode = newlyAddedNodes.find((n) => n.id === node.id);
+      const createdNode = newlyAddedNodes.find((n) => n.id === node.id);
 
-    if (!!createdNode) {
-      node.position = createdNode.position;
-    } else if (previousPosition) {
-      node.position = previousPosition;
-    } else {
-      const maxBorderNodeWidthWest = getChildren(node, allVisibleNodes)
-        .filter(isWestBorderNode)
-        .map((borderNode) => borderNode.width || 0)
-        .reduce((a, b) => Math.max(a, b), 0);
-
-      node.position = { x: 0, y: 0 };
-      const previousSibling = nodesToLayout[index - 1];
-      if (previousSibling) {
-        const previousSiblingMaxBorderNodeWidthEast = getChildren(previousSibling, allVisibleNodes)
-          .filter(isEastBorderNode)
+      if (!!createdNode) {
+        node.position = createdNode.position;
+      } else if (previousPosition) {
+        node.position = previousPosition;
+      } else {
+        const maxBorderNodeWidthWest = getChildren(node, allVisibleNodes)
+          .filter(isWestBorderNode)
           .map((borderNode) => borderNode.width || 0)
           .reduce((a, b) => Math.max(a, b), 0);
 
-        node.position = {
-          x:
-            previousSibling.position.x +
-            maxBorderNodeWidthWest +
-            previousSiblingMaxBorderNodeWidthEast +
-            (previousSibling.width ?? 0) +
-            gap,
-          y: 0,
-        };
+        node.position = { x: 0, y: 0 };
+        const previousSibling = nodesToLayout[index - 1];
+        if (previousSibling) {
+          const previousSiblingMaxBorderNodeWidthEast = getChildren(previousSibling, allVisibleNodes)
+            .filter(isEastBorderNode)
+            .map((borderNode) => borderNode.width || 0)
+            .reduce((a, b) => Math.max(a, b), 0);
+
+          node.position = {
+            x:
+              previousSibling.position.x +
+              maxBorderNodeWidthWest +
+              previousSiblingMaxBorderNodeWidthEast +
+              (previousSibling.width ?? 0) +
+              gap,
+            y: 0,
+          };
+        }
       }
+    });
+  }
+};
+
+export const prepareLayoutLabels = (previousDiagram: RawDiagram | null, diagram: RawDiagram): void => {
+  layoutNodeLabels(previousDiagram, diagram.nodes);
+  layoutEdgeLabels(previousDiagram, diagram.edges);
+};
+
+const layoutNodeLabels = (previousDiagram: RawDiagram | null, nodes: Node<NodeData>[]) => {
+  nodes.forEach((node) => {
+    const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
+    if (node.data.outsideLabels.BOTTOM_MIDDLE) {
+      const outsideLabel = node.data.outsideLabels.BOTTOM_MIDDLE;
+      const labelElement = document.getElementById(`${outsideLabel.id}-label`);
+      const labelHeight = labelElement?.getBoundingClientRect().height ?? 0;
+      const labelWidth = labelElement?.getBoundingClientRect().width ?? 0;
+      if (!outsideLabel.resizedByUser) {
+        outsideLabel.width = labelWidth;
+        outsideLabel.height = labelHeight;
+      } else if (previousNode) {
+        outsideLabel.width = previousNode.data.outsideLabels.BOTTOM_MIDDLE?.width ?? labelWidth;
+        outsideLabel.height = previousNode.data.outsideLabels.BOTTOM_MIDDLE?.height ?? labelHeight;
+      }
+    }
+    if (node.data.insideLabel) {
+      const insideLabel = node.data.insideLabel;
+      const labelElement = document.getElementById(`${insideLabel.id}-label`);
+      insideLabel.width = labelElement?.getBoundingClientRect().width ?? 0;
+      insideLabel.height = labelElement?.getBoundingClientRect().height ?? 0;
     }
   });
 };
 
-const layoutEdges = (previousDiagram: RawDiagram | null, edges: Edge<MultiLabelEdgeData>[]) => {
+const layoutEdgeLabels = (previousDiagram: RawDiagram | null, edges: Edge<MultiLabelEdgeData>[]) => {
   edges.forEach((edge) => {
     const previousEdge: Edge<MultiLabelEdgeData> | undefined = (previousDiagram?.edges ?? []).find(
       (prevEdge) => prevEdge.id === edge.id

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,28 +56,10 @@ export class LayoutEngine implements ILayoutEngine {
           height: `${node.height}px`,
         };
       }
-      this.layoutOutsideLabels(previousDiagram, node);
     });
   }
 
   public registerNodeLayoutHandlerContribution(nodeLayoutHandlerContribution: INodeLayoutHandler<NodeData>) {
     this.nodeLayoutHandlers.push(nodeLayoutHandlerContribution);
   }
-
-  private layoutOutsideLabels = (previousDiagram: RawDiagram | null, node: Node<NodeData>) => {
-    const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
-    if (node.data.outsideLabels.BOTTOM_MIDDLE) {
-      const outsideLabel = node.data.outsideLabels.BOTTOM_MIDDLE;
-      const labelElement = document.getElementById(`${outsideLabel.id}-label`);
-      const labelHeight = labelElement?.getBoundingClientRect().height ?? 0;
-      const labelWidth = labelElement?.getBoundingClientRect().width ?? 0;
-      if (!outsideLabel.resizedByUser) {
-        outsideLabel.width = labelWidth;
-        outsideLabel.height = labelHeight;
-      } else if (previousNode) {
-        outsideLabel.width = previousNode.data.outsideLabels.BOTTOM_MIDDLE?.width ?? labelWidth;
-        outsideLabel.height = previousNode.data.outsideLabels.BOTTOM_MIDDLE?.height ?? labelHeight;
-      }
-    }
-  };
 }
