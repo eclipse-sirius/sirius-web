@@ -398,6 +398,7 @@ type SingleClickOnDiagramElementTool implements Tool {
   dialogDescriptionId: String
   targetDescriptions: [DiagramElementDescription!]!
   withImpactAnalysis: Boolean!
+  keyBindings: [KeyBinding!]!
 }
 
 type SingleClickOnTwoDiagramElementsTool implements Tool {
