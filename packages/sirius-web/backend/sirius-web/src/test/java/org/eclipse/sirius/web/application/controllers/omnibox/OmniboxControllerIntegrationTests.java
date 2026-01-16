@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -270,6 +270,15 @@ public class OmniboxControllerIntegrationTests extends AbstractIntegrationTests 
         assertThat(complexQueryObjectLabels).isNotEmpty()
             .anyMatch(label -> label.contains("org.eclipse.sirius.web.tests.data"))
             .anyMatch(label -> label.contains("Success"));
+
+        Map<String, Object> queryWithSyntaxErrorVariables = Map.of(
+                "query", "name::Comp*"
+        );
+
+        var queryWithSyntaxErrorResult = this.projectsOmniboxSearchQueryRunner.run(queryWithSyntaxErrorVariables);
+        assertThat(queryWithSyntaxErrorResult.errors()).isEmpty();
+        List<String> queryWithSyntaxErrorObjectLabels = JsonPath.read(queryWithSyntaxErrorResult.data(), "$.data.viewer.projectsOmniboxSearch.edges[*].node.label");
+        assertThat(queryWithSyntaxErrorObjectLabels).isEmpty();
     }
 
 }
