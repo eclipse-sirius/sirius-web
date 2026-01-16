@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ export const PublishStudioLibraryCommand = ({ command, onKeyDown, onClose }: Omn
   return (
     <>
       <ListItemButton key={command.id} data-testid={command.label} onClick={handleClick} onKeyDown={onKeyDown}>
-        <ListItemIcon>{command.icon}]</ListItemIcon>
+        <ListItemIcon>{command.icon}</ListItemIcon>
         <ListItemText sx={{ whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>{command.label}</ListItemText>
       </ListItemButton>
       {state.open ? (
