@@ -10,10 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 
-import { GQLKeyBinding } from '../Palette.types';
+export interface UseInvokeFetchContextMenuEntryValue {
+  invokeFetchContextMenuEntry: (
+    editingContextId: string,
+    treeId: string,
+    treeItemId: string,
+    menuEntry: GQLTreeItemContextMenuEntry,
+    onClick: () => void
+  ) => void;
+}
 
-export interface KeyBindingProps {
-  keyBinding: GQLKeyBinding;
-  'data-testid'?: string;
+export interface UseInvokeFetchContextMenuEntryState {
+  onClick: () => void;
 }

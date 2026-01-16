@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,10 +12,18 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.tree.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.KeyBinding;
 import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
@@ -29,6 +37,8 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemContextMenuEntryImpl#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemContextMenuEntryImpl#getPreconditionExpression
  * <em>Precondition Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemContextMenuEntryImpl#getKeyBindings <em>Key
+ * Bindings</em>}</li>
  * </ul>
  *
  * @generated
@@ -74,6 +84,16 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
      * @ordered
      */
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getKeyBindings() <em>Key Bindings</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getKeyBindings()
+     * @generated
+     * @ordered
+     */
+    protected EList<KeyBinding> keyBindings;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -146,12 +166,41 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
      * @generated
      */
     @Override
+    public EList<KeyBinding> getKeyBindings() {
+        if (this.keyBindings == null) {
+            this.keyBindings = new EObjectContainmentEList<>(KeyBinding.class, this, TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS);
+        }
+        return this.keyBindings;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+        switch (featureID) {
+            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS:
+                return ((InternalEList<?>) this.getKeyBindings()).basicRemove(otherEnd, msgs);
+        }
+        return super.eInverseRemove(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__NAME:
                 return this.getName();
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
                 return this.getPreconditionExpression();
+            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS:
+                return this.getKeyBindings();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -161,6 +210,7 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -169,6 +219,10 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
                 return;
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression((String) newValue);
+                return;
+            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS:
+                this.getKeyBindings().clear();
+                this.getKeyBindings().addAll((Collection<? extends KeyBinding>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -188,6 +242,9 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
                 return;
+            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS:
+                this.getKeyBindings().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -204,6 +261,8 @@ public abstract class TreeItemContextMenuEntryImpl extends MinimalEObjectImpl.Co
                 return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION:
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
+            case TreePackage.TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS:
+                return this.keyBindings != null && !this.keyBindings.isEmpty();
         }
         return super.eIsSet(featureID);
     }

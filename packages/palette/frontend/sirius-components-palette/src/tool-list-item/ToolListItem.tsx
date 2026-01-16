@@ -11,13 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay, KeyBinding } from '@eclipse-sirius/sirius-components-core';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
-import { KeyBinding } from '../key-binding/KeyBinding';
 import { isSingleClickOnDiagramElementTool } from '../Palette';
 import { GQLTool } from '../Palette.types';
 import { ToolListItemProps } from './ToolListItem.types';
