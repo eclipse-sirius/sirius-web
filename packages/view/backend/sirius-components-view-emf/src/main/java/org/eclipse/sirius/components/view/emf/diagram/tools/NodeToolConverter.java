@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewToolImageProvider;
-import org.eclipse.sirius.components.view.emf.diagram.tools.api.IKeyBindingConverter;
+import org.eclipse.sirius.components.view.emf.IKeyBindingConverter;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodeToolConverter;
 import org.eclipse.sirius.components.view.emf.form.converters.MultiValueProvider;
 import org.springframework.stereotype.Service;

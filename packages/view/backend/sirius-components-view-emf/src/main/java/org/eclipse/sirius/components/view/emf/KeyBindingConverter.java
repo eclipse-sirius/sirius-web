@@ -10,12 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf.diagram.tools;
+package org.eclipse.sirius.components.view.emf;
 
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
-import org.eclipse.sirius.components.view.emf.diagram.tools.api.IKeyBindingConverter;
 import org.springframework.stereotype.Service;
 
 /**

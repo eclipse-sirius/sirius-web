@@ -113,6 +113,7 @@ interface TreeItemContextMenuEntry {
   id: ID!
   label: String!
   iconURL: [String!]!
+  keyBindings: [KeyBinding!]!
 }
 
 extend type Mutation {
@@ -157,12 +158,14 @@ type SingleClickTreeItemContextMenuEntry implements TreeItemContextMenuEntry {
   label: String!
   iconURL: [String!]!
   withImpactAnalysis: Boolean!
+  keyBindings: [KeyBinding!]!
 }
 
 type FetchTreeItemContextMenuEntry implements TreeItemContextMenuEntry {
   id: ID!
   label: String!
   iconURL: [String!]!
+  keyBindings: [KeyBinding!]!
 }
 
 type FetchTreeItemContextMenuEntryData {
