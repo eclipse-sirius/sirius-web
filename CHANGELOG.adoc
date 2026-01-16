@@ -56,6 +56,9 @@ This means that the following methods `getHeaderHeightFootprint` and `getInsideL
 An example of this impact could be found in `EllipseNodeLayoutHandler.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/1626[#1626] [diagram] Add the ability to trigger tools using key bindings.
 The `SingleClickOnDiagramElementTool` builder now requires a list of key bindings.
+- https://github.com/eclipse-sirius/sirius-web/issues/5982[#5982] [tree] Add the ability to trigger context menu entries using key bindings.
+The `TreeItemContextMenuEntryBuilder` subclasses now require a list of key bindings.
+`IKeyBindingConverter` and `KeyBindingConverter` have been moved from their respective packages to `org.eclipse.sirius.components.view.emf`.
 
 
 === Dependency update
@@ -95,6 +98,9 @@ The key bindings are visible in the palette next to the tool name.
 A key binding needs to contain at least one of `Control`, `Alt`, or `Meta` to be executed by the frontend.
 - https://github.com/eclipse-sirius/sirius-web/issues/3488[#3488] [diagram] Restore auto-layout support for diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/5062[#5062] [sirius-web] Add new "views explorer" view
+- https://github.com/eclipse-sirius/sirius-web/issues/5982[#5982] [tree] Add the ability to trigger context menu entries using key bindings.
+As for diagram tools, it is now possible to add `KeyBinding` instances to context menu entries in trees.
+Note that for the moment, only entries that aren't overridden in the frontend can be triggered with key bindings, although it is possible to define key bindings for any entry.
 
 
 === Improvements

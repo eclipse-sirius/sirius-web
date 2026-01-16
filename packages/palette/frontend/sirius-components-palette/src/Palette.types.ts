@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLKeyBinding } from '@eclipse-sirius/sirius-components-core';
 import { PaletteExtensionSectionProps } from './PaletteExtensionSection.types';
 
 export interface ContextualPaletteStyleProps {
@@ -58,13 +59,6 @@ export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   dialogDescriptionId: string;
   withImpactAnalysis: boolean;
   keyBindings: GQLKeyBinding[];
-}
-
-export interface GQLKeyBinding {
-  isCtrl: boolean;
-  isMeta: boolean;
-  isAlt: boolean;
-  key: string;
 }
 
 export interface GQLPalette {

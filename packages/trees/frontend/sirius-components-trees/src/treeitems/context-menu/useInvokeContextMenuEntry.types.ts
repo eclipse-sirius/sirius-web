@@ -10,18 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf.diagram.tools.api;
+import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 
-import java.util.Optional;
-
-import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
-
-/**
- * Used to create key bindings.
- *
- * @author gdaniel
- */
-public interface IKeyBindingConverter {
-
-    Optional<KeyBinding> createKeyBinding(org.eclipse.sirius.components.view.KeyBinding viewKeyBinding);
+export interface UseInvokeContextMenuEntryValue {
+  invokeContextMenuEntry: (
+    editingContextId: string,
+    treeId: string,
+    treeItemId: string,
+    menuEntry: GQLTreeItemContextMenuEntry,
+    onClick: () => void
+  ) => void;
 }

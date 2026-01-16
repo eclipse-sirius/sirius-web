@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.dto;
+package org.eclipse.sirius.components.view.emf;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 
 /**
- * Used to represent a single click entry inside a context menu of a tree item.
+ * Used to create key bindings.
  *
- * @author Jerome Gout
+ * @author gdaniel
  */
-public record SingleClickTreeItemContextMenuEntry(String id, String label, List<String> iconURL, boolean withImpactAnalysis, List<KeyBinding> keyBindings) implements ITreeItemContextMenuEntry { }
+public interface IKeyBindingConverter {
 
+    Optional<KeyBinding> createKeyBinding(org.eclipse.sirius.components.view.KeyBinding viewKeyBinding);
+}

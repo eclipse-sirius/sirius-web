@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.trees.dto;
 
-import java.util.List;
+export interface KeyBindingProps {
+  keyBinding: GQLKeyBinding;
+  'data-testid'?: string;
+}
 
-import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
-
-/**
- * Used to represent a fetch entry inside a context menu of a tree item.
- *
- * @author Jerome Gout
- */
-public record FetchTreeItemContextMenuEntry(String id, String label, List<String> iconURL, List<KeyBinding> keyBindings) implements ITreeItemContextMenuEntry { }
+export interface GQLKeyBinding {
+  isCtrl: boolean;
+  isMeta: boolean;
+  isAlt: boolean;
+  key: string;
+}
