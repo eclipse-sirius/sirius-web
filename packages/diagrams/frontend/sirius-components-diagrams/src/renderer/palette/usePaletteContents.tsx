@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,12 @@ export const getPaletteQuery = gql`
       appliesToDiagramRoot
       dialogDescriptionId
       withImpactAnalysis
+      keyBindings {
+        isCtrl
+        isMeta
+        isAlt
+        key
+      }
     }
   }
   query getPalette($editingContextId: ID!, $diagramId: ID!, $diagramElementIds: [ID!]) {
@@ -76,7 +82,7 @@ const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-export const usePaletteContents = (diagramElementIds: string[]): UsePaletteContentValue => {
+export const usePaletteContents = (diagramElementIds: string[], skip: boolean): UsePaletteContentValue => {
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage } = useMultiToast();
 
@@ -90,6 +96,7 @@ export const usePaletteContents = (diagramElementIds: string[]): UsePaletteConte
       diagramId,
       diagramElementIds,
     },
+    skip,
   });
 
   const description: GQLRepresentationDescription | undefined =

@@ -54,6 +54,8 @@ An example of this impact could be found in `EllipseNodeConverter.ts`.
 In the node layout, we no longer need to retrieve the label element, as the size is now present in the label data.
 This means that the following methods `getHeaderHeightFootprint` and `getInsideLabelWidthConstraint` have changed their signature by removing the label element.
 An example of this impact could be found in `EllipseNodeLayoutHandler.ts`.
+- https://github.com/eclipse-sirius/sirius-web/issues/1626[#1626] [diagram] Add the ability to trigger tools using key bindings.
+The `SingleClickOnDiagramElementTool` builder now requires a list of key bindings.
 
 
 === Dependency update
@@ -83,6 +85,13 @@ If present, the toolbar will be enabled, disabled otherwise.
 - https://github.com/eclipse-sirius/sirius-web/issues/3459[#3459] [diagram] Add support for edges on `IconLabel` nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/6157[#6157] [diagram] Add ability to collapse/expand the diagram toolbar.
 - https://github.com/eclipse-sirius/sirius-web/issues/6203[#6203] [selection] Update the selection dialog according to the changes made in the selection dialog description.
+- https://github.com/eclipse-sirius/sirius-web/issues/1626[#1626] [diagram] Add the ability to trigger tools using key bindings
+It is now possible to add `KeyBinding` instances to node tools in a diagram (see `NoteToolBuilder#keyBindings`), and specify the keys to press to trigger the tool.
+The key bindings that can be triggered at a given time are computed from the palette of the selected diagram elements.
+For example, the tools contained in a given `NodeDescription` can only be triggered via key bindings if the selected diagram element is a node with the given `NodeDescription`.
+The key bindings are visible in the palette next to the tool name.
+A key binding needs to contain at least one of `Control`, `Alt`, or `Meta` to be executed by the frontend.
+
 
 === Improvements
 

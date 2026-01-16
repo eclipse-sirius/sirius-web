@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider
 import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVariables;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -40,16 +39,13 @@ import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
-import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
-import org.eclipse.sirius.components.view.emf.diagram.ViewToolImageProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IGroupPaletteToolsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
-import org.eclipse.sirius.components.view.emf.form.converters.MultiValueProvider;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodeToolConverter;
 import org.springframework.stereotype.Service;
 
 /**
@@ -66,23 +62,24 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
 
     private final IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService;
 
-    private final IDiagramIdProvider diagramIdProvider;
-
     private final IDiagramDescriptionService diagramDescriptionService;
 
     private final IViewAQLInterpreterFactory aqlInterpreterFactory;
 
     private final List<IGroupPaletteToolsProvider> paletteToolsProviders;
 
-    public ViewGroupPaletteProvider(IObjectSearchService objectSearchService, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService,
-                                    IDiagramIdProvider diagramIdProvider, IDiagramDescriptionService diagramDescriptionService, IViewAQLInterpreterFactory aqlInterpreterFactory, List<IGroupPaletteToolsProvider> paletteToolsProviders) {
+    private final INodeToolConverter nodeToolConverter;
+
+    public ViewGroupPaletteProvider(IObjectSearchService objectSearchService, IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate,
+            IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, IDiagramDescriptionService diagramDescriptionService, IViewAQLInterpreterFactory aqlInterpreterFactory,
+            List<IGroupPaletteToolsProvider> paletteToolsProviders, INodeToolConverter nodeToolConverter) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
-        this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
         this.paletteToolsProviders = Objects.requireNonNull(paletteToolsProviders);
+        this.nodeToolConverter = Objects.requireNonNull(nodeToolConverter);
     }
 
     @Override
@@ -169,12 +166,12 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
         if (viewDiagramDescription.getGroupPalette() != null) {
             viewDiagramDescription.getGroupPalette().getNodeTools().stream()
                     .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
-                    .map(nodeTool -> this.createNodeTool(nodeTool, variableManager, interpreter))
+                    .map(nodeTool -> this.nodeToolConverter.createNodeTool(interpreter, nodeTool, false, variableManager))
                     .forEach(paletteEntries::add);
 
             viewDiagramDescription.getGroupPalette().getQuickAccessTools().stream()
                     .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
-                    .map(nodeTool -> this.createNodeTool(nodeTool, variableManager, interpreter))
+                    .map(nodeTool -> this.nodeToolConverter.createNodeTool(interpreter, nodeTool, false, variableManager))
                     .forEach(quickAccessTools::add);
 
             viewDiagramDescription.getGroupPalette().getToolSections().stream()
@@ -186,24 +183,6 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
         return new Palette(paletteId, quickAccessTools, paletteEntries);
     }
 
-    private ITool createNodeTool(NodeTool viewNodeTool, VariableManager variableManager, AQLInterpreter interpreter) {
-        String toolId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(viewNodeTool).toString().getBytes()).toString();
-        List<String> iconURLProvider = this.nodeToolIconURLProvider(viewNodeTool, interpreter, variableManager);
-        String dialogDescriptionId = "";
-        if (viewNodeTool.getDialogDescription() != null) {
-            dialogDescriptionId = this.diagramIdProvider.getId(viewNodeTool.getDialogDescription());
-        }
-
-        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
-                .label(viewNodeTool.getName())
-                .iconURL(iconURLProvider)
-                .dialogDescriptionId(dialogDescriptionId)
-                .targetDescriptions(List.of())
-                .appliesToDiagramRoot(false)
-                .withImpactAnalysis(viewNodeTool.isWithImpactAnalysis())
-                .build();
-    }
-
     private boolean checkPrecondition(Tool tool, VariableManager variableManager, AQLInterpreter interpreter) {
         String precondition = tool.getPreconditionExpression();
         if (precondition != null && !precondition.isBlank()) {
@@ -213,23 +192,12 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
         return true;
     }
 
-    private List<String> nodeToolIconURLProvider(NodeTool nodeTool, AQLInterpreter interpreter, VariableManager variableManager) {
-        List<String> iconURL = null;
-        String iconURLsExpression = nodeTool.getIconURLsExpression();
-        if (iconURLsExpression == null || iconURLsExpression.isBlank()) {
-            iconURL = List.of(ViewToolImageProvider.NODE_CREATION_TOOL_ICON);
-        } else {
-            iconURL = new MultiValueProvider<>(interpreter, iconURLsExpression, String.class).apply(variableManager);
-        }
-        return iconURL;
-    }
-
     private org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection createToolSection(NodeToolSection toolSection, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolSelectionId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(toolSection).toString().getBytes()).toString();
 
         var tools = new ArrayList<ITool>(toolSection.getNodeTools().stream()
                 .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(tool -> this.createNodeTool(tool, variableManager, interpreter))
+                .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
                 .toList());
 
         return org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection.newToolSection(toolSelectionId)
