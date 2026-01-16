@@ -43,17 +43,17 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
       };
 
       layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-        updatedNodes.map((node) => {
+        const updatedNodesAfterLayout = updatedNodes.map((node) => {
           if (nodeIds.find((nodeId) => nodeId === node.id)) {
             return laidOutDiagram.nodes.find((laidOutNode) => laidOutNode.id === node.id) ?? node;
           }
           return node;
         });
 
-        setNodes(updatedNodes);
+        setNodes(updatedNodesAfterLayout);
         setEdges(laidOutDiagram.edges);
         const finalDiagram: RawDiagram = {
-          nodes: updatedNodes,
+          nodes: updatedNodesAfterLayout,
           edges: laidOutDiagram.edges,
         };
         synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
