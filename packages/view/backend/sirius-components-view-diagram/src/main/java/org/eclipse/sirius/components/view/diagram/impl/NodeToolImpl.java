@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram.impl;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.view.KeyBinding;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -35,6 +41,7 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * Select Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolImpl#isWithImpactAnalysis <em>With Impact
  * Analysis</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeToolImpl#getKeyBindings <em>Key Bindings</em>}</li>
  * </ul>
  *
  * @generated
@@ -110,6 +117,16 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @see #isWithImpactAnalysis()
      */
     protected boolean withImpactAnalysis = WITH_IMPACT_ANALYSIS_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getKeyBindings() <em>Key Bindings</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getKeyBindings()
+     * @generated
+     * @ordered
+     */
+    protected EList<KeyBinding> keyBindings;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -253,10 +270,25 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      * @generated
      */
     @Override
+    public EList<KeyBinding> getKeyBindings() {
+        if (this.keyBindings == null) {
+            this.keyBindings = new EObjectContainmentEList<>(KeyBinding.class, this, DiagramPackage.NODE_TOOL__KEY_BINDINGS);
+        }
+        return this.keyBindings;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
                 return this.basicSetDialogDescription(null, msgs);
+            case DiagramPackage.NODE_TOOL__KEY_BINDINGS:
+                return ((InternalEList<?>) this.getKeyBindings()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -277,6 +309,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
                 return this.getElementsToSelectExpression();
             case DiagramPackage.NODE_TOOL__WITH_IMPACT_ANALYSIS:
                 return this.isWithImpactAnalysis();
+            case DiagramPackage.NODE_TOOL__KEY_BINDINGS:
+                return this.getKeyBindings();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -286,6 +320,7 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
      *
      * @generated
      */
+    @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
@@ -300,6 +335,10 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
                 return;
             case DiagramPackage.NODE_TOOL__WITH_IMPACT_ANALYSIS:
                 this.setWithImpactAnalysis((Boolean) newValue);
+                return;
+            case DiagramPackage.NODE_TOOL__KEY_BINDINGS:
+                this.getKeyBindings().clear();
+                this.getKeyBindings().addAll((Collection<? extends KeyBinding>) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -325,6 +364,9 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
             case DiagramPackage.NODE_TOOL__WITH_IMPACT_ANALYSIS:
                 this.setWithImpactAnalysis(WITH_IMPACT_ANALYSIS_EDEFAULT);
                 return;
+            case DiagramPackage.NODE_TOOL__KEY_BINDINGS:
+                this.getKeyBindings().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -345,6 +387,8 @@ public class NodeToolImpl extends ToolImpl implements NodeTool {
                 return ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT == null ? this.elementsToSelectExpression != null : !ELEMENTS_TO_SELECT_EXPRESSION_EDEFAULT.equals(this.elementsToSelectExpression);
             case DiagramPackage.NODE_TOOL__WITH_IMPACT_ANALYSIS:
                 return this.withImpactAnalysis != WITH_IMPACT_ANALYSIS_EDEFAULT;
+            case DiagramPackage.NODE_TOOL__KEY_BINDINGS:
+                return this.keyBindings != null && !this.keyBindings.isEmpty();
         }
         return super.eIsSet(featureID);
     }
