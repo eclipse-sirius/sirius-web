@@ -119,5 +119,17 @@ public class NodeToolBuilder {
         return this;
     }
 
+    /**
+     * Setter for KeyBindings.
+     *
+     * @generated
+     */
+    public NodeToolBuilder keyBindings(org.eclipse.sirius.components.view.KeyBinding ... values) {
+        for (org.eclipse.sirius.components.view.KeyBinding value : values) {
+            this.getNodeTool().getKeyBindings().add(value);
+        }
+        return this;
+    }
+
 }
 

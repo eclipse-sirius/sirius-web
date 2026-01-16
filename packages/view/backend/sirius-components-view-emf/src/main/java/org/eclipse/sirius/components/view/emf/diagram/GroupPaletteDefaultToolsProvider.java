@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageConstants;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
@@ -27,10 +31,6 @@ import org.eclipse.sirius.components.view.emf.diagram.tools.HideElementToolHandl
 import org.eclipse.sirius.components.view.emf.diagram.tools.UnFadeElementToolHandler;
 import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * An helper to build default tools in the group palette.
@@ -55,7 +55,7 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
     public List<ITool> createQuickAccessTools(DiagramContext diagramContext, List<IDiagramElementDescription> targetDescriptions, List<Object> diagramElements) {
         List<ITool> extraTools = new ArrayList<>();
 
-        if (containsFadedElement(diagramElements)) {
+        if (this.containsFadedElement(diagramElements)) {
             var unFadeTool = this.createUnFadeTool(targetDescriptions);
             extraTools.add(unFadeTool);
         } else {
@@ -88,6 +88,7 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .iconURL(List.of(DiagramImageConstants.FADE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -97,6 +98,7 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .iconURL(List.of(DiagramImageConstants.FADE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -108,6 +110,7 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .iconURL(List.of(DiagramImageConstants.HIDE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -117,6 +120,7 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .iconURL(List.of(DiagramImageConstants.ADJUST_SIZE))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 

@@ -2229,6 +2229,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getNodeTool_KeyBindings() {
+        return (EReference) this.nodeToolEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getSourceEdgeEndReconnectionTool() {
         return this.sourceEdgeEndReconnectionToolEClass;
     }
@@ -2981,6 +2991,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.nodeToolEClass, NODE_TOOL__ICON_UR_LS_EXPRESSION);
         this.createEAttribute(this.nodeToolEClass, NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION);
         this.createEAttribute(this.nodeToolEClass, NODE_TOOL__WITH_IMPACT_ANALYSIS);
+        this.createEReference(this.nodeToolEClass, NODE_TOOL__KEY_BINDINGS);
 
         this.sourceEdgeEndReconnectionToolEClass = this.createEClass(SOURCE_EDGE_END_RECONNECTION_TOOL);
 
@@ -3459,6 +3470,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getNodeTool_WithImpactAnalysis(), this.ecorePackage.getEBoolean(), "withImpactAnalysis", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getNodeTool_KeyBindings(), theViewPackage.getKeyBinding(), null, "keyBindings", null, 0, -1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.sourceEdgeEndReconnectionToolEClass, SourceEdgeEndReconnectionTool.class, "SourceEdgeEndReconnectionTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

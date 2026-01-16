@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.view.diagram;
+
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.sirius.components.view.KeyBinding;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Node Tool</b></em>'. <!-- end-user-doc -->
@@ -26,6 +29,7 @@ package org.eclipse.sirius.components.view.diagram;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#isWithImpactAnalysis <em>With Impact
  * Analysis</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.NodeTool#getKeyBindings <em>Key Bindings</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool()
@@ -125,5 +129,16 @@ public interface NodeTool extends Tool {
      * @generated
      */
     void setWithImpactAnalysis(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Key Bindings</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.KeyBinding}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Key Bindings</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeTool_KeyBindings()
+     * @model containment="true"
+     * @generated
+     */
+    EList<KeyBinding> getKeyBindings();
 
 } // NodeTool

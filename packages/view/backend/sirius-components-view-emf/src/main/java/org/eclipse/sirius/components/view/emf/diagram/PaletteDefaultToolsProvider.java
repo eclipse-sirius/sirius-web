@@ -158,6 +158,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.ADJUST_SIZE))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -209,6 +210,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.RESET_LABEL_POSITION))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -218,6 +220,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.RESET_LABEL_SIZE))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -232,6 +235,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.RESET_BENDING_POINTS))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -252,6 +256,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.RESET_HANDLES))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -264,6 +269,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                         .targetDescriptions(targetDescriptions)
                         .appliesToDiagramRoot(false)
                         .withImpactAnalysis(false)
+                        .keyBindings(List.of())
                         .build();
                 case COLLAPSED -> SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(ExpandElementToolHandler.EXPAND_ELEMENT_TOOL_ID)
                         .label(this.messageService.defaultQuickToolExpand())
@@ -271,6 +277,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                         .targetDescriptions(targetDescriptions)
                         .appliesToDiagramRoot(false)
                         .withImpactAnalysis(false)
+                        .keyBindings(List.of())
                         .build();
             };
             return Optional.of(collapsingTool);
@@ -285,6 +292,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
                 .withImpactAnalysis(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -308,6 +316,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.FADE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -319,6 +328,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.HIDE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
+                .keyBindings(List.of())
                 .build();
     }
 
@@ -329,6 +339,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                     .iconURL(List.of(DiagramImageConstants.UNPIN_SVG))
                     .targetDescriptions(targetDescriptions)
                     .appliesToDiagramRoot(false)
+                    .keyBindings(List.of())
                     .build();
         } else {
             return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(PinElementToolHandler.PIN_ELEMENT_TOOL_ID)
@@ -336,6 +347,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                     .iconURL(List.of(DiagramImageConstants.PIN_SVG))
                     .targetDescriptions(targetDescriptions)
                     .appliesToDiagramRoot(false)
+                    .keyBindings(List.of())
                     .build();
         }
     }
@@ -360,6 +372,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .targetDescriptions(targetDescriptions)
                 .appliesToDiagramRoot(false)
                 .withImpactAnalysis(false)
+                .keyBindings(List.of())
                 .build();
 
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.For;
 import org.eclipse.sirius.components.view.If;
+import org.eclipse.sirius.components.view.KeyBinding;
 import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.TextStyleDescription;
@@ -100,6 +101,8 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
                 return this.createTextStylePalette();
             case ViewPackage.TEXT_STYLE_DESCRIPTION:
                 return this.createTextStyleDescription();
+            case ViewPackage.KEY_BINDING:
+                return this.createKeyBinding();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -292,6 +295,17 @@ public class ViewFactoryImpl extends EFactoryImpl implements ViewFactory {
     public TextStyleDescription createTextStyleDescription() {
         TextStyleDescriptionImpl textStyleDescription = new TextStyleDescriptionImpl();
         return textStyleDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public KeyBinding createKeyBinding() {
+        KeyBindingImpl keyBinding = new KeyBindingImpl();
+        return keyBinding;
     }
 
     /**

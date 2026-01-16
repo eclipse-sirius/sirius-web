@@ -43,7 +43,7 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
 
   const elementId = diagramElementIds[0] ? diagramElementIds[0] : diagramId;
   const elementsIds = diagramElementIds[0] ? diagramElementIds : [diagramId];
-  let { palette }: UsePaletteContentValue = usePaletteContents(elementsIds);
+  let { palette }: UsePaletteContentValue = usePaletteContents(elementsIds, false);
 
   const onKeyDown = useCallback(
     (event: React.KeyboardEvent<Element>) => {

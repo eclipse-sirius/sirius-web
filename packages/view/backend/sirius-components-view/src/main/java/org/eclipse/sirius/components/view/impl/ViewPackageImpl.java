@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.For;
 import org.eclipse.sirius.components.view.If;
+import org.eclipse.sirius.components.view.KeyBinding;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
@@ -170,6 +171,13 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     private EClass textStyleDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass keyBindingEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -863,6 +871,56 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
+    public EClass getKeyBinding() {
+        return this.keyBindingEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getKeyBinding_Ctrl() {
+        return (EAttribute) this.keyBindingEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getKeyBinding_Alt() {
+        return (EAttribute) this.keyBindingEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getKeyBinding_Meta() {
+        return (EAttribute) this.keyBindingEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getKeyBinding_Key() {
+        return (EAttribute) this.keyBindingEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EDataType getIdentifier() {
         return this.identifierEDataType;
     }
@@ -1012,6 +1070,12 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.textStyleDescriptionEClass, TEXT_STYLE_DESCRIPTION__IS_BOLD_EXPRESSION);
         this.createEAttribute(this.textStyleDescriptionEClass, TEXT_STYLE_DESCRIPTION__IS_ITALIC_EXPRESSION);
         this.createEAttribute(this.textStyleDescriptionEClass, TEXT_STYLE_DESCRIPTION__IS_UNDERLINE_EXPRESSION);
+
+        this.keyBindingEClass = this.createEClass(KEY_BINDING);
+        this.createEAttribute(this.keyBindingEClass, KEY_BINDING__CTRL);
+        this.createEAttribute(this.keyBindingEClass, KEY_BINDING__ALT);
+        this.createEAttribute(this.keyBindingEClass, KEY_BINDING__META);
+        this.createEAttribute(this.keyBindingEClass, KEY_BINDING__KEY);
 
         // Create data types
         this.identifierEDataType = this.createEDataType(IDENTIFIER);
@@ -1182,6 +1246,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTextStyleDescription_IsUnderlineExpression(), this.getInterpretedExpression(), "isUnderlineExpression", "aql:false", 0, 1, TextStyleDescription.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.keyBindingEClass, KeyBinding.class, "KeyBinding", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getKeyBinding_Ctrl(), this.ecorePackage.getEBoolean(), "ctrl", null, 0, 1, KeyBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getKeyBinding_Alt(), this.ecorePackage.getEBoolean(), "alt", null, 0, 1, KeyBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getKeyBinding_Meta(), this.ecorePackage.getEBoolean(), "meta", null, 0, 1, KeyBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getKeyBinding_Key(), this.ecorePackage.getEString(), "key", null, 0, 1, KeyBinding.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize data types
         this.initEDataType(this.identifierEDataType, String.class, "Identifier", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

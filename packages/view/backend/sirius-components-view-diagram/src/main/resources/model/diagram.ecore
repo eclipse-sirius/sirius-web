@@ -387,6 +387,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="elementsToSelectExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="withImpactAnalysis" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="keyBindings" upperBound="-1"
+        eType="ecore:EClass ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//KeyBinding"
+        containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="SourceEdgeEndReconnectionTool" eSuperTypes="#//EdgeReconnectionTool"/>
   <eClassifiers xsi:type="ecore:EClass" name="TargetEdgeEndReconnectionTool" eSuperTypes="#//EdgeReconnectionTool"/>
