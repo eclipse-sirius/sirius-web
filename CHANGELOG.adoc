@@ -47,6 +47,7 @@ The resize is still constrained by its inside label
 When the selection changes, the details view will attempt to re-open the same tab (i.e. the tab with the same _label_) when rendering the view for the new selection.
 If the tab cannot be found the first tab of the form will be opened instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/6040[#6040] [sirius-web] Only propose to select project template or libraries when it is relevant
+- https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Standardize font sizes on the _New Project_ creation page
 
 
 
@@ -238,6 +239,7 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/6098[#6098] [vs-code] Add support for impact analysis in VSCode extension
 - https://github.com/eclipse-sirius/sirius-web/issues/6081[#6081] [diagram] Prevent border nodes from detaching during parent resize
 - https://github.com/eclipse-sirius/sirius-web/issues/6079[#6079] [diagram] Fix reference position not correctly applied with InvokeSingleClickOnTwoDiagramElementsToolInput
+
 
 === New Features
 
@@ -654,7 +656,6 @@ This value must be initialized to _false_ in custom node converters like in `Ell
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] In order to handle undo on node appearance events you need to implement a `INodeAppearanceChangeUndoRecorder` the method `List<IAppearanceChange> computeUndoNodeAppearanceChanges(Node previousNode, Optional<INodeAppearanceChange> change)` is used to determine the list of `IAppearanceChange` that will be applied after an undo operation in order to get the previous style after a style change or if the node was deleted.
 
 
-
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.5[Spring Boot 3.5.5]
@@ -757,6 +758,7 @@ While it is pinned, other panels and representation can use the new "Show in Det
 - https://github.com/eclipse-sirius/sirius-web/issues/5624[#5624] [diagram] Add undo redo for the remaining diagram events
 - https://github.com/eclipse-sirius/sirius-web/issues/5632[#5632] [diagram] Add undo redo for remaining node appearance changes
 
+
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5220[#5220] [diagram] The palette now has a maximum size but not a minimum one.
@@ -838,6 +840,7 @@ We have also added the `IInputDispatcher` which is in charge of dispatching an i
 - Add support for project duplication
 - Add support for multiple query languages
 
+
 === Architectural decision records
 
 - [ADR-197] Add support for backend-driven diagram customization
@@ -847,6 +850,7 @@ We have also added the `IInputDispatcher` which is in charge of dispatching an i
 - [ADR-201] Add impact analysis for contextual menu actions of trees
 - [ADR-202] Add support for project duplication
 - [ADR-203] Add support for multiple query interpreters
+
 
 === Deprecation warning
 
@@ -970,6 +974,7 @@ The link to libraries has become a standard menu item which can be hidden provid
 - https://github.com/eclipse-sirius/sirius-web/issues/5212[#5212] [diagram] Custom nodes should use `useConnectionLineNodeStyle` in order to get the correct style feedback when creating a connection near the border of a node, this can be use like `connectionFeedbackStyle or dropFeedbackStyle`.
 - https://github.com/eclipse-sirius/sirius-web/issues/4886[#4886] [core] In the frontend, `WorkbenchViewContribution` now need to have an ID. This ID is used to share the workbench state through shareable URLs.
 
+
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.0[Spring Boot 3.5.0].
@@ -1007,6 +1012,7 @@ Fix how error messages are handled.
 - https://github.com/eclipse-sirius/sirius-web/issues/5248[#5248] [diagram] Fix an issue where the diagram was in an incorrect state after moving a node that was inside a list node
 - https://github.com/eclipse-sirius/sirius-web/issues/5267[#5267] [diagram] Fix an issue where the handle style is not updated correctly during reconnect
 - https://github.com/eclipse-sirius/sirius-web/issues/5275[#5275] [portal] Fix an issue where the portal representation was not working if a representation was removed from the editing context while present in the portal representation.
+
 
 === New Features
 
@@ -1196,6 +1202,7 @@ These `useEffect` now read the state value from `prevState` instead of `state`, 
 - https://github.com/eclipse-sirius/sirius-web/issues/5203[#5203] [diagram] When exporting a diagram as an image, hidden nodes are now ignored when computing the area to export.
 This avoid possibly large blank areas in the resulting images where invisible nodes are.
 
+
 === New Features
 
 - [releng] The integration tests from the main `sirius-web` module are now exported in a https://maven.apache.org/plugins/maven-jar-plugin/examples/create-test-jar.html[test JAR].
@@ -1301,6 +1308,7 @@ The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via th
 - https://github.com/eclipse-sirius/sirius-web/issues/5137[#5137] [diagram] Improve feedback on growable nodes when resizing the parent
 
 
+
 == v2025.4.0
 
 === Shapes
@@ -1390,7 +1398,6 @@ This means that all checkbox cell classes have been moved into sirius-web-applic
 They are now in `org.eclipse.sirius.web.application.views.table.customcells` package.
 
 
-
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-web/issues/4620[#4620] [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.4.3[Spring Boot 3.4.3].
@@ -1432,7 +1439,6 @@ They are now in `org.eclipse.sirius.web.application.views.table.customcells` pac
 - https://github.com/eclipse-sirius/sirius-web/issues/4660[#4660] [sirius-web] Fix the use of project image as a shape of image node style
 - https://github.com/eclipse-sirius/sirius-web/issues/4807[#4807] [table] Table CSV export does not export the content of a LabelCell
 - https://github.com/eclipse-sirius/sirius-web/issues/4831[#4831] [sirius-web] Fix the computation of the previous / next page and the ordering of the projects in the project browser
-
 
 
 === New Features
@@ -1491,6 +1497,7 @@ Actions are visible on nodes on diagrams, on the top right corner of the nodes, 
 - https://github.com/eclipse-sirius/sirius-web/issues/4626[#4626] [diagram] Conserve rectilinearity of custom edges
 - https://github.com/eclipse-sirius/sirius-web/issues/4770[#4770] [diagram] Allow reconnecting an edge on another edge
 - https://github.com/eclipse-sirius/sirius-web/issues/4745[#4745] Add table cell extension point
+
 
 === Improvements
 
