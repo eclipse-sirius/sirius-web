@@ -93,7 +93,7 @@ test.describe('diagram - drag and drop', () => {
   });
 
   test('when dragging a node, then non-compatible node style is not changed', async ({ page }) => {
-    const entity1Locator = page.locator('[data-testid="FreeForm - Entity1"]');
+    const entity1Locator = new PlaywrightNode(page, 'Entity1').nodeLocator;
 
     const boxShadowBefore = await entity1Locator.evaluate((node) => {
       return window.getComputedStyle(node).getPropertyValue('box-shadow');
@@ -121,7 +121,7 @@ test.describe('diagram - drag and drop', () => {
   });
 
   test('when dragging a node, then compatible nodes style indicates it', async ({ page }) => {
-    const entity1Locator = page.locator('[data-testid="FreeForm - Entity1"]');
+    const entity1Locator = new PlaywrightNode(page, 'Entity1').nodeLocator;
 
     const boxShadowBefore = await entity1Locator.evaluate((node) => {
       return window.getComputedStyle(node).getPropertyValue('box-shadow');
