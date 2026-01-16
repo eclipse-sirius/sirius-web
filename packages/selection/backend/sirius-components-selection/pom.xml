@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.4</version>
+		<version>2025.12.5</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-selection</artifactId>
-	<version>2025.12.4</version>
+	<version>2025.12.5</version>
 	<name>sirius-components-selection</name>
 	<description>Sirius Components Selection</description>
 
@@ -32,18 +32,18 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-representations</artifactId>
-			<version>2025.12.4</version>
+			<version>2025.12.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.12.4</version>
+			<version>2025.12.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-trees</artifactId>
-			<version>2025.12.4</version>
+			<version>2025.12.5</version>
 		</dependency>
 	</dependencies>
 

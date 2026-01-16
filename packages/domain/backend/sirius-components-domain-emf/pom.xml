@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.4</version>
+		<version>2025.12.5</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-domain-emf</artifactId>
-	<version>2025.12.4</version>
+	<version>2025.12.5</version>
 	<name>sirius-components-domain-emf</name>
 	<description>Sirius Components Domain EMF</description>
 
@@ -32,12 +32,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2025.12.4</version>
+			<version>2025.12.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-domain</artifactId>
-			<version>2025.12.4</version>
+			<version>2025.12.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -47,13 +47,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2025.12.4</version>
+			<version>2025.12.5</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2025.12.4</version>
+			<version>2025.12.5</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
