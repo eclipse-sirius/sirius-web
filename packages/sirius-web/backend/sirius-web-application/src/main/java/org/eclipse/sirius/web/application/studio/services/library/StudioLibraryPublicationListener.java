@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ public class StudioLibraryPublicationListener {
             var semanticData = semanticDataCreatedEvent.semanticData();
 
             Library library = Library.newLibrary()
-                    .namespace(publishLibrariesInput.projectId())
+                    .namespace(publishLibrariesInput.editingContextId())
                     .name(request.libraryName())
                     .semanticData(AggregateReference.to(semanticData.getId()))
                     .version(publishLibrariesInput.version())

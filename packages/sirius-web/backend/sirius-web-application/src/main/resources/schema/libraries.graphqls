@@ -49,7 +49,7 @@ extend type EditingContext {
 
 input PublishLibrariesInput {
   id: ID!
-  projectId: ID!
+  editingContextId: ID!
   publicationKind: String!
   version: String!
   description: String!
