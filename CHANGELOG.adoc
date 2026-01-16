@@ -182,6 +182,7 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/6083[#6083] [diagram] Prevent border node labels from being too close to their node
 - https://github.com/eclipse-sirius/sirius-web/issues/6029[#6029] [diagram] Fix a potential infitine loop when exporting some diagrams as SVG
 - https://github.com/eclipse-sirius/sirius-web/issues/6089[#6089] [diagram] Prevent delete from diagram tool from crashing when the node has no inside label
+- https://github.com/eclipse-sirius/sirius-web/issues/6069[#6069] [sirius-web] Fix an issue preventing some letters from being typed in the duplicate modal
 
 
 === New Features
@@ -272,7 +273,6 @@ The only difference is that this new marker has a second range of two dots after
 - https://github.com/eclipse-sirius/sirius-web/issues/5909[#5909] [graphql] Improve the customization of GraphQL error messages
 - https://github.com/eclipse-sirius/sirius-web/issues/5947[#5947] [sirius-web] Add support for publishing libraries from non-main editing contexts.
 - https://github.com/eclipse-sirius/sirius-web/issues/6044[#6044] [sirius-web] Properly catch `ElasticsearchException`
-
 
 
 == 2025.12.0
@@ -441,6 +441,7 @@ The command has also been renamed _Blank project_ to reflect what it currently d
 - https://github.com/eclipse-sirius/sirius-web/issues/5902[#5902] [diagram] Prevent loss of drop position on the node
 - https://github.com/eclipse-sirius/sirius-web/issues/6009[#6009] [explorer] Fix an issue where the Explorer view filter bar research introduced unwanted characters in Explorer view tree items labels.
 
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5667[#5667] [sirius-web] Add a new left-side panel to perform basic search of semantic elements
@@ -519,6 +520,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 - https://github.com/eclipse-sirius/sirius-web/issues/5071[#5071] [diagram] Limit node resizing with minimum node size constraints
 - https://github.com/eclipse-sirius/sirius-web/issues/5846[#5846] [sirius-web] Provide the ownerId field in the "duplicate-target-browser" tree id.
 - https://github.com/eclipse-sirius/sirius-web/issues/5812[#5812] Replace most of the hardcoded String by internationalized keys.
+
 
 
 == 2025.10.0
