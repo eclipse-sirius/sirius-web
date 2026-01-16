@@ -217,11 +217,11 @@ export const NewProjectView = () => {
               </div>
               <Paper>
                 <form onSubmit={handleFormSubmitted} className={classes.form}>
+                  <Typography variant="h6">{t('name')}</Typography>
                   <TextField
                     variant="standard"
                     error={isError}
                     helperText={t('nameTextfieldHelperText')}
-                    label={t('name')}
                     name="name"
                     value={state.name}
                     placeholder={t('nameTextfieldPlaceholder')}
