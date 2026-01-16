@@ -91,6 +91,7 @@ The key bindings that can be triggered at a given time are computed from the pal
 For example, the tools contained in a given `NodeDescription` can only be triggered via key bindings if the selected diagram element is a node with the given `NodeDescription`.
 The key bindings are visible in the palette next to the tool name.
 A key binding needs to contain at least one of `Control`, `Alt`, or `Meta` to be executed by the frontend.
+- https://github.com/eclipse-sirius/sirius-web/issues/3488[#3488] [diagram] Restore auto-layout support for diagrams
 
 
 === Improvements

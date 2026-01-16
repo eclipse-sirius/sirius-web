@@ -19,8 +19,13 @@ export class PlaywrightNode {
 
   constructor(page: Page, name: string, type: string = 'FreeForm', index = 0) {
     this.page = page;
-    this.nodeLocator = this.page.locator(`[data-testid="${type} - ${name}"]`).nth(index).locator('..');
-    this.nodeStyleLocator = this.page.locator(`[data-testid="${type} - ${name}"]`).first();
+    this.nodeLocator = this.page
+      .locator(`[data-testid="${type} - ${name}"]:not(#hidden-node-container *)`)
+      .nth(index)
+      .locator('..');
+    this.nodeStyleLocator = this.page
+      .locator(`[data-testid="${type} - ${name}"]:not(#hidden-node-container *)`)
+      .first();
   }
 
   async click() {
