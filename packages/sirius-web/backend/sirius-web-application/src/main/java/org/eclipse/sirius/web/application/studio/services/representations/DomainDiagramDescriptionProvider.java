@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.DefaultViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.KeyBindingBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.DefaultColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -146,6 +147,16 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
         var newEntityNodeTool = new DiagramBuilders().newNodeTool()
                 .name("New entity")
                 .body(initialChangeContext)
+                .keyBindings(
+                        new KeyBindingBuilder()
+                                .key("e")
+                                .ctrl(true)
+                                .build(),
+                        new KeyBindingBuilder()
+                                .key("e")
+                                .meta(true)
+                                .build()
+                )
                 .build();
 
         var dropAttributesTool = new DiagramBuilders().newDropNodeTool()
