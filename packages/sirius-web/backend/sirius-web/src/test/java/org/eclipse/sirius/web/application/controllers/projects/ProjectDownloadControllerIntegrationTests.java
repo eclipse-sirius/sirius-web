@@ -225,12 +225,16 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "05e44ccc-9363-443f-a816-25fc73e3e7f7": {
                           "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
                           "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8",
+                          "migrationVersion": "0",
+                          "latestMigrationPerformed": "none"
                         },
                         "e81eec5c-42d6-491c-8bcc-9beb951356f8": {
                           "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
                           "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8",
+                          "migrationVersion": "0",
+                          "latestMigrationPerformed": "none"
                         }
                       },
                       "dependencies": []

@@ -107,7 +107,7 @@ public class RepresentationSearchService implements IRepresentationSearchService
     }
 
     private String migratedContent(IEditingContext editingContext, RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
-        return this.representationContentMigrationService.getMigratedContent(editingContext, representationMetadata, representationContent)
+        return this.representationContentMigrationService.getMigratedContent(editingContext, representationContent.getContent(), representationMetadata.getKind(), representationContent.getLastMigrationPerformed(), representationContent.getMigrationVersion())
                 .map(Object::toString)
                 .orElse("");
     }

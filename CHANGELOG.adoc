@@ -145,7 +145,7 @@ The representation ID prefix has changed from `representations://` to `relatedvi
 The workbench view ID is now `related-views`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] The method `IEditingDomainFactory#createEditingDomain` will now require the `editingContextId` to be used
 - https://github.com/eclipse-sirius/sirius-web/issues/5910[#5910] [diagram] The `ReferencePosition` now uses a list of positions to take into account multiple drops.
-
+- [sirius-web] The method signature of `IRepresentationContentMigrationService#getMigratedContent` has been modified to take individual parameters (`String representationContent, String kind, String lastMigrationPerformed, String migrationVersion`) instead of domain objects (`RepresentationMetadata representationMetadata, RepresentationContent representationContent`).
 
 === Dependency update
 
@@ -173,6 +173,7 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/5931[#5931] [diagram] Prevent label resize handles from being visible when labels are hidden
 - https://github.com/eclipse-sirius/sirius-web/issues/5975[#5975] [diagram] Prevent newly created nodes from stacking in the same position
 - https://github.com/eclipse-sirius/sirius-web/issues/6048[#6048] [sirius-web] Display the default workbench configuration for libraries.
+- https://github.com/eclipse-sirius/sirius-web/issues/5810[#5810] [sirius-web] Fix an issue where the out-to-date representations were not migrated to the latest version.
 
 
 === New Features
