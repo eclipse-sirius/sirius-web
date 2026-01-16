@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -501,13 +501,22 @@ public interface TreePackage extends EPackage {
     int TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = 1;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = 2;
+
+    /**
      * The number of structural features of the '<em>Item Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = 2;
+    int TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = 3;
 
     /**
      * The number of operations of the '<em>Item Context Menu Entry</em>' class. <!-- begin-user-doc --> <!--
@@ -545,6 +554,15 @@ public interface TreePackage extends EPackage {
      * @ordered
      */
     int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS;
 
     /**
      * The feature id for the '<em><b>Body</b></em>' containment reference list. <!-- begin-user-doc --> <!--
@@ -628,6 +646,15 @@ public interface TreePackage extends EPackage {
     int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int FETCH_TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS;
+
+    /**
      * The feature id for the '<em><b>Url Exression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -706,6 +733,15 @@ public interface TreePackage extends EPackage {
      * @ordered
      */
     int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' reference list. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS;
 
     /**
      * The feature id for the '<em><b>Contribution Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1131,6 +1167,18 @@ public interface TreePackage extends EPackage {
      * @generated
      */
     EAttribute getTreeItemContextMenuEntry_PreconditionExpression();
+
+    /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getKeyBindings <em>Key Bindings</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Key Bindings</em>'.
+     * @see org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getKeyBindings()
+     * @see #getTreeItemContextMenuEntry()
+     * @generated
+     */
+    EReference getTreeItemContextMenuEntry_KeyBindings();
 
     /**
      * Returns the meta object for class
@@ -1592,6 +1640,14 @@ public interface TreePackage extends EPackage {
          * @generated
          */
         EAttribute TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION = eINSTANCE.getTreeItemContextMenuEntry_PreconditionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Key Bindings</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS = eINSTANCE.getTreeItemContextMenuEntry_KeyBindings();
 
         /**
          * The meta object literal for the

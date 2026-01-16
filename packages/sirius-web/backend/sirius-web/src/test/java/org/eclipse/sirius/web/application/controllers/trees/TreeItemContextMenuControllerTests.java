@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,10 @@ package org.eclipse.sirius.web.application.controllers.trees;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.time.Duration;
 import java.util.List;
@@ -26,7 +28,9 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.trees.dto.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.collaborative.trees.dto.InvokeSingleClickTreeItemContextMenuEntryInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
@@ -48,6 +52,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -76,6 +81,9 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
 
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Autowired
     private ExplorerEventSubscriptionRunner explorerEventSubscriptionRunner;
@@ -161,20 +169,15 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
     @DisplayName("Given a studio, when the context menu actions are requested on an Entity, then the correct actions are returned")
     public void givenAStudioWhenTheContextMenuActionsAreRequestedOnAnEntityThenTheCorrectActionsAreReturned() {
         // 1- retrieve the tree description id of the DSL Domain explorer example
-        var explorerDescriptionId = new AtomicReference<String>();
-
-        Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()
-        );
+        Map<String, Object> explorerVariables = Map.of("editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID);
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult.data(), "$.data.viewer.editingContext.explorerDescriptions[*].id");
         assertThat(explorerIds).isNotEmpty().hasSize(2);
         assertThat(explorerIds.get(0)).isEqualTo(ExplorerDescriptionProvider.DESCRIPTION_ID);
         assertThat(explorerIds.get(1)).startsWith("siriusComponents://representationDescription?kind=treeDescription");
-        explorerDescriptionId.set(explorerIds.get(1));
 
-        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(explorerDescriptionId.get(), List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID), List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(explorerIds.get(1), List.of(StudioIdentifiers.DOMAIN_DOCUMENT.toString(), StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID), List.of());
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.explorerEventSubscriptionRunner.run(input).flux();
 
         // 2- Retrieve the representation id (the id of DSL Domain explorer example tree)
@@ -188,7 +191,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         // 3- retrieve all context menu actions defined for an Entity tree item
         Runnable getContextMenuActions = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "representationId", treeId.get(),
                     "treeItemId", ROOT_ENTITY_ID
             );
@@ -205,6 +208,20 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
             var helpIdIndex = actionLabels.indexOf("Help");
             var toggleAbstractActionIdIndex = actionLabels.indexOf("Toggle abstract");
 
+            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
+            FetchTreeItemContextMenuEntry helpFetchTreeItemContextMenuEntry = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.contextMenu[" + helpIdIndex + "]", FetchTreeItemContextMenuEntry.class);
+            assertThat(helpFetchTreeItemContextMenuEntry.keyBindings())
+                    .hasSize(2)
+                    .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("h"))
+                    .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isCtrl() && keyBinding.isMeta() && keyBinding.key().equals("h"));
+
+            SingleClickTreeItemContextMenuEntry toggleAbstractSingleClickTreeItemContextMenuEntry = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.contextMenu[" + toggleAbstractActionIdIndex + "]",
+                    SingleClickTreeItemContextMenuEntry.class);
+            assertThat(toggleAbstractSingleClickTreeItemContextMenuEntry.keyBindings())
+                    .hasSize(2)
+                    .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("a"))
+                    .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isCtrl() && keyBinding.isMeta() && keyBinding.key().equals("a"));
+
             helpId.set(actionIds.get(helpIdIndex));
             toggleAbstractAction.set(actionIds.get(toggleAbstractActionIdIndex));
         };
@@ -212,7 +229,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         // 4- invoke fetch action data query to retrieve the fetch action data
         Runnable getFetchActionData = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "representationId", treeId.get(),
                     "treeItemId", ROOT_ENTITY_ID,
                     "menuEntryId", helpId.get()
@@ -231,7 +248,7 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         Runnable invokeToggleAbstractAction = () -> {
             var toggleAbstractActionParameters = new InvokeSingleClickTreeItemContextMenuEntryInput(
                     UUID.randomUUID(),
-                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     treeId.get(),
                     ROOT_ENTITY_ID,
                     toggleAbstractAction.get()
