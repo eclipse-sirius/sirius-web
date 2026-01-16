@@ -1,0 +1,32 @@
+= Diagram representation description
+
+This document describes attention points on how to configure the `Diagram` representation in the `View` model.
+
+== Node tool key bindings
+
+It is possible to specify key bindings that can be used by the user to trigger node tools.
+These key bindings should be described as children of the node tool in the view model.
+
+A key binding defines the following properties:
+
+* `key`: the key pressed
+* `ctrl`: the Ctrl modifier
+* `alt`: the Alt modifier
+* `meta`: the Meta modifier
+
+A key binding needs to define at least one modifier to be executed by the application.
+Note that there is no `shift` modifier: specifiers can directly specify the capitalized `key` with no modifier in the key binding (e.g. `A` instead of `a`).
+
+Specifiers should carefully think about the key bindings they provide and how some modifiers behave on different keyboard layout and operating systems. 
+For example, a key binding for `alt+o` will be captured on windows when the user presses the keys `alt` and `o`.
+On macOS, another key binding for `alt+œ` should be defined to match the same key combination, because pressing `alt` and `o` prints the `œ` character.
+
+This issue is https://github.com/mui/mui-x/pull/14220#discussion_r1720441510[not specific to Sirius Web], and is related to https://github.com/w3c/uievents/issues/377[a broader issue implied by the deprecation of the KeyboardEvent.keyCode property].
+
+TIP: As a rule of thumb it is recommended to only use the `ctrl` modifier and alphanumeric keys to define key bindings.
+
+The defined key bindings do not override the default browser behavior.
+Specifiers should be careful to use key bindings that work along with browser shortcuts, and consider that some shortcuts are reserved by the browser and won't trigger node tools (e.g. `Ctrl+t` will always open a new tab but won't trigger any tool).
+
+The direct edit has a higher precedence than key binding matching. 
+As a result, defining a key binding without modifiers on a diagram element that supports direct edit won't work as expected, since the direct edit will always be triggered instead of the tool with the key binding.

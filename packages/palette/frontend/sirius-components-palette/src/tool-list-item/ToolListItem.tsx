@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
+import { KeyBinding } from '../key-binding/KeyBinding';
+import { isSingleClickOnDiagramElementTool } from '../Palette';
 import { GQLTool } from '../Palette.types';
 import { ToolListItemProps } from './ToolListItem.types';
 
@@ -49,6 +51,7 @@ const useStyle = makeStyles()((theme) => ({
     marginRight: theme.spacing(2),
   },
 }));
+
 export const ToolListItem = ({ tool, disabled, onToolClick }: ToolListItemProps) => {
   const { classes } = useStyle();
 
@@ -68,6 +71,9 @@ export const ToolListItem = ({ tool, disabled, onToolClick }: ToolListItemProps)
           <IconOverlay iconURLs={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
         </ListItemIcon>
         <ListItemText primary={tool.label} className={classes.listItemText} />
+        {isSingleClickOnDiagramElementTool(tool) && tool.keyBindings[0] ? (
+          <KeyBinding keyBinding={tool.keyBindings[0]} data-testid={`key-binding-${tool.label}`} />
+        ) : null}
       </ListItemButton>
     </Tooltip>
   );
