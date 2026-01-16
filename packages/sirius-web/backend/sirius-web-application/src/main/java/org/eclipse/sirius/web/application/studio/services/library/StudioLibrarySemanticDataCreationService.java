@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.application.studio.services.library.api.DependencyGraph;
 import org.eclipse.sirius.web.application.studio.services.library.api.IStudioLibrarySemanticDataCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
@@ -43,6 +44,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
@@ -62,12 +65,17 @@ public class StudioLibrarySemanticDataCreationService implements IStudioLibraryS
 
     private final ILibrarySearchService librarySearchService;
 
-    public StudioLibrarySemanticDataCreationService(IIdentityService identityService, IResourceToDocumentService resourceToDocumentService, ISemanticDataCreationService semanticDataCreationService, ILibrarySearchService librarySearchService) {
+    private final IProjectEditingContextService projectEditingContextService;
+
+    private final Logger logger = LoggerFactory.getLogger(StudioLibrarySemanticDataCreationService.class);
+
+    public StudioLibrarySemanticDataCreationService(IIdentityService identityService, IResourceToDocumentService resourceToDocumentService, ISemanticDataCreationService semanticDataCreationService,
+            ILibrarySearchService librarySearchService, IProjectEditingContextService projectEditingContextService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.resourceToDocumentService = Objects.requireNonNull(resourceToDocumentService);
         this.semanticDataCreationService = Objects.requireNonNull(semanticDataCreationService);
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
-
+        this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
     }
 
     @Override
@@ -86,9 +94,14 @@ public class StudioLibrarySemanticDataCreationService implements IStudioLibraryS
                 } else {
                     // The shared component contains all its elements in its root, and its content may vary between version,
                     // it is more stable to use a fixed name as the resource identifier.
-                    String resourceId = input.projectId() + ":" + "shared_components";
-                    Resource sharedComponentsResource = this.getOrCreateLibraryResource("shared_components", resourceId, resourceSet);
-                    sharedComponentsResource.getContents().add(libraryCandidate);
+                    Optional<String> optionalProjectId = this.projectEditingContextService.getProjectId(input.editingContextId());
+                    if (optionalProjectId.isPresent()) {
+                        String resourceId = optionalProjectId.get() + ":" + "shared_components";
+                        Resource sharedComponentsResource = this.getOrCreateLibraryResource("shared_components", resourceId, resourceSet);
+                        sharedComponentsResource.getContents().add(libraryCandidate);
+                    } else {
+                        this.logger.warn("No project found for editing context {}", input.editingContextId());
+                    }
                 }
             }
         }
@@ -174,9 +187,9 @@ public class StudioLibrarySemanticDataCreationService implements IStudioLibraryS
         List<AggregateReference<SemanticData, UUID>> dependencies = new ArrayList<>();
         for (EObject dependencyCandidate : dependencyGraph.getDependencies(libraryCandidate)) {
             Optional<LibraryMetadataAdapter> optLibraryMetadata = dependencyCandidate.eResource().eAdapters().stream()
-                .filter(LibraryMetadataAdapter.class::isInstance)
-                .map(LibraryMetadataAdapter.class::cast)
-                .findFirst();
+                    .filter(LibraryMetadataAdapter.class::isInstance)
+                    .map(LibraryMetadataAdapter.class::cast)
+                    .findFirst();
             if (optLibraryMetadata.isPresent()) {
                 LibraryMetadataAdapter libraryMetadata = optLibraryMetadata.get();
                 this.librarySearchService.findByNamespaceAndNameAndVersion(libraryMetadata.getNamespace(), libraryMetadata.getName(), libraryMetadata.getVersion())
