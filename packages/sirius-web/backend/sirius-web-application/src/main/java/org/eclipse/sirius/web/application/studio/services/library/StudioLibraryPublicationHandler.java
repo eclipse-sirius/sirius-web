@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,10 +32,8 @@ import org.eclipse.sirius.web.application.library.services.api.ILibraryPublicati
 import org.eclipse.sirius.web.application.studio.services.library.api.DependencyGraph;
 import org.eclipse.sirius.web.application.studio.services.library.api.IStudioLibraryDependencyCollector;
 import org.eclipse.sirius.web.application.studio.services.library.api.IStudioLibrarySemanticDataCreationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -50,16 +48,14 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
 
     private final IStudioLibraryDependencyCollector studioLibraryDependencyCollector;
 
-    private final IProjectSemanticDataSearchService projectSemanticDataSearchService;
-
     private final IStudioLibrarySemanticDataCreationService studioLibrarySemanticDataCreationService;
 
     private final IMessageService messageService;
 
-    public StudioLibraryPublicationHandler(IEditingContextSearchService editingContextSearchService, IStudioLibraryDependencyCollector studioLibraryDependencyCollector, IProjectSemanticDataSearchService projectSemanticDataSearchService, IStudioLibrarySemanticDataCreationService studioLibrarySemanticDataCreationService, IMessageService messageService) {
+    public StudioLibraryPublicationHandler(IEditingContextSearchService editingContextSearchService, IStudioLibraryDependencyCollector studioLibraryDependencyCollector,
+            IStudioLibrarySemanticDataCreationService studioLibrarySemanticDataCreationService, IMessageService messageService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.studioLibraryDependencyCollector = Objects.requireNonNull(studioLibraryDependencyCollector);
-        this.projectSemanticDataSearchService = Objects.requireNonNull(projectSemanticDataSearchService);
         this.studioLibrarySemanticDataCreationService = Objects.requireNonNull(studioLibrarySemanticDataCreationService);
         this.messageService = Objects.requireNonNull(messageService);
     }
@@ -73,8 +69,7 @@ public class StudioLibraryPublicationHandler implements ILibraryPublicationHandl
     public IPayload handle(PublishLibrariesInput input) {
         IPayload result = new ErrorPayload(input.id(), this.messageService.unexpectedError());
 
-        Optional<IEMFEditingContext> optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(input.projectId()))
-                .flatMap(projectSemanticData -> this.editingContextSearchService.findById(projectSemanticData.getSemanticData().getId().toString()))
+        Optional<IEMFEditingContext> optionalEditingContext = this.editingContextSearchService.findById(input.editingContextId())
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,6 @@ import jakarta.validation.constraints.NotNull;
  *
  * @author gdaniel
  */
-public record PublishLibrariesInput(@NotNull UUID id, @NotNull String projectId, @NotNull String publicationKind, @NotNull String version, @NotNull String description) implements IInput {
+public record PublishLibrariesInput(@NotNull UUID id, @NotNull String editingContextId, @NotNull String publicationKind, @NotNull String version, @NotNull String description) implements IInput {
 
 }

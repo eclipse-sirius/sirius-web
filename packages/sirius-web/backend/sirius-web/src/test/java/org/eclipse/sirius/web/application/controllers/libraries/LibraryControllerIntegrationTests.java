@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -149,15 +149,15 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a valid studio project ID, when the publication mutation is performed, then the libraries are published")
-    public void givenValidStudioProjectIdWhenPublicationMutationIsPerformedThenLibrariesArePublished() {
+    @DisplayName("Given a valid studio editing context ID, when the publication mutation is performed, then the libraries are published")
+    public void givenValidStudioEditingContextIdWhenPublicationMutationIsPerformedThenLibrariesArePublished() {
         var page = this.librarySearchService.findAll(PageRequest.of(0, 10));
         long initialLibraryCount = page.getTotalElements();
 
         String version = "0.0.1";
         String description = "Initial version";
 
-        var input = new PublishLibrariesInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "studio-all", version, description);
+        var input = new PublishLibrariesInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, "studio-all", version, description);
         var result = this.publishLibrariesMutationRunner.run(input);
         TestTransaction.flagForCommit();
         TestTransaction.end();
