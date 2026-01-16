@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch._types.ElasticsearchException;
 
 /**
  * The default implementation that creates the index for an editing context.
@@ -65,7 +66,7 @@ public class DefaultIndexCreationService implements IDefaultIndexCreationService
                                                     textPropertyBuilder.index(false)))));
                     indexCreated = true;
                 }
-            } catch (IOException exception) {
+            } catch (IOException | ElasticsearchException exception) {
                 this.logger.warn("An error occurred while creating the index", exception);
             }
         }
