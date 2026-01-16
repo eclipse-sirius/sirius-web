@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -132,6 +132,14 @@ public interface ViewFactory extends EFactory {
      * @generated
      */
     TextStyleDescription createTextStyleDescription();
+
+    /**
+     * Returns a new object of class '<em>Key Binding</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return a new object of class '<em>Key Binding</em>'.
+     * @generated
+     */
+    KeyBinding createKeyBinding();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -57,6 +57,14 @@ export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   appliesToDiagramRoot: boolean;
   dialogDescriptionId: string;
   withImpactAnalysis: boolean;
+  keyBindings: GQLKeyBinding[];
+}
+
+export interface GQLKeyBinding {
+  isCtrl: boolean;
+  isMeta: boolean;
+  isAlt: boolean;
+  key: string;
 }
 
 export interface GQLPalette {
