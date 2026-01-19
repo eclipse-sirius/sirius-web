@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -87,7 +88,7 @@ public class DiagramEdgeIconLabelViewProvider implements IE2EViewProvider {
                 .name(DiagramEdgeIconLabelDomainProvider.DOMAIN_NAME + " - simple edge icon label")
                 .domainType(DiagramEdgeIconLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramEdgeIconLabelDomainProvider.DOMAIN_NAME + " diagram ")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
                 .edgeDescriptions(edgeDescription1)
                 .build();

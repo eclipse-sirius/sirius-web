@@ -96,7 +96,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
     }
   }, [data, error]);
 
-  const toDiagramLayoutData = (diagram: RawDiagram): GQLDiagramLayoutData => {
+  const toDiagramLayoutData = (
+    diagram: RawDiagram,
+    autoLayoutState: 'UNCHANGED' | 'ACTIVATE' | 'DEACTIVATE'
+  ): GQLDiagramLayoutData => {
     const nodeId2node = new Map<string, Node<NodeData | EdgeAnchorNodeData>>();
     diagram.nodes.forEach((node) => nodeId2node.set(node.id, node));
     const nodeLayoutData: GQLNodeLayoutData[] = [];
@@ -264,11 +267,17 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
       nodeLayoutData,
       edgeLayoutData,
       labelLayoutData,
+      autoLayoutState,
     };
   };
 
-  const synchronizeLayoutData = (id: string, cause: string, diagram: RawDiagram) => {
-    const diagramLayoutData = toDiagramLayoutData(diagram);
+  const synchronizeLayoutData = (
+    id: string,
+    cause: string,
+    diagram: RawDiagram,
+    autoLayoutState: 'UNCHANGED' | 'ACTIVATE' | 'DEACTIVATE'
+  ) => {
+    const diagramLayoutData = toDiagramLayoutData(diagram, autoLayoutState);
 
     const input: GQLLayoutDiagramInput = {
       id,

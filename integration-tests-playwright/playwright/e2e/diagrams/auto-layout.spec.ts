@@ -82,3 +82,40 @@ test.describe('diagram - auto-layout', () => {
     );
   });
 });
+
+test.describe('diagram - auto-until-manual', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('Studio', 'studio-template');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit/`);
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a diagram with auto-until-manual is opened, then all nodes are positioned according to the elk layout', async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const node = new PlaywrightNode(page, 'Entity1', 'List');
+    const position = await node.getReactFlowXYPosition();
+    expect(position.x).toBe(12);
+    expect(position.y).toBe(242);
+  });
+
+  test('when moving a node on an auto-until-manual diagram, then move is not reset', async ({ page }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const rootNode = new PlaywrightNode(page, 'Entity1', 'List');
+    const rootPositionBefore = await rootNode.getDOMXYPosition();
+    await rootNode.move({ x: 100, y: 100 });
+
+    const rootPositionAfter = await rootNode.getDOMXYPosition();
+    expect(rootPositionAfter.x).not.toBe(rootPositionBefore.x);
+    expect(rootPositionAfter.y).not.toBe(rootPositionBefore.y);
+  });
+});

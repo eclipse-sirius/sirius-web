@@ -318,5 +318,6 @@ export const convertDiagram = (
   return {
     nodes: rawDiagram.nodes,
     edges: rawDiagram.edges,
+    autoLaidOut: gqlDiagram.layoutData.autoLaidOut,
   };
 };

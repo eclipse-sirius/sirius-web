@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -56,7 +57,7 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
             .build();
 
         var diagramDescription = diagramDescriptionBuilder
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .domainType("flow::System")
                 .name("Topography")
                 .titleExpression("Topography")

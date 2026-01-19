@@ -23,6 +23,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.diagrams.dto.AutoLayoutState;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramLayoutDataInput;
@@ -112,7 +113,7 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
-        var siriusWebApplicationOutsideLabelId =  new AtomicReference<String>();
+        var siriusWebApplicationOutsideLabelId = new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
@@ -124,7 +125,7 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
         Runnable initialLayout = () -> {
             var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), false, false, List.of(), new Size(20, 20));
             var labelLayoutDataInput = new LabelLayoutDataInput(siriusWebApplicationOutsideLabelId.get(), new Position(10, 10), new Size(10, 10), false, false);
-            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of(labelLayoutDataInput));
+            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of(labelLayoutDataInput), AutoLayoutState.UNCHANGED);
             var input = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.layoutDiagram.__typename");
@@ -138,7 +139,7 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
         Runnable secondLayout = () -> {
             var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(20, 20), new Size(30, 30), true, true, List.of(), new Size(20, 20));
             var labelLayoutDataInput = new LabelLayoutDataInput(siriusWebApplicationOutsideLabelId.get(), new Position(20, 20), new Size(30, 30), true, true);
-            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of(labelLayoutDataInput));
+            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of(labelLayoutDataInput), AutoLayoutState.UNCHANGED);
             var input = new LayoutDiagramInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.layoutDiagram.__typename");
@@ -206,7 +207,7 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
 
         var diagramId = new AtomicReference<String>();
         var siriusWebApplicationNodeId = new AtomicReference<String>();
-        var siriusWebApplicationOutsideLabelId =  new AtomicReference<String>();
+        var siriusWebApplicationOutsideLabelId = new AtomicReference<String>();
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
@@ -218,7 +219,7 @@ public class UndoLayoutDiagramControllerTests extends AbstractIntegrationTests {
         Runnable initialLayout = () -> {
             var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), false, false, List.of(), new Size(10, 10));
             var labelLayoutDataInput = new LabelLayoutDataInput(siriusWebApplicationOutsideLabelId.get(), new Position(10, 10), new Size(10, 10), false, false);
-            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of(labelLayoutDataInput));
+            var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(), List.of(labelLayoutDataInput), AutoLayoutState.UNCHANGED);
             var input = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.layoutDiagram.__typename");

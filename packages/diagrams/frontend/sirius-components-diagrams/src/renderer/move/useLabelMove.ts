@@ -38,7 +38,7 @@ export const useLabelMove = (): UseLabelMoveValue => {
         nodes: nodes,
         edges: getEdges(),
       };
-      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
     },
     [getNodes, synchronizeLayoutData]
   );
@@ -76,7 +76,7 @@ export const useLabelMove = (): UseLabelMoveValue => {
         nodes: [...getNodes()],
         edges: edges,
       };
-      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
     },
     [getEdges, synchronizeLayoutData]
   );

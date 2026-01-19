@@ -262,7 +262,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           setNodes(laidOutDiagram.nodes);
 
           if (!readOnly) {
-            synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram);
+            synchronizeLayoutData(diagramRefreshedEventPayload.id, 'refresh', laidOutDiagram, 'UNCHANGED');
           }
         }
       );

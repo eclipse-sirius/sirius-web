@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -169,7 +170,7 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         return this.diagramDescription;

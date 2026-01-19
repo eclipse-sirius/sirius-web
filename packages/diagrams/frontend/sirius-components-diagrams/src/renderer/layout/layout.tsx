@@ -36,6 +36,7 @@ import { RawDiagram } from './layout.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { getChildren, computeNewlyNodePosition } from './layoutNode';
 import { gap } from './layoutParams';
+import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
 
 const emptyNodeProps = {
   selected: false,
@@ -387,6 +388,19 @@ const layoutDiagram = (
 export const prepareLayoutLabels = (previousDiagram: RawDiagram | null, diagram: RawDiagram): void => {
   layoutNodeLabels(previousDiagram, diagram.nodes);
   layoutEdgeLabels(previousDiagram, diagram.edges);
+};
+
+export const prepareListNodeLayout = (previousDiagram: RawDiagram | null, diagram: RawDiagram): void => {
+  const listNodeLayoutHandler = new ListNodeLayoutHandler();
+  const layoutEngine: ILayoutEngine = new LayoutEngine();
+
+  const visibleNodes: Node<NodeData, string>[] = diagram.nodes.filter((node) => !node.hidden);
+  const listNodes: Node<ListNodeData, string>[] = visibleNodes.filter(isListNode);
+
+  listNodes.forEach((node: Node<ListNodeData, string>) => {
+    const directChildren = visibleNodes.filter((visibleNode) => visibleNode.parentId === node.id);
+    listNodeLayoutHandler.handle(layoutEngine, previousDiagram, node, visibleNodes, directChildren, []);
+  });
 };
 
 const layoutNodeLabels = (previousDiagram: RawDiagram | null, nodes: Node<NodeData>[]) => {

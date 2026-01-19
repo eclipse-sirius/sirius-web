@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ export const useLabelResize = (): UseLabelResizeValue => {
         nodes: nodes,
         edges: getEdges(),
       };
-      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
     },
     [synchronizeLayoutData]
   );
@@ -74,7 +74,7 @@ export const useLabelResize = (): UseLabelResizeValue => {
         nodes: [...getNodes()],
         edges: edges,
       };
-      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
     },
     [getEdges, synchronizeLayoutData]
   );

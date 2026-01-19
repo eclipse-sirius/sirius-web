@@ -22,7 +22,6 @@ import { getBorderNodeExtent } from './layoutBorderNodes';
 import {
   applyRatioOnNewNodeSizeValue,
   computeNodesBox,
-  findNodeIndex,
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
@@ -41,6 +40,16 @@ const getChildNodeHeightMinFootPrint = (node: Node<NodeData>): number => {
   return node.data.resizedByUser ? node.height ?? 0 : getDefaultOrMinHeight(node.data.minComputedHeight ?? 0, node);
 };
 
+const getBorderWidthValue = (borderWidthStyle: string | number | undefined): number => {
+  if (borderWidthStyle === undefined) {
+    return 0;
+  }
+  if (typeof borderWidthStyle === 'string') {
+    return parseFloat(borderWidthStyle);
+  }
+  return borderWidthStyle;
+};
+
 export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'listNode';
@@ -49,19 +58,13 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   public handle(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<ListNodeData, 'listNode'>,
+    node: Node<ListNodeData, string>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
     forceDimensions?: ForcedDimensions
   ) {
-    const nodeIndex = findNodeIndex(visibleNodes, node.id);
-    const nodeElement = document.getElementById(`${node.id}-listNode-${nodeIndex}`);
-    const nodeElementChild =
-      nodeElement?.children &&
-      Array.from(nodeElement.children).filter((child) => !child.classList.contains('react-flow__resize-control'))[0];
-    const borderWidth = nodeElementChild ? parseFloat(window.getComputedStyle(nodeElementChild).borderLeftWidth) : 0;
-
+    const borderWidth = getBorderWidthValue(node.data.style.borderLeftWidth ?? node.data.style.borderWidth);
     if (directChildren.length > 0) {
       this.handleParentNode(
         layoutEngine,
@@ -80,7 +83,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
   handleLeafNode(
     previousDiagram: RawDiagram | null,
-    node: Node<ListNodeData, 'listNode'>,
+    node: Node<ListNodeData, string>,
     _visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceDimensions?: ForcedDimensions
@@ -124,7 +127,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   private handleParentNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<ListNodeData, 'listNode'>,
+    node: Node<ListNodeData, string>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],

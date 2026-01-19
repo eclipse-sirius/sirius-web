@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -246,6 +247,7 @@ public class DiagramRendererNodeTests {
                 .edgeDescriptions(new ArrayList<>())
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         VariableManager variableManager = new VariableManager();

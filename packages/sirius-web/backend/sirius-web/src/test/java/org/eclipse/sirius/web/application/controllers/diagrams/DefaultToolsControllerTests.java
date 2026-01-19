@@ -25,6 +25,7 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.diagrams.dto.AutoLayoutState;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EdgeLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
@@ -258,7 +259,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             var webApplicationToDomainEdgeLayoutData = new EdgeLayoutDataInput(webApplicationToDomainEdgeId.get(), bendingPoints, List.of());
 
             var labelLayoutData = new LabelLayoutDataInput(webApplicationToDomainEdgeOutsideLabelId.get(), new Position(5, 5), new Size(10, 10), true, false);
-            var layoutData = new DiagramLayoutDataInput(List.of(siriusWebDomainNodeLayout), List.of(webApplicationToDomainEdgeLayoutData), List.of(labelLayoutData));
+            var layoutData = new DiagramLayoutDataInput(List.of(siriusWebDomainNodeLayout), List.of(webApplicationToDomainEdgeLayoutData), List.of(labelLayoutData), AutoLayoutState.UNCHANGED);
             var layoutInput = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), "layout", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };

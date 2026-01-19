@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescript
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -118,7 +119,7 @@ public class CustomNodesUnsynchonisedDiagramDescriptionProvider implements IEdit
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         return this.diagramDescription;

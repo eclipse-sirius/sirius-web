@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBu
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -61,11 +62,9 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
 
     private final View view;
 
-    private DiagramDescription diagramDescription;
+    private final IDiagramIdProvider diagramIdProvider;
 
     private NodeTool createNodeTool;
-
-    private final IDiagramIdProvider diagramIdProvider;
 
     private SelectionDialogTreeDescription selectionDialogTreeDescription;
 
@@ -148,17 +147,15 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .nodeTools(this.createNodeTool)
                 .build();
 
-        this.diagramDescription = new DiagramDescriptionBuilder()
+        return new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'SelectionDescriptionDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .palette(diagramPalette)
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
-
-        return this.diagramDescription;
     }
 
     private void createNodeTool() {
