@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescr
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.edgedescriptions.ClassExtendsEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.edgedescriptions.ClassImplementsEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.classdiagram.edgedescriptions.InterfaceExtendsEdgeDescriptionProvider;
@@ -47,7 +48,7 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
         classDiagramDescription.setName(NAME);
         classDiagramDescription.setDomainType("papaya:Component");
         classDiagramDescription.setTitleExpression("aql:self.name + ' class diagram'");
-        classDiagramDescription.setAutoLayout(false);
+        classDiagramDescription.setLayoutOption(DiagramLayoutOption.NONE);
         classDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         classDiagramDescription.setIconExpression("aql:'/papaya-representations/class-diagram.svg'");
         classDiagramDescription.setDescription("Represents a simplified Class Diagram. It can display classes, records, interfaces or enums. It can also represent the relationships between them.");

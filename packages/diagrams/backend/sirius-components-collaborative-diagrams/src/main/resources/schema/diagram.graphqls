@@ -417,7 +417,7 @@ type SingleClickOnTwoDiagramElementsCandidate {
 type DiagramDescription implements RepresentationDescription {
   id: ID!
   label: String!
-  autoLayout: Boolean!
+  layoutOption: DiagramLayoutOption!
   arrangeLayoutDirection: ArrangeLayoutDirection!
   nodeDescriptions: [NodeDescription!]!
   childNodeDescriptionIds: [ID!]!
@@ -443,6 +443,12 @@ enum ArrangeLayoutDirection {
   DOWN
   LEFT
   UP
+}
+
+enum DiagramLayoutOption {
+  NONE,
+  AUTO_LAYOUT,
+  AUTO_UNTIL_MANUAL
 }
 
 type DropNodeCompatibilityEntry {

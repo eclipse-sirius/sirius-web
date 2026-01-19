@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBu
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -60,13 +61,9 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
     private static final String DIALOG_MESSAGE = "Select the objects to consider";
 
     private final View view;
-
-    private DiagramDescription diagramDescription;
-
-    private NodeTool createNodeTool;
-
     private final IDiagramIdProvider diagramIdProvider;
-
+    private DiagramDescription diagramDescription;
+    private NodeTool createNodeTool;
     private SelectionDialogTreeDescription selectionDialogTreeDescription;
 
     private SelectionDialogDescription selectionDialog;
@@ -155,7 +152,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .palette(diagramPalette)
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         return this.diagramDescription;
