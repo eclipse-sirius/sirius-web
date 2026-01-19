@@ -149,6 +149,9 @@ The workbench view ID is now `related-views`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5947[#5947] [sirius-web] Add support for publishing libraries from non-main editing contexts.
 `PublishLibrariesInput#projectId` has been replaced with `PublishLibrariesInput#editingContextId`.
 Note that the namespace of published libraries from studios still matches the `projectId` of the published studio.
+- https://github.com/eclipse-sirius/sirius-web/issues/2503[#2503] Change descriptions name to id and add a documentation field
+  * `RepresentationDescription#name` has been renamed to `id` (API changes: `getName()`/`setName()` -> `getId()`/`setId()`, feature constant `REPRESENTATION_DESCRIPTION__NAME` -> `REPRESENTATION_DESCRIPTION__ID`). Generated models and Java APIs have been updated; downstream code referencing the old name feature or accessing descriptions by name must be adapted to use `id`.
+  * Updated generated model types: several `EdgeStyle` usages have been renamed to `EdgeStyleDescription` and conditional types adjusted accordingly.
 
 
 === Dependency update
@@ -224,6 +227,8 @@ In conjunction of the `workbenchViewContributionExtensionPoint` frontend extensi
 - https://github.com/eclipse-sirius/sirius-web/issues/5937[#5937] [diagram] Add support for bending points for oblique edges
 - https://github.com/eclipse-sirius/sirius-web/issues/5300[#5300] [diagram] Add undo redo for node layout
 - https://github.com/eclipse-sirius/sirius-web/issues/5651[#5651] [diagram] Add undo redo for label layout and appearance
+- https://github.com/eclipse-sirius/sirius-web/issues/2503[#2503] Change descriptions name to id and add a documentation field
+  * In the View model, added a `description` attribute (documentation) on multiple model elements (diagram and view models: diagram element descriptions, node/edge style descriptions, tools, etc.).
 
 
 === Improvements

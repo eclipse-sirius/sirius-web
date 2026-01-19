@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,7 +96,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
         var packageNodeDescription = this.packageNodeDescription();
         var componentNodeDescription = this.componentNodeDescription(packageNodeDescription);
 
-        var edgeStyle = new DiagramBuilders().newEdgeStyle()
+        var edgeStyle = new DiagramBuilders().newEdgeStyleDescription()
                 .edgeWidth(1)
                 .build();
 
@@ -145,7 +145,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 .build();
 
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'DropNodeDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(componentNodeDescription)
@@ -159,7 +159,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
 
     private NodeDescription packageNodeDescription() {
         return new DiagramBuilders().newNodeDescription()
-                .name("Package")
+                .id("Package")
                 .domainType("papaya:Package")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(
@@ -202,7 +202,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .childrenDescriptions(packageNodeDescription)

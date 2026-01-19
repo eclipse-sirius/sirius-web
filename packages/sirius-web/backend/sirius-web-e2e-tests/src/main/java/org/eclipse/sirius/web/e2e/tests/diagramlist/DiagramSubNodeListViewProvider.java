@@ -78,7 +78,7 @@ public class DiagramSubNodeListViewProvider implements IE2EViewProvider {
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramListDomainProvider.DOMAIN_NAME + " - list with subnode")
+                .id(DiagramListDomainProvider.DOMAIN_NAME + " - list with subnode")
                 .domainType(DiagramListDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramListDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -96,7 +96,7 @@ public class DiagramSubNodeListViewProvider implements IE2EViewProvider {
         var subNode4Description = this.getSubNodeDescription(colorProvider, 4);
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Entity Node 1")
+                .id("Entity Node 1")
                 .domainType(DiagramListDomainProvider.DOMAIN_NAME + "::Entity1")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -148,7 +148,7 @@ public class DiagramSubNodeListViewProvider implements IE2EViewProvider {
     private NodeDescription getSubNodeDescription(IColorProvider colorProvider, int index) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Compartment" + index)
+                .id("Compartment" + index)
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)

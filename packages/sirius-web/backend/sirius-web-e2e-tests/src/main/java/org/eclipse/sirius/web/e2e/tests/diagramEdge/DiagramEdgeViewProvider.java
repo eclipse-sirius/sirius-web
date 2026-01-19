@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -110,7 +110,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
 
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramEdgeDomainProvider.DOMAIN_NAME + " - simple edges")
+                .id(DiagramEdgeDomainProvider.DOMAIN_NAME + " - simple edges")
                 .domainType(DiagramEdgeDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramEdgeDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -124,7 +124,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
     private NodeDescription getNodeDescription(IColorProvider colorProvider, String entityName) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name(entityName)
+                .id(entityName)
                 .domainType(DiagramEdgeDomainProvider.DOMAIN_NAME + "::" + entityName)
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -198,7 +198,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
     private EdgeDescription getEdgeDescription(IColorProvider colorProvider, String entityName, DiagramElementDescription sourceDescription, DiagramElementDescription targetDescription) {
         return new DiagramBuilders()
                 .newEdgeDescription()
-                .name(entityName)
+                .id(entityName)
                 .isDomainBasedEdge(true)
                 .domainType(DiagramEdgeDomainProvider.DOMAIN_NAME + "::" + entityName)
                 .semanticCandidatesExpression("aql:self.eContents()")
@@ -210,7 +210,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .targetDescriptions(targetDescription)
                 .style(
                         new DiagramBuilders()
-                                .newEdgeStyle()
+                                .newEdgeStyleDescription()
                                 .fontSize(14)
                                 .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_BLUE))
                                 .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))
@@ -242,7 +242,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
     private EdgeDescription getEdgeDescriptionWithLabel(IColorProvider colorProvider, String entityName, DiagramElementDescription sourceDescription, DiagramElementDescription targetDescription) {
         return new DiagramBuilders()
                 .newEdgeDescription()
-                .name(entityName)
+                .id(entityName)
                 .isDomainBasedEdge(true)
                 .domainType(DiagramEdgeDomainProvider.DOMAIN_NAME + "::" + entityName)
                 .semanticCandidatesExpression("aql:self.eContents()")
@@ -256,7 +256,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .targetDescriptions(targetDescription)
                 .style(
                         new DiagramBuilders()
-                                .newEdgeStyle()
+                                .newEdgeStyleDescription()
                                 .fontSize(14)
                                 .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_BLUE))
                                 .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -92,7 +92,7 @@ public class BorderNodeDiagramDescriptionProvider implements IEditingContextProc
                 .build();
 
         var borderNodeDescription = new NodeDescriptionBuilder()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya::Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .style(borderNodeStyle)
@@ -113,7 +113,7 @@ public class BorderNodeDiagramDescriptionProvider implements IEditingContextProc
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
-                .name("ProjectNode")
+                .id("ProjectNode")
                 .domainType("papaya::Project")
                 .semanticCandidatesExpression("aql:self")
                 .insideLabel(insideLabel)
@@ -123,7 +123,7 @@ public class BorderNodeDiagramDescriptionProvider implements IEditingContextProc
 
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'BorderNodeDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,14 +52,14 @@ public class ProcessorToProcessorEdgeDescriptionProvider implements IEdgeDescrip
     @Override
     public EdgeDescription create() {
         return this.diagramBuilderHelper.newEdgeDescription()
-                .name(NAME)
+                .id(NAME)
                 .domainType("flow::DataFlow")
                 .semanticCandidatesExpression("aql:self.elements.eAllContents(flow::DataFlow)")
                 .targetExpression("feature:target")
                 .sourceExpression("feature:source")
                 .isDomainBasedEdge(true)
                 .centerLabelExpression("aql:self.capacity")
-                .style(this.diagramBuilderHelper.newEdgeStyle()
+                .style(this.diagramBuilderHelper.newEdgeStyleDescription()
                         .lineStyle(LineStyle.SOLID)
                         .color(this.colorProvider.getColor("Flow_Gray"))
                         .targetArrowStyle(ArrowStyle.INPUT_ARROW)

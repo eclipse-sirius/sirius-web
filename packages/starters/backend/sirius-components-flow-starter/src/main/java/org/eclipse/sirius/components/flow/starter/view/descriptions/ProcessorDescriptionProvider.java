@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,7 +67,7 @@ public class ProcessorDescriptionProvider implements INodeDescriptionProvider {
     @Override
     public NodeDescription create() {
         return this.diagramBuilderHelper.newNodeDescription()
-                .name(NAME)
+                .id(NAME)
                 .domainType("flow::Processor")
                 .semanticCandidatesExpression("feature:elements")
                 .outsideLabels(this.flowViewBuilder.getOutsideLabelDescription(this.colorProvider, "aql:self.name"))

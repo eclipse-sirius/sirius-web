@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -70,7 +70,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
         org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
-        viewDiagramDescription.setName(domainName + " Diagram Description");
+        viewDiagramDescription.setId(domainName + " Diagram Description");
         viewDiagramDescription.setDomainType(domainName + "::Root");
         viewDiagramDescription.setTitleExpression(domainName + " diagram");
         viewDiagramDescription.setPalette(defaultToolsFactory.createDefaultDiagramPalette());
@@ -105,7 +105,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
 
     private NodeDescription createNodeDescriptionsEntity1(View view, String domainName, DefaultToolsFactory defaultToolsFactory) {
         NodeDescription entity1Node = DiagramFactory.eINSTANCE.createNodeDescription();
-        entity1Node.setName("Entity1 Node");
+        entity1Node.setId("Entity1 Node");
         entity1Node.setDomainType(domainName + "::Entity1");
         entity1Node.setSemanticCandidatesExpression("aql:self.eContents()");
         entity1Node.setInsideLabel(this.createInsideLabelDescription(view));
@@ -117,7 +117,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
 
     private NodeDescription createNodeDescriptionsEntity2(View view, String domainName, DefaultToolsFactory defaultToolsFactory) {
         NodeDescription entity2Node = DiagramFactory.eINSTANCE.createNodeDescription();
-        entity2Node.setName("Entity2 Node");
+        entity2Node.setId("Entity2 Node");
         entity2Node.setDomainType(domainName + "::Entity2");
         entity2Node.setSemanticCandidatesExpression("aql:self.eContents()");
         entity2Node.setInsideLabel(this.createInsideLabelDescription(view));
@@ -143,7 +143,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
 
     private void addEdgeDescription(NodeDescription entity1Node, NodeDescription entity2Node, DefaultToolsFactory defaultToolsFactory, org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, View view) {
         EdgeDescription linkedToEdge = DiagramFactory.eINSTANCE.createEdgeDescription();
-        linkedToEdge.setName("LinkedTo Edge");
+        linkedToEdge.setId("LinkedTo Edge");
         linkedToEdge.setSemanticCandidatesExpression("");
         linkedToEdge.setCenterLabelExpression("");
         linkedToEdge.getSourceDescriptions().add(entity1Node);
@@ -153,7 +153,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         linkedToEdge.setPalette(defaultToolsFactory.createDefaultEdgePalette());
         viewDiagramDescription.getEdgeDescriptions().add(linkedToEdge);
 
-        EdgeStyle edgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
+        EdgeStyleDescription edgeStyle = DiagramFactory.eINSTANCE.createEdgeStyleDescription();
         edgeStyle.setColor(this.getColorFromPalette(view, COLOR_NAME_DARK));
         edgeStyle.setBackground(this.getColorFromPalette(view, COLOR_NAME_TRANSPARENT));
         edgeStyle.setBorderColor(this.getColorFromPalette(view, COLOR_NAME_DARK));

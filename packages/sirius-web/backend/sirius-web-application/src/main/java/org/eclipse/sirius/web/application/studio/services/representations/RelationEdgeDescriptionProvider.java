@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
@@ -50,7 +50,7 @@ public class RelationEdgeDescriptionProvider implements IEdgeDescriptionProvider
 
         return new DiagramBuilders()
                 .newEdgeDescription()
-                .name("Relation")
+                .id("Relation")
                 .domainType("domain::Relation")
                 .isDomainBasedEdge(true)
                 .centerLabelExpression("aql:self.renderRelation()")
@@ -97,9 +97,9 @@ public class RelationEdgeDescriptionProvider implements IEdgeDescriptionProvider
                 .build();
     }
 
-    private EdgeStyle defaultRelationEdgeStyle() {
+    private EdgeStyleDescription defaultRelationEdgeStyle() {
         return new DiagramBuilders()
-                .newEdgeStyle()
+                .newEdgeStyleDescription()
                 .sourceArrowStyle(ArrowStyle.NONE)
                 .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.BLACK_COLOR))
                 .borderSize(0)

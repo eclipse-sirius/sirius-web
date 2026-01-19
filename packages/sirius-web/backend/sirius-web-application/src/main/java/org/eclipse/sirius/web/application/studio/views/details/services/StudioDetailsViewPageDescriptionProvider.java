@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,7 @@ public class StudioDetailsViewPageDescriptionProvider implements IStudioDetailsV
             DiagramPackage.Literals.ICON_LABEL_NODE_STYLE_DESCRIPTION,
             DiagramPackage.Literals.RECTANGULAR_NODE_STYLE_DESCRIPTION,
             DiagramPackage.Literals.LIST_LAYOUT_STRATEGY_DESCRIPTION,
-            DiagramPackage.Literals.EDGE_STYLE,
+            DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION,
             ViewPackage.Literals.FIXED_COLOR
     );
 

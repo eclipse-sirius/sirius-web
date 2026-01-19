@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,7 +97,7 @@ public class ViewDeckDescriptionBuilder {
 
     private void createOKRDeckDescription(View view) {
         DeckDescription deckDescription = this.deckBuilders.newDeckDescription()
-                .name("Deck OKR Representation")
+                .id("Deck OKR Representation")
                 .domainType("task::Project")
                 .titleExpression("New OKR Representation")
                 .laneDescriptions(this.createObjectiveLaneDescription())
@@ -219,7 +219,7 @@ public class ViewDeckDescriptionBuilder {
         LaneDropTool laneDropTool = this.createTagLaneDropTool();
         String representationTypeName = prefix.substring(0, 1).toUpperCase() + prefix.substring(1);
         return this.deckBuilders.newDeckDescription()
-                .name(String.format("Deck %s Representation", representationTypeName))
+                .id(String.format("Deck %s Representation", representationTypeName))
                 .domainType("task::Project")
                 .titleExpression(String.format("New %s Representation", representationTypeName))
                 .laneDropTool(laneDropTool)

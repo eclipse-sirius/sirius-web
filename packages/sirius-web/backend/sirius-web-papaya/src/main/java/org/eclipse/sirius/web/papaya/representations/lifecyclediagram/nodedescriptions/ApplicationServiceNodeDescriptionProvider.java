@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,7 +63,7 @@ public class ApplicationServiceNodeDescriptionProvider implements INodeDescripti
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(NAME)
+                .id(NAME)
                 .domainType("papaya::Service")
                 .semanticCandidatesExpression("aql:self.services")
                 .insideLabel(insideLabel)

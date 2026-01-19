@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -126,7 +126,7 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
@@ -143,7 +143,7 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'ModelOperationDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)

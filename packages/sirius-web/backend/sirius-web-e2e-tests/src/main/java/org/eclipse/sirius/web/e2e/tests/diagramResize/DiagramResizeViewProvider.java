@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,9 @@
  *******************************************************************************/
 
 package org.eclipse.sirius.web.e2e.tests.diagramResize;
+
+import java.util.List;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
@@ -36,9 +39,6 @@ import org.eclipse.sirius.web.e2e.tests.services.SiriusWebE2EColorProvider;
 import org.eclipse.sirius.web.e2e.tests.services.api.IE2EViewProvider;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * The view provider for the diagram-resize test suite.
@@ -79,7 +79,7 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
     private DiagramDescription diagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramResizeDomainProvider.DOMAIN_NAME + " - simple resize node")
+                .id(DiagramResizeDomainProvider.DOMAIN_NAME + " - simple resize node")
                 .domainType(DiagramResizeDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramResizeDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -95,7 +95,7 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
     private NodeDescription getNodeDescription(IColorProvider colorProvider, String name, String domain, UserResizableDirection resizeDirection) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name(name)
+                .id(name)
                 .domainType(DiagramResizeDomainProvider.DOMAIN_NAME + domain)
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

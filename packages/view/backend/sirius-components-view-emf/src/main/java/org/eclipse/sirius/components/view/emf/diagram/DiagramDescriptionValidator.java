@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -129,7 +129,7 @@ public class DiagramDescriptionValidator implements EValidator {
         if (!isValid && diagnostics != null) {
             String objectInError = layoutStrategyDescription.eClass().getName();
             if (layoutStrategyDescription.eContainer().eContainer() instanceof NodeDescription nodeDescription) {
-                objectInError = nodeDescription.getName();
+                objectInError = nodeDescription.getId();
             }
             BasicDiagnostic basicDiagnostic = new BasicDiagnostic(Diagnostic.ERROR,
                     SIRIUS_COMPONENTS_EMF_PACKAGE,
@@ -169,7 +169,7 @@ public class DiagramDescriptionValidator implements EValidator {
                         0,
                         String.format(
                                 "In the node description \"%1$s\", the border node descriptions for initial position should be among the border node descriptions(owned and reused) of the node description.",
-                                nodeDescription.getName()),
+                                nodeDescription.getId()),
                         new Object[] {
                             layoutStrategyDescription,
                             DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelStyle;
@@ -66,7 +66,7 @@ public class DiagramColorAdapter extends EContentAdapter {
             this.setNodeColors(style, condition);
         } else if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof DiagramDescription && notification.getNewValue() instanceof EdgeDescription edgeDescription
                 && DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS == notification.getFeatureID(DiagramDescription.class)) {
-            EdgeStyle style = edgeDescription.getStyle();
+            EdgeStyleDescription style = edgeDescription.getStyle();
             if (style.getColor() == null) {
                 style.setColor(this.colorPaletteService.getColorFromPalette(edgeDescription, BLACK_COLOR_NAME));
             }
@@ -77,7 +77,7 @@ public class DiagramColorAdapter extends EContentAdapter {
                 style.setBorderColor(this.colorPaletteService.getColorFromPalette(edgeDescription, BLACK_COLOR_NAME));
                 style.setBorderSize(0);
             }
-        } else if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof EdgeDescription condition && notification.getNewValue() instanceof EdgeStyle style
+        } else if (Notification.ADD == notification.getEventType() && notification.getNotifier() instanceof EdgeDescription condition && notification.getNewValue() instanceof EdgeStyleDescription style
                 && DiagramPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES == notification.getFeatureID(EdgeDescription.class)) {
             if (style.getColor() == null) {
                 style.setColor(this.colorPaletteService.getColorFromPalette(condition, BLACK_COLOR_NAME));

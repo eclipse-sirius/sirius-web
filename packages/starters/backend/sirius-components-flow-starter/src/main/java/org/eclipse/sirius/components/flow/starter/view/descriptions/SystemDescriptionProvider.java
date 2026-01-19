@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,7 +62,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
     @Override
     public NodeDescription create() {
         var nodeDescription = this.diagramBuilderHelper.newNodeDescription()
-                .name(NAME)
+                .id(NAME)
                 .domainType("flow::System")
                 .semanticCandidatesExpression("feature:elements")
                 .insideLabel(this.flowViewBuilder.getInsideLabelDescription(this.colorProvider, "aql:self.name", true, true, HeaderSeparatorDisplayMode.NEVER))
@@ -244,7 +244,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
     private NodeDescription createDescriptionNode() {
         var weightNodeDescription =
                 this.diagramBuilderHelper.newNodeDescription()
-                        .name("Weight Node")
+                        .id("Weight Node")
                         .semanticCandidatesExpression("aql:self")
                         .insideLabel(this.flowViewBuilder.getInsideLabelDescription(this.colorProvider, "aql:'Weight: ' + self.weight"))
                         .style(this.diagramBuilderHelper.newIconLabelNodeStyleDescription().build())
@@ -252,14 +252,14 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
 
         var temperatureNodeDescription =
                 this.diagramBuilderHelper.newNodeDescription()
-                        .name("Temperature Node")
+                        .id("Temperature Node")
                         .semanticCandidatesExpression("aql:self")
                         .insideLabel(this.flowViewBuilder.getInsideLabelDescription(this.colorProvider, "aql:'Temperature: ' + self.temperature"))
                         .style(this.diagramBuilderHelper.newIconLabelNodeStyleDescription().build())
                         .build();
 
         return this.diagramBuilderHelper.newNodeDescription()
-                .name("Description Node")
+                .id("Description Node")
                 .domainType("flow::CompositeProcessor")
                 .semanticCandidatesExpression("aql:self")
                 .insideLabel(this.flowViewBuilder.getInsideLabelDescription(this.colorProvider, "Description", false, true, HeaderSeparatorDisplayMode.IF_CHILDREN))

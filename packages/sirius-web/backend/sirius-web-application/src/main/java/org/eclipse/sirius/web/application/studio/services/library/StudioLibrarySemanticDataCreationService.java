@@ -140,7 +140,7 @@ public class StudioLibrarySemanticDataCreationService implements IStudioLibraryS
     private Optional<String> getLibraryName(EObject eObject) {
         Optional<String> result = Optional.empty();
         if (eObject instanceof RepresentationDescription representationDescription) {
-            result = Optional.ofNullable(representationDescription.getName());
+            result = Optional.ofNullable(representationDescription.getId());
         } else if (eObject instanceof Domain domain) {
             result = Optional.ofNullable(domain.getName());
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -248,12 +248,12 @@ public interface ViewPackage extends EPackage {
     int REPRESENTATION_DESCRIPTION = 4;
 
     /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REPRESENTATION_DESCRIPTION__NAME = 0;
+    int REPRESENTATION_DESCRIPTION__ID = 0;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1142,15 +1142,15 @@ public interface ViewPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getName <em>Name</em>}'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getId <em>Id</em>}'. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @see org.eclipse.sirius.components.view.RepresentationDescription#getName()
+     * @return the meta object for the attribute '<em>Id</em>'.
+     * @see org.eclipse.sirius.components.view.RepresentationDescription#getId()
      * @see #getRepresentationDescription()
      * @generated
      */
-    EAttribute getRepresentationDescription_Name();
+    EAttribute getRepresentationDescription_Id();
 
     /**
      * Returns the meta object for the attribute
@@ -1830,12 +1830,12 @@ public interface ViewPackage extends EPackage {
         EClass REPRESENTATION_DESCRIPTION = eINSTANCE.getRepresentationDescription();
 
         /**
-         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Id</b></em>' attribute feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute REPRESENTATION_DESCRIPTION__NAME = eINSTANCE.getRepresentationDescription_Name();
+        EAttribute REPRESENTATION_DESCRIPTION__ID = eINSTANCE.getRepresentationDescription_Id();
 
         /**
          * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--

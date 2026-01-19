@@ -8,7 +8,7 @@
   <eClassifiers xsi:type="ecore:EDataType" name="Length" instanceClassName="int"/>
   <eClassifiers xsi:type="ecore:EClass" name="View">
     <eStructuralFeatures xsi:type="ecore:EReference" name="descriptions" upperBound="-1"
-        eType="#//RepresentationDescription" containment="true" eKeys="#//RepresentationDescription/name"/>
+        eType="#//RepresentationDescription" containment="true" eKeys="#//RepresentationDescription/id"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="colorPalettes" upperBound="-1"
         eType="#//ColorPalette" containment="true" eKeys="#//ColorPalette/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="textStylePalettes" upperBound="-1"
@@ -26,7 +26,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="RepresentationDescription" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="#//Identifier"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="#//Identifier"
         defaultValueLiteral="NewRepresentationDescription"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="#//DomainType"
         defaultValueLiteral=""/>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.provider.RepresentationDescriptionItemProvider;
 
@@ -149,7 +149,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
      */
     @Override
     public String getText(Object object) {
-        String label = ((DiagramDescription) object).getName();
+        String label = ((DiagramDescription) object).getId();
         return label == null || label.length() == 0 ? this.getString("_UI_DiagramDescription_type") : this.getString("_UI_DiagramDescription_type") + " " + label;
     }
 
@@ -194,7 +194,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE, DiagramFactory.eINSTANCE.createGroupPalette()));
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
-        nodeChild.setName("Node");
+        nodeChild.setId("Node");
         var style = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         style.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeChild.setStyle(style);
@@ -213,8 +213,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS, nodeChild));
 
         EdgeDescription edgeChild = DiagramFactory.eINSTANCE.createEdgeDescription();
-        edgeChild.setName("Edge");
-        EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
+        edgeChild.setId("Edge");
+        EdgeStyleDescription newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyleDescription();
         edgeChild.setStyle(newEdgeStyle);
         edgeChild.setPalette(defaultToolsFactory.createDefaultEdgePalette());
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));

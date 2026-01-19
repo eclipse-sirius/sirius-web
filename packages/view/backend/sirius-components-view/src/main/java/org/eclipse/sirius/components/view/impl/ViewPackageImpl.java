@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -393,7 +393,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
      * @generated
      */
     @Override
-    public EAttribute getRepresentationDescription_Name() {
+    public EAttribute getRepresentationDescription_Id() {
         return (EAttribute) this.representationDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -942,7 +942,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.userColorEClass, USER_COLOR__NAME);
 
         this.representationDescriptionEClass = this.createEClass(REPRESENTATION_DESCRIPTION);
-        this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__NAME);
+        this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__ID);
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__DOMAIN_TYPE);
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION);
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION);
@@ -1052,7 +1052,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.initEClass(this.viewEClass, View.class, "View", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getView_Descriptions(), this.getRepresentationDescription(), null, "descriptions", null, 0, -1, View.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getView_Descriptions().getEKeys().add(this.getRepresentationDescription_Name());
+        this.getView_Descriptions().getEKeys().add(this.getRepresentationDescription_Id());
         this.initEReference(this.getView_ColorPalettes(), this.getColorPalette(), null, "colorPalettes", null, 0, -1, View.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.getView_ColorPalettes().getEKeys().add(this.getColorPalette_Name());
@@ -1076,7 +1076,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.representationDescriptionEClass, RepresentationDescription.class, "RepresentationDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getRepresentationDescription_Name(), this.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, RepresentationDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+        this.initEAttribute(this.getRepresentationDescription_Id(), this.getIdentifier(), "id", "NewRepresentationDescription", 0, 1, RepresentationDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getRepresentationDescription_DomainType(), this.getDomainType(), "domainType", "", 0, 1, RepresentationDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

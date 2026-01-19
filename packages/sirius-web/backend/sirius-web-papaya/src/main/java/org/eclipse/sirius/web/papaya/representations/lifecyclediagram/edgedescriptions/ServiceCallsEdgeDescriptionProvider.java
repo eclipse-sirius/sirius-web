@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ public class ServiceCallsEdgeDescriptionProvider implements IEdgeDescriptionProv
 
     @Override
     public EdgeDescription create() {
-        var extendsEdgeStyle = new DiagramBuilders().newEdgeStyle()
+        var extendsEdgeStyle = new DiagramBuilders().newEdgeStyleDescription()
                 .color(this.colorProvider.getColor(PapayaColorPaletteProvider.SERVICE_DARK))
                 .sourceArrowStyle(ArrowStyle.NONE)
                 .targetArrowStyle(ArrowStyle.INPUT_ARROW)
@@ -54,7 +54,7 @@ public class ServiceCallsEdgeDescriptionProvider implements IEdgeDescriptionProv
                 .build();
 
         return new DiagramBuilders().newEdgeDescription()
-                .name(NAME)
+                .id(NAME)
                 .centerLabelExpression("calls")
                 .sourceExpression("aql:self")
                 .targetExpression("aql:self.calls")

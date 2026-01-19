@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,7 +50,7 @@ public class PowerInputDescriptionProvider implements INodeDescriptionProvider {
     @Override
     public NodeDescription create() {
         return this.diagramBuilderHelper.newNodeDescription()
-                .name(NAME)
+                .id(NAME)
                 .domainType("flow::PowerInput")
                 .semanticCandidatesExpression("feature:powerInputs")
                 .defaultHeightExpression("50")

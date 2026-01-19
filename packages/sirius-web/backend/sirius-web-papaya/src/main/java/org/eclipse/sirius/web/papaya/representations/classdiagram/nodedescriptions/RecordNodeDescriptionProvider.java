@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,7 @@ public class RecordNodeDescriptionProvider implements INodeDescriptionProvider {
         var recordComponentNodeDescription = this.recordComponentNodeDescription();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(NAME)
+                .id(NAME)
                 .domainType("papaya::Record")
                 .semanticCandidatesExpression("aql:editingContext.getSynchronizedObjects(semanticElementIds)")
                 .insideLabel(insideLabel)
@@ -106,7 +106,7 @@ public class RecordNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(RECORD_COMPONENT_NAME)
+                .id(RECORD_COMPONENT_NAME)
                 .domainType("papaya:RecordComponent")
                 .semanticCandidatesExpression("aql:self.components")
                 .insideLabel(insideLabel)

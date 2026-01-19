@@ -108,7 +108,7 @@ INSERT INTO document (
                      "id": "6949ddfe-f480-473b-bc8a-6f2bdde07e4d",
                      "eClass": "diagram:NodeDescription",
                      "data": {
-                       "name": "NodeWithoutImage migration",
+                       "id": "NodeWithoutImage migration",
                        "domainType": "flow::CompositeProcessor",
                        "labelExpression": "aql:''NodeWithoutImage''",
                        "childrenLayoutStrategy": {
@@ -129,7 +129,7 @@ INSERT INTO document (
                      "id": "88f95390-ac15-4381-ae82-7b23a2017bd4",
                      "eClass": "diagram:NodeDescription",
                      "data": {
-                       "name": "NodeWithImage migration",
+                       "id": "NodeWithImage migration",
                        "domainType": "flow::CompositeProcessor",
                        "labelExpression": "aql:''NodeWithImage''",
                        "childrenLayoutStrategy": {
@@ -264,7 +264,7 @@ INSERT INTO document (
                      "id": "6949ddfe-f480-473b-bc8a-6f2bdde07e4d",
                      "eClass": "diagram:NodeDescription",
                      "data": {
-                       "name": "NodeWithoutImage migration",
+                       "id": "NodeWithoutImage migration",
                        "domainType": "flow::CompositeProcessor",
                        "childrenLayoutStrategy": {
                          "id": "20651d93-2ee5-41cb-b2bd-1e75958c73cf",
@@ -467,7 +467,7 @@ INSERT INTO document (
                      "id": "ff5276cd-edeb-418c-8d52-d03edb958ceb",
                      "eClass": "diagram:NodeDescription",
                      "data": {
-                       "name": "NodeWithUserResizableFalse migration",
+                       "id": "NodeWithUserResizableFalse migration",
                        "domainType": "flow::CompositeProcessor",
                        "userResizable": "false",
                        "childrenLayoutStrategy": {
@@ -488,7 +488,7 @@ INSERT INTO document (
                      "id": "88f95390-ac15-4381-ae82-7b23a2017bd4",
                      "eClass": "diagram:NodeDescription",
                      "data": {
-                       "name": "NodeWithUserResizableTrue migration",
+                       "id": "NodeWithUserResizableTrue migration",
                        "domainType": "flow::CompositeProcessor",
                        "userResizable": "true",
                        "childrenLayoutStrategy": {
@@ -881,7 +881,7 @@ INSERT INTO document (
                      "id": "4d1ec4d1-dd2c-4cb2-bbed-df02f0babbd8",
                      "eClass": "diagram:NodeDescription",
                      "data": {
-                       "name": "LabelBorderSize migration",
+                       "id": "LabelBorderSize migration",
                        "domainType": "flow::CompositeProcessor",
                        "insideLabel": {
                          "data": {
@@ -1040,7 +1040,7 @@ INSERT INTO document (
                       "id": "6b69cc8b-b1e8-4aed-9195-539351ac34d9",
                       "eClass": "diagram:NodeDescription",
                       "data": {
-                        "name": "ShowIcon migration Node 1",
+                        "id": "ShowIcon migration Node 1",
                         "domainType": "flow::CompositeProcessor",
                         "childrenLayoutStrategy": {
                           "id": "50b48332-c97e-4638-9912-feed821df798",
@@ -1067,7 +1067,7 @@ INSERT INTO document (
                       "id": "6c5106eb-27fc-473a-bc55-461c7fcca989",
                       "eClass": "diagram:NodeDescription",
                       "data": {
-                        "name": "ShowIcon migration Node 2",
+                        "id": "ShowIcon migration Node 2",
                         "domainType": "flow::CompositeProcessor",
                         "childrenLayoutStrategy": {
                           "id": "bb2bef9c-17c3-43bd-9062-a9fa664be36b",
@@ -1348,7 +1348,7 @@ INSERT INTO document (
                       "id": "6b69cc8b-b1e8-4aed-9195-539351ac34d9",
                       "eClass": "diagram:NodeDescription",
                       "data": {
-                        "name": "migration Node 1",
+                        "id": "migration Node 1",
                         "domainType": "flow::CompositeProcessor",
                         "childrenLayoutStrategy": {
                           "id": "50b48332-c97e-4638-9912-feed821df798",
@@ -1379,7 +1379,7 @@ INSERT INTO document (
                       "id": "6c5106eb-27fc-473a-bc55-461c7fcca989",
                       "eClass": "diagram:NodeDescription",
                       "data": {
-                        "name": "migration Node 2",
+                        "id": "migration Node 2",
                         "domainType": "flow::CompositeProcessor",
                         "childrenLayoutStrategy": {
                           "id": "bb2bef9c-17c3-43bd-9062-a9fa664be36b",
@@ -1518,7 +1518,7 @@ INSERT INTO document (
                "id":"deaa26de-6383-4c36-baba-2feb8a6e675e",
                "eClass":"form:FormDescription",
                "data":{
-                 "name":"Form View for WidgetDescriptionStyleLayoutPropertiesMigrationParticipant",
+                 "id":"Form View for WidgetDescriptionStyleLayoutPropertiesMigrationParticipant",
                  "domainType":"buck::Human",
                  "pages":[
                    {
@@ -1767,7 +1767,7 @@ INSERT INTO document (
                "id": "df899cf6-2f11-47d4-b9ac-def01094b84e",
                "eClass": "tree:TreeDescription",
                "data": {
-                 "name": "TreeDescription#iconUrlDescription migration",
+                 "id": "TreeDescription#iconUrlDescription migration",
                  "domainType": "buck::Human",
                  "titleExpression": "New Tree Representation",
                  "kindExpression": "root",
@@ -1951,7 +1951,7 @@ INSERT INTO document (
                     "id": "8dcec73a-1f46-44ba-acff-351b2d954eaa",
                     "eClass": "diagram:NodeDescription",
                     "data": {
-                      "name": "Entity1 Node",
+                      "id": "Entity1 Node",
                       "domainType": "chaplygin::Entity1",
                       "synchronizationPolicy": "UNSYNCHRONIZED",
                       "palette": {
@@ -2009,7 +2009,7 @@ INSERT INTO document (
                     "id": "5b3bd157-6222-4545-98a7-760b7dc95751",
                     "eClass": "diagram:NodeDescription",
                     "data": {
-                      "name": "Entity2 Node",
+                      "id": "Entity2 Node",
                       "domainType": "chaplygin::Entity2",
                       "palette": {
                         "id": "8ba50bdf-4354-4c1e-81d8-74a5436d9639",
@@ -2232,7 +2232,7 @@ INSERT INTO document (
                       "id": "021022da-66ac-47bf-a718-a3d2423838d7",
                       "eClass": "diagram:NodeDescription",
                       "data": {
-                        "name": "Node",
+                        "id": "Node",
                         "childrenLayoutStrategy": {
                           "id": "a38d5fa1-d309-4921-b47a-ba23a19a53c3",
                           "eClass": "diagram:ListLayoutStrategyDescription",
@@ -2274,7 +2274,7 @@ INSERT INTO document (
                             "id": "668ed053-7661-4d9d-a166-5edb027d75db",
                             "eClass": "diagram:NodeDescription",
                             "data": {
-                              "name": "Sub-node",
+                              "id": "Sub-node",
                               "childrenLayoutStrategy": {
                                 "id": "610a8024-10b5-48cd-bab0-fa1b61cfc9a4",
                                 "eClass": "diagram:FreeFormLayoutStrategyDescription"
@@ -2343,7 +2343,7 @@ INSERT INTO document (
                       "id": "021022da-66ac-47bf-a718-a3d2423838d7",
                       "eClass": "diagram:NodeDescription",
                       "data": {
-                        "name": "Node",
+                        "id": "Node",
                         "style": {
                           "id": "be60a21a-7573-4a84-ae05-feadd351104e",
                           "eClass": "diagram:RectangularNodeStyleDescription",

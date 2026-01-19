@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST and others.
+ * Copyright (c) 2024, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,7 +52,7 @@ public class TreeDescriptionIconURLExpressionMigrationParticipantTests extends A
     private void testIsMigrationSuccessful(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             var optionalTreeDescription = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream())
-                    .filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_TREE_DESCRIPTION_ICON_URL_STUDIO_DOCUMENT_NAME))
+                    .filter(representationDescription -> representationDescription.getId().equals(MigrationIdentifiers.MIGRATION_TREE_DESCRIPTION_ICON_URL_STUDIO_DOCUMENT_NAME))
                     .findFirst();
             assertThat(optionalTreeDescription).isPresent();
             assertThat(optionalTreeDescription.get()).isInstanceOf(TreeDescription.class);

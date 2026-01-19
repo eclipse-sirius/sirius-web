@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getId <em>Id</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getDomainType <em>Domain
  * Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getPreconditionExpression
@@ -41,24 +41,22 @@ import org.eclipse.sirius.components.view.ViewPackage;
  */
 public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.Container implements RepresentationDescription {
     /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The default value of the '{@link #getId() <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getName()
+     * @see #getId()
      * @generated
      * @ordered
      */
-    protected static final String NAME_EDEFAULT = "NewRepresentationDescription";
+    protected static final String ID_EDEFAULT = "NewRepresentationDescription";
 
     /**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The cached value of the '{@link #getId() <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getName()
+     * @see #getId()
      * @generated
      * @ordered
      */
-    protected String name = NAME_EDEFAULT;
+    protected String id = ID_EDEFAULT;
 
     /**
      * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -165,8 +163,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
-    public String getName() {
-        return this.name;
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -175,11 +173,11 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
-    public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
+    public void setId(String newId) {
+        String oldId = this.id;
+        this.id = newId;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__NAME, oldName, this.name));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__ID, oldId, this.id));
     }
 
     /**
@@ -282,8 +280,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-                return this.getName();
+            case ViewPackage.REPRESENTATION_DESCRIPTION__ID:
+                return this.getId();
             case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
                 return this.getDomainType();
             case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
@@ -304,8 +302,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-                this.setName((String) newValue);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__ID:
+                this.setId((String) newValue);
                 return;
             case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
                 this.setDomainType((String) newValue);
@@ -331,8 +329,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-                this.setName(NAME_EDEFAULT);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__ID:
+                this.setId(ID_EDEFAULT);
                 return;
             case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
                 this.setDomainType(DOMAIN_TYPE_EDEFAULT);
@@ -358,8 +356,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__ID:
+                return ID_EDEFAULT == null ? this.id != null : !ID_EDEFAULT.equals(this.id);
             case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
                 return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
             case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
@@ -382,18 +380,19 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (name: " +
-                this.name +
-                ", domainType: " +
-                this.domainType +
-                ", preconditionExpression: " +
-                this.preconditionExpression +
-                ", titleExpression: " +
-                this.titleExpression +
-                ", iconExpression: " +
-                this.iconExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (id: ");
+        result.append(this.id);
+        result.append(", domainType: ");
+        result.append(this.domainType);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
+        result.append(", titleExpression: ");
+        result.append(this.titleExpression);
+        result.append(", iconExpression: ");
+        result.append(this.iconExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // RepresentationDescriptionImpl

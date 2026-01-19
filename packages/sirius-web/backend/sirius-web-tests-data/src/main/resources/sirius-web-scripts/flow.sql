@@ -135,7 +135,7 @@ INSERT INTO representation_metadata (
   '6dfe736e-c582-4148-8dcf-9b1baa6e3a12#40569b77-1967-46cc-99da-c526f5ffbc85',
   '40569b77-1967-46cc-99da-c526f5ffbc85',
   '5b75dcbe-10af-452a-af98-4461ee13ea40',
-  'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38',
+  'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=7256a8d7-581c-30c7-88ee-c5c95822f3d7',
   'Topography',
   'siriusComponents://representation?type=Diagram',
   '2025-09-09 07:47:39.194852+00',
@@ -161,7 +161,7 @@ INSERT INTO representation_content (
     "id": "40569b77-1967-46cc-99da-c526f5ffbc85",
     "kind": "siriusComponents://representation?type=Diagram",
     "targetObjectId": "5b75dcbe-10af-452a-af98-4461ee13ea40",
-    "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38",
+    "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=7256a8d7-581c-30c7-88ee-c5c95822f3d7",
     "nodes": [
       {
         "id": "2c6c3606-5ed2-35f1-b05e-cba434e1a812",

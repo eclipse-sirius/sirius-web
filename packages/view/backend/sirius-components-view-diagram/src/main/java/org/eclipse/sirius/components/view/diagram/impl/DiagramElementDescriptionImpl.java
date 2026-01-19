@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getId <em>Id</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getDomainType <em>Domain
  * Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getSemanticCandidatesExpression
@@ -36,6 +36,8 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
  * <em>Precondition Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getSynchronizationPolicy
  * <em>Synchronization Policy</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getDescription
+ * <em>Description</em>}</li>
  * </ul>
  *
  * @generated
@@ -43,24 +45,22 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.Container implements DiagramElementDescription {
 
     /**
-     * The default value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The default value of the '{@link #getId() <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getId()
      * @generated
      * @ordered
-     * @see #getName()
      */
-    protected static final String NAME_EDEFAULT = "NewRepresentationDescription";
+    protected static final String ID_EDEFAULT = "NewRepresentationDescription";
 
     /**
-     * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The cached value of the '{@link #getId() <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getId()
      * @generated
      * @ordered
-     * @see #getName()
      */
-    protected String name = NAME_EDEFAULT;
+    protected String id = ID_EDEFAULT;
 
     /**
      * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -143,6 +143,26 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     protected SynchronizationPolicy synchronizationPolicy = SYNCHRONIZATION_POLICY_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected String description = DESCRIPTION_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -167,8 +187,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
-    public String getName() {
-        return this.name;
+    public String getId() {
+        return this.id;
     }
 
     /**
@@ -177,11 +197,11 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
-    public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
+    public void setId(String newId) {
+        String oldId = this.id;
+        this.id = newId;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME, oldName, this.name));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__ID, oldId, this.id));
     }
 
     /**
@@ -283,10 +303,33 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescription(String newDescription) {
+        String oldDescription = this.description;
+        this.description = newDescription;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION, oldDescription, this.description));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-                return this.getName();
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__ID:
+                return this.getId();
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
                 return this.getDomainType();
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
@@ -295,6 +338,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return this.getPreconditionExpression();
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 return this.getSynchronizationPolicy();
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
+                return this.getDescription();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -307,8 +352,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-                this.setName((String) newValue);
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__ID:
+                this.setId((String) newValue);
                 return;
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
                 this.setDomainType((String) newValue);
@@ -322,6 +367,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 this.setSynchronizationPolicy((SynchronizationPolicy) newValue);
                 return;
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
+                this.setDescription((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -334,8 +382,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-                this.setName(NAME_EDEFAULT);
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__ID:
+                this.setId(ID_EDEFAULT);
                 return;
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
                 this.setDomainType(DOMAIN_TYPE_EDEFAULT);
@@ -349,6 +397,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 this.setSynchronizationPolicy(SYNCHRONIZATION_POLICY_EDEFAULT);
                 return;
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
+                this.setDescription(DESCRIPTION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -361,8 +412,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__ID:
+                return ID_EDEFAULT == null ? this.id != null : !ID_EDEFAULT.equals(this.id);
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
                 return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
@@ -371,6 +422,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 return this.synchronizationPolicy != SYNCHRONIZATION_POLICY_EDEFAULT;
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
+                return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
         }
         return super.eIsSet(featureID);
     }
@@ -386,8 +439,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
+        result.append(" (id: ");
+        result.append(this.id);
         result.append(", domainType: ");
         result.append(this.domainType);
         result.append(", semanticCandidatesExpression: ");
@@ -396,6 +449,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         result.append(this.preconditionExpression);
         result.append(", synchronizationPolicy: ");
         result.append(this.synchronizationPolicy);
+        result.append(", description: ");
+        result.append(this.description);
         result.append(')');
         return result.toString();
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -79,7 +79,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramListDomainProvider.DOMAIN_NAME + " - simple list node")
+                .id(DiagramListDomainProvider.DOMAIN_NAME + " - simple list node")
                 .domainType(DiagramListDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramListDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -95,7 +95,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
         var childrenFreeFormDescription = this.getChildrenFreeFormDescription(colorProvider);
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Entity Node 1")
+                .id("Entity Node 1")
                 .domainType(DiagramListDomainProvider.DOMAIN_NAME + "::Entity1")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -146,7 +146,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
     private NodeDescription getChildrenListDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("CompartmentList")
+                .id("CompartmentList")
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
@@ -170,7 +170,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
     private NodeDescription getIconListDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Compartment")
+                .id("Compartment")
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
@@ -218,7 +218,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
     private NodeDescription getChildrenFreeFormDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("CompartmentFreeForm")
+                .id("CompartmentFreeForm")
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
@@ -242,7 +242,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
     private NodeDescription getSimpleRectangularDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Simple rectangular")
+                .id("Simple rectangular")
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)

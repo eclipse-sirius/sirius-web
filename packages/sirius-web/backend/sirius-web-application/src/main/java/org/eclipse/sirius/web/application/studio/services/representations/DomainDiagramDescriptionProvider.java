@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -116,9 +116,9 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(domainDiagramDescription, cache));
 
         domainDiagramDescription.getNodeDescriptions().stream()
-            .filter(nodeDescription -> nodeDescription.getName().equals(EntityNodeDescriptionProvider.ENTITY_NODE_DESCRIPTION_NAME))
+            .filter(nodeDescription -> nodeDescription.getId().equals(EntityNodeDescriptionProvider.ENTITY_NODE_DESCRIPTION_NAME))
             .flatMap(entityNodeScription -> entityNodeScription.getChildrenDescriptions().stream())
-            .filter(nodeDescription -> nodeDescription.getName().equals(EntityNodeDescriptionProvider.ATTRIBUTE_NODE_DESCRIPTION_NAME))
+            .filter(nodeDescription -> nodeDescription.getId().equals(EntityNodeDescriptionProvider.ATTRIBUTE_NODE_DESCRIPTION_NAME))
             .findFirst()
             .ifPresent(attributeNodeDescription -> domainDiagramDescription.getPalette().getDropNodeTool().getAcceptedNodeTypes().add(attributeNodeDescription));
 
@@ -175,7 +175,7 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
 
         var diagramDescription = new DiagramBuilders()
                 .newDiagramDescription()
-                .name("Domain")
+                .id("Domain")
                 .domainType("domain::Domain")
                 .titleExpression("aql:'Domain'")
                 .palette(palette)

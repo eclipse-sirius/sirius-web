@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,7 +85,7 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - Fully display the inside label Diagram")
+                .id(DiagramLabelDomainProvider.DOMAIN_NAME + " - Fully display the inside label Diagram")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramLabelDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -98,7 +98,7 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
     private DiagramDescription wrapLabelWithoutChangingNodeWidthDiagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - Wrap the label without changing the node width")
+                .id(DiagramLabelDomainProvider.DOMAIN_NAME + " - Wrap the label without changing the node width")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramLabelDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -111,7 +111,7 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
     private DiagramDescription labelIsTruncatedWithoutChangingNodeWidthDiagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - The label is truncated without changing the node width")
+                .id(DiagramLabelDomainProvider.DOMAIN_NAME + " - The label is truncated without changing the node width")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramLabelDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -124,7 +124,7 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
     private NodeDescription getNodeDescription(IColorProvider colorProvider, LabelOverflowStrategy labelOverflowStrategy) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Entity Node 1")
+                .id("Entity Node 1")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Entity1")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ public class WidgetDescriptionStyleLayoutPropertiesMigrationParticipantTests ext
     private void testIsMigrationSuccessful(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             var optionalFormDescription = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream())
-                    .filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_WIDGET_DESCRIPTION_STYLE_LAYOUT_PROPERTIES_MIGRATION_PARTICIPANT_STUDIO_FORM))
+                    .filter(representationDescription -> representationDescription.getId().equals(MigrationIdentifiers.MIGRATION_WIDGET_DESCRIPTION_STYLE_LAYOUT_PROPERTIES_MIGRATION_PARTICIPANT_STUDIO_FORM))
                     .findFirst();
             assertThat(optionalFormDescription).isPresent();
             assertThat(optionalFormDescription.get()).isInstanceOf(FormDescription.class);

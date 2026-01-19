@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,14 +94,14 @@ public class EdgePaletteDiagramDescriptionProvider implements IEditingContextPro
                 .build();
 
         var nodeDescription = new DiagramBuilders().newNodeDescription()
-                .name("Domain Diagram")
+                .id("Domain Diagram")
                 .domainType("domain:Entity")
                 .semanticCandidatesExpression("aql:self.types")
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
                 .build();
 
-        var edgeStyle = new DiagramBuilders().newEdgeStyle()
+        var edgeStyle = new DiagramBuilders().newEdgeStyleDescription()
                 .edgeWidth(1)
                 .build();
 
@@ -130,7 +130,7 @@ public class EdgePaletteDiagramDescriptionProvider implements IEditingContextPro
                 .build();
 
         var edgeDescription = new DiagramBuilders().newEdgeDescription()
-                .name("Edge Palette")
+                .id("Edge Palette")
                 .sourceExpression("aql:self")
                 .targetExpression("aql:self.superTypes")
                 .sourceDescriptions(nodeDescription)
@@ -140,7 +140,7 @@ public class EdgePaletteDiagramDescriptionProvider implements IEditingContextPro
                 .build();
 
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'DomainDiagram'")
                 .domainType("domain:domain")
                 .nodeDescriptions(nodeDescription)

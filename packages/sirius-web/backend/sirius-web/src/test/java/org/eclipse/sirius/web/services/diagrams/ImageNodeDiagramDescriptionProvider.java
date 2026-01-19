@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -105,7 +105,7 @@ public class ImageNodeDiagramDescriptionProvider implements IEditingContextProce
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .outsideLabels(outsideLabel)
@@ -118,7 +118,7 @@ public class ImageNodeDiagramDescriptionProvider implements IEditingContextProce
                         .borderSize(0)
                         .build())
                 .borderNodesDescriptions(new NodeDescriptionBuilder()
-                        .name("Package")
+                        .id("Package")
                         .domainType("papaya:Package")
                         .semanticCandidatesExpression("aql:self.eContents()")
                         .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -130,7 +130,7 @@ public class ImageNodeDiagramDescriptionProvider implements IEditingContextProce
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'ImageNodeDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)

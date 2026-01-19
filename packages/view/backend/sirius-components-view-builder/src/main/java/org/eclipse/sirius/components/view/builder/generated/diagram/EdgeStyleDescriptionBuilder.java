@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,12 @@
 package org.eclipse.sirius.components.view.builder.generated.diagram;
 
 /**
- * Builder for EdgeStyleBuilder.
+ * Builder for EdgeStyleDescriptionBuilder.
  *
  * @author BuilderGenerator
  * @generated
  */
-public class EdgeStyleBuilder {
+public class EdgeStyleDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.EdgeStyleDescription.
@@ -47,7 +47,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder color(org.eclipse.sirius.components.view.UserColor value) {
+    public EdgeStyleDescriptionBuilder color(org.eclipse.sirius.components.view.UserColor value) {
         this.getEdgeStyleDescription().setColor(value);
         return this;
     }
@@ -56,7 +56,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder fontSize(java.lang.Integer value) {
+    public EdgeStyleDescriptionBuilder fontSize(java.lang.Integer value) {
         this.getEdgeStyleDescription().setFontSize(value);
         return this;
     }
@@ -65,7 +65,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder italic(java.lang.Boolean value) {
+    public EdgeStyleDescriptionBuilder italic(java.lang.Boolean value) {
         this.getEdgeStyleDescription().setItalic(value);
         return this;
     }
@@ -74,7 +74,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder bold(java.lang.Boolean value) {
+    public EdgeStyleDescriptionBuilder bold(java.lang.Boolean value) {
         this.getEdgeStyleDescription().setBold(value);
         return this;
     }
@@ -83,7 +83,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder underline(java.lang.Boolean value) {
+    public EdgeStyleDescriptionBuilder underline(java.lang.Boolean value) {
         this.getEdgeStyleDescription().setUnderline(value);
         return this;
     }
@@ -92,7 +92,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder strikeThrough(java.lang.Boolean value) {
+    public EdgeStyleDescriptionBuilder strikeThrough(java.lang.Boolean value) {
         this.getEdgeStyleDescription().setStrikeThrough(value);
         return this;
     }
@@ -101,7 +101,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder borderColor(org.eclipse.sirius.components.view.UserColor value) {
+    public EdgeStyleDescriptionBuilder borderColor(org.eclipse.sirius.components.view.UserColor value) {
         this.getEdgeStyleDescription().setBorderColor(value);
         return this;
     }
@@ -110,7 +110,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder borderRadius(java.lang.Integer value) {
+    public EdgeStyleDescriptionBuilder borderRadius(java.lang.Integer value) {
         this.getEdgeStyleDescription().setBorderRadius(value);
         return this;
     }
@@ -119,7 +119,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder borderSize(java.lang.Integer value) {
+    public EdgeStyleDescriptionBuilder borderSize(java.lang.Integer value) {
         this.getEdgeStyleDescription().setBorderSize(value);
         return this;
     }
@@ -128,7 +128,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
+    public EdgeStyleDescriptionBuilder borderLineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getEdgeStyleDescription().setBorderLineStyle(value);
         return this;
     }
@@ -137,7 +137,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder lineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
+    public EdgeStyleDescriptionBuilder lineStyle(org.eclipse.sirius.components.view.diagram.LineStyle value) {
         this.getEdgeStyleDescription().setLineStyle(value);
         return this;
     }
@@ -146,7 +146,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder sourceArrowStyle(org.eclipse.sirius.components.view.diagram.ArrowStyle value) {
+    public EdgeStyleDescriptionBuilder sourceArrowStyle(org.eclipse.sirius.components.view.diagram.ArrowStyle value) {
         this.getEdgeStyleDescription().setSourceArrowStyle(value);
         return this;
     }
@@ -155,7 +155,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder targetArrowStyle(org.eclipse.sirius.components.view.diagram.ArrowStyle value) {
+    public EdgeStyleDescriptionBuilder targetArrowStyle(org.eclipse.sirius.components.view.diagram.ArrowStyle value) {
         this.getEdgeStyleDescription().setTargetArrowStyle(value);
         return this;
     }
@@ -164,7 +164,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder edgeWidth(java.lang.Integer value) {
+    public EdgeStyleDescriptionBuilder edgeWidth(java.lang.Integer value) {
         this.getEdgeStyleDescription().setEdgeWidth(value);
         return this;
     }
@@ -173,7 +173,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder showIcon(java.lang.Boolean value) {
+    public EdgeStyleDescriptionBuilder showIcon(java.lang.Boolean value) {
         this.getEdgeStyleDescription().setShowIcon(value);
         return this;
     }
@@ -182,7 +182,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder labelIcon(java.lang.String value) {
+    public EdgeStyleDescriptionBuilder labelIcon(java.lang.String value) {
         this.getEdgeStyleDescription().setLabelIcon(value);
         return this;
     }
@@ -191,7 +191,7 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder background(org.eclipse.sirius.components.view.UserColor value) {
+    public EdgeStyleDescriptionBuilder background(org.eclipse.sirius.components.view.UserColor value) {
         this.getEdgeStyleDescription().setBackground(value);
         return this;
     }
@@ -200,18 +200,26 @@ public class EdgeStyleBuilder {
      *
      * @generated
      */
-    public EdgeStyleBuilder maxWidthExpression(java.lang.String value) {
+    public EdgeStyleDescriptionBuilder maxWidthExpression(java.lang.String value) {
         this.getEdgeStyleDescription().setMaxWidthExpression(value);
         return this;
     }
-
     /**
      * Setter for EdgeType.
      *
      * @generated
      */
-    public EdgeStyleBuilder edgeType(org.eclipse.sirius.components.view.diagram.EdgeType value) {
+    public EdgeStyleDescriptionBuilder edgeType(org.eclipse.sirius.components.view.diagram.EdgeType value) {
         this.getEdgeStyleDescription().setEdgeType(value);
+        return this;
+    }
+    /**
+     * Setter for Description.
+     *
+     * @generated
+     */
+    public EdgeStyleDescriptionBuilder description(java.lang.String value) {
+        this.getEdgeStyleDescription().setDescription(value);
         return this;
     }
 

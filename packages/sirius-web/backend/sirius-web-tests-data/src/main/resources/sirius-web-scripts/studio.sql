@@ -269,7 +269,7 @@ INSERT INTO document (
                "id":"ed20cb85-a58a-47ad-bc0d-749ec8b2ea03",
                "eClass":"form:FormDescription",
                "data":{
-                 "name":"Human Form",
+                 "id":"Human Form",
                  "domainType":"buck::Human",
                  "pages":[
                    {
@@ -395,7 +395,7 @@ INSERT INTO document (
                "id": "d28d9ecb-102a-4eee-9d26-55543c5acb7f",
                "eClass": "table:TableDescription",
                "data":{
-                 "name": "New Table Description",
+                 "id": "New Table Description",
                  "domainType": "buck::Root",
                  "titleExpression": "aql:New Table",
                  "columnDescriptions": [
@@ -476,14 +476,14 @@ INSERT INTO document (
                "id":"7384dc2c-1b43-45c7-9c74-f972b28774c8",
                "eClass":"diagram:DiagramDescription",
                "data":{
-                 "name":"Root Diagram",
+                 "id":"Root Diagram",
                  "domainType":"buck::Root",
                  "nodeDescriptions":[
                    {
                      "id":"e91e6e23-1440-4fbf-b31c-3a21bf25d85b",
                      "eClass":"diagram:NodeDescription",
                      "data":{
-                       "name":"Human Node",
+                       "id":"Human Node",
                        "domainType":"buck::Human",
                        "semanticCandidatesExpression":"aql:self.humans",
                        "style":{
@@ -510,7 +510,7 @@ INSERT INTO document (
                      "id":"145f5833-f7b1-4c70-8a53-c3cc414e1af9",
                      "eClass":"diagram:NodeDescription",
                      "data":{
-                       "name":"Human Node",
+                       "id":"Human Node",
                        "domainType":"buck::Human",
                        "semanticCandidatesExpression":"aql:self.humans",
                        "style":{
@@ -528,7 +528,7 @@ INSERT INTO document (
                      "id":"3aa78047-dd0e-43b1-9628-a638b2fe7a2b",
                      "eClass":"diagram:EdgeDescription",
                      "data":{
-                       "name":"Siblings",
+                       "id":"Siblings",
                        "sourceExpression":"aql:self",
                        "sourceDescriptions":[
                          "//@descriptions.0/@nodeDescriptions.0"
@@ -539,7 +539,7 @@ INSERT INTO document (
                        ],
                        "style":{
                          "id":"a2a3713f-57bc-422b-92e8-b22ed69e94a8",
-                         "eClass":"diagram:EdgeStyle",
+                         "eClass":"diagram:EdgeStyleDescription",
                          "data":{
                            "edgeWidth":"5"
                          }
@@ -618,14 +618,14 @@ INSERT INTO document (
                "id":"99cb5ddd-4241-4474-8866-2b3b84cb440f",
                "eClass":"diagram:DiagramDescription",
                "data":{
-                 "name":"Root Diagram",
+                 "id":"Root Diagram",
                  "domainType":"buck::Root",
                  "nodeDescriptions":[
                    {
                      "id":"b4e36182-3577-4758-b8fe-7a74ae8d5b9d",
                      "eClass":"diagram:NodeDescription",
                      "data":{
-                       "name":"Human Node",
+                       "id":"Human Node",
                        "domainType":"buck::Human",
                        "semanticCandidatesExpression":"aql:self.humans",
                        "style":{
@@ -841,7 +841,7 @@ VALUES (
                     "id": "92cc1d59-487f-4e0a-8864-983915b562c8",
                     "eClass": "diagram:NodeDescription",
                     "data": {
-                      "name": "Root Node",
+                      "id": "Root Node",
                       "domainType": "buck::Root",
                       "semanticCandidatesExpression": "aql:self",
                       "synchronizationPolicy": "UNSYNCHRONIZED",
@@ -862,7 +862,7 @@ VALUES (
                           "id": "2c363d7d-b5ed-45b5-8f73-c7c3bb02493b",
                           "eClass": "diagram:NodeDescription",
                           "data": {
-                            "name": "Human Sub-node",
+                            "id": "Human Sub-node",
                             "domainType": "buck::Human",
                             "synchronizationPolicy": "UNSYNCHRONIZED",
                             "style": {

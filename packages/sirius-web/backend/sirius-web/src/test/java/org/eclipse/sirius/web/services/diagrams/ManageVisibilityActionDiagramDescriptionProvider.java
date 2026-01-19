@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,7 +94,7 @@ public class ManageVisibilityActionDiagramDescriptionProvider implements IEditin
                 .build();
 
         var childrenNodeDescription = new NodeDescriptionBuilder()
-                .name("Class")
+                .id("Class")
                 .domainType("papaya:Class")
                 .semanticCandidatesExpression("aql:self.eAllContents()")
                 .insideLabel(insideLabel)
@@ -104,7 +104,7 @@ public class ManageVisibilityActionDiagramDescriptionProvider implements IEditin
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
@@ -115,7 +115,7 @@ public class ManageVisibilityActionDiagramDescriptionProvider implements IEditin
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'ManageVisibilityActionDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)

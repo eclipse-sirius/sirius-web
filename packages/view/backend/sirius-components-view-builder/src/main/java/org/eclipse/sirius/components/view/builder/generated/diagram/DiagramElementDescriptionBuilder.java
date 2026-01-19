@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,14 +27,15 @@ public abstract class DiagramElementDescriptionBuilder {
     protected abstract org.eclipse.sirius.components.view.diagram.DiagramElementDescription getDiagramElementDescription();
 
     /**
-     * Setter for Name.
+     * Setter for Id.
      *
      * @generated
      */
-    public DiagramElementDescriptionBuilder name(java.lang.String value) {
-        this.getDiagramElementDescription().setName(value);
+    public DiagramElementDescriptionBuilder id(java.lang.String value) {
+        this.getDiagramElementDescription().setId(value);
         return this;
     }
+
     /**
      * Setter for DomainType.
      *
@@ -69,6 +70,16 @@ public abstract class DiagramElementDescriptionBuilder {
      */
     public DiagramElementDescriptionBuilder synchronizationPolicy(org.eclipse.sirius.components.view.diagram.SynchronizationPolicy value) {
         this.getDiagramElementDescription().setSynchronizationPolicy(value);
+        return this;
+    }
+
+    /**
+     * Setter for Description.
+     *
+     * @generated
+     */
+    public DiagramElementDescriptionBuilder description(java.lang.String value) {
+        this.getDiagramElementDescription().setDescription(value);
         return this;
     }
 

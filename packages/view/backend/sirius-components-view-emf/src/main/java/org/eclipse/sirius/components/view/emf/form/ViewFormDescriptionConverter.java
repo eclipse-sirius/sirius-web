@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -92,7 +92,7 @@ public class ViewFormDescriptionConverter implements IRepresentationDescriptionC
         };
 
         var formDescription = FormDescription.newFormDescription(this.formIdProvider.getId(viewFormDescription))
-                .label(Optional.ofNullable(viewFormDescription.getName()).orElse(DEFAULT_FORM_LABEL))
+                .label(Optional.ofNullable(viewFormDescription.getId()).orElse(DEFAULT_FORM_LABEL))
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .labelProvider(variableManager -> this.computeFormLabel(viewFormDescription, variableManager, interpreter))
                 .canCreatePredicate(variableManager -> this.canCreate(viewFormDescription.getDomainType(), viewFormDescription.getPreconditionExpression(), variableManager, interpreter))

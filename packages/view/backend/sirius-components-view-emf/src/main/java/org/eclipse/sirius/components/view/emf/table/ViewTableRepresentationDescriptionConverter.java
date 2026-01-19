@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -102,7 +102,7 @@ public class ViewTableRepresentationDescriptionConverter implements IRepresentat
         };
 
         var tableDescription = TableDescription.newTableDescription(this.tableIdProvider.getId(viewTableDescription))
-                .label(Optional.ofNullable(viewTableDescription.getName()).orElse(DEFAULT_TABLE_LABEL))
+                .label(Optional.ofNullable(viewTableDescription.getId()).orElse(DEFAULT_TABLE_LABEL))
                 .labelProvider(variableManager -> this.computeTableLabel(viewTableDescription, variableManager, interpreter))
                 .canCreatePredicate(variableManager -> this.canCreate(viewTableDescription.getDomainType(), viewTableDescription.getPreconditionExpression(), variableManager, interpreter))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)

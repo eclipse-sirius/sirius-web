@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,6 +87,16 @@ public class ImageNodeStyleDescriptionBuilder {
         this.getImageNodeStyleDescription().setChildrenLayoutStrategy(value);
         return this;
     }
+    /**
+     * Setter for Description.
+     *
+     * @generated
+     */
+    public ImageNodeStyleDescriptionBuilder description(java.lang.String value) {
+        this.getImageNodeStyleDescription().setDescription(value);
+        return this;
+    }
+
     /**
      * Setter for Shape.
      *

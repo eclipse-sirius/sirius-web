@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,7 @@ public class LifecycleDiagramDescriptionProvider implements IRepresentationDescr
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         var lifecycleDiagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
-        lifecycleDiagramDescription.setName(NAME);
+        lifecycleDiagramDescription.setId(NAME);
         lifecycleDiagramDescription.setDomainType("papaya:ApplicationConcern");
         lifecycleDiagramDescription.setTitleExpression("aql:self.name + ' Lifecycle Diagram'");
         lifecycleDiagramDescription.setAutoLayout(false);

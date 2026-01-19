@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class DomainDropTreeItemHandler implements IDropTreeItemHandler {
                 && tree.getDescriptionId().startsWith(IRepresentationDescriptionIdProvider.PREFIX)) {
             var optionalViewTreeDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, tree.getDescriptionId());
             if (optionalViewTreeDescription.isPresent()) {
-                result = optionalViewTreeDescription.get().getName().equals(DomainViewTreeDescriptionProvider.DOMAIN_EXPLORER_DESCRIPTION_NAME);
+                result = optionalViewTreeDescription.get().getId().equals(DomainViewTreeDescriptionProvider.DOMAIN_EXPLORER_DESCRIPTION_NAME);
             }
         }
         return result;

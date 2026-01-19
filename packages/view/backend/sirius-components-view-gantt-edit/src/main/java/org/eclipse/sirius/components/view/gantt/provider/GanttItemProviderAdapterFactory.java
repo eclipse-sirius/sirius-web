@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -477,7 +477,7 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
             @Override
             public Object caseView(View object) {
                 GanttDescription ganttDescription = GanttFactory.eINSTANCE.createGanttDescription();
-                ganttDescription.setName("New Gantt Description");
+                ganttDescription.setId("New Gantt Description");
                 ganttDescription.setTitleExpression("aql:'New Gantt Representation'");
                 this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, ganttDescription));
 

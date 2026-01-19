@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,7 @@ import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
@@ -325,15 +325,15 @@ public class DiagramSwitch<T> extends Switch<T> {
                     result = this.defaultCase(theEObject);
                 return result;
             }
-            case DiagramPackage.EDGE_STYLE: {
-                EdgeStyle edgeStyle = (EdgeStyle) theEObject;
-                T result = this.caseEdgeStyle(edgeStyle);
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION: {
+                EdgeStyleDescription edgeStyleDescription = (EdgeStyleDescription) theEObject;
+                T result = this.caseEdgeStyleDescription(edgeStyleDescription);
                 if (result == null)
-                    result = this.caseStyle(edgeStyle);
+                    result = this.caseStyle(edgeStyleDescription);
                 if (result == null)
-                    result = this.caseLabelStyle(edgeStyle);
+                    result = this.caseLabelStyle(edgeStyleDescription);
                 if (result == null)
-                    result = this.caseBorderStyle(edgeStyle);
+                    result = this.caseBorderStyle(edgeStyleDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -344,7 +344,7 @@ public class DiagramSwitch<T> extends Switch<T> {
                 if (result == null)
                     result = this.caseConditional(conditionalEdgeStyle);
                 if (result == null)
-                    result = this.caseEdgeStyle(conditionalEdgeStyle);
+                    result = this.caseEdgeStyleDescription(conditionalEdgeStyle);
                 if (result == null)
                     result = this.caseStyle(conditionalEdgeStyle);
                 if (result == null)
@@ -890,16 +890,17 @@ public class DiagramSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Edge Style</em>'. <!-- begin-user-doc -->
-     * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Edge Style Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
      *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Edge Style</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Edge Style Description</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseEdgeStyle(EdgeStyle object) {
+    public T caseEdgeStyleDescription(EdgeStyleDescription object) {
         return null;
     }
 

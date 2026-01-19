@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,45 +22,58 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Edge Style</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Edge Style Description</b></em>'. <!--
+ * end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getFontSize <em>Font Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#isItalic <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#isBold <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#isUnderline <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#isStrikeThrough <em>Strike
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getFontSize <em>Font
+ * Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#isItalic <em>Italic</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#isBold <em>Bold</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#isUnderline
+ * <em>Underline</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#isStrikeThrough <em>Strike
  * Through</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBorderColor <em>Border Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBorderRadius <em>Border Radius</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBorderSize <em>Border Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBorderLineStyle <em>Border Line
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getBorderColor <em>Border
+ * Color</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getBorderRadius <em>Border
+ * Radius</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getBorderSize <em>Border
+ * Size</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getBorderLineStyle <em>Border
+ * Line Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getLineStyle <em>Line
  * Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getLineStyle <em>Line Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getSourceArrowStyle <em>Source Arrow
- * Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getTargetArrowStyle <em>Target Arrow
- * Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getEdgeWidth <em>Edge Width</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#isShowIcon <em>Show Icon</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getLabelIcon <em>Label Icon</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getBackground <em>Background</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getMaxWidthExpression <em>Max Width
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl#getEdgeType <em>Edge Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getSourceArrowStyle <em>Source
+ * Arrow Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getTargetArrowStyle <em>Target
+ * Arrow Style</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getEdgeWidth <em>Edge
+ * Width</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#isShowIcon <em>Show
+ * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getLabelIcon <em>Label
+ * Icon</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getBackground
+ * <em>Background</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getMaxWidthExpression <em>Max
+ * Width Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getEdgeType <em>Edge
+ * Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl#getDescription
+ * <em>Description</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
-
+public class EdgeStyleDescriptionImpl extends StyleImpl implements EdgeStyleDescription {
     /**
      * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -105,9 +118,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * The default value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
+     * @see #isBold()
      * @generated
      * @ordered
-     * @see #isBold()
      */
     protected static final boolean BOLD_EDEFAULT = false;
 
@@ -115,9 +128,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * The cached value of the '{@link #isBold() <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
+     * @see #isBold()
      * @generated
      * @ordered
-     * @see #isBold()
      */
     protected boolean bold = BOLD_EDEFAULT;
 
@@ -215,9 +228,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * The default value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getBorderLineStyle()
      * @generated
      * @ordered
-     * @see #getBorderLineStyle()
      */
     protected static final LineStyle BORDER_LINE_STYLE_EDEFAULT = LineStyle.SOLID;
 
@@ -255,9 +268,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * The default value of the '{@link #getSourceArrowStyle() <em>Source Arrow Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSourceArrowStyle()
      * @generated
      * @ordered
-     * @see #getSourceArrowStyle()
      */
     protected static final ArrowStyle SOURCE_ARROW_STYLE_EDEFAULT = ArrowStyle.NONE;
 
@@ -265,9 +278,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * The cached value of the '{@link #getSourceArrowStyle() <em>Source Arrow Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSourceArrowStyle()
      * @generated
      * @ordered
-     * @see #getSourceArrowStyle()
      */
     protected ArrowStyle sourceArrowStyle = SOURCE_ARROW_STYLE_EDEFAULT;
 
@@ -275,9 +288,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * The default value of the '{@link #getTargetArrowStyle() <em>Target Arrow Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getTargetArrowStyle()
      * @generated
      * @ordered
-     * @see #getTargetArrowStyle()
      */
     protected static final ArrowStyle TARGET_ARROW_STYLE_EDEFAULT = ArrowStyle.INPUT_ARROW;
 
@@ -285,9 +298,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * The cached value of the '{@link #getTargetArrowStyle() <em>Target Arrow Style</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getTargetArrowStyle()
      * @generated
      * @ordered
-     * @see #getTargetArrowStyle()
      */
     protected ArrowStyle targetArrowStyle = TARGET_ARROW_STYLE_EDEFAULT;
 
@@ -365,9 +378,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * The default value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getMaxWidthExpression()
      * @generated
      * @ordered
-     * @see #getMaxWidthExpression()
      */
     protected static final String MAX_WIDTH_EXPRESSION_EDEFAULT = null;
 
@@ -375,9 +388,9 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      * The cached value of the '{@link #getMaxWidthExpression() <em>Max Width Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getMaxWidthExpression()
      * @generated
      * @ordered
-     * @see #getMaxWidthExpression()
      */
     protected String maxWidthExpression = MAX_WIDTH_EXPRESSION_EDEFAULT;
 
@@ -402,11 +415,31 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
     protected EdgeType edgeType = EDGE_TYPE_EDEFAULT;
 
     /**
+     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected String description = DESCRIPTION_EDEFAULT;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected EdgeStyleImpl() {
+    protected EdgeStyleDescriptionImpl() {
         super();
     }
 
@@ -417,7 +450,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.EDGE_STYLE;
+        return DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION;
     }
 
     /**
@@ -440,7 +473,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         int oldFontSize = this.fontSize;
         this.fontSize = newFontSize;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__FONT_SIZE, oldFontSize, this.fontSize));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__FONT_SIZE, oldFontSize, this.fontSize));
     }
 
     /**
@@ -463,7 +496,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         boolean oldItalic = this.italic;
         this.italic = newItalic;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__ITALIC, oldItalic, this.italic));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__ITALIC, oldItalic, this.italic));
     }
 
     /**
@@ -486,7 +519,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         boolean oldBold = this.bold;
         this.bold = newBold;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BOLD, oldBold, this.bold));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__BOLD, oldBold, this.bold));
     }
 
     /**
@@ -509,7 +542,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         boolean oldUnderline = this.underline;
         this.underline = newUnderline;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__UNDERLINE, oldUnderline, this.underline));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__UNDERLINE, oldUnderline, this.underline));
     }
 
     /**
@@ -532,7 +565,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         boolean oldStrikeThrough = this.strikeThrough;
         this.strikeThrough = newStrikeThrough;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
     }
 
     /**
@@ -547,9 +580,18 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             this.borderColor = (UserColor) this.eResolveProxy(oldBorderColor);
             if (this.borderColor != oldBorderColor) {
                 if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.EDGE_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_COLOR, oldBorderColor, this.borderColor));
             }
         }
+        return this.borderColor;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBorderColor() {
         return this.borderColor;
     }
 
@@ -563,16 +605,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         UserColor oldBorderColor = this.borderColor;
         this.borderColor = newBorderColor;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public UserColor basicGetBorderColor() {
-        return this.borderColor;
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_COLOR, oldBorderColor, this.borderColor));
     }
 
     /**
@@ -595,7 +628,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         int oldBorderRadius = this.borderRadius;
         this.borderRadius = newBorderRadius;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BORDER_RADIUS, oldBorderRadius, this.borderRadius));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_RADIUS, oldBorderRadius, this.borderRadius));
     }
 
     /**
@@ -618,7 +651,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         int oldBorderSize = this.borderSize;
         this.borderSize = newBorderSize;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BORDER_SIZE, oldBorderSize, this.borderSize));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_SIZE, oldBorderSize, this.borderSize));
     }
 
     /**
@@ -641,7 +674,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         LineStyle oldBorderLineStyle = this.borderLineStyle;
         this.borderLineStyle = newBorderLineStyle == null ? BORDER_LINE_STYLE_EDEFAULT : newBorderLineStyle;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE, oldBorderLineStyle, this.borderLineStyle));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_LINE_STYLE, oldBorderLineStyle, this.borderLineStyle));
     }
 
     /**
@@ -664,7 +697,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         LineStyle oldLineStyle = this.lineStyle;
         this.lineStyle = newLineStyle == null ? LINE_STYLE_EDEFAULT : newLineStyle;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__LINE_STYLE, oldLineStyle, this.lineStyle));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__LINE_STYLE, oldLineStyle, this.lineStyle));
     }
 
     /**
@@ -687,7 +720,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         ArrowStyle oldSourceArrowStyle = this.sourceArrowStyle;
         this.sourceArrowStyle = newSourceArrowStyle == null ? SOURCE_ARROW_STYLE_EDEFAULT : newSourceArrowStyle;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__SOURCE_ARROW_STYLE, oldSourceArrowStyle, this.sourceArrowStyle));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE, oldSourceArrowStyle, this.sourceArrowStyle));
     }
 
     /**
@@ -710,7 +743,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         ArrowStyle oldTargetArrowStyle = this.targetArrowStyle;
         this.targetArrowStyle = newTargetArrowStyle == null ? TARGET_ARROW_STYLE_EDEFAULT : newTargetArrowStyle;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__TARGET_ARROW_STYLE, oldTargetArrowStyle, this.targetArrowStyle));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE, oldTargetArrowStyle, this.targetArrowStyle));
     }
 
     /**
@@ -733,7 +766,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         int oldEdgeWidth = this.edgeWidth;
         this.edgeWidth = newEdgeWidth;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__EDGE_WIDTH, oldEdgeWidth, this.edgeWidth));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_WIDTH, oldEdgeWidth, this.edgeWidth));
     }
 
     /**
@@ -756,7 +789,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         boolean oldShowIcon = this.showIcon;
         this.showIcon = newShowIcon;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__SHOW_ICON, oldShowIcon, this.showIcon));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__SHOW_ICON, oldShowIcon, this.showIcon));
     }
 
     /**
@@ -779,7 +812,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         String oldLabelIcon = this.labelIcon;
         this.labelIcon = newLabelIcon;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__LABEL_ICON, oldLabelIcon, this.labelIcon));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__LABEL_ICON, oldLabelIcon, this.labelIcon));
     }
 
     /**
@@ -794,9 +827,18 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
             this.background = (UserColor) this.eResolveProxy(oldBackground);
             if (this.background != oldBackground) {
                 if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.EDGE_STYLE__BACKGROUND, oldBackground, this.background));
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.EDGE_STYLE_DESCRIPTION__BACKGROUND, oldBackground, this.background));
             }
         }
+        return this.background;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public UserColor basicGetBackground() {
         return this.background;
     }
 
@@ -810,7 +852,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         UserColor oldBackground = this.background;
         this.background = newBackground;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__BACKGROUND, oldBackground, this.background));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__BACKGROUND, oldBackground, this.background));
     }
 
     /**
@@ -833,7 +875,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         String oldMaxWidthExpression = this.maxWidthExpression;
         this.maxWidthExpression = newMaxWidthExpression;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION, oldMaxWidthExpression, this.maxWidthExpression));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__MAX_WIDTH_EXPRESSION, oldMaxWidthExpression, this.maxWidthExpression));
     }
 
     /**
@@ -856,7 +898,7 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         EdgeType oldEdgeType = this.edgeType;
         this.edgeType = newEdgeType == null ? EDGE_TYPE_EDEFAULT : newEdgeType;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE__EDGE_TYPE, oldEdgeType, this.edgeType));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_TYPE, oldEdgeType, this.edgeType));
     }
 
     /**
@@ -864,8 +906,22 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
      *
      * @generated
      */
-    public UserColor basicGetBackground() {
-        return this.background;
+    @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescription(String newDescription) {
+        String oldDescription = this.description;
+        this.description = newDescription;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_STYLE_DESCRIPTION__DESCRIPTION, oldDescription, this.description));
     }
 
     /**
@@ -876,46 +932,48 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case DiagramPackage.EDGE_STYLE__FONT_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__FONT_SIZE:
                 return this.getFontSize();
-            case DiagramPackage.EDGE_STYLE__ITALIC:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__ITALIC:
                 return this.isItalic();
-            case DiagramPackage.EDGE_STYLE__BOLD:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BOLD:
                 return this.isBold();
-            case DiagramPackage.EDGE_STYLE__UNDERLINE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__UNDERLINE:
                 return this.isUnderline();
-            case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__STRIKE_THROUGH:
                 return this.isStrikeThrough();
-            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_COLOR:
                 if (resolve)
                     return this.getBorderColor();
                 return this.basicGetBorderColor();
-            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 return this.getBorderRadius();
-            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_SIZE:
                 return this.getBorderSize();
-            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.getBorderLineStyle();
-            case DiagramPackage.EDGE_STYLE__LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LINE_STYLE:
                 return this.getLineStyle();
-            case DiagramPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE:
                 return this.getSourceArrowStyle();
-            case DiagramPackage.EDGE_STYLE__TARGET_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE:
                 return this.getTargetArrowStyle();
-            case DiagramPackage.EDGE_STYLE__EDGE_WIDTH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_WIDTH:
                 return this.getEdgeWidth();
-            case DiagramPackage.EDGE_STYLE__SHOW_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.isShowIcon();
-            case DiagramPackage.EDGE_STYLE__LABEL_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LABEL_ICON:
                 return this.getLabelIcon();
-            case DiagramPackage.EDGE_STYLE__BACKGROUND:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BACKGROUND:
                 if (resolve)
                     return this.getBackground();
                 return this.basicGetBackground();
-            case DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__MAX_WIDTH_EXPRESSION:
                 return this.getMaxWidthExpression();
-            case DiagramPackage.EDGE_STYLE__EDGE_TYPE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_TYPE:
                 return this.getEdgeType();
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__DESCRIPTION:
+                return this.getDescription();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -928,59 +986,62 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case DiagramPackage.EDGE_STYLE__FONT_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__FONT_SIZE:
                 this.setFontSize((Integer) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__ITALIC:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__ITALIC:
                 this.setItalic((Boolean) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__BOLD:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BOLD:
                 this.setBold((Boolean) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__UNDERLINE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__UNDERLINE:
                 this.setUnderline((Boolean) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__STRIKE_THROUGH:
                 this.setStrikeThrough((Boolean) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_COLOR:
                 this.setBorderColor((UserColor) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 this.setBorderRadius((Integer) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_SIZE:
                 this.setBorderSize((Integer) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle((LineStyle) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LINE_STYLE:
                 this.setLineStyle((LineStyle) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE:
                 this.setSourceArrowStyle((ArrowStyle) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__TARGET_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE:
                 this.setTargetArrowStyle((ArrowStyle) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__EDGE_WIDTH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_WIDTH:
                 this.setEdgeWidth((Integer) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__SHOW_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon((Boolean) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__LABEL_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LABEL_ICON:
                 this.setLabelIcon((String) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__BACKGROUND:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BACKGROUND:
                 this.setBackground((UserColor) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__MAX_WIDTH_EXPRESSION:
                 this.setMaxWidthExpression((String) newValue);
                 return;
-            case DiagramPackage.EDGE_STYLE__EDGE_TYPE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_TYPE:
                 this.setEdgeType((EdgeType) newValue);
+                return;
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__DESCRIPTION:
+                this.setDescription((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -994,59 +1055,62 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case DiagramPackage.EDGE_STYLE__FONT_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__FONT_SIZE:
                 this.setFontSize(FONT_SIZE_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__ITALIC:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__ITALIC:
                 this.setItalic(ITALIC_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__BOLD:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BOLD:
                 this.setBold(BOLD_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__UNDERLINE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__UNDERLINE:
                 this.setUnderline(UNDERLINE_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__STRIKE_THROUGH:
                 this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_COLOR:
                 this.setBorderColor((UserColor) null);
                 return;
-            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_SIZE:
                 this.setBorderSize(BORDER_SIZE_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LINE_STYLE:
                 this.setLineStyle(LINE_STYLE_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE:
                 this.setSourceArrowStyle(SOURCE_ARROW_STYLE_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__TARGET_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE:
                 this.setTargetArrowStyle(TARGET_ARROW_STYLE_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__EDGE_WIDTH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_WIDTH:
                 this.setEdgeWidth(EDGE_WIDTH_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__SHOW_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SHOW_ICON:
                 this.setShowIcon(SHOW_ICON_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__LABEL_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LABEL_ICON:
                 this.setLabelIcon(LABEL_ICON_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__BACKGROUND:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BACKGROUND:
                 this.setBackground((UserColor) null);
                 return;
-            case DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__MAX_WIDTH_EXPRESSION:
                 this.setMaxWidthExpression(MAX_WIDTH_EXPRESSION_EDEFAULT);
                 return;
-            case DiagramPackage.EDGE_STYLE__EDGE_TYPE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_TYPE:
                 this.setEdgeType(EDGE_TYPE_EDEFAULT);
+                return;
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__DESCRIPTION:
+                this.setDescription(DESCRIPTION_EDEFAULT);
                 return;
         }
         super.eUnset(featureID);
@@ -1060,42 +1124,44 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case DiagramPackage.EDGE_STYLE__FONT_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__FONT_SIZE:
                 return this.fontSize != FONT_SIZE_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__ITALIC:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__ITALIC:
                 return this.italic != ITALIC_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__BOLD:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BOLD:
                 return this.bold != BOLD_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__UNDERLINE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__UNDERLINE:
                 return this.underline != UNDERLINE_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__STRIKE_THROUGH:
                 return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_COLOR:
                 return this.borderColor != null;
-            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_RADIUS:
                 return this.borderRadius != BORDER_RADIUS_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_SIZE:
                 return this.borderSize != BORDER_SIZE_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LINE_STYLE:
                 return this.lineStyle != LINE_STYLE_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE:
                 return this.sourceArrowStyle != SOURCE_ARROW_STYLE_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__TARGET_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE:
                 return this.targetArrowStyle != TARGET_ARROW_STYLE_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__EDGE_WIDTH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_WIDTH:
                 return this.edgeWidth != EDGE_WIDTH_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__SHOW_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SHOW_ICON:
                 return this.showIcon != SHOW_ICON_EDEFAULT;
-            case DiagramPackage.EDGE_STYLE__LABEL_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LABEL_ICON:
                 return LABEL_ICON_EDEFAULT == null ? this.labelIcon != null : !LABEL_ICON_EDEFAULT.equals(this.labelIcon);
-            case DiagramPackage.EDGE_STYLE__BACKGROUND:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BACKGROUND:
                 return this.background != null;
-            case DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__MAX_WIDTH_EXPRESSION:
                 return MAX_WIDTH_EXPRESSION_EDEFAULT == null ? this.maxWidthExpression != null : !MAX_WIDTH_EXPRESSION_EDEFAULT.equals(this.maxWidthExpression);
-            case DiagramPackage.EDGE_STYLE__EDGE_TYPE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_TYPE:
                 return this.edgeType != EDGE_TYPE_EDEFAULT;
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__DESCRIPTION:
+                return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
         }
         return super.eIsSet(featureID);
     }
@@ -1109,15 +1175,15 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
         if (baseClass == LabelStyle.class) {
             switch (derivedFeatureID) {
-                case DiagramPackage.EDGE_STYLE__FONT_SIZE:
+                case DiagramPackage.EDGE_STYLE_DESCRIPTION__FONT_SIZE:
                     return ViewPackage.LABEL_STYLE__FONT_SIZE;
-                case DiagramPackage.EDGE_STYLE__ITALIC:
+                case DiagramPackage.EDGE_STYLE_DESCRIPTION__ITALIC:
                     return ViewPackage.LABEL_STYLE__ITALIC;
-                case DiagramPackage.EDGE_STYLE__BOLD:
+                case DiagramPackage.EDGE_STYLE_DESCRIPTION__BOLD:
                     return ViewPackage.LABEL_STYLE__BOLD;
-                case DiagramPackage.EDGE_STYLE__UNDERLINE:
+                case DiagramPackage.EDGE_STYLE_DESCRIPTION__UNDERLINE:
                     return ViewPackage.LABEL_STYLE__UNDERLINE;
-                case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
+                case DiagramPackage.EDGE_STYLE_DESCRIPTION__STRIKE_THROUGH:
                     return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
                 default:
                     return -1;
@@ -1125,13 +1191,13 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         }
         if (baseClass == BorderStyle.class) {
             switch (derivedFeatureID) {
-                case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
+                case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_COLOR:
                     return DiagramPackage.BORDER_STYLE__BORDER_COLOR;
-                case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
+                case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_RADIUS:
                     return DiagramPackage.BORDER_STYLE__BORDER_RADIUS;
-                case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
+                case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_SIZE:
                     return DiagramPackage.BORDER_STYLE__BORDER_SIZE;
-                case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
+                case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
                     return DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE;
                 default:
                     return -1;
@@ -1150,15 +1216,15 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         if (baseClass == LabelStyle.class) {
             switch (baseFeatureID) {
                 case ViewPackage.LABEL_STYLE__FONT_SIZE:
-                    return DiagramPackage.EDGE_STYLE__FONT_SIZE;
+                    return DiagramPackage.EDGE_STYLE_DESCRIPTION__FONT_SIZE;
                 case ViewPackage.LABEL_STYLE__ITALIC:
-                    return DiagramPackage.EDGE_STYLE__ITALIC;
+                    return DiagramPackage.EDGE_STYLE_DESCRIPTION__ITALIC;
                 case ViewPackage.LABEL_STYLE__BOLD:
-                    return DiagramPackage.EDGE_STYLE__BOLD;
+                    return DiagramPackage.EDGE_STYLE_DESCRIPTION__BOLD;
                 case ViewPackage.LABEL_STYLE__UNDERLINE:
-                    return DiagramPackage.EDGE_STYLE__UNDERLINE;
+                    return DiagramPackage.EDGE_STYLE_DESCRIPTION__UNDERLINE;
                 case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-                    return DiagramPackage.EDGE_STYLE__STRIKE_THROUGH;
+                    return DiagramPackage.EDGE_STYLE_DESCRIPTION__STRIKE_THROUGH;
                 default:
                     return -1;
             }
@@ -1166,13 +1232,13 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         if (baseClass == BorderStyle.class) {
             switch (baseFeatureID) {
                 case DiagramPackage.BORDER_STYLE__BORDER_COLOR:
-                    return DiagramPackage.EDGE_STYLE__BORDER_COLOR;
+                    return DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_COLOR;
                 case DiagramPackage.BORDER_STYLE__BORDER_RADIUS:
-                    return DiagramPackage.EDGE_STYLE__BORDER_RADIUS;
+                    return DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_RADIUS;
                 case DiagramPackage.BORDER_STYLE__BORDER_SIZE:
-                    return DiagramPackage.EDGE_STYLE__BORDER_SIZE;
+                    return DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_SIZE;
                 case DiagramPackage.BORDER_STYLE__BORDER_LINE_STYLE:
-                    return DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE;
+                    return DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_LINE_STYLE;
                 default:
                     return -1;
             }
@@ -1223,8 +1289,10 @@ public class EdgeStyleImpl extends StyleImpl implements EdgeStyle {
         result.append(this.maxWidthExpression);
         result.append(", edgeType: ");
         result.append(this.edgeType);
+        result.append(", description: ");
+        result.append(this.description);
         result.append(')');
         return result.toString();
     }
 
-} // EdgeStyleImpl
+} // EdgeStyleDescriptionImpl

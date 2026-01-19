@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,7 @@ public class DiagramNodeDescriptionLayoutStrategyMigrationParticipantTests exten
     private void testIsMigrationSuccessful(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             var optionalDiagramDescription = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream())
-                    .filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_STUDIO_DIAGRAM)).findFirst();
+                    .filter(representationDescription -> representationDescription.getId().equals(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_STUDIO_DIAGRAM)).findFirst();
             assertThat(optionalDiagramDescription).isPresent();
             assertThat(optionalDiagramDescription.get()).isInstanceOf(DiagramDescription.class);
             optionalDiagramDescription.ifPresent(representationDescription -> {
@@ -67,7 +67,7 @@ public class DiagramNodeDescriptionLayoutStrategyMigrationParticipantTests exten
                             assertThat(listLayoutStrategyDescription.getTopGapExpression()).isEqualTo("10");
                             assertThat(listLayoutStrategyDescription.getBottomGapExpression()).isEqualTo("20");
                             assertThat(listLayoutStrategyDescription.getGrowableNodes()).hasSize(1);
-                            assertThat(listLayoutStrategyDescription.getGrowableNodes()).allSatisfy(growableNode -> assertThat(growableNode.getName()).isEqualTo("Sub-node"));
+                            assertThat(listLayoutStrategyDescription.getGrowableNodes()).allSatisfy(growableNode -> assertThat(growableNode.getId()).isEqualTo("Sub-node"));
                         });
                         assertThat(nodeDescription.getChildrenDescriptions()).anySatisfy(subNodeDescription -> {
                             assertThat(subNodeDescription.getStyle().getChildrenLayoutStrategy()).isNotNull();
@@ -82,7 +82,7 @@ public class DiagramNodeDescriptionLayoutStrategyMigrationParticipantTests exten
                                 assertThat(listLayoutStrategyDescription.getTopGapExpression()).isEqualTo("10");
                                 assertThat(listLayoutStrategyDescription.getBottomGapExpression()).isEqualTo("20");
                                 assertThat(listLayoutStrategyDescription.getGrowableNodes()).hasSize(1);
-                                assertThat(listLayoutStrategyDescription.getGrowableNodes()).allSatisfy(growableNode -> assertThat(growableNode.getName()).isEqualTo("Sub-node"));
+                                assertThat(listLayoutStrategyDescription.getGrowableNodes()).allSatisfy(growableNode -> assertThat(growableNode.getId()).isEqualTo("Sub-node"));
                             });
                         });
                     });
@@ -90,7 +90,7 @@ public class DiagramNodeDescriptionLayoutStrategyMigrationParticipantTests exten
             });
 
             var optionalDiagramDescriptionAlreadyMigrate = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream())
-                    .filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_ALREADY_MIGRATE_STUDIO_DIAGRAM))
+                    .filter(representationDescription -> representationDescription.getId().equals(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_LAYOUT_STRATEGY_ALREADY_MIGRATE_STUDIO_DIAGRAM))
                     .findFirst();
             assertThat(optionalDiagramDescriptionAlreadyMigrate).isPresent();
             assertThat(optionalDiagramDescriptionAlreadyMigrate.get()).isInstanceOf(DiagramDescription.class);

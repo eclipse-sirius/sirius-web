@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,14 +43,15 @@ public class NodeDescriptionBuilder {
     }
 
     /**
-     * Setter for Name.
+     * Setter for Id.
      *
      * @generated
      */
-    public NodeDescriptionBuilder name(java.lang.String value) {
-        this.getNodeDescription().setName(value);
+    public NodeDescriptionBuilder id(java.lang.String value) {
+        this.getNodeDescription().setId(value);
         return this;
     }
+
     /**
      * Setter for DomainType.
      *
@@ -87,6 +88,16 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setSynchronizationPolicy(value);
         return this;
     }
+    /**
+     * Setter for Description.
+     *
+     * @generated
+     */
+    public NodeDescriptionBuilder description(java.lang.String value) {
+        this.getNodeDescription().setDescription(value);
+        return this;
+    }
+
     /**
      * Setter for Collapsible.
      *

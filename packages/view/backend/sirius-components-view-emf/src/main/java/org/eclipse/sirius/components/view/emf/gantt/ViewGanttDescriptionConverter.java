@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,7 +97,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .toList();
 
         var ganttDescription = GanttDescription.newGanttDescription(this.ganttIdProvider.getId(viewGanttDescription))
-                .label(Optional.ofNullable(viewGanttDescription.getName()).orElse(DEFAULT_GANTT_DESCRIPTION_LABEL))
+                .label(Optional.ofNullable(viewGanttDescription.getId()).orElse(DEFAULT_GANTT_DESCRIPTION_LABEL))
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .canCreatePredicate(variableManager -> this.canCreate(viewGanttDescription.getDomainType(), viewGanttDescription.getPreconditionExpression(), variableManager, interpreter))
                 .labelProvider(variableManager -> this.computeGanttLabel(viewGanttDescription, variableManager, interpreter))

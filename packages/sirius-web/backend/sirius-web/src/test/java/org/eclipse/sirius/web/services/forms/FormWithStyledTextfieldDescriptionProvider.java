@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -148,7 +148,7 @@ public class FormWithStyledTextfieldDescriptionProvider implements IEditingConte
                 .build();
 
         this.formDescription = new FormDescriptionBuilder()
-                .name("Form")
+                .id("Form")
                 .titleExpression("aql:'FormWithStyledTextfield'")
                 .domainType("domain:Entity")
                 .pages(pageDescription)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.flow.starter.services;
 
+import fr.obeo.dsl.designer.sample.flow.DataSource;
+import fr.obeo.dsl.designer.sample.flow.FlowPackage;
+
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import fr.obeo.dsl.designer.sample.flow.DataSource;
-import fr.obeo.dsl.designer.sample.flow.FlowPackage;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -55,7 +56,7 @@ public class FlowService {
         }
 
         var descriptionId = convertedNodes.entrySet().stream()
-                .filter(entry -> entry.getKey().getName().equals(nodeDescriptionName))
+                .filter(entry -> entry.getKey().getId().equals(nodeDescriptionName))
                 .findFirst()
                 .map(entry -> entry.getValue().getId())
                 .orElse(null);

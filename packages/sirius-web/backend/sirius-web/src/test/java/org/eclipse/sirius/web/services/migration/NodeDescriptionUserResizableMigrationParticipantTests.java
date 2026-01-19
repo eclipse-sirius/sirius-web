@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -204,17 +204,17 @@ public class NodeDescriptionUserResizableMigrationParticipantTests extends Abstr
     private void testIsMigrationSuccessful(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             var optionalDiagramDescription = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream())
-                    .filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO_DIAGRAM)).findFirst();
+                    .filter(representationDescription -> representationDescription.getId().equals(MigrationIdentifiers.MIGRATION_NODE_DESCRIPTION_USER_RESIZABLE_STUDIO_DIAGRAM)).findFirst();
             assertThat(optionalDiagramDescription).isPresent();
             assertThat(optionalDiagramDescription.get()).isInstanceOf(DiagramDescription.class);
             optionalDiagramDescription.ifPresent(representationDescription -> {
                 if (representationDescription instanceof DiagramDescription diagramDescription) {
                     assertThat(diagramDescription.getNodeDescriptions()).hasSize(2);
                     diagramDescription.getNodeDescriptions().forEach(nodeDescription -> {
-                        if (nodeDescription.getName().equals("NodeWithUserResizableFalse migration")) {
+                        if (nodeDescription.getId().equals("NodeWithUserResizableFalse migration")) {
                             assertThat(nodeDescription.getUserResizable()).isEqualTo(UserResizableDirection.NONE);
                         }
-                        if (nodeDescription.getName().equals("NodeWithUserResizableTrue migration")) {
+                        if (nodeDescription.getId().equals("NodeWithUserResizableTrue migration")) {
                             assertThat(nodeDescription.getUserResizable()).isEqualTo(UserResizableDirection.BOTH);
                         }
                     });

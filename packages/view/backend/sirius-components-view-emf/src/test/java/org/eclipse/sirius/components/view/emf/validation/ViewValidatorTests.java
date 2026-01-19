@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -284,7 +284,7 @@ public class ViewValidatorTests {
         NodeDescription borderNodeDescription1 = DiagramFactory.eINSTANCE.createNodeDescription();
 
         NodeDescription nodeDescription = DiagramFactory.eINSTANCE.createNodeDescription();
-        nodeDescription.setName("Node Description");
+        nodeDescription.setId("Node Description");
         FreeFormLayoutStrategyDescription freeFormLayoutStrategyDescription = DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription();
         freeFormLayoutStrategyDescription.getOnSouthAtCreationBorderNodes().add(borderNodeDescription1);
         freeFormLayoutStrategyDescription.getOnEastAtCreationBorderNodes().add(borderNodeDescription1);
@@ -301,7 +301,7 @@ public class ViewValidatorTests {
         expected.add(new BasicDiagnostic(Diagnostic.ERROR,
                 SIRIUS_COMPONENTS_EMF_PACKAGE,
                 0,
-                String.format("The border node descriptions of \"%1$s\" should have at most one initial position", nodeDescription.getName()),
+                String.format("The border node descriptions of \"%1$s\" should have at most one initial position", nodeDescription.getId()),
                 new Object[] {
                     freeFormLayoutStrategyDescription,
                     DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY,
@@ -312,7 +312,7 @@ public class ViewValidatorTests {
                 0,
                 String.format(
                         "In the node description \"%1$s\", the border node descriptions for initial position should be among the border node descriptions(owned and reused) of the node description.",
-                        nodeDescription.getName()),
+                        nodeDescription.getId()),
                 new Object[] {
                     freeFormLayoutStrategyDescription,
                     DiagramPackage.Literals.NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY,

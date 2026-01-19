@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,14 +43,15 @@ public class EdgeDescriptionBuilder {
     }
 
     /**
-     * Setter for Name.
+     * Setter for Id.
      *
      * @generated
      */
-    public EdgeDescriptionBuilder name(java.lang.String value) {
-        this.getEdgeDescription().setName(value);
+    public EdgeDescriptionBuilder id(java.lang.String value) {
+        this.getEdgeDescription().setId(value);
         return this;
     }
+
     /**
      * Setter for DomainType.
      *
@@ -87,6 +88,16 @@ public class EdgeDescriptionBuilder {
         this.getEdgeDescription().setSynchronizationPolicy(value);
         return this;
     }
+    /**
+     * Setter for Description.
+     *
+     * @generated
+     */
+    public EdgeDescriptionBuilder description(java.lang.String value) {
+        this.getEdgeDescription().setDescription(value);
+        return this;
+    }
+
     /**
      * Setter for BeginLabelExpression.
      *
@@ -179,10 +190,11 @@ public class EdgeDescriptionBuilder {
      *
      * @generated
      */
-    public EdgeDescriptionBuilder style(org.eclipse.sirius.components.view.diagram.EdgeStyle value) {
+    public EdgeDescriptionBuilder style(org.eclipse.sirius.components.view.diagram.EdgeStyleDescription value) {
         this.getEdgeDescription().setStyle(value);
         return this;
     }
+
     /**
      * Setter for ConditionalStyles.
      *

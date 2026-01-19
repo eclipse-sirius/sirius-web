@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '<em><b>Edge Description</b></em>'. <!-- end-user-doc
@@ -219,7 +219,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      * @ordered
      */
-    protected EdgeStyle style;
+    protected EdgeStyleDescription style;
 
     /**
      * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
@@ -468,7 +468,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      * @generated
      */
     @Override
-    public EdgeStyle getStyle() {
+    public EdgeStyleDescription getStyle() {
         return this.style;
     }
 
@@ -477,8 +477,26 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
      *
      * @generated
      */
+    public NotificationChain basicSetStyle(EdgeStyleDescription newStyle, NotificationChain msgs) {
+        EdgeStyleDescription oldStyle = this.style;
+        this.style = newStyle;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__STYLE, oldStyle, newStyle);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     @Override
-    public void setStyle(EdgeStyle newStyle) {
+    public void setStyle(EdgeStyleDescription newStyle) {
         if (newStyle != this.style) {
             NotificationChain msgs = null;
             if (this.style != null)
@@ -490,24 +508,6 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 msgs.dispatch();
         } else if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__STYLE, newStyle, newStyle));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public NotificationChain basicSetStyle(EdgeStyle newStyle, NotificationChain msgs) {
-        EdgeStyle oldStyle = this.style;
-        this.style = newStyle;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.EDGE_DESCRIPTION__STYLE, oldStyle, newStyle);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
     }
 
     /**
@@ -614,7 +614,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.setTargetExpression((String) newValue);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
-                this.setStyle((EdgeStyle) newValue);
+                this.setStyle((EdgeStyleDescription) newValue);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
@@ -660,7 +660,7 @@ public class EdgeDescriptionImpl extends DiagramElementDescriptionImpl implement
                 this.setTargetExpression(TARGET_EXPRESSION_EDEFAULT);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__STYLE:
-                this.setStyle((EdgeStyle) null);
+                this.setStyle((EdgeStyleDescription) null);
                 return;
             case DiagramPackage.EDGE_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();

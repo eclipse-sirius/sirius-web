@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,7 @@ public class StudioLifecycleIntegrationTests extends AbstractIntegrationTests {
             var hasHumanFormDescription = views.stream()
                     .anyMatch(view -> view.getDescriptions().stream()
                             .filter(FormDescription.class::isInstance)
-                            .anyMatch(representationDescription -> representationDescription.getName().equals("Human Form")));
+                            .anyMatch(representationDescription -> representationDescription.getId().equals("Human Form")));
             assertThat(hasHumanFormDescription).isTrue();
         } else {
             fail("Invalid editing context");

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeDescription} object.
@@ -228,7 +228,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     @Override
     public String getText(Object object) {
-        String label = ((EdgeDescription) object).getName();
+        String label = ((EdgeDescription) object).getId();
         return label == null || label.length() == 0 ? this.getString("_UI_EdgeDescription_type") : this.getString("_UI_EdgeDescription_type") + " " + label;
     }
 
@@ -274,7 +274,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultEdgePalette()));
 
-        EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
+        EdgeStyleDescription newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyleDescription();
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__STYLE, newEdgeStyle));
 
         ConditionalEdgeStyle conditionalEdgeStyle = DiagramFactory.eINSTANCE.createConditionalEdgeStyle();

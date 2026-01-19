@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,7 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.BorderStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.emf.api.CustomImageMetadata;
@@ -87,7 +87,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         List<AbstractControlDescription> controls = new ArrayList<>(this.getGeneralControlDescription());
 
         Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
-                .filter(EdgeStyle.class::isInstance)
+                .filter(EdgeStyleDescription.class::isInstance)
                 .isPresent();
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
@@ -136,9 +136,9 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         controls.add(strikeThrough);
 
         var showIcon = this.propertiesWidgetCreationService.createCheckbox("nodestyle.showIcon", "Show Icon",
-                style -> ((EdgeStyle) style).isShowIcon(),
-                (style, newValue) -> ((EdgeStyle) style).setShowIcon(newValue),
-                DiagramPackage.Literals.EDGE_STYLE__SHOW_ICON,
+                style -> ((EdgeStyleDescription) style).isShowIcon(),
+                (style, newValue) -> ((EdgeStyleDescription) style).setShowIcon(newValue),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__SHOW_ICON,
                 Optional.of(variableManager -> "Show an icon near the label, use the default one if no custom icon is set."));
         controls.add(showIcon);
 
@@ -146,15 +146,15 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         controls.add(this.createIconSelectionField());
         controls.add(this.createLineStyleSelectionField());
         var edgeWidth = this.propertiesWidgetCreationService.createTextField("edgestyle.EdgeWidth", "Edge Width",
-                style -> String.valueOf(((EdgeStyle) style).getEdgeWidth()),
+                style -> String.valueOf(((EdgeStyleDescription) style).getEdgeWidth()),
                 (style, newValue) -> {
                     try {
-                        ((EdgeStyle) style).setEdgeWidth(Integer.parseInt(newValue));
+                        ((EdgeStyleDescription) style).setEdgeWidth(Integer.parseInt(newValue));
                     } catch (NumberFormatException nfe) {
                         // Ignore.
                     }
                 },
-                DiagramPackage.Literals.EDGE_STYLE__EDGE_WIDTH);
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__EDGE_WIDTH);
         controls.add(edgeWidth);
         controls.add(this.createSourceArrowStyleSelectionField());
         controls.add(this.createTargetArrowStyleSelectionField());
@@ -171,7 +171,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
         var userColor = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Color", "Color", DiagramPackage.Literals.STYLE__COLOR, colorOptionsProvider);
         controls.add(userColor);
 
-        var background = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Background", "Background", DiagramPackage.Literals.EDGE_STYLE__BACKGROUND, colorOptionsProvider);
+        var background = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.Background", "Background", DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__BACKGROUND, colorOptionsProvider);
         controls.add(background);
 
         var borderColor = this.propertiesWidgetCreationService.createReferenceWidget("edgestyle.BorderColor", "Border Color", DiagramPackage.Literals.BORDER_STYLE__BORDER_COLOR, colorOptionsProvider);
@@ -227,7 +227,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Source Arrow Style")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getSourceArrowStyle)
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyleDescription.class).map(EdgeStyleDescription::getSourceArrowStyle)
                         .map(ArrowStyle::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -241,7 +241,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> List.of())
                 .newValueHandler(this.getSourceArrowValueHandler())
-                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE__SOURCE_ARROW_STYLE))
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .build();
@@ -249,7 +249,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getSourceArrowValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyleDescription.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newArrowStyle = Integer.parseInt(newValue);
                 ArrowStyle arrowStyle = ArrowStyle.get(newArrowStyle);
@@ -268,7 +268,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Target Arrow Style")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getTargetArrowStyle)
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyleDescription.class).map(EdgeStyleDescription::getTargetArrowStyle)
                         .map(ArrowStyle::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -282,7 +282,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> List.of())
                 .newValueHandler(this.getTargetArrowValueHandler())
-                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE__TARGET_ARROW_STYLE))
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .build();
@@ -290,7 +290,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getTargetArrowValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyleDescription.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newArrowStyle = Integer.parseInt(newValue);
                 ArrowStyle arrowStyle = ArrowStyle.get(newArrowStyle);
@@ -309,7 +309,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Line Style")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getLineStyle)
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyleDescription.class).map(EdgeStyleDescription::getLineStyle)
                         .map(LineStyle::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -331,7 +331,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getLineStyleValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyleDescription.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newLineStyle = Integer.parseInt(newValue);
                 LineStyle lineStyle = LineStyle.get(newLineStyle);
@@ -350,7 +350,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Custom Icon")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getLabelIcon).orElse(EMPTY))
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyleDescription.class).map(EdgeStyleDescription::getLabelIcon).orElse(EMPTY))
                 .optionsProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
                         .map(IEditingContext::getId)
                         .map(this.customImageSearchService::getAvailableImages)
@@ -366,7 +366,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .map(customImageMetadataEntity -> List.of(customImageMetadataEntity.id().toString()))
                         .orElse(List.of()))
                 .newValueHandler(this.getIconLabelValueHandler())
-                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE__LABEL_ICON))
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__LABEL_ICON))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .helpTextProvider(variableManager -> "Set a custom icon for the label, use in association with Show Icon property")
@@ -375,7 +375,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getIconLabelValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyleDescription.class);
             if (optionalEdgeStyle.isPresent()) {
                 String newIcon = newValue;
                 if (newValue != null && newValue.isBlank()) {
@@ -394,7 +394,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Border Line Style")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getBorderLineStyle)
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyleDescription.class).map(EdgeStyleDescription::getBorderLineStyle)
                         .map(LineStyle::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -416,7 +416,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getBorderLineStyleValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyleDescription.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newLineStyle = Integer.parseInt(newValue);
                 LineStyle lineStyle = LineStyle.get(newLineStyle);
@@ -435,7 +435,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Edge Type")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getEdgeType)
+                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyleDescription.class).map(EdgeStyleDescription::getEdgeType)
                         .map(EdgeType::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -449,7 +449,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                         .orElse(EMPTY))
                 .optionIconURLProvider(variableManager -> List.of())
                 .newValueHandler(this.getEdgeTypeValueHandler())
-                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE__EDGE_TYPE))
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__EDGE_TYPE))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .build();
@@ -457,7 +457,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getEdgeTypeValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyleDescription.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newEdgeType = Integer.parseInt(newValue);
                 EdgeType edgeType = EdgeType.get(newEdgeType);

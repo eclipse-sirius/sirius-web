@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,12 +67,12 @@ public interface TablePackage extends EPackage {
     int TABLE_DESCRIPTION = 0;
 
     /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TABLE_DESCRIPTION__NAME = ViewPackage.REPRESENTATION_DESCRIPTION__NAME;
+    int TABLE_DESCRIPTION__ID = ViewPackage.REPRESENTATION_DESCRIPTION__ID;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -710,6 +710,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
+
     /**
      * The number of structural features of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -718,6 +719,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION_FEATURE_COUNT = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
     /**
      * The number of operations of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -726,6 +728,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl <em>Row
      * Filter Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -735,6 +738,7 @@ public interface TablePackage extends EPackage {
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowFilterDescription()
      */
     int ROW_FILTER_DESCRIPTION = 9;
+
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -742,6 +746,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_FILTER_DESCRIPTION__ID = 0;
+
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -750,6 +755,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION = 1;
+
     /**
      * The feature id for the '<em><b>Initial State Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -758,12 +764,14 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION = 2;
+
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
+
     /**
      * The number of structural features of the '<em>Row Filter Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->

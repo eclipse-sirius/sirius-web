@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -263,7 +263,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     @Override
     public String getText(Object object) {
-        String label = ((NodeDescription) object).getName();
+        String label = ((NodeDescription) object).getId();
         return label == null || label.length() == 0 ? this.getString("_UI_NodeDescription_type") : this.getString("_UI_NodeDescription_type") + " " + label;
     }
 
@@ -319,7 +319,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS, DiagramFactory.eINSTANCE.createAction()));
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
-        nodeChild.setName("Sub-node");
+        nodeChild.setId("Sub-node");
         var subNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         subNodeStyle.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeChild.setStyle(subNodeStyle);
@@ -338,7 +338,7 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
 
         NodeDescription borderNodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
-        borderNodeChild.setName("Border node");
+        borderNodeChild.setId("Border node");
         var borderNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         borderNodeStyle.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         borderNodeChild.setStyle(borderNodeStyle);

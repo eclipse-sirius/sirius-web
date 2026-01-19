@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -115,7 +115,7 @@ public class DeckDescriptionItemProvider extends RepresentationDescriptionItemPr
      */
     @Override
     public String getText(Object object) {
-        String label = ((DeckDescription) object).getName();
+        String label = ((DeckDescription) object).getId();
         return label == null || label.length() == 0 ? this.getString("_UI_DeckDescription_type") : this.getString("_UI_DeckDescription_type") + " " + label;
     }
 

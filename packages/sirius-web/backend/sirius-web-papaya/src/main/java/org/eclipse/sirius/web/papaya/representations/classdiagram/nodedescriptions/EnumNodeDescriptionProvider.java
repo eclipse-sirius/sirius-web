@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
         var enumLiteralNodeDescription = this.enumLiteralNodeDescription();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(NAME)
+                .id(NAME)
                 .domainType("papaya::Enum")
                 .semanticCandidatesExpression("aql:editingContext.getSynchronizedObjects(semanticElementIds)")
                 .insideLabel(insideLabel)
@@ -106,7 +106,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(ENUM_LITERAL_NAME)
+                .id(ENUM_LITERAL_NAME)
                 .domainType("papaya:EnumLiteral")
                 .semanticCandidatesExpression("aql:self.literals")
                 .insideLabel(insideLabel)

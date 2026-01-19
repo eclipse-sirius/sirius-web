@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,12 +73,12 @@ public interface GanttPackage extends EPackage {
     int GANTT_DESCRIPTION = 0;
 
     /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int GANTT_DESCRIPTION__NAME = ViewPackage.REPRESENTATION_DESCRIPTION__NAME;
+    int GANTT_DESCRIPTION__ID = ViewPackage.REPRESENTATION_DESCRIPTION__ID;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -105,6 +105,14 @@ public interface GanttPackage extends EPackage {
      * @ordered
      */
     int GANTT_DESCRIPTION__TITLE_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Icon Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int GANTT_DESCRIPTION__ICON_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION;
 
     /**
      * The feature id for the '<em><b>Task Element Descriptions</b></em>' containment reference list. <!--

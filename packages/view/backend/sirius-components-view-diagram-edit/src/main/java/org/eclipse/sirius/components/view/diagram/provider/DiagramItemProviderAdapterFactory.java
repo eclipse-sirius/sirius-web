@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -220,14 +220,6 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected IconLabelNodeStyleDescriptionItemProvider iconLabelNodeStyleDescriptionItemProvider;
-
-    /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.EdgeStyle}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected EdgeStyleItemProvider edgeStyleItemProvider;
 
     /**
      * This keeps track of the one adapter used for all
@@ -612,18 +604,27 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeStyle}. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected EdgeStyleDescriptionItemProvider edgeStyleDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
-    public Adapter createEdgeStyleAdapter() {
-        if (this.edgeStyleItemProvider == null) {
-            this.edgeStyleItemProvider = new EdgeStyleItemProvider(this);
+    public Adapter createEdgeStyleDescriptionAdapter() {
+        if (this.edgeStyleDescriptionItemProvider == null) {
+            this.edgeStyleDescriptionItemProvider = new EdgeStyleDescriptionItemProvider(this);
         }
 
-        return this.edgeStyleItemProvider;
+        return this.edgeStyleDescriptionItemProvider;
     }
 
     /**
@@ -1134,8 +1135,8 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.imageNodeStyleDescriptionItemProvider.dispose();
         if (this.iconLabelNodeStyleDescriptionItemProvider != null)
             this.iconLabelNodeStyleDescriptionItemProvider.dispose();
-        if (this.edgeStyleItemProvider != null)
-            this.edgeStyleItemProvider.dispose();
+        if (this.edgeStyleDescriptionItemProvider != null)
+            this.edgeStyleDescriptionItemProvider.dispose();
         if (this.conditionalEdgeStyleItemProvider != null)
             this.conditionalEdgeStyleItemProvider.dispose();
         if (this.diagramPaletteItemProvider != null)
@@ -1250,7 +1251,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             @Override
             public Object caseView(View object) {
                 DiagramDescription newDiagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
-                newDiagramDescription.setName("New Diagram Description");
+                newDiagramDescription.setId("New Diagram Description");
                 newDiagramDescription.setPalette(new DefaultToolsFactory().createDefaultDiagramPalette());
                 this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newDiagramDescription));
 

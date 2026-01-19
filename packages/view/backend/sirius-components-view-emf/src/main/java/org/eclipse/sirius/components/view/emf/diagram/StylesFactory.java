@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,7 @@ public final class StylesFactory {
         this.interpreter = Objects.requireNonNull(interpreter);
     }
 
-    public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
+    public LabelStyleDescription createEdgeLabelStyleDescription(org.eclipse.sirius.components.view.diagram.EdgeStyleDescription edgeStyle) {
         return LabelStyleDescription.newLabelStyleDescription()
                 .colorProvider(variableManager -> this.getFixedColorValue(edgeStyle.getColor(), DEFAULT_COLOR))
                 .fontSizeProvider(variableManager -> edgeStyle.getFontSize())
@@ -95,7 +95,7 @@ public final class StylesFactory {
                 .build();
     }
 
-    public EdgeStyle createEdgeStyle(org.eclipse.sirius.components.view.diagram.EdgeStyle edgeStyle) {
+    public EdgeStyle createEdgeStyle(org.eclipse.sirius.components.view.diagram.EdgeStyleDescription edgeStyle) {
         return EdgeStyle.newEdgeStyle()
                 .color(this.getFixedColorValue(edgeStyle.getColor(), DEFAULT_COLOR))
                 .lineStyle(LineStyle.valueOf(edgeStyle.getLineStyle().getLiteral()))

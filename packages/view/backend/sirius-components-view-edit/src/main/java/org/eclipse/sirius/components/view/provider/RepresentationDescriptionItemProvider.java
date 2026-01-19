@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addNamePropertyDescriptor(object);
+            this.addIdPropertyDescriptor(object);
             this.addDomainTypePropertyDescriptor(object);
             this.addPreconditionExpressionPropertyDescriptor(object);
             this.addTitleExpressionPropertyDescriptor(object);
@@ -69,15 +69,15 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Id feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addNamePropertyDescriptor(Object object) {
+    protected void addIdPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RepresentationDescription_name_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_name_feature", "_UI_RepresentationDescription_type"),
-                ViewPackage.Literals.REPRESENTATION_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_RepresentationDescription_id_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_id_feature", "_UI_RepresentationDescription_type"),
+                ViewPackage.Literals.REPRESENTATION_DESCRIPTION__ID, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -156,7 +156,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public String getText(Object object) {
-        String label = ((RepresentationDescription) object).getName();
+        String label = ((RepresentationDescription) object).getId();
         return label == null || label.length() == 0 ? this.getString("_UI_RepresentationDescription_type") : this.getString("_UI_RepresentationDescription_type") + " " + label;
     }
 
@@ -172,7 +172,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(RepresentationDescription.class)) {
-            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+            case ViewPackage.REPRESENTATION_DESCRIPTION__ID:
             case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
             case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
             case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:

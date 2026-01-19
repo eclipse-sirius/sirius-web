@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,14 +43,15 @@ public class FormDescriptionBuilder {
     }
 
     /**
-     * Setter for Name.
+     * Setter for Id.
      *
      * @generated
      */
-    public FormDescriptionBuilder name(java.lang.String value) {
-        this.getFormDescription().setName(value);
+    public FormDescriptionBuilder id(java.lang.String value) {
+        this.getFormDescription().setId(value);
         return this;
     }
+
     /**
      * Setter for DomainType.
      *

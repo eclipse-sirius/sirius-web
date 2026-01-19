@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -147,7 +147,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .map(edge -> this.convert(edge, converterContext, stylesFactory)).toList();
 
         var builder = DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
-                .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
+                .label(Optional.ofNullable(viewDiagramDescription.getId()).orElse(DEFAULT_DIAGRAM_LABEL))
                 .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
                 .canCreatePredicate(new IViewDiagramCreationPredicate() {
                     @Override
@@ -493,7 +493,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         Function<VariableManager, LabelStyleDescription> styleDescriptionProvider = variableManager -> {
             var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(org.eclipse.sirius.components.view.diagram.EdgeStyle.class::cast)
+                    .map(org.eclipse.sirius.components.view.diagram.EdgeStyleDescription.class::cast)
                     .findFirst()
                     .orElseGet(viewEdgeDescription::getStyle);
 
@@ -577,7 +577,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
         Function<VariableManager, EdgeStyle> styleProvider = variableManager -> {
             var effectiveStyle = viewEdgeDescription.getConditionalStyles().stream()
                     .filter(style -> this.matches(interpreter, style.getCondition(), variableManager))
-                    .map(org.eclipse.sirius.components.view.diagram.EdgeStyle.class::cast)
+                    .map(org.eclipse.sirius.components.view.diagram.EdgeStyleDescription.class::cast)
                     .findFirst()
                     .orElseGet(viewEdgeDescription::getStyle);
             return stylesFactory.createEdgeStyle(effectiveStyle);

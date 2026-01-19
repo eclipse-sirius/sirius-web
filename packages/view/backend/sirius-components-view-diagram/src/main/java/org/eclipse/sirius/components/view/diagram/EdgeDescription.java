@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -243,7 +243,7 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @see #setStyle(EdgeStyle)
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeDescription_Style()
      */
-    EdgeStyle getStyle();
+    EdgeStyleDescription getStyle();
 
     /**
      * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.EdgeDescription#getStyle
@@ -254,7 +254,7 @@ public interface EdgeDescription extends DiagramElementDescription {
      * @see #getStyle()
      * @generated
      */
-    void setStyle(EdgeStyle value);
+    void setStyle(EdgeStyleDescription value);
 
     /**
      * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are

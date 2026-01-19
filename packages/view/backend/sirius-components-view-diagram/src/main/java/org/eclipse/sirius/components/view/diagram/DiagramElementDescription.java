@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getName <em>Name</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getId <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getDomainType <em>Domain
  * Type</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getSemanticCandidatesExpression
@@ -42,27 +42,27 @@ import org.eclipse.emf.ecore.EObject;
 public interface DiagramElementDescription extends EObject {
 
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. The default value is
+     * Returns the value of the '<em><b>Id</b></em>' attribute. The default value is
      * <code>"NewRepresentationDescription"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramElementDescription_Name()
+     * @return the value of the '<em>Id</em>' attribute.
+     * @see #setId(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramElementDescription_Id()
      * @model default="NewRepresentationDescription" dataType="org.eclipse.sirius.components.view.Identifier"
      * @generated
      */
-    String getName();
+    String getId();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getName
-     * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getId
+     * <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
+     *            the new value of the '<em>Id</em>' attribute.
+     * @see #getId()
      * @generated
      */
-    void setName(String value);
+    void setId(String value);
 
     /**
      * Returns the value of the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -160,5 +160,27 @@ public interface DiagramElementDescription extends EObject {
      * @generated
      */
     void setSynchronizationPolicy(SynchronizationPolicy value);
+
+    /**
+     * Returns the value of the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Description</em>' attribute.
+     * @see #setDescription(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramElementDescription_Description()
+     * @model
+     * @generated
+     */
+    String getDescription();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getDescription
+     * <em>Description</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Description</em>' attribute.
+     * @see #getDescription()
+     * @generated
+     */
+    void setDescription(String value);
 
 } // DiagramElementDescription

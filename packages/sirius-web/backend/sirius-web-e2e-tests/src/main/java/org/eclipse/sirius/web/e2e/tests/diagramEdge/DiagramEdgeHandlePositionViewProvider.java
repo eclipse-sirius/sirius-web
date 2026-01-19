@@ -84,7 +84,7 @@ public class DiagramEdgeHandlePositionViewProvider implements IE2EViewProvider {
 
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramEdgeHandlePositionDomainProvider.DOMAIN_NAME + " - simple edge handle position " + arrangeLayoutDirection.name())
+                .id(DiagramEdgeHandlePositionDomainProvider.DOMAIN_NAME + " - simple edge handle position " + arrangeLayoutDirection.name())
                 .domainType(DiagramEdgeHandlePositionDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramEdgeHandlePositionDomainProvider.DOMAIN_NAME + " diagram " + arrangeLayoutDirection.name())
                 .autoLayout(false)
@@ -98,7 +98,7 @@ public class DiagramEdgeHandlePositionViewProvider implements IE2EViewProvider {
     private NodeDescription getNodeDescription(IColorProvider colorProvider, String entityName) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name(entityName)
+                .id(entityName)
                 .domainType(DiagramEdgeHandlePositionDomainProvider.DOMAIN_NAME + "::" + entityName)
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -124,7 +124,7 @@ public class DiagramEdgeHandlePositionViewProvider implements IE2EViewProvider {
     private EdgeDescription getEdgeDescription(IColorProvider colorProvider, DiagramElementDescription sourceDescription, DiagramElementDescription targetDescription) {
         return new DiagramBuilders()
                 .newEdgeDescription()
-                .name("LinkedTo Edge")
+                .id("LinkedTo Edge")
                 .isDomainBasedEdge(false)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .sourceExpression("aql:self")
@@ -134,7 +134,7 @@ public class DiagramEdgeHandlePositionViewProvider implements IE2EViewProvider {
                 .centerLabelExpression("")
                 .style(
                         new DiagramBuilders()
-                                .newEdgeStyle()
+                                .newEdgeStyleDescription()
                                 .fontSize(14)
                                 .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
                                 .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))

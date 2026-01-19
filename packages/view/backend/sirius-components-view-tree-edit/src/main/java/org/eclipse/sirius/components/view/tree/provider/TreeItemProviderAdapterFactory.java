@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -507,7 +507,7 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
             @Override
             public Object caseView(View object) {
                 TreeDescription treeDescription = TreeFactory.eINSTANCE.createTreeDescription();
-                treeDescription.setName("New Tree Description");
+                treeDescription.setId("New Tree Description");
                 treeDescription.setTitleExpression("aql:'New Tree Representation'");
                 this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, treeDescription));
 

@@ -253,7 +253,7 @@ public class DiagramRepresentationUploadControllerTests extends AbstractIntegrat
                    ],
                    "representations": {
                      "ff02f72f-6be4-43bb-b581-aa9dd6a7b9d2": {
-                       "descriptionURI": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38",
+                       "descriptionURI": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=7256a8d7-581c-30c7-88ee-c5c95822f3d7",
                        "type": "siriusComponents://representation?type=Diagram",
                        "targetObjectURI": "sirius:///f03b8538-17f9-4df3-82b1-d378b6ce4e4e#9a543523-e43b-436b-a642-5ee5dcee0a95"
                      }
@@ -267,7 +267,7 @@ public class DiagramRepresentationUploadControllerTests extends AbstractIntegrat
                         {
                               "id": "ff02f72f-6be4-43bb-b581-aa9dd6a7b9d2",
                               "projectId": "3921036d-b0ba-4ea7-baf2-1d1fd32ce6b6",
-                              "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38",
+                              "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=7256a8d7-581c-30c7-88ee-c5c95822f3d7",
                               "targetObjectId": "9a543523-e43b-436b-a642-5ee5dcee0a95",
                               "label": "Topography",
                               "kind": "siriusComponents://representation?type=Diagram",
@@ -275,7 +275,7 @@ public class DiagramRepresentationUploadControllerTests extends AbstractIntegrat
                                 "id": "ff02f72f-6be4-43bb-b581-aa9dd6a7b9d2",
                                 "kind": "siriusComponents://representation?type=Diagram",
                                 "targetObjectId": "9a543523-e43b-436b-a642-5ee5dcee0a95",
-                                "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38",
+                                "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=7256a8d7-581c-30c7-88ee-c5c95822f3d7",
                                 "nodes": %s,
                                 "edges": %s,
                                 "layoutData": %s

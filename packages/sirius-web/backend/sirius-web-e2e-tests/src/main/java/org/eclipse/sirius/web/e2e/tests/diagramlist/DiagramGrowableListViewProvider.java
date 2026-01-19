@@ -82,7 +82,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramListDomainProvider.DOMAIN_NAME + " - multiple growable list nodes")
+                .id(DiagramListDomainProvider.DOMAIN_NAME + " - multiple growable list nodes")
                 .domainType(DiagramListDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramListDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -99,7 +99,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
         var list3Description = this.getList3Description(colorProvider);
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Entity Node 1")
+                .id("Entity Node 1")
                 .domainType(DiagramListDomainProvider.DOMAIN_NAME + "::Entity1")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -154,7 +154,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
         var subList2Description = this.getSubList2Description(colorProvider);
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("CompartmentList1")
+                .id("CompartmentList1")
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
@@ -192,7 +192,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
     private NodeDescription getList2Description(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("CompartmentList2")
+                .id("CompartmentList2")
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
@@ -218,7 +218,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
     private NodeDescription getList3Description(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("CompartmentList3")
+                .id("CompartmentList3")
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
@@ -244,7 +244,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
     private NodeDescription getSubList1Description(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("CompartmentSubList1")
+                .id("CompartmentSubList1")
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)
@@ -270,7 +270,7 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
     private NodeDescription getSubList2Description(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("CompartmentSubList2")
+                .id("CompartmentSubList2")
                 .semanticCandidatesExpression("aql:self")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(false)

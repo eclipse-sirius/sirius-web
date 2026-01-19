@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -127,7 +127,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(NAME)
+                .id(NAME)
                 .domainType("papaya::Class")
                 .semanticCandidatesExpression("aql:editingContext.getSynchronizedObjects(semanticElementIds)")
                 .insideLabel(insideLabel)
@@ -174,7 +174,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var constructorNodeDescription = this.constructorNodeDescription();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(CONSTRUCTORS_NAME)
+                .id(CONSTRUCTORS_NAME)
                 .domainType("papaya::Class")
                 .semanticCandidatesExpression("aql:self")
                 .insideLabel(insideLabel)
@@ -207,7 +207,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(CONSTRUCTOR_NAME)
+                .id(CONSTRUCTOR_NAME)
                 .domainType("papaya:Constructor")
                 .semanticCandidatesExpression("aql:self.constructors")
                 .insideLabel(insideLabel)
@@ -246,7 +246,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var attributeNodeDescription = this.attributeNodeDescription();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(ATTRIBUTES_NAME)
+                .id(ATTRIBUTES_NAME)
                 .domainType("papaya::Class")
                 .semanticCandidatesExpression("aql:self")
                 .insideLabel(insideLabel)
@@ -278,7 +278,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(ATTRIBUTE_NAME)
+                .id(ATTRIBUTE_NAME)
                 .domainType("papaya:Attribute")
                 .semanticCandidatesExpression("aql:self.attributes")
                 .insideLabel(insideLabel)
@@ -317,7 +317,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
         var operationNodeDescription = this.operationNodeDescription();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(OPERATIONS_NAME)
+                .id(OPERATIONS_NAME)
                 .domainType("papaya::Class")
                 .semanticCandidatesExpression("aql:self")
                 .insideLabel(insideLabel)
@@ -349,7 +349,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(OPERATION_NAME)
+                .id(OPERATION_NAME)
                 .domainType("papaya:Operation")
                 .semanticCandidatesExpression("aql:self.operations")
                 .insideLabel(insideLabel)

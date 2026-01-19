@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ public class TypeContainmentEdgeDescriptionProvider implements IEdgeDescriptionP
 
     @Override
     public EdgeDescription create() {
-        var implementsEdgeStyle = new DiagramBuilders().newEdgeStyle()
+        var implementsEdgeStyle = new DiagramBuilders().newEdgeStyleDescription()
                 .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .sourceArrowStyle(ArrowStyle.INPUT_ARROW_WITH_DIAMOND)
                 .targetArrowStyle(ArrowStyle.NONE)
@@ -56,7 +56,7 @@ public class TypeContainmentEdgeDescriptionProvider implements IEdgeDescriptionP
                 .build();
 
         return new DiagramBuilders().newEdgeDescription()
-                .name(NAME)
+                .id(NAME)
                 .centerLabelExpression("")
                 .sourceExpression("aql:self")
                 .targetExpression("aql:self.types")

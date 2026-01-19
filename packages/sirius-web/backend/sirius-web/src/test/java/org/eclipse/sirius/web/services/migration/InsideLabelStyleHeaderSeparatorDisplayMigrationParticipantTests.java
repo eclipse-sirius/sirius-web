@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,7 @@ public class InsideLabelStyleHeaderSeparatorDisplayMigrationParticipantTests ext
     private void testIsMigrationSuccessful(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             var optionalDiagramDescription = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream())
-                    .filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_DIAGRAM))
+                    .filter(representationDescription -> representationDescription.getId().equals(MigrationIdentifiers.MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_DIAGRAM))
                     .findFirst();
             assertThat(optionalDiagramDescription).isPresent();
             assertThat(optionalDiagramDescription.get()).isInstanceOf(DiagramDescription.class);
@@ -61,7 +61,7 @@ public class InsideLabelStyleHeaderSeparatorDisplayMigrationParticipantTests ext
                 if (representationDescription instanceof DiagramDescription diagramDescription) {
                     assertThat(diagramDescription.getNodeDescriptions()).hasSize(2);
                     diagramDescription.getNodeDescriptions().forEach(nodeDescription -> {
-                        if (nodeDescription.getName().equals(MigrationIdentifiers.MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_NODE_1)) {
+                        if (nodeDescription.getId().equals(MigrationIdentifiers.MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_NODE_1)) {
                             assertThat(nodeDescription.getInsideLabel().getStyle().getHeaderSeparatorDisplayMode()).isEqualTo(HeaderSeparatorDisplayMode.IF_CHILDREN);
                         } else {
                             assertThat(nodeDescription.getInsideLabel().getStyle().getHeaderSeparatorDisplayMode()).isEqualTo(HeaderSeparatorDisplayMode.NEVER);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -179,7 +179,7 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
@@ -190,7 +190,7 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'VisibilityDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)

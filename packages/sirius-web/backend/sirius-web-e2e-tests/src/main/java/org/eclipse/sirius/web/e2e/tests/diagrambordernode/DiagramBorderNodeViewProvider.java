@@ -80,7 +80,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramBorderNodeDomainProvider.DOMAIN_NAME + " - simple border")
+                .id(DiagramBorderNodeDomainProvider.DOMAIN_NAME + " - simple border")
                 .domainType(DiagramBorderNodeDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramBorderNodeDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -95,7 +95,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
         var borderNodeEastDescription = this.getChildrenBorderDescription(colorProvider, "east");
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Entity Node 1")
+                .id("Entity Node 1")
                 .domainType(DiagramBorderNodeDomainProvider.DOMAIN_NAME + "::Entity1")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -149,7 +149,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
     private NodeDescription getChildrenBorderDescription(IColorProvider colorProvider, String side) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Border" + side)
+                .id("Border" + side)
                 .domainType(DiagramBorderNodeDomainProvider.DOMAIN_NAME + "::Border")
                 .semanticCandidatesExpression("aql:self.eContents()->select( b | b.name=='" + side + "')")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

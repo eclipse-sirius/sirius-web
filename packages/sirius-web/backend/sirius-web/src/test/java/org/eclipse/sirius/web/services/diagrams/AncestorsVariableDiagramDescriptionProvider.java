@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -121,7 +121,7 @@ public class AncestorsVariableDiagramDescriptionProvider implements IEditingCont
                 .build();
 
         var leafNodeDescription = new NodeDescriptionBuilder()
-                .name("Class")
+                .id("Class")
                 .domainType("papaya:Class")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(leafInsideLabel)
@@ -130,7 +130,7 @@ public class AncestorsVariableDiagramDescriptionProvider implements IEditingCont
                 .build();
 
         var childNodeDescription = new NodeDescriptionBuilder()
-                .name("Package")
+                .id("Package")
                 .domainType("papaya:Package")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(childInsideLabel)
@@ -140,7 +140,7 @@ public class AncestorsVariableDiagramDescriptionProvider implements IEditingCont
                 .build();
 
         var rootNodeDescription = new NodeDescriptionBuilder()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(rootInsideLabel)
@@ -153,7 +153,7 @@ public class AncestorsVariableDiagramDescriptionProvider implements IEditingCont
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'AncestorsVariableDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(rootNodeDescription)

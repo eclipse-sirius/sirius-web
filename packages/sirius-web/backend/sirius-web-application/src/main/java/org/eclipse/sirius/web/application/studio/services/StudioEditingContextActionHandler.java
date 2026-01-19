@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,7 @@ public class StudioEditingContextActionHandler implements IEditingContextActionH
         return this.getResourceSet(editingContext).map(resourceSet -> {
             View newView = ViewFactory.eINSTANCE.createView();
             DiagramDescription diagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
-            diagramDescription.setName("New Diagram Description");
+            diagramDescription.setId("New Diagram Description");
             newView.getDescriptions().add(diagramDescription);
 
             JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());

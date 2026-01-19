@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -85,7 +85,7 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
 
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramEdgeOnBorderNodeDomainProvider.DOMAIN_NAME + " - simple edge on border node")
+                .id(DiagramEdgeOnBorderNodeDomainProvider.DOMAIN_NAME + " - simple edge on border node")
                 .domainType(DiagramEdgeOnBorderNodeDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramEdgeOnBorderNodeDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -99,7 +99,7 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
     private NodeDescription getNodeDescription(IColorProvider colorProvider, String entityName) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name(entityName)
+                .id(entityName)
                 .domainType(DiagramEdgeOnBorderNodeDomainProvider.DOMAIN_NAME + "::" + entityName)
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -150,7 +150,7 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
     private EdgeDescription getEdgeDescription(IColorProvider colorProvider, DiagramElementDescription sourceDescription, DiagramElementDescription targetDescription) {
         return new DiagramBuilders()
                 .newEdgeDescription()
-                .name("LinkedTo Edge")
+                .id("LinkedTo Edge")
                 .isDomainBasedEdge(false)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .sourceExpression("aql:self")
@@ -160,7 +160,7 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
                 .centerLabelExpression("")
                 .style(
                         new DiagramBuilders()
-                                .newEdgeStyle()
+                                .newEdgeStyleDescription()
                                 .fontSize(14)
                                 .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
                                 .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))

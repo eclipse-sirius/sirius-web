@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,7 +45,7 @@ public class ViewDiagramElementFinder implements IViewObjectCache, IViewDiagramE
         return this.data.getOrDefault("NodeDescription", List.of()).stream()
                 .filter(NodeDescription.class::isInstance)
                 .map(NodeDescription.class::cast)
-                .filter(nodeDescription -> nodeDescription.getName().equals(name))
+                .filter(nodeDescription -> nodeDescription.getId().equals(name))
                 .findFirst();
     }
 
@@ -54,7 +54,7 @@ public class ViewDiagramElementFinder implements IViewObjectCache, IViewDiagramE
         return this.data.getOrDefault("EdgeDescription", List.of()).stream()
                 .filter(EdgeDescription.class::isInstance)
                 .map(EdgeDescription.class::cast)
-                .filter(edgeDescription -> edgeDescription.getName().equals(name))
+                .filter(edgeDescription -> edgeDescription.getId().equals(name))
                 .findFirst();
     }
 

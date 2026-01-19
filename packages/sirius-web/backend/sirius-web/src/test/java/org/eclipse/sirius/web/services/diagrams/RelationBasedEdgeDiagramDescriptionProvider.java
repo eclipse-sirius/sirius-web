@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -119,7 +119,7 @@ public class RelationBasedEdgeDiagramDescriptionProvider implements IEditingCont
         var containmentEdgeDescription = this.containmentEdgeDecription(entityNodeDescription);
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram with RelationBasedEdge")
+                .id("Diagram with RelationBasedEdge")
                 .titleExpression("aql:'RelationBasedEdgeDiagram'")
                 .domainType("rbeDomain::Root")
                 .nodeDescriptions(entityNodeDescription)
@@ -149,7 +149,7 @@ public class RelationBasedEdgeDiagramDescriptionProvider implements IEditingCont
                 .build();
 
         return new NodeDescriptionBuilder()
-                .name("Entity")
+                .id("Entity")
                 .domainType("rbeDomain::Entity")
                 .semanticCandidatesExpression("aql:if (self.oclIsKindOf(rbeDomain::Root) then self.entities->concat(self.entities.subEntities)->concat(self.entities.subEntities.subEntities) else self.subEntities endif")
                 .insideLabel(insideLabel)
@@ -174,7 +174,7 @@ public class RelationBasedEdgeDiagramDescriptionProvider implements IEditingCont
                 .build();
 
         return new NodeDescriptionBuilder()
-                .name("Sub-entities compartment")
+                .id("Sub-entities compartment")
                 .domainType("rbeDomain::Entity")
                 .semanticCandidatesExpression("aql:self")
                 .insideLabel(insideLabel)
@@ -189,7 +189,7 @@ public class RelationBasedEdgeDiagramDescriptionProvider implements IEditingCont
         return new EdgeDescriptionBuilder()
                 .centerLabelExpression("")
                 .isDomainBasedEdge(false)
-                .name("Containment Edge")
+                .id("Containment Edge")
                 .preconditionExpression("aql:not graphicalEdgeSource.isAncestorOf(graphicalEdgeTarget, cache)")
                 .sourceDescriptions(entityNodeDescription)
                 .sourceExpression("aql:self")

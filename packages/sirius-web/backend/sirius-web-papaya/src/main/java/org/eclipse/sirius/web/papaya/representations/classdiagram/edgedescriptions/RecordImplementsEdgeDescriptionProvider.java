@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ public class RecordImplementsEdgeDescriptionProvider implements IEdgeDescription
 
     @Override
     public EdgeDescription create() {
-        var implementsEdgeStyle = new DiagramBuilders().newEdgeStyle()
+        var implementsEdgeStyle = new DiagramBuilders().newEdgeStyleDescription()
                 .color(this.colorProvider.getColor(PapayaColorPaletteProvider.PRIMARY))
                 .sourceArrowStyle(ArrowStyle.NONE)
                 .targetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW)
@@ -53,7 +53,7 @@ public class RecordImplementsEdgeDescriptionProvider implements IEdgeDescription
                 .build();
 
         return new DiagramBuilders().newEdgeDescription()
-                .name(NAME)
+                .id(NAME)
                 .centerLabelExpression("")
                 .sourceExpression("aql:self")
                 .targetExpression("aql:self.implements")

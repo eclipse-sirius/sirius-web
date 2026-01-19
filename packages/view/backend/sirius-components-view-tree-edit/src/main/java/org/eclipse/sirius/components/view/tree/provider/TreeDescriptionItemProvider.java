@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -282,7 +282,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
      */
     @Override
     public String getText(Object object) {
-        String label = ((TreeDescription) object).getName();
+        String label = ((TreeDescription) object).getId();
         return label == null || label.length() == 0 ? this.getString("_UI_TreeDescription_type") : this.getString("_UI_TreeDescription_type") + " " + label;
     }
 

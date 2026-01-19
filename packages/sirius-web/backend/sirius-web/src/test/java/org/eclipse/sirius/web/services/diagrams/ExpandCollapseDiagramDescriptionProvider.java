@@ -153,7 +153,7 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
@@ -164,7 +164,7 @@ public class ExpandCollapseDiagramDescriptionProvider implements IEditingContext
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'ExpandCollapseDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)

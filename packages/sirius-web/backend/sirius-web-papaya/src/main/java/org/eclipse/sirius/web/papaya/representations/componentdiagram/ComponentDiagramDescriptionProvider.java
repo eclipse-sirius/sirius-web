@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,7 @@ public class ComponentDiagramDescriptionProvider implements IRepresentationDescr
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         var componentDiagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
-        componentDiagramDescription.setName(NAME);
+        componentDiagramDescription.setId(NAME);
         componentDiagramDescription.setDomainType("papaya::Component");
         componentDiagramDescription.setTitleExpression("aql:self.name + ' component diagram'");
         componentDiagramDescription.setAutoLayout(false);

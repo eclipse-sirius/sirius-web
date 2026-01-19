@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -117,7 +117,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
 
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramNodeCreationDomainProvider.DOMAIN_NAME + " - node creation")
+                .id(DiagramNodeCreationDomainProvider.DOMAIN_NAME + " - node creation")
                 .domainType(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramNodeCreationDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -143,7 +143,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
     private NodeDescription getNode4Description(IColorProvider colorProvider, String entityName) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name(entityName)
+                .id(entityName)
                 .domainType(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::" + entityName)
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -184,7 +184,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
     private NodeDescription getNode3Description(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("entity3")
+                .id("entity3")
                 .domainType(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::" + "Entity3")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -222,7 +222,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                 .childrenDescriptions(
                         new DiagramBuilders()
                                 .newNodeDescription()
-                                .name("entity3Compartment")
+                                .id("entity3Compartment")
                                 .semanticCandidatesExpression("aql:self")
                                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                                 .collapsible(true)
@@ -274,7 +274,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
     private NodeDescription getNode4Description(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("entity4")
+                .id("entity4")
                 .domainType(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::" + "Entity4")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -300,7 +300,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
     private EdgeDescription getEdgeDescription(IColorProvider colorProvider, DiagramElementDescription sourceDescription, DiagramElementDescription targetDescription) {
         return new DiagramBuilders()
                 .newEdgeDescription()
-                .name("edge")
+                .id("edge")
                 .isDomainBasedEdge(false)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .centerLabelExpression("")
@@ -310,7 +310,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                 .targetDescriptions(targetDescription)
                 .style(
                         new DiagramBuilders()
-                                .newEdgeStyle()
+                                .newEdgeStyleDescription()
                                 .fontSize(14)
                                 .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
                                 .borderSize(0)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,7 @@ import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.EdgeType;
@@ -153,8 +153,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createImageNodeStyleDescription();
             case DiagramPackage.ICON_LABEL_NODE_STYLE_DESCRIPTION:
                 return this.createIconLabelNodeStyleDescription();
-            case DiagramPackage.EDGE_STYLE:
-                return this.createEdgeStyle();
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION:
+                return this.createEdgeStyleDescription();
             case DiagramPackage.CONDITIONAL_EDGE_STYLE:
                 return this.createConditionalEdgeStyle();
             case DiagramPackage.DIAGRAM_PALETTE:
@@ -451,9 +451,9 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     @Override
-    public EdgeStyle createEdgeStyle() {
-        EdgeStyleImpl edgeStyle = new EdgeStyleImpl();
-        return edgeStyle;
+    public EdgeStyleDescription createEdgeStyleDescription() {
+        EdgeStyleDescriptionImpl edgeStyleDescription = new EdgeStyleDescriptionImpl();
+        return edgeStyleDescription;
     }
 
     /**

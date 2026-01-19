@@ -115,7 +115,7 @@ INSERT INTO representation_metadata (
   '4e7e526f-b0c3-45f3-82d3-1148c99de300#4e4a4c0e-9a24-48a5-a52a-97bbdc35fcf9',
   '4e4a4c0e-9a24-48a5-a52a-97bbdc35fcf9',
   '01791d50-5f04-4a41-9e24-7833bd081051',
-  'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38',
+  'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=7256a8d7-581c-30c7-88ee-c5c95822f3d7',
   'Topography',
   'siriusComponents://representation?type=Diagram',
   '2025-10-07 13:41:34.133346+00',
@@ -142,7 +142,7 @@ INSERT INTO representation_content (
     "id":"f53ce563-2375-4189-a83f-fcbaca070db5",
     "kind":"siriusComponents://representation?type=Diagram",
     "targetObjectId":"01791d50-5f04-4a41-9e24-7833bd081051",
-    "descriptionId":"siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38",
+    "descriptionId":"siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=7256a8d7-581c-30c7-88ee-c5c95822f3d7",
     "nodes":[
       {
         "id":"9d5cdcfe-c35c-3ab4-9ecf-a327e655a049",
@@ -391,7 +391,7 @@ INSERT INTO representation_metadata (
   '3f155db4-6771-459a-9fec-6a3a77238d31#4687c6ae-e968-4680-a4ad-5db22dd7f6ef',
   '4687c6ae-e968-4680-a4ad-5db22dd7f6ef',
   '01791d50-5f04-4a41-9e24-7833bd081051',
-  'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38',
+  'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=7256a8d7-581c-30c7-88ee-c5c95822f3d7',
   'Topography',
   'siriusComponents://representation?type=Diagram',
   '2025-10-07 13:41:41.494685+00',
@@ -418,7 +418,7 @@ INSERT INTO representation_content (
     "id":"f53ce563-2375-4189-a83f-fcbaca070db5",
     "kind":"siriusComponents://representation?type=Diagram",
     "targetObjectId":"01791d50-5f04-4a41-9e24-7833bd081051",
-    "descriptionId":"siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38",
+    "descriptionId":"siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=7256a8d7-581c-30c7-88ee-c5c95822f3d7",
     "nodes":[
       {
         "id":"9d5cdcfe-c35c-3ab4-9ecf-a327e655a049",

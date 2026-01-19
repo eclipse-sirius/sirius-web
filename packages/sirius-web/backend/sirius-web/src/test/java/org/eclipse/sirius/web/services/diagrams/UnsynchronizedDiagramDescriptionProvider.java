@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -138,7 +138,7 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
         var nodeDescription = new NodeDescriptionBuilder()
                 .palette(new NodePaletteBuilder().nodeTools(this.removeViewTool)
                         .build())
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
@@ -193,7 +193,7 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'UnsynchronizedDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)

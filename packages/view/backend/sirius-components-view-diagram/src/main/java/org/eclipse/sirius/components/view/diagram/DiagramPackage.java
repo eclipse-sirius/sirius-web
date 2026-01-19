@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -68,12 +68,12 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_DESCRIPTION = 0;
 
     /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION__NAME = ViewPackage.REPRESENTATION_DESCRIPTION__NAME;
+    int DIAGRAM_DESCRIPTION__ID = ViewPackage.REPRESENTATION_DESCRIPTION__ID;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -190,12 +190,12 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_ELEMENT_DESCRIPTION = 1;
 
     /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION__NAME = 0;
+    int DIAGRAM_ELEMENT_DESCRIPTION__ID = 0;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -233,13 +233,21 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = 4;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION = 5;
+
+    /**
      * The number of structural features of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 5;
+    int DIAGRAM_ELEMENT_DESCRIPTION_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Element Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -261,12 +269,12 @@ public interface DiagramPackage extends EPackage {
     int NODE_DESCRIPTION = 2;
 
     /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_DESCRIPTION__NAME = DIAGRAM_ELEMENT_DESCRIPTION__NAME;
+    int NODE_DESCRIPTION__ID = DIAGRAM_ELEMENT_DESCRIPTION__ID;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -302,6 +310,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_DESCRIPTION__SYNCHRONIZATION_POLICY = DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_DESCRIPTION__DESCRIPTION = DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION;
 
     /**
      * The feature id for the '<em><b>Collapsible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -491,12 +507,12 @@ public interface DiagramPackage extends EPackage {
     int EDGE_DESCRIPTION = 3;
 
     /**
-     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int EDGE_DESCRIPTION__NAME = DIAGRAM_ELEMENT_DESCRIPTION__NAME;
+    int EDGE_DESCRIPTION__ID = DIAGRAM_ELEMENT_DESCRIPTION__ID;
 
     /**
      * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -532,6 +548,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_DESCRIPTION__SYNCHRONIZATION_POLICY = DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_DESCRIPTION__DESCRIPTION = DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION;
 
     /**
      * The feature id for the '<em><b>Begin Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -1684,13 +1708,21 @@ public interface DiagramPackage extends EPackage {
     int NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = BORDER_STYLE_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_STYLE_DESCRIPTION__DESCRIPTION = BORDER_STYLE_FEATURE_COUNT + 1;
+
+    /**
      * The number of structural features of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = BORDER_STYLE_FEATURE_COUNT + 1;
+    int NODE_STYLE_DESCRIPTION_FEATURE_COUNT = BORDER_STYLE_FEATURE_COUNT + 2;
 
     /**
      * The number of operations of the '<em>Node Style Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1881,6 +1913,14 @@ public interface DiagramPackage extends EPackage {
     int RECTANGULAR_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECTANGULAR_NODE_STYLE_DESCRIPTION__DESCRIPTION = NODE_STYLE_DESCRIPTION__DESCRIPTION;
+
+    /**
      * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1947,6 +1987,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int IMAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION = NODE_STYLE_DESCRIPTION__DESCRIPTION;
 
     /**
      * The feature id for the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2026,6 +2074,14 @@ public interface DiagramPackage extends EPackage {
     int ICON_LABEL_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int ICON_LABEL_NODE_STYLE_DESCRIPTION__DESCRIPTION = NODE_STYLE_DESCRIPTION__DESCRIPTION;
+
+    /**
      * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -2050,6 +2106,198 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int ICON_LABEL_NODE_STYLE_DESCRIPTION_OPERATION_COUNT = NODE_STYLE_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl
+     * <em>Edge Style Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeStyleDescription()
+     * @generated
+     */
+    int EDGE_STYLE_DESCRIPTION = 22;
+
+    /**
+     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__COLOR = STYLE__COLOR;
+
+    /**
+     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__FONT_SIZE = STYLE_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__ITALIC = STYLE_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__BOLD = STYLE_FEATURE_COUNT + 2;
+
+    /**
+     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__UNDERLINE = STYLE_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__BORDER_COLOR = STYLE_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__BORDER_RADIUS = STYLE_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__BORDER_SIZE = STYLE_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__LINE_STYLE = STYLE_FEATURE_COUNT + 9;
+
+    /**
+     * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE = STYLE_FEATURE_COUNT + 10;
+
+    /**
+     * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE = STYLE_FEATURE_COUNT + 11;
+
+    /**
+     * The feature id for the '<em><b>Edge Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__EDGE_WIDTH = STYLE_FEATURE_COUNT + 12;
+
+    /**
+     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__SHOW_ICON = STYLE_FEATURE_COUNT + 13;
+
+    /**
+     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__LABEL_ICON = STYLE_FEATURE_COUNT + 14;
+
+    /**
+     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__BACKGROUND = STYLE_FEATURE_COUNT + 15;
+
+    /**
+     * The feature id for the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__MAX_WIDTH_EXPRESSION = STYLE_FEATURE_COUNT + 16;
+
+    /**
+     * The feature id for the '<em><b>Edge Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__EDGE_TYPE = STYLE_FEATURE_COUNT + 17;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION__DESCRIPTION = STYLE_FEATURE_COUNT + 18;
+
+    /**
+     * The number of structural features of the '<em>Edge Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION_FEATURE_COUNT = STYLE_FEATURE_COUNT + 19;
+
+    /**
+     * The number of operations of the '<em>Edge Style Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_STYLE_DESCRIPTION_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the
@@ -2082,189 +2330,6 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     int ICON_LABEL_NODE_STYLE_DESCRIPTION = 21;
-
-    /**
-     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl <em>Edge
-     * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl
-     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeStyle()
-     * @generated
-     */
-    int EDGE_STYLE = 22;
-
-    /**
-     * The feature id for the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__COLOR = STYLE__COLOR;
-
-    /**
-     * The feature id for the '<em><b>Font Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__FONT_SIZE = STYLE_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Italic</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__ITALIC = STYLE_FEATURE_COUNT + 1;
-
-    /**
-     * The feature id for the '<em><b>Bold</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__BOLD = STYLE_FEATURE_COUNT + 2;
-
-    /**
-     * The feature id for the '<em><b>Underline</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__UNDERLINE = STYLE_FEATURE_COUNT + 3;
-
-    /**
-     * The feature id for the '<em><b>Strike Through</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__STRIKE_THROUGH = STYLE_FEATURE_COUNT + 4;
-
-    /**
-     * The feature id for the '<em><b>Border Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__BORDER_COLOR = STYLE_FEATURE_COUNT + 5;
-
-    /**
-     * The feature id for the '<em><b>Border Radius</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__BORDER_RADIUS = STYLE_FEATURE_COUNT + 6;
-
-    /**
-     * The feature id for the '<em><b>Border Size</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__BORDER_SIZE = STYLE_FEATURE_COUNT + 7;
-
-    /**
-     * The feature id for the '<em><b>Border Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__BORDER_LINE_STYLE = STYLE_FEATURE_COUNT + 8;
-
-    /**
-     * The feature id for the '<em><b>Line Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__LINE_STYLE = STYLE_FEATURE_COUNT + 9;
-
-    /**
-     * The feature id for the '<em><b>Source Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__SOURCE_ARROW_STYLE = STYLE_FEATURE_COUNT + 10;
-
-    /**
-     * The feature id for the '<em><b>Target Arrow Style</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__TARGET_ARROW_STYLE = STYLE_FEATURE_COUNT + 11;
-
-    /**
-     * The feature id for the '<em><b>Edge Width</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__EDGE_WIDTH = STYLE_FEATURE_COUNT + 12;
-
-    /**
-     * The feature id for the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__SHOW_ICON = STYLE_FEATURE_COUNT + 13;
-
-    /**
-     * The feature id for the '<em><b>Label Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__LABEL_ICON = STYLE_FEATURE_COUNT + 14;
-
-    /**
-     * The feature id for the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__BACKGROUND = STYLE_FEATURE_COUNT + 15;
-
-    /**
-     * The feature id for the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__MAX_WIDTH_EXPRESSION = STYLE_FEATURE_COUNT + 16;
-
-    /**
-     * The feature id for the '<em><b>Edge Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE__EDGE_TYPE = STYLE_FEATURE_COUNT + 17;
-
-    /**
-     * The number of structural features of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE_FEATURE_COUNT = STYLE_FEATURE_COUNT + 18;
-
-    /**
-     * The number of operations of the '<em>Edge Style</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     */
-    int EDGE_STYLE_OPERATION_COUNT = STYLE_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl
@@ -2441,13 +2506,21 @@ public interface DiagramPackage extends EPackage {
     int CONDITIONAL_EDGE_STYLE__EDGE_TYPE = ViewPackage.CONDITIONAL_FEATURE_COUNT + 18;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CONDITIONAL_EDGE_STYLE__DESCRIPTION = ViewPackage.CONDITIONAL_FEATURE_COUNT + 19;
+
+    /**
      * The number of structural features of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 19;
+    int CONDITIONAL_EDGE_STYLE_FEATURE_COUNT = ViewPackage.CONDITIONAL_FEATURE_COUNT + 20;
 
     /**
      * The number of operations of the '<em>Conditional Edge Style</em>' class. <!-- begin-user-doc --> <!--
@@ -2818,12 +2891,20 @@ public interface DiagramPackage extends EPackage {
     int TOOL__BODY = 2;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TOOL__DESCRIPTION = 3;
+
+    /**
      * The number of structural features of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TOOL_FEATURE_COUNT = 3;
+    int TOOL_FEATURE_COUNT = 4;
 
     /**
      * The number of operations of the '<em>Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2868,6 +2949,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int DELETE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DELETE_TOOL__DESCRIPTION = TOOL__DESCRIPTION;
 
     /**
      * The number of structural features of the '<em>Delete Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
@@ -2923,6 +3012,14 @@ public interface DiagramPackage extends EPackage {
     int DROP_TOOL__BODY = TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_TOOL__DESCRIPTION = TOOL__DESCRIPTION;
+
+    /**
      * The number of structural features of the '<em>Drop Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -2974,6 +3071,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int EDGE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_TOOL__DESCRIPTION = TOOL__DESCRIPTION;
 
     /**
      * The feature id for the '<em><b>Target Element Descriptions</b></em>' reference list. <!-- begin-user-doc --> <!--
@@ -3065,6 +3170,14 @@ public interface DiagramPackage extends EPackage {
     int EDGE_RECONNECTION_TOOL__BODY = TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int EDGE_RECONNECTION_TOOL__DESCRIPTION = TOOL__DESCRIPTION;
+
+    /**
      * The number of structural features of the '<em>Edge Reconnection Tool</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -3117,6 +3230,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int LABEL_EDIT_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int LABEL_EDIT_TOOL__DESCRIPTION = TOOL__DESCRIPTION;
 
     /**
      * The feature id for the '<em><b>Initial Direct Edit Label Expression</b></em>' attribute. <!-- begin-user-doc -->
@@ -3179,6 +3300,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int NODE_TOOL__BODY = TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL__DESCRIPTION = TOOL__DESCRIPTION;
 
     int NODE_TOOL__DIALOG_DESCRIPTION = TOOL_FEATURE_COUNT;
 
@@ -3253,6 +3382,14 @@ public interface DiagramPackage extends EPackage {
     int SOURCE_EDGE_END_RECONNECTION_TOOL__BODY = EDGE_RECONNECTION_TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SOURCE_EDGE_END_RECONNECTION_TOOL__DESCRIPTION = EDGE_RECONNECTION_TOOL__DESCRIPTION;
+
+    /**
      * The number of structural features of the '<em>Source Edge End Reconnection Tool</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
@@ -3295,6 +3432,14 @@ public interface DiagramPackage extends EPackage {
      * @ordered
      */
     int TARGET_EDGE_END_RECONNECTION_TOOL__BODY = EDGE_RECONNECTION_TOOL__BODY;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TARGET_EDGE_END_RECONNECTION_TOOL__DESCRIPTION = EDGE_RECONNECTION_TOOL__DESCRIPTION;
 
     /**
      * The number of structural features of the '<em>Target Edge End Reconnection Tool</em>' class. <!-- begin-user-doc
@@ -3755,6 +3900,14 @@ public interface DiagramPackage extends EPackage {
     int DROP_NODE_TOOL__BODY = TOOL__BODY;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DROP_NODE_TOOL__DESCRIPTION = TOOL__DESCRIPTION;
+
+    /**
      * The feature id for the '<em><b>Accepted Node Types</b></em>' reference list. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -4139,16 +4292,15 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getName <em>Name</em>}'. <!--
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getId <em>Id</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
-     * @return the meta object for the attribute '<em>Name</em>'.
-     * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getName()
+     * @return the meta object for the attribute '<em>Id</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getId()
      * @see #getDiagramElementDescription()
+     * @generated
      */
-    EAttribute getDiagramElementDescription_Name();
+    EAttribute getDiagramElementDescription_Id();
 
     /**
      * Returns the meta object for the attribute
@@ -4197,6 +4349,18 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EAttribute getDiagramElementDescription_SynchronizationPolicy();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getDescription
+     * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramElementDescription#getDescription()
+     * @see #getDiagramElementDescription()
+     * @generated
+     */
+    EAttribute getDiagramElementDescription_Description();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.NodeDescription <em>Node
@@ -5065,6 +5229,18 @@ public interface DiagramPackage extends EPackage {
     EReference getNodeStyleDescription_ChildrenLayoutStrategy();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getDescription <em>Description</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getDescription()
+     * @see #getNodeStyleDescription()
+     * @generated
+     */
+    EAttribute getNodeStyleDescription_Description();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle
      * <em>Conditional Node Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -5215,125 +5391,134 @@ public interface DiagramPackage extends EPackage {
     EReference getIconLabelNodeStyleDescription_Background();
 
     /**
-     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle <em>Edge
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription
+     * <em>Edge Style Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Edge Style Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription
+     * @generated
+     */
+    EClass getEdgeStyleDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getLineStyle <em>Line Style</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Line Style</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getLineStyle()
+     * @see #getEdgeStyleDescription()
+     * @generated
+     */
+    EAttribute getEdgeStyleDescription_LineStyle();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getSourceArrowStyle <em>Source Arrow
      * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for class '<em>Edge Style</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle
-     * @generated
-     */
-    EClass getEdgeStyle();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getLineStyle <em>Line Style</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @return the meta object for the attribute '<em>Line Style</em>'.
-     * @generated
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getLineStyle()
-     * @see #getEdgeStyle()
-     */
-    EAttribute getEdgeStyle_LineStyle();
-
-    /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getSourceArrowStyle <em>Source Arrow Style</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
      * @return the meta object for the attribute '<em>Source Arrow Style</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getSourceArrowStyle()
-     * @see #getEdgeStyle()
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getSourceArrowStyle()
+     * @see #getEdgeStyleDescription()
      * @generated
      */
-    EAttribute getEdgeStyle_SourceArrowStyle();
+    EAttribute getEdgeStyleDescription_SourceArrowStyle();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getTargetArrowStyle <em>Target Arrow Style</em>}'.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getTargetArrowStyle <em>Target Arrow
+     * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Target Arrow Style</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getTargetArrowStyle()
-     * @see #getEdgeStyle()
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getTargetArrowStyle()
+     * @see #getEdgeStyleDescription()
      * @generated
      */
-    EAttribute getEdgeStyle_TargetArrowStyle();
+    EAttribute getEdgeStyleDescription_TargetArrowStyle();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeWidth <em>Edge Width</em>}'. <!--
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getEdgeWidth <em>Edge Width</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @return the meta object for the attribute '<em>Edge Width</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getEdgeWidth()
+     * @see #getEdgeStyleDescription()
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeWidth()
-     * @see #getEdgeStyle()
      */
-    EAttribute getEdgeStyle_EdgeWidth();
+    EAttribute getEdgeStyleDescription_EdgeWidth();
 
     /**
-     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#isShowIcon
-     * <em>Show Icon</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#isShowIcon <em>Show Icon</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Show Icon</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#isShowIcon()
-     * @see #getEdgeStyle()
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#isShowIcon()
+     * @see #getEdgeStyleDescription()
      * @generated
      */
-    EAttribute getEdgeStyle_ShowIcon();
+    EAttribute getEdgeStyleDescription_ShowIcon();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getLabelIcon <em>Label Icon</em>}'. <!--
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getLabelIcon <em>Label Icon</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @return the meta object for the attribute '<em>Label Icon</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getLabelIcon()
+     * @see #getEdgeStyleDescription()
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getLabelIcon()
-     * @see #getEdgeStyle()
      */
-    EAttribute getEdgeStyle_LabelIcon();
+    EAttribute getEdgeStyleDescription_LabelIcon();
 
     /**
      * Returns the meta object for the reference
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getBackground <em>Background</em>}'. <!--
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getBackground <em>Background</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @return the meta object for the reference '<em>Background</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getBackground()
+     * @see #getEdgeStyleDescription()
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getBackground()
-     * @see #getEdgeStyle()
      */
-    EReference getEdgeStyle_Background();
+    EReference getEdgeStyleDescription_Background();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getMaxWidthExpression <em>Max Width
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getMaxWidthExpression <em>Max Width
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Max Width Expression</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getMaxWidthExpression()
-     * @see #getEdgeStyle()
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getMaxWidthExpression()
+     * @see #getEdgeStyleDescription()
      * @generated
      */
-    EAttribute getEdgeStyle_MaxWidthExpression();
+    EAttribute getEdgeStyleDescription_MaxWidthExpression();
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeType <em>Edge Type</em>}'. <!--
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getEdgeType <em>Edge Type</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Edge Type</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle#getEdgeType()
-     * @see #getEdgeStyle()
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getEdgeType()
+     * @see #getEdgeStyleDescription()
      * @generated
      */
-    EAttribute getEdgeStyle_EdgeType();
+    EAttribute getEdgeStyleDescription_EdgeType();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getDescription <em>Description</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription#getDescription()
+     * @see #getEdgeStyleDescription()
+     * @generated
+     */
+    EAttribute getEdgeStyleDescription_Description();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle
@@ -5732,6 +5917,17 @@ public interface DiagramPackage extends EPackage {
      * @generated
      */
     EReference getTool_Body();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.diagram.Tool#getDescription
+     * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.Tool#getDescription()
+     * @see #getTool()
+     * @generated
+     */
+    EAttribute getTool_Description();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DeleteTool <em>Delete
@@ -6538,12 +6734,12 @@ public interface DiagramPackage extends EPackage {
         EClass DIAGRAM_ELEMENT_DESCRIPTION = eINSTANCE.getDiagramElementDescription();
 
         /**
-         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * The meta object literal for the '<em><b>Id</b></em>' attribute feature. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
          * @generated
          */
-        EAttribute DIAGRAM_ELEMENT_DESCRIPTION__NAME = eINSTANCE.getDiagramElementDescription_Name();
+        EAttribute DIAGRAM_ELEMENT_DESCRIPTION__ID = eINSTANCE.getDiagramElementDescription_Id();
 
         /**
          * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -6576,6 +6772,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY = eINSTANCE.getDiagramElementDescription_SynchronizationPolicy();
+
+        /**
+         * The meta object literal for the '<em><b>Description</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION = eINSTANCE.getDiagramElementDescription_Description();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.NodeDescriptionImpl
@@ -7194,6 +7398,14 @@ public interface DiagramPackage extends EPackage {
         EReference NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY = eINSTANCE.getNodeStyleDescription_ChildrenLayoutStrategy();
 
         /**
+         * The meta object literal for the '<em><b>Description</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute NODE_STYLE_DESCRIPTION__DESCRIPTION = eINSTANCE.getNodeStyleDescription_Description();
+
+        /**
          * The meta object literal for the
          * '{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalNodeStyleImpl <em>Conditional Node
          * Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7316,14 +7528,15 @@ public interface DiagramPackage extends EPackage {
         EReference ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getIconLabelNodeStyleDescription_Background();
 
         /**
-         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl
-         * <em>Edge Style</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl <em>Edge Style
+         * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @see org.eclipse.sirius.components.view.diagram.impl.EdgeStyleImpl
-         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeStyle()
+         * @see org.eclipse.sirius.components.view.diagram.impl.EdgeStyleDescriptionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeStyleDescription()
          * @generated
          */
-        EClass EDGE_STYLE = eINSTANCE.getEdgeStyle();
+        EClass EDGE_STYLE_DESCRIPTION = eINSTANCE.getEdgeStyleDescription();
 
         /**
          * The meta object literal for the '<em><b>Line Style</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -7331,7 +7544,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute EDGE_STYLE__LINE_STYLE = eINSTANCE.getEdgeStyle_LineStyle();
+        EAttribute EDGE_STYLE_DESCRIPTION__LINE_STYLE = eINSTANCE.getEdgeStyleDescription_LineStyle();
 
         /**
          * The meta object literal for the '<em><b>Source Arrow Style</b></em>' attribute feature. <!-- begin-user-doc
@@ -7339,7 +7552,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute EDGE_STYLE__SOURCE_ARROW_STYLE = eINSTANCE.getEdgeStyle_SourceArrowStyle();
+        EAttribute EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE = eINSTANCE.getEdgeStyleDescription_SourceArrowStyle();
 
         /**
          * The meta object literal for the '<em><b>Target Arrow Style</b></em>' attribute feature. <!-- begin-user-doc
@@ -7347,7 +7560,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute EDGE_STYLE__TARGET_ARROW_STYLE = eINSTANCE.getEdgeStyle_TargetArrowStyle();
+        EAttribute EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE = eINSTANCE.getEdgeStyleDescription_TargetArrowStyle();
 
         /**
          * The meta object literal for the '<em><b>Edge Width</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -7355,7 +7568,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute EDGE_STYLE__EDGE_WIDTH = eINSTANCE.getEdgeStyle_EdgeWidth();
+        EAttribute EDGE_STYLE_DESCRIPTION__EDGE_WIDTH = eINSTANCE.getEdgeStyleDescription_EdgeWidth();
 
         /**
          * The meta object literal for the '<em><b>Show Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -7363,7 +7576,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute EDGE_STYLE__SHOW_ICON = eINSTANCE.getEdgeStyle_ShowIcon();
+        EAttribute EDGE_STYLE_DESCRIPTION__SHOW_ICON = eINSTANCE.getEdgeStyleDescription_ShowIcon();
 
         /**
          * The meta object literal for the '<em><b>Label Icon</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -7371,7 +7584,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute EDGE_STYLE__LABEL_ICON = eINSTANCE.getEdgeStyle_LabelIcon();
+        EAttribute EDGE_STYLE_DESCRIPTION__LABEL_ICON = eINSTANCE.getEdgeStyleDescription_LabelIcon();
 
         /**
          * The meta object literal for the '<em><b>Background</b></em>' reference feature. <!-- begin-user-doc --> <!--
@@ -7379,7 +7592,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EReference EDGE_STYLE__BACKGROUND = eINSTANCE.getEdgeStyle_Background();
+        EReference EDGE_STYLE_DESCRIPTION__BACKGROUND = eINSTANCE.getEdgeStyleDescription_Background();
 
         /**
          * The meta object literal for the '<em><b>Max Width Expression</b></em>' attribute feature. <!-- begin-user-doc
@@ -7387,7 +7600,7 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute EDGE_STYLE__MAX_WIDTH_EXPRESSION = eINSTANCE.getEdgeStyle_MaxWidthExpression();
+        EAttribute EDGE_STYLE_DESCRIPTION__MAX_WIDTH_EXPRESSION = eINSTANCE.getEdgeStyleDescription_MaxWidthExpression();
 
         /**
          * The meta object literal for the '<em><b>Edge Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
@@ -7395,7 +7608,15 @@ public interface DiagramPackage extends EPackage {
          *
          * @generated
          */
-        EAttribute EDGE_STYLE__EDGE_TYPE = eINSTANCE.getEdgeStyle_EdgeType();
+        EAttribute EDGE_STYLE_DESCRIPTION__EDGE_TYPE = eINSTANCE.getEdgeStyleDescription_EdgeType();
+
+        /**
+         * The meta object literal for the '<em><b>Description</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute EDGE_STYLE_DESCRIPTION__DESCRIPTION = eINSTANCE.getEdgeStyleDescription_Description();
 
         /**
          * The meta object literal for the
@@ -7673,6 +7894,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference TOOL__BODY = eINSTANCE.getTool_Body();
+
+        /**
+         * The meta object literal for the '<em><b>Description</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TOOL__DESCRIPTION = eINSTANCE.getTool_Description();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.DeleteToolImpl

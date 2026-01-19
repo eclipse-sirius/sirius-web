@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -118,7 +118,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
@@ -126,7 +126,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                 .palette(nodePalette)
                 .build();
 
-        var dependencyEdgeStyle = new DiagramBuilders().newEdgeStyle()
+        var dependencyEdgeStyle = new DiagramBuilders().newEdgeStyleDescription()
                 .sourceArrowStyle(ArrowStyle.NONE)
                 .targetArrowStyle(ArrowStyle.INPUT_FILL_CLOSED_ARROW)
                 .lineStyle(LineStyle.SOLID)
@@ -154,7 +154,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                 .build();
 
         var edgeDescription = new DiagramBuilders().newEdgeDescription()
-                .name("Dependency")
+                .id("Dependency")
                 .sourceDescriptions(nodeDescription)
                 .targetDescriptions(nodeDescription)
                 .centerLabelExpression("")
@@ -169,7 +169,7 @@ public class EditableLabelDiagramDescriptionProvider implements IEditingContextP
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'EditableLabelDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)

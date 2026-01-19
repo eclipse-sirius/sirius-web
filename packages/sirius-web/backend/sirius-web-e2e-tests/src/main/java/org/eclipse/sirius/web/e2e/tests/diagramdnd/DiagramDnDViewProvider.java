@@ -110,7 +110,7 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
 
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramDnDDomainProvider.DOMAIN_NAME + " - simple dnd view")
+                .id(DiagramDnDDomainProvider.DOMAIN_NAME + " - simple dnd view")
                 .domainType(DiagramDnDDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramDnDDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -156,7 +156,7 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
 
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Entity Node 1")
+                .id("Entity Node 1")
                 .domainType(DiagramDnDDomainProvider.DOMAIN_NAME + "::Entity1")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
@@ -185,7 +185,7 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
     private NodeDescription getEntitySimpleNodeDescription(IColorProvider colorProvider, String domainType) {
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Simple rectangular" + domainType)
+                .id("Simple rectangular" + domainType)
                 .domainType(DiagramDnDDomainProvider.DOMAIN_NAME + "::" + domainType)
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

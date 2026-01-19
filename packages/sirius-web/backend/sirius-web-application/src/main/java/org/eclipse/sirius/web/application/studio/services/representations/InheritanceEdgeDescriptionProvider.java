@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
@@ -49,7 +49,7 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
 
         return new DiagramBuilders()
                 .newEdgeDescription()
-                .name("Inheritance")
+                .id("Inheritance")
                 .centerLabelExpression("")
                 .targetExpression("aql:self.superTypes")
                 .style(this.inheritanceEdgeStyle())
@@ -90,9 +90,9 @@ public class InheritanceEdgeDescriptionProvider implements IEdgeDescriptionProvi
                 .build();
     }
 
-    private EdgeStyle inheritanceEdgeStyle() {
+    private EdgeStyleDescription inheritanceEdgeStyle() {
         return new DiagramBuilders()
-                .newEdgeStyle()
+                .newEdgeStyleDescription()
                 .targetArrowStyle(ArrowStyle.INPUT_CLOSED_ARROW)
                 .color(this.colorProvider.getColor(DomainDiagramDescriptionProvider.LIGHT_GREY_COLOR))
                 .borderSize(0)

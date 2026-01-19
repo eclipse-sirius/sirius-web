@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,7 +75,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
         var operationNodeDescription = this.operationNodeDescription();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(NAME)
+                .id(NAME)
                 .domainType("papaya::Interface")
                 .semanticCandidatesExpression("aql:editingContext.getSynchronizedObjects(semanticElementIds)")
                 .insideLabel(insideLabel)
@@ -107,7 +107,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
                 .build();
 
         return new DiagramBuilders().newNodeDescription()
-                .name(OPERATION_NAME)
+                .id(OPERATION_NAME)
                 .domainType("papaya:Operation")
                 .semanticCandidatesExpression("aql:self.operations")
                 .insideLabel(insideLabel)

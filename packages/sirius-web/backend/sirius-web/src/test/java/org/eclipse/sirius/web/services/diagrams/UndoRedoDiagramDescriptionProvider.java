@@ -160,7 +160,7 @@ public class UndoRedoDiagramDescriptionProvider implements IEditingContextProces
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
-                .name("Component")
+                .id("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .insideLabel(insideLabel)
@@ -173,7 +173,7 @@ public class UndoRedoDiagramDescriptionProvider implements IEditingContextProces
 
 
         this.diagramDescription = new DiagramDescriptionBuilder()
-                .name("Diagram")
+                .id("Diagram")
                 .titleExpression("aql:'UndoRedoDiagram'")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)

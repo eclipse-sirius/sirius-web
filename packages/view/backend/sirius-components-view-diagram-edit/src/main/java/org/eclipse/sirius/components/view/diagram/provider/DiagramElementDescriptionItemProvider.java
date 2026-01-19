@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,25 +60,26 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addNamePropertyDescriptor(object);
+            this.addIdPropertyDescriptor(object);
             this.addDomainTypePropertyDescriptor(object);
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
             this.addPreconditionExpressionPropertyDescriptor(object);
             this.addSynchronizationPolicyPropertyDescriptor(object);
+            this.addDescriptionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Id feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addNamePropertyDescriptor(Object object) {
+    protected void addIdPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramElementDescription_name_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_name_feature", "_UI_DiagramElementDescription_type"),
-                DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_DiagramElementDescription_id_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_id_feature", "_UI_DiagramElementDescription_type"),
+                DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__ID, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -133,6 +134,18 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
     }
 
     /**
+     * This adds a property descriptor for the Description feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDescriptionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramElementDescription_description_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_description_feature", "_UI_DiagramElementDescription_type"),
+                DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -149,7 +162,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
      */
     @Override
     public String getText(Object object) {
-        String label = ((DiagramElementDescription) object).getName();
+        String label = ((DiagramElementDescription) object).getId();
         return label == null || label.length() == 0 ? this.getString("_UI_DiagramElementDescription_type") : this.getString("_UI_DiagramElementDescription_type") + " " + label;
     }
 
@@ -165,11 +178,12 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(DiagramElementDescription.class)) {
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__ID:
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

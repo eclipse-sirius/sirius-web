@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,7 @@ import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription;
@@ -203,8 +203,8 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter caseEdgeStyle(EdgeStyle object) {
-            return DiagramAdapterFactory.this.createEdgeStyleAdapter();
+        public Adapter caseEdgeStyleDescription(EdgeStyleDescription object) {
+            return DiagramAdapterFactory.this.createEdgeStyleDescriptionAdapter();
         }
 
         @Override
@@ -710,16 +710,16 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
     }
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.diagram.EdgeStyle
-     * <em>Edge Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily
-     * ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc
-     * -->
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription <em>Edge Style Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.EdgeStyleDescription
      * @generated
-     * @see org.eclipse.sirius.components.view.diagram.EdgeStyle
      */
-    public Adapter createEdgeStyleAdapter() {
+    public Adapter createEdgeStyleDescriptionAdapter() {
         return null;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,7 +76,7 @@ public class DiagramPaletteViewProvider implements IE2EViewProvider {
     private DiagramDescription getDiagramDescription(IColorProvider colorProvider) {
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramPaletteDomainProvider.DOMAIN_NAME + " - palette")
+                .id(DiagramPaletteDomainProvider.DOMAIN_NAME + " - palette")
                 .domainType(DiagramPaletteDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramPaletteDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
@@ -102,7 +102,7 @@ public class DiagramPaletteViewProvider implements IE2EViewProvider {
 
         return new DiagramBuilders()
                 .newNodeDescription()
-                .name("Entity Node 1")
+                .id("Entity Node 1")
                 .domainType(DiagramPaletteDomainProvider.DOMAIN_NAME + "::Entity1")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)

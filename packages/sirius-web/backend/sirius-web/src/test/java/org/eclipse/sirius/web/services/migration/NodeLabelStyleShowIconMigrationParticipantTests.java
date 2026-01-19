@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,7 +51,7 @@ public class NodeLabelStyleShowIconMigrationParticipantTests extends AbstractInt
     private void testIsMigrationSuccessful(IEditingContext editingContext) {
         if (editingContext instanceof EditingContext siriusWebEditingContext) {
             var optionalDiagramDescription = siriusWebEditingContext.getViews().stream().flatMap(view -> view.getDescriptions().stream())
-                    .filter(representationDescription -> representationDescription.getName().equals(MigrationIdentifiers.MIGRATION_NODE_LABEL_STYLE_SHOW_ICON_STUDIO_DIAGRAM)).findFirst();
+                    .filter(representationDescription -> representationDescription.getId().equals(MigrationIdentifiers.MIGRATION_NODE_LABEL_STYLE_SHOW_ICON_STUDIO_DIAGRAM)).findFirst();
             assertThat(optionalDiagramDescription).isPresent();
             assertThat(optionalDiagramDescription.get()).isInstanceOf(DiagramDescription.class);
             optionalDiagramDescription.ifPresent(representationDescription -> {

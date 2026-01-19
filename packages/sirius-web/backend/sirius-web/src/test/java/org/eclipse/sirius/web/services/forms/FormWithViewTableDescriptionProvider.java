@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,8 @@ import org.eclipse.sirius.components.view.builder.generated.form.PageDescription
 import org.eclipse.sirius.components.view.builder.generated.table.TableBuilders;
 import org.eclipse.sirius.components.view.builder.generated.tablewidget.TableWidgetBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
-import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
+import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
 import org.eclipse.sirius.components.view.form.FormDescription;
 import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -105,7 +105,7 @@ public class FormWithViewTableDescriptionProvider implements IEditingContextProc
                 .build();
 
         this.formDescription = new FormDescriptionBuilder()
-                .name("Form")
+                .id("Form")
                 .titleExpression("aql:'FormWithViewTable'")
                 .domainType("papaya:Package")
                 .pages(pageDescription)

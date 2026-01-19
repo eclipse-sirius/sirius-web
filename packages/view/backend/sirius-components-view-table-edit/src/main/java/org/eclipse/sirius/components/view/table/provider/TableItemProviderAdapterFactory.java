@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ import org.eclipse.sirius.components.view.util.ViewSwitch;
  * @generated
  */
 public class TableItemProviderAdapterFactory extends TableAdapterFactory
-        implements ComposeableAdapterFactory, IChangeNotifier, IDisposable, IChildCreationExtender {
+implements ComposeableAdapterFactory, IChangeNotifier, IDisposable, IChildCreationExtender {
 
     /**
      * This keeps track of the root adapter factory that delegates to this adapter
@@ -394,6 +394,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      *
      * @generated
      */
+    @Override
     public Collection<?> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
         return this.childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
     }
@@ -403,6 +404,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
      *
      * @generated
      */
+    @Override
     public ResourceLocator getResourceLocator() {
         return this.childCreationExtenderManager;
     }
@@ -482,6 +484,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
          *
          * @generated
          */
+        @Override
         public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
             ArrayList<Object> result = new ArrayList<>();
             new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
@@ -493,6 +496,7 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
          *
          * @generated
          */
+        @Override
         public ResourceLocator getResourceLocator() {
             return TableEditPlugin.INSTANCE;
         }
@@ -540,9 +544,9 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory
             @Override
             public Object caseView(View object) {
                 TableDescription tableDescription = TableFactory.eINSTANCE.createTableDescription();
-                tableDescription.setName("New Table Description");
+                tableDescription.setId("New Table Description");
                 this.newChildDescriptors
-                        .add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, tableDescription));
+                .add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, tableDescription));
 
                 return null;
             }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -158,12 +158,12 @@ public interface DiagramFactory extends EFactory {
     IconLabelNodeStyleDescription createIconLabelNodeStyleDescription();
 
     /**
-     * Returns a new object of class '<em>Edge Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns a new object of class '<em>Edge Style Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return a new object of class '<em>Edge Style</em>'.
+     * @return a new object of class '<em>Edge Style Description</em>'.
      * @generated
      */
-    EdgeStyle createEdgeStyle();
+    EdgeStyleDescription createEdgeStyleDescription();
 
     /**
      * Returns a new object of class '<em>Conditional Edge Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->

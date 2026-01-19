@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,7 +91,7 @@ public interface DiagramDescription extends RepresentationDescription {
      *
      * @return the value of the '<em>Node Descriptions</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_NodeDescriptions()
-     * @model containment="true" keys="name"
+     * @model containment="true" keys="id"
      * @generated
      */
     EList<NodeDescription> getNodeDescriptions();
@@ -103,7 +103,7 @@ public interface DiagramDescription extends RepresentationDescription {
      *
      * @return the value of the '<em>Edge Descriptions</em>' containment reference list.
      * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_EdgeDescriptions()
-     * @model containment="true" keys="name"
+     * @model containment="true" keys="id"
      * @generated
      */
     EList<EdgeDescription> getEdgeDescriptions();

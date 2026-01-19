@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,22 +23,21 @@ import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
-import org.eclipse.sirius.components.view.diagram.EdgeStyle;
+import org.eclipse.sirius.components.view.diagram.EdgeStyleDescription;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeStyle} object. <!--
- * begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeStyleDescription}
+ * object. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class EdgeStyleItemProvider extends StyleItemProvider {
-
+public class EdgeStyleDescriptionItemProvider extends StyleItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public EdgeStyleItemProvider(AdapterFactory adapterFactory) {
+    public EdgeStyleDescriptionItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -70,6 +69,7 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
             this.addBackgroundPropertyDescriptor(object);
             this.addMaxWidthExpressionPropertyDescriptor(object);
             this.addEdgeTypePropertyDescriptor(object);
+            this.addDescriptionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -180,8 +180,9 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     protected void addLineStylePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_lineStyle_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_lineStyle_feature", "_UI_EdgeStyle_type"),
-                DiagramPackage.Literals.EDGE_STYLE__LINE_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeStyleDescription_lineStyle_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_lineStyle_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__LINE_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -191,8 +192,9 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     protected void addSourceArrowStylePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_sourceArrowStyle_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_sourceArrowStyle_feature", "_UI_EdgeStyle_type"),
-                DiagramPackage.Literals.EDGE_STYLE__SOURCE_ARROW_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeStyleDescription_sourceArrowStyle_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_sourceArrowStyle_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -202,8 +204,9 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     protected void addTargetArrowStylePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_targetArrowStyle_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_targetArrowStyle_feature", "_UI_EdgeStyle_type"),
-                DiagramPackage.Literals.EDGE_STYLE__TARGET_ARROW_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeStyleDescription_targetArrowStyle_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_targetArrowStyle_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -213,8 +216,9 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     protected void addEdgeWidthPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_edgeWidth_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_edgeWidth_feature", "_UI_EdgeStyle_type"),
-                DiagramPackage.Literals.EDGE_STYLE__EDGE_WIDTH, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeStyleDescription_edgeWidth_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_edgeWidth_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__EDGE_WIDTH, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -224,8 +228,9 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     protected void addShowIconPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_showIcon_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_showIcon_feature", "_UI_EdgeStyle_type"),
-                DiagramPackage.Literals.EDGE_STYLE__SHOW_ICON, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeStyleDescription_showIcon_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_showIcon_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__SHOW_ICON, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -235,8 +240,9 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     protected void addLabelIconPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_labelIcon_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_labelIcon_feature", "_UI_EdgeStyle_type"),
-                DiagramPackage.Literals.EDGE_STYLE__LABEL_ICON, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeStyleDescription_labelIcon_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_labelIcon_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__LABEL_ICON, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -246,8 +252,9 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     protected void addBackgroundPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_background_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_background_feature", "_UI_EdgeStyle_type"),
-                DiagramPackage.Literals.EDGE_STYLE__BACKGROUND, true, false, true, null, null, null));
+                this.getString("_UI_EdgeStyleDescription_background_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_background_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__BACKGROUND, true, false, true, null, null, null));
     }
 
     /**
@@ -258,8 +265,9 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     protected void addMaxWidthExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_maxWidthExpression_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_maxWidthExpression_feature", "_UI_EdgeStyle_type"),
-                DiagramPackage.Literals.EDGE_STYLE__MAX_WIDTH_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeStyleDescription_maxWidthExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_maxWidthExpression_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__MAX_WIDTH_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -269,18 +277,31 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     protected void addEdgeTypePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_EdgeStyle_edgeType_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyle_edgeType_feature", "_UI_EdgeStyle_type"),
-                DiagramPackage.Literals.EDGE_STYLE__EDGE_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_EdgeStyleDescription_edgeType_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_edgeType_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__EDGE_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This returns EdgeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Description feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDescriptionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_EdgeStyleDescription_description_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_EdgeStyleDescription_description_feature", "_UI_EdgeStyleDescription_type"),
+                DiagramPackage.Literals.EDGE_STYLE_DESCRIPTION__DESCRIPTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This returns EdgeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/EdgeStyle"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/EdgeStyleDescription"));
     }
 
     /**
@@ -300,8 +321,8 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
      */
     @Override
     public String getText(Object object) {
-        EdgeStyle edgeStyle = (EdgeStyle) object;
-        return this.getString("_UI_EdgeStyle_type") + " " + edgeStyle.getFontSize();
+        EdgeStyleDescription edgeStyleDescription = (EdgeStyleDescription) object;
+        return this.getString("_UI_EdgeStyleDescription_type") + " " + edgeStyleDescription.getFontSize();
     }
 
     /**
@@ -315,24 +336,25 @@ public class EdgeStyleItemProvider extends StyleItemProvider {
     public void notifyChanged(Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(EdgeStyle.class)) {
-            case DiagramPackage.EDGE_STYLE__FONT_SIZE:
-            case DiagramPackage.EDGE_STYLE__ITALIC:
-            case DiagramPackage.EDGE_STYLE__BOLD:
-            case DiagramPackage.EDGE_STYLE__UNDERLINE:
-            case DiagramPackage.EDGE_STYLE__STRIKE_THROUGH:
-            case DiagramPackage.EDGE_STYLE__BORDER_COLOR:
-            case DiagramPackage.EDGE_STYLE__BORDER_RADIUS:
-            case DiagramPackage.EDGE_STYLE__BORDER_SIZE:
-            case DiagramPackage.EDGE_STYLE__BORDER_LINE_STYLE:
-            case DiagramPackage.EDGE_STYLE__LINE_STYLE:
-            case DiagramPackage.EDGE_STYLE__SOURCE_ARROW_STYLE:
-            case DiagramPackage.EDGE_STYLE__TARGET_ARROW_STYLE:
-            case DiagramPackage.EDGE_STYLE__EDGE_WIDTH:
-            case DiagramPackage.EDGE_STYLE__SHOW_ICON:
-            case DiagramPackage.EDGE_STYLE__LABEL_ICON:
-            case DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION:
-            case DiagramPackage.EDGE_STYLE__EDGE_TYPE:
+        switch (notification.getFeatureID(EdgeStyleDescription.class)) {
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__FONT_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__ITALIC:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BOLD:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__UNDERLINE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__STRIKE_THROUGH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_COLOR:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_RADIUS:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_SIZE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__BORDER_LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LINE_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SOURCE_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__TARGET_ARROW_STYLE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_WIDTH:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__SHOW_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__LABEL_ICON:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__MAX_WIDTH_EXPRESSION:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__EDGE_TYPE:
+            case DiagramPackage.EDGE_STYLE_DESCRIPTION__DESCRIPTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

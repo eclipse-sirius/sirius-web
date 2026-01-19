@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -90,7 +90,7 @@ public class ViewDeckDescriptionConverter implements IRepresentationDescriptionC
         List<LaneDescription> laneDescriptions = viewDeckDescription.getLaneDescriptions().stream().map(laneDescription -> this.convert(laneDescription, interpreter)).toList();
 
         var id = this.deckIdProvider.getId(viewDeckDescription);
-        var label = Optional.ofNullable(viewDeckDescription.getName()).orElse(DEFAULT_DECK_DESCRIPTION_LABEL);
+        var label = Optional.ofNullable(viewDeckDescription.getId()).orElse(DEFAULT_DECK_DESCRIPTION_LABEL);
         var idProvider = new GetOrCreateRandomIdProvider();
         Function<VariableManager, String> labelProvider = variableManager -> this.computeDeckLabel(viewDeckDescription, variableManager, interpreter);
         Predicate<VariableManager> canCreatePredicate = variableManager -> this.canCreate(viewDeckDescription.getDomainType(), viewDeckDescription.getPreconditionExpression(), variableManager,
