@@ -1,0 +1,37 @@
+= ADR-222 - Add auto layout until manual change on diagram
+
+== Context
+
+Some diagrams need to be laid out using an external layout algorithm like ELK.
+It is currently possible to either trigger this layout manually (via a button in the UI) or configure the diagram description to apply it automatically.
+In the latter case, the user cannot manually change the position of a node, as the algorithm automatically runs after every action.
+A third scenario proposed in this ADR would be to trigger this layout until any user wants to manually customize the layout.
+
+== Decision
+
+=== View DSL
+
+Transform the boolean `autoLayout` feature into a `layoutOption` enum as follows:
+
+[source,ecore]
+----
+<eClassifiers xsi:type="ecore:EEnum" name="DiagramLayoutOption">
+<eLiterals name="None"/>
+<eLiterals name="Auto" value="1"/>
+<eLiterals name="AutoUntilManual" value="2"/>
+</eClassifiers>
+----
+
+=== Backend
+
+Add a migration participant to migrate existing diagram descriptions.
+
+=== Frontend
+
+Add a state in the diagram to know if auto-layout is activated or not.
+If a user triggers one action that creates some manual layout (like moving a node), then this state is deactivated.
+Add a button in the DiagramPanel to activate or deactivate this auto-layout.
+
+== Status
+
+Proposed.
