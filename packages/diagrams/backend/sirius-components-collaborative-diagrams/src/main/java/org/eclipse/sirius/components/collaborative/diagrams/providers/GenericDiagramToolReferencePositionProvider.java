@@ -50,8 +50,10 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
         } else if (diagramInput instanceof DropOnDiagramInput input) {
             String parentId = this.getParentId(diagramContext, input.diagramTargetElementId());
             referencePosition = new ReferencePosition(parentId, List.of(new Position(input.startingPositionX(), input.startingPositionY())), input.getClass().getSimpleName());
-        } else if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
-            referencePosition = new ReferencePosition(input.diagramTargetElementId(), List.of(new Position(input.targetPositionX(), input.targetPositionY())), input.getClass().getSimpleName());
+        } else if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput invokeSingleClickOnTwoDiagramElementsToolInput &&
+                (invokeSingleClickOnTwoDiagramElementsToolInput.targetPositionX() != 0 || invokeSingleClickOnTwoDiagramElementsToolInput.targetPositionY() != 0)) {
+            var position = new Position(invokeSingleClickOnTwoDiagramElementsToolInput.targetPositionX(), invokeSingleClickOnTwoDiagramElementsToolInput.targetPositionY());
+            referencePosition = new ReferencePosition(invokeSingleClickOnTwoDiagramElementsToolInput.diagramTargetElementId(), List.of(position), invokeSingleClickOnTwoDiagramElementsToolInput.getClass().getSimpleName());
         }
         return referencePosition;
     }
