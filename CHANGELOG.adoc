@@ -8,7 +8,7 @@
 
 === Architectural decision records
 
-
+- [ADR-222] Add auto layout until manual change on diagram
 
 === Deprecation warning
 
