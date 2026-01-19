@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,7 +91,7 @@ public class GroupPaletteControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             var nodeCount = new DiagramNavigator(diagram).findDiagramNodeCount();
-            assertThat(nodeCount).isEqualTo(4);
+            assertThat(nodeCount).isEqualTo(5);
             compositeProcessorId1.set(new DiagramNavigator(diagram).nodeWithLabel("CompositeProcessor1").getNode().getId());
             compositeProcessorId2.set(new DiagramNavigator(diagram).nodeWithLabel("CompositeProcessor2").getNode().getId());
             diagramId.set(diagram.getId());
