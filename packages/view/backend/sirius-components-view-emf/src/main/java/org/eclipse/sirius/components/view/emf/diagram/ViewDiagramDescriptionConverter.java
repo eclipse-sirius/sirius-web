@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
 import org.eclipse.sirius.components.diagrams.components.LabelIdProvider;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
 import org.eclipse.sirius.components.diagrams.description.IDecoratorDescription;
@@ -178,7 +179,7 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                         return viewDiagramDescription;
                     }
                 })
-                .autoLayout(viewDiagramDescription.isAutoLayout())
+                .layoutOption(DiagramLayoutOption.valueOf(viewDiagramDescription.getLayoutOption().getLiteral()))
                 .arrangeLayoutDirection(ArrangeLayoutDirection.valueOf(viewDiagramDescription.getArrangeLayoutDirection().getLiteral()))
                 .targetObjectIdProvider(this.semanticTargetIdProvider)
                 .nodeDescriptions(nodeDescriptions)

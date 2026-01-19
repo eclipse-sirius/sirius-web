@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
@@ -59,6 +60,7 @@ public class TestDiagramDescriptionBuilder {
                 .iconURLsProvider(variableManager -> List.of())
                 .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .decoratorDescriptions(List.of())
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,16 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-import java.util.List;
-
 /**
- * Input used to receive diagram layout data.
+ * Defines the possible actions for managing the autoLayout state.
  *
- * @author sbegaudeau
+ * @author frouene
  */
-public record DiagramLayoutDataInput(List<NodeLayoutDataInput> nodeLayoutData,
-                                     List<EdgeLayoutDataInput> edgeLayoutData,
-                                     List<LabelLayoutDataInput> labelLayoutData,
-                                     AutoLayoutState autoLayoutState) {
-
+public enum AutoLayoutState {
+    UNCHANGED,
+    ACTIVATE,
+    DEACTIVATE
 }

@@ -421,15 +421,15 @@ test.describe('diagram - label', () => {
 
   test('when dragging a center edge label, then no offset apply on the drop position', async ({ page }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    const labelBoundingBox = await page.getByTestId('Label - entity1s [0..*]').boundingBox();
-    await page.getByTestId('Label - entity1s [0..*]').hover({ position: { x: 10, y: 10 } });
+    const labelBoundingBox = await page.getByTestId('Label - entity2s [0..*]').boundingBox();
+    await page.getByTestId('Label - entity2s [0..*]').hover({ position: { x: 10, y: 10 } });
     await page.mouse.down();
     await page.mouse.move((labelBoundingBox?.x ?? 0) + 100, (labelBoundingBox?.y ?? 0) + 100);
     await page.mouse.up();
 
     await page.waitForFunction(
       ({ expectedX, expectedY }) => {
-        const label = document.querySelector(`[data-testid="Label - entity1s [0..*]"]`);
+        const label = document.querySelector(`[data-testid="Label - entity2s [0..*]"]`);
         if (!label) {
           return false;
         }

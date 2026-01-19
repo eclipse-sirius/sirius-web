@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
@@ -154,6 +155,7 @@ public class DiagramRendererEdgeTests {
                 .iconURLsProvider(variableManager -> List.of())
                 .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .decoratorDescriptions(List.of())
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         VariableManager variableManager = new VariableManager();

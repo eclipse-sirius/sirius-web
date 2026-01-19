@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescript
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -125,7 +126,7 @@ public class RelationBasedEdgeDiagramDescriptionProvider implements IEditingCont
                 .domainType("rbeDomain::Root")
                 .nodeDescriptions(entityNodeDescription)
                 .edgeDescriptions(containmentEdgeDescription)
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 

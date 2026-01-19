@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DecoratorPosition;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -179,9 +180,9 @@ public class NodeDecoratorDiagramDescriptionProvider implements IEditingContextP
                 .nodeDescriptions(componentNodeDescription, classifierNodeDescription)
                 .edgeDescriptions()
                 .palette(diagramPalette)
-                .autoLayout(false)
                 .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .decoratorDescriptions(decorator1, decorator2, decorator3, semanticDecorator1, semanticDecorator2)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         return this.diagramDescription;

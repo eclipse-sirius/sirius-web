@@ -123,7 +123,7 @@ public final class Diagram implements IRepresentation {
 
         private DiagramStyle style;
 
-        private DiagramLayoutData layoutData = new DiagramLayoutData(Map.of(), Map.of(), Map.of());
+        private DiagramLayoutData layoutData = new DiagramLayoutData(Map.of(), Map.of(), Map.of(), false);
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);

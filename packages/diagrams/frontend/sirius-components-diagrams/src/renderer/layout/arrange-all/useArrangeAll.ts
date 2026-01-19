@@ -42,7 +42,7 @@ export const useArrangeAll = (): UseArrangeAllValue => {
             edges: laidOutDiagram.edges,
           };
           fitView({ duration: 200, nodes: laidOutDiagram.nodes });
-          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'ACTIVATE');
           resolve();
         });
       });

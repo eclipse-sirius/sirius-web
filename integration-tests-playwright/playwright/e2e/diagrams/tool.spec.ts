@@ -52,10 +52,6 @@ test.describe('diagram - tool', () => {
 test.describe('diagram - tool key bindings', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    await page.addInitScript(() => {
-      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
-      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
-    });
     const project = await new PlaywrightProject(request).createProject('Studio', 'blank-studio-template');
     projectId = project.projectId;
 

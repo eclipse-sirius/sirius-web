@@ -75,7 +75,7 @@ export const useProcessLayoutTool = (): UseProcessLayoutToolValue => {
           nodes: laidOutDiagram.nodes as Node<NodeData, DiagramNodeType>[],
           edges: laidOutDiagram.edges,
         };
-        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
       });
     }
   };

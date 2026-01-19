@@ -29,6 +29,7 @@ export interface Diagram {
   nodes: Node<NodeData, DiagramNodeType>[];
   edges: Edge<MultiLabelEdgeData>[];
   style: React.CSSProperties;
+  autoLaidOut: boolean;
 }
 
 export type OutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';

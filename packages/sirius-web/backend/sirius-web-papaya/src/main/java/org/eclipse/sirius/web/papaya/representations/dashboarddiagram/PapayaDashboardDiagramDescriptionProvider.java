@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -82,6 +83,7 @@ public class PapayaDashboardDiagramDescriptionProvider implements IEditingContex
                 .targetObjectIdProvider(this::getDiagramTargetObjectId)
                 .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                 .decoratorDescriptions(List.of())
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
         return List.of(dashboardDescription);
     }

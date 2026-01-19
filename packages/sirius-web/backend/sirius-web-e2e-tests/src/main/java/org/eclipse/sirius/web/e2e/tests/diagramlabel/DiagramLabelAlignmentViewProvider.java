@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy;
@@ -85,7 +86,7 @@ public class DiagramLabelAlignmentViewProvider implements IE2EViewProvider {
                 .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - inside label alignment with overflow none Diagram")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramLabelDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider, InsideLabelPosition.TOP_LEFT, LabelOverflowStrategy.NONE),
                         this.getNodeDescription(colorProvider, InsideLabelPosition.TOP_CENTER, LabelOverflowStrategy.NONE),
@@ -111,7 +112,7 @@ public class DiagramLabelAlignmentViewProvider implements IE2EViewProvider {
                 .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - inside label alignment with overflow wrap Diagram")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramLabelDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider, InsideLabelPosition.TOP_LEFT, LabelOverflowStrategy.WRAP),
                         this.getNodeDescription(colorProvider, InsideLabelPosition.TOP_CENTER, LabelOverflowStrategy.WRAP),
@@ -137,7 +138,7 @@ public class DiagramLabelAlignmentViewProvider implements IE2EViewProvider {
                 .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - inside label alignment with overflow ellipse Diagram")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramLabelDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider, InsideLabelPosition.TOP_LEFT, LabelOverflowStrategy.ELLIPSIS),
                         this.getNodeDescription(colorProvider, InsideLabelPosition.TOP_CENTER, LabelOverflowStrategy.ELLIPSIS),
