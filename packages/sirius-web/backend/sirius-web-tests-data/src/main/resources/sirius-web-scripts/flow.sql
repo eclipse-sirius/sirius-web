@@ -51,7 +51,16 @@ INSERT INTO document (
              "eClass": "flow:CompositeProcessor",
              "data": {
                "name": "CompositeProcessor2",
-               "elements": []
+               "elements": [
+                 {
+                   "id": "430094ca-c2d3-45a0-a69b-f39d9bc5a7be",
+                   "eClass": "flow:Processor",
+                   "data": {
+                     "incomingFlows": ["03ae2875-3dbe-4c85-a2fe-83bd86b5248c"],
+                     "name": "Processor2"
+                   }
+                 }
+               ]
              }
            },
            {
@@ -67,6 +76,16 @@ INSERT INTO document (
                      "capacity": 6,
                      "load": 6,
                      "target": "ef69655b-b26f-4a4c-9b4e-4e7e00a7edb9"
+                   }
+                 },
+                {
+                   "id": "03ae2875-3dbe-4c85-a2fe-83bd86b5248c",
+                   "eClass": "flow:DataFlow",
+                   "data": {
+                     "usage": "standard",
+                     "capacity": 6,
+                     "load": 6,
+                     "target": "430094ca-c2d3-45a0-a69b-f39d9bc5a7be"
                    }
                  }
                ],
@@ -368,6 +387,48 @@ INSERT INTO representation_content (
           "color": "#B1BCBE"
         },
         "centerLabelEditable": true
+      },
+      {
+        "id": "f2bab5c4-7e0b-3c1e-b224-b1172e445a53",
+        "type": "edge:straight",
+        "targetObjectId": "03ae2875-3dbe-4c85-a2fe-83bd86b5248c",
+        "targetObjectKind": "siriusComponents://semantic?domain=flow&entity=DataFlow",
+        "targetObjectLabel": "standard",
+        "descriptionId": "siriusComponents://edgeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=b6557d5c-4233-4ce9-aabd-6bb61dc98d33",
+        "beginLabel": null,
+        "centerLabel": {
+          "id": "998bfe83-4efb-4c53-b15b-42027a9d9c9d",
+          "type": "label:edge-center",
+          "text": "6",
+          "style": {
+            "color": "#B1BCBE",
+            "fontSize": 14,
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikeThrough": false,
+            "iconURL": [],
+            "background": "transparent",
+            "borderColor": "black",
+            "borderSize": 0,
+            "borderRadius": 3,
+            "borderStyle": "Solid",
+            "maxWidth": null
+          }
+        },
+        "endLabel": null,
+        "sourceId": "562d5a71-dd43-4269-ad92-656b917a6bc0",
+        "targetId": "cc5f93e9-e0e7-44c5-b36d-2966c1c084e3",
+        "modifiers": [],
+        "state": "Normal",
+        "style": {
+          "size": 1,
+          "lineStyle": "Dash",
+          "sourceArrow": "None",
+          "targetArrow": "InputClosedArrow",
+          "color": "#B1BCBE"
+        },
+        "centerLabelEditable": true
       }
     ],
     "layoutData": {
@@ -391,7 +452,17 @@ INSERT INTO representation_content (
           "position": { "x": 8.0, "y": 32.79999923706055 },
           "size": { "width": 150.0, "height": 150.0 },
           "resizedByUser": false,
-          "handleLayoutData": []
+          "handleLayoutData": [
+          {
+            "edgeId": "2415b5f8-c769-3999-ada1-c4d07e629e83",
+            "position": {
+              "x": 0.0,
+              "y": 97
+            },
+            "handlePosition": "left",
+            "type": "target"
+          }
+        ]
         }
       },
       "edgeLayoutData": {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.studio.services.representations.api.IDomainDiagramDescriptionProvider;
+import org.eclipse.sirius.web.data.FlowIdentifier;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
@@ -38,6 +39,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -134,5 +136,40 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
                 .then(requestDiagramPalette)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with an edge with custom handle, when the palette is requested for this edge element, then the reset handles position quick access tool is available")
+    public void givenDiagramWithEdgeWithCustomHandleWhenPaletteRequestedThenResetHandlesPositionToolAvailable() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", FlowIdentifier.FLOW_EDITING_CONTEXT_ID,
+                "representationId", FlowIdentifier.FLOW_DIAGRAM_REPRESENTATION_ID,
+                "diagramElementIds", List.of(FlowIdentifier.FLOW_EDGE_DATA_FLOW_1)
+        );
+        var result = this.paletteQueryRunner.run(variables);
+
+        List<String> quickAccessToolsIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].id");
+        assertThat(quickAccessToolsIds)
+                .isNotEmpty()
+                .anySatisfy(toolId -> assertThat(toolId).isEqualTo("reset-handles-position"));
+
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with an edge without custom handle, when the palette is requested for this edge element, then the reset handles position quick access tool is not available")
+    public void givenDiagramWithEdgeWithoutCustomHandleWhenPaletteRequestedThenResetHandlesPositionToolNotAvailable() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", FlowIdentifier.FLOW_EDITING_CONTEXT_ID,
+                "representationId", FlowIdentifier.FLOW_DIAGRAM_REPRESENTATION_ID,
+                "diagramElementIds", List.of(FlowIdentifier.FLOW_EDGE_DATA_FLOW_2)
+        );
+        var result = this.paletteQueryRunner.run(variables);
+
+        List<String> quickAccessToolsIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].id");
+        assertThat(quickAccessToolsIds)
+                .isNotEmpty()
+                .noneSatisfy(toolId -> assertThat(toolId).isEqualTo("reset-handles-position"));
     }
 }
