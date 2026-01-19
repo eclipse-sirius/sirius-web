@@ -98,8 +98,13 @@
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//EdgeType/SmartManhattan"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//EdgeType/Oblique"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//DiagramLayoutOption">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DiagramLayoutOption/NONE"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DiagramLayoutOption/AUTO_LAYOUT"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DiagramLayoutOption/AUTO_UNTIL_MANUAL"/>
+    </genEnums>
     <genClasses ecoreClass="diagram.ecore#//DiagramDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/autoLayout"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/layoutOption"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/palette"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/groupPalette"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/nodeDescriptions"/>

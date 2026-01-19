@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -79,7 +80,7 @@ public class DiagramSelfContainedViewProvider implements IE2EViewProvider {
                 .name(DiagramSelfContainedDomainProvider.DOMAIN_NAME + " - self contained")
                 .domainType(DiagramSelfContainedDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramSelfContainedDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
                 .build();

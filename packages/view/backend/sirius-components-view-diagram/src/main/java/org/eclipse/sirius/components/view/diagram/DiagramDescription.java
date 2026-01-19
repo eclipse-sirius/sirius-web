@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isAutoLayout <em>Auto Layout</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getLayoutOption <em>Layout Option</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getPalette <em>Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getNodeDescriptions <em>Node
@@ -40,26 +40,30 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
 public interface DiagramDescription extends RepresentationDescription {
 
     /**
-     * Returns the value of the '<em><b>Auto Layout</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Layout Option</b></em>' attribute. The literals are from the enumeration
+     * {@link org.eclipse.sirius.components.view.diagram.DiagramLayoutOption}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
-     * @return the value of the '<em>Auto Layout</em>' attribute.
-     * @see #setAutoLayout(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_AutoLayout()
+     * @return the value of the '<em>Layout Option</em>' attribute.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramLayoutOption
+     * @see #setLayoutOption(DiagramLayoutOption)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_LayoutOption()
      * @model required="true"
      * @generated
      */
-    boolean isAutoLayout();
+    DiagramLayoutOption getLayoutOption();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isAutoLayout <em>Auto
-     * Layout</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getLayoutOption
+     * <em>Layout Option</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *            the new value of the '<em>Auto Layout</em>' attribute.
-     * @see #isAutoLayout()
+     *            the new value of the '<em>Layout Option</em>' attribute.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramLayoutOption
+     * @see #getLayoutOption()
      * @generated
      */
-    void setAutoLayout(boolean value);
+    void setLayoutOption(DiagramLayoutOption value);
 
     /**
      * Returns the value of the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--

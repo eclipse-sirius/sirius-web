@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -88,7 +89,7 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
                 .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - Fully display the inside label Diagram")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramLabelDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .palette(this.getDiagramPalette())
                 .nodeDescriptions(this.getNodeDescription(colorProvider, LabelOverflowStrategy.NONE))
@@ -101,7 +102,7 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
                 .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - Wrap the label without changing the node width")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramLabelDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .palette(this.getDiagramPalette())
                 .nodeDescriptions(this.getNodeDescription(colorProvider, LabelOverflowStrategy.WRAP))
@@ -114,7 +115,7 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
                 .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - The label is truncated without changing the node width")
                 .domainType(DiagramLabelDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramLabelDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .palette(this.getDiagramPalette())
                 .nodeDescriptions(this.getNodeDescription(colorProvider, LabelOverflowStrategy.ELLIPSIS))

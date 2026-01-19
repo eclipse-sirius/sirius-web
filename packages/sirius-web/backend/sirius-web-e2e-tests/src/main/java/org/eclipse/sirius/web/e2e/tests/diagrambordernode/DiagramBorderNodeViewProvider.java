@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
@@ -83,7 +84,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                 .name(DiagramBorderNodeDomainProvider.DOMAIN_NAME + " - simple border")
                 .domainType(DiagramBorderNodeDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramBorderNodeDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
                 .build();

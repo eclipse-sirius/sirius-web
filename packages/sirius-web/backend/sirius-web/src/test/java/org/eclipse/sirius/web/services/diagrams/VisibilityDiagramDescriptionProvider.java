@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBu
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -195,7 +196,7 @@ public class VisibilityDiagramDescriptionProvider implements IEditingContextProc
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         return this.diagramDescription;

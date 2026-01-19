@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
@@ -145,7 +146,7 @@ public class EdgePaletteDiagramDescriptionProvider implements IEditingContextPro
                 .domainType("domain:domain")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions(edgeDescription)
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         return this.diagramDescription;

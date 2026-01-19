@@ -62,8 +62,10 @@ export interface GQLDiagramDescription {
   dropNodeCompatibility: GQLDropNodeCompatibility[];
   debug: boolean;
   arrangeLayoutDirection: GQLArrangeLayoutDirection;
-  autoLayout: boolean;
+  layoutOption: GQLDiagramLayoutOption;
 }
+
+export type GQLDiagramLayoutOption = 'NONE' | 'AUTO_LAYOUT' | 'AUTO_UNTIL_MANUAL';
 
 export type GQLArrangeLayoutDirection = 'UNDEFINED' | 'RIGHT' | 'DOWN' | 'LEFT' | 'UP';
 

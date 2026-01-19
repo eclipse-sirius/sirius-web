@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
@@ -82,7 +83,7 @@ public class DiagramListViewProvider implements IE2EViewProvider {
                 .name(DiagramListDomainProvider.DOMAIN_NAME + " - simple list node")
                 .domainType(DiagramListDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramListDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
                 .build();

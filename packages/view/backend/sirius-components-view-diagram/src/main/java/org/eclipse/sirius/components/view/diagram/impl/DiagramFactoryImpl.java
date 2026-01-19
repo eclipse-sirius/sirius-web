@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DeleteView;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
@@ -236,6 +237,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createHeaderSeparatorDisplayModeFromString(eDataType, initialValue);
             case DiagramPackage.EDGE_TYPE:
                 return this.createEdgeTypeFromString(eDataType, initialValue);
+            case DiagramPackage.DIAGRAM_LAYOUT_OPTION:
+                return this.createDiagramLayoutOptionFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -275,6 +278,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.convertHeaderSeparatorDisplayModeToString(eDataType, instanceValue);
             case DiagramPackage.EDGE_TYPE:
                 return this.convertEdgeTypeToString(eDataType, instanceValue);
+            case DiagramPackage.DIAGRAM_LAYOUT_OPTION:
+                return this.convertDiagramLayoutOptionToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -957,6 +962,27 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     public String convertEdgeTypeToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public DiagramLayoutOption createDiagramLayoutOptionFromString(EDataType eDataType, String initialValue) {
+        DiagramLayoutOption result = DiagramLayoutOption.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertDiagramLayoutOptionToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

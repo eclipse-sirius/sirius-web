@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeType;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
@@ -120,7 +121,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                 .name(DiagramNodeCreationDomainProvider.DOMAIN_NAME + " - node creation")
                 .domainType(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramNodeCreationDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(nodeDescription1, nodeDescription2, this.getNode3Description(colorProvider))
                 .edgeDescriptions(edgeDescription)

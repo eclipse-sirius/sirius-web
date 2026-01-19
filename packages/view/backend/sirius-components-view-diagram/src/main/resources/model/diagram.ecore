@@ -85,9 +85,14 @@
     <eLiterals name="SmartManhattan" value="1" literal="SmartManhattan"/>
     <eLiterals name="Oblique" value="2" literal="Oblique"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="DiagramLayoutOption">
+    <eLiterals name="NONE"/>
+    <eLiterals name="AUTO_LAYOUT" value="1"/>
+    <eLiterals name="AUTO_UNTIL_MANUAL" value="2"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoLayout" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="layoutOption" lowerBound="1"
+        eType="#//DiagramLayoutOption"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="palette" eType="#//DiagramPalette"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="groupPalette" eType="#//GroupPalette"

@@ -110,12 +110,12 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_DESCRIPTION__ICON_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION;
 
     /**
-     * The feature id for the '<em><b>Auto Layout</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Layout Option</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION__AUTO_LAYOUT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
+    int DIAGRAM_DESCRIPTION__LAYOUT_OPTION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!-- end-user-doc
@@ -4044,6 +4044,16 @@ public interface DiagramPackage extends EPackage {
     int EDGE_TYPE = 60;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.DiagramLayoutOption <em>Layout
+     * Option</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.DiagramLayoutOption
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramLayoutOption()
+     * @generated
+     */
+    int DIAGRAM_LAYOUT_OPTION = 61;
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4055,16 +4065,15 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isAutoLayout <em>Auto Layout</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getLayoutOption <em>Layout Option</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
-     * @return the meta object for the attribute '<em>Auto Layout</em>'.
-     * @generated
-     * @see org.eclipse.sirius.components.view.diagram.DiagramDescription#isAutoLayout()
+     * @return the meta object for the attribute '<em>Layout Option</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramDescription#getLayoutOption()
      * @see #getDiagramDescription()
+     * @generated
      */
-    EAttribute getDiagramDescription_AutoLayout();
+    EAttribute getDiagramDescription_LayoutOption();
 
     /**
      * Returns the meta object for the containment reference
@@ -6445,6 +6454,16 @@ public interface DiagramPackage extends EPackage {
     EEnum getEdgeType();
 
     /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.DiagramLayoutOption
+     * <em>Layout Option</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Layout Option</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramLayoutOption
+     * @generated
+     */
+    EEnum getDiagramLayoutOption();
+
+    /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the factory that creates the instances of the model.
@@ -6479,12 +6498,12 @@ public interface DiagramPackage extends EPackage {
         EClass DIAGRAM_DESCRIPTION = eINSTANCE.getDiagramDescription();
 
         /**
-         * The meta object literal for the '<em><b>Auto Layout</b></em>' attribute feature. <!-- begin-user-doc --> <!--
-         * end-user-doc -->
+         * The meta object literal for the '<em><b>Layout Option</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute DIAGRAM_DESCRIPTION__AUTO_LAYOUT = eINSTANCE.getDiagramDescription_AutoLayout();
+        EAttribute DIAGRAM_DESCRIPTION__LAYOUT_OPTION = eINSTANCE.getDiagramDescription_LayoutOption();
 
         /**
          * The meta object literal for the '<em><b>Palette</b></em>' containment reference feature. <!-- begin-user-doc
@@ -8255,6 +8274,16 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EEnum EDGE_TYPE = eINSTANCE.getEdgeType();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.DiagramLayoutOption
+         * <em>Layout Option</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.DiagramLayoutOption
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDiagramLayoutOption()
+         * @generated
+         */
+        EEnum DIAGRAM_LAYOUT_OPTION = eINSTANCE.getDiagramLayoutOption();
 
     }
 

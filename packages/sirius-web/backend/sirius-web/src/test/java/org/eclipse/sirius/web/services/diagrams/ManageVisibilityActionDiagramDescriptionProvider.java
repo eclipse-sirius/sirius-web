@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularN
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -76,7 +77,7 @@ public class ManageVisibilityActionDiagramDescriptionProvider implements IEditin
         viewForDiagramDesc.getDescriptions().add(this.createDiagramDescription());
 
         viewForDiagramDesc.eAllContents().forEachRemaining(eObject ->
-            eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes()))));
+                eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes()))));
 
         String resourcePath = UUID.nameUUIDFromBytes("ManageVisibilityActionDiagramDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
@@ -120,7 +121,7 @@ public class ManageVisibilityActionDiagramDescriptionProvider implements IEditin
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         return this.diagramDescription;

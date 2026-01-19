@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -87,7 +88,7 @@ public class DiagramEdgeHandlePositionViewProvider implements IE2EViewProvider {
                 .name(DiagramEdgeHandlePositionDomainProvider.DOMAIN_NAME + " - simple edge handle position " + arrangeLayoutDirection.name())
                 .domainType(DiagramEdgeHandlePositionDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramEdgeHandlePositionDomainProvider.DOMAIN_NAME + " diagram " + arrangeLayoutDirection.name())
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(arrangeLayoutDirection)
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
                 .edgeDescriptions(edgeDescription1)

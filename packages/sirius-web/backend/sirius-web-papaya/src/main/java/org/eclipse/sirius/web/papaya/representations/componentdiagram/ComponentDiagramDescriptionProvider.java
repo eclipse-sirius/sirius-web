@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescr
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.web.papaya.representations.componentdiagram.edgedescriptions.ComponentDependencyEdgeDescriptionProvider;
@@ -45,7 +46,7 @@ public class ComponentDiagramDescriptionProvider implements IRepresentationDescr
         componentDiagramDescription.setName(NAME);
         componentDiagramDescription.setDomainType("papaya::Component");
         componentDiagramDescription.setTitleExpression("aql:self.name + ' component diagram'");
-        componentDiagramDescription.setAutoLayout(false);
+        componentDiagramDescription.setLayoutOption(DiagramLayoutOption.NONE);
         componentDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.DOWN);
         componentDiagramDescription.setIconExpression("aql:'/papaya-representations/component-diagram.svg'");
 

@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
@@ -149,7 +150,7 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .palette(diagramPalette)
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         return this.diagramDescription;
@@ -215,16 +216,16 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                                 .expression("aql:self")
                                 .children(
                                         new ViewBuilders().newLet()
-                                            .variableName("project")
-                                            .valueExpression("aql:self")
-                                            .children(
-                                                    new ViewBuilders().newChangeContext().expression("aql:project").build(),
-                                                    this.createCreateNewComponentOperation("component1", "aql:'Component1'"),
-                                                    new ViewBuilders().newChangeContext().expression("aql:project").build(),
-                                                    this.createCreateNewComponentOperation("component2", "aql:'Component2'"),
-                                                    new ViewBuilders().newChangeContext().expression("aql:project").build(),
-                                                    this.createCreateNewComponentOperation("component3", "aql:'Component3'"))
-                                            .build()
+                                                .variableName("project")
+                                                .valueExpression("aql:self")
+                                                .children(
+                                                        new ViewBuilders().newChangeContext().expression("aql:project").build(),
+                                                        this.createCreateNewComponentOperation("component1", "aql:'Component1'"),
+                                                        new ViewBuilders().newChangeContext().expression("aql:project").build(),
+                                                        this.createCreateNewComponentOperation("component2", "aql:'Component2'"),
+                                                        new ViewBuilders().newChangeContext().expression("aql:project").build(),
+                                                        this.createCreateNewComponentOperation("component3", "aql:'Component3'"))
+                                                .build()
                                 )
                                 .build()
                 )

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -48,7 +49,7 @@ public class FlowTopographyWithAutoLayoutViewDiagramDescriptionProvider implemen
     public RepresentationDescription create(IColorProvider colorProvider) {
         var diagramDescriptionBuilder = this.diagramBuilderHelper.newDiagramDescription();
         var diagramDescription = diagramDescriptionBuilder
-                .autoLayout(true)
+                .layoutOption(DiagramLayoutOption.AUTO_LAYOUT)
                 .domainType("flow::System")
                 .name("Topography with auto layout")
                 .titleExpression("Topography with auto layout").build();

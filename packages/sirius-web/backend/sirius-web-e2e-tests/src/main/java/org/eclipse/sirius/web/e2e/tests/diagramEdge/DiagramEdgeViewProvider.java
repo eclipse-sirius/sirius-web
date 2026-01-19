@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
 import org.eclipse.sirius.components.view.diagram.EdgeType;
@@ -113,7 +114,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .name(DiagramEdgeDomainProvider.DOMAIN_NAME + " - simple edges")
                 .domainType(DiagramEdgeDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramEdgeDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
                 .edgeDescriptions(edgeDescription1, edgeDescription2, edgeDescription3, edgeDescription4, edgeDescription5)

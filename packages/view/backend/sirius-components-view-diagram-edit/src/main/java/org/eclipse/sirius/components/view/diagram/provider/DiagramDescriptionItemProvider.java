@@ -58,22 +58,22 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addAutoLayoutPropertyDescriptor(object);
+            this.addLayoutOptionPropertyDescriptor(object);
             this.addArrangeLayoutDirectionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
 
     /**
-     * This adds a property descriptor for the Auto Layout feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Layout Option feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected void addAutoLayoutPropertyDescriptor(Object object) {
+    protected void addLayoutOptionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramDescription_autoLayout_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_autoLayout_feature", "_UI_DiagramDescription_type"),
-                DiagramPackage.Literals.DIAGRAM_DESCRIPTION__AUTO_LAYOUT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+                this.getString("_UI_DiagramDescription_layoutOption_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_layoutOption_feature", "_UI_DiagramDescription_type"),
+                DiagramPackage.Literals.DIAGRAM_DESCRIPTION__LAYOUT_OPTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -165,7 +165,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(DiagramDescription.class)) {
-            case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__LAYOUT_OPTION:
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;

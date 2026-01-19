@@ -21,7 +21,7 @@ const defaultValue: DiagramDescriptionContextValue = {
     dropNodeCompatibility: [],
     debug: false,
     arrangeLayoutDirection: 'RIGHT',
-    autoLayout: false,
+    layoutOption: 'NONE',
   },
 };
 

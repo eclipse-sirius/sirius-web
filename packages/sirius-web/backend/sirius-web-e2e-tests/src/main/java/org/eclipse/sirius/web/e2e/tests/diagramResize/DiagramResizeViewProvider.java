@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
@@ -82,7 +83,7 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
                 .name(DiagramResizeDomainProvider.DOMAIN_NAME + " - simple resize node")
                 .domainType(DiagramResizeDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramResizeDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider, "Entity1 - Resize Both", "::Entity1", UserResizableDirection.BOTH),
                         this.getNodeDescription(colorProvider, "Entity2 - Resize NONE", "::Entity2", UserResizableDirection.NONE),
