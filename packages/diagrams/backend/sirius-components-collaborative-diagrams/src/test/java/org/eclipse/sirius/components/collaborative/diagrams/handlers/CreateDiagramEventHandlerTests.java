@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchSe
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.DiagramStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.junit.jupiter.api.Test;
@@ -67,6 +68,7 @@ public class CreateDiagramEventHandlerTests {
                         .iconURLsProvider(variableManager -> List.of())
                         .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
                         .decoratorDescriptions(List.of())
+                        .layoutOption(DiagramLayoutOption.NONE)
                         .build();
 
                 return Optional.of(diagramDescription);

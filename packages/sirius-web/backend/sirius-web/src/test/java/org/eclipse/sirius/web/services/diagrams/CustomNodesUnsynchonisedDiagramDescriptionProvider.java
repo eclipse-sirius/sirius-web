@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescript
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -119,7 +120,7 @@ public class CustomNodesUnsynchonisedDiagramDescriptionProvider implements IEdit
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 

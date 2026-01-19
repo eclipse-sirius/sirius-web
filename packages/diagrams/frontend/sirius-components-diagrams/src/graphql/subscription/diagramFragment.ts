@@ -59,6 +59,7 @@ fragment diagramFragment on Diagram {
       resizedByUser
       movedByUser
     }
+    autoLaidOut
   }
   nodes {
     ...nodeFragment

@@ -30,9 +30,9 @@ import org.eclipse.sirius.components.representations.VariableManager;
  * The root concept of the description of a diagram representation.
  *
  * <p>
- *     This description is used to hold both the data and behavior to be executed during the rendering of the diagram.
- *     As such, it is divided into multiple description objects containing various pieces of information such as {@link NodeDescription}
- *     or {@link EdgeDescription}.
+ * This description is used to hold both the data and behavior to be executed during the rendering of the diagram.
+ * As such, it is divided into multiple description objects containing various pieces of information such as {@link NodeDescription}
+ * or {@link EdgeDescription}.
  * </p>
  *
  * @author sbegaudeau
@@ -66,7 +66,7 @@ public final class DiagramDescription implements IRepresentationDescription {
 
     private String label;
 
-    private boolean autoLayout;
+    private DiagramLayoutOption layoutOption;
 
     private ArrangeLayoutDirection arrangeLayoutDirection;
 
@@ -97,8 +97,8 @@ public final class DiagramDescription implements IRepresentationDescription {
     /**
      * Entry point of the creation of the diagram description.
      *
-     * @param id The unique identifier of the description
-     *
+     * @param id
+     *         The unique identifier of the description
      * @return The builder used to create a diagram description
      */
     public static Builder newDiagramDescription(String id) {
@@ -108,8 +108,8 @@ public final class DiagramDescription implements IRepresentationDescription {
     /**
      * Entry point used to duplicate and modify an existing diagram description.
      *
-     * @param diagramDescription The original description
-     *
+     * @param diagramDescription
+     *         The original description
      * @return The builder used to create a diagram description
      */
     public static Builder newDiagramDescription(DiagramDescription diagramDescription) {
@@ -126,15 +126,8 @@ public final class DiagramDescription implements IRepresentationDescription {
         return this.label;
     }
 
-    /**
-     * Used to indicate if the diagram created should be laid out automatically.
-     *
-     * @return <code>true</code> if the diagram should be laid out automatically, <code>false</code> otherwise
-     *
-     * @technical-debt This property should not exist on the diagram description since it is not used by the rendering.
-     */
-    public boolean isAutoLayout() {
-        return this.autoLayout;
+    public DiagramLayoutOption getLayoutOption() {
+        return this.layoutOption;
     }
 
     /**
@@ -142,7 +135,6 @@ public final class DiagramDescription implements IRepresentationDescription {
      *
      * @return The main direction to be used by some layout algorithm.
      *
-     * @technical-debt This property should not exist on the diagram description since it is not used by the rendering.
      */
     public ArrangeLayoutDirection getArrangeLayoutDirection() {
         return this.arrangeLayoutDirection;
@@ -166,7 +158,7 @@ public final class DiagramDescription implements IRepresentationDescription {
      * Provides a function which will be used when a new diagram is created in order to compute its label.<p>
      *
      * <p>
-     *     The following variables will at least be available when this behavior is executed:
+     * The following variables will at least be available when this behavior is executed:
      * </p>
      *
      * <ul>
@@ -175,7 +167,6 @@ public final class DiagramDescription implements IRepresentationDescription {
      * </ul>
      *
      * @return A function used to compute the label of the representation.
-     *
      * @technical-debt This function is not used by the rendering, and it should not exist on the diagram description since
      * it is not relevant to the creation of a diagram. It is instead used to compute one specific kind of metadata (the label)
      * for one specific use case. Applications integrating Sirius Components could choose not to have any label at all or
@@ -207,7 +198,7 @@ public final class DiagramDescription implements IRepresentationDescription {
      * Provides a function which will be used when a semantic element is dropped in a diagram.
      *
      * <p>
-     *     The following variables will at least be available when this behavior is executed:
+     * The following variables will at least be available when this behavior is executed:
      * </p>
      *
      * <ul>
@@ -217,7 +208,6 @@ public final class DiagramDescription implements IRepresentationDescription {
      * </ul>
      *
      * @return A function used to execute some behavior when a semantic element is dropped in a diagram.
-     *
      * @technical-debt This function is unused during the rendering and should thus be removed. Hardcoding such behavior
      * into the description also provides a poor extensibility of the diagram representation by preventing downstream
      * consumers from updating the existing behavior or adding a new one easily
@@ -230,7 +220,7 @@ public final class DiagramDescription implements IRepresentationDescription {
      * Provides a function which will be used when a node is being dropped in a diagram.
      *
      * <p>
-     *     The following variables will at least be available when this behavior is executed:
+     * The following variables will at least be available when this behavior is executed:
      * </p>
      *
      * <ul>
@@ -251,7 +241,6 @@ public final class DiagramDescription implements IRepresentationDescription {
      * </ul>
      *
      * @return A function used to execute some behavior when a node is dropped in a diagram.
-     *
      * @technical-debt This function is unused during the rendering and should thus be removed. Hardcoding such behavior
      * into the description also provides a poor extensibility of the diagram representation by preventing downstream
      * consumers from updating the existing behavior or adding a new one easily
@@ -264,7 +253,7 @@ public final class DiagramDescription implements IRepresentationDescription {
      * Provides the function which will be used to retrieve the URL of the various images composing the icon of the diagram.
      *
      * <p>
-     *     The following variables will at least be available when this behavior is executed:
+     * The following variables will at least be available when this behavior is executed:
      * </p>
      *
      * <ul>
@@ -272,7 +261,6 @@ public final class DiagramDescription implements IRepresentationDescription {
      * </ul>
      *
      * @return A function used to compute the URLs of the icon associated with the diagram.
-     *
      * @technical-debt This function is not used by the rendering, and it should not exist on the diagram description since
      * it is not relevant to the creation of a diagram. It is instead used to compute one specific kind of metadata (the icon)
      * for one specific use case. Applications integrating Sirius Components could choose not to have any icon at all or
@@ -308,7 +296,7 @@ public final class DiagramDescription implements IRepresentationDescription {
 
         private String label;
 
-        private boolean autoLayout;
+        private DiagramLayoutOption layoutOption;
 
         private ArrangeLayoutDirection arrangeLayoutDirection = ArrangeLayoutDirection.UNDEFINED;
 
@@ -339,7 +327,7 @@ public final class DiagramDescription implements IRepresentationDescription {
         private Builder(DiagramDescription diagramDescription) {
             this.id = diagramDescription.getId();
             this.label = diagramDescription.getLabel();
-            this.autoLayout = diagramDescription.isAutoLayout();
+            this.layoutOption = diagramDescription.getLayoutOption();
             this.arrangeLayoutDirection = diagramDescription.getArrangeLayoutDirection();
             this.targetObjectIdProvider = diagramDescription.getTargetObjectIdProvider();
             this.canCreatePredicate = diagramDescription.getCanCreatePredicate();
@@ -358,8 +346,8 @@ public final class DiagramDescription implements IRepresentationDescription {
             return this;
         }
 
-        public Builder autoLayout(boolean autoLayout) {
-            this.autoLayout = autoLayout;
+        public Builder layoutOption(DiagramLayoutOption layoutOption) {
+            this.layoutOption = Objects.requireNonNull(layoutOption);
             return this;
         }
 
@@ -422,7 +410,7 @@ public final class DiagramDescription implements IRepresentationDescription {
             DiagramDescription diagramDescription = new DiagramDescription();
             diagramDescription.id = Objects.requireNonNull(this.id);
             diagramDescription.label = Objects.requireNonNull(this.label);
-            diagramDescription.autoLayout = this.autoLayout;
+            diagramDescription.layoutOption = Objects.requireNonNull(this.layoutOption);
             diagramDescription.arrangeLayoutDirection = Objects.requireNonNull(this.arrangeLayoutDirection);
             diagramDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             diagramDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);

@@ -237,7 +237,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
             edges: getEdges(),
           };
           updateNodeInternals(edgeAnchorNode?.data.sourceTargetEdgeId || '');
-          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
         } else {
           handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind, { x: 0, y: 0 });
         }
@@ -364,7 +364,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         };
 
         updateNodeInternals(targetInternalNode.id);
-        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
       } else {
         const currentHandle = targetInternalNode.data.connectionHandles.find(
           (connectionHandle) => connectionHandle.id === handleId

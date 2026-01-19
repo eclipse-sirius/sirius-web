@@ -101,7 +101,7 @@ export const useDistributeNodesOnGap = (): UseDistributeNodesOnGapValue => {
             nodes: laidOutDiagram.nodes,
             edges: laidOutDiagram.edges,
           };
-          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
         });
       }
     }, []);

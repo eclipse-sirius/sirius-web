@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { expect, test } from '@playwright/test';
+import { expect, test, Page } from '@playwright/test';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -63,7 +64,7 @@ test.describe('diagram - drag and drop of multiple elements', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }
@@ -87,12 +88,14 @@ test.describe('diagram - drag and drop of multiple elements', () => {
     // Now, inside the diagram, select both attributes from the 'Source' entity
     const attr1NodeBefore = new PlaywrightNode(page, 'attr1', 'IconLabel');
     await attr1NodeBefore.click();
+    // Hide Node Panel Info to avoid overlap in diagram
+    await new PlaywrightDiagram(page).hideDebugPanel();
 
     const attr2NodeBefore = new PlaywrightNode(page, 'attr2', 'IconLabel');
     await attr2NodeBefore.controlClick();
 
     // And move them inside the 'Target' entity
-    await attr2NodeBefore.move({ x: 400, y: 0 });
+    await attr2NodeBefore.move({ x: -250, y: 0 });
 
     await page.waitForFunction(
       () => {
@@ -139,7 +142,7 @@ test.describe('diagram - drag and drop of multiple elements', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }
@@ -148,12 +151,14 @@ test.describe('diagram - drag and drop of multiple elements', () => {
     // Now, inside the diagram, select both attributes from the 'Source' entity
     const attr1NodeBefore = new PlaywrightNode(page, 'attr1', 'IconLabel');
     await attr1NodeBefore.click();
+    // Hide Node Panel Info to avoid overlap in diagram
+    await new PlaywrightDiagram(page).hideDebugPanel();
 
     const attr2NodeBefore = new PlaywrightNode(page, 'attr2', 'IconLabel');
     await attr2NodeBefore.controlClick();
 
     // And move them directly on the diagram area (not on an entity)
-    await attr2NodeBefore.move({ x: 200, y: 200 });
+    await attr2NodeBefore.move({ x: 400, y: 100 });
 
     await page.waitForFunction(
       () => {
@@ -184,7 +189,7 @@ test.describe('diagram - drag and drop of multiple elements', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }

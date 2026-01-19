@@ -94,15 +94,17 @@ public class DiagramDescriptionBuilder {
         this.getDiagramDescription().setIconExpression(value);
         return this;
     }
+
     /**
-     * Setter for AutoLayout.
+     * Setter for LayoutOption.
      *
      * @generated
      */
-    public DiagramDescriptionBuilder autoLayout(java.lang.Boolean value) {
-        this.getDiagramDescription().setAutoLayout(value);
+    public DiagramDescriptionBuilder layoutOption(org.eclipse.sirius.components.view.diagram.DiagramLayoutOption value) {
+        this.getDiagramDescription().setLayoutOption(value);
         return this;
     }
+
     /**
      * Setter for Toolbar.
      *

@@ -74,7 +74,7 @@ test.describe('edge on edge', () => {
     await page.mouse.up();
     await expect(edges).toHaveCount(2);
     //Create node to edge
-    playwrightNode2b.click();
+    await playwrightNode2b.click();
     await page.getByTestId('creationhandle-bottom').hover();
     await page.mouse.down();
     const playwrightEdge = new PlaywrightEdge(page);

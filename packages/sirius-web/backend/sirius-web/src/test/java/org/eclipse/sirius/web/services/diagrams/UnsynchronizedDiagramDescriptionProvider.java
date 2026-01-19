@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.CreateInstanceB
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
@@ -200,7 +201,7 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .palette(diagramPalette)
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 

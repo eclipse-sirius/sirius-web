@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps.Builder;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramEdgeLayoutEvent;
 import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramLabelLayoutEvent;
@@ -186,7 +187,8 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .filter(DiagramEdgeLayoutEvent.class::isInstance)
                 .map(DiagramEdgeLayoutEvent.class::cast).toList();
 
-        var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of()));
+        var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of(),
+                !diagramDescription.getLayoutOption().equals(DiagramLayoutOption.NONE)));
 
         diagramNodeLayoutEvents.forEach(nodeLayoutDataEvent ->
                 newLayoutData.nodeLayoutData().put(nodeLayoutDataEvent.nodeId(), nodeLayoutDataEvent.nodeLayoutData()));
@@ -233,7 +235,20 @@ public class DiagramCreationService implements IDiagramCreationService {
                         (oldValue, newValue) -> newValue
                 ));
 
-        var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData);
+        DiagramLayoutOption diagramLayoutOption = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
+                .filter(DiagramDescription.class::isInstance)
+                .map(DiagramDescription.class::cast)
+                .map(DiagramDescription::getLayoutOption)
+                .orElse(DiagramLayoutOption.NONE);
+        boolean autoLaidOut = (diagramLayoutOption.equals(DiagramLayoutOption.AUTO_UNTIL_MANUAL)
+                && switch (layoutDiagramInput.diagramLayoutData().autoLayoutState()) {
+            case ACTIVATE -> true;
+            case DEACTIVATE -> false;
+            case UNCHANGED -> diagram.getLayoutData().autoLaidOut();
+        })
+                || diagramLayoutOption.equals(DiagramLayoutOption.AUTO_LAYOUT);
+
+        var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData, autoLaidOut);
         var laidOutDiagram = Diagram.newDiagram(diagram)
                 .layoutData(layoutData)
                 .build();

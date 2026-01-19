@@ -30,7 +30,7 @@ export const useLabelResetPosition = (): UseLabelResetPositionValue => {
         nodes: nodes,
         edges: edges,
       };
-      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
     },
     [synchronizeLayoutData]
   );

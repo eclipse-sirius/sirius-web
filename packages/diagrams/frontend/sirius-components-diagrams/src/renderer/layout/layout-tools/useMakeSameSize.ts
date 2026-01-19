@@ -54,7 +54,7 @@ export const useMakeSameSize = (): UseMakeSameSizeValue => {
           edges: laidOutDiagram.edges,
         };
         setNodes(laidOutDiagram.nodes);
-        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
       });
     }
   }, []);

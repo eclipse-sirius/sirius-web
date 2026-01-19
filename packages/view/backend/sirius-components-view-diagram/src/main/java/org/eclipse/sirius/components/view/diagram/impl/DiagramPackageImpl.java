@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.view.diagram.DeleteView;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
@@ -585,6 +586,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EEnum diagramLayoutOptionEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private boolean isCreated = false;
 
     /**
@@ -619,10 +627,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @generated
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
-     * @generated
      */
     public static DiagramPackage init() {
         if (isInited)
@@ -667,7 +675,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getDiagramDescription_AutoLayout() {
+    public EAttribute getDiagramDescription_LayoutOption() {
         return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
@@ -3137,6 +3145,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EEnum getDiagramLayoutOption() {
+        return this.diagramLayoutOptionEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public DiagramFactory getDiagramFactory() {
         return (DiagramFactory) this.getEFactoryInstance();
     }
@@ -3154,7 +3172,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         // Create classes and their features
         this.diagramDescriptionEClass = this.createEClass(DIAGRAM_DESCRIPTION);
-        this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__AUTO_LAYOUT);
+        this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__LAYOUT_OPTION);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__TOOLBAR);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__PALETTE);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__GROUP_PALETTE);
@@ -3456,6 +3474,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.headerSeparatorDisplayModeEEnum = this.createEEnum(HEADER_SEPARATOR_DISPLAY_MODE);
         this.edgeTypeEEnum = this.createEEnum(EDGE_TYPE);
         this.decoratorPositionEEnum = this.createEEnum(DECORATOR_POSITION);
+        this.diagramLayoutOptionEEnum = this.createEEnum(DIAGRAM_LAYOUT_OPTION);
     }
 
     /**
@@ -3526,7 +3545,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.diagramDescriptionEClass, DiagramDescription.class, "DiagramDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getDiagramDescription_AutoLayout(), this.ecorePackage.getEBoolean(), "autoLayout", null, 1, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+        this.initEAttribute(this.getDiagramDescription_LayoutOption(), this.getDiagramLayoutOption(), "layoutOption", null, 1, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_Toolbar(), this.getDiagramToolbar(), null, "toolbar", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -4115,6 +4134,11 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.EAST);
         this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.NORTH_EAST);
         this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.CENTER);
+
+        this.initEEnum(this.diagramLayoutOptionEEnum, DiagramLayoutOption.class, "DiagramLayoutOption");
+        this.addEEnumLiteral(this.diagramLayoutOptionEEnum, DiagramLayoutOption.NONE);
+        this.addEEnumLiteral(this.diagramLayoutOptionEEnum, DiagramLayoutOption.AUTO_LAYOUT);
+        this.addEEnumLiteral(this.diagramLayoutOptionEEnum, DiagramLayoutOption.AUTO_UNTIL_MANUAL);
 
         // Create resource
         this.createResource(eNS_URI);

@@ -105,7 +105,7 @@ public class GetNodeDescriptionsEventHandlerTests {
         var diagram = Diagram.newDiagram(UUID.randomUUID().toString())
                 .descriptionId(DIAGRAM_DESCRIPTION_ID)
                 .edges(List.of())
-                .layoutData(new DiagramLayoutData(Map.of(), Map.of(), Map.of()))
+                .layoutData(new DiagramLayoutData(Map.of(), Map.of(), Map.of(), false))
                 .nodes(List.of())
                 .targetObjectId("")
                 .style(DiagramStyle.newDiagramStyle().build())

@@ -16,13 +16,19 @@ import { HandleType, Position } from '@xyflow/react';
 import { RawDiagram } from './layout.types';
 
 export interface UseSynchronizeLayoutDataValue {
-  synchronizeLayoutData: (id: string, cause: string, diagram: RawDiagram) => void;
+  synchronizeLayoutData: (
+    id: string,
+    cause: string,
+    diagram: RawDiagram,
+    autoLayoutState: 'UNCHANGED' | 'ACTIVATE' | 'DEACTIVATE'
+  ) => void;
 }
 
 export interface GQLDiagramLayoutData {
   nodeLayoutData: GQLNodeLayoutData[];
   edgeLayoutData: GQLEdgeLayoutData[];
   labelLayoutData: GQLLabelLayoutData[];
+  autoLayoutState: 'UNCHANGED' | 'ACTIVATE' | 'DEACTIVATE';
 }
 
 export interface GQLNodeLayoutData {
