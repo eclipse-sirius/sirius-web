@@ -88,7 +88,7 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                     Optional<String> optionalParentId = Optional.empty();
                     var parentId = previousDiagram.getId();
                     for (Node currentNode : previousDiagram.getNodes()) {
-                        optionalParentId = findParentId(currentNode, previousNode.getId());
+                        optionalParentId = this.findParentId(currentNode, previousNode.getId());
                     }
                     if (optionalParentId.isPresent()) {
                         parentId = optionalParentId.get();
@@ -102,7 +102,7 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                             .build();
                     undoViewCreationRequests.add(creationRequest);
 
-                    nodeAppearanceChangeUndoRecorders.stream()
+                    this.nodeAppearanceChangeUndoRecorders.stream()
                             .filter(handler -> handler.canHandle(previousNode))
                             .forEach(handler -> undoAppearanceChanges.addAll(handler.computeUndoNodeAppearanceChanges(previousNode, Optional.empty())));
 
@@ -118,7 +118,7 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                         var diagramHideElementChange = new DiagramHideElementChange(diagramInput.id(), diagramInput.representationId(), Set.of(previousNode.getId()), true, false);
                         representationChanges.add(diagramHideElementChange);
                     }
-                    
+
                     var previousNodeLayoutData = previousDiagram.getLayoutData().nodeLayoutData();
                     if (previousNodeLayoutData.containsKey(previousNode.getId())) {
                         var undoPositionEvent = new DiagramNodeLayoutEvent(previousNode.getId(), previousNodeLayoutData.get(previousNode.getId()));
@@ -129,16 +129,16 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                     previousNode.getOutsideLabels().forEach(label -> {
                         var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
                         if (previousLabelLayoutData.containsKey(label.id())) {
-                            var diagramLabelLayoutChange = getDiagramNodeLabelChange(label.id(), previousLabelLayoutData.get(label.id()), diagramInput);
+                            var diagramLabelLayoutChange = this.getDiagramNodeLabelChange(label.id(), previousLabelLayoutData.get(label.id()), diagramInput);
                             representationChanges.addAll(diagramLabelLayoutChange);
                         }
                     });
 
-                    Optional.of(previousNode.getInsideLabel())
+                    Optional.ofNullable(previousNode.getInsideLabel())
                             .ifPresent(label -> {
                                 var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
                                 if (previousLabelLayoutData.containsKey(label.getId())) {
-                                    var diagramLabelLayoutChange = getDiagramNodeLabelChange(label.getId(), previousLabelLayoutData.get(label.getId()), diagramInput);
+                                    var diagramLabelLayoutChange = this.getDiagramNodeLabelChange(label.getId(), previousLabelLayoutData.get(label.getId()), diagramInput);
                                     representationChanges.addAll(diagramLabelLayoutChange);
                                 }
                             });
@@ -177,7 +177,7 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
         if (parentNode.isEmpty()) {
             var childNodes = Stream.concat(currentNode.getBorderNodes().stream(), currentNode.getChildNodes().stream()).toList();
             for (Node node : childNodes) {
-                return findParentId(node, childId);
+                return this.findParentId(node, childId);
             }
         }
 
