@@ -14,7 +14,7 @@ import { CoordinateExtent, Edge, InternalNode, Node, Position, XYPosition } from
 import { NodeLookup } from '@xyflow/system';
 import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { borderNodeGap, borderNodeOffset, borderNodeReferencePositionRatio } from './layoutParams';
+import { borderNodeGap, borderNodeLabelGap, borderNodeOffset, borderNodeReferencePositionRatio } from './layoutParams';
 
 export const isEastBorderNode = (borderNode: Node<NodeData>): boolean => {
   return borderNode.data.isBorderNode && borderNode.data.borderNodePosition === BorderNodePosition.EAST;
@@ -232,14 +232,14 @@ export const computeBorderNodeLabelPosition = (
         switch (borderNode.data.borderNodePosition) {
           case BorderNodePosition.EAST:
             borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.x =
-              (borderNode.width ?? 0) / 2 + borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2;
+              (borderNode.width ?? 0) / 2 + borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2 + borderNodeLabelGap;
             borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y = hasEdge
               ? -(borderNode.height ?? 0) - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height
               : -(borderNode.height ?? 0) / 2 - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height / 2;
             break;
           case BorderNodePosition.WEST:
             borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.x =
-              -(borderNode.width ?? 0) / 2 - borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2;
+              -(borderNode.width ?? 0) / 2 - borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2 - borderNodeLabelGap;
             borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y = hasEdge
               ? -(borderNode.height ?? 0) - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height
               : -(borderNode.height ?? 0) / 2 - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height / 2;
@@ -249,13 +249,13 @@ export const computeBorderNodeLabelPosition = (
               ? (borderNode.width ?? 0) / 2 + borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2
               : 0;
             borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y =
-              -(borderNode.height ?? 0) - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height;
+              -(borderNode.height ?? 0) - borderNode.data.outsideLabels.BOTTOM_MIDDLE.height - borderNodeLabelGap;
             break;
           case BorderNodePosition.SOUTH:
             borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.x = hasEdge
               ? (borderNode.width ?? 0) / 2 + borderNode.data.outsideLabels.BOTTOM_MIDDLE.width / 2
               : 0;
-            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y = 0;
+            borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.y = borderNodeLabelGap;
             break;
           default:
             borderNode.data.outsideLabels.BOTTOM_MIDDLE.position.x = 0;

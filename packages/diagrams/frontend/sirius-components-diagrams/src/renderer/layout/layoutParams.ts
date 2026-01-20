@@ -32,3 +32,4 @@ export const horizontalLayoutAngleMax = 60;
 export const edgeBendPointOffset = 25;
 export const borderNodeGap = 10;
 export const maxOverflowIteration = 10;
+export const borderNodeLabelGap = 2;
