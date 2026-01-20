@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,16 +13,18 @@
 package org.eclipse.sirius.web.application.views.explorer.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerElementsProvider;
-import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerServices;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerTreeAlteredContentProvider;
 import org.springframework.stereotype.Service;
 
@@ -36,11 +38,14 @@ public class ExplorerElementsProvider implements IExplorerElementsProvider {
 
     private final List<IExplorerTreeAlteredContentProvider> alteredContentProviders;
 
-    private final IExplorerServices explorerServices;
+    private final IContentService contentService;
 
-    public ExplorerElementsProvider(List<IExplorerTreeAlteredContentProvider> alteredContentProviders, IExplorerServices explorerServices) {
+    private final ILabelService labelService;
+
+    public ExplorerElementsProvider(List<IExplorerTreeAlteredContentProvider> alteredContentProviders, IContentService contentService, ILabelService labelService) {
         this.alteredContentProviders = Objects.requireNonNull(alteredContentProviders);
-        this.explorerServices = Objects.requireNonNull(explorerServices);
+        this.contentService = Objects.requireNonNull(contentService);
+        this.labelService = Objects.requireNonNull(labelService);
     }
 
     @Override
@@ -62,9 +67,22 @@ public class ExplorerElementsProvider implements IExplorerElementsProvider {
         return elements;
     }
 
-    private List<Resource> getDefaultElements(VariableManager variableManager) {
+    private List<Object> getDefaultElements(VariableManager variableManager) {
         Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        return this.explorerServices.getDefaultElements(optionalEditingContext.orElse(null));
+        var resources = new ArrayList<Resource>();
+        var elements = new ArrayList<>();
+        this.contentService.getContents(optionalEditingContext.orElse(null)).forEach(content -> {
+            if (content instanceof Resource resource) {
+                resources.add(resource);
+            }
+            else {
+                elements.add(content);
+            }
+        });
+        //We sort the elements as it was done by the former IExplorerServices#getDefaultElements service.
+        resources.sort(Comparator.nullsLast(Comparator.comparing(resource -> this.labelService.getStyledLabel(resource).toString(), String.CASE_INSENSITIVE_ORDER)));
+        elements.addAll(resources);
+        return elements;
     }
 
     private List<String> getActiveFilterIds(VariableManager variableManager) {

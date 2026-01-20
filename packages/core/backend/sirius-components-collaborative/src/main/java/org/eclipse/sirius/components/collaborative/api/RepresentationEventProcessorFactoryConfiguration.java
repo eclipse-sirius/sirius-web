@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.api;
 
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -39,7 +41,7 @@ public class RepresentationEventProcessorFactoryConfiguration {
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
     public RepresentationEventProcessorFactoryConfiguration(IRepresentationDescriptionSearchService representationDescriptionSearchService, IRepresentationSearchService representationSearchService,
-            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, ISubscriptionManagerFactory subscriptionManagerFactory) {
+            IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry, ISubscriptionManagerFactory subscriptionManagerFactory, List<IRepresentationMetadataProvider> representationMetadataProviders) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);

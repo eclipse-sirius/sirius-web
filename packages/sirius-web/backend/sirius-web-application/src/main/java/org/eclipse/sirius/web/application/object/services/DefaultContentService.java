@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,19 +15,24 @@ package org.eclipse.sirius.web.application.object.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory.Descriptor;
 import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
 import org.eclipse.sirius.components.core.api.IDefaultContentService;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.springframework.stereotype.Service;
 
 /**
- * Default implementation of {@link IDefaultContentService}.
+ * Default implementation of {@link IDefaultContentService}. 
  *
  * @author mcharfadi
  */
@@ -59,6 +64,14 @@ public class DefaultContentService implements IDefaultContentService {
         else if (object instanceof Resource resource) {
             // The object may be a document
             contents.addAll(resource.getContents());
+        } else if (object instanceof IEditingContext editingContext) {
+            Optional.of(editingContext)
+                    .filter(IEMFEditingContext.class::isInstance)
+                    .map(IEMFEditingContext.class::cast)
+                    .map(IEMFEditingContext::getDomain)
+                    .map(EditingDomain::getResourceSet)
+                    .map(ResourceSet::getResources)
+                    .ifPresent(contents::addAll);
         }
         return contents;
     }

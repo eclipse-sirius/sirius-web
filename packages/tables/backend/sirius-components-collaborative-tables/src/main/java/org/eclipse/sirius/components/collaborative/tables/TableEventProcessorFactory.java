@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
@@ -60,7 +60,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
     private final IObjectSearchService objectSearchService;
 
@@ -74,11 +74,11 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
 
     private final List<ICustomCellDescriptor> customCellDescriptors;
 
-    public TableEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationPersistenceService representationPersistenceService,
+    public TableEventProcessorFactory(RepresentationEventProcessorFactoryConfiguration configuration, IRepresentationPersistenceStrategy representationPersistenceStrategy,
             IObjectSearchService objectSearchService, List<ITableEventHandler> tableEventHandlers, IURLParser urlParser, List<ICustomCellDescriptor> customCellDescriptors) {
         this.representationSearchService = Objects.requireNonNull(configuration.getRepresentationSearchService());
         this.representationDescriptionSearchService = Objects.requireNonNull(configuration.getRepresentationDescriptionSearchService());
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.tableEventHandlers = Objects.requireNonNull(tableEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(configuration.getSubscriptionManagerFactory());
@@ -121,7 +121,7 @@ public class TableEventProcessorFactory implements IRepresentationEventProcessor
                         .build();
 
                 IRepresentationEventProcessor tableEventProcessor = new TableEventProcessor(tableCreationParameters, this.tableEventHandlers, new TableContext(table),
-                        this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry, this.representationPersistenceService);
+                        this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry, this.representationPersistenceStrategy);
                 return Optional.of(tableEventProcessor);
             }
         }

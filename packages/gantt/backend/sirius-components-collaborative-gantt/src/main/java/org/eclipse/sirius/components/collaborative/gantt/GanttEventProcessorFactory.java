@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttEventHandler;
@@ -43,15 +43,15 @@ public class GanttEventProcessorFactory implements IRepresentationEventProcessor
 
     private final List<IGanttEventHandler> ganttEventHandlers;
 
-    private final IRepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceStrategy representationPersistenceStrategy;
 
     public GanttEventProcessorFactory(IRepresentationSearchService representationSearchService, GanttCreationService ganttCreationService, ISubscriptionManagerFactory subscriptionManagerFactory,
-            List<IGanttEventHandler> ganttEventHandlers, IRepresentationPersistenceService representationPersistenceService) {
+            List<IGanttEventHandler> ganttEventHandlers, IRepresentationPersistenceStrategy representationPersistenceStrategy) {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.ganttCreationService = Objects.requireNonNull(ganttCreationService);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
         this.ganttEventHandlers = Objects.requireNonNull(ganttEventHandlers);
-        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
+        this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class GanttEventProcessorFactory implements IRepresentationEventProcessor
             GanttContext ganttContext = new GanttContext(optionalGantt.get());
 
             IRepresentationEventProcessor ganttEventProcessor = new GanttEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.ganttCreationService,
-                    this.representationSearchService, this.ganttEventHandlers, ganttContext, this.representationPersistenceService);
+                    this.representationSearchService, this.ganttEventHandlers, ganttContext, this.representationPersistenceStrategy);
 
             return Optional.of(ganttEventProcessor);
         }
