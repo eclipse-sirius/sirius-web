@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -68,7 +68,7 @@ export const CreateProjectArea = ({}: CreateProjectAreaProps) => {
           ) : template.id === 'browse-all-project-templates' ? (
             <ShowAllProjectTemplatesCard key={template.id} />
           ) : (
-            <NewProjectCard key={template.id} template={template} />
+            <NewProjectCard key={template.id} url={`/new/project?templateId=${template.id}`} template={template} />
           )
         )}
         {createProjectAreaCards.map(({ Component: Card }, index) => (

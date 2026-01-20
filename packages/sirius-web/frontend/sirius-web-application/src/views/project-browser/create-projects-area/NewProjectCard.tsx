@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,13 +41,13 @@ const useNewProjectCardStyles = makeStyles()((theme) => ({
  * Displays a card to trigger the project creation process for a specific project template
  * (which may be the default 'blank' template).
  */
-export const NewProjectCard = ({ template }: NewProjectCardProps) => {
+export const NewProjectCard = ({ url, template }: NewProjectCardProps) => {
   const { classes } = useNewProjectCardStyles();
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
   return (
     <Button
-      to={`/new/project?templateId=${template.id}`}
+      to={url}
       component={RouterLink}
       className={classes.button}
       data-testid={`create-project-from-template-${template.label}`}>
