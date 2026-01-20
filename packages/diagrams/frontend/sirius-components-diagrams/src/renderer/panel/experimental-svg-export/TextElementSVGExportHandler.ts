@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -121,7 +121,9 @@ export class TextElementSVGExportHandler implements IElementSVGExportHandler {
         const lineBounds: DOMRect = lineRange.getBoundingClientRect();
         if (lineBounds.height > oneCharHeight) {
           // We have a line break, update the range end to the previous character
-          lineRange.setEnd(textElement, --j);
+          if (j > i + 1) {
+            lineRange.setEnd(textElement, --j);
+          }
           shouldSwitchLine = true;
         } else if (j >= textContent.length) {
           // We reached the end of the text content
