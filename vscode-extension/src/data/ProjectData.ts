@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import { RepresentationData } from './RepresentationData';
 import { getTreeEventSubscription } from './getTreeEventSubscription';
 
 const getTextFromStyledString = (styledString: GQLStyledString): string => {
-  return styledString.styledStringFragments.map((fragments) => fragments.text).join();
+  return styledString.styledStringFragments.map((fragments) => fragments.text).join('');
 };
 
 export class ProjectData {
