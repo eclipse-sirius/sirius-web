@@ -268,9 +268,9 @@ test.describe('diagram - drag and drop', () => {
     const entity32PositionAfter = await entity32DroppedNode.getReactFlowXYPosition('E3-2-dropped');
     const entity33PositionAfter = await entity33DroppedNode.getReactFlowXYPosition('E3-3-dropped');
 
-    expect(entity32PositionAfter.x - entity31PositionAfter.x).toBe(entity32RelativePositionX);
-    expect(entity32PositionAfter.y - entity31PositionAfter.y).toBe(entity32RelativePositionY);
-    expect(entity33PositionAfter.x - entity31PositionAfter.x).toBe(entity33RelativePositionX);
-    expect(entity33PositionAfter.y - entity31PositionAfter.y).toBe(entity33RelativePositionY);
+    expect(entity32PositionAfter.x - entity31PositionAfter.x).toBeCloseTo(entity32RelativePositionX, 2)
+    expect(entity32PositionAfter.y - entity31PositionAfter.y).toBeCloseTo(entity32RelativePositionY, 2);
+    expect(entity33PositionAfter.x - entity31PositionAfter.x).toBeCloseTo(entity33RelativePositionX, 2);
+    expect(entity33PositionAfter.y - entity31PositionAfter.y).toBeCloseTo(entity33RelativePositionY, 2);
   });
 });

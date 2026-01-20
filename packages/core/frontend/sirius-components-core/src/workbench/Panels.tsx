@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,21 +45,19 @@ const usePanelStyles = makeStyles()((theme) => ({
   },
   verticalResizer: {
     display: 'grid',
-    width: `1px`,
+    width: '3px',
     cursor: 'col-resize',
     backgroundColor: theme.palette.divider,
     borderColor: theme.palette.divider,
     borderRightStyle: 'solid',
-    borderRightWidth: '1px',
   },
   horizontalResizer: {
     display: 'grid',
-    height: `1px`,
+    height: '3px',
     cursor: 'row-resize',
     backgroundColor: theme.palette.divider,
     borderColor: theme.palette.divider,
     borderBottomStyle: 'solid',
-    borderBottomWidth: '1px',
   },
 }));
 
