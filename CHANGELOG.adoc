@@ -266,7 +266,7 @@ The node action icons are now a little smaller and only appear after the node ha
 - https://github.com/eclipse-sirius/sirius-web/issues/6060[#6060] [diagram] Add a new edge marker named _ClosedArrowWith4Dots_ which is very similar to the existing _ClosedArrowWithDots_.
 The only difference is that this new marker has a second range of two dots after the first range.
 - https://github.com/eclipse-sirius/sirius-web/issues/6101[#6101] [sirius-web] Allow more control of the redirect URL in the new project card
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5909[#5909] [graphql] Improve the customization of GraphQL error messages
 
 
 

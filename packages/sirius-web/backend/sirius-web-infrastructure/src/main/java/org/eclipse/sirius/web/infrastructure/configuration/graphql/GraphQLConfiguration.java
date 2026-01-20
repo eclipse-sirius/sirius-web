@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.graphql.api.UploadScalarType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
@@ -57,18 +58,23 @@ public class GraphQLConfiguration {
     private final Logger logger = LoggerFactory.getLogger(GraphQLConfiguration.class);
 
     @Bean
-    public GraphQL graphQL(GraphQLSchema graphQLSchema, @Value("${sirius.web.graphql.tracing:false}") boolean activateTracing) {
+    @ConditionalOnMissingBean(DataFetcherExceptionHandler.class)
+    public DataFetcherExceptionHandler dataFetcherExceptionHandler() {
+        return new GraphQLDataFetcherExceptionHandler();
+    }
+
+    @Bean
+    public GraphQL graphQL(GraphQLSchema graphQLSchema, DataFetcherExceptionHandler dataFetcherExceptionHandler, @Value("${sirius.web.graphql.tracing:false}") boolean activateTracing) {
         var options = SchemaPrinter.Options.defaultOptions();
         String schema = new SchemaPrinter(options).print(graphQLSchema);
 
         this.logger.trace(schema);
 
-        DataFetcherExceptionHandler exceptionHandler = new GraphQLDataFetcherExceptionHandler();
-        ExecutionStrategy queryExecutionStrategy = new AsyncExecutionStrategy(exceptionHandler);
+        ExecutionStrategy queryExecutionStrategy = new AsyncExecutionStrategy(dataFetcherExceptionHandler);
         // @see https://www.graphql-java.com/documentation/v11/execution/ The graphql specification says that mutations
         // MUST be executed serially and in the order in which the query fields occur.
-        ExecutionStrategy mutationExecutionStrategy = new AsyncSerialExecutionStrategy(exceptionHandler);
-        ExecutionStrategy subscriptionExecutionStrategy = new SubscriptionExecutionStrategy(exceptionHandler);
+        ExecutionStrategy mutationExecutionStrategy = new AsyncSerialExecutionStrategy(dataFetcherExceptionHandler);
+        ExecutionStrategy subscriptionExecutionStrategy = new SubscriptionExecutionStrategy(dataFetcherExceptionHandler);
 
         var graphQLJavaBuilder = GraphQL.newGraphQL(graphQLSchema)
                 .queryExecutionStrategy(queryExecutionStrategy)
