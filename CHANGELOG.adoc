@@ -176,7 +176,7 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/6045[#6045] [diagram] Prevent misplacement of a subnode after hiding another list subnode
 - https://github.com/eclipse-sirius/sirius-web/issues/6073[#6073] [sirius-web] Fix typo in library publication and import commands.
 - https://github.com/eclipse-sirius/sirius-web/issues/6083[#6083] [diagram] Prevent border node labels from being too close to their node
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5988[#5988] [core] Increase size of panel dividers for resize
 
 === New Features
 
