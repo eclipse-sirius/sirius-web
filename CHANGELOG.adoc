@@ -145,6 +145,7 @@ The representation ID prefix has changed from `representations://` to `relatedvi
 The workbench view ID is now `related-views`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] The method `IEditingDomainFactory#createEditingDomain` will now require the `editingContextId` to be used
 - https://github.com/eclipse-sirius/sirius-web/issues/5910[#5910] [diagram] The `ReferencePosition` now uses a list of positions to take into account multiple drops.
+- https://github.com/eclipse-sirius/sirius-web/issues/6101[#6101] [sirius-web] The `NewProjectCard` will now ask for a `url`
 
 
 === Dependency update
@@ -262,6 +263,7 @@ The node action icons are now a little smaller and only appear after the node ha
 - https://github.com/eclipse-sirius/sirius-web/issues/5910[#5910] [diagram] Preserve relative layout while dropping multi nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/6060[#6060] [diagram] Add a new edge marker named _ClosedArrowWith4Dots_ which is very similar to the existing _ClosedArrowWithDots_.
 The only difference is that this new marker has a second range of two dots after the first range.
+- https://github.com/eclipse-sirius/sirius-web/issues/6101[#6101] [sirius-web] Allow more control of the redirect URL in the new project card
 
 
 
