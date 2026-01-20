@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  Selection,
-  SelectionContextProvider
-} from '@eclipse-sirius/sirius-components-core';
+import { Selection, SelectionContextProvider } from '@eclipse-sirius/sirius-components-core';
 import {
   DiagramRepresentation,
   NodeTypeContext,
@@ -23,6 +20,7 @@ import {
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import { FormRepresentation } from '@eclipse-sirius/sirius-components-forms';
+import { ImpactAnalysisDialogContextProvider } from '@eclipse-sirius/sirius-components-impactanalysis';
 import { ConfirmationDialogSettingsContextProvider, DetailsView } from '@eclipse-sirius/sirius-web-application';
 import { Theme, ThemeProvider } from '@mui/material';
 import React, { useEffect, useState } from 'react';
@@ -176,12 +174,14 @@ export const App = ({
     <ThemeProvider theme={siriusWebTheme}>
       <SelectionContextProvider initialSelection={selection}>
         <ConfirmationDialogSettingsContextProvider projectId={projectId}>
-          <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
-            <div style={appStyle}>
-              <div style={headerStyle}></div>
-              {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
-            </div>
-          </NodeTypeContext.Provider>
+          <ImpactAnalysisDialogContextProvider>
+            <NodeTypeContext.Provider value={nodeTypeRegistryValue}>
+              <div style={appStyle}>
+                <div style={headerStyle}></div>
+                {state.editingContextId && state.authenticate ? <div style={componentStyle}>{component}</div> : null}
+              </div>
+            </NodeTypeContext.Provider>
+          </ImpactAnalysisDialogContextProvider>
         </ConfirmationDialogSettingsContextProvider>
       </SelectionContextProvider>
     </ThemeProvider>
