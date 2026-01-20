@@ -174,7 +174,7 @@ const applyMoveToListChild = (
           : getBorderWidth(resizedNode);
         const newLabelHeight = element.getBoundingClientRect().height / zoom + borderOffset + resizedNode.data.topGap;
         return nodes
-          .filter((node) => node.parentId === resizedNode.id && !node.hidden)
+          .filter((node) => node.parentId === resizedNode.id && !node.hidden && !node.data.isBorderNode)
           .map((node, index, array) => {
             const previousSibling = array[index - 1];
             let newPositionY: number = newLabelHeight;
