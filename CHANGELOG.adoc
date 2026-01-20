@@ -184,6 +184,7 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/6089[#6089] [diagram] Prevent delete from diagram tool from crashing when the node has no inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6069[#6069] [sirius-web] Fix an issue preventing some letters from being typed in the duplicate modal
 - https://github.com/eclipse-sirius/sirius-web/issues/6058[#6058] [diagram] Fix an issue where edge `reset handle quick tool` could be available even if the handle was not moved.
+- https://github.com/eclipse-sirius/sirius-web/issues/6098[#6098] [vs-code] Add support for impact analysis in VSCode extension
 
 
 === New Features
