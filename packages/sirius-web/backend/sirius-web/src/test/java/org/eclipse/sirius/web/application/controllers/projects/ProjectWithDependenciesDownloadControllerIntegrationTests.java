@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,7 +94,9 @@ public class ProjectWithDependenciesDownloadControllerIntegrationTests extends A
                         "dd0080f8-430d-441f-99a4-f46c7d9b28ef":{
                           "targetObjectURI":"sirius:///a4495c9c-d00c-4f0e-a591-1176d102a4a1#569d3f9b-2a43-4254-b609-511258251d96",
                           "type":"siriusComponents://representation?type=Table",
-                          "descriptionURI":"papaya_package_table_description"
+                          "descriptionURI":"papaya_package_table_description",
+                          "migrationVersion": "0",
+                          "latestMigrationPerformed": "none"
                         }
                       },
                       "dependencies":[

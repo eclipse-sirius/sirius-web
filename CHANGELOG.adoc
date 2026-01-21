@@ -145,6 +145,7 @@ The representation ID prefix has changed from `representations://` to `relatedvi
 The workbench view ID is now `related-views`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6041[#6041] [sirius-web] The method `IEditingDomainFactory#createEditingDomain` will now require the `editingContextId` to be used
 - https://github.com/eclipse-sirius/sirius-web/issues/5910[#5910] [diagram] The `ReferencePosition` now uses a list of positions to take into account multiple drops.
+- [sirius-web] The method signature of `IRepresentationContentMigrationService#getMigratedContent` has been modified to take individual parameters (`String representationContent, String kind, String lastMigrationPerformed, String migrationVersion`) instead of domain objects (`RepresentationMetadata representationMetadata, RepresentationContent representationContent`).
 
 
 === Dependency update
@@ -177,6 +178,8 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/6073[#6073] [sirius-web] Fix typo in library publication and import commands.
 - https://github.com/eclipse-sirius/sirius-web/issues/6083[#6083] [diagram] Prevent border node labels from being too close to their node
 - https://github.com/eclipse-sirius/sirius-web/issues/6029[#6029] [diagram] Fix a potential infitine loop when exporting some diagrams as SVG
+- https://github.com/eclipse-sirius/sirius-web/issues/5810[#5810] [sirius-web] Fix an issue where the out-to-date representations were not migrated to the latest version.
+
 
 === New Features
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,10 @@ public record ProjectZipContent(
     public static final String TARGET_OBJECT_URI = "targetObjectURI";
 
     public static final String DESCRIPTION_URI = "descriptionURI";
+
+    public static final String MIGRATION_VERSION = "migrationVersion";
+
+    public static final String LATEST_MIGRATION_PERFORMED = "latestMigrationPerformed";
 
     public ProjectZipContent {
         Objects.requireNonNull(projectName);

@@ -17,7 +17,7 @@ Such a metadata can be directly stored inside the exported `manifest.json`:
 {
   "representations": {
     "<representationId>": {
-      "lastMigrationPerformed": "<migrationName>",
+      "latestMigrationPerformed": "<migrationName>",
       "migrationVersion": "<version>"
     }
   }
@@ -26,23 +26,26 @@ Such a metadata can be directly stored inside the exported `manifest.json`:
 
 === Import
 
-The migration data will be obtained by `RepresentationProjectContentImportParticipant#getRepresentationManifest` in `RepresentationProjectContentImportParticipant#createRepresentations`.
-If the data does not exist, `0` and `none` will be used as default value to apply all migration participants over the representation.
-`IRepresentationImporterUpdateService#update` will be updated to take the migration data as parameters.
+The migration data will be read from the manifest through a new method `RepresentationProjectContentImportParticipant#getRepresentationImportMetadata`.
+A new record `RepresentationImportMetadata` will be created to hold this data (descriptionUri, targetObjectUri, lastMigrationPerformed, migrationVersion).
+If the migration data does not exist in the manifest, `"none"` and `"0"` will be used as default values to apply all migration participants over the representation.
 
-As all representations will now have migration data `IRepresentationContentUpdateService#updateContentByRepresentationId` will be removed and `IRepresentationContentUpdateService#updateContentByRepresentationIdWithMigrationData` will be renamed to `update`.
+The import process will be split into two phases:
+1. Unserialization and migration: A new event handler `UnserializeImportedRepresentationDataEventHandler` will handle the unserialization of the representation content and apply migrations through `IRepresentationContentMigrationService#getMigratedContent`.
+2. Representation creation: The migrated content will then be used to create the representation through the standard creation flow.
+
+The representation data will be stored as a `String` in `RepresentationSerializedImportData` instead of a deserialized `IRepresentation` to allow migration before full deserialization.
 
 === Export
 
-`ProjectRepresentationDataExportParticipant#exportData` will be updated to put the migration data into the representation manifest.
+`ProjectRepresentationDataExportParticipant#exportData` will be updated to write the migration data (`migrationVersion` and `latestMigrationPerformed`) from the `RepresentationContent` domain object into the representation manifest.
 
 == Consequences
 
-- Representation metadata in the exported JSON manifest now have two new keys `migrationVersion` and `lastMigrationPerformed`.
+- Representation metadata in the exported JSON manifest will have two new keys `migrationVersion` and `latestMigrationPerformed`.
 We will keep support for JSON without such fields to avoid breaking changes at this level.
-- `IRepresentationImporterUpdateService#update` has two new parameters: `migrationVersion` and `lastMigrationPerformed`.
-- `IRepresentationContentUpdateService#updateContentByRepresentationId` is removed.
-- `IRepresentationContentUpdateService#updateContentByRepresentationIdWithMigrationData` is renamed to `update`.
+- `IRepresentationContentMigrationService#getMigratedContent` signature will be changed: it will now take individual parameters (`String representationContent, String kind, String lastMigrationPerformed, String migrationVersion`) instead of domain objects (`RepresentationMetadata representationMetadata, RepresentationContent representationContent`).
+
 
 == Cutting backs
 
@@ -50,4 +53,4 @@ We will keep support for JSON without such fields to avoid breaking changes at t
 
 == Status
 
-Proposed.
+Accepted.
