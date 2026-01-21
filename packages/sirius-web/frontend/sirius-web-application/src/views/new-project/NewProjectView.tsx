@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -205,11 +205,11 @@ export const NewProjectView = () => {
               </div>
               <Paper>
                 <form onSubmit={handleFormSubmitted} className={classes.form}>
+                  <Typography variant="h6">{t('name')}</Typography>
                   <TextField
                     variant="standard"
                     error={isError}
                     helperText={t('nameTextfieldHelperText')}
-                    label={t('name')}
                     name="name"
                     value={state.name}
                     placeholder={t('nameTextfieldPlaceholder')}
