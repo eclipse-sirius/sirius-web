@@ -115,7 +115,7 @@ public class RepresentationContent extends AbstractValidatingAggregateRoot<Repre
     }
 
     public void updateMigrationData(String newLastMigrationPerformed, String newMigrationVersion) {
-        if (!Objects.equals(this.migrationVersion, newMigrationVersion)) {
+        if (!Objects.equals(this.migrationVersion, newMigrationVersion) || !Objects.equals(this.lastMigrationPerformed, newLastMigrationPerformed)) {
             this.lastMigrationPerformed = Objects.requireNonNull(newLastMigrationPerformed);
             this.migrationVersion = Objects.requireNonNull(newMigrationVersion);
             this.lastModifiedOn = Instant.now();
