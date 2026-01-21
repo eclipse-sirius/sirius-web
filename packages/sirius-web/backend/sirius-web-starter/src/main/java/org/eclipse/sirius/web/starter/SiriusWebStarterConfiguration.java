@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,11 @@ import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFacto
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.representations.SubscriptionManager;
 import org.eclipse.sirius.components.collaborative.representations.api.IEventProcessorSubscriptionSchedulerProvider;
+import org.eclipse.sirius.components.collaborative.widget.reference.dto.ReferenceValueOptionsQueryInput;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.eclipse.sirius.components.graphql.ws.api.IGraphQLWebSocketHandlerListener;
 import org.eclipse.sirius.components.web.concurrent.DelegatingRequestContextExecutorService;
+import org.eclipse.sirius.web.application.undo.services.api.IUndoRedoIgnoreInputPredicate;
 import org.eclipse.sirius.web.application.viewer.services.api.IViewerProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -103,6 +105,11 @@ public class SiriusWebStarterConfiguration {
     @ConditionalOnMissingBean
     public IExceptionWrapper exceptionWrapper() {
         return new ExceptionWrapper();
+    }
+
+    @Bean
+    public IUndoRedoIgnoreInputPredicate ignoreReferenceValueOptionsQueryInputPredicate() {
+        return ReferenceValueOptionsQueryInput.class::isInstance;
     }
 
     @Bean
