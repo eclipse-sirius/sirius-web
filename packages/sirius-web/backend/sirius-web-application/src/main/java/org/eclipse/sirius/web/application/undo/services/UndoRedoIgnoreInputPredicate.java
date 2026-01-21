@@ -18,16 +18,23 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.GetActionsInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetPaletteInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InitialDirectEditElementLabelInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LayoutDiagramInput;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextChildObjectCreationDescriptionsInput;
+import org.eclipse.sirius.components.collaborative.dto.EditingContextObjectsInput;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsInput;
 import org.eclipse.sirius.components.collaborative.dto.GetEditingContextActionsInput;
+import org.eclipse.sirius.components.collaborative.dto.GetRepresentationDescriptionFromDescriptionIdInput;
 import org.eclipse.sirius.components.collaborative.dto.GetRepresentationDescriptionInput;
 import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessageInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemContextMenuInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePathInput;
+import org.eclipse.sirius.components.collaborative.widget.reference.dto.ReferenceValueOptionsQueryInput;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
 import org.eclipse.sirius.web.application.undo.services.api.IUndoRedoIgnoreInputPredicate;
+import org.eclipse.sirius.web.application.views.explorer.dto.EditingContextExplorerDescriptionsInput;
+import org.eclipse.sirius.web.application.views.search.dto.SearchInput;
 import org.springframework.stereotype.Service;
 
 /**
@@ -57,7 +64,14 @@ public class UndoRedoIgnoreInputPredicate implements IUndoRedoIgnoreInputPredica
             GetSelectionDescriptionMessageInput.class,
             GetActionsInput.class,
             InitialDirectEditElementLabelInput.class,
-            org.eclipse.sirius.components.collaborative.trees.dto.InitialDirectEditElementLabelInput.class
+            org.eclipse.sirius.components.collaborative.trees.dto.InitialDirectEditElementLabelInput.class,
+            ExpandAllTreePathInput.class,
+            EditingContextExplorerDescriptionsInput.class,
+            EditingContextObjectsInput.class,
+            EditingContextChildObjectCreationDescriptionsInput.class,
+            GetRepresentationDescriptionFromDescriptionIdInput.class,
+            SearchInput.class,
+            ReferenceValueOptionsQueryInput.class
     );
 
     @Override
