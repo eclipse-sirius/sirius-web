@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,8 +27,6 @@ import org.eclipse.sirius.components.collaborative.representations.migration.Rep
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.migration.MigrationVersionComparator;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationContentMigrationService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -53,13 +51,13 @@ public class RepresentationContentMigrationService implements IRepresentationCon
     }
 
     @Override
-    public Optional<ObjectNode> getMigratedContent(IEditingContext editingContext, RepresentationMetadata representationMetadata, RepresentationContent representationContent) {
+    public Optional<ObjectNode> getMigratedContent(IEditingContext editingContext, String representationContent, String kind, String lastMigrationPerformed, String migrationVersion) {
         Optional<ObjectNode> optionalObjectNode = Optional.empty();
         try {
-            JsonNode rootJsonNode = this.objectMapper.readTree(representationContent.getContent());
+            JsonNode rootJsonNode = this.objectMapper.readTree(representationContent);
             if (rootJsonNode instanceof ObjectNode objectNode) {
 
-                List<IRepresentationMigrationParticipant> applicableParticipants = this.getApplicableMigrationParticipants(representationMetadata.getKind(), representationContent);
+                List<IRepresentationMigrationParticipant> applicableParticipants = this.getApplicableMigrationParticipants(kind, migrationVersion);
                 if (!applicableParticipants.isEmpty()) {
                     var migrationService = new RepresentationMigrationService(editingContext, applicableParticipants, objectNode);
                     migrationService.parseProperties(objectNode, this.objectMapper);
@@ -74,9 +72,7 @@ public class RepresentationContentMigrationService implements IRepresentationCon
         return optionalObjectNode;
     }
 
-    private List<IRepresentationMigrationParticipant> getApplicableMigrationParticipants(String kind, RepresentationContent representationContent) {
-        var migrationVersion = representationContent.getMigrationVersion();
-
+    private List<IRepresentationMigrationParticipant> getApplicableMigrationParticipants(String kind, String migrationVersion) {
         MigrationVersionComparator migrationVersionComparator = new MigrationVersionComparator();
         return this.migrationParticipants.stream()
                 .filter(migrationParticipant -> Objects.equals(migrationParticipant.getKind(), kind))

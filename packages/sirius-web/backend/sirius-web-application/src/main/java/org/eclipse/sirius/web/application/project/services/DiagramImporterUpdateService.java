@@ -28,6 +28,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramCreationService;
@@ -82,7 +83,6 @@ import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.services.api.IDiagramImporterNodeStyleAppearanceChangeHandler;
 import org.eclipse.sirius.web.application.project.services.api.IRepresentationImporterUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationContentUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,8 +101,6 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
     private final ObjectMapper objectMapper;
 
-    private final IRepresentationContentUpdateService representationContentUpdateService;
-
     private final IRepresentationSearchService representationSearchService;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
@@ -111,16 +109,19 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
     private final List<IDiagramImporterNodeStyleAppearanceChangeHandler> diagramImporterNodeStyleAppearanceChangeHandlers;
 
+    private final IRepresentationPersistenceService representationPersistenceService;
+
     private final Logger logger = LoggerFactory.getLogger(DiagramImporterUpdateService.class);
 
-    public DiagramImporterUpdateService(IEditingContextSearchService editingContextSearchService, ObjectMapper objectMapper, IRepresentationContentUpdateService representationContentUpdateService, IRepresentationSearchService representationSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, DiagramCreationService diagramCreationService, List<IDiagramImporterNodeStyleAppearanceChangeHandler> diagramImporterNodeStyleAppearanceChangeHandlers) {
+    public DiagramImporterUpdateService(IEditingContextSearchService editingContextSearchService, ObjectMapper objectMapper, IRepresentationSearchService representationSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, DiagramCreationService diagramCreationService, List<IDiagramImporterNodeStyleAppearanceChangeHandler> diagramImporterNodeStyleAppearanceChangeHandlers,
+            IRepresentationPersistenceService representationPersistenceService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.representationContentUpdateService = Objects.requireNonNull(representationContentUpdateService);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
         this.diagramImporterNodeStyleAppearanceChangeHandlers = Objects.requireNonNull(diagramImporterNodeStyleAppearanceChangeHandlers);
+        this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
     }
 
     @Override
@@ -178,7 +179,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                             .build();
                     try {
                         String json = this.objectMapper.writeValueAsString(laidOutDiagram);
-                        this.representationContentUpdateService.updateContentByRepresentationId(cause, semanticData, representationMetadata, json);
+                        this.representationPersistenceService.save(cause, editingContext.get(), laidOutDiagram);
                     } catch (JsonProcessingException exception) {
                         this.logger.warn(exception.getMessage(), exception);
                     }

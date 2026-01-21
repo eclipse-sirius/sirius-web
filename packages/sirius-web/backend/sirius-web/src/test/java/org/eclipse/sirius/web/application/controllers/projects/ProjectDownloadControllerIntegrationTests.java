@@ -108,7 +108,9 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "74fe378b-0010-4909-8762-3f8425abf857":{
                           "descriptionURI":"siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d59c3558-31d3-387d-a720-098370b677fb",
                           "type":"siriusComponents://representation?type=Diagram",
-                          "targetObjectURI":"sirius:///f0e490c1-79f1-49a0-b1f2-3637f2958148#f8204cb6-3705-48a5-bee3-ad7e7d6cbdaf"
+                          "targetObjectURI":"sirius:///f0e490c1-79f1-49a0-b1f2-3637f2958148#f8204cb6-3705-48a5-bee3-ad7e7d6cbdaf",
+                          "migrationVersion": "2025.12.0-202511141745",
+                          "latestMigrationPerformed": "none"
                         }
                       },
                       "dependencies": []
@@ -231,12 +233,16 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
                         "05e44ccc-9363-443f-a816-25fc73e3e7f7": {
                           "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
                           "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8",
+                          "migrationVersion": "0",
+                          "latestMigrationPerformed": "none"
                         },
                         "e81eec5c-42d6-491c-8bcc-9beb951356f8": {
                           "descriptionURI": "69030a1b-0b5f-3c1d-8399-8ca260e4a672",
                           "type": "siriusComponents://representation?type=Portal",
-                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8"
+                          "targetObjectURI": "sirius:///48dc942a-6b76-4133-bca5-5b29ebee133d#3237b215-ae23-48d7-861e-f542a4b9a4b8",
+                          "migrationVersion": "0",
+                          "latestMigrationPerformed": "none"
                         }
                       },
                       "dependencies": []
