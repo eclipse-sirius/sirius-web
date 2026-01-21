@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -153,11 +153,11 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
             assertThat(tree.getChildren().get(0).getLabel().toString()).isEqualTo("Domain");
             assertThat(tree.getChildren().get(0).getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getChildren().get(0).getLabel().toString()).isEqualTo("buck");
-            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
-            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getLabel().toString()).contains("[Entity] Human");
-            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getChildren()).hasSize(4);
-            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getChildren().get(0).getLabel().toString()).isEqualTo("superTypes");
-            settingId.set(tree.getChildren().get(0).getChildren().get(0).getChildren().get(2).getChildren().get(0).getId());
+            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
+            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(3).getLabel().toString()).contains("[Entity] Human");
+            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(3).getChildren()).hasSize(4);
+            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(3).getChildren().get(0).getLabel().toString()).isEqualTo("superTypes");
+            settingId.set(tree.getChildren().get(0).getChildren().get(0).getChildren().get(3).getChildren().get(0).getId());
         });
 
         Runnable getTreePathFromSetting = () -> {
@@ -202,7 +202,7 @@ public class DomainExplorerControllerTests extends AbstractIntegrationTests {
             assertThat(tree.getChildren().get(0).getLabel().toString()).isEqualTo("Domain");
             assertThat(tree.getChildren().get(0).getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getChildren().get(0).getLabel().toString()).isEqualTo("buck");
-            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
+            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(5);
 
             var treeItem = tree.getChildren().get(0).getChildren().get(0).getChildren().get(0);
             assertThat(treeItem.getId()).isNotBlank();

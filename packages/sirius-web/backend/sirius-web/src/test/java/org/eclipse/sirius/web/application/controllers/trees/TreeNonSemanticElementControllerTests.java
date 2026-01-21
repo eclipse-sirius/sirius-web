@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -81,7 +82,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
     private Flux<Object> givenSubscriptionToTree() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                 DomainTreeRepresentationDescriptionProvider.DESCRIPTION_ID,
                 StudioIdentifiers.DOMAIN_OBJECT.toString(),
                 "Tree"
@@ -105,7 +106,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
 
         Runnable getTreePathFromSetting = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "treeId", treeId.get(),
                     "treeItemId", ROOT_SETTING_ID
             );
@@ -117,7 +118,7 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
 
         Runnable getTreePath = () -> {
             Map<String, Object> variables = Map.of(
-                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     "treeId", treeId.get(),
                     "treeItemId", StudioIdentifiers.DOMAIN_OBJECT.toString()
             );
@@ -136,15 +137,15 @@ public class TreeNonSemanticElementControllerTests extends AbstractIntegrationTe
 
         String representationId = this.representationIdBuilder.buildTreeRepresentationId(treeId.get().substring(0, treeId.get().indexOf("?expandedIds=")), List.of(StudioIdentifiers.DOMAIN_OBJECT.toString(), ROOT_ENTITY_ID));
 
-        var expandedTreeInput = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), representationId);
+        var expandedTreeInput = new TreeEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, representationId);
         var expandedTreeFlux = this.treeEventSubscriptionRunner.run(expandedTreeInput).flux();
 
         Consumer<Object> initialExpandedTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
-            assertThat(tree.getChildren().get(0).getChildren()).hasSize(4);
-            assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren()).hasSize(4);
-            assertThat(tree.getChildren().get(0).getChildren().get(1).getChildren().get(0).getId()).startsWith(DomainTreeRepresentationDescriptionProvider.SETTING);
+            assertThat(tree.getChildren().get(0).getChildren()).hasSize(5);
+            assertThat(tree.getChildren().get(0).getChildren().get(2).getChildren()).hasSize(4);
+            assertThat(tree.getChildren().get(0).getChildren().get(2).getChildren().get(0).getId()).startsWith(DomainTreeRepresentationDescriptionProvider.SETTING);
         });
 
         StepVerifier.create(expandedTreeFlux)
