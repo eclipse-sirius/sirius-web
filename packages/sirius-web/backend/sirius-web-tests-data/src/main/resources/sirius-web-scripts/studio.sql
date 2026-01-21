@@ -705,6 +705,742 @@ INSERT INTO project_image (
   '2024-01-02 9:42:0.000'
 );
 
+INSERT INTO representation_metadata (
+  id,
+  target_object_id,
+  description_id,
+  label,
+  kind,
+  created_on,
+  last_modified_on,
+  documentation,
+  semantic_data_id,
+  representation_metadata_id
+) VALUES (
+  'e344d967-a639-4f6c-9c00-a466d51063c6#74fe378b-0010-4909-8762-3f8425abf857',
+  'f8204cb6-3705-48a5-bee3-ad7e7d6cbdaf',
+  'siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d59c3558-31d3-387d-a720-098370b677fb',
+  'Domain',
+  'siriusComponents://representation?type=Diagram',
+  '2026-01-21 13:46:0.000',
+  '2026-01-21 13:46:0.000',
+  '',
+  'e344d967-a639-4f6c-9c00-a466d51063c6',
+  '74fe378b-0010-4909-8762-3f8425abf857'
+);
+
+INSERT INTO representation_content (
+  id,
+  content,
+  last_migration_performed,
+  migration_version,
+  created_on,
+  last_modified_on,
+  semantic_data_id,
+  representation_metadata_id
+) VALUES (
+  'e344d967-a639-4f6c-9c00-a466d51063c6#74fe378b-0010-4909-8762-3f8425abf857',
+  '{
+     "id": "74fe378b-0010-4909-8762-3f8425abf857",
+     "kind": "siriusComponents://representation?type=Diagram",
+     "targetObjectId": "f8204cb6-3705-48a5-bee3-ad7e7d6cbdaf",
+     "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d59c3558-31d3-387d-a720-098370b677fb",
+     "nodes": [
+       {
+         "id": "fb671c47-e46b-35a6-bfa8-324365544985",
+         "type": "node:rectangle",
+         "targetObjectId": "c341bf91-d315-4264-9787-c51b121a6375",
+         "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+         "targetObjectLabel": "Root",
+         "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba",
+         "borderNode": false,
+         "initialBorderNodePosition": "NONE",
+         "modifiers": [],
+         "state": "Normal",
+         "collapsingState": "EXPANDED",
+         "insideLabel": {
+           "id": "834aee75-c755-3f97-9af0-fc4285c3b9a0",
+           "text": "Root",
+           "insideLabelLocation": "TOP_CENTER",
+           "style": {
+             "color": "rgb(0, 0, 0)",
+             "fontSize": 14,
+             "bold": false,
+             "italic": false,
+             "underline": false,
+             "strikeThrough": false,
+             "iconURL": ["/icons/full/obj16/Entity.svg"],
+             "background": "transparent",
+             "borderColor": "black",
+             "borderSize": 0,
+             "borderRadius": 3,
+             "borderStyle": "Solid",
+             "maxWidth": null,
+             "visibility": "visible"
+           },
+           "isHeader": true,
+           "headerSeparatorDisplayMode": "IF_CHILDREN",
+           "overflowStrategy": "NONE",
+           "textAlign": "LEFT",
+           "customizedStyleProperties": []
+         },
+         "outsideLabels": [],
+         "style": {
+           "background": "rgb(250, 250, 250)",
+           "borderColor": "rgb(251, 184, 0)",
+           "borderSize": 3,
+           "borderRadius": 8,
+           "borderStyle": "Solid",
+           "childrenLayoutStrategy": {
+             "areChildNodesDraggable": true,
+             "topGap": 0,
+             "bottomGap": 0,
+             "growableNodeIds": [],
+             "kind": "List"
+           }
+         },
+         "borderNodes": [],
+         "childNodes": [
+           {
+             "id": "57647065-be83-39d1-8427-fdddf7dbffa0",
+             "type": "node:icon-label",
+             "targetObjectId": "7ac92c9d-3cb6-4374-9774-11bb62962fe2",
+             "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Attribute",
+             "targetObjectLabel": "label",
+             "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=2aeee83f-2f8c-3348-9cb8-2829343542ee",
+             "borderNode": false,
+             "initialBorderNodePosition": "NONE",
+             "modifiers": [],
+             "state": "Normal",
+             "collapsingState": "EXPANDED",
+             "insideLabel": {
+               "id": "edc56b33-470a-3625-90b4-e4821fe5b8f3",
+               "text": "label",
+               "insideLabelLocation": "TOP_LEFT",
+               "style": {
+                 "color": "rgb(66, 66, 66)",
+                 "fontSize": 12,
+                 "bold": false,
+                 "italic": false,
+                 "underline": false,
+                 "strikeThrough": false,
+                 "iconURL": ["/icons/full/obj16/StringAttribute.svg"],
+                 "background": "transparent",
+                 "borderColor": "black",
+                 "borderSize": 0,
+                 "borderRadius": 3,
+                 "borderStyle": "Solid",
+                 "maxWidth": null,
+                 "visibility": "visible"
+               },
+               "isHeader": false,
+               "headerSeparatorDisplayMode": "NEVER",
+               "overflowStrategy": "NONE",
+               "textAlign": "LEFT",
+               "customizedStyleProperties": []
+             },
+             "outsideLabels": [],
+             "style": {
+               "background": "transparent",
+               "childrenLayoutStrategy": { "kind": "FreeForm" }
+             },
+             "borderNodes": [],
+             "childNodes": [],
+             "defaultWidth": null,
+             "defaultHeight": null,
+             "labelEditable": true,
+             "deletable": true,
+             "pinned": false,
+             "customizedStyleProperties": []
+           },
+           {
+             "id": "6aa6a031-2f87-387c-b5a0-d015aa85669f",
+             "type": "node:icon-label",
+             "targetObjectId": "d51d676c-0cb7-414b-8358-bacbc5d33942",
+             "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Attribute",
+             "targetObjectLabel": "description",
+             "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=2aeee83f-2f8c-3348-9cb8-2829343542ee",
+             "borderNode": false,
+             "initialBorderNodePosition": "NONE",
+             "modifiers": [],
+             "state": "Normal",
+             "collapsingState": "EXPANDED",
+             "insideLabel": {
+               "id": "dc3b6f9d-01fc-3688-a15e-6ef09f018f8f",
+               "text": "description",
+               "insideLabelLocation": "TOP_LEFT",
+               "style": {
+                 "color": "rgb(66, 66, 66)",
+                 "fontSize": 12,
+                 "bold": false,
+                 "italic": false,
+                 "underline": false,
+                 "strikeThrough": false,
+                 "iconURL": ["/icons/full/obj16/StringAttribute.svg"],
+                 "background": "transparent",
+                 "borderColor": "black",
+                 "borderSize": 0,
+                 "borderRadius": 3,
+                 "borderStyle": "Solid",
+                 "maxWidth": null,
+                 "visibility": "visible"
+               },
+               "isHeader": false,
+               "headerSeparatorDisplayMode": "NEVER",
+               "overflowStrategy": "NONE",
+               "textAlign": "LEFT",
+               "customizedStyleProperties": []
+             },
+             "outsideLabels": [],
+             "style": {
+               "background": "transparent",
+               "childrenLayoutStrategy": { "kind": "FreeForm" }
+             },
+             "borderNodes": [],
+             "childNodes": [],
+             "defaultWidth": null,
+             "defaultHeight": null,
+             "labelEditable": true,
+             "deletable": true,
+             "pinned": false,
+             "customizedStyleProperties": []
+           }
+         ],
+         "defaultWidth": null,
+         "defaultHeight": null,
+         "labelEditable": true,
+         "deletable": true,
+         "pinned": false,
+         "customizedStyleProperties": []
+       },
+       {
+         "id": "2a705c17-3c82-30d9-b41d-8685c640e4c7",
+         "type": "node:rectangle",
+         "targetObjectId": "c6fdba07-dea5-4a53-99c7-7eefc1bfdfcc",
+         "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+         "targetObjectLabel": "NamedElement",
+         "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba",
+         "borderNode": false,
+         "initialBorderNodePosition": "NONE",
+         "modifiers": [],
+         "state": "Normal",
+         "collapsingState": "EXPANDED",
+         "insideLabel": {
+           "id": "616269c9-0cf8-3a92-89b2-c8625f7b72de",
+           "text": "NamedElement",
+           "insideLabelLocation": "TOP_CENTER",
+           "style": {
+             "color": "rgb(0, 0, 0)",
+             "fontSize": 14,
+             "bold": false,
+             "italic": true,
+             "underline": false,
+             "strikeThrough": false,
+             "iconURL": [
+               "/icons/full/obj16/Entity.svg",
+               "/icons/full/obj16/Abstract.svg"
+             ],
+             "background": "transparent",
+             "borderColor": "black",
+             "borderSize": 0,
+             "borderRadius": 3,
+             "borderStyle": "Solid",
+             "maxWidth": null,
+             "visibility": "visible"
+           },
+           "isHeader": true,
+           "headerSeparatorDisplayMode": "IF_CHILDREN",
+           "overflowStrategy": "NONE",
+           "textAlign": "LEFT",
+           "customizedStyleProperties": []
+         },
+         "outsideLabels": [],
+         "style": {
+           "background": "rgb(117, 117, 117)",
+           "borderColor": "rgb(251, 184, 0)",
+           "borderSize": 3,
+           "borderRadius": 8,
+           "borderStyle": "Solid",
+           "childrenLayoutStrategy": {
+             "areChildNodesDraggable": true,
+             "topGap": 0,
+             "bottomGap": 0,
+             "growableNodeIds": [],
+             "kind": "List"
+           }
+         },
+         "borderNodes": [],
+         "childNodes": [
+           {
+             "id": "867412e7-9f34-3a0c-8c78-2ecfbc8cbbe2",
+             "type": "node:icon-label",
+             "targetObjectId": "520bb7c9-5f28-40f7-bda0-b35dd593876d",
+             "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Attribute",
+             "targetObjectLabel": "name",
+             "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=2aeee83f-2f8c-3348-9cb8-2829343542ee",
+             "borderNode": false,
+             "initialBorderNodePosition": "NONE",
+             "modifiers": [],
+             "state": "Normal",
+             "collapsingState": "EXPANDED",
+             "insideLabel": {
+               "id": "12a603a0-8032-3398-9cda-340ba83fab87",
+               "text": "name",
+               "insideLabelLocation": "TOP_LEFT",
+               "style": {
+                 "color": "rgb(66, 66, 66)",
+                 "fontSize": 12,
+                 "bold": false,
+                 "italic": false,
+                 "underline": false,
+                 "strikeThrough": false,
+                 "iconURL": ["/icons/full/obj16/StringAttribute.svg"],
+                 "background": "transparent",
+                 "borderColor": "black",
+                 "borderSize": 0,
+                 "borderRadius": 3,
+                 "borderStyle": "Solid",
+                 "maxWidth": null,
+                 "visibility": "visible"
+               },
+               "isHeader": false,
+               "headerSeparatorDisplayMode": "NEVER",
+               "overflowStrategy": "NONE",
+               "textAlign": "LEFT",
+               "customizedStyleProperties": []
+             },
+             "outsideLabels": [],
+             "style": {
+               "background": "transparent",
+               "childrenLayoutStrategy": { "kind": "FreeForm" }
+             },
+             "borderNodes": [],
+             "childNodes": [],
+             "defaultWidth": null,
+             "defaultHeight": null,
+             "labelEditable": true,
+             "deletable": true,
+             "pinned": false,
+             "customizedStyleProperties": []
+           }
+         ],
+         "defaultWidth": null,
+         "defaultHeight": null,
+         "labelEditable": true,
+         "deletable": true,
+         "pinned": false,
+         "customizedStyleProperties": []
+       },
+       {
+         "id": "34389cad-41a2-3873-9302-483887a67050",
+         "type": "node:rectangle",
+         "targetObjectId": "1731ffb5-bfb0-46f3-a23d-0c0650300005",
+         "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+         "targetObjectLabel": "Human",
+         "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba",
+         "borderNode": false,
+         "initialBorderNodePosition": "NONE",
+         "modifiers": [],
+         "state": "Normal",
+         "collapsingState": "EXPANDED",
+         "insideLabel": {
+           "id": "048582f3-fc69-3594-a593-7e71b641188a",
+           "text": "Human",
+           "insideLabelLocation": "TOP_CENTER",
+           "style": {
+             "color": "rgb(0, 0, 0)",
+             "fontSize": 14,
+             "bold": false,
+             "italic": false,
+             "underline": false,
+             "strikeThrough": false,
+             "iconURL": ["/icons/full/obj16/Entity.svg"],
+             "background": "transparent",
+             "borderColor": "black",
+             "borderSize": 0,
+             "borderRadius": 3,
+             "borderStyle": "Solid",
+             "maxWidth": null,
+             "visibility": "visible"
+           },
+           "isHeader": true,
+           "headerSeparatorDisplayMode": "IF_CHILDREN",
+           "overflowStrategy": "NONE",
+           "textAlign": "LEFT",
+           "customizedStyleProperties": []
+         },
+         "outsideLabels": [],
+         "style": {
+           "background": "rgb(250, 250, 250)",
+           "borderColor": "rgb(251, 184, 0)",
+           "borderSize": 3,
+           "borderRadius": 8,
+           "borderStyle": "Solid",
+           "childrenLayoutStrategy": {
+             "areChildNodesDraggable": true,
+             "topGap": 0,
+             "bottomGap": 0,
+             "growableNodeIds": [],
+             "kind": "List"
+           }
+         },
+         "borderNodes": [],
+         "childNodes": [
+           {
+             "id": "30e8852e-ea10-3681-a407-92c7a9e31f3f",
+             "type": "node:icon-label",
+             "targetObjectId": "e86d3f45-d043-441e-b8ab-12e4b3f8915a",
+             "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Attribute",
+             "targetObjectLabel": "description",
+             "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=2aeee83f-2f8c-3348-9cb8-2829343542ee",
+             "borderNode": false,
+             "initialBorderNodePosition": "NONE",
+             "modifiers": [],
+             "state": "Normal",
+             "collapsingState": "EXPANDED",
+             "insideLabel": {
+               "id": "15ce4ecb-38cb-3833-99a8-3956b4826138",
+               "text": "description",
+               "insideLabelLocation": "TOP_LEFT",
+               "style": {
+                 "color": "rgb(66, 66, 66)",
+                 "fontSize": 12,
+                 "bold": false,
+                 "italic": false,
+                 "underline": false,
+                 "strikeThrough": false,
+                 "iconURL": ["/icons/full/obj16/StringAttribute.svg"],
+                 "background": "transparent",
+                 "borderColor": "black",
+                 "borderSize": 0,
+                 "borderRadius": 3,
+                 "borderStyle": "Solid",
+                 "maxWidth": null,
+                 "visibility": "visible"
+               },
+               "isHeader": false,
+               "headerSeparatorDisplayMode": "NEVER",
+               "overflowStrategy": "NONE",
+               "textAlign": "LEFT",
+               "customizedStyleProperties": []
+             },
+             "outsideLabels": [],
+             "style": {
+               "background": "transparent",
+               "childrenLayoutStrategy": { "kind": "FreeForm" }
+             },
+             "borderNodes": [],
+             "childNodes": [],
+             "defaultWidth": null,
+             "defaultHeight": null,
+             "labelEditable": true,
+             "deletable": true,
+             "pinned": false,
+             "customizedStyleProperties": []
+           },
+           {
+             "id": "deeded4f-9fb5-3df1-b9b0-80d8880a3c6f",
+             "type": "node:icon-label",
+             "targetObjectId": "703e6db4-a193-4da7-a872-6efba2b3a2c5",
+             "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Attribute",
+             "targetObjectLabel": "promoted",
+             "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=2aeee83f-2f8c-3348-9cb8-2829343542ee",
+             "borderNode": false,
+             "initialBorderNodePosition": "NONE",
+             "modifiers": [],
+             "state": "Normal",
+             "collapsingState": "EXPANDED",
+             "insideLabel": {
+               "id": "ee9685e2-93ca-3124-80d0-d5f4e8362f29",
+               "text": "promoted",
+               "insideLabelLocation": "TOP_LEFT",
+               "style": {
+                 "color": "rgb(66, 66, 66)",
+                 "fontSize": 12,
+                 "bold": false,
+                 "italic": false,
+                 "underline": false,
+                 "strikeThrough": false,
+                 "iconURL": ["/icons/full/obj16/BooleanAttribute.svg"],
+                 "background": "transparent",
+                 "borderColor": "black",
+                 "borderSize": 0,
+                 "borderRadius": 3,
+                 "borderStyle": "Solid",
+                 "maxWidth": null,
+                 "visibility": "visible"
+               },
+               "isHeader": false,
+               "headerSeparatorDisplayMode": "NEVER",
+               "overflowStrategy": "NONE",
+               "textAlign": "LEFT",
+               "customizedStyleProperties": []
+             },
+             "outsideLabels": [],
+             "style": {
+               "background": "transparent",
+               "childrenLayoutStrategy": { "kind": "FreeForm" }
+             },
+             "borderNodes": [],
+             "childNodes": [],
+             "defaultWidth": null,
+             "defaultHeight": null,
+             "labelEditable": true,
+             "deletable": true,
+             "pinned": false,
+             "customizedStyleProperties": []
+           },
+           {
+             "id": "3d20835b-a31a-3025-aed3-8e2ec459c074",
+             "type": "node:icon-label",
+             "targetObjectId": "a480dbc0-14b7-4f06-a4f7-4c86139a803a",
+             "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Attribute",
+             "targetObjectLabel": "birthDate",
+             "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=2aeee83f-2f8c-3348-9cb8-2829343542ee",
+             "borderNode": false,
+             "initialBorderNodePosition": "NONE",
+             "modifiers": [],
+             "state": "Normal",
+             "collapsingState": "EXPANDED",
+             "insideLabel": {
+               "id": "1b2c46d2-3834-35c8-8a0a-1dcfcfd5f0df",
+               "text": "birthDate",
+               "insideLabelLocation": "TOP_LEFT",
+               "style": {
+                 "color": "rgb(66, 66, 66)",
+                 "fontSize": 12,
+                 "bold": false,
+                 "italic": false,
+                 "underline": false,
+                 "strikeThrough": false,
+                 "iconURL": ["/icons/full/obj16/StringAttribute.svg"],
+                 "background": "transparent",
+                 "borderColor": "black",
+                 "borderSize": 0,
+                 "borderRadius": 3,
+                 "borderStyle": "Solid",
+                 "maxWidth": null,
+                 "visibility": "visible"
+               },
+               "isHeader": false,
+               "headerSeparatorDisplayMode": "NEVER",
+               "overflowStrategy": "NONE",
+               "textAlign": "LEFT",
+               "customizedStyleProperties": []
+             },
+             "outsideLabels": [],
+             "style": {
+               "background": "transparent",
+               "childrenLayoutStrategy": { "kind": "FreeForm" }
+             },
+             "borderNodes": [],
+             "childNodes": [],
+             "defaultWidth": null,
+             "defaultHeight": null,
+             "labelEditable": true,
+             "deletable": true,
+             "pinned": false,
+             "customizedStyleProperties": []
+           }
+         ],
+         "defaultWidth": null,
+         "defaultHeight": null,
+         "labelEditable": true,
+         "deletable": true,
+         "pinned": false,
+         "customizedStyleProperties": []
+       }
+     ],
+     "edges": [
+       {
+         "id": "d0917969-7547-3408-a1d7-5d5ebf21cc93",
+         "type": "edge:straight",
+         "targetObjectId": "1731ffb5-bfb0-46f3-a23d-0c0650300005",
+         "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+         "targetObjectLabel": "Human",
+         "descriptionId": "siriusComponents://edgeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=fee7b454-e061-3ab3-8314-6a29c723d158",
+         "beginLabel": null,
+         "centerLabel": null,
+         "endLabel": null,
+         "sourceId": "34389cad-41a2-3873-9302-483887a67050",
+         "targetId": "2a705c17-3c82-30d9-b41d-8685c640e4c7",
+         "modifiers": [],
+         "state": "Normal",
+         "style": {
+           "size": 1,
+           "lineStyle": "Solid",
+           "sourceArrow": "None",
+           "targetArrow": "InputClosedArrow",
+           "color": "rgb(117, 117, 117)",
+           "edgeType": "Manhattan"
+         },
+         "centerLabelEditable": true,
+         "deletable": true,
+         "customizedStyleProperties": []
+       },
+       {
+         "id": "9b5c0041-55fc-3fea-86d2-b2f959b43a03",
+         "type": "edge:straight",
+         "targetObjectId": "f8fefc5d-4fee-4666-815e-94b24a95183f",
+         "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Relation",
+         "targetObjectLabel": "humans",
+         "descriptionId": "siriusComponents://edgeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d3c1af57-d18b-33ac-9fd1-d5aed8ae9e35",
+         "beginLabel": null,
+         "centerLabel": {
+           "id": "0d672268-41a2-3064-b726-4e9d89f7b713",
+           "type": "label:edge-center",
+           "text": "humans [0..*]",
+           "style": {
+             "color": "rgb(0, 0, 0)",
+             "fontSize": 14,
+             "bold": false,
+             "italic": false,
+             "underline": false,
+             "strikeThrough": false,
+             "iconURL": [],
+             "background": "transparent",
+             "borderColor": "black",
+             "borderSize": 0,
+             "borderRadius": 3,
+             "borderStyle": "Solid",
+             "maxWidth": null,
+             "visibility": "visible"
+           },
+           "customizedStyleProperties": []
+         },
+         "endLabel": null,
+         "sourceId": "fb671c47-e46b-35a6-bfa8-324365544985",
+         "targetId": "34389cad-41a2-3873-9302-483887a67050",
+         "modifiers": [],
+         "state": "Normal",
+         "style": {
+           "size": 1,
+           "lineStyle": "Solid",
+           "sourceArrow": "FillDiamond",
+           "targetArrow": "InputArrow",
+           "color": "rgb(0, 0, 0)",
+           "edgeType": "Manhattan"
+         },
+         "centerLabelEditable": true,
+         "deletable": true,
+         "customizedStyleProperties": []
+       }
+     ],
+     "layoutData": {
+       "nodeLayoutData": {
+         "30e8852e-ea10-3681-a407-92c7a9e31f3f": {
+           "id": "30e8852e-ea10-3681-a407-92c7a9e31f3f",
+           "position": { "x": 3.0, "y": 38.0 },
+           "size": { "width": 144.0, "height": 16.0 },
+           "resizedByUser": false,
+           "movedByUser": false,
+           "handleLayoutData": [],
+           "minComputedSize": { "width": 115.453125, "height": 16.0 }
+         },
+         "34389cad-41a2-3873-9302-483887a67050": {
+           "id": "34389cad-41a2-3873-9302-483887a67050",
+           "position": { "x": 360.046875, "y": 0.0 },
+           "size": { "width": 150.0, "height": 89.0 },
+           "resizedByUser": false,
+           "movedByUser": false,
+           "handleLayoutData": [],
+           "minComputedSize": { "width": 121.453125, "height": 89.0 }
+         },
+         "3d20835b-a31a-3025-aed3-8e2ec459c074": {
+           "id": "3d20835b-a31a-3025-aed3-8e2ec459c074",
+           "position": { "x": 3.0, "y": 70.0 },
+           "size": { "width": 144.0, "height": 16.0 },
+           "resizedByUser": false,
+           "movedByUser": false,
+           "handleLayoutData": [],
+           "minComputedSize": { "width": 105.859375, "height": 16.0 }
+         },
+         "2a705c17-3c82-30d9-b41d-8685c640e4c7": {
+           "id": "2a705c17-3c82-30d9-b41d-8685c640e4c7",
+           "position": { "x": 175.0, "y": 0.0 },
+           "size": { "width": 160.046875, "height": 70.0 },
+           "resizedByUser": false,
+           "movedByUser": false,
+           "handleLayoutData": [],
+           "minComputedSize": { "width": 160.046875, "height": 57.0 }
+         },
+         "deeded4f-9fb5-3df1-b9b0-80d8880a3c6f": {
+           "id": "deeded4f-9fb5-3df1-b9b0-80d8880a3c6f",
+           "position": { "x": 3.0, "y": 54.0 },
+           "size": { "width": 144.0, "height": 16.0 },
+           "resizedByUser": false,
+           "movedByUser": false,
+           "handleLayoutData": [],
+           "minComputedSize": { "width": 107.734375, "height": 16.0 }
+         },
+         "57647065-be83-39d1-8427-fdddf7dbffa0": {
+           "id": "57647065-be83-39d1-8427-fdddf7dbffa0",
+           "position": { "x": 3.0, "y": 38.0 },
+           "size": { "width": 144.0, "height": 16.0 },
+           "resizedByUser": false,
+           "movedByUser": false,
+           "handleLayoutData": [],
+           "minComputedSize": { "width": 82.0, "height": 16.0 }
+         },
+         "867412e7-9f34-3a0c-8c78-2ecfbc8cbbe2": {
+           "id": "867412e7-9f34-3a0c-8c78-2ecfbc8cbbe2",
+           "position": { "x": 3.0, "y": 38.0 },
+           "size": { "width": 154.046875, "height": 16.0 },
+           "resizedByUser": false,
+           "movedByUser": false,
+           "handleLayoutData": [],
+           "minComputedSize": { "width": 86.546875, "height": 16.0 }
+         },
+         "fb671c47-e46b-35a6-bfa8-324365544985": {
+           "id": "fb671c47-e46b-35a6-bfa8-324365544985",
+           "position": { "x": 0.0, "y": 0.0 },
+           "size": { "width": 150.0, "height": 73.0 },
+           "resizedByUser": false,
+           "movedByUser": false,
+           "handleLayoutData": [],
+           "minComputedSize": { "width": 121.453125, "height": 73.0 }
+         },
+         "6aa6a031-2f87-387c-b5a0-d015aa85669f": {
+           "id": "6aa6a031-2f87-387c-b5a0-d015aa85669f",
+           "position": { "x": 3.0, "y": 54.0 },
+           "size": { "width": 144.0, "height": 16.0 },
+           "resizedByUser": false,
+           "movedByUser": false,
+           "handleLayoutData": [],
+           "minComputedSize": { "width": 115.453125, "height": 16.0 }
+         }
+       },
+       "edgeLayoutData": {
+         "d0917969-7547-3408-a1d7-5d5ebf21cc93": {
+           "id": "d0917969-7547-3408-a1d7-5d5ebf21cc93",
+           "bendingPoints": [],
+           "edgeAnchorLayoutData": []
+         },
+         "9b5c0041-55fc-3fea-86d2-b2f959b43a03": {
+           "id": "9b5c0041-55fc-3fea-86d2-b2f959b43a03",
+           "bendingPoints": [],
+           "edgeAnchorLayoutData": []
+         }
+       },
+       "labelLayoutData": {
+         "0d672268-41a2-3064-b726-4e9d89f7b713": {
+           "id": "0d672268-41a2-3064-b726-4e9d89f7b713",
+           "position": { "x": 0.0, "y": 0.0 },
+           "size": { "width": 84.171875, "height": 16.0 },
+           "resizedByUser": false,
+           "movedByUser": false
+         }
+       }
+     }
+   }',
+   'none',
+   '2025.12.0-202511141745',
+   '2026-01-21 13:46:0.000',
+   '2026-01-21 13:46:0.000',
+   'e344d967-a639-4f6c-9c00-a466d51063c6',
+   '74fe378b-0010-4909-8762-3f8425abf857'
+);
+
 -- Studio instance project
 INSERT INTO project (
   id,

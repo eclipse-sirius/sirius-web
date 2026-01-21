@@ -10,13 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { RepresentationPathContext, SelectionContextProvider, Workbench } from '@eclipse-sirius/sirius-components-core';
+import {
+  RepresentationMetadata,
+  RepresentationPathContext,
+  SelectionContextProvider,
+  Workbench,
+} from '@eclipse-sirius/sirius-components-core';
+import { useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { useInitialWorkbenchConfiguration } from '../edit-project/useInitialWorkbenchConfiguration';
 import { DisplayLibraryNavbar } from './DisplayLibraryNavbar';
-import { DisplayLibraryViewParams } from './DisplayLibraryView.types';
+import { DisplayLibraryViewParams, DisplayLibraryViewState } from './DisplayLibraryView.types';
 import { useLibrary } from './useLibrary';
 
 const useDisplayLibraryViewStyles = makeStyles()(() => ({
@@ -41,9 +47,20 @@ export const DisplayLibraryView = () => {
     data?.viewer?.library ? data.viewer.library.currentEditingContext.id : null
   );
 
+  const [state, setState] = useState<DisplayLibraryViewState>({
+    representation: null,
+  });
+
   const getRepresentationPath = (representationId: string) => {
     // Note that this should match the corresponding route configuration
     return `/libraries/${namespace}/${name}/${version}/edit/${representationId}`;
+  };
+
+  const onRepresentationSelected = (representationMetadata: RepresentationMetadata) => {
+    setState((prevState) => ({
+      ...prevState,
+      representation: representationMetadata,
+    }));
   };
 
   if (data && !data.viewer.library) {
@@ -59,8 +76,8 @@ export const DisplayLibraryView = () => {
             <DisplayLibraryNavbar library={data.viewer.library} />
             <Workbench
               editingContextId={data.viewer.library.currentEditingContext.id}
-              initialRepresentationSelected={null}
-              onRepresentationSelected={null}
+              initialRepresentationSelected={state.representation}
+              onRepresentationSelected={onRepresentationSelected}
               readOnly
               initialWorkbenchConfiguration={workbenchConfiguration}
               ref={null}

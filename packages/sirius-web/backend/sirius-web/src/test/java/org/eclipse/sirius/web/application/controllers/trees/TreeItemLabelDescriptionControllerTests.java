@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -79,7 +80,7 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
         var explorerDescriptionId = new AtomicReference<String>();
 
         Map<String, Object> explorerVariables = Map.of(
-                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString()
+                "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID
         );
         var explorerResult = this.explorerDescriptionsQueryRunner.run(explorerVariables);
         List<String> explorerIds = JsonPath.read(explorerResult.data(), "$.data.viewer.editingContext.explorerDescriptions[*].id");
@@ -96,7 +97,7 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
         //      - check that the ROOT entity has not the abstract style applied.
         //      - check that the NamedElement entity has the abstract style (if style)
         //      - check that the Human entity has 3 attributes (for style)
-        var inputStyle = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
+        var inputStyle = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, explorerRepresentationId);
         var fluxStyle = this.explorerEventSubscriptionRunner.run(inputStyle).flux();
 
         Consumer<Object> styleTreeContentConsumer = assertRefreshedTreeThat(tree -> {
@@ -107,8 +108,8 @@ public class TreeItemLabelDescriptionControllerTests extends AbstractIntegration
                     .get(0)
                     .getChildren();
             var rootLabels = domainChildren.get(0).getLabel().styledStringFragments();
-            var namedElementLabels = domainChildren.get(1).getLabel().styledStringFragments();
-            var humanLabels = domainChildren.get(2).getLabel().styledStringFragments();
+            var namedElementLabels = domainChildren.get(2).getLabel().styledStringFragments();
+            var humanLabels = domainChildren.get(3).getLabel().styledStringFragments();
 
             assertThat(rootLabels.get(rootLabels.size() - 1).text()).doesNotContain("[abstract]");
             assertThat(namedElementLabels.get(namedElementLabels.size() - 1).text()).contains("[abstract]");
