@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
+import org.eclipse.sirius.web.application.project.dto.UnserializeImportedRepresentationDataInput;
+import org.eclipse.sirius.web.application.project.dto.UnserializeImportedRepresentationSuccessPayload;
 import org.eclipse.sirius.web.application.project.services.api.IProjectContentImportParticipant;
 import org.eclipse.sirius.web.application.project.services.api.IRepresentationImporterUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
@@ -53,13 +55,13 @@ public class RepresentationProjectContentImportParticipant implements IProjectCo
 
     private final ObjectMapper objectMapper;
 
-    private final List<IRepresentationImporterUpdateService> diagramImporterUpdateServices;
+    private final List<IRepresentationImporterUpdateService> importerUpdateServices;
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public RepresentationProjectContentImportParticipant(ObjectMapper objectMapper, List<IRepresentationImporterUpdateService> diagramImporterUpdateServices, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+    public RepresentationProjectContentImportParticipant(ObjectMapper objectMapper, List<IRepresentationImporterUpdateService> importerUpdateServices, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
-        this.diagramImporterUpdateServices = Objects.requireNonNull(diagramImporterUpdateServices);
+        this.importerUpdateServices = Objects.requireNonNull(importerUpdateServices);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
     }
 
@@ -81,7 +83,7 @@ public class RepresentationProjectContentImportParticipant implements IProjectCo
         }
     }
 
-    private List<RepresentationImportData> getRepresentationImportData(ProjectZipContent projectZipContent) {
+    private List<RepresentationSerializedImportData> getRepresentationImportData(ProjectZipContent projectZipContent) {
         String representationsFolderInZip = projectZipContent.projectName() + ZIP_FOLDER_SEPARATOR + REPRESENTATIONS_FOLDER + ZIP_FOLDER_SEPARATOR;
         List<ByteArrayOutputStream> representationDescriptorsContent = projectZipContent.files().entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(representationsFolderInZip))
@@ -91,21 +93,22 @@ public class RepresentationProjectContentImportParticipant implements IProjectCo
         return this.getRepresentationImportData(representationDescriptorsContent);
     }
 
-    private List<RepresentationImportData> getRepresentationImportData(List<ByteArrayOutputStream> outputStreamToTransformToRepresentationDescriptor) {
-        List<RepresentationImportData> representations = new ArrayList<>();
+    private List<RepresentationSerializedImportData> getRepresentationImportData(List<ByteArrayOutputStream> outputStreamToTransformToRepresentationDescriptor) {
+        List<RepresentationSerializedImportData> representations = new ArrayList<>();
         for (ByteArrayOutputStream outputStream : outputStreamToTransformToRepresentationDescriptor) {
             try {
                 byte[] representationDescriptorBytes = outputStream.toByteArray();
-                RepresentationSerializedImportData representationSerializedImportData = null;
-                representationSerializedImportData = this.objectMapper.readValue(representationDescriptorBytes, RepresentationSerializedImportData.class);
-                var representationDescriptor = new RepresentationImportData(representationSerializedImportData.id(),
-                        representationSerializedImportData.projectId(),
-                        representationSerializedImportData.descriptionId(),
-                        representationSerializedImportData.targetObjectId(),
-                        representationSerializedImportData.label(),
-                        representationSerializedImportData.kind(),
-                        representationSerializedImportData.representation());
-                representations.add(representationDescriptor);
+                var jsonNode = this.objectMapper.readTree(representationDescriptorBytes);
+
+                var id = UUID.fromString(jsonNode.get("id").asText());
+                var projectId = jsonNode.get("projectId").asText();
+                var descriptionId = jsonNode.get("descriptionId").asText();
+                var targetObjectId = jsonNode.get("targetObjectId").asText();
+                var label = jsonNode.get("label").asText();
+                var kind = jsonNode.get("kind").asText();
+                var representation = jsonNode.get("representation").toString();
+
+                representations.add(new RepresentationSerializedImportData(id, projectId, descriptionId, targetObjectId, label, kind, representation));
             } catch (IOException exception) {
                 logger.warn("Unable to convert one of the given representation : {}", exception.getMessage(), exception);
             }
@@ -117,15 +120,14 @@ public class RepresentationProjectContentImportParticipant implements IProjectCo
      * Get the representation (type, targetObjectUri, descriptionUri) described into the binary file from a given
      * representation identifier.
      *
-     * @param representationImportData
-     *         the representation to look for in Manifest
+     * @param representationId
+     *         the ID of the representation to look for in Manifest
      * @return the representation details from Manifest
      */
-    private Map<?, ?> getRepresentationManifest(RepresentationImportData representationImportData, ProjectZipContent projectZipContent) {
+    private Map<?, ?> getRepresentationManifest(String representationId, ProjectZipContent projectZipContent) {
         Object representationsFromManifest = projectZipContent.manifest().get(ProjectZipContent.REPRESENTATIONS);
-        UUID representationId = representationImportData.id();
         if (representationsFromManifest instanceof Map && representationId != null) {
-            Object representationFromManifest = ((Map<?, ?>) representationsFromManifest).get(representationImportData.id().toString());
+            Object representationFromManifest = ((Map<?, ?>) representationsFromManifest).get(representationId);
             if (representationFromManifest instanceof Map) {
                 return (Map<?, ?>) representationFromManifest;
             }
@@ -157,34 +159,56 @@ public class RepresentationProjectContentImportParticipant implements IProjectCo
     }
 
     private void createRepresentations(UUID inputId, ProjectZipContent projectZipContent, IEditingContextEventProcessor editingContextEventProcessor, Map<String, String> documentIdMapping, Map<String, String> semanticIdMapping) {
-        for (RepresentationImportData representationImportData : this.getRepresentationImportData(projectZipContent)) {
-            Map<?, ?> representationManifest = this.getRepresentationManifest(representationImportData, projectZipContent);
-
-            String targetObjectURI = Optional.ofNullable(representationManifest.get(ProjectZipContent.TARGET_OBJECT_URI))
-                    .filter(String.class::isInstance)
-                    .map(String.class::cast)
-                    .orElse("");
-            String descriptionURI = Optional.ofNullable(representationManifest.get(ProjectZipContent.DESCRIPTION_URI))
-                    .filter(String.class::isInstance)
-                    .map(String.class::cast)
-                    .orElse("");
-
-            String objectId = this.getNewObjectId(targetObjectURI, documentIdMapping, semanticIdMapping);
-
-            CreateRepresentationInput createRepresentationInput = new CreateRepresentationInput(inputId, editingContextEventProcessor.getEditingContextId(), descriptionURI, objectId, representationImportData.label());
-            var representationPayloadCreated = editingContextEventProcessor.handle(createRepresentationInput)
-                    .filter(CreateRepresentationSuccessPayload.class::isInstance)
-                    .map(CreateRepresentationSuccessPayload.class::cast)
-                    .blockOptional();
-
-            if (representationPayloadCreated.isPresent()) {
-                var newRepresentationId = representationPayloadCreated.get().representation().id();
-                var editingContextId = editingContextEventProcessor.getEditingContextId();
-                this.diagramImporterUpdateServices.stream()
-                        .filter(diagramImporterUpdateService -> diagramImporterUpdateService.canHandle(editingContextId, representationImportData))
-                        .forEach(diagramImporterUpdateService -> diagramImporterUpdateService.handle(semanticIdMapping, createRepresentationInput, editingContextId, newRepresentationId, representationImportData));
-            }
+        for (RepresentationSerializedImportData serializedData : this.getRepresentationImportData(projectZipContent)) {
+            var metadata = this.getRepresentationImportMetadata(serializedData.id().toString(), projectZipContent);
+            UnserializeImportedRepresentationDataInput unserializeImportedRepresentationDataInput = new UnserializeImportedRepresentationDataInput(inputId, serializedData, metadata);
+            editingContextEventProcessor.handle(unserializeImportedRepresentationDataInput)
+                    .filter(UnserializeImportedRepresentationSuccessPayload.class::isInstance)
+                    .map(UnserializeImportedRepresentationSuccessPayload.class::cast)
+                    .blockOptional()
+                    .ifPresent(payload -> createRepresentation(inputId, payload.representationImportData(), metadata, editingContextEventProcessor, documentIdMapping, semanticIdMapping));
         }
     }
 
+    private void createRepresentation(UUID inputId, RepresentationImportData representationData, RepresentationImportMetadata representationMetadata, IEditingContextEventProcessor editingContextEventProcessor, Map<String, String> documentIdMapping, Map<String, String> semanticIdMapping) {
+        String objectId = this.getNewObjectId(representationMetadata.targetObjectUri(), documentIdMapping, semanticIdMapping);
+
+        CreateRepresentationInput createRepresentationInput = new CreateRepresentationInput(inputId, editingContextEventProcessor.getEditingContextId(), representationMetadata.descriptionUri(), objectId, representationData.label());
+        var representationPayloadCreated = editingContextEventProcessor.handle(createRepresentationInput)
+                .filter(CreateRepresentationSuccessPayload.class::isInstance)
+                .map(CreateRepresentationSuccessPayload.class::cast)
+                .blockOptional();
+
+        if (representationPayloadCreated.isPresent()) {
+            var newRepresentationId = representationPayloadCreated.get().representation().id();
+            var editingContextId = editingContextEventProcessor.getEditingContextId();
+            this.importerUpdateServices.stream()
+                    .filter(importerUpdateService -> importerUpdateService.canHandle(editingContextId, representationData))
+                    .forEach(importerUpdateService -> importerUpdateService.handle(semanticIdMapping, createRepresentationInput, editingContextId, newRepresentationId, representationData));
+        }
+    }
+
+
+    private RepresentationImportMetadata getRepresentationImportMetadata(String representationId, ProjectZipContent projectZipContent) {
+        Map<?, ?> representationManifest = this.getRepresentationManifest(representationId, projectZipContent);
+
+        String targetObjectURI = Optional.ofNullable(representationManifest.get(ProjectZipContent.TARGET_OBJECT_URI))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .orElse("");
+        String descriptionURI = Optional.ofNullable(representationManifest.get(ProjectZipContent.DESCRIPTION_URI))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .orElse("");
+        String latestMigrationPerformed = Optional.ofNullable(representationManifest.get(ProjectZipContent.LATEST_MIGRATION_PERFORMED))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .orElse("none");
+        String migrationVersion = Optional.ofNullable(representationManifest.get(ProjectZipContent.MIGRATION_VERSION))
+                .filter(String.class::isInstance)
+                .map(String.class::cast)
+                .orElse("0");
+
+        return new RepresentationImportMetadata(descriptionURI, targetObjectURI, latestMigrationPerformed, migrationVersion);
+    }
 }

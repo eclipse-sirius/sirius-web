@@ -93,10 +93,12 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
                     .orElse(List.of());
 
             for (var representationMetadata : allRepresentationMetadata) {
-                var optionalRepresentationContentNode = this.representationContentSearchService.findContentById(AggregateReference.to(UUID.fromString(editingContext.getId())), AggregateReference.to(representationMetadata.getRepresentationMetadataId()))
-                        .flatMap(representationContent -> this.representationContentMigrationService.getMigratedContent(editingContext, representationMetadata, representationContent));
+                var optionalRepresentationContent = this.representationContentSearchService.findContentById(AggregateReference.to(UUID.fromString(editingContext.getId())), AggregateReference.to(representationMetadata.getRepresentationMetadataId()));
+                var optionalRepresentationContentNode = optionalRepresentationContent
+                        .flatMap(representationContent -> this.representationContentMigrationService.getMigratedContent(editingContext, representationContent.getContent(), representationMetadata.getKind(), representationContent.getLastMigrationPerformed(), representationContent.getMigrationVersion()));
 
                 if (optionalRepresentationContentNode.isPresent()) {
+                    var representationContent = optionalRepresentationContent.get();
                     var representationContentNode = optionalRepresentationContentNode.get();
 
                     var exportData = new RepresentationSerializedExportData(
@@ -127,7 +129,9 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
                     Map<String, String> representationManifest = Map.of(
                             "type", representationMetadata.getKind(),
                             "descriptionURI", representationMetadata.getDescriptionId(),
-                            "targetObjectURI", uriFragment
+                            "targetObjectURI", uriFragment,
+                            "migrationVersion", representationContent.getMigrationVersion(),
+                            "latestMigrationPerformed", representationContent.getLastMigrationPerformed()
                     );
                     representationManifests.put(representationMetadata.getRepresentationMetadataId().toString(), representationManifest);
 
