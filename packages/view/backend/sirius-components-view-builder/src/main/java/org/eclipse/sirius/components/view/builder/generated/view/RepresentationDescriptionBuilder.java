@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,6 +69,16 @@ public abstract class RepresentationDescriptionBuilder {
      */
     public RepresentationDescriptionBuilder iconExpression(java.lang.String value) {
         this.getRepresentationDescription().setIconExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for Description.
+     *
+     * @generated
+     */
+    public RepresentationDescriptionBuilder description(java.lang.String value) {
+        this.getRepresentationDescription().setDescription(value);
         return this;
     }
 

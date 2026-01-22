@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -435,6 +435,16 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
     @Override
     public EAttribute getRepresentationDescription_IconExpression() {
         return (EAttribute) this.representationDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getRepresentationDescription_Description() {
+        return (EAttribute) this.representationDescriptionEClass.getEStructuralFeatures().get(5);
     }
 
     /**
@@ -947,6 +957,7 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION);
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION);
         this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__ICON_EXPRESSION);
+        this.createEAttribute(this.representationDescriptionEClass, REPRESENTATION_DESCRIPTION__DESCRIPTION);
 
         this.labelStyleEClass = this.createEClass(LABEL_STYLE);
         this.createEAttribute(this.labelStyleEClass, LABEL_STYLE__FONT_SIZE);
@@ -1086,6 +1097,8 @@ public class ViewPackageImpl extends EPackageImpl implements ViewPackage {
                 RepresentationDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getRepresentationDescription_IconExpression(), this.getInterpretedExpression(), "iconExpression", "", 0, 1, RepresentationDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getRepresentationDescription_Description(), this.ecorePackage.getEString(), "description", null, 0, 1, RepresentationDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.labelStyleEClass, LabelStyle.class, "LabelStyle", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getLabelStyle_FontSize(), this.getLength(), "fontSize", "14", 1, 1, LabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,

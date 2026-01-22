@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,6 +81,7 @@ public class RecordNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(recordNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .childrenDescriptions(recordComponentNodeDescription)
+                .description("Represents the Papaya::Record concept as a Node. A Record node also displays its RecordComponents.")
                 .build();
     }
 
@@ -112,6 +113,7 @@ public class RecordNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(recordComponentNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .description("Represents the Papaya::RecordComponent concept as a Node.")
                 .build();
     }
 

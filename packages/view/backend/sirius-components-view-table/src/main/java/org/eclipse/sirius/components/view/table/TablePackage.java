@@ -109,6 +109,14 @@ public interface TablePackage extends EPackage {
     int TABLE_DESCRIPTION__ICON_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TABLE_DESCRIPTION__DESCRIPTION = ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION;
+
+    /**
      * The feature id for the '<em><b>Use Striped Rows Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *

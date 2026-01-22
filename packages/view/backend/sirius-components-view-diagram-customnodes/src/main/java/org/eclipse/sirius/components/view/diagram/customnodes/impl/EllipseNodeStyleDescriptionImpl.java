@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ import org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDe
  * <em>Border Line Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.customnodes.impl.EllipseNodeStyleDescriptionImpl#getChildrenLayoutStrategy
  * <em>Children Layout Strategy</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.customnodes.impl.EllipseNodeStyleDescriptionImpl#getDescription
+ * <em>Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.customnodes.impl.EllipseNodeStyleDescriptionImpl#getBackground
  * <em>Background</em>}</li>
  * </ul>
@@ -127,6 +129,26 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
      * @ordered
      */
     protected LayoutStrategyDescription childrenLayoutStrategy;
+
+    /**
+     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected String description = DESCRIPTION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
@@ -324,6 +346,29 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
      * @generated
      */
     @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescription(String newDescription) {
+        String oldDescription = this.description;
+        this.description = newDescription;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__DESCRIPTION, oldDescription, this.description));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public UserColor getBackground() {
         if (this.background != null && this.background.eIsProxy()) {
             InternalEObject oldBackground = (InternalEObject) this.background;
@@ -392,6 +437,8 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
                 return this.getBorderLineStyle();
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.getChildrenLayoutStrategy();
+            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                return this.getDescription();
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 if (resolve)
                     return this.getBackground();
@@ -423,6 +470,9 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
                 return;
+            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                this.setDescription((String) newValue);
+                return;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 this.setBackground((UserColor) newValue);
                 return;
@@ -453,6 +503,9 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
                 return;
+            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                this.setDescription(DESCRIPTION_EDEFAULT);
+                return;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 this.setBackground((UserColor) null);
                 return;
@@ -478,6 +531,8 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.childrenLayoutStrategy != null;
+            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
             case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND:
                 return this.background != null;
         }
@@ -501,6 +556,8 @@ public class EllipseNodeStyleDescriptionImpl extends MinimalEObjectImpl.Containe
         result.append(this.borderSize);
         result.append(", borderLineStyle: ");
         result.append(this.borderLineStyle);
+        result.append(", description: ");
+        result.append(this.description);
         result.append(')');
         return result.toString();
     }

@@ -441,7 +441,7 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
                 return this.onNorthAtCreationBorderNodes != null && !this.onNorthAtCreationBorderNodes.isEmpty();
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION:
                 return ARE_CHILD_NODES_DRAGGABLE_EXPRESSION_EDEFAULT == null ? this.areChildNodesDraggableExpression != null
-                : !ARE_CHILD_NODES_DRAGGABLE_EXPRESSION_EDEFAULT.equals(this.areChildNodesDraggableExpression);
+                        : !ARE_CHILD_NODES_DRAGGABLE_EXPRESSION_EDEFAULT.equals(this.areChildNodesDraggableExpression);
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__TOP_GAP_EXPRESSION:
                 return TOP_GAP_EXPRESSION_EDEFAULT == null ? this.topGapExpression != null : !TOP_GAP_EXPRESSION_EDEFAULT.equals(this.topGapExpression);
             case DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION:

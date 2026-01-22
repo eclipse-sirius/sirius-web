@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -64,6 +64,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
             this.addPreconditionExpressionPropertyDescriptor(object);
             this.addTitleExpressionPropertyDescriptor(object);
             this.addIconExpressionPropertyDescriptor(object);
+            this.addDescriptionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -130,6 +131,18 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
     }
 
     /**
+     * This adds a property descriptor for the Description feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDescriptionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RepresentationDescription_description_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_description_feature", "_UI_RepresentationDescription_type"),
+                ViewPackage.Literals.REPRESENTATION_DESCRIPTION__DESCRIPTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns RepresentationDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -177,6 +190,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
             case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
             case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
             case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

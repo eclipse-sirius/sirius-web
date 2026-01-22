@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.emf.ecore.EObject;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression <em>Icon
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getDescription <em>Description</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription()
@@ -152,5 +153,27 @@ public interface RepresentationDescription extends EObject {
      * @generated
      */
     void setIconExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Description</em>' attribute.
+     * @see #setDescription(String)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_Description()
+     * @model
+     * @generated
+     */
+    String getDescription();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getDescription
+     * <em>Description</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Description</em>' attribute.
+     * @see #getDescription()
+     * @generated
+     */
+    void setDescription(String value);
 
 } // RepresentationDescription
