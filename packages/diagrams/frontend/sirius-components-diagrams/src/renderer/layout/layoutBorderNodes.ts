@@ -75,16 +75,56 @@ export const findBorderNodePosition = (
   parentNode: Node | undefined
 ): BorderNodePosition | null => {
   if (borderNodePosition && borderNode.width && borderNode.height && parentNode?.width && parentNode.height) {
-    if (Math.trunc(borderNodePosition.x + borderNode.width) - borderNodeOffset === 0) {
+    if (
+      Math.trunc(borderNodePosition.x + borderNode.width) - borderNodeOffset <= 0 &&
+      !(
+        borderNode.data.borderNodePosition === BorderNodePosition.NORTH &&
+        Math.trunc(borderNodePosition.y + borderNode.height) - borderNodeOffset <= 0
+      ) &&
+      !(
+        borderNode.data.borderNodePosition === BorderNodePosition.SOUTH &&
+        Math.trunc(borderNodePosition.y) + borderNodeOffset >= Math.trunc(parentNode.height)
+      )
+    ) {
       return BorderNodePosition.WEST;
     }
-    if (Math.trunc(borderNodePosition.x) + borderNodeOffset === Math.trunc(parentNode.width)) {
+    if (
+      Math.trunc(borderNodePosition.x) + borderNodeOffset >= Math.trunc(parentNode.width) &&
+      !(
+        borderNode.data.borderNodePosition === BorderNodePosition.NORTH &&
+        Math.trunc(borderNodePosition.y + borderNode.height) - borderNodeOffset <= 0
+      ) &&
+      !(
+        borderNode.data.borderNodePosition === BorderNodePosition.SOUTH &&
+        Math.trunc(borderNodePosition.y) + borderNodeOffset >= Math.trunc(parentNode.height)
+      )
+    ) {
       return BorderNodePosition.EAST;
     }
-    if (Math.trunc(borderNodePosition.y + borderNode.height) - borderNodeOffset === 0) {
+    if (
+      Math.trunc(borderNodePosition.y + borderNode.height) - borderNodeOffset <= 0 &&
+      !(
+        borderNode.data.borderNodePosition === BorderNodePosition.WEST &&
+        Math.trunc(borderNodePosition.x + borderNode.width) - borderNodeOffset <= 0
+      ) &&
+      !(
+        borderNode.data.borderNodePosition === BorderNodePosition.EAST &&
+        Math.trunc(borderNodePosition.x) + borderNodeOffset >= Math.trunc(parentNode.width)
+      )
+    ) {
       return BorderNodePosition.NORTH;
     }
-    if (Math.trunc(borderNodePosition.y) + borderNodeOffset === Math.trunc(parentNode.height)) {
+    if (
+      Math.trunc(borderNodePosition.y) + borderNodeOffset >= Math.trunc(parentNode.height) &&
+      !(
+        borderNode.data.borderNodePosition === BorderNodePosition.WEST &&
+        Math.trunc(borderNodePosition.x + borderNode.width) - borderNodeOffset <= 0
+      ) &&
+      !(
+        borderNode.data.borderNodePosition === BorderNodePosition.EAST &&
+        Math.trunc(borderNodePosition.x) + borderNodeOffset >= Math.trunc(parentNode.width)
+      )
+    ) {
       return BorderNodePosition.SOUTH;
     }
   }
