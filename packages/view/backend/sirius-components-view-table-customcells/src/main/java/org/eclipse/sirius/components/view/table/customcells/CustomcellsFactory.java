@@ -15,36 +15,39 @@ package org.eclipse.sirius.components.view.table.customcells;
 import org.eclipse.emf.ecore.EFactory;
 
 /**
- * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of
- * the model. <!-- end-user-doc -->
- *
- * @generated
+ * <!-- begin-user-doc -->
+ * The <b>Factory</b> for the model.
+ * It provides a create method for each non-abstract class of the model.
+ * <!-- end-user-doc -->
  * @see org.eclipse.sirius.components.view.table.customcells.CustomcellsPackage
+ * @generated
  */
-public interface CustomcellsFactory extends EFactory {
+public interface CustomcellsFactory extends EFactory
+{
+	/**
+	 * The singleton instance of the factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	CustomcellsFactory eINSTANCE = org.eclipse.sirius.components.view.table.customcells.impl.CustomcellsFactoryImpl.init();
 
-    /**
-     * The singleton instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    CustomcellsFactory eINSTANCE = org.eclipse.sirius.components.view.table.customcells.impl.CustomcellsFactoryImpl.init();
+	/**
+	 * Returns a new object of class '<em>Cell Checkbox Widget Description</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Cell Checkbox Widget Description</em>'.
+	 * @generated
+	 */
+	CellCheckboxWidgetDescription createCellCheckboxWidgetDescription();
 
-    /**
-     * Returns a new object of class '<em>Cell Checkbox Widget Description</em>'. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @return a new object of class '<em>Cell Checkbox Widget Description</em>'.
-     * @generated
-     */
-    CellCheckboxWidgetDescription createCellCheckboxWidgetDescription();
+	/**
+	 * Returns the package supported by this factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the package supported by this factory.
+	 * @generated
+	 */
+	CustomcellsPackage getCustomcellsPackage();
 
-    /**
-     * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the package supported by this factory.
-     * @generated
-     */
-    CustomcellsPackage getCustomcellsPackage();
-
-} // CustomcellsFactory
+} //CustomcellsFactory

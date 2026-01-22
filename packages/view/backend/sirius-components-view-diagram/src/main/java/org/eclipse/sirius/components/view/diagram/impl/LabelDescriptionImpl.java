@@ -40,23 +40,23 @@ import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
 public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container implements LabelDescription {
 
     /**
-     * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String LABEL_EXPRESSION_EDEFAULT = "aql:self.name";
 
     /**
-     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
 
     /**
@@ -80,211 +80,201 @@ public abstract class LabelDescriptionImpl extends MinimalEObjectImpl.Container 
     protected LabelOverflowStrategy overflowStrategy = OVERFLOW_STRATEGY_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getTextAlign() <em>Text Align</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getTextAlign() <em>Text Align</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getTextAlign()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTextAlign()
+	 * @generated
+	 * @ordered
+	 */
     protected static final LabelTextAlign TEXT_ALIGN_EDEFAULT = LabelTextAlign.LEFT;
 
     /**
-     * The cached value of the '{@link #getTextAlign() <em>Text Align</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getTextAlign() <em>Text Align</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getTextAlign()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTextAlign()
+	 * @generated
+	 * @ordered
+	 */
     protected LabelTextAlign textAlign = TEXT_ALIGN_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected LabelDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.LABEL_DESCRIPTION;
-    }
+		return DiagramPackage.Literals.LABEL_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getLabelExpression() {
-        return this.labelExpression;
-    }
+		return labelExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setLabelExpression(String newLabelExpression) {
-        String oldLabelExpression = this.labelExpression;
-        this.labelExpression = newLabelExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION, oldLabelExpression, this.labelExpression));
-    }
+		String oldLabelExpression = labelExpression;
+		labelExpression = newLabelExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION, oldLabelExpression, labelExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public LabelOverflowStrategy getOverflowStrategy() {
-        return this.overflowStrategy;
-    }
+		return overflowStrategy;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setOverflowStrategy(LabelOverflowStrategy newOverflowStrategy) {
-        LabelOverflowStrategy oldOverflowStrategy = this.overflowStrategy;
-        this.overflowStrategy = newOverflowStrategy == null ? OVERFLOW_STRATEGY_EDEFAULT : newOverflowStrategy;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY, oldOverflowStrategy, this.overflowStrategy));
-    }
+		LabelOverflowStrategy oldOverflowStrategy = overflowStrategy;
+		overflowStrategy = newOverflowStrategy == null ? OVERFLOW_STRATEGY_EDEFAULT : newOverflowStrategy;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY, oldOverflowStrategy, overflowStrategy));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public LabelTextAlign getTextAlign() {
-        return this.textAlign;
-    }
+		return textAlign;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setTextAlign(LabelTextAlign newTextAlign) {
-        LabelTextAlign oldTextAlign = this.textAlign;
-        this.textAlign = newTextAlign == null ? TEXT_ALIGN_EDEFAULT : newTextAlign;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN, oldTextAlign, this.textAlign));
-    }
+		LabelTextAlign oldTextAlign = textAlign;
+		textAlign = newTextAlign == null ? TEXT_ALIGN_EDEFAULT : newTextAlign;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN, oldTextAlign, textAlign));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
-                return this.getLabelExpression();
-            case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
-                return this.getOverflowStrategy();
-            case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
-                return this.getTextAlign();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
+				return getLabelExpression();
+			case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
+				return getOverflowStrategy();
+			case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
+				return getTextAlign();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
-                this.setLabelExpression((String) newValue);
-                return;
-            case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
-                this.setOverflowStrategy((LabelOverflowStrategy) newValue);
-                return;
-            case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
-                this.setTextAlign((LabelTextAlign) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
+				setLabelExpression((String)newValue);
+				return;
+			case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
+				setOverflowStrategy((LabelOverflowStrategy)newValue);
+				return;
+			case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
+				setTextAlign((LabelTextAlign)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
-                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
-                return;
-            case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
-                this.setOverflowStrategy(OVERFLOW_STRATEGY_EDEFAULT);
-                return;
-            case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
-                this.setTextAlign(TEXT_ALIGN_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
+				setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
+				return;
+			case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
+				setOverflowStrategy(OVERFLOW_STRATEGY_EDEFAULT);
+				return;
+			case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
+				setTextAlign(TEXT_ALIGN_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
-                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
-            case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
-                return this.overflowStrategy != OVERFLOW_STRATEGY_EDEFAULT;
-            case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
-                return this.textAlign != TEXT_ALIGN_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.LABEL_DESCRIPTION__LABEL_EXPRESSION:
+				return LABEL_EXPRESSION_EDEFAULT == null ? labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(labelExpression);
+			case DiagramPackage.LABEL_DESCRIPTION__OVERFLOW_STRATEGY:
+				return overflowStrategy != OVERFLOW_STRATEGY_EDEFAULT;
+			case DiagramPackage.LABEL_DESCRIPTION__TEXT_ALIGN:
+				return textAlign != TEXT_ALIGN_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (labelExpression: ");
-        result.append(this.labelExpression);
-        result.append(", overflowStrategy: ");
-        result.append(this.overflowStrategy);
-        result.append(", textAlign: ");
-        result.append(this.textAlign);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (labelExpression: ");
+		result.append(labelExpression);
+		result.append(", overflowStrategy: ");
+		result.append(overflowStrategy);
+		result.append(", textAlign: ");
+		result.append(textAlign);
+		result.append(')');
+		return result.toString();
+	}
 
 } // LabelDescriptionImpl

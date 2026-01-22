@@ -33,215 +33,213 @@ import org.eclipse.sirius.components.papaya.Subscription;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.EventImpl#getEmittedBy <em>Emitted By</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.EventImpl#getListenedBy <em>Listened By</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.EventImpl#getCausedBy <em>Caused By</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.EventImpl#getEmittedBy <em>Emitted By</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.EventImpl#getListenedBy <em>Listened By</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.EventImpl#getCausedBy <em>Caused By</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class EventImpl extends NamedElementImpl implements Event {
     /**
-     * The cached value of the '{@link #getEmittedBy() <em>Emitted By</em>}' reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getEmittedBy() <em>Emitted By</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getEmittedBy()
-     * @generated
-     * @ordered
-     */
+	 * @see #getEmittedBy()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Publication> emittedBy;
 
     /**
-     * The cached value of the '{@link #getListenedBy() <em>Listened By</em>}' reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getListenedBy() <em>Listened By</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getListenedBy()
-     * @generated
-     * @ordered
-     */
+	 * @see #getListenedBy()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Subscription> listenedBy;
 
     /**
-     * The cached value of the '{@link #getCausedBy() <em>Caused By</em>}' reference list. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getCausedBy() <em>Caused By</em>}' reference list.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getCausedBy()
-     * @generated
-     * @ordered
-     */
+	 * @see #getCausedBy()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Message> causedBy;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EventImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.EVENT;
-    }
+		return PapayaPackage.Literals.EVENT;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Publication> getEmittedBy() {
-        if (this.emittedBy == null) {
-            this.emittedBy = new EObjectWithInverseResolvingEList<>(Publication.class, this, PapayaPackage.EVENT__EMITTED_BY, PapayaPackage.PUBLICATION__MESSAGE);
-        }
-        return this.emittedBy;
-    }
+		if (emittedBy == null)
+		{
+			emittedBy = new EObjectWithInverseResolvingEList<Publication>(Publication.class, this, PapayaPackage.EVENT__EMITTED_BY, PapayaPackage.PUBLICATION__MESSAGE);
+		}
+		return emittedBy;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Subscription> getListenedBy() {
-        if (this.listenedBy == null) {
-            this.listenedBy = new EObjectWithInverseResolvingEList<>(Subscription.class, this, PapayaPackage.EVENT__LISTENED_BY, PapayaPackage.SUBSCRIPTION__MESSAGE);
-        }
-        return this.listenedBy;
-    }
+		if (listenedBy == null)
+		{
+			listenedBy = new EObjectWithInverseResolvingEList<Subscription>(Subscription.class, this, PapayaPackage.EVENT__LISTENED_BY, PapayaPackage.SUBSCRIPTION__MESSAGE);
+		}
+		return listenedBy;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Message> getCausedBy() {
-        if (this.causedBy == null) {
-            this.causedBy = new EObjectResolvingEList<>(Message.class, this, PapayaPackage.EVENT__CAUSED_BY);
-        }
-        return this.causedBy;
-    }
+		if (causedBy == null)
+		{
+			causedBy = new EObjectResolvingEList<Message>(Message.class, this, PapayaPackage.EVENT__CAUSED_BY);
+		}
+		return causedBy;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PapayaPackage.EVENT__EMITTED_BY:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getEmittedBy()).basicAdd(otherEnd, msgs);
-            case PapayaPackage.EVENT__LISTENED_BY:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getListenedBy()).basicAdd(otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.EVENT__EMITTED_BY:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getEmittedBy()).basicAdd(otherEnd, msgs);
+			case PapayaPackage.EVENT__LISTENED_BY:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getListenedBy()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PapayaPackage.EVENT__EMITTED_BY:
-                return ((InternalEList<?>) this.getEmittedBy()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.EVENT__LISTENED_BY:
-                return ((InternalEList<?>) this.getListenedBy()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.EVENT__EMITTED_BY:
+				return ((InternalEList<?>)getEmittedBy()).basicRemove(otherEnd, msgs);
+			case PapayaPackage.EVENT__LISTENED_BY:
+				return ((InternalEList<?>)getListenedBy()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.EVENT__EMITTED_BY:
-                return this.getEmittedBy();
-            case PapayaPackage.EVENT__LISTENED_BY:
-                return this.getListenedBy();
-            case PapayaPackage.EVENT__CAUSED_BY:
-                return this.getCausedBy();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.EVENT__EMITTED_BY:
+				return getEmittedBy();
+			case PapayaPackage.EVENT__LISTENED_BY:
+				return getListenedBy();
+			case PapayaPackage.EVENT__CAUSED_BY:
+				return getCausedBy();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.EVENT__EMITTED_BY:
-                this.getEmittedBy().clear();
-                this.getEmittedBy().addAll((Collection<? extends Publication>) newValue);
-                return;
-            case PapayaPackage.EVENT__LISTENED_BY:
-                this.getListenedBy().clear();
-                this.getListenedBy().addAll((Collection<? extends Subscription>) newValue);
-                return;
-            case PapayaPackage.EVENT__CAUSED_BY:
-                this.getCausedBy().clear();
-                this.getCausedBy().addAll((Collection<? extends Message>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.EVENT__EMITTED_BY:
+				getEmittedBy().clear();
+				getEmittedBy().addAll((Collection<? extends Publication>)newValue);
+				return;
+			case PapayaPackage.EVENT__LISTENED_BY:
+				getListenedBy().clear();
+				getListenedBy().addAll((Collection<? extends Subscription>)newValue);
+				return;
+			case PapayaPackage.EVENT__CAUSED_BY:
+				getCausedBy().clear();
+				getCausedBy().addAll((Collection<? extends Message>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.EVENT__EMITTED_BY:
-                this.getEmittedBy().clear();
-                return;
-            case PapayaPackage.EVENT__LISTENED_BY:
-                this.getListenedBy().clear();
-                return;
-            case PapayaPackage.EVENT__CAUSED_BY:
-                this.getCausedBy().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.EVENT__EMITTED_BY:
+				getEmittedBy().clear();
+				return;
+			case PapayaPackage.EVENT__LISTENED_BY:
+				getListenedBy().clear();
+				return;
+			case PapayaPackage.EVENT__CAUSED_BY:
+				getCausedBy().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.EVENT__EMITTED_BY:
-                return this.emittedBy != null && !this.emittedBy.isEmpty();
-            case PapayaPackage.EVENT__LISTENED_BY:
-                return this.listenedBy != null && !this.listenedBy.isEmpty();
-            case PapayaPackage.EVENT__CAUSED_BY:
-                return this.causedBy != null && !this.causedBy.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.EVENT__EMITTED_BY:
+				return emittedBy != null && !emittedBy.isEmpty();
+			case PapayaPackage.EVENT__LISTENED_BY:
+				return listenedBy != null && !listenedBy.isEmpty();
+			case PapayaPackage.EVENT__CAUSED_BY:
+				return causedBy != null && !causedBy.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // EventImpl

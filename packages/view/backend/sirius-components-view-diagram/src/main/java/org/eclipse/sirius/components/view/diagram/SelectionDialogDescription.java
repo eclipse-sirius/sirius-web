@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,11 +20,9 @@ package org.eclipse.sirius.components.view.diagram;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage <em>Selection
- * Message</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription
- * <em>Selection Dialog Tree Description</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple <em>Multiple</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage <em>Selection Message</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription <em>Selection Dialog Tree Description</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple <em>Multiple</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription()
@@ -45,15 +43,12 @@ public interface SelectionDialogDescription extends DialogDescription {
     String getSelectionMessage();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage <em>Selection
-     * Message</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Selection Message</em>' attribute.
-     * @see #getSelectionMessage()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage <em>Selection Message</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Selection Message</em>' attribute.
+	 * @see #getSelectionMessage()
+	 * @generated
+	 */
     void setSelectionMessage(String value);
 
     /**
@@ -69,37 +64,32 @@ public interface SelectionDialogDescription extends DialogDescription {
     SelectionDialogTreeDescription getSelectionDialogTreeDescription();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription
-     * <em>Selection Dialog Tree Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Selection Dialog Tree Description</em>' containment reference.
-     * @see #getSelectionDialogTreeDescription()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription <em>Selection Dialog Tree Description</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Selection Dialog Tree Description</em>' containment reference.
+	 * @see #getSelectionDialogTreeDescription()
+	 * @generated
+	 */
     void setSelectionDialogTreeDescription(SelectionDialogTreeDescription value);
 
     /**
-     * Returns the value of the '<em><b>Multiple</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Multiple</em>' attribute.
-     * @see #setMultiple(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_Multiple()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Multiple</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Multiple</em>' attribute.
+	 * @see #setMultiple(boolean)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_Multiple()
+	 * @model
+	 * @generated
+	 */
     boolean isMultiple();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple
-     * <em>Multiple</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Multiple</em>' attribute.
-     * @see #isMultiple()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple <em>Multiple</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Multiple</em>' attribute.
+	 * @see #isMultiple()
+	 * @generated
+	 */
     void setMultiple(boolean value);
 
 } // SelectionDialogDescription

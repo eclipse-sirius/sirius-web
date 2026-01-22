@@ -30,126 +30,124 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.AnnotationImpl#getFields <em>Fields</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.AnnotationImpl#getFields <em>Fields</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class AnnotationImpl extends TypeImpl implements Annotation {
     /**
-     * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list. <!-- begin-user-doc
+	 * The cached value of the '{@link #getFields() <em>Fields</em>}' containment reference list.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getFields()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFields()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<AnnotationField> fields;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected AnnotationImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.ANNOTATION;
-    }
+		return PapayaPackage.Literals.ANNOTATION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<AnnotationField> getFields() {
-        if (this.fields == null) {
-            this.fields = new EObjectContainmentEList<>(AnnotationField.class, this, PapayaPackage.ANNOTATION__FIELDS);
-        }
-        return this.fields;
-    }
+		if (fields == null)
+		{
+			fields = new EObjectContainmentEList<AnnotationField>(AnnotationField.class, this, PapayaPackage.ANNOTATION__FIELDS);
+		}
+		return fields;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PapayaPackage.ANNOTATION__FIELDS:
-                return ((InternalEList<?>) this.getFields()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ANNOTATION__FIELDS:
+				return ((InternalEList<?>)getFields()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.ANNOTATION__FIELDS:
-                return this.getFields();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ANNOTATION__FIELDS:
+				return getFields();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.ANNOTATION__FIELDS:
-                this.getFields().clear();
-                this.getFields().addAll((Collection<? extends AnnotationField>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ANNOTATION__FIELDS:
+				getFields().clear();
+				getFields().addAll((Collection<? extends AnnotationField>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.ANNOTATION__FIELDS:
-                this.getFields().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ANNOTATION__FIELDS:
+				getFields().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.ANNOTATION__FIELDS:
-                return this.fields != null && !this.fields.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ANNOTATION__FIELDS:
+				return fields != null && !fields.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // AnnotationImpl

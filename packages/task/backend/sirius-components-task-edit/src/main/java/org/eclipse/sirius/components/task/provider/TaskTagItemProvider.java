@@ -49,8 +49,8 @@ public class TaskTagItemProvider extends ItemProviderAdapter implements IEditing
      * @generated
      */
     public TaskTagItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
      * This returns the property descriptors for the adapted class. <!--
@@ -60,46 +60,59 @@ public class TaskTagItemProvider extends ItemProviderAdapter implements IEditing
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addPrefixPropertyDescriptor(object);
-            this.addSuffixPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addPrefixPropertyDescriptor(object);
+			addSuffixPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Prefix feature. <!-- begin-user-doc
+	 * This adds a property descriptor for the Prefix feature.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addPrefixPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this
-                .createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_TaskTag_prefix_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_TaskTag_prefix_feature",
-                                "_UI_TaskTag_type"),
-                        TaskPackage.Literals.TASK_TAG__PREFIX, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TaskTag_prefix_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TaskTag_prefix_feature", "_UI_TaskTag_type"),
+				 TaskPackage.Literals.TASK_TAG__PREFIX,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Suffix feature. <!-- begin-user-doc
+	 * This adds a property descriptor for the Suffix feature.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addSuffixPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this
-                .createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_TaskTag_suffix_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_TaskTag_suffix_feature",
-                                "_UI_TaskTag_type"),
-                        TaskPackage.Literals.TASK_TAG__SUFFIX, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TaskTag_suffix_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TaskTag_suffix_feature", "_UI_TaskTag_type"),
+				 TaskPackage.Literals.TASK_TAG__SUFFIX,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This returns TaskTag.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -112,14 +125,13 @@ public class TaskTagItemProvider extends ItemProviderAdapter implements IEditing
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc -->
@@ -136,38 +148,36 @@ public class TaskTagItemProvider extends ItemProviderAdapter implements IEditing
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This handles model notifications by calling {@link #updateChildren} to update any cached
+	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(TaskTag.class)) {
-        case TaskPackage.TASK_TAG__PREFIX:
-        case TaskPackage.TASK_TAG__SUFFIX:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        default:
-            super.notifyChanged(notification);
-            return;
-        }
-    }
+		switch (notification.getFeatureID(TaskTag.class))
+		{
+			case TaskPackage.TASK_TAG__PREFIX:
+			case TaskPackage.TASK_TAG__SUFFIX:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
     /**
      * Return the resource locator for this item provider's resources. <!--
@@ -177,7 +187,7 @@ public class TaskTagItemProvider extends ItemProviderAdapter implements IEditing
      */
     @Override
     public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
-    }
+		return ((IChildCreationExtender)adapterFactory).getResourceLocator();
+	}
 
 }

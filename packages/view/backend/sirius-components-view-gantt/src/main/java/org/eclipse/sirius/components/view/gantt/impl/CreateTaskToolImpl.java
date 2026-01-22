@@ -24,22 +24,20 @@ import org.eclipse.sirius.components.view.gantt.GanttPackage;
  */
 public class CreateTaskToolImpl extends TaskToolImpl implements CreateTaskTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CreateTaskToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return GanttPackage.Literals.CREATE_TASK_TOOL;
-    }
+		return GanttPackage.Literals.CREATE_TASK_TOOL;
+	}
 
 } // CreateTaskToolImpl

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,15 +22,11 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getChildren <em>Children</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexDirection <em>Flex
- * Direction</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getIsEnabledExpression <em>Is Enabled
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle <em>Border
- * Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getConditionalBorderStyles
- * <em>Conditional Border Styles</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexDirection <em>Flex Direction</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getIsEnabledExpression <em>Is Enabled Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle <em>Border Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getConditionalBorderStyles <em>Conditional Border Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription()
@@ -66,63 +62,55 @@ public interface FlexboxContainerDescription extends WidgetDescription {
     FlexDirection getFlexDirection();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexDirection <em>Flex
-     * Direction</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Flex Direction</em>' attribute.
-     * @see org.eclipse.sirius.components.view.form.FlexDirection
-     * @see #getFlexDirection()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getFlexDirection <em>Flex Direction</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Flex Direction</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.form.FlexDirection
+	 * @see #getFlexDirection()
+	 * @generated
+	 */
     void setFlexDirection(FlexDirection value);
 
     /**
-     * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Is Enabled Expression</em>' attribute.
-     * @see #setIsEnabledExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_IsEnabledExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Is Enabled Expression</em>' attribute.
+	 * @see #setIsEnabledExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_IsEnabledExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getIsEnabledExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getIsEnabledExpression <em>Is Enabled
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Is Enabled Expression</em>' attribute.
-     * @see #getIsEnabledExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getIsEnabledExpression <em>Is Enabled Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
+	 * @see #getIsEnabledExpression()
+	 * @generated
+	 */
     void setIsEnabledExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Border Style</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Border Style</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Border Style</em>' containment reference.
-     * @see #setBorderStyle(ContainerBorderStyle)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_BorderStyle()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Border Style</em>' containment reference.
+	 * @see #setBorderStyle(ContainerBorderStyle)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getFlexboxContainerDescription_BorderStyle()
+	 * @model containment="true"
+	 * @generated
+	 */
     ContainerBorderStyle getBorderStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle
-     * <em>Border Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Border Style</em>' containment reference.
-     * @see #getBorderStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription#getBorderStyle <em>Border Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Border Style</em>' containment reference.
+	 * @see #getBorderStyle()
+	 * @generated
+	 */
     void setBorderStyle(ContainerBorderStyle value);
 
     /**

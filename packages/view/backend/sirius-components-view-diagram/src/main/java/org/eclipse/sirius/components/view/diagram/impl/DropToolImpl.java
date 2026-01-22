@@ -23,22 +23,20 @@ import org.eclipse.sirius.components.view.diagram.DropTool;
  */
 public class DropToolImpl extends ToolImpl implements DropTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DropToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.DROP_TOOL;
-    }
+		return DiagramPackage.Literals.DROP_TOOL;
+	}
 
 } // DropToolImpl

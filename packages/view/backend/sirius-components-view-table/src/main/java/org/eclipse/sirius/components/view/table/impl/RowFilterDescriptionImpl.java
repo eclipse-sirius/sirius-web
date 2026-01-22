@@ -28,11 +28,9 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl#getId <em>Id</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl#getLabelExpression <em>Label
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl#getInitialStateExpression
- * <em>Initial State Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl#getId <em>Id</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl#getLabelExpression <em>Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl#getInitialStateExpression <em>Initial State Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -40,23 +38,40 @@ import org.eclipse.sirius.components.view.table.TablePackage;
 public class RowFilterDescriptionImpl extends MinimalEObjectImpl.Container implements RowFilterDescription {
 
     /**
-     * The default value of the '{@link #getId() <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getId()
-     */
+	 * The default value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String ID_EDEFAULT = null;
     /**
-     * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getId() <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getId()
+	 * @generated
+	 * @ordered
+	 */
+    protected String id = ID_EDEFAULT;
+	/**
+	 * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getLabelExpression()
-     */
+	 * @see #getLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String LABEL_EXPRESSION_EDEFAULT = null;
     /**
+	 * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+	 * @see #getLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
+    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
+	/**
      * The default value of the '{@link #getInitialStateExpression() <em>Initial State Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -65,23 +80,6 @@ public class RowFilterDescriptionImpl extends MinimalEObjectImpl.Container imple
      * @see #getInitialStateExpression()
      */
     protected static final String INITIAL_STATE_EXPRESSION_EDEFAULT = "";
-    /**
-     * The cached value of the '{@link #getId() <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getId()
-     */
-    protected String id = ID_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getLabelExpression()
-     */
-    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
     /**
      * The cached value of the '{@link #getInitialStateExpression() <em>Initial State Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -93,189 +91,180 @@ public class RowFilterDescriptionImpl extends MinimalEObjectImpl.Container imple
     protected String initialStateExpression = INITIAL_STATE_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RowFilterDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TablePackage.Literals.ROW_FILTER_DESCRIPTION;
-    }
+		return TablePackage.Literals.ROW_FILTER_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getId() {
-        return this.id;
-    }
+		return id;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setId(String newId) {
-        String oldId = this.id;
-        this.id = newId;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.ROW_FILTER_DESCRIPTION__ID, oldId, this.id));
-    }
+		String oldId = id;
+		id = newId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.ROW_FILTER_DESCRIPTION__ID, oldId, id));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getLabelExpression() {
-        return this.labelExpression;
-    }
+		return labelExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setLabelExpression(String newLabelExpression) {
-        String oldLabelExpression = this.labelExpression;
-        this.labelExpression = newLabelExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION, oldLabelExpression, this.labelExpression));
-    }
+		String oldLabelExpression = labelExpression;
+		labelExpression = newLabelExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION, oldLabelExpression, labelExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getInitialStateExpression() {
-        return this.initialStateExpression;
-    }
+		return initialStateExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setInitialStateExpression(String newInitialStateExpression) {
-        String oldInitialStateExpression = this.initialStateExpression;
-        this.initialStateExpression = newInitialStateExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION, oldInitialStateExpression, this.initialStateExpression));
-    }
+		String oldInitialStateExpression = initialStateExpression;
+		initialStateExpression = newInitialStateExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION, oldInitialStateExpression, initialStateExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TablePackage.ROW_FILTER_DESCRIPTION__ID:
-                return this.getId();
-            case TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION:
-                return this.getLabelExpression();
-            case TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION:
-                return this.getInitialStateExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case TablePackage.ROW_FILTER_DESCRIPTION__ID:
+				return getId();
+			case TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION:
+				return getLabelExpression();
+			case TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION:
+				return getInitialStateExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TablePackage.ROW_FILTER_DESCRIPTION__ID:
-                this.setId((String) newValue);
-                return;
-            case TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION:
-                this.setLabelExpression((String) newValue);
-                return;
-            case TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION:
-                this.setInitialStateExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case TablePackage.ROW_FILTER_DESCRIPTION__ID:
+				setId((String)newValue);
+				return;
+			case TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION:
+				setLabelExpression((String)newValue);
+				return;
+			case TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION:
+				setInitialStateExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TablePackage.ROW_FILTER_DESCRIPTION__ID:
-                this.setId(ID_EDEFAULT);
-                return;
-            case TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION:
-                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
-                return;
-            case TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION:
-                this.setInitialStateExpression(INITIAL_STATE_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case TablePackage.ROW_FILTER_DESCRIPTION__ID:
+				setId(ID_EDEFAULT);
+				return;
+			case TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION:
+				setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
+				return;
+			case TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION:
+				setInitialStateExpression(INITIAL_STATE_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TablePackage.ROW_FILTER_DESCRIPTION__ID:
-                return !Objects.equals(ID_EDEFAULT, this.id);
-            case TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION:
-                return !Objects.equals(LABEL_EXPRESSION_EDEFAULT, this.labelExpression);
-            case TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION:
-                return INITIAL_STATE_EXPRESSION_EDEFAULT == null ? this.initialStateExpression != null : !INITIAL_STATE_EXPRESSION_EDEFAULT.equals(this.initialStateExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case TablePackage.ROW_FILTER_DESCRIPTION__ID:
+				return ID_EDEFAULT == null ? id != null : !ID_EDEFAULT.equals(id);
+			case TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION:
+				return LABEL_EXPRESSION_EDEFAULT == null ? labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(labelExpression);
+			case TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION:
+				return INITIAL_STATE_EXPRESSION_EDEFAULT == null ? initialStateExpression != null : !INITIAL_STATE_EXPRESSION_EDEFAULT.equals(initialStateExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        String result = super.toString() + " (id: " +
-                this.id +
-                ", labelExpression: " +
-                this.labelExpression +
-                ", initialStateExpression: " +
-                this.initialStateExpression +
-                ')';
-        return result;
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (id: ");
+		result.append(id);
+		result.append(", labelExpression: ");
+		result.append(labelExpression);
+		result.append(", initialStateExpression: ");
+		result.append(initialStateExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // RowFilterDescriptionImpl

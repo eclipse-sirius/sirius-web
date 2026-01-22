@@ -25,8 +25,8 @@ import org.eclipse.sirius.components.papaya.Tag;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.TagImpl#getKey <em>Key</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.TagImpl#getValue <em>Value</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.TagImpl#getKey <em>Key</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.TagImpl#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @generated
@@ -43,22 +43,22 @@ public class TagImpl extends MinimalEObjectImpl.Container implements Tag {
     protected static final String KEY_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getKey() <em>Key</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getKey()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getKey() <em>Key</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getKey()
+	 * @generated
+	 * @ordered
+	 */
     protected String key = KEY_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getValue() <em>Value</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getValue()
-     * @generated
-     * @ordered
-     */
+	 * @see #getValue()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String VALUE_EDEFAULT = null;
 
     /**
@@ -72,155 +72,147 @@ public class TagImpl extends MinimalEObjectImpl.Container implements Tag {
     protected String value = VALUE_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TagImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.TAG;
-    }
+		return PapayaPackage.Literals.TAG;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getKey() {
-        return this.key;
-    }
+		return key;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setKey(String newKey) {
-        String oldKey = this.key;
-        this.key = newKey;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.TAG__KEY, oldKey, this.key));
-    }
+		String oldKey = key;
+		key = newKey;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.TAG__KEY, oldKey, key));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getValue() {
-        return this.value;
-    }
+		return value;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setValue(String newValue) {
-        String oldValue = this.value;
-        this.value = newValue;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.TAG__VALUE, oldValue, this.value));
-    }
+		String oldValue = value;
+		value = newValue;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.TAG__VALUE, oldValue, value));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.TAG__KEY:
-                return this.getKey();
-            case PapayaPackage.TAG__VALUE:
-                return this.getValue();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.TAG__KEY:
+				return getKey();
+			case PapayaPackage.TAG__VALUE:
+				return getValue();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.TAG__KEY:
-                this.setKey((String) newValue);
-                return;
-            case PapayaPackage.TAG__VALUE:
-                this.setValue((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.TAG__KEY:
+				setKey((String)newValue);
+				return;
+			case PapayaPackage.TAG__VALUE:
+				setValue((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.TAG__KEY:
-                this.setKey(KEY_EDEFAULT);
-                return;
-            case PapayaPackage.TAG__VALUE:
-                this.setValue(VALUE_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.TAG__KEY:
+				setKey(KEY_EDEFAULT);
+				return;
+			case PapayaPackage.TAG__VALUE:
+				setValue(VALUE_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.TAG__KEY:
-                return KEY_EDEFAULT == null ? this.key != null : !KEY_EDEFAULT.equals(this.key);
-            case PapayaPackage.TAG__VALUE:
-                return VALUE_EDEFAULT == null ? this.value != null : !VALUE_EDEFAULT.equals(this.value);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.TAG__KEY:
+				return KEY_EDEFAULT == null ? key != null : !KEY_EDEFAULT.equals(key);
+			case PapayaPackage.TAG__VALUE:
+				return VALUE_EDEFAULT == null ? value != null : !VALUE_EDEFAULT.equals(value);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (key: ");
-        result.append(this.key);
-        result.append(", value: ");
-        result.append(this.value);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (key: ");
+		result.append(key);
+		result.append(", value: ");
+		result.append(value);
+		result.append(')');
+		return result.toString();
+	}
 
 } // TagImpl

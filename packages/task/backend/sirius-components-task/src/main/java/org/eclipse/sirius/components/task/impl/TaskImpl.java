@@ -23,22 +23,20 @@ import org.eclipse.sirius.components.task.TaskPackage;
  */
 public class TaskImpl extends AbstractTaskImpl implements Task {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TaskImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TaskPackage.Literals.TASK;
-    }
+		return TaskPackage.Literals.TASK;
+	}
 
 } // TaskImpl

@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.InterfaceImplementation#getImplements <em>Implements</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.InterfaceImplementation#getImplements <em>Implements</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getInterfaceImplementation()

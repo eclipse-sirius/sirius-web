@@ -36,77 +36,71 @@ import org.eclipse.emf.ecore.EObject;
 public interface LabelDescription extends EObject {
 
     /**
-     * Returns the value of the '<em><b>Label Expression</b></em>' attribute. The default value is
-     * <code>"aql:self.name"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Label Expression</em>' attribute.
-     * @see #setLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_LabelExpression()
-     * @model default="aql:self.name" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Label Expression</b></em>' attribute.
+	 * The default value is <code>"aql:self.name"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Label Expression</em>' attribute.
+	 * @see #setLabelExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_LabelExpression()
+	 * @model default="aql:self.name" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getLabelExpression
-     * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Label Expression</em>' attribute.
-     * @see #getLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getLabelExpression <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Label Expression</em>' attribute.
+	 * @see #getLabelExpression()
+	 * @generated
+	 */
     void setLabelExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Overflow Strategy</b></em>' attribute. The literals are from the enumeration
-     * {@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy}. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Overflow Strategy</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Overflow Strategy</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
-     * @see #setOverflowStrategy(LabelOverflowStrategy)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_OverflowStrategy()
-     * @model required="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Overflow Strategy</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
+	 * @see #setOverflowStrategy(LabelOverflowStrategy)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_OverflowStrategy()
+	 * @model required="true"
+	 * @generated
+	 */
     LabelOverflowStrategy getOverflowStrategy();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getOverflowStrategy
-     * <em>Overflow Strategy</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Overflow Strategy</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
-     * @see #getOverflowStrategy()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getOverflowStrategy <em>Overflow Strategy</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Overflow Strategy</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy
+	 * @see #getOverflowStrategy()
+	 * @generated
+	 */
     void setOverflowStrategy(LabelOverflowStrategy value);
 
     /**
-     * Returns the value of the '<em><b>Text Align</b></em>' attribute. The literals are from the enumeration
-     * {@link org.eclipse.sirius.components.view.diagram.LabelTextAlign}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Text Align</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
-     * @see #setTextAlign(LabelTextAlign)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_TextAlign()
-     * @model required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Text Align</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.sirius.components.view.diagram.LabelTextAlign}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Text Align</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
+	 * @see #setTextAlign(LabelTextAlign)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelDescription_TextAlign()
+	 * @model required="true"
+	 * @generated
+	 */
     LabelTextAlign getTextAlign();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getTextAlign <em>Text
-     * Align</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Text Align</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
-     * @see #getTextAlign()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.LabelDescription#getTextAlign <em>Text Align</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Text Align</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.LabelTextAlign
+	 * @see #getTextAlign()
+	 * @generated
+	 */
     void setTextAlign(LabelTextAlign value);
 
 } // LabelDescription

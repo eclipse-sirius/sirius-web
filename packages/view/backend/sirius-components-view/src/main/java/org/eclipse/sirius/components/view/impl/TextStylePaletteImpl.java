@@ -62,169 +62,163 @@ public class TextStylePaletteImpl extends MinimalEObjectImpl.Container implement
     protected String name = NAME_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getStyles() <em>Styles</em>}' containment reference list. <!-- begin-user-doc
+	 * The cached value of the '{@link #getStyles() <em>Styles</em>}' containment reference list.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getStyles()
-     * @generated
-     * @ordered
-     */
+	 * @see #getStyles()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<TextStyleDescription> styles;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TextStylePaletteImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return ViewPackage.Literals.TEXT_STYLE_PALETTE;
-    }
+		return ViewPackage.Literals.TEXT_STYLE_PALETTE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+		return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.TEXT_STYLE_PALETTE__NAME, oldName, this.name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.TEXT_STYLE_PALETTE__NAME, oldName, name));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<TextStyleDescription> getStyles() {
-        if (this.styles == null) {
-            this.styles = new EObjectContainmentEList<>(TextStyleDescription.class, this, ViewPackage.TEXT_STYLE_PALETTE__STYLES);
-        }
-        return this.styles;
-    }
+		if (styles == null)
+		{
+			styles = new EObjectContainmentEList<TextStyleDescription>(TextStyleDescription.class, this, ViewPackage.TEXT_STYLE_PALETTE__STYLES);
+		}
+		return styles;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
-                return ((InternalEList<?>) this.getStyles()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
+				return ((InternalEList<?>)getStyles()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case ViewPackage.TEXT_STYLE_PALETTE__NAME:
-                return this.getName();
-            case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
-                return this.getStyles();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.TEXT_STYLE_PALETTE__NAME:
+				return getName();
+			case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
+				return getStyles();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case ViewPackage.TEXT_STYLE_PALETTE__NAME:
-                this.setName((String) newValue);
-                return;
-            case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
-                this.getStyles().clear();
-                this.getStyles().addAll((Collection<? extends TextStyleDescription>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.TEXT_STYLE_PALETTE__NAME:
+				setName((String)newValue);
+				return;
+			case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
+				getStyles().clear();
+				getStyles().addAll((Collection<? extends TextStyleDescription>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case ViewPackage.TEXT_STYLE_PALETTE__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
-            case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
-                this.getStyles().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.TEXT_STYLE_PALETTE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
+				getStyles().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case ViewPackage.TEXT_STYLE_PALETTE__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
-                return this.styles != null && !this.styles.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.TEXT_STYLE_PALETTE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case ViewPackage.TEXT_STYLE_PALETTE__STYLES:
+				return styles != null && !styles.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(')');
+		return result.toString();
+	}
 
 } // TextStylePaletteImpl

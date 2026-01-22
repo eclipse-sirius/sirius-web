@@ -26,64 +26,64 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.provider.ConditionalItemProvider;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
- *
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle} object.
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
  * @generated
  */
 public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public ConditionalNodeStyleItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-        }
-        return this.itemPropertyDescriptors;
-    }
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
      * This returns ConditionalNodeStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -96,25 +96,26 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((ConditionalNodeStyle) object).getCondition();
-        return label == null || label.length() == 0 ? this.getString("_UI_ConditionalNodeStyle_type") : this.getString("_UI_ConditionalNodeStyle_type") + " " + label;
-    }
+		String label = ((ConditionalNodeStyle)object).getCondition();
+		return label == null || label.length() == 0 ?
+			getString("_UI_ConditionalNodeStyle_type") :
+			getString("_UI_ConditionalNodeStyle_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -125,31 +126,41 @@ public class ConditionalNodeStyleItemProvider extends ConditionalItemProvider {
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(ConditionalNodeStyle.class)) {
-            case DiagramPackage.CONDITIONAL_NODE_STYLE__STYLE:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(ConditionalNodeStyle.class))
+		{
+			case DiagramPackage.CONDITIONAL_NODE_STYLE__STYLE:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE, DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription()));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+				 DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE, DiagramFactory.eINSTANCE.createImageNodeStyleDescription()));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+				 DiagramFactory.eINSTANCE.createImageNodeStyleDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE, DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.CONDITIONAL_NODE_STYLE__STYLE,
+				 DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription()));
+	}
 
 }

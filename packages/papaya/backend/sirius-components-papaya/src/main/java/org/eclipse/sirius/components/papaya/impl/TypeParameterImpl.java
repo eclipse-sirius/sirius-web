@@ -23,22 +23,20 @@ import org.eclipse.sirius.components.papaya.TypeParameter;
  */
 public class TypeParameterImpl extends NamedElementImpl implements TypeParameter {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TypeParameterImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.TYPE_PARAMETER;
-    }
+		return PapayaPackage.Literals.TYPE_PARAMETER;
+	}
 
 } // TypeParameterImpl

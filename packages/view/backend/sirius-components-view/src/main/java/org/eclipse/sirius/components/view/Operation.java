@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.Operation#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.Operation#getChildren <em>Children</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getOperation()
@@ -31,14 +31,14 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Operation extends EObject {
     /**
-     * Returns the value of the '<em><b>Children</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Children</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.ViewPackage#getOperation_Children()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Children</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.Operation}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Children</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getOperation_Children()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Operation> getChildren();
 
 } // Operation

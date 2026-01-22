@@ -22,39 +22,35 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getId <em>Id</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getLabelExpression <em>Label
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getInitialStateExpression <em>Initial State
- * Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getId <em>Id</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getLabelExpression <em>Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getInitialStateExpression <em>Initial State Expression</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription()
  */
 public interface RowFilterDescription extends EObject {
 
     /**
-     * Returns the value of the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Id</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.Identifier" required="true"
-     * @generated
-     * @see #setId(String)
-     * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription_Id()
-     */
+	 * Returns the value of the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Id</em>' attribute.
+	 * @see #setId(String)
+	 * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription_Id()
+	 * @model dataType="org.eclipse.sirius.components.view.Identifier" required="true"
+	 * @generated
+	 */
     String getId();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getId <em>Id</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Id</em>' attribute.
-     * @generated
-     * @see #getId()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getId <em>Id</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * @see #getId()
+	 * @generated
+	 */
     void setId(String value);
 
     /**
@@ -81,27 +77,24 @@ public interface RowFilterDescription extends EObject {
     void setLabelExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Initial State Expression</b></em>' attribute. The default value is
-     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Initial State Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     * @see #setInitialStateExpression(String)
-     * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription_InitialStateExpression()
-     */
+	 * Returns the value of the '<em><b>Initial State Expression</b></em>' attribute.
+	 * The default value is <code>""</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Initial State Expression</em>' attribute.
+	 * @see #setInitialStateExpression(String)
+	 * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription_InitialStateExpression()
+	 * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getInitialStateExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getInitialStateExpression <em>Initial State
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Initial State Expression</em>' attribute.
-     * @generated
-     * @see #getInitialStateExpression()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.table.RowFilterDescription#getInitialStateExpression <em>Initial State Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Initial State Expression</em>' attribute.
+	 * @see #getInitialStateExpression()
+	 * @generated
+	 */
     void setInitialStateExpression(String value);
 
 } // RowFilterDescription

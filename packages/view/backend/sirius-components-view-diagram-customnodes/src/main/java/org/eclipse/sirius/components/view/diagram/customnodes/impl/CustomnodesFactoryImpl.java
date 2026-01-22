@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,87 +17,102 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.sirius.components.view.diagram.customnodes.*;
 import org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesFactory;
 import org.eclipse.sirius.components.view.diagram.customnodes.CustomnodesPackage;
 import org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDescription;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Factory</b>.
+ * <!-- end-user-doc -->
  * @generated
  */
-public class CustomnodesFactoryImpl extends EFactoryImpl implements CustomnodesFactory {
-    /**
-     * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public static CustomnodesFactory init() {
-        try {
-            CustomnodesFactory theCustomnodesFactory = (CustomnodesFactory) EPackage.Registry.INSTANCE.getEFactory(CustomnodesPackage.eNS_URI);
-            if (theCustomnodesFactory != null) {
-                return theCustomnodesFactory;
-            }
-        } catch (Exception exception) {
-            EcorePlugin.INSTANCE.log(exception);
-        }
-        return new CustomnodesFactoryImpl();
-    }
+public class CustomnodesFactoryImpl extends EFactoryImpl implements CustomnodesFactory
+{
+	/**
+	 * Creates the default factory implementation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public static CustomnodesFactory init()
+	{
+		try
+		{
+			CustomnodesFactory theCustomnodesFactory = (CustomnodesFactory)EPackage.Registry.INSTANCE.getEFactory(CustomnodesPackage.eNS_URI);
+			if (theCustomnodesFactory != null)
+			{
+				return theCustomnodesFactory;
+			}
+		}
+		catch (Exception exception)
+		{
+			EcorePlugin.INSTANCE.log(exception);
+		}
+		return new CustomnodesFactoryImpl();
+	}
 
-    /**
-     * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public CustomnodesFactoryImpl() {
-        super();
-    }
+	/**
+	 * Creates an instance of the factory.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public CustomnodesFactoryImpl()
+	{
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EObject create(EClass eClass) {
-        switch (eClass.getClassifierID()) {
-            case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION:
-                return this.createEllipseNodeStyleDescription();
-            default:
-                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-        }
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EObject create(EClass eClass)
+	{
+		switch (eClass.getClassifierID())
+		{
+			case CustomnodesPackage.ELLIPSE_NODE_STYLE_DESCRIPTION: return createEllipseNodeStyleDescription();
+			default:
+				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		}
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EllipseNodeStyleDescription createEllipseNodeStyleDescription() {
-        EllipseNodeStyleDescriptionImpl ellipseNodeStyleDescription = new EllipseNodeStyleDescriptionImpl();
-        return ellipseNodeStyleDescription;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EllipseNodeStyleDescription createEllipseNodeStyleDescription()
+	{
+		EllipseNodeStyleDescriptionImpl ellipseNodeStyleDescription = new EllipseNodeStyleDescriptionImpl();
+		return ellipseNodeStyleDescription;
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public CustomnodesPackage getCustomnodesPackage() {
-        return (CustomnodesPackage) this.getEPackage();
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public CustomnodesPackage getCustomnodesPackage()
+	{
+		return (CustomnodesPackage)getEPackage();
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @deprecated
-     * @generated
-     */
-    @Deprecated
-    public static CustomnodesPackage getPackage() {
-        return CustomnodesPackage.eINSTANCE;
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @deprecated
+	 * @generated
+	 */
+	@Deprecated
+	public static CustomnodesPackage getPackage()
+	{
+		return CustomnodesPackage.eINSTANCE;
+	}
 
-} // CustomnodesFactoryImpl
+} //CustomnodesFactoryImpl

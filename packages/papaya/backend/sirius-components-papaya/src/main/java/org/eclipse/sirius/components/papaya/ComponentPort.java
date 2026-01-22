@@ -19,7 +19,7 @@ package org.eclipse.sirius.components.papaya;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.ComponentPort#getProtocol <em>Protocol</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.ComponentPort#getProtocol <em>Protocol</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getComponentPort()
@@ -28,25 +28,23 @@ package org.eclipse.sirius.components.papaya;
  */
 public interface ComponentPort extends NamedElement {
     /**
-     * Returns the value of the '<em><b>Protocol</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Protocol</em>' attribute.
-     * @see #setProtocol(String)
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getComponentPort_Protocol()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Protocol</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Protocol</em>' attribute.
+	 * @see #setProtocol(String)
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getComponentPort_Protocol()
+	 * @model
+	 * @generated
+	 */
     String getProtocol();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.ComponentPort#getProtocol <em>Protocol</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Protocol</em>' attribute.
-     * @see #getProtocol()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.papaya.ComponentPort#getProtocol <em>Protocol</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Protocol</em>' attribute.
+	 * @see #getProtocol()
+	 * @generated
+	 */
     void setProtocol(String value);
 
 } // ComponentPort

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,92 +25,111 @@ import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.Feature;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.domain.Feature} object. <!-- begin-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.domain.Feature} object.
+ * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
- *
  * @generated
  */
 public class FeatureItemProvider extends NamedElementItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public FeatureItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addOptionalPropertyDescriptor(object);
-            this.addManyPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addOptionalPropertyDescriptor(object);
+			addManyPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Optional feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Optional feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addOptionalPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Feature_optional_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_optional_feature", "_UI_Feature_type"),
-                        DomainPackage.Literals.FEATURE__OPTIONAL, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Feature_optional_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Feature_optional_feature", "_UI_Feature_type"),
+				 DomainPackage.Literals.FEATURE__OPTIONAL,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Many feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Many feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addManyPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Feature_many_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Feature_many_feature", "_UI_Feature_type"),
-                        DomainPackage.Literals.FEATURE__MANY, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Feature_many_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Feature_many_feature", "_UI_Feature_type"),
+				 DomainPackage.Literals.FEATURE__MANY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This returns Feature.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns Feature.gif.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Feature"));
-    }
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Feature"));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((Feature) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Feature_type") :
-                this.getString("_UI_Feature_type") + " " + label;
-    }
+		String label = ((Feature)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Feature_type") :
+			getString("_UI_Feature_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -121,26 +140,27 @@ public class FeatureItemProvider extends NamedElementItemProvider {
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(Feature.class)) {
-        case DomainPackage.FEATURE__OPTIONAL:
-        case DomainPackage.FEATURE__MANY:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(Feature.class))
+		{
+			case DomainPackage.FEATURE__OPTIONAL:
+			case DomainPackage.FEATURE__MANY:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
 }

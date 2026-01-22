@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,8 +39,8 @@ public class ObjectiveItemProvider extends AbstractTaskItemProvider {
      * @generated
      */
     public ObjectiveItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
      * This returns the property descriptors for the adapted class. <!--
@@ -50,44 +50,42 @@ public class ObjectiveItemProvider extends AbstractTaskItemProvider {
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-        }
-        return this.itemPropertyDescriptors;
-    }
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(TaskPackage.Literals.OBJECTIVE__OWNED_KEY_RESULTS);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(TaskPackage.Literals.OBJECTIVE__OWNED_KEY_RESULTS);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
      * This returns Objective.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -100,62 +98,62 @@ public class ObjectiveItemProvider extends AbstractTaskItemProvider {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((Objective) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Objective_type")
-                : this.getString("_UI_Objective_type") + " " + label;
-    }
+		String label = ((Objective)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Objective_type") :
+			getString("_UI_Objective_type") + " " + label;
+	}
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This handles model notifications by calling {@link #updateChildren} to update any cached
+	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(Objective.class)) {
-        case TaskPackage.OBJECTIVE__OWNED_KEY_RESULTS:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
-        default:
-            super.notifyChanged(notification);
-            return;
-        }
-    }
+		switch (notification.getFeatureID(Objective.class))
+		{
+			case TaskPackage.OBJECTIVE__OWNED_KEY_RESULTS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(TaskPackage.Literals.OBJECTIVE__OWNED_KEY_RESULTS,
-                TaskFactory.eINSTANCE.createKeyResult()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(TaskPackage.Literals.OBJECTIVE__OWNED_KEY_RESULTS,
+				 TaskFactory.eINSTANCE.createKeyResult()));
+	}
 
 }

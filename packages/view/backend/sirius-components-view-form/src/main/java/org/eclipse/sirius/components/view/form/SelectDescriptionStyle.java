@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,11 +23,9 @@ import org.eclipse.sirius.components.view.UserColor;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#getBackgroundColor <em>Background
- * Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#getForegroundColor <em>Foreground
- * Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#isShowIcon <em>Show Icon</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#getBackgroundColor <em>Background Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#getForegroundColor <em>Foreground Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#isShowIcon <em>Show Icon</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getSelectDescriptionStyle()
@@ -48,14 +46,12 @@ public interface SelectDescriptionStyle extends WidgetDescriptionStyle, LabelSty
     UserColor getBackgroundColor();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#getBackgroundColor
-     * <em>Background Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Background Color</em>' reference.
-     * @see #getBackgroundColor()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#getBackgroundColor <em>Background Color</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Background Color</em>' reference.
+	 * @see #getBackgroundColor()
+	 * @generated
+	 */
     void setBackgroundColor(UserColor value);
 
     /**
@@ -71,36 +67,32 @@ public interface SelectDescriptionStyle extends WidgetDescriptionStyle, LabelSty
     UserColor getForegroundColor();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#getForegroundColor
-     * <em>Foreground Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Foreground Color</em>' reference.
-     * @see #getForegroundColor()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#getForegroundColor <em>Foreground Color</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Foreground Color</em>' reference.
+	 * @see #getForegroundColor()
+	 * @generated
+	 */
     void setForegroundColor(UserColor value);
 
     /**
-     * Returns the value of the '<em><b>Show Icon</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Show Icon</em>' attribute.
-     * @see #setShowIcon(boolean)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getSelectDescriptionStyle_ShowIcon()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Show Icon</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Show Icon</em>' attribute.
+	 * @see #setShowIcon(boolean)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getSelectDescriptionStyle_ShowIcon()
+	 * @model
+	 * @generated
+	 */
     boolean isShowIcon();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#isShowIcon <em>Show
-     * Icon</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Show Icon</em>' attribute.
-     * @see #isShowIcon()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle#isShowIcon <em>Show Icon</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Show Icon</em>' attribute.
+	 * @see #isShowIcon()
+	 * @generated
+	 */
     void setShowIcon(boolean value);
 
 } // SelectDescriptionStyle

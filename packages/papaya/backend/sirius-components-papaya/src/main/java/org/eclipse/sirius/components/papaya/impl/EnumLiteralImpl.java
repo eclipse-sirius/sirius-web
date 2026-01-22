@@ -28,148 +28,144 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.EnumLiteralImpl#getAnnotations <em>Annotations</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.EnumLiteralImpl#getAnnotations <em>Annotations</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
     /**
-     * The cached value of the '{@link #getAnnotations() <em>Annotations</em>}' reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getAnnotations() <em>Annotations</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getAnnotations()
-     * @generated
-     * @ordered
-     */
+	 * @see #getAnnotations()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Annotation> annotations;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EnumLiteralImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.ENUM_LITERAL;
-    }
+		return PapayaPackage.Literals.ENUM_LITERAL;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Annotation> getAnnotations() {
-        if (this.annotations == null) {
-            this.annotations = new EObjectResolvingEList<>(Annotation.class, this, PapayaPackage.ENUM_LITERAL__ANNOTATIONS);
-        }
-        return this.annotations;
-    }
+		if (annotations == null)
+		{
+			annotations = new EObjectResolvingEList<Annotation>(Annotation.class, this, PapayaPackage.ENUM_LITERAL__ANNOTATIONS);
+		}
+		return annotations;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.ENUM_LITERAL__ANNOTATIONS:
-                return this.getAnnotations();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ENUM_LITERAL__ANNOTATIONS:
+				return getAnnotations();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.ENUM_LITERAL__ANNOTATIONS:
-                this.getAnnotations().clear();
-                this.getAnnotations().addAll((Collection<? extends Annotation>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ENUM_LITERAL__ANNOTATIONS:
+				getAnnotations().clear();
+				getAnnotations().addAll((Collection<? extends Annotation>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.ENUM_LITERAL__ANNOTATIONS:
-                this.getAnnotations().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ENUM_LITERAL__ANNOTATIONS:
+				getAnnotations().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.ENUM_LITERAL__ANNOTATIONS:
-                return this.annotations != null && !this.annotations.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ENUM_LITERAL__ANNOTATIONS:
+				return annotations != null && !annotations.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == AnnotableElement.class) {
-            switch (derivedFeatureID) {
-                case PapayaPackage.ENUM_LITERAL__ANNOTATIONS:
-                    return PapayaPackage.ANNOTABLE_ELEMENT__ANNOTATIONS;
-                default:
-                    return -1;
-            }
-        }
-        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-    }
+		if (baseClass == AnnotableElement.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case PapayaPackage.ENUM_LITERAL__ANNOTATIONS: return PapayaPackage.ANNOTABLE_ELEMENT__ANNOTATIONS;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == AnnotableElement.class) {
-            switch (baseFeatureID) {
-                case PapayaPackage.ANNOTABLE_ELEMENT__ANNOTATIONS:
-                    return PapayaPackage.ENUM_LITERAL__ANNOTATIONS;
-                default:
-                    return -1;
-            }
-        }
-        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-    }
+		if (baseClass == AnnotableElement.class)
+		{
+			switch (baseFeatureID)
+			{
+				case PapayaPackage.ANNOTABLE_ELEMENT__ANNOTATIONS: return PapayaPackage.ENUM_LITERAL__ANNOTATIONS;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
 
 } // EnumLiteralImpl

@@ -35,54 +35,63 @@ import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription} object. <!-- begin-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription} object.
+ * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
- *
  * @generated
  */
 public class FreeFormLayoutStrategyDescriptionItemProvider extends ItemProviderAdapter
         implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public FreeFormLayoutStrategyDescriptionItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addOnWestAtCreationBorderNodesPropertyDescriptor(object);
-            this.addOnEastAtCreationBorderNodesPropertyDescriptor(object);
-            this.addOnSouthAtCreationBorderNodesPropertyDescriptor(object);
-            this.addOnNorthAtCreationBorderNodesPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addOnWestAtCreationBorderNodesPropertyDescriptor(object);
+			addOnEastAtCreationBorderNodesPropertyDescriptor(object);
+			addOnSouthAtCreationBorderNodesPropertyDescriptor(object);
+			addOnNorthAtCreationBorderNodesPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the On West At Creation Border Nodes feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the On West At Creation Border Nodes feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addOnWestAtCreationBorderNodesPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LayoutStrategyDescription_onWestAtCreationBorderNodes_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LayoutStrategyDescription_onWestAtCreationBorderNodes_feature", "_UI_LayoutStrategyDescription_type"),
-                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES, true, false, true, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_LayoutStrategyDescription_onWestAtCreationBorderNodes_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_LayoutStrategyDescription_onWestAtCreationBorderNodes_feature", "_UI_LayoutStrategyDescription_type"),
+				 DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
 
     @Override
     protected ItemPropertyDescriptor createItemPropertyDescriptor(AdapterFactory adapterFactory, ResourceLocator resourceLocator, String displayName, String description, EStructuralFeature feature,
@@ -107,43 +116,70 @@ public class FreeFormLayoutStrategyDescriptionItemProvider extends ItemProviderA
     }
 
     /**
-     * This adds a property descriptor for the On East At Creation Border Nodes feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the On East At Creation Border Nodes feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addOnEastAtCreationBorderNodesPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LayoutStrategyDescription_onEastAtCreationBorderNodes_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LayoutStrategyDescription_onEastAtCreationBorderNodes_feature", "_UI_LayoutStrategyDescription_type"),
-                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES, true, false, true, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_LayoutStrategyDescription_onEastAtCreationBorderNodes_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_LayoutStrategyDescription_onEastAtCreationBorderNodes_feature", "_UI_LayoutStrategyDescription_type"),
+				 DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the On South At Creation Border Nodes feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the On South At Creation Border Nodes feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addOnSouthAtCreationBorderNodesPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LayoutStrategyDescription_onSouthAtCreationBorderNodes_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LayoutStrategyDescription_onSouthAtCreationBorderNodes_feature", "_UI_LayoutStrategyDescription_type"),
-                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES, true, false, true, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_LayoutStrategyDescription_onSouthAtCreationBorderNodes_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_LayoutStrategyDescription_onSouthAtCreationBorderNodes_feature", "_UI_LayoutStrategyDescription_type"),
+				 DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the On North At Creation Border Nodes feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the On North At Creation Border Nodes feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addOnNorthAtCreationBorderNodesPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LayoutStrategyDescription_onNorthAtCreationBorderNodes_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_LayoutStrategyDescription_onNorthAtCreationBorderNodes_feature", "_UI_LayoutStrategyDescription_type"),
-                DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES, true, false, true, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_LayoutStrategyDescription_onNorthAtCreationBorderNodes_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_LayoutStrategyDescription_onNorthAtCreationBorderNodes_feature", "_UI_LayoutStrategyDescription_type"),
+				 DiagramPackage.Literals.LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
      * This returns FreeFormLayoutStrategyDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -156,24 +192,23 @@ public class FreeFormLayoutStrategyDescriptionItemProvider extends ItemProviderA
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_FreeFormLayoutStrategyDescription_type");
-    }
+		return getString("_UI_FreeFormLayoutStrategyDescription_type");
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -184,29 +219,29 @@ public class FreeFormLayoutStrategyDescriptionItemProvider extends ItemProviderA
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
-        super.notifyChanged(notification);
-    }
+		updateChildren(notification);
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
     /**
-     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Return the resource locator for this item provider's resources.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
-    }
+		return ((IChildCreationExtender)adapterFactory).getResourceLocator();
+	}
 
 }

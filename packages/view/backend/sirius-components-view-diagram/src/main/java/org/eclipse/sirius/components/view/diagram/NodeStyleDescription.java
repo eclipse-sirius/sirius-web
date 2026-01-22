@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,7 @@ package org.eclipse.sirius.components.view.diagram;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getChildrenLayoutStrategy <em>Children
- * Layout Strategy</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getChildrenLayoutStrategy <em>Children Layout Strategy</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription()
@@ -31,27 +30,24 @@ package org.eclipse.sirius.components.view.diagram;
 public interface NodeStyleDescription extends BorderStyle {
 
     /**
-     * Returns the value of the '<em><b>Children Layout Strategy</b></em>' containment reference. <!-- begin-user-doc
+	 * Returns the value of the '<em><b>Children Layout Strategy</b></em>' containment reference.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Children Layout Strategy</em>' containment reference.
-     * @see #setChildrenLayoutStrategy(LayoutStrategyDescription)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription_ChildrenLayoutStrategy()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Children Layout Strategy</em>' containment reference.
+	 * @see #setChildrenLayoutStrategy(LayoutStrategyDescription)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeStyleDescription_ChildrenLayoutStrategy()
+	 * @model containment="true"
+	 * @generated
+	 */
     LayoutStrategyDescription getChildrenLayoutStrategy();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getChildrenLayoutStrategy <em>Children
-     * Layout Strategy</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Children Layout Strategy</em>' containment reference.
-     * @see #getChildrenLayoutStrategy()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.NodeStyleDescription#getChildrenLayoutStrategy <em>Children Layout Strategy</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Children Layout Strategy</em>' containment reference.
+	 * @see #getChildrenLayoutStrategy()
+	 * @generated
+	 */
     void setChildrenLayoutStrategy(LayoutStrategyDescription value);
 
 } // NodeStyleDescription

@@ -33,14 +33,11 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getTooltipExpression <em>Tooltip
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getIconURLsExpression <em>Icon UR Ls
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getPreconditionExpression <em>Precondition
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getTooltipExpression <em>Tooltip Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getIconURLsExpression <em>Icon UR Ls Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getPreconditionExpression <em>Precondition Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.ActionImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
@@ -127,274 +124,262 @@ public class ActionImpl extends MinimalEObjectImpl.Container implements Action {
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getBody()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Operation> body;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ActionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.ACTION;
-    }
+		return DiagramPackage.Literals.ACTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+		return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ACTION__NAME, oldName, this.name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ACTION__NAME, oldName, name));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getTooltipExpression() {
-        return this.tooltipExpression;
-    }
+		return tooltipExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setTooltipExpression(String newTooltipExpression) {
-        String oldTooltipExpression = this.tooltipExpression;
-        this.tooltipExpression = newTooltipExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ACTION__TOOLTIP_EXPRESSION, oldTooltipExpression, this.tooltipExpression));
-    }
+		String oldTooltipExpression = tooltipExpression;
+		tooltipExpression = newTooltipExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ACTION__TOOLTIP_EXPRESSION, oldTooltipExpression, tooltipExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIconURLsExpression() {
-        return this.iconURLsExpression;
-    }
+		return iconURLsExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIconURLsExpression(String newIconURLsExpression) {
-        String oldIconURLsExpression = this.iconURLsExpression;
-        this.iconURLsExpression = newIconURLsExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION, oldIconURLsExpression, this.iconURLsExpression));
-    }
+		String oldIconURLsExpression = iconURLsExpression;
+		iconURLsExpression = newIconURLsExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION, oldIconURLsExpression, iconURLsExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getPreconditionExpression() {
-        return this.preconditionExpression;
-    }
+		return preconditionExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setPreconditionExpression(String newPreconditionExpression) {
-        String oldPreconditionExpression = this.preconditionExpression;
-        this.preconditionExpression = newPreconditionExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ACTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
-    }
+		String oldPreconditionExpression = preconditionExpression;
+		preconditionExpression = newPreconditionExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.ACTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, preconditionExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Operation> getBody() {
-        if (this.body == null) {
-            this.body = new EObjectContainmentEList<>(Operation.class, this, DiagramPackage.ACTION__BODY);
-        }
-        return this.body;
-    }
+		if (body == null)
+		{
+			body = new EObjectContainmentEList<Operation>(Operation.class, this, DiagramPackage.ACTION__BODY);
+		}
+		return body;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case DiagramPackage.ACTION__BODY:
-                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.ACTION__BODY:
+				return ((InternalEList<?>)getBody()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.ACTION__NAME:
-                return this.getName();
-            case DiagramPackage.ACTION__TOOLTIP_EXPRESSION:
-                return this.getTooltipExpression();
-            case DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION:
-                return this.getIconURLsExpression();
-            case DiagramPackage.ACTION__PRECONDITION_EXPRESSION:
-                return this.getPreconditionExpression();
-            case DiagramPackage.ACTION__BODY:
-                return this.getBody();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.ACTION__NAME:
+				return getName();
+			case DiagramPackage.ACTION__TOOLTIP_EXPRESSION:
+				return getTooltipExpression();
+			case DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION:
+				return getIconURLsExpression();
+			case DiagramPackage.ACTION__PRECONDITION_EXPRESSION:
+				return getPreconditionExpression();
+			case DiagramPackage.ACTION__BODY:
+				return getBody();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.ACTION__NAME:
-                this.setName((String) newValue);
-                return;
-            case DiagramPackage.ACTION__TOOLTIP_EXPRESSION:
-                this.setTooltipExpression((String) newValue);
-                return;
-            case DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION:
-                this.setIconURLsExpression((String) newValue);
-                return;
-            case DiagramPackage.ACTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression((String) newValue);
-                return;
-            case DiagramPackage.ACTION__BODY:
-                this.getBody().clear();
-                this.getBody().addAll((Collection<? extends Operation>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.ACTION__NAME:
+				setName((String)newValue);
+				return;
+			case DiagramPackage.ACTION__TOOLTIP_EXPRESSION:
+				setTooltipExpression((String)newValue);
+				return;
+			case DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION:
+				setIconURLsExpression((String)newValue);
+				return;
+			case DiagramPackage.ACTION__PRECONDITION_EXPRESSION:
+				setPreconditionExpression((String)newValue);
+				return;
+			case DiagramPackage.ACTION__BODY:
+				getBody().clear();
+				getBody().addAll((Collection<? extends Operation>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.ACTION__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
-            case DiagramPackage.ACTION__TOOLTIP_EXPRESSION:
-                this.setTooltipExpression(TOOLTIP_EXPRESSION_EDEFAULT);
-                return;
-            case DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION:
-                this.setIconURLsExpression(ICON_UR_LS_EXPRESSION_EDEFAULT);
-                return;
-            case DiagramPackage.ACTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
-                return;
-            case DiagramPackage.ACTION__BODY:
-                this.getBody().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.ACTION__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case DiagramPackage.ACTION__TOOLTIP_EXPRESSION:
+				setTooltipExpression(TOOLTIP_EXPRESSION_EDEFAULT);
+				return;
+			case DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION:
+				setIconURLsExpression(ICON_UR_LS_EXPRESSION_EDEFAULT);
+				return;
+			case DiagramPackage.ACTION__PRECONDITION_EXPRESSION:
+				setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+				return;
+			case DiagramPackage.ACTION__BODY:
+				getBody().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.ACTION__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case DiagramPackage.ACTION__TOOLTIP_EXPRESSION:
-                return TOOLTIP_EXPRESSION_EDEFAULT == null ? this.tooltipExpression != null : !TOOLTIP_EXPRESSION_EDEFAULT.equals(this.tooltipExpression);
-            case DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION:
-                return ICON_UR_LS_EXPRESSION_EDEFAULT == null ? this.iconURLsExpression != null : !ICON_UR_LS_EXPRESSION_EDEFAULT.equals(this.iconURLsExpression);
-            case DiagramPackage.ACTION__PRECONDITION_EXPRESSION:
-                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
-            case DiagramPackage.ACTION__BODY:
-                return this.body != null && !this.body.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.ACTION__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case DiagramPackage.ACTION__TOOLTIP_EXPRESSION:
+				return TOOLTIP_EXPRESSION_EDEFAULT == null ? tooltipExpression != null : !TOOLTIP_EXPRESSION_EDEFAULT.equals(tooltipExpression);
+			case DiagramPackage.ACTION__ICON_UR_LS_EXPRESSION:
+				return ICON_UR_LS_EXPRESSION_EDEFAULT == null ? iconURLsExpression != null : !ICON_UR_LS_EXPRESSION_EDEFAULT.equals(iconURLsExpression);
+			case DiagramPackage.ACTION__PRECONDITION_EXPRESSION:
+				return PRECONDITION_EXPRESSION_EDEFAULT == null ? preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(preconditionExpression);
+			case DiagramPackage.ACTION__BODY:
+				return body != null && !body.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(", tooltipExpression: ");
-        result.append(this.tooltipExpression);
-        result.append(", iconURLsExpression: ");
-        result.append(this.iconURLsExpression);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", tooltipExpression: ");
+		result.append(tooltipExpression);
+		result.append(", iconURLsExpression: ");
+		result.append(iconURLsExpression);
+		result.append(", preconditionExpression: ");
+		result.append(preconditionExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ActionImpl

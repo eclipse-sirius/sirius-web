@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,17 +22,13 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getValuesExpression <em>Values
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getKeysExpression <em>Keys
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getYAxisLabelExpression <em>YAxis Label
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getStyle <em>Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getConditionalStyles <em>Conditional
- * Styles</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getWidth <em>Width</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getHeight <em>Height</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getValuesExpression <em>Values Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getKeysExpression <em>Keys Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getYAxisLabelExpression <em>YAxis Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getConditionalStyles <em>Conditional Styles</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getWidth <em>Width</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.BarChartDescription#getHeight <em>Height</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getBarChartDescription()
@@ -53,14 +49,12 @@ public interface BarChartDescription extends WidgetDescription {
     String getValuesExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getValuesExpression
-     * <em>Values Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Values Expression</em>' attribute.
-     * @see #getValuesExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getValuesExpression <em>Values Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Values Expression</em>' attribute.
+	 * @see #getValuesExpression()
+	 * @generated
+	 */
     void setValuesExpression(String value);
 
     /**
@@ -76,37 +70,33 @@ public interface BarChartDescription extends WidgetDescription {
     String getKeysExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getKeysExpression
-     * <em>Keys Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Keys Expression</em>' attribute.
-     * @see #getKeysExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getKeysExpression <em>Keys Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Keys Expression</em>' attribute.
+	 * @see #getKeysExpression()
+	 * @generated
+	 */
     void setKeysExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>YAxis Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>YAxis Label Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>YAxis Label Expression</em>' attribute.
-     * @see #setYAxisLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getBarChartDescription_YAxisLabelExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>YAxis Label Expression</em>' attribute.
+	 * @see #setYAxisLabelExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getBarChartDescription_YAxisLabelExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getYAxisLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getYAxisLabelExpression
-     * <em>YAxis Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>YAxis Label Expression</em>' attribute.
-     * @see #getYAxisLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getYAxisLabelExpression <em>YAxis Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>YAxis Label Expression</em>' attribute.
+	 * @see #getYAxisLabelExpression()
+	 * @generated
+	 */
     void setYAxisLabelExpression(String value);
 
     /**
@@ -122,26 +112,24 @@ public interface BarChartDescription extends WidgetDescription {
     BarChartDescriptionStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getStyle
-     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getStyle <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Style</em>' containment reference.
+	 * @see #getStyle()
+	 * @generated
+	 */
     void setStyle(BarChartDescriptionStyle value);
 
     /**
-     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle}. <!-- begin-user-doc
+	 * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.form.ConditionalBarChartDescriptionStyle}.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getBarChartDescription_ConditionalStyles()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getBarChartDescription_ConditionalStyles()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<ConditionalBarChartDescriptionStyle> getConditionalStyles();
 
     /**
@@ -157,14 +145,12 @@ public interface BarChartDescription extends WidgetDescription {
     int getWidth();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getWidth
-     * <em>Width</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Width</em>' attribute.
-     * @see #getWidth()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getWidth <em>Width</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Width</em>' attribute.
+	 * @see #getWidth()
+	 * @generated
+	 */
     void setWidth(int value);
 
     /**
@@ -180,14 +166,12 @@ public interface BarChartDescription extends WidgetDescription {
     int getHeight();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getHeight
-     * <em>Height</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Height</em>' attribute.
-     * @see #getHeight()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.BarChartDescription#getHeight <em>Height</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Height</em>' attribute.
+	 * @see #getHeight()
+	 * @generated
+	 */
     void setHeight(int value);
 
 } // BarChartDescription

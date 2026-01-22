@@ -31,180 +31,178 @@ import org.eclipse.sirius.components.papaya.Subscription;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.QueryImpl#getEmittedBy <em>Emitted By</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.QueryImpl#getListenedBy <em>Listened By</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.QueryImpl#getEmittedBy <em>Emitted By</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.QueryImpl#getListenedBy <em>Listened By</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class QueryImpl extends NamedElementImpl implements Query {
     /**
-     * The cached value of the '{@link #getEmittedBy() <em>Emitted By</em>}' reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getEmittedBy() <em>Emitted By</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getEmittedBy()
-     * @generated
-     * @ordered
-     */
+	 * @see #getEmittedBy()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Publication> emittedBy;
 
     /**
-     * The cached value of the '{@link #getListenedBy() <em>Listened By</em>}' reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getListenedBy() <em>Listened By</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getListenedBy()
-     * @generated
-     * @ordered
-     */
+	 * @see #getListenedBy()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Subscription> listenedBy;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected QueryImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.QUERY;
-    }
+		return PapayaPackage.Literals.QUERY;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Publication> getEmittedBy() {
-        if (this.emittedBy == null) {
-            this.emittedBy = new EObjectWithInverseResolvingEList<>(Publication.class, this, PapayaPackage.QUERY__EMITTED_BY, PapayaPackage.PUBLICATION__MESSAGE);
-        }
-        return this.emittedBy;
-    }
+		if (emittedBy == null)
+		{
+			emittedBy = new EObjectWithInverseResolvingEList<Publication>(Publication.class, this, PapayaPackage.QUERY__EMITTED_BY, PapayaPackage.PUBLICATION__MESSAGE);
+		}
+		return emittedBy;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Subscription> getListenedBy() {
-        if (this.listenedBy == null) {
-            this.listenedBy = new EObjectWithInverseResolvingEList<>(Subscription.class, this, PapayaPackage.QUERY__LISTENED_BY, PapayaPackage.SUBSCRIPTION__MESSAGE);
-        }
-        return this.listenedBy;
-    }
+		if (listenedBy == null)
+		{
+			listenedBy = new EObjectWithInverseResolvingEList<Subscription>(Subscription.class, this, PapayaPackage.QUERY__LISTENED_BY, PapayaPackage.SUBSCRIPTION__MESSAGE);
+		}
+		return listenedBy;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PapayaPackage.QUERY__EMITTED_BY:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getEmittedBy()).basicAdd(otherEnd, msgs);
-            case PapayaPackage.QUERY__LISTENED_BY:
-                return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getListenedBy()).basicAdd(otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.QUERY__EMITTED_BY:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getEmittedBy()).basicAdd(otherEnd, msgs);
+			case PapayaPackage.QUERY__LISTENED_BY:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getListenedBy()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PapayaPackage.QUERY__EMITTED_BY:
-                return ((InternalEList<?>) this.getEmittedBy()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.QUERY__LISTENED_BY:
-                return ((InternalEList<?>) this.getListenedBy()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.QUERY__EMITTED_BY:
+				return ((InternalEList<?>)getEmittedBy()).basicRemove(otherEnd, msgs);
+			case PapayaPackage.QUERY__LISTENED_BY:
+				return ((InternalEList<?>)getListenedBy()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.QUERY__EMITTED_BY:
-                return this.getEmittedBy();
-            case PapayaPackage.QUERY__LISTENED_BY:
-                return this.getListenedBy();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.QUERY__EMITTED_BY:
+				return getEmittedBy();
+			case PapayaPackage.QUERY__LISTENED_BY:
+				return getListenedBy();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.QUERY__EMITTED_BY:
-                this.getEmittedBy().clear();
-                this.getEmittedBy().addAll((Collection<? extends Publication>) newValue);
-                return;
-            case PapayaPackage.QUERY__LISTENED_BY:
-                this.getListenedBy().clear();
-                this.getListenedBy().addAll((Collection<? extends Subscription>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.QUERY__EMITTED_BY:
+				getEmittedBy().clear();
+				getEmittedBy().addAll((Collection<? extends Publication>)newValue);
+				return;
+			case PapayaPackage.QUERY__LISTENED_BY:
+				getListenedBy().clear();
+				getListenedBy().addAll((Collection<? extends Subscription>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.QUERY__EMITTED_BY:
-                this.getEmittedBy().clear();
-                return;
-            case PapayaPackage.QUERY__LISTENED_BY:
-                this.getListenedBy().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.QUERY__EMITTED_BY:
+				getEmittedBy().clear();
+				return;
+			case PapayaPackage.QUERY__LISTENED_BY:
+				getListenedBy().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.QUERY__EMITTED_BY:
-                return this.emittedBy != null && !this.emittedBy.isEmpty();
-            case PapayaPackage.QUERY__LISTENED_BY:
-                return this.listenedBy != null && !this.listenedBy.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.QUERY__EMITTED_BY:
+				return emittedBy != null && !emittedBy.isEmpty();
+			case PapayaPackage.QUERY__LISTENED_BY:
+				return listenedBy != null && !listenedBy.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // QueryImpl

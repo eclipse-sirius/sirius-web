@@ -28,16 +28,11 @@ import org.eclipse.sirius.components.view.impl.OperationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getParentViewExpression <em>Parent View
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getElementDescription <em>Element
- * Description</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getSemanticElementExpression <em>Semantic
- * Element Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getVariableName <em>Variable
- * Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getContainmentKind <em>Containment
- * Kind</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getParentViewExpression <em>Parent View Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getElementDescription <em>Element Description</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getSemanticElementExpression <em>Semantic Element Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getVariableName <em>Variable Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.CreateViewImpl#getContainmentKind <em>Containment Kind</em>}</li>
  * </ul>
  *
  * @generated
@@ -74,337 +69,321 @@ public class CreateViewImpl extends OperationImpl implements CreateView {
     protected DiagramElementDescription elementDescription;
 
     /**
-     * The default value of the '{@link #getSemanticElementExpression() <em>Semantic Element Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSemanticElementExpression()
-     * @generated
-     * @ordered
-     */
+	 * The default value of the '{@link #getSemanticElementExpression() <em>Semantic Element Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getSemanticElementExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT = "aql:self";
 
     /**
-     * The cached value of the '{@link #getSemanticElementExpression() <em>Semantic Element Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSemanticElementExpression()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getSemanticElementExpression() <em>Semantic Element Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getSemanticElementExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String semanticElementExpression = SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getVariableName() <em>Variable Name</em>}' attribute. <!-- begin-user-doc -->
+	 * The default value of the '{@link #getVariableName() <em>Variable Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getVariableName()
-     * @generated
-     * @ordered
-     */
+	 * @see #getVariableName()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String VARIABLE_NAME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getVariableName() <em>Variable Name</em>}' attribute. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getVariableName() <em>Variable Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getVariableName()
-     * @generated
-     * @ordered
-     */
+	 * @see #getVariableName()
+	 * @generated
+	 * @ordered
+	 */
     protected String variableName = VARIABLE_NAME_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getContainmentKind() <em>Containment Kind</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getContainmentKind() <em>Containment Kind</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getContainmentKind()
-     * @generated
-     * @ordered
-     */
+	 * @see #getContainmentKind()
+	 * @generated
+	 * @ordered
+	 */
     protected static final NodeContainmentKind CONTAINMENT_KIND_EDEFAULT = NodeContainmentKind.CHILD_NODE;
 
     /**
-     * The cached value of the '{@link #getContainmentKind() <em>Containment Kind</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getContainmentKind() <em>Containment Kind</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getContainmentKind()
-     * @generated
-     * @ordered
-     */
+	 * @see #getContainmentKind()
+	 * @generated
+	 * @ordered
+	 */
     protected NodeContainmentKind containmentKind = CONTAINMENT_KIND_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CreateViewImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.CREATE_VIEW;
-    }
+		return DiagramPackage.Literals.CREATE_VIEW;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getParentViewExpression() {
-        return this.parentViewExpression;
-    }
+		return parentViewExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setParentViewExpression(String newParentViewExpression) {
-        String oldParentViewExpression = this.parentViewExpression;
-        this.parentViewExpression = newParentViewExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION, oldParentViewExpression, this.parentViewExpression));
-    }
+		String oldParentViewExpression = parentViewExpression;
+		parentViewExpression = newParentViewExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION, oldParentViewExpression, parentViewExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public DiagramElementDescription getElementDescription() {
-        if (this.elementDescription != null && this.elementDescription.eIsProxy()) {
-            InternalEObject oldElementDescription = (InternalEObject) this.elementDescription;
-            this.elementDescription = (DiagramElementDescription) this.eResolveProxy(oldElementDescription);
-            if (this.elementDescription != oldElementDescription) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION, oldElementDescription, this.elementDescription));
-            }
-        }
-        return this.elementDescription;
-    }
+		if (elementDescription != null && elementDescription.eIsProxy())
+		{
+			InternalEObject oldElementDescription = (InternalEObject)elementDescription;
+			elementDescription = (DiagramElementDescription)eResolveProxy(oldElementDescription);
+			if (elementDescription != oldElementDescription)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION, oldElementDescription, elementDescription));
+			}
+		}
+		return elementDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public DiagramElementDescription basicGetElementDescription() {
-        return this.elementDescription;
-    }
+		return elementDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setElementDescription(DiagramElementDescription newElementDescription) {
-        DiagramElementDescription oldElementDescription = this.elementDescription;
-        this.elementDescription = newElementDescription;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION, oldElementDescription, this.elementDescription));
-    }
+		DiagramElementDescription oldElementDescription = elementDescription;
+		elementDescription = newElementDescription;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION, oldElementDescription, elementDescription));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getSemanticElementExpression() {
-        return this.semanticElementExpression;
-    }
+		return semanticElementExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setSemanticElementExpression(String newSemanticElementExpression) {
-        String oldSemanticElementExpression = this.semanticElementExpression;
-        this.semanticElementExpression = newSemanticElementExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION, oldSemanticElementExpression, this.semanticElementExpression));
-    }
+		String oldSemanticElementExpression = semanticElementExpression;
+		semanticElementExpression = newSemanticElementExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION, oldSemanticElementExpression, semanticElementExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getVariableName() {
-        return this.variableName;
-    }
+		return variableName;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setVariableName(String newVariableName) {
-        String oldVariableName = this.variableName;
-        this.variableName = newVariableName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__VARIABLE_NAME, oldVariableName, this.variableName));
-    }
+		String oldVariableName = variableName;
+		variableName = newVariableName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__VARIABLE_NAME, oldVariableName, variableName));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NodeContainmentKind getContainmentKind() {
-        return this.containmentKind;
-    }
+		return containmentKind;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setContainmentKind(NodeContainmentKind newContainmentKind) {
-        NodeContainmentKind oldContainmentKind = this.containmentKind;
-        this.containmentKind = newContainmentKind == null ? CONTAINMENT_KIND_EDEFAULT : newContainmentKind;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND, oldContainmentKind, this.containmentKind));
-    }
+		NodeContainmentKind oldContainmentKind = containmentKind;
+		containmentKind = newContainmentKind == null ? CONTAINMENT_KIND_EDEFAULT : newContainmentKind;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND, oldContainmentKind, containmentKind));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-                return this.getParentViewExpression();
-            case DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
-                if (resolve)
-                    return this.getElementDescription();
-                return this.basicGetElementDescription();
-            case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-                return this.getSemanticElementExpression();
-            case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
-                return this.getVariableName();
-            case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
-                return this.getContainmentKind();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+				return getParentViewExpression();
+			case DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
+				if (resolve) return getElementDescription();
+				return basicGetElementDescription();
+			case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+				return getSemanticElementExpression();
+			case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
+				return getVariableName();
+			case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
+				return getContainmentKind();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-                this.setParentViewExpression((String) newValue);
-                return;
-            case DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
-                this.setElementDescription((DiagramElementDescription) newValue);
-                return;
-            case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-                this.setSemanticElementExpression((String) newValue);
-                return;
-            case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
-                this.setVariableName((String) newValue);
-                return;
-            case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
-                this.setContainmentKind((NodeContainmentKind) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+				setParentViewExpression((String)newValue);
+				return;
+			case DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
+				setElementDescription((DiagramElementDescription)newValue);
+				return;
+			case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+				setSemanticElementExpression((String)newValue);
+				return;
+			case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
+				setVariableName((String)newValue);
+				return;
+			case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
+				setContainmentKind((NodeContainmentKind)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-                this.setParentViewExpression(PARENT_VIEW_EXPRESSION_EDEFAULT);
-                return;
-            case DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
-                this.setElementDescription((DiagramElementDescription) null);
-                return;
-            case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-                this.setSemanticElementExpression(SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT);
-                return;
-            case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
-                this.setVariableName(VARIABLE_NAME_EDEFAULT);
-                return;
-            case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
-                this.setContainmentKind(CONTAINMENT_KIND_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+				setParentViewExpression(PARENT_VIEW_EXPRESSION_EDEFAULT);
+				return;
+			case DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
+				setElementDescription((DiagramElementDescription)null);
+				return;
+			case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+				setSemanticElementExpression(SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT);
+				return;
+			case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
+				setVariableName(VARIABLE_NAME_EDEFAULT);
+				return;
+			case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
+				setContainmentKind(CONTAINMENT_KIND_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-                return PARENT_VIEW_EXPRESSION_EDEFAULT == null ? this.parentViewExpression != null : !PARENT_VIEW_EXPRESSION_EDEFAULT.equals(this.parentViewExpression);
-            case DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
-                return this.elementDescription != null;
-            case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-                return SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT == null ? this.semanticElementExpression != null : !SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT.equals(this.semanticElementExpression);
-            case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
-                return VARIABLE_NAME_EDEFAULT == null ? this.variableName != null : !VARIABLE_NAME_EDEFAULT.equals(this.variableName);
-            case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
-                return this.containmentKind != CONTAINMENT_KIND_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+				return PARENT_VIEW_EXPRESSION_EDEFAULT == null ? parentViewExpression != null : !PARENT_VIEW_EXPRESSION_EDEFAULT.equals(parentViewExpression);
+			case DiagramPackage.CREATE_VIEW__ELEMENT_DESCRIPTION:
+				return elementDescription != null;
+			case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+				return SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT == null ? semanticElementExpression != null : !SEMANTIC_ELEMENT_EXPRESSION_EDEFAULT.equals(semanticElementExpression);
+			case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
+				return VARIABLE_NAME_EDEFAULT == null ? variableName != null : !VARIABLE_NAME_EDEFAULT.equals(variableName);
+			case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
+				return containmentKind != CONTAINMENT_KIND_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (parentViewExpression: ");
-        result.append(this.parentViewExpression);
-        result.append(", semanticElementExpression: ");
-        result.append(this.semanticElementExpression);
-        result.append(", variableName: ");
-        result.append(this.variableName);
-        result.append(", containmentKind: ");
-        result.append(this.containmentKind);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (parentViewExpression: ");
+		result.append(parentViewExpression);
+		result.append(", semanticElementExpression: ");
+		result.append(semanticElementExpression);
+		result.append(", variableName: ");
+		result.append(variableName);
+		result.append(", containmentKind: ");
+		result.append(containmentKind);
+		result.append(')');
+		return result.toString();
+	}
 
 } // CreateViewImpl

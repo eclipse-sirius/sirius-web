@@ -36,15 +36,12 @@ import org.eclipse.sirius.components.view.form.FormPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getStringValueExpression <em>String
- * Value Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getBody <em>Body</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getIsEnabledExpression <em>Is Enabled
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getStyle <em>Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getConditionalStyles <em>Conditional
- * Styles</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getType <em>Type</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getStringValueExpression <em>String Value Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getIsEnabledExpression <em>Is Enabled Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getConditionalStyles <em>Conditional Styles</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.DateTimeDescriptionImpl#getType <em>Type</em>}</li>
  * </ul>
  *
  * @generated
@@ -71,13 +68,13 @@ public class DateTimeDescriptionImpl extends WidgetDescriptionImpl implements Da
     protected String stringValueExpression = STRING_VALUE_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getBody()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Operation> body;
 
     /**
@@ -101,23 +98,22 @@ public class DateTimeDescriptionImpl extends WidgetDescriptionImpl implements Da
     protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getStyle()
-     * @generated
-     * @ordered
-     */
+	 * @see #getStyle()
+	 * @generated
+	 * @ordered
+	 */
     protected DateTimeDescriptionStyle style;
 
     /**
-     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getConditionalStyles()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getConditionalStyles()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<ConditionalDateTimeDescriptionStyle> conditionalStyles;
 
     /**
@@ -141,316 +137,301 @@ public class DateTimeDescriptionImpl extends WidgetDescriptionImpl implements Da
     protected DateTimeType type = TYPE_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DateTimeDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.DATE_TIME_DESCRIPTION;
-    }
+		return FormPackage.Literals.DATE_TIME_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getStringValueExpression() {
-        return this.stringValueExpression;
-    }
+		return stringValueExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setStringValueExpression(String newStringValueExpression) {
-        String oldStringValueExpression = this.stringValueExpression;
-        this.stringValueExpression = newStringValueExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION, oldStringValueExpression, this.stringValueExpression));
-    }
+		String oldStringValueExpression = stringValueExpression;
+		stringValueExpression = newStringValueExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION, oldStringValueExpression, stringValueExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Operation> getBody() {
-        if (this.body == null) {
-            this.body = new EObjectContainmentEList<>(Operation.class, this, FormPackage.DATE_TIME_DESCRIPTION__BODY);
-        }
-        return this.body;
-    }
+		if (body == null)
+		{
+			body = new EObjectContainmentEList<Operation>(Operation.class, this, FormPackage.DATE_TIME_DESCRIPTION__BODY);
+		}
+		return body;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIsEnabledExpression() {
-        return this.isEnabledExpression;
-    }
+		return isEnabledExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIsEnabledExpression(String newIsEnabledExpression) {
-        String oldIsEnabledExpression = this.isEnabledExpression;
-        this.isEnabledExpression = newIsEnabledExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, this.isEnabledExpression));
-    }
+		String oldIsEnabledExpression = isEnabledExpression;
+		isEnabledExpression = newIsEnabledExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, isEnabledExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public DateTimeDescriptionStyle getStyle() {
-        return this.style;
-    }
+		return style;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public NotificationChain basicSetStyle(DateTimeDescriptionStyle newStyle, NotificationChain msgs) {
-        DateTimeDescriptionStyle oldStyle = this.style;
-        this.style = newStyle;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__STYLE, oldStyle, newStyle);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
+		DateTimeDescriptionStyle oldStyle = style;
+		style = newStyle;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__STYLE, oldStyle, newStyle);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setStyle(DateTimeDescriptionStyle newStyle) {
-        if (newStyle != this.style) {
-            NotificationChain msgs = null;
-            if (this.style != null)
-                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - FormPackage.DATE_TIME_DESCRIPTION__STYLE, null, msgs);
-            if (newStyle != null)
-                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - FormPackage.DATE_TIME_DESCRIPTION__STYLE, null, msgs);
-            msgs = this.basicSetStyle(newStyle, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__STYLE, newStyle, newStyle));
-    }
+		if (newStyle != style)
+		{
+			NotificationChain msgs = null;
+			if (style != null)
+				msgs = ((InternalEObject)style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - FormPackage.DATE_TIME_DESCRIPTION__STYLE, null, msgs);
+			if (newStyle != null)
+				msgs = ((InternalEObject)newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - FormPackage.DATE_TIME_DESCRIPTION__STYLE, null, msgs);
+			msgs = basicSetStyle(newStyle, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__STYLE, newStyle, newStyle));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<ConditionalDateTimeDescriptionStyle> getConditionalStyles() {
-        if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalDateTimeDescriptionStyle.class, this,
-                    FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES);
-        }
-        return this.conditionalStyles;
-    }
+		if (conditionalStyles == null)
+		{
+			conditionalStyles = new EObjectContainmentEList<ConditionalDateTimeDescriptionStyle>(ConditionalDateTimeDescriptionStyle.class, this, FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES);
+		}
+		return conditionalStyles;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public DateTimeType getType() {
-        return this.type;
-    }
+		return type;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setType(DateTimeType newType) {
-        DateTimeType oldType = this.type;
-        this.type = newType == null ? TYPE_EDEFAULT : newType;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__TYPE, oldType, this.type));
-    }
+		DateTimeType oldType = type;
+		type = newType == null ? TYPE_EDEFAULT : newType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.DATE_TIME_DESCRIPTION__TYPE, oldType, type));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case FormPackage.DATE_TIME_DESCRIPTION__BODY:
-                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-            case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
-                return this.basicSetStyle(null, msgs);
-            case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
-                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case FormPackage.DATE_TIME_DESCRIPTION__BODY:
+				return ((InternalEList<?>)getBody()).basicRemove(otherEnd, msgs);
+			case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
+				return basicSetStyle(null, msgs);
+			case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
+				return ((InternalEList<?>)getConditionalStyles()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION:
-                return this.getStringValueExpression();
-            case FormPackage.DATE_TIME_DESCRIPTION__BODY:
-                return this.getBody();
-            case FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return this.getIsEnabledExpression();
-            case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
-                return this.getStyle();
-            case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
-                return this.getConditionalStyles();
-            case FormPackage.DATE_TIME_DESCRIPTION__TYPE:
-                return this.getType();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION:
+				return getStringValueExpression();
+			case FormPackage.DATE_TIME_DESCRIPTION__BODY:
+				return getBody();
+			case FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				return getIsEnabledExpression();
+			case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
+				return getStyle();
+			case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
+				return getConditionalStyles();
+			case FormPackage.DATE_TIME_DESCRIPTION__TYPE:
+				return getType();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION:
-                this.setStringValueExpression((String) newValue);
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__BODY:
-                this.getBody().clear();
-                this.getBody().addAll((Collection<? extends Operation>) newValue);
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.setIsEnabledExpression((String) newValue);
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
-                this.setStyle((DateTimeDescriptionStyle) newValue);
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
-                this.getConditionalStyles().clear();
-                this.getConditionalStyles().addAll((Collection<? extends ConditionalDateTimeDescriptionStyle>) newValue);
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__TYPE:
-                this.setType((DateTimeType) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION:
+				setStringValueExpression((String)newValue);
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__BODY:
+				getBody().clear();
+				getBody().addAll((Collection<? extends Operation>)newValue);
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				setIsEnabledExpression((String)newValue);
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
+				setStyle((DateTimeDescriptionStyle)newValue);
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
+				getConditionalStyles().clear();
+				getConditionalStyles().addAll((Collection<? extends ConditionalDateTimeDescriptionStyle>)newValue);
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__TYPE:
+				setType((DateTimeType)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION:
-                this.setStringValueExpression(STRING_VALUE_EXPRESSION_EDEFAULT);
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__BODY:
-                this.getBody().clear();
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
-                this.setStyle((DateTimeDescriptionStyle) null);
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
-                this.getConditionalStyles().clear();
-                return;
-            case FormPackage.DATE_TIME_DESCRIPTION__TYPE:
-                this.setType(TYPE_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION:
+				setStringValueExpression(STRING_VALUE_EXPRESSION_EDEFAULT);
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__BODY:
+				getBody().clear();
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
+				setStyle((DateTimeDescriptionStyle)null);
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
+				getConditionalStyles().clear();
+				return;
+			case FormPackage.DATE_TIME_DESCRIPTION__TYPE:
+				setType(TYPE_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION:
-                return STRING_VALUE_EXPRESSION_EDEFAULT == null ? this.stringValueExpression != null : !STRING_VALUE_EXPRESSION_EDEFAULT.equals(this.stringValueExpression);
-            case FormPackage.DATE_TIME_DESCRIPTION__BODY:
-                return this.body != null && !this.body.isEmpty();
-            case FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
-            case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
-                return this.style != null;
-            case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
-                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
-            case FormPackage.DATE_TIME_DESCRIPTION__TYPE:
-                return this.type != TYPE_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.DATE_TIME_DESCRIPTION__STRING_VALUE_EXPRESSION:
+				return STRING_VALUE_EXPRESSION_EDEFAULT == null ? stringValueExpression != null : !STRING_VALUE_EXPRESSION_EDEFAULT.equals(stringValueExpression);
+			case FormPackage.DATE_TIME_DESCRIPTION__BODY:
+				return body != null && !body.isEmpty();
+			case FormPackage.DATE_TIME_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				return IS_ENABLED_EXPRESSION_EDEFAULT == null ? isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(isEnabledExpression);
+			case FormPackage.DATE_TIME_DESCRIPTION__STYLE:
+				return style != null;
+			case FormPackage.DATE_TIME_DESCRIPTION__CONDITIONAL_STYLES:
+				return conditionalStyles != null && !conditionalStyles.isEmpty();
+			case FormPackage.DATE_TIME_DESCRIPTION__TYPE:
+				return type != TYPE_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (stringValueExpression: ");
-        result.append(this.stringValueExpression);
-        result.append(", isEnabledExpression: ");
-        result.append(this.isEnabledExpression);
-        result.append(", type: ");
-        result.append(this.type);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (stringValueExpression: ");
+		result.append(stringValueExpression);
+		result.append(", isEnabledExpression: ");
+		result.append(isEnabledExpression);
+		result.append(", type: ");
+		result.append(type);
+		result.append(')');
+		return result.toString();
+	}
 
 } // DateTimeDescriptionImpl

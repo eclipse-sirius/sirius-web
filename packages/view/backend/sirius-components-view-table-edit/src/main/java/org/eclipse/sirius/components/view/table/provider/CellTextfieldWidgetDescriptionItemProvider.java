@@ -28,14 +28,13 @@ import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
- *
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription} object.
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
  * @generated
  */
 public class CellTextfieldWidgetDescriptionItemProvider extends ItemProviderAdapter
@@ -49,8 +48,8 @@ public class CellTextfieldWidgetDescriptionItemProvider extends ItemProviderAdap
      * @generated
      */
     public CellTextfieldWidgetDescriptionItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
      * This returns the property descriptors for the adapted class. <!--
@@ -60,44 +59,42 @@ public class CellTextfieldWidgetDescriptionItemProvider extends ItemProviderAdap
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-        }
-        return this.itemPropertyDescriptors;
-    }
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
      * This returns CellTextfieldWidgetDescription.gif. <!-- begin-user-doc --> <!--
@@ -112,80 +109,95 @@ public class CellTextfieldWidgetDescriptionItemProvider extends ItemProviderAdap
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_CellTextfieldWidgetDescription_type");
-    }
+		return getString("_UI_CellTextfieldWidgetDescription_type");
+	}
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This handles model notifications by calling {@link #updateChildren} to update any cached
+	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(CellTextfieldWidgetDescription.class)) {
-            case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(CellTextfieldWidgetDescription.class))
+		{
+			case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createChangeContext()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createCreateInstance()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createSetValue()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createUnsetValue()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createDeleteElement()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createLet()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createLet()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createIf()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createIf()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
-                org.eclipse.sirius.components.view.ViewFactory.eINSTANCE.createFor()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createFor()));
+	}
 
     /**
      * Return the resource locator for this item provider's resources. <!--
@@ -195,7 +207,7 @@ public class CellTextfieldWidgetDescriptionItemProvider extends ItemProviderAdap
      */
     @Override
     public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
-    }
+		return ((IChildCreationExtender)adapterFactory).getResourceLocator();
+	}
 
 }

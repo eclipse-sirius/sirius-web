@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,32 +34,19 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getKindExpression <em>Kind
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemIconExpression <em>Tree Item
- * Icon Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemIdExpression <em>Tree Item Id
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemObjectExpression <em>Tree Item
- * Object Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getElementsExpression <em>Elements
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getHasChildrenExpression <em>Has Children
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getChildrenExpression <em>Children
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getParentExpression <em>Parent
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getEditableExpression <em>Editable
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getSelectableExpression <em>Selectable
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getDeletableExpression <em>Deletable
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemLabelDescriptions <em>Tree
- * Item Label Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getContextMenuEntries <em>Context Menu
- * Entries</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getKindExpression <em>Kind Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemIconExpression <em>Tree Item Icon Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemIdExpression <em>Tree Item Id Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemObjectExpression <em>Tree Item Object Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getElementsExpression <em>Elements Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getHasChildrenExpression <em>Has Children Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getChildrenExpression <em>Children Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getParentExpression <em>Parent Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getEditableExpression <em>Editable Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getSelectableExpression <em>Selectable Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getDeletableExpression <em>Deletable Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemLabelDescriptions <em>Tree Item Label Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getContextMenuEntries <em>Context Menu Entries</em>}</li>
  * </ul>
  *
  * @generated
@@ -67,33 +54,32 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
 public class TreeDescriptionImpl extends RepresentationDescriptionImpl implements TreeDescription {
 
     /**
-     * The default value of the '{@link #getKindExpression() <em>Kind Expression</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getKindExpression() <em>Kind Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getKindExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getKindExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String KIND_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getKindExpression() <em>Kind Expression</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getKindExpression() <em>Kind Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getKindExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getKindExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String kindExpression = KIND_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getTreeItemIconExpression() <em>Tree Item Icon Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTreeItemIconExpression()
-     * @generated
-     * @ordered
-     */
+	 * The default value of the '{@link #getTreeItemIconExpression() <em>Tree Item Icon Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getTreeItemIconExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String TREE_ITEM_ICON_EXPRESSION_EDEFAULT = null;
 
     /**
@@ -127,23 +113,21 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
     protected String treeItemIdExpression = TREE_ITEM_ID_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getTreeItemObjectExpression() <em>Tree Item Object Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTreeItemObjectExpression()
-     * @generated
-     * @ordered
-     */
+	 * The default value of the '{@link #getTreeItemObjectExpression() <em>Tree Item Object Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getTreeItemObjectExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getTreeItemObjectExpression() <em>Tree Item Object Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTreeItemObjectExpression()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getTreeItemObjectExpression() <em>Tree Item Object Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getTreeItemObjectExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String treeItemObjectExpression = TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT;
 
     /**
@@ -287,555 +271,527 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
     protected String deletableExpression = DELETABLE_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getTreeItemLabelDescriptions() <em>Tree Item Label Descriptions</em>}'
-     * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTreeItemLabelDescriptions()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getTreeItemLabelDescriptions() <em>Tree Item Label Descriptions</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getTreeItemLabelDescriptions()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<TreeItemLabelDescription> treeItemLabelDescriptions;
 
     /**
-     * The cached value of the '{@link #getContextMenuEntries() <em>Context Menu Entries</em>}' containment reference
-     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getContextMenuEntries()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getContextMenuEntries() <em>Context Menu Entries</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getContextMenuEntries()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<TreeItemContextMenuEntry> contextMenuEntries;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TreeDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TreePackage.Literals.TREE_DESCRIPTION;
-    }
+		return TreePackage.Literals.TREE_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getKindExpression() {
-        return this.kindExpression;
-    }
+		return kindExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setKindExpression(String newKindExpression) {
-        String oldKindExpression = this.kindExpression;
-        this.kindExpression = newKindExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION, oldKindExpression, this.kindExpression));
-    }
+		String oldKindExpression = kindExpression;
+		kindExpression = newKindExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION, oldKindExpression, kindExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getTreeItemIconExpression() {
-        return this.treeItemIconExpression;
-    }
+		return treeItemIconExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setTreeItemIconExpression(String newTreeItemIconExpression) {
-        String oldTreeItemIconExpression = this.treeItemIconExpression;
-        this.treeItemIconExpression = newTreeItemIconExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION, oldTreeItemIconExpression, this.treeItemIconExpression));
-    }
+		String oldTreeItemIconExpression = treeItemIconExpression;
+		treeItemIconExpression = newTreeItemIconExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION, oldTreeItemIconExpression, treeItemIconExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getTreeItemIdExpression() {
-        return this.treeItemIdExpression;
-    }
+		return treeItemIdExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setTreeItemIdExpression(String newTreeItemIdExpression) {
-        String oldTreeItemIdExpression = this.treeItemIdExpression;
-        this.treeItemIdExpression = newTreeItemIdExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION, oldTreeItemIdExpression, this.treeItemIdExpression));
-    }
+		String oldTreeItemIdExpression = treeItemIdExpression;
+		treeItemIdExpression = newTreeItemIdExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION, oldTreeItemIdExpression, treeItemIdExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getTreeItemObjectExpression() {
-        return this.treeItemObjectExpression;
-    }
+		return treeItemObjectExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setTreeItemObjectExpression(String newTreeItemObjectExpression) {
-        String oldTreeItemObjectExpression = this.treeItemObjectExpression;
-        this.treeItemObjectExpression = newTreeItemObjectExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION, oldTreeItemObjectExpression, this.treeItemObjectExpression));
-    }
+		String oldTreeItemObjectExpression = treeItemObjectExpression;
+		treeItemObjectExpression = newTreeItemObjectExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION, oldTreeItemObjectExpression, treeItemObjectExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getElementsExpression() {
-        return this.elementsExpression;
-    }
+		return elementsExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setElementsExpression(String newElementsExpression) {
-        String oldElementsExpression = this.elementsExpression;
-        this.elementsExpression = newElementsExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION, oldElementsExpression, this.elementsExpression));
-    }
+		String oldElementsExpression = elementsExpression;
+		elementsExpression = newElementsExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION, oldElementsExpression, elementsExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getHasChildrenExpression() {
-        return this.hasChildrenExpression;
-    }
+		return hasChildrenExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setHasChildrenExpression(String newHasChildrenExpression) {
-        String oldHasChildrenExpression = this.hasChildrenExpression;
-        this.hasChildrenExpression = newHasChildrenExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION, oldHasChildrenExpression, this.hasChildrenExpression));
-    }
+		String oldHasChildrenExpression = hasChildrenExpression;
+		hasChildrenExpression = newHasChildrenExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION, oldHasChildrenExpression, hasChildrenExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getChildrenExpression() {
-        return this.childrenExpression;
-    }
+		return childrenExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setChildrenExpression(String newChildrenExpression) {
-        String oldChildrenExpression = this.childrenExpression;
-        this.childrenExpression = newChildrenExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION, oldChildrenExpression, this.childrenExpression));
-    }
+		String oldChildrenExpression = childrenExpression;
+		childrenExpression = newChildrenExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION, oldChildrenExpression, childrenExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getParentExpression() {
-        return this.parentExpression;
-    }
+		return parentExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setParentExpression(String newParentExpression) {
-        String oldParentExpression = this.parentExpression;
-        this.parentExpression = newParentExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION, oldParentExpression, this.parentExpression));
-    }
+		String oldParentExpression = parentExpression;
+		parentExpression = newParentExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION, oldParentExpression, parentExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getEditableExpression() {
-        return this.editableExpression;
-    }
+		return editableExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setEditableExpression(String newEditableExpression) {
-        String oldEditableExpression = this.editableExpression;
-        this.editableExpression = newEditableExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION, oldEditableExpression, this.editableExpression));
-    }
+		String oldEditableExpression = editableExpression;
+		editableExpression = newEditableExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION, oldEditableExpression, editableExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getSelectableExpression() {
-        return this.selectableExpression;
-    }
+		return selectableExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setSelectableExpression(String newSelectableExpression) {
-        String oldSelectableExpression = this.selectableExpression;
-        this.selectableExpression = newSelectableExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION, oldSelectableExpression, this.selectableExpression));
-    }
+		String oldSelectableExpression = selectableExpression;
+		selectableExpression = newSelectableExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION, oldSelectableExpression, selectableExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getDeletableExpression() {
-        return this.deletableExpression;
-    }
+		return deletableExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setDeletableExpression(String newDeletableExpression) {
-        String oldDeletableExpression = this.deletableExpression;
-        this.deletableExpression = newDeletableExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION, oldDeletableExpression, this.deletableExpression));
-    }
+		String oldDeletableExpression = deletableExpression;
+		deletableExpression = newDeletableExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION, oldDeletableExpression, deletableExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<TreeItemLabelDescription> getTreeItemLabelDescriptions() {
-        if (this.treeItemLabelDescriptions == null) {
-            this.treeItemLabelDescriptions = new EObjectContainmentEList<>(TreeItemLabelDescription.class, this, TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS);
-        }
-        return this.treeItemLabelDescriptions;
-    }
+		if (treeItemLabelDescriptions == null)
+		{
+			treeItemLabelDescriptions = new EObjectContainmentEList<TreeItemLabelDescription>(TreeItemLabelDescription.class, this, TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS);
+		}
+		return treeItemLabelDescriptions;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<TreeItemContextMenuEntry> getContextMenuEntries() {
-        if (this.contextMenuEntries == null) {
-            this.contextMenuEntries = new EObjectContainmentEList<>(TreeItemContextMenuEntry.class, this, TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES);
-        }
-        return this.contextMenuEntries;
-    }
+		if (contextMenuEntries == null)
+		{
+			contextMenuEntries = new EObjectContainmentEList<TreeItemContextMenuEntry>(TreeItemContextMenuEntry.class, this, TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES);
+		}
+		return contextMenuEntries;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
-                return ((InternalEList<?>) this.getTreeItemLabelDescriptions()).basicRemove(otherEnd, msgs);
-            case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
-                return ((InternalEList<?>) this.getContextMenuEntries()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+				return ((InternalEList<?>)getTreeItemLabelDescriptions()).basicRemove(otherEnd, msgs);
+			case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+				return ((InternalEList<?>)getContextMenuEntries()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
-                return this.getKindExpression();
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
-                return this.getTreeItemIconExpression();
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
-                return this.getTreeItemIdExpression();
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
-                return this.getTreeItemObjectExpression();
-            case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
-                return this.getElementsExpression();
-            case TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
-                return this.getHasChildrenExpression();
-            case TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION:
-                return this.getChildrenExpression();
-            case TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION:
-                return this.getParentExpression();
-            case TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION:
-                return this.getEditableExpression();
-            case TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION:
-                return this.getSelectableExpression();
-            case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
-                return this.getDeletableExpression();
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
-                return this.getTreeItemLabelDescriptions();
-            case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
-                return this.getContextMenuEntries();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
+				return getKindExpression();
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
+				return getTreeItemIconExpression();
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
+				return getTreeItemIdExpression();
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
+				return getTreeItemObjectExpression();
+			case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
+				return getElementsExpression();
+			case TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
+				return getHasChildrenExpression();
+			case TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION:
+				return getChildrenExpression();
+			case TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION:
+				return getParentExpression();
+			case TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION:
+				return getEditableExpression();
+			case TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION:
+				return getSelectableExpression();
+			case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
+				return getDeletableExpression();
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+				return getTreeItemLabelDescriptions();
+			case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+				return getContextMenuEntries();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
-                this.setKindExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
-                this.setTreeItemIconExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
-                this.setTreeItemIdExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
-                this.setTreeItemObjectExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
-                this.setElementsExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
-                this.setHasChildrenExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION:
-                this.setChildrenExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION:
-                this.setParentExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION:
-                this.setEditableExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION:
-                this.setSelectableExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
-                this.setDeletableExpression((String) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
-                this.getTreeItemLabelDescriptions().clear();
-                this.getTreeItemLabelDescriptions().addAll((Collection<? extends TreeItemLabelDescription>) newValue);
-                return;
-            case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
-                this.getContextMenuEntries().clear();
-                this.getContextMenuEntries().addAll((Collection<? extends TreeItemContextMenuEntry>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
+				setKindExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
+				setTreeItemIconExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
+				setTreeItemIdExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
+				setTreeItemObjectExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
+				setElementsExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
+				setHasChildrenExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION:
+				setChildrenExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION:
+				setParentExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION:
+				setEditableExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION:
+				setSelectableExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
+				setDeletableExpression((String)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+				getTreeItemLabelDescriptions().clear();
+				getTreeItemLabelDescriptions().addAll((Collection<? extends TreeItemLabelDescription>)newValue);
+				return;
+			case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+				getContextMenuEntries().clear();
+				getContextMenuEntries().addAll((Collection<? extends TreeItemContextMenuEntry>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
-                this.setKindExpression(KIND_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
-                this.setTreeItemIconExpression(TREE_ITEM_ICON_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
-                this.setTreeItemIdExpression(TREE_ITEM_ID_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
-                this.setTreeItemObjectExpression(TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
-                this.setElementsExpression(ELEMENTS_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
-                this.setHasChildrenExpression(HAS_CHILDREN_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION:
-                this.setChildrenExpression(CHILDREN_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION:
-                this.setParentExpression(PARENT_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION:
-                this.setEditableExpression(EDITABLE_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION:
-                this.setSelectableExpression(SELECTABLE_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
-                this.setDeletableExpression(DELETABLE_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
-                this.getTreeItemLabelDescriptions().clear();
-                return;
-            case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
-                this.getContextMenuEntries().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
+				setKindExpression(KIND_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
+				setTreeItemIconExpression(TREE_ITEM_ICON_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
+				setTreeItemIdExpression(TREE_ITEM_ID_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
+				setTreeItemObjectExpression(TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
+				setElementsExpression(ELEMENTS_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
+				setHasChildrenExpression(HAS_CHILDREN_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION:
+				setChildrenExpression(CHILDREN_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION:
+				setParentExpression(PARENT_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION:
+				setEditableExpression(EDITABLE_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION:
+				setSelectableExpression(SELECTABLE_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
+				setDeletableExpression(DELETABLE_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+				getTreeItemLabelDescriptions().clear();
+				return;
+			case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+				getContextMenuEntries().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
-                return KIND_EXPRESSION_EDEFAULT == null ? this.kindExpression != null : !KIND_EXPRESSION_EDEFAULT.equals(this.kindExpression);
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
-                return TREE_ITEM_ICON_EXPRESSION_EDEFAULT == null ? this.treeItemIconExpression != null : !TREE_ITEM_ICON_EXPRESSION_EDEFAULT.equals(this.treeItemIconExpression);
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
-                return TREE_ITEM_ID_EXPRESSION_EDEFAULT == null ? this.treeItemIdExpression != null : !TREE_ITEM_ID_EXPRESSION_EDEFAULT.equals(this.treeItemIdExpression);
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
-                return TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT == null ? this.treeItemObjectExpression != null : !TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT.equals(this.treeItemObjectExpression);
-            case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
-                return ELEMENTS_EXPRESSION_EDEFAULT == null ? this.elementsExpression != null : !ELEMENTS_EXPRESSION_EDEFAULT.equals(this.elementsExpression);
-            case TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
-                return HAS_CHILDREN_EXPRESSION_EDEFAULT == null ? this.hasChildrenExpression != null : !HAS_CHILDREN_EXPRESSION_EDEFAULT.equals(this.hasChildrenExpression);
-            case TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION:
-                return CHILDREN_EXPRESSION_EDEFAULT == null ? this.childrenExpression != null : !CHILDREN_EXPRESSION_EDEFAULT.equals(this.childrenExpression);
-            case TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION:
-                return PARENT_EXPRESSION_EDEFAULT == null ? this.parentExpression != null : !PARENT_EXPRESSION_EDEFAULT.equals(this.parentExpression);
-            case TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION:
-                return EDITABLE_EXPRESSION_EDEFAULT == null ? this.editableExpression != null : !EDITABLE_EXPRESSION_EDEFAULT.equals(this.editableExpression);
-            case TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION:
-                return SELECTABLE_EXPRESSION_EDEFAULT == null ? this.selectableExpression != null : !SELECTABLE_EXPRESSION_EDEFAULT.equals(this.selectableExpression);
-            case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
-                return DELETABLE_EXPRESSION_EDEFAULT == null ? this.deletableExpression != null : !DELETABLE_EXPRESSION_EDEFAULT.equals(this.deletableExpression);
-            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
-                return this.treeItemLabelDescriptions != null && !this.treeItemLabelDescriptions.isEmpty();
-            case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
-                return this.contextMenuEntries != null && !this.contextMenuEntries.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case TreePackage.TREE_DESCRIPTION__KIND_EXPRESSION:
+				return KIND_EXPRESSION_EDEFAULT == null ? kindExpression != null : !KIND_EXPRESSION_EDEFAULT.equals(kindExpression);
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ICON_EXPRESSION:
+				return TREE_ITEM_ICON_EXPRESSION_EDEFAULT == null ? treeItemIconExpression != null : !TREE_ITEM_ICON_EXPRESSION_EDEFAULT.equals(treeItemIconExpression);
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_ID_EXPRESSION:
+				return TREE_ITEM_ID_EXPRESSION_EDEFAULT == null ? treeItemIdExpression != null : !TREE_ITEM_ID_EXPRESSION_EDEFAULT.equals(treeItemIdExpression);
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_OBJECT_EXPRESSION:
+				return TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT == null ? treeItemObjectExpression != null : !TREE_ITEM_OBJECT_EXPRESSION_EDEFAULT.equals(treeItemObjectExpression);
+			case TreePackage.TREE_DESCRIPTION__ELEMENTS_EXPRESSION:
+				return ELEMENTS_EXPRESSION_EDEFAULT == null ? elementsExpression != null : !ELEMENTS_EXPRESSION_EDEFAULT.equals(elementsExpression);
+			case TreePackage.TREE_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
+				return HAS_CHILDREN_EXPRESSION_EDEFAULT == null ? hasChildrenExpression != null : !HAS_CHILDREN_EXPRESSION_EDEFAULT.equals(hasChildrenExpression);
+			case TreePackage.TREE_DESCRIPTION__CHILDREN_EXPRESSION:
+				return CHILDREN_EXPRESSION_EDEFAULT == null ? childrenExpression != null : !CHILDREN_EXPRESSION_EDEFAULT.equals(childrenExpression);
+			case TreePackage.TREE_DESCRIPTION__PARENT_EXPRESSION:
+				return PARENT_EXPRESSION_EDEFAULT == null ? parentExpression != null : !PARENT_EXPRESSION_EDEFAULT.equals(parentExpression);
+			case TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION:
+				return EDITABLE_EXPRESSION_EDEFAULT == null ? editableExpression != null : !EDITABLE_EXPRESSION_EDEFAULT.equals(editableExpression);
+			case TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION:
+				return SELECTABLE_EXPRESSION_EDEFAULT == null ? selectableExpression != null : !SELECTABLE_EXPRESSION_EDEFAULT.equals(selectableExpression);
+			case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
+				return DELETABLE_EXPRESSION_EDEFAULT == null ? deletableExpression != null : !DELETABLE_EXPRESSION_EDEFAULT.equals(deletableExpression);
+			case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
+				return treeItemLabelDescriptions != null && !treeItemLabelDescriptions.isEmpty();
+			case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+				return contextMenuEntries != null && !contextMenuEntries.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (kindExpression: ");
-        result.append(this.kindExpression);
-        result.append(", treeItemIconExpression: ");
-        result.append(this.treeItemIconExpression);
-        result.append(", treeItemIdExpression: ");
-        result.append(this.treeItemIdExpression);
-        result.append(", treeItemObjectExpression: ");
-        result.append(this.treeItemObjectExpression);
-        result.append(", elementsExpression: ");
-        result.append(this.elementsExpression);
-        result.append(", hasChildrenExpression: ");
-        result.append(this.hasChildrenExpression);
-        result.append(", childrenExpression: ");
-        result.append(this.childrenExpression);
-        result.append(", parentExpression: ");
-        result.append(this.parentExpression);
-        result.append(", editableExpression: ");
-        result.append(this.editableExpression);
-        result.append(", selectableExpression: ");
-        result.append(this.selectableExpression);
-        result.append(", deletableExpression: ");
-        result.append(this.deletableExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (kindExpression: ");
+		result.append(kindExpression);
+		result.append(", treeItemIconExpression: ");
+		result.append(treeItemIconExpression);
+		result.append(", treeItemIdExpression: ");
+		result.append(treeItemIdExpression);
+		result.append(", treeItemObjectExpression: ");
+		result.append(treeItemObjectExpression);
+		result.append(", elementsExpression: ");
+		result.append(elementsExpression);
+		result.append(", hasChildrenExpression: ");
+		result.append(hasChildrenExpression);
+		result.append(", childrenExpression: ");
+		result.append(childrenExpression);
+		result.append(", parentExpression: ");
+		result.append(parentExpression);
+		result.append(", editableExpression: ");
+		result.append(editableExpression);
+		result.append(", selectableExpression: ");
+		result.append(selectableExpression);
+		result.append(", deletableExpression: ");
+		result.append(deletableExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // TreeDescriptionImpl

@@ -21,8 +21,8 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.Message#getEmittedBy <em>Emitted By</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Message#getListenedBy <em>Listened By</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.Message#getEmittedBy <em>Emitted By</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.Message#getListenedBy <em>Listened By</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getMessage()

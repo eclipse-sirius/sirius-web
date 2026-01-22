@@ -29,176 +29,169 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.deck.impl.ConditionalDeckDescriptionStyleImpl#getBackgroundColor
- * <em>Background Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.deck.impl.ConditionalDeckDescriptionStyleImpl#getBackgroundColor <em>Background Color</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ConditionalDeckDescriptionStyleImpl extends ConditionalImpl implements ConditionalDeckDescriptionStyle {
     /**
-     * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' reference. <!-- begin-user-doc
+	 * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' reference.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getBackgroundColor()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBackgroundColor()
+	 * @generated
+	 * @ordered
+	 */
     protected UserColor backgroundColor;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ConditionalDeckDescriptionStyleImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DeckPackage.Literals.CONDITIONAL_DECK_DESCRIPTION_STYLE;
-    }
+		return DeckPackage.Literals.CONDITIONAL_DECK_DESCRIPTION_STYLE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public UserColor getBackgroundColor() {
-        if (this.backgroundColor != null && this.backgroundColor.eIsProxy()) {
-            InternalEObject oldBackgroundColor = (InternalEObject) this.backgroundColor;
-            this.backgroundColor = (UserColor) this.eResolveProxy(oldBackgroundColor);
-            if (this.backgroundColor != oldBackgroundColor) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, this.backgroundColor));
-            }
-        }
-        return this.backgroundColor;
-    }
+		if (backgroundColor != null && backgroundColor.eIsProxy())
+		{
+			InternalEObject oldBackgroundColor = (InternalEObject)backgroundColor;
+			backgroundColor = (UserColor)eResolveProxy(oldBackgroundColor);
+			if (backgroundColor != oldBackgroundColor)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, backgroundColor));
+			}
+		}
+		return backgroundColor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public UserColor basicGetBackgroundColor() {
-        return this.backgroundColor;
-    }
+		return backgroundColor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBackgroundColor(UserColor newBackgroundColor) {
-        UserColor oldBackgroundColor = this.backgroundColor;
-        this.backgroundColor = newBackgroundColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, this.backgroundColor));
-    }
+		UserColor oldBackgroundColor = backgroundColor;
+		backgroundColor = newBackgroundColor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, backgroundColor));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                if (resolve)
-                    return this.getBackgroundColor();
-                return this.basicGetBackgroundColor();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+				if (resolve) return getBackgroundColor();
+				return basicGetBackgroundColor();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                this.setBackgroundColor((UserColor) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+				setBackgroundColor((UserColor)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                this.setBackgroundColor((UserColor) null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+				setBackgroundColor((UserColor)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                return this.backgroundColor != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+				return backgroundColor != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == DeckDescriptionStyle.class) {
-            switch (derivedFeatureID) {
-                case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                    return DeckPackage.DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR;
-                default:
-                    return -1;
-            }
-        }
-        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-    }
+		if (baseClass == DeckDescriptionStyle.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR: return DeckPackage.DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == DeckDescriptionStyle.class) {
-            switch (baseFeatureID) {
-                case DeckPackage.DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                    return DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR;
-                default:
-                    return -1;
-            }
-        }
-        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-    }
+		if (baseClass == DeckDescriptionStyle.class)
+		{
+			switch (baseFeatureID)
+			{
+				case DeckPackage.DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR: return DeckPackage.CONDITIONAL_DECK_DESCRIPTION_STYLE__BACKGROUND_COLOR;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
 
 } // ConditionalDeckDescriptionStyleImpl

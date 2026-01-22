@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.Controller#getCalls <em>Calls</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.Controller#getCalls <em>Calls</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getController()
@@ -30,14 +30,14 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Controller extends NamedElement, MessageEmitter, MessageListener {
     /**
-     * Returns the value of the '<em><b>Calls</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Service}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Calls</em>' reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getController_Calls()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Calls</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.papaya.Service}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Calls</em>' reference list.
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getController_Calls()
+	 * @model
+	 * @generated
+	 */
     EList<Service> getCalls();
 
 } // Controller

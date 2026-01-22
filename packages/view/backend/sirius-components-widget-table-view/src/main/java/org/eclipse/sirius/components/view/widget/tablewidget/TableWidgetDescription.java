@@ -25,58 +25,50 @@ import org.eclipse.sirius.components.view.table.RowDescription;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getColumnDescriptions
- * <em>Column Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getRowDescription <em>Row
- * Description</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getCellDescriptions <em>Cell
- * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getUseStripedRowsExpression
- * <em>Use Striped Rows Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getIsEnabledExpression <em>Is
- * Enabled Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getColumnDescriptions <em>Column Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getRowDescription <em>Row Description</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getCellDescriptions <em>Cell Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getUseStripedRowsExpression <em>Use Striped Rows Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getIsEnabledExpression <em>Is Enabled Expression</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription()
  */
 public interface TableWidgetDescription extends WidgetDescription {
 
     /**
-     * Returns the value of the '<em><b>Column Descriptions</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.table.ColumnDescription}. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Column Descriptions</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.table.ColumnDescription}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Column Descriptions</em>' containment reference list.
-     * @model containment="true"
-     * @generated
-     * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription_ColumnDescriptions()
-     */
+	 * @return the value of the '<em>Column Descriptions</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription_ColumnDescriptions()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<ColumnDescription> getColumnDescriptions();
 
     /**
-     * Returns the value of the '<em><b>Row Description</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Row Description</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Row Description</em>' containment reference.
-     * @model containment="true"
-     * @generated
-     * @see #setRowDescription(RowDescription)
-     * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription_RowDescription()
-     */
+	 * @return the value of the '<em>Row Description</em>' containment reference.
+	 * @see #setRowDescription(RowDescription)
+	 * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription_RowDescription()
+	 * @model containment="true"
+	 * @generated
+	 */
     RowDescription getRowDescription();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getRowDescription <em>Row
-     * Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Row Description</em>' containment reference.
-     * @generated
-     * @see #getRowDescription()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getRowDescription <em>Row Description</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Row Description</em>' containment reference.
+	 * @see #getRowDescription()
+	 * @generated
+	 */
     void setRowDescription(RowDescription value);
 
     /**
@@ -92,51 +84,45 @@ public interface TableWidgetDescription extends WidgetDescription {
     EList<CellDescription> getCellDescriptions();
 
     /**
-     * Returns the value of the '<em><b>Use Striped Rows Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Use Striped Rows Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Use Striped Rows Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     * @see #setUseStripedRowsExpression(String)
-     * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription_UseStripedRowsExpression()
-     */
+	 * @return the value of the '<em>Use Striped Rows Expression</em>' attribute.
+	 * @see #setUseStripedRowsExpression(String)
+	 * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription_UseStripedRowsExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getUseStripedRowsExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getUseStripedRowsExpression
-     * <em>Use Striped Rows Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Use Striped Rows Expression</em>' attribute.
-     * @generated
-     * @see #getUseStripedRowsExpression()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getUseStripedRowsExpression <em>Use Striped Rows Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Use Striped Rows Expression</em>' attribute.
+	 * @see #getUseStripedRowsExpression()
+	 * @generated
+	 */
     void setUseStripedRowsExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Is Enabled Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     * @see #setIsEnabledExpression(String)
-     * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription_IsEnabledExpression()
-     */
+	 * @return the value of the '<em>Is Enabled Expression</em>' attribute.
+	 * @see #setIsEnabledExpression(String)
+	 * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage#getTableWidgetDescription_IsEnabledExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getIsEnabledExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getIsEnabledExpression
-     * <em>Is Enabled Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Is Enabled Expression</em>' attribute.
-     * @generated
-     * @see #getIsEnabledExpression()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription#getIsEnabledExpression <em>Is Enabled Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
+	 * @see #getIsEnabledExpression()
+	 * @generated
+	 */
     void setIsEnabledExpression(String value);
 
 } // TableWidgetDescription

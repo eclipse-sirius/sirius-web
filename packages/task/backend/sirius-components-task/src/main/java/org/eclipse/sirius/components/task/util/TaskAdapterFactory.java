@@ -16,6 +16,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.task.*;
 import org.eclipse.sirius.components.task.AbstractTask;
 import org.eclipse.sirius.components.task.Company;
 import org.eclipse.sirius.components.task.KeyResult;
@@ -31,122 +32,125 @@ import org.eclipse.sirius.components.task.Team;
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
- *
  * @see org.eclipse.sirius.components.task.TaskPackage
  * @generated
  */
 public class TaskAdapterFactory extends AdapterFactoryImpl {
     /**
-     * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * The cached model package.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected static TaskPackage modelPackage;
 
     /**
-     * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates an instance of the adapter factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public TaskAdapterFactory() {
-        if (modelPackage == null) {
-            modelPackage = TaskPackage.eINSTANCE;
-        }
-    }
+		if (modelPackage == null)
+		{
+			modelPackage = TaskPackage.eINSTANCE;
+		}
+	}
 
     /**
-     * Returns whether this factory is applicable for the type of the object. <!-- begin-user-doc --> This
+	 * Returns whether this factory is applicable for the type of the object.
+	 * <!-- begin-user-doc --> This
      * implementation returns <code>true</code> if the object is either the model's package or is an instance object of
      * the model. <!-- end-user-doc -->
-     *
-     * @return whether this factory is applicable for the type of the object.
-     * @generated
-     */
+	 * @return whether this factory is applicable for the type of the object.
+	 * @generated
+	 */
     @Override
     public boolean isFactoryForType(Object object) {
-        if (object == modelPackage) {
-            return true;
-        }
-        if (object instanceof EObject) {
-            return ((EObject) object).eClass().getEPackage() == modelPackage;
-        }
-        return false;
-    }
+		if (object == modelPackage)
+		{
+			return true;
+		}
+		if (object instanceof EObject)
+		{
+			return ((EObject)object).eClass().getEPackage() == modelPackage;
+		}
+		return false;
+	}
 
     /**
-     * The switch that delegates to the <code>createXXX</code> methods. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected TaskSwitch<Adapter> modelSwitch = new TaskSwitch<>() {
-        @Override
-        public Adapter caseResource(Resource object) {
-            return TaskAdapterFactory.this.createResourceAdapter();
-        }
-
-        @Override
-        public Adapter caseCompany(Company object) {
-            return TaskAdapterFactory.this.createCompanyAdapter();
-        }
-
-        @Override
-        public Adapter caseTeam(Team object) {
-            return TaskAdapterFactory.this.createTeamAdapter();
-        }
-
-        @Override
-        public Adapter casePerson(Person object) {
-            return TaskAdapterFactory.this.createPersonAdapter();
-        }
-
-        @Override
-        public Adapter caseAbstractTask(AbstractTask object) {
-            return TaskAdapterFactory.this.createAbstractTaskAdapter();
-        }
-
-        @Override
-        public Adapter caseTask(Task object) {
-            return TaskAdapterFactory.this.createTaskAdapter();
-        }
-
-        @Override
-        public Adapter caseObjective(Objective object) {
-            return TaskAdapterFactory.this.createObjectiveAdapter();
-        }
-
-        @Override
-        public Adapter caseKeyResult(KeyResult object) {
-            return TaskAdapterFactory.this.createKeyResultAdapter();
-        }
-
-        @Override
-        public Adapter caseProject(Project object) {
-            return TaskAdapterFactory.this.createProjectAdapter();
-        }
-
-        @Override
-        public Adapter caseTaskTag(TaskTag object) {
-            return TaskAdapterFactory.this.createTaskTagAdapter();
-        }
-
-        @Override
-        public Adapter defaultCase(EObject object) {
-            return TaskAdapterFactory.this.createEObjectAdapter();
-        }
-    };
+	 * The switch that delegates to the <code>createXXX</code> methods.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+    protected TaskSwitch<Adapter> modelSwitch = new TaskSwitch<Adapter>()
+		{
+			@Override
+			public Adapter caseResource(Resource object)
+			{
+				return createResourceAdapter();
+			}
+			@Override
+			public Adapter caseCompany(Company object)
+			{
+				return createCompanyAdapter();
+			}
+			@Override
+			public Adapter caseTeam(Team object)
+			{
+				return createTeamAdapter();
+			}
+			@Override
+			public Adapter casePerson(Person object)
+			{
+				return createPersonAdapter();
+			}
+			@Override
+			public Adapter caseAbstractTask(AbstractTask object)
+			{
+				return createAbstractTaskAdapter();
+			}
+			@Override
+			public Adapter caseTask(Task object)
+			{
+				return createTaskAdapter();
+			}
+			@Override
+			public Adapter caseObjective(Objective object)
+			{
+				return createObjectiveAdapter();
+			}
+			@Override
+			public Adapter caseKeyResult(KeyResult object)
+			{
+				return createKeyResultAdapter();
+			}
+			@Override
+			public Adapter caseProject(Project object)
+			{
+				return createProjectAdapter();
+			}
+			@Override
+			public Adapter caseTaskTag(TaskTag object)
+			{
+				return createTaskTagAdapter();
+			}
+			@Override
+			public Adapter defaultCase(EObject object)
+			{
+				return createEObjectAdapter();
+			}
+		};
 
     /**
-     * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param target
-     *            the object to adapt.
-     * @return the adapter for the <code>target</code>.
-     * @generated
-     */
+	 * Creates an adapter for the <code>target</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param target the object to adapt.
+	 * @return the adapter for the <code>target</code>.
+	 * @generated
+	 */
     @Override
     public Adapter createAdapter(Notifier target) {
-        return this.modelSwitch.doSwitch((EObject) target);
-    }
+		return modelSwitch.doSwitch((EObject)target);
+	}
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Resource
@@ -159,73 +163,68 @@ public class TaskAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createResourceAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Company
-     * <em>Company</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Company <em>Company</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.task.Company
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.task.Company
+	 * @generated
+	 */
     public Adapter createCompanyAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Team <em>Team</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Team <em>Team</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.task.Team
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.task.Team
+	 * @generated
+	 */
     public Adapter createTeamAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Person <em>Person</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Person <em>Person</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.task.Person
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.task.Person
+	 * @generated
+	 */
     public Adapter createPersonAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.AbstractTask <em>Abstract
-     * Task</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.AbstractTask <em>Abstract Task</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases;
      * it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.task.AbstractTask
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.task.AbstractTask
+	 * @generated
+	 */
     public Adapter createAbstractTaskAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Task <em>Task</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Task <em>Task</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.task.Task
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.task.Task
+	 * @generated
+	 */
     public Adapter createTaskAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Objective
@@ -238,57 +237,54 @@ public class TaskAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createObjectiveAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.KeyResult <em>Key
-     * Result</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.KeyResult <em>Key Result</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.task.KeyResult
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.task.KeyResult
+	 * @generated
+	 */
     public Adapter createKeyResultAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Project
-     * <em>Project</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.Project <em>Project</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.task.Project
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.task.Project
+	 * @generated
+	 */
     public Adapter createProjectAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.TaskTag <em>Tag</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.task.TaskTag <em>Tag</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.task.TaskTag
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.task.TaskTag
+	 * @generated
+	 */
     public Adapter createTaskTagAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for the default case. <!-- begin-user-doc --> This default implementation returns null.
+	 * Creates a new adapter for the default case.
+	 * <!-- begin-user-doc --> This default implementation returns null.
      * <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @generated
+	 */
     public Adapter createEObjectAdapter() {
-        return null;
-    }
+		return null;
+	}
 
 } // TaskAdapterFactory

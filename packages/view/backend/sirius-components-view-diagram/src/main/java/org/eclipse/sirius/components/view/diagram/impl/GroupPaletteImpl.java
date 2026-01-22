@@ -32,11 +32,9 @@ import org.eclipse.sirius.components.view.diagram.ToolSection;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getNodeTools <em>Node Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getQuickAccessTools <em>Quick Access
- * Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getToolSections <em>Tool
- * Sections</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getNodeTools <em>Node Tools</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getQuickAccessTools <em>Quick Access Tools</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.GroupPaletteImpl#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
  *
  * @generated
@@ -53,13 +51,12 @@ public class GroupPaletteImpl extends MinimalEObjectImpl.Container implements Gr
     protected EList<NodeTool> nodeTools;
 
     /**
-     * The cached value of the '{@link #getQuickAccessTools() <em>Quick Access Tools</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getQuickAccessTools()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getQuickAccessTools() <em>Quick Access Tools</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getQuickAccessTools()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<NodeTool> quickAccessTools;
 
     /**
@@ -73,161 +70,159 @@ public class GroupPaletteImpl extends MinimalEObjectImpl.Container implements Gr
     protected EList<ToolSection> toolSections;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected GroupPaletteImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.GROUP_PALETTE;
-    }
+		return DiagramPackage.Literals.GROUP_PALETTE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeTool> getNodeTools() {
-        if (this.nodeTools == null) {
-            this.nodeTools = new EObjectContainmentEList<>(NodeTool.class, this, DiagramPackage.GROUP_PALETTE__NODE_TOOLS);
-        }
-        return this.nodeTools;
-    }
+		if (nodeTools == null)
+		{
+			nodeTools = new EObjectContainmentEList<NodeTool>(NodeTool.class, this, DiagramPackage.GROUP_PALETTE__NODE_TOOLS);
+		}
+		return nodeTools;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeTool> getQuickAccessTools() {
-        if (this.quickAccessTools == null) {
-            this.quickAccessTools = new EObjectContainmentEList<>(NodeTool.class, this, DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS);
-        }
-        return this.quickAccessTools;
-    }
+		if (quickAccessTools == null)
+		{
+			quickAccessTools = new EObjectContainmentEList<NodeTool>(NodeTool.class, this, DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS);
+		}
+		return quickAccessTools;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<ToolSection> getToolSections() {
-        if (this.toolSections == null) {
-            this.toolSections = new EObjectContainmentEList<>(ToolSection.class, this, DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS);
-        }
-        return this.toolSections;
-    }
+		if (toolSections == null)
+		{
+			toolSections = new EObjectContainmentEList<ToolSection>(ToolSection.class, this, DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS);
+		}
+		return toolSections;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
-                return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
-            case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
-                return ((InternalEList<?>) this.getQuickAccessTools()).basicRemove(otherEnd, msgs);
-            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
-                return ((InternalEList<?>) this.getToolSections()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
+				return ((InternalEList<?>)getNodeTools()).basicRemove(otherEnd, msgs);
+			case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
+				return ((InternalEList<?>)getQuickAccessTools()).basicRemove(otherEnd, msgs);
+			case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+				return ((InternalEList<?>)getToolSections()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
-                return this.getNodeTools();
-            case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
-                return this.getQuickAccessTools();
-            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
-                return this.getToolSections();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
+				return getNodeTools();
+			case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
+				return getQuickAccessTools();
+			case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+				return getToolSections();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
-                this.getNodeTools().clear();
-                this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
-                return;
-            case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
-                this.getQuickAccessTools().clear();
-                this.getQuickAccessTools().addAll((Collection<? extends NodeTool>) newValue);
-                return;
-            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
-                this.getToolSections().clear();
-                this.getToolSections().addAll((Collection<? extends ToolSection>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
+				getNodeTools().clear();
+				getNodeTools().addAll((Collection<? extends NodeTool>)newValue);
+				return;
+			case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
+				getQuickAccessTools().clear();
+				getQuickAccessTools().addAll((Collection<? extends NodeTool>)newValue);
+				return;
+			case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+				getToolSections().clear();
+				getToolSections().addAll((Collection<? extends ToolSection>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
-                this.getNodeTools().clear();
-                return;
-            case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
-                this.getQuickAccessTools().clear();
-                return;
-            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
-                this.getToolSections().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
+				getNodeTools().clear();
+				return;
+			case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
+				getQuickAccessTools().clear();
+				return;
+			case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+				getToolSections().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
-                return this.nodeTools != null && !this.nodeTools.isEmpty();
-            case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
-                return this.quickAccessTools != null && !this.quickAccessTools.isEmpty();
-            case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
-                return this.toolSections != null && !this.toolSections.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.GROUP_PALETTE__NODE_TOOLS:
+				return nodeTools != null && !nodeTools.isEmpty();
+			case DiagramPackage.GROUP_PALETTE__QUICK_ACCESS_TOOLS:
+				return quickAccessTools != null && !quickAccessTools.isEmpty();
+			case DiagramPackage.GROUP_PALETTE__TOOL_SECTIONS:
+				return toolSections != null && !toolSections.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // GroupPaletteImpl

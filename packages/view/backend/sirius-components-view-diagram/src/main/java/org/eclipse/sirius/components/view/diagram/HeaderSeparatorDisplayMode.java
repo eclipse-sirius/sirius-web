@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,76 +21,80 @@ import org.eclipse.emf.common.util.Enumerator;
 /**
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '<em><b>Header Separator Display
  * Mode</b></em>', and utility methods for working with them. <!-- end-user-doc -->
- *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getHeaderSeparatorDisplayMode()
  * @model
  * @generated
  */
 public enum HeaderSeparatorDisplayMode implements Enumerator {
     /**
-     * The '<em><b>NEVER</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #NEVER_VALUE
-     * @generated
-     * @ordered
-     */
+	 * The '<em><b>NEVER</b></em>' literal object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #NEVER_VALUE
+	 * @generated
+	 * @ordered
+	 */
     NEVER(0, "NEVER", "NEVER"),
 
     /**
-     * The '<em><b>ALWAYS</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #ALWAYS_VALUE
-     * @generated
-     * @ordered
-     */
+	 * The '<em><b>ALWAYS</b></em>' literal object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #ALWAYS_VALUE
+	 * @generated
+	 * @ordered
+	 */
     ALWAYS(1, "ALWAYS", "ALWAYS"),
 
     /**
-     * The '<em><b>IF CHILDREN</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #IF_CHILDREN_VALUE
-     * @generated
-     * @ordered
-     */
+	 * The '<em><b>IF CHILDREN</b></em>' literal object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #IF_CHILDREN_VALUE
+	 * @generated
+	 * @ordered
+	 */
     IF_CHILDREN(2, "IF_CHILDREN", "IF_CHILDREN");
 
     /**
-     * The '<em><b>NEVER</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #NEVER
-     * @model
-     * @generated
-     * @ordered
-     */
+	 * The '<em><b>NEVER</b></em>' literal value.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #NEVER
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
     public static final int NEVER_VALUE = 0;
 
     /**
-     * The '<em><b>ALWAYS</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #ALWAYS
-     * @model
-     * @generated
-     * @ordered
-     */
+	 * The '<em><b>ALWAYS</b></em>' literal value.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #ALWAYS
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
     public static final int ALWAYS_VALUE = 1;
 
     /**
-     * The '<em><b>IF CHILDREN</b></em>' literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #IF_CHILDREN
-     * @model
-     * @generated
-     * @ordered
-     */
+	 * The '<em><b>IF CHILDREN</b></em>' literal value.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #IF_CHILDREN
+	 * @model
+	 * @generated
+	 * @ordered
+	 */
     public static final int IF_CHILDREN_VALUE = 2;
 
     /**
-     * An array of all the '<em><b>Header Separator Display Mode</b></em>' enumerators. <!-- begin-user-doc --> <!--
+	 * An array of all the '<em><b>Header Separator Display Mode</b></em>' enumerators.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
-    private static final HeaderSeparatorDisplayMode[] VALUES_ARRAY = new HeaderSeparatorDisplayMode[] { NEVER, ALWAYS, IF_CHILDREN, };
+	 * @generated
+	 */
+    private static final HeaderSeparatorDisplayMode[] VALUES_ARRAY = new HeaderSeparatorDisplayMode[]
+		{
+			NEVER,
+			ALWAYS,
+			IF_CHILDREN,
+		};
 
     /**
      * A public read-only list of all the '<em><b>Header Separator Display Mode</b></em>' enumerators. <!--
@@ -101,36 +105,33 @@ public enum HeaderSeparatorDisplayMode implements Enumerator {
     public static final List<HeaderSeparatorDisplayMode> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private final int value;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private final String name;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private final String literal;
 
     /**
-     * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Only this class can construct instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private HeaderSeparatorDisplayMode(int value, String name, String literal) {
-        this.value = value;
-        this.name = name;
-        this.literal = literal;
-    }
+		this.value = value;
+		this.name = name;
+		this.literal = literal;
+	}
 
     /**
      * Returns the '<em><b>Header Separator Display Mode</b></em>' literal with the specified literal value. <!--
@@ -142,33 +143,36 @@ public enum HeaderSeparatorDisplayMode implements Enumerator {
      * @generated
      */
     public static HeaderSeparatorDisplayMode get(String literal) {
-        for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            HeaderSeparatorDisplayMode result = VALUES_ARRAY[i];
-            if (result.toString().equals(literal)) {
-                return result;
-            }
-        }
-        return null;
-    }
+		for (int i = 0; i < VALUES_ARRAY.length; ++i)
+		{
+			HeaderSeparatorDisplayMode result = VALUES_ARRAY[i];
+			if (result.toString().equals(literal))
+			{
+				return result;
+			}
+		}
+		return null;
+	}
 
     /**
-     * Returns the '<em><b>Header Separator Display Mode</b></em>' literal with the specified name. <!-- begin-user-doc
+	 * Returns the '<em><b>Header Separator Display Mode</b></em>' literal with the specified name.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @param name
-     *            the name.
-     * @return the matching enumerator or <code>null</code>.
-     * @generated
-     */
+	 * @param name the name.
+	 * @return the matching enumerator or <code>null</code>.
+	 * @generated
+	 */
     public static HeaderSeparatorDisplayMode getByName(String name) {
-        for (int i = 0; i < VALUES_ARRAY.length; ++i) {
-            HeaderSeparatorDisplayMode result = VALUES_ARRAY[i];
-            if (result.getName().equals(name)) {
-                return result;
-            }
-        }
-        return null;
-    }
+		for (int i = 0; i < VALUES_ARRAY.length; ++i)
+		{
+			HeaderSeparatorDisplayMode result = VALUES_ARRAY[i];
+			if (result.getName().equals(name))
+			{
+				return result;
+			}
+		}
+		return null;
+	}
 
     /**
      * Returns the '<em><b>Header Separator Display Mode</b></em>' literal with the specified integer value. <!--
@@ -180,56 +184,51 @@ public enum HeaderSeparatorDisplayMode implements Enumerator {
      * @generated
      */
     public static HeaderSeparatorDisplayMode get(int value) {
-        switch (value) {
-            case NEVER_VALUE:
-                return NEVER;
-            case ALWAYS_VALUE:
-                return ALWAYS;
-            case IF_CHILDREN_VALUE:
-                return IF_CHILDREN;
-        }
-        return null;
-    }
+		switch (value)
+		{
+			case NEVER_VALUE: return NEVER;
+			case ALWAYS_VALUE: return ALWAYS;
+			case IF_CHILDREN_VALUE: return IF_CHILDREN;
+		}
+		return null;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int getValue() {
-        return this.value;
-    }
+	  return value;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+	  return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getLiteral() {
-        return this.literal;
-    }
+	  return literal;
+	}
 
     /**
-     * Returns the literal value of the enumerator, which is its string representation. <!-- begin-user-doc --> <!--
+	 * Returns the literal value of the enumerator, which is its string representation.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String toString() {
-        return this.literal;
-    }
+		return literal;
+	}
 
 } // HeaderSeparatorDisplayMode

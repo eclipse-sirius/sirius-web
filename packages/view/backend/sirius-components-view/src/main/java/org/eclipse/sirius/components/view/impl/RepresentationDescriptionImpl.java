@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,15 +26,11 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getDomainType <em>Domain
- * Type</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getPreconditionExpression
- * <em>Precondition Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getTitleExpression <em>Title
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getIconExpression <em>Icon
- * Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getDomainType <em>Domain Type</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getPreconditionExpression <em>Precondition Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getTitleExpression <em>Title Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getIconExpression <em>Icon Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -61,23 +57,23 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     protected String name = NAME_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getDomainType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDomainType()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String DOMAIN_TYPE_EDEFAULT = "";
 
     /**
-     * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getDomainType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDomainType()
+	 * @generated
+	 * @ordered
+	 */
     protected String domainType = DOMAIN_TYPE_EDEFAULT;
 
     /**
@@ -101,299 +97,286 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getTitleExpression() <em>Title Expression</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getTitleExpression() <em>Title Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getTitleExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTitleExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String TITLE_EXPRESSION_EDEFAULT = "aql:\'New Representation\'";
 
     /**
-     * The cached value of the '{@link #getTitleExpression() <em>Title Expression</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getTitleExpression() <em>Title Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getTitleExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTitleExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String titleExpression = TITLE_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getIconExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getIconExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String ICON_EXPRESSION_EDEFAULT = "";
 
     /**
-     * The cached value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getIconExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getIconExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String iconExpression = ICON_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RepresentationDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return ViewPackage.Literals.REPRESENTATION_DESCRIPTION;
-    }
+		return ViewPackage.Literals.REPRESENTATION_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+		return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__NAME, oldName, this.name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__NAME, oldName, name));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getDomainType() {
-        return this.domainType;
-    }
+		return domainType;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setDomainType(String newDomainType) {
-        String oldDomainType = this.domainType;
-        this.domainType = newDomainType;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE, oldDomainType, this.domainType));
-    }
+		String oldDomainType = domainType;
+		domainType = newDomainType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE, oldDomainType, domainType));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getPreconditionExpression() {
-        return this.preconditionExpression;
-    }
+		return preconditionExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setPreconditionExpression(String newPreconditionExpression) {
-        String oldPreconditionExpression = this.preconditionExpression;
-        this.preconditionExpression = newPreconditionExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
-    }
+		String oldPreconditionExpression = preconditionExpression;
+		preconditionExpression = newPreconditionExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, preconditionExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getTitleExpression() {
-        return this.titleExpression;
-    }
+		return titleExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setTitleExpression(String newTitleExpression) {
-        String oldTitleExpression = this.titleExpression;
-        this.titleExpression = newTitleExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION, oldTitleExpression, this.titleExpression));
-    }
+		String oldTitleExpression = titleExpression;
+		titleExpression = newTitleExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION, oldTitleExpression, titleExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIconExpression() {
-        return this.iconExpression;
-    }
+		return iconExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIconExpression(String newIconExpression) {
-        String oldIconExpression = this.iconExpression;
-        this.iconExpression = newIconExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION, oldIconExpression, this.iconExpression));
-    }
+		String oldIconExpression = iconExpression;
+		iconExpression = newIconExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION, oldIconExpression, iconExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-                return this.getName();
-            case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
-                return this.getDomainType();
-            case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
-                return this.getPreconditionExpression();
-            case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
-                return this.getTitleExpression();
-            case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
-                return this.getIconExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+				return getName();
+			case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+				return getDomainType();
+			case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+				return getPreconditionExpression();
+			case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
+				return getTitleExpression();
+			case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
+				return getIconExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-                this.setName((String) newValue);
-                return;
-            case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
-                this.setDomainType((String) newValue);
-                return;
-            case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression((String) newValue);
-                return;
-            case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
-                this.setTitleExpression((String) newValue);
-                return;
-            case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
-                this.setIconExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+				setName((String)newValue);
+				return;
+			case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+				setDomainType((String)newValue);
+				return;
+			case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+				setPreconditionExpression((String)newValue);
+				return;
+			case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
+				setTitleExpression((String)newValue);
+				return;
+			case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
+				setIconExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
-            case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
-                this.setDomainType(DOMAIN_TYPE_EDEFAULT);
-                return;
-            case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
-                return;
-            case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
-                this.setTitleExpression(TITLE_EXPRESSION_EDEFAULT);
-                return;
-            case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
-                this.setIconExpression(ICON_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+				setDomainType(DOMAIN_TYPE_EDEFAULT);
+				return;
+			case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+				setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+				return;
+			case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
+				setTitleExpression(TITLE_EXPRESSION_EDEFAULT);
+				return;
+			case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
+				setIconExpression(ICON_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
-                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
-            case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
-                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
-            case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
-                return TITLE_EXPRESSION_EDEFAULT == null ? this.titleExpression != null : !TITLE_EXPRESSION_EDEFAULT.equals(this.titleExpression);
-            case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
-                return ICON_EXPRESSION_EDEFAULT == null ? this.iconExpression != null : !ICON_EXPRESSION_EDEFAULT.equals(this.iconExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case ViewPackage.REPRESENTATION_DESCRIPTION__DOMAIN_TYPE:
+				return DOMAIN_TYPE_EDEFAULT == null ? domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(domainType);
+			case ViewPackage.REPRESENTATION_DESCRIPTION__PRECONDITION_EXPRESSION:
+				return PRECONDITION_EXPRESSION_EDEFAULT == null ? preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(preconditionExpression);
+			case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
+				return TITLE_EXPRESSION_EDEFAULT == null ? titleExpression != null : !TITLE_EXPRESSION_EDEFAULT.equals(titleExpression);
+			case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
+				return ICON_EXPRESSION_EDEFAULT == null ? iconExpression != null : !ICON_EXPRESSION_EDEFAULT.equals(iconExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        String result = super.toString() + " (name: " +
-                this.name +
-                ", domainType: " +
-                this.domainType +
-                ", preconditionExpression: " +
-                this.preconditionExpression +
-                ", titleExpression: " +
-                this.titleExpression +
-                ", iconExpression: " +
-                this.iconExpression +
-                ')';
-        return result;
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", domainType: ");
+		result.append(domainType);
+		result.append(", preconditionExpression: ");
+		result.append(preconditionExpression);
+		result.append(", titleExpression: ");
+		result.append(titleExpression);
+		result.append(", iconExpression: ");
+		result.append(iconExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // RepresentationDescriptionImpl

@@ -19,8 +19,8 @@ package org.eclipse.sirius.components.view;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.For#getExpression <em>Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.For#getIteratorName <em>Iterator Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.For#getExpression <em>Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.For#getIteratorName <em>Iterator Name</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getFor()
@@ -29,47 +29,43 @@ package org.eclipse.sirius.components.view;
  */
 public interface For extends Operation {
     /**
-     * Returns the value of the '<em><b>Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Expression</em>' attribute.
-     * @see #setExpression(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getFor_Expression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Expression</em>' attribute.
+	 * @see #setExpression(String)
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getFor_Expression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
+	 * @generated
+	 */
     String getExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.For#getExpression <em>Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Expression</em>' attribute.
-     * @see #getExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.For#getExpression <em>Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Expression</em>' attribute.
+	 * @see #getExpression()
+	 * @generated
+	 */
     void setExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Iterator Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Iterator Name</em>' attribute.
-     * @see #setIteratorName(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getFor_IteratorName()
-     * @model required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Iterator Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Iterator Name</em>' attribute.
+	 * @see #setIteratorName(String)
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getFor_IteratorName()
+	 * @model required="true"
+	 * @generated
+	 */
     String getIteratorName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.For#getIteratorName <em>Iterator Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Iterator Name</em>' attribute.
-     * @see #getIteratorName()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.For#getIteratorName <em>Iterator Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Iterator Name</em>' attribute.
+	 * @see #getIteratorName()
+	 * @generated
+	 */
     void setIteratorName(String value);
 
 } // For

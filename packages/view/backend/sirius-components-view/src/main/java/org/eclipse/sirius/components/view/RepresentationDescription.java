@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,14 +22,11 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getDomainType <em>Domain Type</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getPreconditionExpression <em>Precondition
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression <em>Title
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression <em>Icon
- * Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getDomainType <em>Domain Type</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getPreconditionExpression <em>Precondition Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression <em>Title Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression <em>Icon Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription()
@@ -38,26 +35,24 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface RepresentationDescription extends EObject {
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. The default value is
-     * <code>"NewRepresentationDescription"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_Name()
-     * @model default="NewRepresentationDescription" dataType="org.eclipse.sirius.components.view.Identifier"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * The default value is <code>"NewRepresentationDescription"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_Name()
+	 * @model default="NewRepresentationDescription" dataType="org.eclipse.sirius.components.view.Identifier"
+	 * @generated
+	 */
     String getName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getName
-     * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
     void setName(String value);
 
     /**
@@ -73,61 +68,54 @@ public interface RepresentationDescription extends EObject {
     String getDomainType();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getDomainType
-     * <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Domain Type</em>' attribute.
-     * @see #getDomainType()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getDomainType <em>Domain Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Domain Type</em>' attribute.
+	 * @see #getDomainType()
+	 * @generated
+	 */
     void setDomainType(String value);
 
     /**
-     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. The default value is
-     * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Precondition Expression</em>' attribute.
-     * @see #setPreconditionExpression(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_PreconditionExpression()
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute.
+	 * The default value is <code>""</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Precondition Expression</em>' attribute.
+	 * @see #setPreconditionExpression(String)
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_PreconditionExpression()
+	 * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getPreconditionExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getPreconditionExpression <em>Precondition
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Precondition Expression</em>' attribute.
-     * @see #getPreconditionExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getPreconditionExpression <em>Precondition Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Precondition Expression</em>' attribute.
+	 * @see #getPreconditionExpression()
+	 * @generated
+	 */
     void setPreconditionExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Title Expression</b></em>' attribute. The default value is
-     * <code>"aql:\'New Representation\'"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Title Expression</em>' attribute.
-     * @see #setTitleExpression(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_TitleExpression()
-     * @model default="aql:\'New Representation\'" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Title Expression</b></em>' attribute.
+	 * The default value is <code>"aql:\'New Representation\'"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Title Expression</em>' attribute.
+	 * @see #setTitleExpression(String)
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_TitleExpression()
+	 * @model default="aql:\'New Representation\'" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getTitleExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression
-     * <em>Title Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Title Expression</em>' attribute.
-     * @see #getTitleExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getTitleExpression <em>Title Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Title Expression</em>' attribute.
+	 * @see #getTitleExpression()
+	 * @generated
+	 */
     void setTitleExpression(String value);
 
     /**
@@ -143,14 +131,12 @@ public interface RepresentationDescription extends EObject {
     String getIconExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression
-     * <em>Icon Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Icon Expression</em>' attribute.
-     * @see #getIconExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression <em>Icon Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Icon Expression</em>' attribute.
+	 * @see #getIconExpression()
+	 * @generated
+	 */
     void setIconExpression(String value);
 
 } // RepresentationDescription

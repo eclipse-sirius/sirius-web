@@ -22,12 +22,10 @@ import org.eclipse.sirius.components.view.UserColor;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#getBackgroundColor <em>Background
- * Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#getForegroundColor <em>Foreground
- * Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#isItalic <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#isBold <em>Bold</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#getBackgroundColor <em>Background Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#getForegroundColor <em>Foreground Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#isItalic <em>Italic</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#isBold <em>Bold</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getDateTimeDescriptionStyle()
@@ -48,14 +46,12 @@ public interface DateTimeDescriptionStyle extends WidgetDescriptionStyle, Widget
     UserColor getBackgroundColor();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#getBackgroundColor
-     * <em>Background Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Background Color</em>' reference.
-     * @see #getBackgroundColor()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#getBackgroundColor <em>Background Color</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Background Color</em>' reference.
+	 * @see #getBackgroundColor()
+	 * @generated
+	 */
     void setBackgroundColor(UserColor value);
 
     /**
@@ -71,14 +67,12 @@ public interface DateTimeDescriptionStyle extends WidgetDescriptionStyle, Widget
     UserColor getForegroundColor();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#getForegroundColor
-     * <em>Foreground Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Foreground Color</em>' reference.
-     * @see #getForegroundColor()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#getForegroundColor <em>Foreground Color</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Foreground Color</em>' reference.
+	 * @see #getForegroundColor()
+	 * @generated
+	 */
     void setForegroundColor(UserColor value);
 
     /**
@@ -94,14 +88,12 @@ public interface DateTimeDescriptionStyle extends WidgetDescriptionStyle, Widget
     boolean isItalic();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#isItalic
-     * <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Italic</em>' attribute.
-     * @see #isItalic()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#isItalic <em>Italic</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Italic</em>' attribute.
+	 * @see #isItalic()
+	 * @generated
+	 */
     void setItalic(boolean value);
 
     /**
@@ -117,14 +109,12 @@ public interface DateTimeDescriptionStyle extends WidgetDescriptionStyle, Widget
     boolean isBold();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#isBold
-     * <em>Bold</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Bold</em>' attribute.
-     * @see #isBold()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle#isBold <em>Bold</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Bold</em>' attribute.
+	 * @see #isBold()
+	 * @generated
+	 */
     void setBold(boolean value);
 
 } // DateTimeDescriptionStyle

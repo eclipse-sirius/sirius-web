@@ -22,10 +22,9 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getPosition <em>Position</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getStyle <em>Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getConditionalStyles <em>Conditional
- * Styles</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getPosition <em>Position</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getConditionalStyles <em>Conditional Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getOutsideLabelDescription()
@@ -35,29 +34,27 @@ import org.eclipse.emf.common.util.EList;
 public interface OutsideLabelDescription extends LabelDescription {
 
     /**
-     * Returns the value of the '<em><b>Position</b></em>' attribute. The literals are from the enumeration
-     * {@link org.eclipse.sirius.components.view.diagram.OutsideLabelPosition}. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Position</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.sirius.components.view.diagram.OutsideLabelPosition}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Position</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.OutsideLabelPosition
-     * @see #setPosition(OutsideLabelPosition)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getOutsideLabelDescription_Position()
-     * @model required="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Position</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.OutsideLabelPosition
+	 * @see #setPosition(OutsideLabelPosition)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getOutsideLabelDescription_Position()
+	 * @model required="true"
+	 * @generated
+	 */
     OutsideLabelPosition getPosition();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getPosition
-     * <em>Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Position</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.OutsideLabelPosition
-     * @see #getPosition()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getPosition <em>Position</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Position</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.OutsideLabelPosition
+	 * @see #getPosition()
+	 * @generated
+	 */
     void setPosition(OutsideLabelPosition value);
 
     /**
@@ -73,26 +70,24 @@ public interface OutsideLabelDescription extends LabelDescription {
     OutsideLabelStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getStyle
-     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription#getStyle <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Style</em>' containment reference.
+	 * @see #getStyle()
+	 * @generated
+	 */
     void setStyle(OutsideLabelStyle value);
 
     /**
-     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle}. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getOutsideLabelDescription_ConditionalStyles()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getOutsideLabelDescription_ConditionalStyles()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<ConditionalOutsideLabelStyle> getConditionalStyles();
 
 } // OutsideLabelDescription

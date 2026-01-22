@@ -25,49 +25,58 @@ import org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry} object. <!-- begin-user-doc --> <!--
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry} object.
+ * <!-- begin-user-doc --> <!--
  * end-user-doc -->
- *
  * @generated
  */
 public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextMenuEntryItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public CustomTreeItemContextMenuEntryItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addContributionIdPropertyDescriptor(object);
-            this.addWithImpactAnalysisPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addContributionIdPropertyDescriptor(object);
+			addWithImpactAnalysisPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Contribution Id feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Contribution Id feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addContributionIdPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CustomTreeItemContextMenuEntry_contributionId_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CustomTreeItemContextMenuEntry_contributionId_feature", "_UI_CustomTreeItemContextMenuEntry_type"),
-                TreePackage.Literals.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_CustomTreeItemContextMenuEntry_contributionId_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CustomTreeItemContextMenuEntry_contributionId_feature", "_UI_CustomTreeItemContextMenuEntry_type"),
+				 TreePackage.Literals.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the With Impact Analysis feature. <!-- begin-user-doc --> <!-- end-user-doc
@@ -76,42 +85,52 @@ public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextM
      * @generated
      */
     protected void addWithImpactAnalysisPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CustomTreeItemContextMenuEntry_withImpactAnalysis_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CustomTreeItemContextMenuEntry_withImpactAnalysis_feature", "_UI_CustomTreeItemContextMenuEntry_type"),
-                TreePackage.Literals.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_CustomTreeItemContextMenuEntry_withImpactAnalysis_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CustomTreeItemContextMenuEntry_withImpactAnalysis_feature", "_UI_CustomTreeItemContextMenuEntry_type"),
+				 TreePackage.Literals.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This returns CustomTreeItemContextMenuEntry.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns CustomTreeItemContextMenuEntry.gif.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/CustomTreeItemContextMenuEntry"));
-    }
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/CustomTreeItemContextMenuEntry"));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((CustomTreeItemContextMenuEntry) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_CustomTreeItemContextMenuEntry_type") : this.getString("_UI_CustomTreeItemContextMenuEntry_type") + " " + label;
-    }
+		String label = ((CustomTreeItemContextMenuEntry)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_CustomTreeItemContextMenuEntry_type") :
+			getString("_UI_CustomTreeItemContextMenuEntry_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -122,26 +141,27 @@ public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextM
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(CustomTreeItemContextMenuEntry.class)) {
-            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
-            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(CustomTreeItemContextMenuEntry.class))
+		{
+			case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
+			case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
 }

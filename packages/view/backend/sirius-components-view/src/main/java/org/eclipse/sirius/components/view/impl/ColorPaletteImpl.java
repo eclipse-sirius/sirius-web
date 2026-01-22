@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,8 +33,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.impl.ColorPaletteImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ColorPaletteImpl#getColors <em>Colors</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.ColorPaletteImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.ColorPaletteImpl#getColors <em>Colors</em>}</li>
  * </ul>
  *
  * @generated
@@ -61,169 +61,163 @@ public class ColorPaletteImpl extends MinimalEObjectImpl.Container implements Co
     protected String name = NAME_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getColors() <em>Colors</em>}' containment reference list. <!-- begin-user-doc
+	 * The cached value of the '{@link #getColors() <em>Colors</em>}' containment reference list.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getColors()
-     * @generated
-     * @ordered
-     */
+	 * @see #getColors()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<UserColor> colors;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ColorPaletteImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return ViewPackage.Literals.COLOR_PALETTE;
-    }
+		return ViewPackage.Literals.COLOR_PALETTE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+		return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.COLOR_PALETTE__NAME, oldName, this.name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.COLOR_PALETTE__NAME, oldName, name));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<UserColor> getColors() {
-        if (this.colors == null) {
-            this.colors = new EObjectContainmentEList<>(UserColor.class, this, ViewPackage.COLOR_PALETTE__COLORS);
-        }
-        return this.colors;
-    }
+		if (colors == null)
+		{
+			colors = new EObjectContainmentEList<UserColor>(UserColor.class, this, ViewPackage.COLOR_PALETTE__COLORS);
+		}
+		return colors;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case ViewPackage.COLOR_PALETTE__COLORS:
-                return ((InternalEList<?>) this.getColors()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.COLOR_PALETTE__COLORS:
+				return ((InternalEList<?>)getColors()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case ViewPackage.COLOR_PALETTE__NAME:
-                return this.getName();
-            case ViewPackage.COLOR_PALETTE__COLORS:
-                return this.getColors();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.COLOR_PALETTE__NAME:
+				return getName();
+			case ViewPackage.COLOR_PALETTE__COLORS:
+				return getColors();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case ViewPackage.COLOR_PALETTE__NAME:
-                this.setName((String) newValue);
-                return;
-            case ViewPackage.COLOR_PALETTE__COLORS:
-                this.getColors().clear();
-                this.getColors().addAll((Collection<? extends UserColor>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.COLOR_PALETTE__NAME:
+				setName((String)newValue);
+				return;
+			case ViewPackage.COLOR_PALETTE__COLORS:
+				getColors().clear();
+				getColors().addAll((Collection<? extends UserColor>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case ViewPackage.COLOR_PALETTE__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
-            case ViewPackage.COLOR_PALETTE__COLORS:
-                this.getColors().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.COLOR_PALETTE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case ViewPackage.COLOR_PALETTE__COLORS:
+				getColors().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case ViewPackage.COLOR_PALETTE__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case ViewPackage.COLOR_PALETTE__COLORS:
-                return this.colors != null && !this.colors.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.COLOR_PALETTE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case ViewPackage.COLOR_PALETTE__COLORS:
+				return colors != null && !colors.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ColorPaletteImpl

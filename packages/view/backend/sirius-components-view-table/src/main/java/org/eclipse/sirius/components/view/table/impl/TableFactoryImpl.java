@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.sirius.components.view.table.*;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
 import org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription;
@@ -31,186 +32,169 @@ import org.eclipse.sirius.components.view.table.TablePackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
  * @generated
  */
 public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
 
     /**
-     * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates an instance of the factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public TableFactoryImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates the default factory implementation.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public static TableFactory init() {
-        try {
-            TableFactory theTableFactory = (TableFactory) EPackage.Registry.INSTANCE.getEFactory(TablePackage.eNS_URI);
-            if (theTableFactory != null) {
-                return theTableFactory;
-            }
-        } catch (Exception exception) {
-            EcorePlugin.INSTANCE.log(exception);
-        }
-        return new TableFactoryImpl();
-    }
+		try
+		{
+			TableFactory theTableFactory = (TableFactory)EPackage.Registry.INSTANCE.getEFactory(TablePackage.eNS_URI);
+			if (theTableFactory != null)
+			{
+				return theTableFactory;
+			}
+		}
+		catch (Exception exception)
+		{
+			EcorePlugin.INSTANCE.log(exception);
+		}
+		return new TableFactoryImpl();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EObject create(EClass eClass) {
-        switch (eClass.getClassifierID()) {
-            case TablePackage.TABLE_DESCRIPTION:
-                return this.createTableDescription();
-            case TablePackage.COLUMN_DESCRIPTION:
-                return this.createColumnDescription();
-            case TablePackage.ROW_DESCRIPTION:
-                return this.createRowDescription();
-            case TablePackage.CELL_DESCRIPTION:
-                return this.createCellDescription();
-            case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION:
-                return this.createCellTextfieldWidgetDescription();
-            case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION:
-                return this.createCellLabelWidgetDescription();
-            case TablePackage.CELL_TEXTAREA_WIDGET_DESCRIPTION:
-                return this.createCellTextareaWidgetDescription();
-            case TablePackage.ROW_CONTEXT_MENU_ENTRY:
-                return this.createRowContextMenuEntry();
-            case TablePackage.ROW_FILTER_DESCRIPTION:
-                return this.createRowFilterDescription();
-            default:
-                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-        }
-    }
+		switch (eClass.getClassifierID())
+		{
+			case TablePackage.TABLE_DESCRIPTION: return createTableDescription();
+			case TablePackage.COLUMN_DESCRIPTION: return createColumnDescription();
+			case TablePackage.ROW_DESCRIPTION: return createRowDescription();
+			case TablePackage.CELL_DESCRIPTION: return createCellDescription();
+			case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION: return createCellTextfieldWidgetDescription();
+			case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION: return createCellLabelWidgetDescription();
+			case TablePackage.ROW_CONTEXT_MENU_ENTRY: return createRowContextMenuEntry();
+			case TablePackage.CELL_TEXTAREA_WIDGET_DESCRIPTION: return createCellTextareaWidgetDescription();
+			case TablePackage.ROW_FILTER_DESCRIPTION: return createRowFilterDescription();
+			default:
+				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		}
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public TableDescription createTableDescription() {
-        TableDescriptionImpl tableDescription = new TableDescriptionImpl();
-        return tableDescription;
-    }
+		TableDescriptionImpl tableDescription = new TableDescriptionImpl();
+		return tableDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ColumnDescription createColumnDescription() {
-        ColumnDescriptionImpl columnDescription = new ColumnDescriptionImpl();
-        return columnDescription;
-    }
+		ColumnDescriptionImpl columnDescription = new ColumnDescriptionImpl();
+		return columnDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public RowDescription createRowDescription() {
-        RowDescriptionImpl rowDescription = new RowDescriptionImpl();
-        return rowDescription;
-    }
+		RowDescriptionImpl rowDescription = new RowDescriptionImpl();
+		return rowDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public CellDescription createCellDescription() {
-        CellDescriptionImpl cellDescription = new CellDescriptionImpl();
-        return cellDescription;
-    }
+		CellDescriptionImpl cellDescription = new CellDescriptionImpl();
+		return cellDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public CellTextfieldWidgetDescription createCellTextfieldWidgetDescription() {
-        CellTextfieldWidgetDescriptionImpl cellTextfieldWidgetDescription = new CellTextfieldWidgetDescriptionImpl();
-        return cellTextfieldWidgetDescription;
-    }
+		CellTextfieldWidgetDescriptionImpl cellTextfieldWidgetDescription = new CellTextfieldWidgetDescriptionImpl();
+		return cellTextfieldWidgetDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public CellLabelWidgetDescription createCellLabelWidgetDescription() {
-        CellLabelWidgetDescriptionImpl cellLabelWidgetDescription = new CellLabelWidgetDescriptionImpl();
-        return cellLabelWidgetDescription;
-    }
+		CellLabelWidgetDescriptionImpl cellLabelWidgetDescription = new CellLabelWidgetDescriptionImpl();
+		return cellLabelWidgetDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public CellTextareaWidgetDescription createCellTextareaWidgetDescription() {
-        CellTextareaWidgetDescriptionImpl cellTextareaWidgetDescription = new CellTextareaWidgetDescriptionImpl();
-        return cellTextareaWidgetDescription;
-    }
+		CellTextareaWidgetDescriptionImpl cellTextareaWidgetDescription = new CellTextareaWidgetDescriptionImpl();
+		return cellTextareaWidgetDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public RowFilterDescription createRowFilterDescription() {
-        RowFilterDescriptionImpl rowFilterDescription = new RowFilterDescriptionImpl();
-        return rowFilterDescription;
-    }
+		RowFilterDescriptionImpl rowFilterDescription = new RowFilterDescriptionImpl();
+		return rowFilterDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public RowContextMenuEntry createRowContextMenuEntry() {
-        RowContextMenuEntryImpl rowContextMenuEntry = new RowContextMenuEntryImpl();
-        return rowContextMenuEntry;
-    }
+		RowContextMenuEntryImpl rowContextMenuEntry = new RowContextMenuEntryImpl();
+		return rowContextMenuEntry;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public TablePackage getTablePackage() {
-        return (TablePackage) this.getEPackage();
-    }
+		return (TablePackage)getEPackage();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @deprecated
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @deprecated
+	 * @generated
+	 */
     @Deprecated
     public static TablePackage getPackage() {
-        return TablePackage.eINSTANCE;
-    }
+		return TablePackage.eINSTANCE;
+	}
 
 } // TableFactoryImpl

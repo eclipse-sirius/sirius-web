@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.view.Operation;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription#getBody <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.table.TablePackage#getCellTextareaWidgetDescription()
@@ -32,14 +32,14 @@ import org.eclipse.sirius.components.view.Operation;
  */
 public interface CellTextareaWidgetDescription extends CellWidgetDescription {
     /**
-     * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Body</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.table.TablePackage#getCellTextareaWidgetDescription_Body()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Body</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.Operation}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Body</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.table.TablePackage#getCellTextareaWidgetDescription_Body()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Operation> getBody();
 
 } // CellTextareaWidgetDescription

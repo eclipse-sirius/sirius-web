@@ -21,8 +21,8 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.Tag#getKey <em>Key</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.Tag#getValue <em>Value</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.Tag#getKey <em>Key</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.Tag#getValue <em>Value</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTag()
@@ -31,14 +31,14 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Tag extends EObject {
     /**
-     * Returns the value of the '<em><b>Key</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Key</em>' attribute.
-     * @see #setKey(String)
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTag_Key()
-     * @model required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Key</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Key</em>' attribute.
+	 * @see #setKey(String)
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTag_Key()
+	 * @model required="true"
+	 * @generated
+	 */
     String getKey();
 
     /**
@@ -53,14 +53,14 @@ public interface Tag extends EObject {
     void setKey(String value);
 
     /**
-     * Returns the value of the '<em><b>Value</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Value</em>' attribute.
-     * @see #setValue(String)
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTag_Value()
-     * @model required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Value</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Value</em>' attribute.
+	 * @see #setValue(String)
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTag_Value()
+	 * @model required="true"
+	 * @generated
+	 */
     String getValue();
 
     /**

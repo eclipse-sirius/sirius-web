@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,31 +24,31 @@ import org.eclipse.sirius.components.domain.Feature;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.domain.impl.FeatureImpl#isOptional <em>Optional</em>}</li>
- * <li>{@link org.eclipse.sirius.components.domain.impl.FeatureImpl#isMany <em>Many</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.impl.FeatureImpl#isOptional <em>Optional</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.impl.FeatureImpl#isMany <em>Many</em>}</li>
  * </ul>
  *
  * @generated
  */
 public abstract class FeatureImpl extends NamedElementImpl implements Feature {
     /**
-     * The default value of the '{@link #isOptional() <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isOptional()
-     * @generated
-     * @ordered
-     */
+	 * @see #isOptional()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean OPTIONAL_EDEFAULT = true;
 
     /**
-     * The cached value of the '{@link #isOptional() <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isOptional() <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isOptional()
-     * @generated
-     * @ordered
-     */
+	 * @see #isOptional()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean optional = OPTIONAL_EDEFAULT;
 
     /**
@@ -72,155 +72,147 @@ public abstract class FeatureImpl extends NamedElementImpl implements Feature {
     protected boolean many = MANY_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FeatureImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DomainPackage.Literals.FEATURE;
-    }
+		return DomainPackage.Literals.FEATURE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isOptional() {
-        return this.optional;
-    }
+		return optional;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setOptional(boolean newOptional) {
-        boolean oldOptional = this.optional;
-        this.optional = newOptional;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.FEATURE__OPTIONAL, oldOptional, this.optional));
-    }
+		boolean oldOptional = optional;
+		optional = newOptional;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.FEATURE__OPTIONAL, oldOptional, optional));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isMany() {
-        return this.many;
-    }
+		return many;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setMany(boolean newMany) {
-        boolean oldMany = this.many;
-        this.many = newMany;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.FEATURE__MANY, oldMany, this.many));
-    }
+		boolean oldMany = many;
+		many = newMany;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.FEATURE__MANY, oldMany, many));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-        case DomainPackage.FEATURE__OPTIONAL:
-            return this.isOptional();
-        case DomainPackage.FEATURE__MANY:
-            return this.isMany();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.FEATURE__OPTIONAL:
+				return isOptional();
+			case DomainPackage.FEATURE__MANY:
+				return isMany();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-        case DomainPackage.FEATURE__OPTIONAL:
-            this.setOptional((Boolean) newValue);
-            return;
-        case DomainPackage.FEATURE__MANY:
-            this.setMany((Boolean) newValue);
-            return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.FEATURE__OPTIONAL:
+				setOptional((Boolean)newValue);
+				return;
+			case DomainPackage.FEATURE__MANY:
+				setMany((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-        case DomainPackage.FEATURE__OPTIONAL:
-            this.setOptional(OPTIONAL_EDEFAULT);
-            return;
-        case DomainPackage.FEATURE__MANY:
-            this.setMany(MANY_EDEFAULT);
-            return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.FEATURE__OPTIONAL:
+				setOptional(OPTIONAL_EDEFAULT);
+				return;
+			case DomainPackage.FEATURE__MANY:
+				setMany(MANY_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-        case DomainPackage.FEATURE__OPTIONAL:
-            return this.optional != OPTIONAL_EDEFAULT;
-        case DomainPackage.FEATURE__MANY:
-            return this.many != MANY_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.FEATURE__OPTIONAL:
+				return optional != OPTIONAL_EDEFAULT;
+			case DomainPackage.FEATURE__MANY:
+				return many != MANY_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (optional: ");
-        result.append(this.optional);
-        result.append(", many: ");
-        result.append(this.many);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (optional: ");
+		result.append(optional);
+		result.append(", many: ");
+		result.append(many);
+		result.append(')');
+		return result.toString();
+	}
 
 } // FeatureImpl

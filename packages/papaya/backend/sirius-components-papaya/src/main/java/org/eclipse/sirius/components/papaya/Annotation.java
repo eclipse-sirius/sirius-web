@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.Annotation#getFields <em>Fields</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.Annotation#getFields <em>Fields</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getAnnotation()
@@ -31,13 +31,13 @@ import org.eclipse.emf.common.util.EList;
 public interface Annotation extends Type {
 
     /**
-     * Returns the value of the '<em><b>Fields</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.AnnotationField}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Fields</em>' containment reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getAnnotation_Fields()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Fields</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.papaya.AnnotationField}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Fields</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getAnnotation_Fields()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<AnnotationField> getFields();
 } // Annotation

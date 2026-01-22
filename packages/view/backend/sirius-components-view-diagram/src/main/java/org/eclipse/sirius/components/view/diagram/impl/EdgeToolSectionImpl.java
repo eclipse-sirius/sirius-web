@@ -51,109 +51,107 @@ public class EdgeToolSectionImpl extends ToolSectionImpl implements EdgeToolSect
     protected EList<NodeTool> nodeTools;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EdgeToolSectionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.EDGE_TOOL_SECTION;
-    }
+		return DiagramPackage.Literals.EDGE_TOOL_SECTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeTool> getNodeTools() {
-        if (this.nodeTools == null) {
-            this.nodeTools = new EObjectContainmentEList<>(NodeTool.class, this, DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS);
-        }
-        return this.nodeTools;
-    }
+		if (nodeTools == null)
+		{
+			nodeTools = new EObjectContainmentEList<NodeTool>(NodeTool.class, this, DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS);
+		}
+		return nodeTools;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
-                return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
+				return ((InternalEList<?>)getNodeTools()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
-                return this.getNodeTools();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
+				return getNodeTools();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
-                this.getNodeTools().clear();
-                this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
+				getNodeTools().clear();
+				getNodeTools().addAll((Collection<? extends NodeTool>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
-                this.getNodeTools().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
+				getNodeTools().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
-                return this.nodeTools != null && !this.nodeTools.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.EDGE_TOOL_SECTION__NODE_TOOLS:
+				return nodeTools != null && !nodeTools.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // EdgeToolSectionImpl

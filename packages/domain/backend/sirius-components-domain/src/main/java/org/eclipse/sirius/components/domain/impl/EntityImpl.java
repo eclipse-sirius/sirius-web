@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,10 +34,10 @@ import org.eclipse.sirius.components.domain.Relation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.domain.impl.EntityImpl#getAttributes <em>Attributes</em>}</li>
- * <li>{@link org.eclipse.sirius.components.domain.impl.EntityImpl#getRelations <em>Relations</em>}</li>
- * <li>{@link org.eclipse.sirius.components.domain.impl.EntityImpl#getSuperTypes <em>Super Types</em>}</li>
- * <li>{@link org.eclipse.sirius.components.domain.impl.EntityImpl#isAbstract <em>Abstract</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.impl.EntityImpl#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.impl.EntityImpl#getRelations <em>Relations</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.impl.EntityImpl#getSuperTypes <em>Super Types</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.impl.EntityImpl#isAbstract <em>Abstract</em>}</li>
  * </ul>
  *
  * @generated
@@ -64,239 +64,233 @@ public class EntityImpl extends NamedElementImpl implements Entity {
     protected EList<Relation> relations;
 
     /**
-     * The cached value of the '{@link #getSuperTypes() <em>Super Types</em>}' reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getSuperTypes() <em>Super Types</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getSuperTypes()
-     * @generated
-     * @ordered
-     */
+	 * @see #getSuperTypes()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Entity> superTypes;
 
     /**
-     * The default value of the '{@link #isAbstract() <em>Abstract</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isAbstract() <em>Abstract</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isAbstract()
-     * @generated
-     * @ordered
-     */
+	 * @see #isAbstract()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean ABSTRACT_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isAbstract() <em>Abstract</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isAbstract() <em>Abstract</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isAbstract()
-     * @generated
-     * @ordered
-     */
+	 * @see #isAbstract()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean abstract_ = ABSTRACT_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EntityImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DomainPackage.Literals.ENTITY;
-    }
+		return DomainPackage.Literals.ENTITY;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Attribute> getAttributes() {
-        if (this.attributes == null) {
-            this.attributes = new EObjectContainmentEList<>(Attribute.class, this, DomainPackage.ENTITY__ATTRIBUTES);
-        }
-        return this.attributes;
-    }
+		if (attributes == null)
+		{
+			attributes = new EObjectContainmentEList<Attribute>(Attribute.class, this, DomainPackage.ENTITY__ATTRIBUTES);
+		}
+		return attributes;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Relation> getRelations() {
-        if (this.relations == null) {
-            this.relations = new EObjectContainmentEList<>(Relation.class, this, DomainPackage.ENTITY__RELATIONS);
-        }
-        return this.relations;
-    }
+		if (relations == null)
+		{
+			relations = new EObjectContainmentEList<Relation>(Relation.class, this, DomainPackage.ENTITY__RELATIONS);
+		}
+		return relations;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Entity> getSuperTypes() {
-        if (this.superTypes == null) {
-            this.superTypes = new EObjectResolvingEList<>(Entity.class, this, DomainPackage.ENTITY__SUPER_TYPES);
-        }
-        return this.superTypes;
-    }
+		if (superTypes == null)
+		{
+			superTypes = new EObjectResolvingEList<Entity>(Entity.class, this, DomainPackage.ENTITY__SUPER_TYPES);
+		}
+		return superTypes;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isAbstract() {
-        return this.abstract_;
-    }
+		return abstract_;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setAbstract(boolean newAbstract) {
-        boolean oldAbstract = this.abstract_;
-        this.abstract_ = newAbstract;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ENTITY__ABSTRACT, oldAbstract, this.abstract_));
-    }
+		boolean oldAbstract = abstract_;
+		abstract_ = newAbstract;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.ENTITY__ABSTRACT, oldAbstract, abstract_));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-        case DomainPackage.ENTITY__ATTRIBUTES:
-            return ((InternalEList<?>) this.getAttributes()).basicRemove(otherEnd, msgs);
-        case DomainPackage.ENTITY__RELATIONS:
-            return ((InternalEList<?>) this.getRelations()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.ENTITY__ATTRIBUTES:
+				return ((InternalEList<?>)getAttributes()).basicRemove(otherEnd, msgs);
+			case DomainPackage.ENTITY__RELATIONS:
+				return ((InternalEList<?>)getRelations()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-        case DomainPackage.ENTITY__ATTRIBUTES:
-            return this.getAttributes();
-        case DomainPackage.ENTITY__RELATIONS:
-            return this.getRelations();
-        case DomainPackage.ENTITY__SUPER_TYPES:
-            return this.getSuperTypes();
-        case DomainPackage.ENTITY__ABSTRACT:
-            return this.isAbstract();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.ENTITY__ATTRIBUTES:
+				return getAttributes();
+			case DomainPackage.ENTITY__RELATIONS:
+				return getRelations();
+			case DomainPackage.ENTITY__SUPER_TYPES:
+				return getSuperTypes();
+			case DomainPackage.ENTITY__ABSTRACT:
+				return isAbstract();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-        case DomainPackage.ENTITY__ATTRIBUTES:
-            this.getAttributes().clear();
-            this.getAttributes().addAll((Collection<? extends Attribute>) newValue);
-            return;
-        case DomainPackage.ENTITY__RELATIONS:
-            this.getRelations().clear();
-            this.getRelations().addAll((Collection<? extends Relation>) newValue);
-            return;
-        case DomainPackage.ENTITY__SUPER_TYPES:
-            this.getSuperTypes().clear();
-            this.getSuperTypes().addAll((Collection<? extends Entity>) newValue);
-            return;
-        case DomainPackage.ENTITY__ABSTRACT:
-            this.setAbstract((Boolean) newValue);
-            return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.ENTITY__ATTRIBUTES:
+				getAttributes().clear();
+				getAttributes().addAll((Collection<? extends Attribute>)newValue);
+				return;
+			case DomainPackage.ENTITY__RELATIONS:
+				getRelations().clear();
+				getRelations().addAll((Collection<? extends Relation>)newValue);
+				return;
+			case DomainPackage.ENTITY__SUPER_TYPES:
+				getSuperTypes().clear();
+				getSuperTypes().addAll((Collection<? extends Entity>)newValue);
+				return;
+			case DomainPackage.ENTITY__ABSTRACT:
+				setAbstract((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-        case DomainPackage.ENTITY__ATTRIBUTES:
-            this.getAttributes().clear();
-            return;
-        case DomainPackage.ENTITY__RELATIONS:
-            this.getRelations().clear();
-            return;
-        case DomainPackage.ENTITY__SUPER_TYPES:
-            this.getSuperTypes().clear();
-            return;
-        case DomainPackage.ENTITY__ABSTRACT:
-            this.setAbstract(ABSTRACT_EDEFAULT);
-            return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.ENTITY__ATTRIBUTES:
+				getAttributes().clear();
+				return;
+			case DomainPackage.ENTITY__RELATIONS:
+				getRelations().clear();
+				return;
+			case DomainPackage.ENTITY__SUPER_TYPES:
+				getSuperTypes().clear();
+				return;
+			case DomainPackage.ENTITY__ABSTRACT:
+				setAbstract(ABSTRACT_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-        case DomainPackage.ENTITY__ATTRIBUTES:
-            return this.attributes != null && !this.attributes.isEmpty();
-        case DomainPackage.ENTITY__RELATIONS:
-            return this.relations != null && !this.relations.isEmpty();
-        case DomainPackage.ENTITY__SUPER_TYPES:
-            return this.superTypes != null && !this.superTypes.isEmpty();
-        case DomainPackage.ENTITY__ABSTRACT:
-            return this.abstract_ != ABSTRACT_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.ENTITY__ATTRIBUTES:
+				return attributes != null && !attributes.isEmpty();
+			case DomainPackage.ENTITY__RELATIONS:
+				return relations != null && !relations.isEmpty();
+			case DomainPackage.ENTITY__SUPER_TYPES:
+				return superTypes != null && !superTypes.isEmpty();
+			case DomainPackage.ENTITY__ABSTRACT:
+				return abstract_ != ABSTRACT_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (abstract: ");
-        result.append(this.abstract_);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (abstract: ");
+		result.append(abstract_);
+		result.append(')');
+		return result.toString();
+	}
 
 } // EntityImpl

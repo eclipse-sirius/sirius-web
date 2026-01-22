@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.eclipse.sirius.components.view.form.FormElementDescription;
 import org.eclipse.sirius.components.view.form.WidgetDescription;
+import org.eclipse.sirius.components.view.widget.tablewidget.*;
 import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription;
 import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage;
 
@@ -25,82 +26,77 @@ import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage;
  * {@link #doSwitch(EObject) doSwitch(object)} to invoke the <code>caseXXX</code> method for each class of the model,
  * starting with the actual class of the object and proceeding up the inheritance hierarchy until a non-null result is
  * returned, which is the result of the switch. <!-- end-user-doc -->
- *
- * @generated
  * @see org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage
+ * @generated
  */
 public class TableWidgetSwitch<T> extends Switch<T> {
 
     /**
-     * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * The cached model package
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected static TableWidgetPackage modelPackage;
 
     /**
-     * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates an instance of the switch.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public TableWidgetSwitch() {
-        if (modelPackage == null) {
-            modelPackage = TableWidgetPackage.eINSTANCE;
-        }
-    }
+		if (modelPackage == null)
+		{
+			modelPackage = TableWidgetPackage.eINSTANCE;
+		}
+	}
 
     /**
-     * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param ePackage
-     *         the package in question.
-     * @return whether this is a switch for the given package.
-     * @generated
-     */
+	 * Checks whether this is a switch for the given package.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param ePackage the package in question.
+	 * @return whether this is a switch for the given package.
+	 * @generated
+	 */
     @Override
     protected boolean isSwitchFor(EPackage ePackage) {
-        return ePackage == modelPackage;
-    }
+		return ePackage == modelPackage;
+	}
 
     /**
-     * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that
-     * result. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the first non-null result returned by a <code>caseXXX</code> call.
-     * @generated
-     */
+	 * Calls <code>caseXXX</code> for each class of the model until one returns a non null result; it yields that result.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the first non-null result returned by a <code>caseXXX</code> call.
+	 * @generated
+	 */
     @Override
     protected T doSwitch(int classifierID, EObject theEObject) {
-        switch (classifierID) {
-            case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION: {
-                TableWidgetDescription tableWidgetDescription = (TableWidgetDescription) theEObject;
-                T result = this.caseTableWidgetDescription(tableWidgetDescription);
-                if (result == null)
-                    result = this.caseWidgetDescription(tableWidgetDescription);
-                if (result == null)
-                    result = this.caseFormElementDescription(tableWidgetDescription);
-                if (result == null)
-                    result = this.defaultCase(theEObject);
-                return result;
-            }
-            default:
-                return this.defaultCase(theEObject);
-        }
-    }
+		switch (classifierID)
+		{
+			case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION:
+			{
+				TableWidgetDescription tableWidgetDescription = (TableWidgetDescription)theEObject;
+				T result = caseTableWidgetDescription(tableWidgetDescription);
+				if (result == null) result = caseWidgetDescription(tableWidgetDescription);
+				if (result == null) result = caseFormElementDescription(tableWidgetDescription);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			default: return defaultCase(theEObject);
+		}
+	}
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Description</em>'. <!-- begin-user-doc -->
+	 * Returns the result of interpreting the object as an instance of '<em>Description</em>'.
+	 * <!-- begin-user-doc -->
      * This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *         the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Description</em>'.
-     * @generated
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     */
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Description</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
     public T caseTableWidgetDescription(TableWidgetDescription object) {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Returns the result of interpreting the object as an instance of '<em>Element Description</em>'. <!--
@@ -114,8 +110,8 @@ public class TableWidgetSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseFormElementDescription(FormElementDescription object) {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Returns the result of interpreting the object as an instance of '<em>Widget Description</em>'. <!--
@@ -129,23 +125,22 @@ public class TableWidgetSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      */
     public T caseWidgetDescription(WidgetDescription object) {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>EObject</em>'. <!-- begin-user-doc --> This
+	 * Returns the result of interpreting the object as an instance of '<em>EObject</em>'.
+	 * <!-- begin-user-doc --> This
      * implementation returns null; returning a non-null result will terminate the switch, but this is the last case
      * anyway. <!-- end-user-doc -->
-     *
-     * @param object
-     *         the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
-     * @generated
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject)
-     */
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject)
+	 * @generated
+	 */
     @Override
     public T defaultCase(EObject object) {
-        return null;
-    }
+		return null;
+	}
 
 } // TableWidgetSwitch

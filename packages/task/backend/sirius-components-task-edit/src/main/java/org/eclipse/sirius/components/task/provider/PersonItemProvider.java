@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,10 +25,9 @@ import org.eclipse.sirius.components.task.Person;
 import org.eclipse.sirius.components.task.TaskPackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.task.Person} object. <!-- begin-user-doc
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.task.Person} object.
+ * <!-- begin-user-doc
  * --> <!-- end-user-doc -->
- *
  * @generated
  */
 public class PersonItemProvider extends ResourceItemProvider {
@@ -39,8 +38,8 @@ public class PersonItemProvider extends ResourceItemProvider {
      * @generated
      */
     public PersonItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
      * This returns the property descriptors for the adapted class. <!--
@@ -50,31 +49,38 @@ public class PersonItemProvider extends ResourceItemProvider {
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addAliasPropertyDescriptor(object);
-            this.addBiographyPropertyDescriptor(object);
-            this.addImageUrlPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addAliasPropertyDescriptor(object);
+			addBiographyPropertyDescriptor(object);
+			addImageUrlPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Alias feature. <!-- begin-user-doc
+	 * This adds a property descriptor for the Alias feature.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addAliasPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this
-                .createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_Person_alias_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Person_alias_feature",
-                                "_UI_Person_type"),
-                        TaskPackage.Literals.PERSON__ALIAS, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Person_alias_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Person_alias_feature", "_UI_Person_type"),
+				 TaskPackage.Literals.PERSON__ALIAS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Biography feature. <!--
@@ -83,14 +89,20 @@ public class PersonItemProvider extends ResourceItemProvider {
      * @generated
      */
     protected void addBiographyPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this
-                .createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_Person_biography_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Person_biography_feature",
-                                "_UI_Person_type"),
-                        TaskPackage.Literals.PERSON__BIOGRAPHY, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Person_biography_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Person_biography_feature", "_UI_Person_type"),
+				 TaskPackage.Literals.PERSON__BIOGRAPHY,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Image Url feature. <!--
@@ -99,14 +111,20 @@ public class PersonItemProvider extends ResourceItemProvider {
      * @generated
      */
     protected void addImageUrlPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this
-                .createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_Person_imageUrl_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Person_imageUrl_feature",
-                                "_UI_Person_type"),
-                        TaskPackage.Literals.PERSON__IMAGE_URL, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Person_imageUrl_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Person_imageUrl_feature", "_UI_Person_type"),
+				 TaskPackage.Literals.PERSON__IMAGE_URL,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This returns Person.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -119,61 +137,59 @@ public class PersonItemProvider extends ResourceItemProvider {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((Person) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Person_type")
-                : this.getString("_UI_Person_type") + " " + label;
-    }
+		String label = ((Person)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Person_type") :
+			getString("_UI_Person_type") + " " + label;
+	}
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This handles model notifications by calling {@link #updateChildren} to update any cached
+	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(Person.class)) {
-        case TaskPackage.PERSON__ALIAS:
-        case TaskPackage.PERSON__BIOGRAPHY:
-        case TaskPackage.PERSON__IMAGE_URL:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        default:
-            super.notifyChanged(notification);
-            return;
-        }
-    }
+		switch (notification.getFeatureID(Person.class))
+		{
+			case TaskPackage.PERSON__ALIAS:
+			case TaskPackage.PERSON__BIOGRAPHY:
+			case TaskPackage.PERSON__IMAGE_URL:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
 }

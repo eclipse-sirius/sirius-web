@@ -22,10 +22,10 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.task.Project#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.Project#getOwnedTasks <em>Owned Tasks</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.Project#getOwnedObjectives <em>Owned Objectives</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.Project#getOwnedTags <em>Owned Tags</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.Project#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.Project#getOwnedTasks <em>Owned Tasks</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.Project#getOwnedObjectives <em>Owned Objectives</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.Project#getOwnedTags <em>Owned Tags</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.task.TaskPackage#getProject()
@@ -34,14 +34,14 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Project extends EObject {
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.eclipse.sirius.components.task.TaskPackage#getProject_Name()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.sirius.components.task.TaskPackage#getProject_Name()
+	 * @model
+	 * @generated
+	 */
     String getName();
 
     /**
@@ -56,36 +56,36 @@ public interface Project extends EObject {
     void setName(String value);
 
     /**
-     * Returns the value of the '<em><b>Owned Tasks</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.task.Task}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Owned Tasks</em>' containment reference list.
-     * @see org.eclipse.sirius.components.task.TaskPackage#getProject_OwnedTasks()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Owned Tasks</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.task.Task}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Owned Tasks</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.task.TaskPackage#getProject_OwnedTasks()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Task> getOwnedTasks();
 
     /**
-     * Returns the value of the '<em><b>Owned Objectives</b></em>' containment reference list. The list contents are of
-     * type {@link org.eclipse.sirius.components.task.Objective}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Owned Objectives</em>' containment reference list.
-     * @see org.eclipse.sirius.components.task.TaskPackage#getProject_OwnedObjectives()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Owned Objectives</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.task.Objective}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Owned Objectives</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.task.TaskPackage#getProject_OwnedObjectives()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Objective> getOwnedObjectives();
 
     /**
-     * Returns the value of the '<em><b>Owned Tags</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.task.TaskTag}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Owned Tags</em>' containment reference list.
-     * @see org.eclipse.sirius.components.task.TaskPackage#getProject_OwnedTags()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Owned Tags</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.task.TaskTag}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Owned Tags</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.task.TaskPackage#getProject_OwnedTags()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<TaskTag> getOwnedTags();
 
 } // Project

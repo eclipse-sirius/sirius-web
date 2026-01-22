@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,79 +33,64 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getFontSize
- * <em>Font Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isItalic
- * <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isBold
- * <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isUnderline
- * <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isStrikeThrough
- * <em>Strike Through</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getGridTemplateColumns
- * <em>Grid Template Columns</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getGridTemplateRows
- * <em>Grid Template Rows</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getLabelGridRow
- * <em>Label Grid Row</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getLabelGridColumn
- * <em>Label Grid Column</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getWidgetGridRow
- * <em>Widget Grid Row</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getWidgetGridColumn
- * <em>Widget Grid Column</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getGap
- * <em>Gap</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getBackgroundColor
- * <em>Background Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getForegroundColor
- * <em>Foreground Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isShowIcon
- * <em>Show Icon</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getFontSize <em>Font Size</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isItalic <em>Italic</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isBold <em>Bold</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isUnderline <em>Underline</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isStrikeThrough <em>Strike Through</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getGridTemplateColumns <em>Grid Template Columns</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getGridTemplateRows <em>Grid Template Rows</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getLabelGridRow <em>Label Grid Row</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getLabelGridColumn <em>Label Grid Column</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getWidgetGridRow <em>Widget Grid Row</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getWidgetGridColumn <em>Widget Grid Column</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getGap <em>Gap</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getBackgroundColor <em>Background Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#getForegroundColor <em>Foreground Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalMultiSelectDescriptionStyleImpl#isShowIcon <em>Show Icon</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl implements ConditionalMultiSelectDescriptionStyle {
     /**
-     * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFontSize()
+	 * @generated
+	 * @ordered
+	 */
     protected static final int FONT_SIZE_EDEFAULT = 14;
 
     /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFontSize()
+	 * @generated
+	 * @ordered
+	 */
     protected int fontSize = FONT_SIZE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
+	 * @see #isItalic()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean ITALIC_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
+	 * @see #isItalic()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean italic = ITALIC_EDEFAULT;
 
     /**
@@ -129,43 +114,43 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     protected boolean bold = BOLD_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
+	 * @see #isUnderline()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean UNDERLINE_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
+	 * @see #isUnderline()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean underline = UNDERLINE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+	 * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
+	 * @see #isStrikeThrough()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
+	 * @see #isStrikeThrough()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
     /**
@@ -209,23 +194,23 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     protected String gridTemplateRows = GRID_TEMPLATE_ROWS_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getLabelGridRow() <em>Label Grid Row</em>}' attribute. <!-- begin-user-doc -->
+	 * The default value of the '{@link #getLabelGridRow() <em>Label Grid Row</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getLabelGridRow()
-     * @generated
-     * @ordered
-     */
+	 * @see #getLabelGridRow()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String LABEL_GRID_ROW_EDEFAULT = "";
 
     /**
-     * The cached value of the '{@link #getLabelGridRow() <em>Label Grid Row</em>}' attribute. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getLabelGridRow() <em>Label Grid Row</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getLabelGridRow()
-     * @generated
-     * @ordered
-     */
+	 * @see #getLabelGridRow()
+	 * @generated
+	 * @ordered
+	 */
     protected String labelGridRow = LABEL_GRID_ROW_EDEFAULT;
 
     /**
@@ -239,33 +224,33 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     protected static final String LABEL_GRID_COLUMN_EDEFAULT = "";
 
     /**
-     * The cached value of the '{@link #getLabelGridColumn() <em>Label Grid Column</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getLabelGridColumn() <em>Label Grid Column</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelGridColumn()
-     * @generated
-     * @ordered
-     */
+	 * @see #getLabelGridColumn()
+	 * @generated
+	 * @ordered
+	 */
     protected String labelGridColumn = LABEL_GRID_COLUMN_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getWidgetGridRow() <em>Widget Grid Row</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getWidgetGridRow() <em>Widget Grid Row</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getWidgetGridRow()
-     * @generated
-     * @ordered
-     */
+	 * @see #getWidgetGridRow()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String WIDGET_GRID_ROW_EDEFAULT = "";
 
     /**
-     * The cached value of the '{@link #getWidgetGridRow() <em>Widget Grid Row</em>}' attribute. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getWidgetGridRow() <em>Widget Grid Row</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getWidgetGridRow()
-     * @generated
-     * @ordered
-     */
+	 * @see #getWidgetGridRow()
+	 * @generated
+	 * @ordered
+	 */
     protected String widgetGridRow = WIDGET_GRID_ROW_EDEFAULT;
 
     /**
@@ -299,823 +284,764 @@ public class ConditionalMultiSelectDescriptionStyleImpl extends ConditionalImpl 
     protected static final String GAP_EDEFAULT = "";
 
     /**
-     * The cached value of the '{@link #getGap() <em>Gap</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getGap()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getGap() <em>Gap</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getGap()
+	 * @generated
+	 * @ordered
+	 */
     protected String gap = GAP_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' reference. <!-- begin-user-doc
+	 * The cached value of the '{@link #getBackgroundColor() <em>Background Color</em>}' reference.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getBackgroundColor()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBackgroundColor()
+	 * @generated
+	 * @ordered
+	 */
     protected UserColor backgroundColor;
 
     /**
-     * The cached value of the '{@link #getForegroundColor() <em>Foreground Color</em>}' reference. <!-- begin-user-doc
+	 * The cached value of the '{@link #getForegroundColor() <em>Foreground Color</em>}' reference.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getForegroundColor()
-     * @generated
-     * @ordered
-     */
+	 * @see #getForegroundColor()
+	 * @generated
+	 * @ordered
+	 */
     protected UserColor foregroundColor;
 
     /**
-     * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isShowIcon()
-     * @generated
-     * @ordered
-     */
+	 * @see #isShowIcon()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean SHOW_ICON_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isShowIcon() <em>Show Icon</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isShowIcon()
-     * @generated
-     * @ordered
-     */
+	 * @see #isShowIcon()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean showIcon = SHOW_ICON_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ConditionalMultiSelectDescriptionStyleImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE;
-    }
+		return FormPackage.Literals.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int getFontSize() {
-        return this.fontSize;
-    }
+		return fontSize;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setFontSize(int newFontSize) {
-        int oldFontSize = this.fontSize;
-        this.fontSize = newFontSize;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE, oldFontSize, this.fontSize));
-    }
+		int oldFontSize = fontSize;
+		fontSize = newFontSize;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE, oldFontSize, fontSize));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isItalic() {
-        return this.italic;
-    }
+		return italic;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setItalic(boolean newItalic) {
-        boolean oldItalic = this.italic;
-        this.italic = newItalic;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC, oldItalic, this.italic));
-    }
+		boolean oldItalic = italic;
+		italic = newItalic;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC, oldItalic, italic));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isBold() {
-        return this.bold;
-    }
+		return bold;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBold(boolean newBold) {
-        boolean oldBold = this.bold;
-        this.bold = newBold;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD, oldBold, this.bold));
-    }
+		boolean oldBold = bold;
+		bold = newBold;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD, oldBold, bold));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isUnderline() {
-        return this.underline;
-    }
+		return underline;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setUnderline(boolean newUnderline) {
-        boolean oldUnderline = this.underline;
-        this.underline = newUnderline;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE, oldUnderline, this.underline));
-    }
+		boolean oldUnderline = underline;
+		underline = newUnderline;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE, oldUnderline, underline));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isStrikeThrough() {
-        return this.strikeThrough;
-    }
+		return strikeThrough;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setStrikeThrough(boolean newStrikeThrough) {
-        boolean oldStrikeThrough = this.strikeThrough;
-        this.strikeThrough = newStrikeThrough;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
-    }
+		boolean oldStrikeThrough = strikeThrough;
+		strikeThrough = newStrikeThrough;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH, oldStrikeThrough, strikeThrough));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getGridTemplateColumns() {
-        return this.gridTemplateColumns;
-    }
+		return gridTemplateColumns;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setGridTemplateColumns(String newGridTemplateColumns) {
-        String oldGridTemplateColumns = this.gridTemplateColumns;
-        this.gridTemplateColumns = newGridTemplateColumns;
-        if (this.eNotificationRequired())
-            this.eNotify(
-                    new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS, oldGridTemplateColumns, this.gridTemplateColumns));
-    }
+		String oldGridTemplateColumns = gridTemplateColumns;
+		gridTemplateColumns = newGridTemplateColumns;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS, oldGridTemplateColumns, gridTemplateColumns));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getGridTemplateRows() {
-        return this.gridTemplateRows;
-    }
+		return gridTemplateRows;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setGridTemplateRows(String newGridTemplateRows) {
-        String oldGridTemplateRows = this.gridTemplateRows;
-        this.gridTemplateRows = newGridTemplateRows;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS, oldGridTemplateRows, this.gridTemplateRows));
-    }
+		String oldGridTemplateRows = gridTemplateRows;
+		gridTemplateRows = newGridTemplateRows;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS, oldGridTemplateRows, gridTemplateRows));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getLabelGridRow() {
-        return this.labelGridRow;
-    }
+		return labelGridRow;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setLabelGridRow(String newLabelGridRow) {
-        String oldLabelGridRow = this.labelGridRow;
-        this.labelGridRow = newLabelGridRow;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW, oldLabelGridRow, this.labelGridRow));
-    }
+		String oldLabelGridRow = labelGridRow;
+		labelGridRow = newLabelGridRow;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW, oldLabelGridRow, labelGridRow));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getLabelGridColumn() {
-        return this.labelGridColumn;
-    }
+		return labelGridColumn;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setLabelGridColumn(String newLabelGridColumn) {
-        String oldLabelGridColumn = this.labelGridColumn;
-        this.labelGridColumn = newLabelGridColumn;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN, oldLabelGridColumn, this.labelGridColumn));
-    }
+		String oldLabelGridColumn = labelGridColumn;
+		labelGridColumn = newLabelGridColumn;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN, oldLabelGridColumn, labelGridColumn));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getWidgetGridRow() {
-        return this.widgetGridRow;
-    }
+		return widgetGridRow;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setWidgetGridRow(String newWidgetGridRow) {
-        String oldWidgetGridRow = this.widgetGridRow;
-        this.widgetGridRow = newWidgetGridRow;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW, oldWidgetGridRow, this.widgetGridRow));
-    }
+		String oldWidgetGridRow = widgetGridRow;
+		widgetGridRow = newWidgetGridRow;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW, oldWidgetGridRow, widgetGridRow));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getWidgetGridColumn() {
-        return this.widgetGridColumn;
-    }
+		return widgetGridColumn;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setWidgetGridColumn(String newWidgetGridColumn) {
-        String oldWidgetGridColumn = this.widgetGridColumn;
-        this.widgetGridColumn = newWidgetGridColumn;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN, oldWidgetGridColumn, this.widgetGridColumn));
-    }
+		String oldWidgetGridColumn = widgetGridColumn;
+		widgetGridColumn = newWidgetGridColumn;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN, oldWidgetGridColumn, widgetGridColumn));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getGap() {
-        return this.gap;
-    }
+		return gap;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setGap(String newGap) {
-        String oldGap = this.gap;
-        this.gap = newGap;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP, oldGap, this.gap));
-    }
+		String oldGap = gap;
+		gap = newGap;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP, oldGap, gap));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public UserColor getBackgroundColor() {
-        if (this.backgroundColor != null && this.backgroundColor.eIsProxy()) {
-            InternalEObject oldBackgroundColor = (InternalEObject) this.backgroundColor;
-            this.backgroundColor = (UserColor) this.eResolveProxy(oldBackgroundColor);
-            if (this.backgroundColor != oldBackgroundColor) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, this.backgroundColor));
-            }
-        }
-        return this.backgroundColor;
-    }
+		if (backgroundColor != null && backgroundColor.eIsProxy())
+		{
+			InternalEObject oldBackgroundColor = (InternalEObject)backgroundColor;
+			backgroundColor = (UserColor)eResolveProxy(oldBackgroundColor);
+			if (backgroundColor != oldBackgroundColor)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, backgroundColor));
+			}
+		}
+		return backgroundColor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public UserColor basicGetBackgroundColor() {
-        return this.backgroundColor;
-    }
+		return backgroundColor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBackgroundColor(UserColor newBackgroundColor) {
-        UserColor oldBackgroundColor = this.backgroundColor;
-        this.backgroundColor = newBackgroundColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, this.backgroundColor));
-    }
+		UserColor oldBackgroundColor = backgroundColor;
+		backgroundColor = newBackgroundColor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR, oldBackgroundColor, backgroundColor));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public UserColor getForegroundColor() {
-        if (this.foregroundColor != null && this.foregroundColor.eIsProxy()) {
-            InternalEObject oldForegroundColor = (InternalEObject) this.foregroundColor;
-            this.foregroundColor = (UserColor) this.eResolveProxy(oldForegroundColor);
-            if (this.foregroundColor != oldForegroundColor) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, oldForegroundColor, this.foregroundColor));
-            }
-        }
-        return this.foregroundColor;
-    }
+		if (foregroundColor != null && foregroundColor.eIsProxy())
+		{
+			InternalEObject oldForegroundColor = (InternalEObject)foregroundColor;
+			foregroundColor = (UserColor)eResolveProxy(oldForegroundColor);
+			if (foregroundColor != oldForegroundColor)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, oldForegroundColor, foregroundColor));
+			}
+		}
+		return foregroundColor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public UserColor basicGetForegroundColor() {
-        return this.foregroundColor;
-    }
+		return foregroundColor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setForegroundColor(UserColor newForegroundColor) {
-        UserColor oldForegroundColor = this.foregroundColor;
-        this.foregroundColor = newForegroundColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, oldForegroundColor, this.foregroundColor));
-    }
+		UserColor oldForegroundColor = foregroundColor;
+		foregroundColor = newForegroundColor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR, oldForegroundColor, foregroundColor));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isShowIcon() {
-        return this.showIcon;
-    }
+		return showIcon;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setShowIcon(boolean newShowIcon) {
-        boolean oldShowIcon = this.showIcon;
-        this.showIcon = newShowIcon;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON, oldShowIcon, this.showIcon));
-    }
+		boolean oldShowIcon = showIcon;
+		showIcon = newShowIcon;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON, oldShowIcon, showIcon));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-                return this.getFontSize();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-                return this.isItalic();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-                return this.isBold();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-                return this.isUnderline();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                return this.isStrikeThrough();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
-                return this.getGridTemplateColumns();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
-                return this.getGridTemplateRows();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW:
-                return this.getLabelGridRow();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
-                return this.getLabelGridColumn();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
-                return this.getWidgetGridRow();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
-                return this.getWidgetGridColumn();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
-                return this.getGap();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                if (resolve)
-                    return this.getBackgroundColor();
-                return this.basicGetBackgroundColor();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                if (resolve)
-                    return this.getForegroundColor();
-                return this.basicGetForegroundColor();
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
-                return this.isShowIcon();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+				return getFontSize();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+				return isItalic();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+				return isBold();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+				return isUnderline();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				return isStrikeThrough();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
+				return getGridTemplateColumns();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
+				return getGridTemplateRows();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW:
+				return getLabelGridRow();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
+				return getLabelGridColumn();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
+				return getWidgetGridRow();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
+				return getWidgetGridColumn();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
+				return getGap();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+				if (resolve) return getBackgroundColor();
+				return basicGetBackgroundColor();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+				if (resolve) return getForegroundColor();
+				return basicGetForegroundColor();
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+				return isShowIcon();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-                this.setFontSize((Integer) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-                this.setItalic((Boolean) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-                this.setBold((Boolean) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-                this.setUnderline((Boolean) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                this.setStrikeThrough((Boolean) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
-                this.setGridTemplateColumns((String) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
-                this.setGridTemplateRows((String) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW:
-                this.setLabelGridRow((String) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
-                this.setLabelGridColumn((String) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
-                this.setWidgetGridRow((String) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
-                this.setWidgetGridColumn((String) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
-                this.setGap((String) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                this.setBackgroundColor((UserColor) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                this.setForegroundColor((UserColor) newValue);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
-                this.setShowIcon((Boolean) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+				setFontSize((Integer)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+				setItalic((Boolean)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+				setBold((Boolean)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+				setUnderline((Boolean)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				setStrikeThrough((Boolean)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
+				setGridTemplateColumns((String)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
+				setGridTemplateRows((String)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW:
+				setLabelGridRow((String)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
+				setLabelGridColumn((String)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
+				setWidgetGridRow((String)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
+				setWidgetGridColumn((String)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
+				setGap((String)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+				setBackgroundColor((UserColor)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+				setForegroundColor((UserColor)newValue);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+				setShowIcon((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-                this.setFontSize(FONT_SIZE_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-                this.setItalic(ITALIC_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-                this.setBold(BOLD_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-                this.setUnderline(UNDERLINE_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
-                this.setGridTemplateColumns(GRID_TEMPLATE_COLUMNS_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
-                this.setGridTemplateRows(GRID_TEMPLATE_ROWS_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW:
-                this.setLabelGridRow(LABEL_GRID_ROW_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
-                this.setLabelGridColumn(LABEL_GRID_COLUMN_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
-                this.setWidgetGridRow(WIDGET_GRID_ROW_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
-                this.setWidgetGridColumn(WIDGET_GRID_COLUMN_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
-                this.setGap(GAP_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                this.setBackgroundColor((UserColor) null);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                this.setForegroundColor((UserColor) null);
-                return;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
-                this.setShowIcon(SHOW_ICON_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+				setFontSize(FONT_SIZE_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+				setItalic(ITALIC_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+				setBold(BOLD_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+				setUnderline(UNDERLINE_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
+				setGridTemplateColumns(GRID_TEMPLATE_COLUMNS_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
+				setGridTemplateRows(GRID_TEMPLATE_ROWS_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW:
+				setLabelGridRow(LABEL_GRID_ROW_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
+				setLabelGridColumn(LABEL_GRID_COLUMN_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
+				setWidgetGridRow(WIDGET_GRID_ROW_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
+				setWidgetGridColumn(WIDGET_GRID_COLUMN_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
+				setGap(GAP_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+				setBackgroundColor((UserColor)null);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+				setForegroundColor((UserColor)null);
+				return;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+				setShowIcon(SHOW_ICON_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-                return this.fontSize != FONT_SIZE_EDEFAULT;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-                return this.italic != ITALIC_EDEFAULT;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-                return this.bold != BOLD_EDEFAULT;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-                return this.underline != UNDERLINE_EDEFAULT;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
-                return GRID_TEMPLATE_COLUMNS_EDEFAULT == null ? this.gridTemplateColumns != null : !GRID_TEMPLATE_COLUMNS_EDEFAULT.equals(this.gridTemplateColumns);
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
-                return GRID_TEMPLATE_ROWS_EDEFAULT == null ? this.gridTemplateRows != null : !GRID_TEMPLATE_ROWS_EDEFAULT.equals(this.gridTemplateRows);
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW:
-                return LABEL_GRID_ROW_EDEFAULT == null ? this.labelGridRow != null : !LABEL_GRID_ROW_EDEFAULT.equals(this.labelGridRow);
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
-                return LABEL_GRID_COLUMN_EDEFAULT == null ? this.labelGridColumn != null : !LABEL_GRID_COLUMN_EDEFAULT.equals(this.labelGridColumn);
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
-                return WIDGET_GRID_ROW_EDEFAULT == null ? this.widgetGridRow != null : !WIDGET_GRID_ROW_EDEFAULT.equals(this.widgetGridRow);
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
-                return WIDGET_GRID_COLUMN_EDEFAULT == null ? this.widgetGridColumn != null : !WIDGET_GRID_COLUMN_EDEFAULT.equals(this.widgetGridColumn);
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
-                return GAP_EDEFAULT == null ? this.gap != null : !GAP_EDEFAULT.equals(this.gap);
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                return this.backgroundColor != null;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                return this.foregroundColor != null;
-            case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
-                return this.showIcon != SHOW_ICON_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
+				return fontSize != FONT_SIZE_EDEFAULT;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
+				return italic != ITALIC_EDEFAULT;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
+				return bold != BOLD_EDEFAULT;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
+				return underline != UNDERLINE_EDEFAULT;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				return strikeThrough != STRIKE_THROUGH_EDEFAULT;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
+				return GRID_TEMPLATE_COLUMNS_EDEFAULT == null ? gridTemplateColumns != null : !GRID_TEMPLATE_COLUMNS_EDEFAULT.equals(gridTemplateColumns);
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
+				return GRID_TEMPLATE_ROWS_EDEFAULT == null ? gridTemplateRows != null : !GRID_TEMPLATE_ROWS_EDEFAULT.equals(gridTemplateRows);
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW:
+				return LABEL_GRID_ROW_EDEFAULT == null ? labelGridRow != null : !LABEL_GRID_ROW_EDEFAULT.equals(labelGridRow);
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
+				return LABEL_GRID_COLUMN_EDEFAULT == null ? labelGridColumn != null : !LABEL_GRID_COLUMN_EDEFAULT.equals(labelGridColumn);
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
+				return WIDGET_GRID_ROW_EDEFAULT == null ? widgetGridRow != null : !WIDGET_GRID_ROW_EDEFAULT.equals(widgetGridRow);
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
+				return WIDGET_GRID_COLUMN_EDEFAULT == null ? widgetGridColumn != null : !WIDGET_GRID_COLUMN_EDEFAULT.equals(widgetGridColumn);
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
+				return GAP_EDEFAULT == null ? gap != null : !GAP_EDEFAULT.equals(gap);
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
+				return backgroundColor != null;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
+				return foregroundColor != null;
+			case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
+				return showIcon != SHOW_ICON_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == WidgetDescriptionStyle.class) {
-            switch (derivedFeatureID) {
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == LabelStyle.class) {
-            switch (derivedFeatureID) {
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE:
-                    return ViewPackage.LABEL_STYLE__FONT_SIZE;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC:
-                    return ViewPackage.LABEL_STYLE__ITALIC;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD:
-                    return ViewPackage.LABEL_STYLE__BOLD;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE:
-                    return ViewPackage.LABEL_STYLE__UNDERLINE;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                    return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == WidgetGridLayout.class) {
-            switch (derivedFeatureID) {
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
-                    return FormPackage.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_COLUMNS;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
-                    return FormPackage.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_ROWS;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW:
-                    return FormPackage.WIDGET_GRID_LAYOUT__LABEL_GRID_ROW;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
-                    return FormPackage.WIDGET_GRID_LAYOUT__LABEL_GRID_COLUMN;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
-                    return FormPackage.WIDGET_GRID_LAYOUT__WIDGET_GRID_ROW;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
-                    return FormPackage.WIDGET_GRID_LAYOUT__WIDGET_GRID_COLUMN;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP:
-                    return FormPackage.WIDGET_GRID_LAYOUT__GAP;
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == MultiSelectDescriptionStyle.class) {
-            switch (derivedFeatureID) {
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                    return FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                    return FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
-                case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
-                    return FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON;
-                default:
-                    return -1;
-            }
-        }
-        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-    }
+		if (baseClass == WidgetDescriptionStyle.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == LabelStyle.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE: return ViewPackage.LABEL_STYLE__FONT_SIZE;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC: return ViewPackage.LABEL_STYLE__ITALIC;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD: return ViewPackage.LABEL_STYLE__BOLD;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE: return ViewPackage.LABEL_STYLE__UNDERLINE;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH: return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+				default: return -1;
+			}
+		}
+		if (baseClass == WidgetGridLayout.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS: return FormPackage.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_COLUMNS;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS: return FormPackage.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_ROWS;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW: return FormPackage.WIDGET_GRID_LAYOUT__LABEL_GRID_ROW;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN: return FormPackage.WIDGET_GRID_LAYOUT__LABEL_GRID_COLUMN;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW: return FormPackage.WIDGET_GRID_LAYOUT__WIDGET_GRID_ROW;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN: return FormPackage.WIDGET_GRID_LAYOUT__WIDGET_GRID_COLUMN;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP: return FormPackage.WIDGET_GRID_LAYOUT__GAP;
+				default: return -1;
+			}
+		}
+		if (baseClass == MultiSelectDescriptionStyle.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR: return FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR: return FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
+				case FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON: return FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == WidgetDescriptionStyle.class) {
-            switch (baseFeatureID) {
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == LabelStyle.class) {
-            switch (baseFeatureID) {
-                case ViewPackage.LABEL_STYLE__FONT_SIZE:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE;
-                case ViewPackage.LABEL_STYLE__ITALIC:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC;
-                case ViewPackage.LABEL_STYLE__BOLD:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD;
-                case ViewPackage.LABEL_STYLE__UNDERLINE:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE;
-                case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH;
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == WidgetGridLayout.class) {
-            switch (baseFeatureID) {
-                case FormPackage.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_COLUMNS:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS;
-                case FormPackage.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_ROWS:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS;
-                case FormPackage.WIDGET_GRID_LAYOUT__LABEL_GRID_ROW:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW;
-                case FormPackage.WIDGET_GRID_LAYOUT__LABEL_GRID_COLUMN:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN;
-                case FormPackage.WIDGET_GRID_LAYOUT__WIDGET_GRID_ROW:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW;
-                case FormPackage.WIDGET_GRID_LAYOUT__WIDGET_GRID_COLUMN:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN;
-                case FormPackage.WIDGET_GRID_LAYOUT__GAP:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP;
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == MultiSelectDescriptionStyle.class) {
-            switch (baseFeatureID) {
-                case FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
-                case FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
-                case FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON:
-                    return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON;
-                default:
-                    return -1;
-            }
-        }
-        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-    }
+		if (baseClass == WidgetDescriptionStyle.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == LabelStyle.class)
+		{
+			switch (baseFeatureID)
+			{
+				case ViewPackage.LABEL_STYLE__FONT_SIZE: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FONT_SIZE;
+				case ViewPackage.LABEL_STYLE__ITALIC: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__ITALIC;
+				case ViewPackage.LABEL_STYLE__BOLD: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BOLD;
+				case ViewPackage.LABEL_STYLE__UNDERLINE: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__UNDERLINE;
+				case ViewPackage.LABEL_STYLE__STRIKE_THROUGH: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__STRIKE_THROUGH;
+				default: return -1;
+			}
+		}
+		if (baseClass == WidgetGridLayout.class)
+		{
+			switch (baseFeatureID)
+			{
+				case FormPackage.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_COLUMNS: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS;
+				case FormPackage.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_ROWS: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS;
+				case FormPackage.WIDGET_GRID_LAYOUT__LABEL_GRID_ROW: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_ROW;
+				case FormPackage.WIDGET_GRID_LAYOUT__LABEL_GRID_COLUMN: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__LABEL_GRID_COLUMN;
+				case FormPackage.WIDGET_GRID_LAYOUT__WIDGET_GRID_ROW: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_ROW;
+				case FormPackage.WIDGET_GRID_LAYOUT__WIDGET_GRID_COLUMN: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN;
+				case FormPackage.WIDGET_GRID_LAYOUT__GAP: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__GAP;
+				default: return -1;
+			}
+		}
+		if (baseClass == MultiSelectDescriptionStyle.class)
+		{
+			switch (baseFeatureID)
+			{
+				case FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__BACKGROUND_COLOR;
+				case FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__FOREGROUND_COLOR;
+				case FormPackage.MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON: return FormPackage.CONDITIONAL_MULTI_SELECT_DESCRIPTION_STYLE__SHOW_ICON;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: ");
-        result.append(this.fontSize);
-        result.append(", italic: ");
-        result.append(this.italic);
-        result.append(", bold: ");
-        result.append(this.bold);
-        result.append(", underline: ");
-        result.append(this.underline);
-        result.append(", strikeThrough: ");
-        result.append(this.strikeThrough);
-        result.append(", gridTemplateColumns: ");
-        result.append(this.gridTemplateColumns);
-        result.append(", gridTemplateRows: ");
-        result.append(this.gridTemplateRows);
-        result.append(", labelGridRow: ");
-        result.append(this.labelGridRow);
-        result.append(", labelGridColumn: ");
-        result.append(this.labelGridColumn);
-        result.append(", widgetGridRow: ");
-        result.append(this.widgetGridRow);
-        result.append(", widgetGridColumn: ");
-        result.append(this.widgetGridColumn);
-        result.append(", gap: ");
-        result.append(this.gap);
-        result.append(", showIcon: ");
-        result.append(this.showIcon);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (fontSize: ");
+		result.append(fontSize);
+		result.append(", italic: ");
+		result.append(italic);
+		result.append(", bold: ");
+		result.append(bold);
+		result.append(", underline: ");
+		result.append(underline);
+		result.append(", strikeThrough: ");
+		result.append(strikeThrough);
+		result.append(", gridTemplateColumns: ");
+		result.append(gridTemplateColumns);
+		result.append(", gridTemplateRows: ");
+		result.append(gridTemplateRows);
+		result.append(", labelGridRow: ");
+		result.append(labelGridRow);
+		result.append(", labelGridColumn: ");
+		result.append(labelGridColumn);
+		result.append(", widgetGridRow: ");
+		result.append(widgetGridRow);
+		result.append(", widgetGridColumn: ");
+		result.append(widgetGridColumn);
+		result.append(", gap: ");
+		result.append(gap);
+		result.append(", showIcon: ");
+		result.append(showIcon);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ConditionalMultiSelectDescriptionStyleImpl

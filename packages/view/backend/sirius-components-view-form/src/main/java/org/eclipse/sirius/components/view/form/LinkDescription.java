@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,14 +46,12 @@ public interface LinkDescription extends WidgetDescription {
     String getValueExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.LinkDescription#getValueExpression
-     * <em>Value Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Value Expression</em>' attribute.
-     * @see #getValueExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.LinkDescription#getValueExpression <em>Value Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Value Expression</em>' attribute.
+	 * @see #getValueExpression()
+	 * @generated
+	 */
     void setValueExpression(String value);
 
     /**
@@ -69,26 +67,24 @@ public interface LinkDescription extends WidgetDescription {
     LinkDescriptionStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.LinkDescription#getStyle <em>Style</em>}'
-     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.LinkDescription#getStyle <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Style</em>' containment reference.
+	 * @see #getStyle()
+	 * @generated
+	 */
     void setStyle(LinkDescriptionStyle value);
 
     /**
-     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle}. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getLinkDescription_ConditionalStyles()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getLinkDescription_ConditionalStyles()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<ConditionalLinkDescriptionStyle> getConditionalStyles();
 
 } // LinkDescription

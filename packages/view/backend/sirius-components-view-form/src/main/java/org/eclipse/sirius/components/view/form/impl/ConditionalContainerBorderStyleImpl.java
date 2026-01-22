@@ -30,14 +30,10 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl#getBorderColor <em>Border
- * Color</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl#getBorderRadius
- * <em>Border Radius</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl#getBorderSize <em>Border
- * Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl#getBorderLineStyle
- * <em>Border Line Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl#getBorderColor <em>Border Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl#getBorderRadius <em>Border Radius</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl#getBorderSize <em>Border Size</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.ConditionalContainerBorderStyleImpl#getBorderLineStyle <em>Border Line Style</em>}</li>
  * </ul>
  *
  * @generated
@@ -45,53 +41,53 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
 public class ConditionalContainerBorderStyleImpl extends ConditionalImpl implements ConditionalContainerBorderStyle {
 
     /**
-     * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getBorderColor() <em>Border Color</em>}' reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getBorderColor()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBorderColor()
+	 * @generated
+	 * @ordered
+	 */
     protected UserColor borderColor;
 
     /**
-     * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+	 * The default value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getBorderRadius()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBorderRadius()
+	 * @generated
+	 * @ordered
+	 */
     protected static final int BORDER_RADIUS_EDEFAULT = 3;
 
     /**
-     * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBorderRadius() <em>Border Radius</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getBorderRadius()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBorderRadius()
+	 * @generated
+	 * @ordered
+	 */
     protected int borderRadius = BORDER_RADIUS_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getBorderSize()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBorderSize()
+	 * @generated
+	 * @ordered
+	 */
     protected static final int BORDER_SIZE_EDEFAULT = 1;
 
     /**
-     * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getBorderSize() <em>Border Size</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getBorderSize()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBorderSize()
+	 * @generated
+	 * @ordered
+	 */
     protected int borderSize = BORDER_SIZE_EDEFAULT;
 
     /**
@@ -105,300 +101,280 @@ public class ConditionalContainerBorderStyleImpl extends ConditionalImpl impleme
     protected static final ContainerBorderLineStyle BORDER_LINE_STYLE_EDEFAULT = ContainerBorderLineStyle.SOLID;
 
     /**
-     * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getBorderLineStyle() <em>Border Line Style</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getBorderLineStyle()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBorderLineStyle()
+	 * @generated
+	 * @ordered
+	 */
     protected ContainerBorderLineStyle borderLineStyle = BORDER_LINE_STYLE_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ConditionalContainerBorderStyleImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.CONDITIONAL_CONTAINER_BORDER_STYLE;
-    }
+		return FormPackage.Literals.CONDITIONAL_CONTAINER_BORDER_STYLE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public UserColor getBorderColor() {
-        if (this.borderColor != null && this.borderColor.eIsProxy()) {
-            InternalEObject oldBorderColor = (InternalEObject) this.borderColor;
-            this.borderColor = (UserColor) this.eResolveProxy(oldBorderColor);
-            if (this.borderColor != oldBorderColor) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
-            }
-        }
-        return this.borderColor;
-    }
+		if (borderColor != null && borderColor.eIsProxy())
+		{
+			InternalEObject oldBorderColor = (InternalEObject)borderColor;
+			borderColor = (UserColor)eResolveProxy(oldBorderColor);
+			if (borderColor != oldBorderColor)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR, oldBorderColor, borderColor));
+			}
+		}
+		return borderColor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public UserColor basicGetBorderColor() {
-        return this.borderColor;
-    }
+		return borderColor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBorderColor(UserColor newBorderColor) {
-        UserColor oldBorderColor = this.borderColor;
-        this.borderColor = newBorderColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR, oldBorderColor, this.borderColor));
-    }
+		UserColor oldBorderColor = borderColor;
+		borderColor = newBorderColor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR, oldBorderColor, borderColor));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int getBorderRadius() {
-        return this.borderRadius;
-    }
+		return borderRadius;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBorderRadius(int newBorderRadius) {
-        int oldBorderRadius = this.borderRadius;
-        this.borderRadius = newBorderRadius;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS, oldBorderRadius, this.borderRadius));
-    }
+		int oldBorderRadius = borderRadius;
+		borderRadius = newBorderRadius;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS, oldBorderRadius, borderRadius));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int getBorderSize() {
-        return this.borderSize;
-    }
+		return borderSize;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBorderSize(int newBorderSize) {
-        int oldBorderSize = this.borderSize;
-        this.borderSize = newBorderSize;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE, oldBorderSize, this.borderSize));
-    }
+		int oldBorderSize = borderSize;
+		borderSize = newBorderSize;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE, oldBorderSize, borderSize));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ContainerBorderLineStyle getBorderLineStyle() {
-        return this.borderLineStyle;
-    }
+		return borderLineStyle;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBorderLineStyle(ContainerBorderLineStyle newBorderLineStyle) {
-        ContainerBorderLineStyle oldBorderLineStyle = this.borderLineStyle;
-        this.borderLineStyle = newBorderLineStyle == null ? BORDER_LINE_STYLE_EDEFAULT : newBorderLineStyle;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE, oldBorderLineStyle, this.borderLineStyle));
-    }
+		ContainerBorderLineStyle oldBorderLineStyle = borderLineStyle;
+		borderLineStyle = newBorderLineStyle == null ? BORDER_LINE_STYLE_EDEFAULT : newBorderLineStyle;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE, oldBorderLineStyle, borderLineStyle));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
-                if (resolve)
-                    return this.getBorderColor();
-                return this.basicGetBorderColor();
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
-                return this.getBorderRadius();
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE:
-                return this.getBorderSize();
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
-                return this.getBorderLineStyle();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
+				if (resolve) return getBorderColor();
+				return basicGetBorderColor();
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
+				return getBorderRadius();
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE:
+				return getBorderSize();
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
+				return getBorderLineStyle();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
-                this.setBorderColor((UserColor) newValue);
-                return;
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
-                this.setBorderRadius((Integer) newValue);
-                return;
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE:
-                this.setBorderSize((Integer) newValue);
-                return;
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
-                this.setBorderLineStyle((ContainerBorderLineStyle) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
+				setBorderColor((UserColor)newValue);
+				return;
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
+				setBorderRadius((Integer)newValue);
+				return;
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE:
+				setBorderSize((Integer)newValue);
+				return;
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
+				setBorderLineStyle((ContainerBorderLineStyle)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
-                this.setBorderColor((UserColor) null);
-                return;
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
-                this.setBorderRadius(BORDER_RADIUS_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE:
-                this.setBorderSize(BORDER_SIZE_EDEFAULT);
-                return;
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
-                this.setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
+				setBorderColor((UserColor)null);
+				return;
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
+				setBorderRadius(BORDER_RADIUS_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE:
+				setBorderSize(BORDER_SIZE_EDEFAULT);
+				return;
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
+				setBorderLineStyle(BORDER_LINE_STYLE_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
-                return this.borderColor != null;
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
-                return this.borderRadius != BORDER_RADIUS_EDEFAULT;
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE:
-                return this.borderSize != BORDER_SIZE_EDEFAULT;
-            case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
-                return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
+				return borderColor != null;
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
+				return borderRadius != BORDER_RADIUS_EDEFAULT;
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE:
+				return borderSize != BORDER_SIZE_EDEFAULT;
+			case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
+				return borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == ContainerBorderStyle.class) {
-            switch (derivedFeatureID) {
-                case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR:
-                    return FormPackage.CONTAINER_BORDER_STYLE__BORDER_COLOR;
-                case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS:
-                    return FormPackage.CONTAINER_BORDER_STYLE__BORDER_RADIUS;
-                case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE:
-                    return FormPackage.CONTAINER_BORDER_STYLE__BORDER_SIZE;
-                case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
-                    return FormPackage.CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE;
-                default:
-                    return -1;
-            }
-        }
-        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-    }
+		if (baseClass == ContainerBorderStyle.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR: return FormPackage.CONTAINER_BORDER_STYLE__BORDER_COLOR;
+				case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS: return FormPackage.CONTAINER_BORDER_STYLE__BORDER_RADIUS;
+				case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE: return FormPackage.CONTAINER_BORDER_STYLE__BORDER_SIZE;
+				case FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE: return FormPackage.CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == ContainerBorderStyle.class) {
-            switch (baseFeatureID) {
-                case FormPackage.CONTAINER_BORDER_STYLE__BORDER_COLOR:
-                    return FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR;
-                case FormPackage.CONTAINER_BORDER_STYLE__BORDER_RADIUS:
-                    return FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS;
-                case FormPackage.CONTAINER_BORDER_STYLE__BORDER_SIZE:
-                    return FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE;
-                case FormPackage.CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE:
-                    return FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE;
-                default:
-                    return -1;
-            }
-        }
-        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-    }
+		if (baseClass == ContainerBorderStyle.class)
+		{
+			switch (baseFeatureID)
+			{
+				case FormPackage.CONTAINER_BORDER_STYLE__BORDER_COLOR: return FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_COLOR;
+				case FormPackage.CONTAINER_BORDER_STYLE__BORDER_RADIUS: return FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_RADIUS;
+				case FormPackage.CONTAINER_BORDER_STYLE__BORDER_SIZE: return FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_SIZE;
+				case FormPackage.CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE: return FormPackage.CONDITIONAL_CONTAINER_BORDER_STYLE__BORDER_LINE_STYLE;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (borderRadius: ");
-        result.append(this.borderRadius);
-        result.append(", borderSize: ");
-        result.append(this.borderSize);
-        result.append(", borderLineStyle: ");
-        result.append(this.borderLineStyle);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (borderRadius: ");
+		result.append(borderRadius);
+		result.append(", borderSize: ");
+		result.append(borderSize);
+		result.append(", borderLineStyle: ");
+		result.append(borderLineStyle);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ConditionalContainerBorderStyleImpl

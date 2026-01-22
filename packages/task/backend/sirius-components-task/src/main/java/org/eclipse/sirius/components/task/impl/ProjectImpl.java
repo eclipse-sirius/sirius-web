@@ -35,10 +35,10 @@ import org.eclipse.sirius.components.task.TaskTag;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.task.impl.ProjectImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.impl.ProjectImpl#getOwnedTasks <em>Owned Tasks</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.impl.ProjectImpl#getOwnedObjectives <em>Owned Objectives</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.impl.ProjectImpl#getOwnedTags <em>Owned Tags</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.impl.ProjectImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.impl.ProjectImpl#getOwnedTasks <em>Owned Tasks</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.impl.ProjectImpl#getOwnedObjectives <em>Owned Objectives</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.impl.ProjectImpl#getOwnedTags <em>Owned Tags</em>}</li>
  * </ul>
  *
  * @generated
@@ -75,13 +75,12 @@ public class ProjectImpl extends MinimalEObjectImpl.Container implements Project
     protected EList<Task> ownedTasks;
 
     /**
-     * The cached value of the '{@link #getOwnedObjectives() <em>Owned Objectives</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getOwnedObjectives()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getOwnedObjectives() <em>Owned Objectives</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getOwnedObjectives()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Objective> ownedObjectives;
 
     /**
@@ -95,218 +94,205 @@ public class ProjectImpl extends MinimalEObjectImpl.Container implements Project
     protected EList<TaskTag> ownedTags;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ProjectImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TaskPackage.Literals.PROJECT;
-    }
+		return TaskPackage.Literals.PROJECT;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+		return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TaskPackage.PROJECT__NAME, oldName, this.name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TaskPackage.PROJECT__NAME, oldName, name));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Task> getOwnedTasks() {
-        if (this.ownedTasks == null) {
-            this.ownedTasks = new EObjectContainmentEList<>(Task.class, this, TaskPackage.PROJECT__OWNED_TASKS);
-        }
-        return this.ownedTasks;
-    }
+		if (ownedTasks == null)
+		{
+			ownedTasks = new EObjectContainmentEList<Task>(Task.class, this, TaskPackage.PROJECT__OWNED_TASKS);
+		}
+		return ownedTasks;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Objective> getOwnedObjectives() {
-        if (this.ownedObjectives == null) {
-            this.ownedObjectives = new EObjectContainmentEList<>(Objective.class, this, TaskPackage.PROJECT__OWNED_OBJECTIVES);
-        }
-        return this.ownedObjectives;
-    }
+		if (ownedObjectives == null)
+		{
+			ownedObjectives = new EObjectContainmentEList<Objective>(Objective.class, this, TaskPackage.PROJECT__OWNED_OBJECTIVES);
+		}
+		return ownedObjectives;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<TaskTag> getOwnedTags() {
-        if (this.ownedTags == null) {
-            this.ownedTags = new EObjectContainmentEList<>(TaskTag.class, this, TaskPackage.PROJECT__OWNED_TAGS);
-        }
-        return this.ownedTags;
-    }
+		if (ownedTags == null)
+		{
+			ownedTags = new EObjectContainmentEList<TaskTag>(TaskTag.class, this, TaskPackage.PROJECT__OWNED_TAGS);
+		}
+		return ownedTags;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case TaskPackage.PROJECT__OWNED_TASKS:
-                return ((InternalEList<?>) this.getOwnedTasks()).basicRemove(otherEnd, msgs);
-            case TaskPackage.PROJECT__OWNED_OBJECTIVES:
-                return ((InternalEList<?>) this.getOwnedObjectives()).basicRemove(otherEnd, msgs);
-            case TaskPackage.PROJECT__OWNED_TAGS:
-                return ((InternalEList<?>) this.getOwnedTags()).basicRemove(otherEnd, msgs);
-            default:
-                return super.eInverseRemove(otherEnd, featureID, msgs);
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.PROJECT__OWNED_TASKS:
+				return ((InternalEList<?>)getOwnedTasks()).basicRemove(otherEnd, msgs);
+			case TaskPackage.PROJECT__OWNED_OBJECTIVES:
+				return ((InternalEList<?>)getOwnedObjectives()).basicRemove(otherEnd, msgs);
+			case TaskPackage.PROJECT__OWNED_TAGS:
+				return ((InternalEList<?>)getOwnedTags()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TaskPackage.PROJECT__NAME:
-                return this.getName();
-            case TaskPackage.PROJECT__OWNED_TASKS:
-                return this.getOwnedTasks();
-            case TaskPackage.PROJECT__OWNED_OBJECTIVES:
-                return this.getOwnedObjectives();
-            case TaskPackage.PROJECT__OWNED_TAGS:
-                return this.getOwnedTags();
-            default:
-                return super.eGet(featureID, resolve, coreType);
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.PROJECT__NAME:
+				return getName();
+			case TaskPackage.PROJECT__OWNED_TASKS:
+				return getOwnedTasks();
+			case TaskPackage.PROJECT__OWNED_OBJECTIVES:
+				return getOwnedObjectives();
+			case TaskPackage.PROJECT__OWNED_TAGS:
+				return getOwnedTags();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TaskPackage.PROJECT__NAME:
-                this.setName((String) newValue);
-                return;
-            case TaskPackage.PROJECT__OWNED_TASKS:
-                this.getOwnedTasks().clear();
-                this.getOwnedTasks().addAll((Collection<? extends Task>) newValue);
-                return;
-            case TaskPackage.PROJECT__OWNED_OBJECTIVES:
-                this.getOwnedObjectives().clear();
-                this.getOwnedObjectives().addAll((Collection<? extends Objective>) newValue);
-                return;
-            case TaskPackage.PROJECT__OWNED_TAGS:
-                this.getOwnedTags().clear();
-                this.getOwnedTags().addAll((Collection<? extends TaskTag>) newValue);
-                return;
-            default:
-                super.eSet(featureID, newValue);
-                return;
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.PROJECT__NAME:
+				setName((String)newValue);
+				return;
+			case TaskPackage.PROJECT__OWNED_TASKS:
+				getOwnedTasks().clear();
+				getOwnedTasks().addAll((Collection<? extends Task>)newValue);
+				return;
+			case TaskPackage.PROJECT__OWNED_OBJECTIVES:
+				getOwnedObjectives().clear();
+				getOwnedObjectives().addAll((Collection<? extends Objective>)newValue);
+				return;
+			case TaskPackage.PROJECT__OWNED_TAGS:
+				getOwnedTags().clear();
+				getOwnedTags().addAll((Collection<? extends TaskTag>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TaskPackage.PROJECT__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
-            case TaskPackage.PROJECT__OWNED_TASKS:
-                this.getOwnedTasks().clear();
-                return;
-            case TaskPackage.PROJECT__OWNED_OBJECTIVES:
-                this.getOwnedObjectives().clear();
-                return;
-            case TaskPackage.PROJECT__OWNED_TAGS:
-                this.getOwnedTags().clear();
-                return;
-            default:
-                super.eUnset(featureID);
-                return;
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.PROJECT__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case TaskPackage.PROJECT__OWNED_TASKS:
+				getOwnedTasks().clear();
+				return;
+			case TaskPackage.PROJECT__OWNED_OBJECTIVES:
+				getOwnedObjectives().clear();
+				return;
+			case TaskPackage.PROJECT__OWNED_TAGS:
+				getOwnedTags().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TaskPackage.PROJECT__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case TaskPackage.PROJECT__OWNED_TASKS:
-                return this.ownedTasks != null && !this.ownedTasks.isEmpty();
-            case TaskPackage.PROJECT__OWNED_OBJECTIVES:
-                return this.ownedObjectives != null && !this.ownedObjectives.isEmpty();
-            case TaskPackage.PROJECT__OWNED_TAGS:
-                return this.ownedTags != null && !this.ownedTags.isEmpty();
-            default:
-                return super.eIsSet(featureID);
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.PROJECT__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case TaskPackage.PROJECT__OWNED_TASKS:
+				return ownedTasks != null && !ownedTasks.isEmpty();
+			case TaskPackage.PROJECT__OWNED_OBJECTIVES:
+				return ownedObjectives != null && !ownedObjectives.isEmpty();
+			case TaskPackage.PROJECT__OWNED_TAGS:
+				return ownedTags != null && !ownedTags.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ProjectImpl

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,26 +94,26 @@ import org.eclipse.sirius.components.papaya.util.PapayaAdapterFactory;
  */
 public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable, IChildCreationExtender {
     /**
-     * This keeps track of the root adapter factory that delegates to this adapter factory. <!-- begin-user-doc --> <!--
+	 * This keeps track of the root adapter factory that delegates to this adapter factory.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ComposedAdapterFactory parentAdapterFactory;
 
     /**
-     * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!-- begin-user-doc --> <!--
+	 * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
 
     /**
-     * This helps manage the child creation extenders. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This helps manage the child creation extenders.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ChildCreationExtenderManager childCreationExtenderManager = new ChildCreationExtenderManager(PapayaEditPlugin.INSTANCE, PapayaPackage.eNS_URI);
 
     /**
@@ -122,21 +122,21 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      *
      * @generated
      */
-    protected Collection<Object> supportedTypes = new ArrayList<>();
+    protected Collection<Object> supportedTypes = new ArrayList<Object>();
 
     /**
-     * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public PapayaItemProviderAdapterFactory() {
-        this.supportedTypes.add(IEditingDomainItemProvider.class);
-        this.supportedTypes.add(IStructuredItemContentProvider.class);
-        this.supportedTypes.add(ITreeItemContentProvider.class);
-        this.supportedTypes.add(IItemLabelProvider.class);
-        this.supportedTypes.add(IItemPropertySource.class);
-        this.supportedTypes.add(IItemStyledLabelProvider.class);
-    }
+		supportedTypes.add(IEditingDomainItemProvider.class);
+		supportedTypes.add(IStructuredItemContentProvider.class);
+		supportedTypes.add(ITreeItemContentProvider.class);
+		supportedTypes.add(IItemLabelProvider.class);
+		supportedTypes.add(IItemPropertySource.class);
+		supportedTypes.add(IItemStyledLabelProvider.class);
+	}
 
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Tag} instances. <!--
@@ -162,57 +162,56 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ReferencingLink}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ReferencingLink} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ReferencingLinkItemProvider referencingLinkItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.ReferencingLink}. <!-- begin-user-doc
+	 * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.ReferencingLink}.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createReferencingLinkAdapter() {
-        if (this.referencingLinkItemProvider == null) {
-            this.referencingLinkItemProvider = new ReferencingLinkItemProviderSpec(this);
-        }
+		if (referencingLinkItemProvider == null)
+		{
+			referencingLinkItemProvider = new ReferencingLinkItemProvider(this);
+		}
 
-        return this.referencingLinkItemProvider;
-    }
+		return referencingLinkItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ContainingLink}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ContainingLink} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ContainingLinkItemProvider containingLinkItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.ContainingLink}. <!-- begin-user-doc
+	 * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.ContainingLink}.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createContainingLinkAdapter() {
-        if (this.containingLinkItemProvider == null) {
-            this.containingLinkItemProvider = new ContainingLinkItemProviderSpec(this);
-        }
+		if (containingLinkItemProvider == null)
+		{
+			containingLinkItemProvider = new ContainingLinkItemProvider(this);
+		}
 
-        return this.containingLinkItemProvider;
-    }
+		return containingLinkItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Folder} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Folder} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FolderItemProvider folderItemProvider;
 
     /**
@@ -231,11 +230,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Project} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Project} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ProjectItemProvider projectItemProvider;
 
     /**
@@ -254,12 +252,11 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.papaya.OperationalCapability} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalCapability} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected OperationalCapabilityItemProvider operationalCapabilityItemProvider;
 
     /**
@@ -270,65 +267,65 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      */
     @Override
     public Adapter createOperationalCapabilityAdapter() {
-        if (this.operationalCapabilityItemProvider == null) {
-            this.operationalCapabilityItemProvider = new OperationalCapabilityItemProviderSpec(this);
-        }
+		if (operationalCapabilityItemProvider == null)
+		{
+			operationalCapabilityItemProvider = new OperationalCapabilityItemProvider(this);
+		}
 
-        return this.operationalCapabilityItemProvider;
-    }
+		return operationalCapabilityItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalEntity}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalEntity} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected OperationalEntityItemProvider operationalEntityItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalEntity}. <!-- begin-user-doc
+	 * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalEntity}.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createOperationalEntityAdapter() {
-        if (this.operationalEntityItemProvider == null) {
-            this.operationalEntityItemProvider = new OperationalEntityItemProviderSpec(this);
-        }
+		if (operationalEntityItemProvider == null)
+		{
+			operationalEntityItemProvider = new OperationalEntityItemProvider(this);
+		}
 
-        return this.operationalEntityItemProvider;
-    }
+		return operationalEntityItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalActor}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalActor} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected OperationalActorItemProvider operationalActorItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalActor}. <!-- begin-user-doc
+	 * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalActor}.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createOperationalActorAdapter() {
-        if (this.operationalActorItemProvider == null) {
-            this.operationalActorItemProvider = new OperationalActorItemProviderSpec(this);
-        }
+		if (operationalActorItemProvider == null)
+		{
+			operationalActorItemProvider = new OperationalActorItemProvider(this);
+		}
 
-        return this.operationalActorItemProvider;
-    }
+		return operationalActorItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalProcess}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalProcess} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected OperationalProcessItemProvider operationalProcessItemProvider;
 
     /**
@@ -339,19 +336,19 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      */
     @Override
     public Adapter createOperationalProcessAdapter() {
-        if (this.operationalProcessItemProvider == null) {
-            this.operationalProcessItemProvider = new OperationalProcessItemProviderSpec(this);
-        }
+		if (operationalProcessItemProvider == null)
+		{
+			operationalProcessItemProvider = new OperationalProcessItemProvider(this);
+		}
 
-        return this.operationalProcessItemProvider;
-    }
+		return operationalProcessItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalActivity}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalActivity} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected OperationalActivityItemProvider operationalActivityItemProvider;
 
     /**
@@ -362,20 +359,20 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      */
     @Override
     public Adapter createOperationalActivityAdapter() {
-        if (this.operationalActivityItemProvider == null) {
-            this.operationalActivityItemProvider = new OperationalActivityItemProviderSpec(this);
-        }
+		if (operationalActivityItemProvider == null)
+		{
+			operationalActivityItemProvider = new OperationalActivityItemProvider(this);
+		}
 
-        return this.operationalActivityItemProvider;
-    }
+		return operationalActivityItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.papaya.OperationalInteraction} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.OperationalInteraction} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected OperationalInteractionItemProvider operationalInteractionItemProvider;
 
     /**
@@ -386,19 +383,19 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      */
     @Override
     public Adapter createOperationalInteractionAdapter() {
-        if (this.operationalInteractionItemProvider == null) {
-            this.operationalInteractionItemProvider = new OperationalInteractionItemProviderSpec(this);
-        }
+		if (operationalInteractionItemProvider == null)
+		{
+			operationalInteractionItemProvider = new OperationalInteractionItemProvider(this);
+		}
 
-        return this.operationalInteractionItemProvider;
-    }
+		return operationalInteractionItemProvider;
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Iteration}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Iteration} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected IterationItemProvider iterationItemProvider;
 
     /**
@@ -417,11 +414,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Task} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Task} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TaskItemProvider taskItemProvider;
 
     /**
@@ -440,11 +436,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Contribution}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Contribution} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ContributionItemProvider contributionItemProvider;
 
     /**
@@ -463,11 +458,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Component}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Component} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ComponentItemProvider componentItemProvider;
 
     /**
@@ -486,11 +480,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ComponentPort}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ComponentPort} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ComponentPortItemProvider componentPortItemProvider;
 
     /**
@@ -509,11 +502,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ComponentExchange}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ComponentExchange} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ComponentExchangeItemProvider componentExchangeItemProvider;
 
     /**
@@ -532,11 +524,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ProvidedService}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ProvidedService} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ProvidedServiceItemProvider providedServiceItemProvider;
 
     /**
@@ -555,11 +546,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.RequiredService}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.RequiredService} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RequiredServiceItemProvider requiredServiceItemProvider;
 
     /**
@@ -578,11 +568,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Package} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Package} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected PackageItemProvider packageItemProvider;
 
     /**
@@ -601,11 +590,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.GenericType}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.GenericType} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected GenericTypeItemProvider genericTypeItemProvider;
 
     /**
@@ -624,11 +612,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Annotation}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Annotation} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected AnnotationItemProvider annotationItemProvider;
 
     /**
@@ -647,11 +634,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.AnnotationField}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.AnnotationField} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected AnnotationFieldItemProvider annotationFieldItemProvider;
 
     /**
@@ -670,11 +656,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.TypeParameter}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.TypeParameter} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TypeParameterItemProvider typeParameterItemProvider;
 
     /**
@@ -693,11 +678,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Interface}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Interface} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected InterfaceItemProvider interfaceItemProvider;
 
     /**
@@ -716,11 +700,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Class} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Class} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ClassItemProvider classItemProvider;
 
     /**
@@ -739,11 +722,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Constructor}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Constructor} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ConstructorItemProvider constructorItemProvider;
 
     /**
@@ -762,11 +744,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Attribute}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Attribute} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected AttributeItemProvider attributeItemProvider;
 
     /**
@@ -785,11 +766,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Operation}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Operation} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected OperationItemProvider operationItemProvider;
 
     /**
@@ -808,11 +788,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Parameter}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Parameter} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ParameterItemProvider parameterItemProvider;
 
     /**
@@ -831,11 +810,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Record} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Record} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RecordItemProvider recordItemProvider;
 
     /**
@@ -854,11 +832,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.RecordComponent}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.RecordComponent} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RecordComponentItemProvider recordComponentItemProvider;
 
     /**
@@ -877,11 +854,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.DataType} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.DataType} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DataTypeItemProvider dataTypeItemProvider;
 
     /**
@@ -900,11 +876,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Enum} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Enum} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EnumItemProvider enumItemProvider;
 
     /**
@@ -923,11 +898,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.EnumLiteral}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.EnumLiteral} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EnumLiteralItemProvider enumLiteralItemProvider;
 
     /**
@@ -946,11 +920,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ApplicationConcern}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.ApplicationConcern} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ApplicationConcernItemProvider applicationConcernItemProvider;
 
     /**
@@ -969,11 +942,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Controller}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Controller} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ControllerItemProvider controllerItemProvider;
 
     /**
@@ -992,11 +964,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Domain} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Domain} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DomainItemProvider domainItemProvider;
 
     /**
@@ -1015,11 +986,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Service} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Service} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ServiceItemProvider serviceItemProvider;
 
     /**
@@ -1038,11 +1008,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Event} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Event} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EventItemProvider eventItemProvider;
 
     /**
@@ -1061,11 +1030,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Command} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Command} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CommandItemProvider commandItemProvider;
 
     /**
@@ -1084,11 +1052,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Query} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Query} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected QueryItemProvider queryItemProvider;
 
     /**
@@ -1107,11 +1074,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Repository}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Repository} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RepositoryItemProvider repositoryItemProvider;
 
     /**
@@ -1130,11 +1096,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Channel} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Channel} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ChannelItemProvider channelItemProvider;
 
     /**
@@ -1153,11 +1118,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Subscription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Subscription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected SubscriptionItemProvider subscriptionItemProvider;
 
     /**
@@ -1176,11 +1140,10 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Publication}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.Publication} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected PublicationItemProvider publicationItemProvider;
 
     /**
@@ -1199,226 +1162,178 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
-     * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the root adapter factory that contains this factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
-    }
+		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
+	}
 
     /**
-     * This sets the composed adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This sets the composed adapter factory that contains this factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
-        this.parentAdapterFactory = parentAdapterFactory;
-    }
+		this.parentAdapterFactory = parentAdapterFactory;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isFactoryForType(Object type) {
-        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
-    }
+		return supportedTypes.contains(type) || super.isFactoryForType(type);
+	}
 
     /**
-     * This implementation substitutes the factory itself as the key for the adapter. <!-- begin-user-doc --> <!--
+	 * This implementation substitutes the factory itself as the key for the adapter.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter adapt(Notifier notifier, Object type) {
-        return super.adapt(notifier, this);
-    }
+		return super.adapt(notifier, this);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object adapt(Object object, Object type) {
-        if (this.isFactoryForType(type)) {
-            Object adapter = super.adapt(object, type);
-            if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
-                return adapter;
-            }
-        }
+		if (isFactoryForType(type))
+		{
+			Object adapter = super.adapt(object, type);
+			if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter)))
+			{
+				return adapter;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public List<IChildCreationExtender> getChildCreationExtenders() {
-        return this.childCreationExtenderManager.getChildCreationExtenders();
-    }
+		return childCreationExtenderManager.getChildCreationExtenders();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Collection<?> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
-        return this.childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
-    }
+		return childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ResourceLocator getResourceLocator() {
-        return this.childCreationExtenderManager;
-    }
+		return childCreationExtenderManager;
+	}
 
     /**
-     * This adds a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a listener.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void addListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.addListener(notifyChangedListener);
-    }
+		changeNotifier.addListener(notifyChangedListener);
+	}
 
     /**
-     * This removes a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This removes a listener.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void removeListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.removeListener(notifyChangedListener);
-    }
+		changeNotifier.removeListener(notifyChangedListener);
+	}
 
     /**
-     * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!-- begin-user-doc --> <!--
+	 * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void fireNotifyChanged(Notification notification) {
-        this.changeNotifier.fireNotifyChanged(notification);
+		changeNotifier.fireNotifyChanged(notification);
 
-        if (this.parentAdapterFactory != null) {
-            this.parentAdapterFactory.fireNotifyChanged(notification);
-        }
-    }
+		if (parentAdapterFactory != null)
+		{
+			parentAdapterFactory.fireNotifyChanged(notification);
+		}
+	}
 
     /**
-     * This disposes all of the item providers created by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This disposes all of the item providers created by this factory. 
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void dispose() {
-        if (this.tagItemProvider != null)
-            this.tagItemProvider.dispose();
-        if (this.referencingLinkItemProvider != null)
-            this.referencingLinkItemProvider.dispose();
-        if (this.containingLinkItemProvider != null)
-            this.containingLinkItemProvider.dispose();
-        if (this.folderItemProvider != null)
-            this.folderItemProvider.dispose();
-        if (this.projectItemProvider != null)
-            this.projectItemProvider.dispose();
-        if (this.operationalCapabilityItemProvider != null)
-            this.operationalCapabilityItemProvider.dispose();
-        if (this.operationalEntityItemProvider != null)
-            this.operationalEntityItemProvider.dispose();
-        if (this.operationalActorItemProvider != null)
-            this.operationalActorItemProvider.dispose();
-        if (this.operationalProcessItemProvider != null)
-            this.operationalProcessItemProvider.dispose();
-        if (this.operationalActivityItemProvider != null)
-            this.operationalActivityItemProvider.dispose();
-        if (this.operationalInteractionItemProvider != null)
-            this.operationalInteractionItemProvider.dispose();
-        if (this.iterationItemProvider != null)
-            this.iterationItemProvider.dispose();
-        if (this.taskItemProvider != null)
-            this.taskItemProvider.dispose();
-        if (this.contributionItemProvider != null)
-            this.contributionItemProvider.dispose();
-        if (this.componentItemProvider != null)
-            this.componentItemProvider.dispose();
-        if (this.componentPortItemProvider != null)
-            this.componentPortItemProvider.dispose();
-        if (this.componentExchangeItemProvider != null)
-            this.componentExchangeItemProvider.dispose();
-        if (this.providedServiceItemProvider != null)
-            this.providedServiceItemProvider.dispose();
-        if (this.requiredServiceItemProvider != null)
-            this.requiredServiceItemProvider.dispose();
-        if (this.packageItemProvider != null)
-            this.packageItemProvider.dispose();
-        if (this.genericTypeItemProvider != null)
-            this.genericTypeItemProvider.dispose();
-        if (this.annotationItemProvider != null)
-            this.annotationItemProvider.dispose();
-        if (this.annotationFieldItemProvider != null)
-            this.annotationFieldItemProvider.dispose();
-        if (this.typeParameterItemProvider != null)
-            this.typeParameterItemProvider.dispose();
-        if (this.interfaceItemProvider != null)
-            this.interfaceItemProvider.dispose();
-        if (this.classItemProvider != null)
-            this.classItemProvider.dispose();
-        if (this.constructorItemProvider != null)
-            this.constructorItemProvider.dispose();
-        if (this.attributeItemProvider != null)
-            this.attributeItemProvider.dispose();
-        if (this.operationItemProvider != null)
-            this.operationItemProvider.dispose();
-        if (this.parameterItemProvider != null)
-            this.parameterItemProvider.dispose();
-        if (this.recordItemProvider != null)
-            this.recordItemProvider.dispose();
-        if (this.recordComponentItemProvider != null)
-            this.recordComponentItemProvider.dispose();
-        if (this.dataTypeItemProvider != null)
-            this.dataTypeItemProvider.dispose();
-        if (this.enumItemProvider != null)
-            this.enumItemProvider.dispose();
-        if (this.enumLiteralItemProvider != null)
-            this.enumLiteralItemProvider.dispose();
-        if (this.applicationConcernItemProvider != null)
-            this.applicationConcernItemProvider.dispose();
-        if (this.controllerItemProvider != null)
-            this.controllerItemProvider.dispose();
-        if (this.domainItemProvider != null)
-            this.domainItemProvider.dispose();
-        if (this.serviceItemProvider != null)
-            this.serviceItemProvider.dispose();
-        if (this.eventItemProvider != null)
-            this.eventItemProvider.dispose();
-        if (this.commandItemProvider != null)
-            this.commandItemProvider.dispose();
-        if (this.queryItemProvider != null)
-            this.queryItemProvider.dispose();
-        if (this.repositoryItemProvider != null)
-            this.repositoryItemProvider.dispose();
-        if (this.channelItemProvider != null)
-            this.channelItemProvider.dispose();
-        if (this.subscriptionItemProvider != null)
-            this.subscriptionItemProvider.dispose();
-        if (this.publicationItemProvider != null)
-            this.publicationItemProvider.dispose();
-    }
+		if (tagItemProvider != null) tagItemProvider.dispose();
+		if (referencingLinkItemProvider != null) referencingLinkItemProvider.dispose();
+		if (containingLinkItemProvider != null) containingLinkItemProvider.dispose();
+		if (folderItemProvider != null) folderItemProvider.dispose();
+		if (projectItemProvider != null) projectItemProvider.dispose();
+		if (operationalCapabilityItemProvider != null) operationalCapabilityItemProvider.dispose();
+		if (operationalEntityItemProvider != null) operationalEntityItemProvider.dispose();
+		if (operationalActorItemProvider != null) operationalActorItemProvider.dispose();
+		if (operationalProcessItemProvider != null) operationalProcessItemProvider.dispose();
+		if (operationalActivityItemProvider != null) operationalActivityItemProvider.dispose();
+		if (operationalInteractionItemProvider != null) operationalInteractionItemProvider.dispose();
+		if (iterationItemProvider != null) iterationItemProvider.dispose();
+		if (taskItemProvider != null) taskItemProvider.dispose();
+		if (contributionItemProvider != null) contributionItemProvider.dispose();
+		if (componentItemProvider != null) componentItemProvider.dispose();
+		if (componentPortItemProvider != null) componentPortItemProvider.dispose();
+		if (componentExchangeItemProvider != null) componentExchangeItemProvider.dispose();
+		if (providedServiceItemProvider != null) providedServiceItemProvider.dispose();
+		if (requiredServiceItemProvider != null) requiredServiceItemProvider.dispose();
+		if (packageItemProvider != null) packageItemProvider.dispose();
+		if (genericTypeItemProvider != null) genericTypeItemProvider.dispose();
+		if (annotationItemProvider != null) annotationItemProvider.dispose();
+		if (annotationFieldItemProvider != null) annotationFieldItemProvider.dispose();
+		if (typeParameterItemProvider != null) typeParameterItemProvider.dispose();
+		if (interfaceItemProvider != null) interfaceItemProvider.dispose();
+		if (classItemProvider != null) classItemProvider.dispose();
+		if (constructorItemProvider != null) constructorItemProvider.dispose();
+		if (attributeItemProvider != null) attributeItemProvider.dispose();
+		if (operationItemProvider != null) operationItemProvider.dispose();
+		if (parameterItemProvider != null) parameterItemProvider.dispose();
+		if (recordItemProvider != null) recordItemProvider.dispose();
+		if (recordComponentItemProvider != null) recordComponentItemProvider.dispose();
+		if (dataTypeItemProvider != null) dataTypeItemProvider.dispose();
+		if (enumItemProvider != null) enumItemProvider.dispose();
+		if (enumLiteralItemProvider != null) enumLiteralItemProvider.dispose();
+		if (applicationConcernItemProvider != null) applicationConcernItemProvider.dispose();
+		if (controllerItemProvider != null) controllerItemProvider.dispose();
+		if (domainItemProvider != null) domainItemProvider.dispose();
+		if (serviceItemProvider != null) serviceItemProvider.dispose();
+		if (eventItemProvider != null) eventItemProvider.dispose();
+		if (commandItemProvider != null) commandItemProvider.dispose();
+		if (queryItemProvider != null) queryItemProvider.dispose();
+		if (repositoryItemProvider != null) repositoryItemProvider.dispose();
+		if (channelItemProvider != null) channelItemProvider.dispose();
+		if (subscriptionItemProvider != null) subscriptionItemProvider.dispose();
+		if (publicationItemProvider != null) publicationItemProvider.dispose();
+	}
 
 }

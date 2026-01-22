@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,73 +38,66 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface DeckElementDescription extends EObject {
     /**
-     * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute. The default value is
-     * <code>"aql:self"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Semantic Candidates Expression</em>' attribute.
-     * @see #setSemanticCandidatesExpression(String)
-     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckElementDescription_SemanticCandidatesExpression()
-     * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute.
+	 * The default value is <code>"aql:self"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Semantic Candidates Expression</em>' attribute.
+	 * @see #setSemanticCandidatesExpression(String)
+	 * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckElementDescription_SemanticCandidatesExpression()
+	 * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
+	 * @generated
+	 */
     String getSemanticCandidatesExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getSemanticCandidatesExpression
-     * <em>Semantic Candidates Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Semantic Candidates Expression</em>' attribute.
-     * @see #getSemanticCandidatesExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getSemanticCandidatesExpression <em>Semantic Candidates Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Semantic Candidates Expression</em>' attribute.
+	 * @see #getSemanticCandidatesExpression()
+	 * @generated
+	 */
     void setSemanticCandidatesExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Title Expression</b></em>' attribute. The default value is
-     * <code>"aql:self"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Title Expression</em>' attribute.
-     * @see #setTitleExpression(String)
-     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckElementDescription_TitleExpression()
-     * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Title Expression</b></em>' attribute.
+	 * The default value is <code>"aql:self"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Title Expression</em>' attribute.
+	 * @see #setTitleExpression(String)
+	 * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckElementDescription_TitleExpression()
+	 * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getTitleExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getTitleExpression
-     * <em>Title Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Title Expression</em>' attribute.
-     * @see #getTitleExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getTitleExpression <em>Title Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Title Expression</em>' attribute.
+	 * @see #getTitleExpression()
+	 * @generated
+	 */
     void setTitleExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Label Expression</b></em>' attribute. The default value is
-     * <code>"aql:self"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Label Expression</em>' attribute.
-     * @see #setLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckElementDescription_LabelExpression()
-     * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Label Expression</b></em>' attribute.
+	 * The default value is <code>"aql:self"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Label Expression</em>' attribute.
+	 * @see #setLabelExpression(String)
+	 * @see org.eclipse.sirius.components.view.deck.DeckPackage#getDeckElementDescription_LabelExpression()
+	 * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getLabelExpression
-     * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Label Expression</em>' attribute.
-     * @see #getLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getLabelExpression <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Label Expression</em>' attribute.
+	 * @see #getLabelExpression()
+	 * @generated
+	 */
     void setLabelExpression(String value);
 
     /**
@@ -120,14 +113,12 @@ public interface DeckElementDescription extends EObject {
     DeckElementDescriptionStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getStyle
-     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckElementDescription#getStyle <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Style</em>' containment reference.
+	 * @see #getStyle()
+	 * @generated
+	 */
     void setStyle(DeckElementDescriptionStyle value);
 
     /**

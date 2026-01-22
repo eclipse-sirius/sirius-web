@@ -32,9 +32,9 @@ import org.eclipse.sirius.components.task.Team;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.task.impl.CompanyImpl#getOwnedTeams <em>Owned Teams</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.impl.CompanyImpl#getOwnedPersons <em>Owned Persons</em>}</li>
- * <li>{@link org.eclipse.sirius.components.task.impl.CompanyImpl#getOwnedProjects <em>Owned Projects</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.impl.CompanyImpl#getOwnedTeams <em>Owned Teams</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.impl.CompanyImpl#getOwnedPersons <em>Owned Persons</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.impl.CompanyImpl#getOwnedProjects <em>Owned Projects</em>}</li>
  * </ul>
  *
  * @generated
@@ -71,168 +71,159 @@ public class CompanyImpl extends ResourceImpl implements Company {
     protected EList<Project> ownedProjects;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CompanyImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TaskPackage.Literals.COMPANY;
-    }
+		return TaskPackage.Literals.COMPANY;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Team> getOwnedTeams() {
-        if (this.ownedTeams == null) {
-            this.ownedTeams = new EObjectContainmentEList<>(Team.class, this, TaskPackage.COMPANY__OWNED_TEAMS);
-        }
-        return this.ownedTeams;
-    }
+		if (ownedTeams == null)
+		{
+			ownedTeams = new EObjectContainmentEList<Team>(Team.class, this, TaskPackage.COMPANY__OWNED_TEAMS);
+		}
+		return ownedTeams;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Person> getOwnedPersons() {
-        if (this.ownedPersons == null) {
-            this.ownedPersons = new EObjectContainmentEList<>(Person.class, this, TaskPackage.COMPANY__OWNED_PERSONS);
-        }
-        return this.ownedPersons;
-    }
+		if (ownedPersons == null)
+		{
+			ownedPersons = new EObjectContainmentEList<Person>(Person.class, this, TaskPackage.COMPANY__OWNED_PERSONS);
+		}
+		return ownedPersons;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Project> getOwnedProjects() {
-        if (this.ownedProjects == null) {
-            this.ownedProjects = new EObjectContainmentEList<>(Project.class, this, TaskPackage.COMPANY__OWNED_PROJECTS);
-        }
-        return this.ownedProjects;
-    }
+		if (ownedProjects == null)
+		{
+			ownedProjects = new EObjectContainmentEList<Project>(Project.class, this, TaskPackage.COMPANY__OWNED_PROJECTS);
+		}
+		return ownedProjects;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case TaskPackage.COMPANY__OWNED_TEAMS:
-                return ((InternalEList<?>) this.getOwnedTeams()).basicRemove(otherEnd, msgs);
-            case TaskPackage.COMPANY__OWNED_PERSONS:
-                return ((InternalEList<?>) this.getOwnedPersons()).basicRemove(otherEnd, msgs);
-            case TaskPackage.COMPANY__OWNED_PROJECTS:
-                return ((InternalEList<?>) this.getOwnedProjects()).basicRemove(otherEnd, msgs);
-            default:
-                return super.eInverseRemove(otherEnd, featureID, msgs);
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.COMPANY__OWNED_TEAMS:
+				return ((InternalEList<?>)getOwnedTeams()).basicRemove(otherEnd, msgs);
+			case TaskPackage.COMPANY__OWNED_PERSONS:
+				return ((InternalEList<?>)getOwnedPersons()).basicRemove(otherEnd, msgs);
+			case TaskPackage.COMPANY__OWNED_PROJECTS:
+				return ((InternalEList<?>)getOwnedProjects()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TaskPackage.COMPANY__OWNED_TEAMS:
-                return this.getOwnedTeams();
-            case TaskPackage.COMPANY__OWNED_PERSONS:
-                return this.getOwnedPersons();
-            case TaskPackage.COMPANY__OWNED_PROJECTS:
-                return this.getOwnedProjects();
-            default:
-                return super.eGet(featureID, resolve, coreType);
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.COMPANY__OWNED_TEAMS:
+				return getOwnedTeams();
+			case TaskPackage.COMPANY__OWNED_PERSONS:
+				return getOwnedPersons();
+			case TaskPackage.COMPANY__OWNED_PROJECTS:
+				return getOwnedProjects();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TaskPackage.COMPANY__OWNED_TEAMS:
-                this.getOwnedTeams().clear();
-                this.getOwnedTeams().addAll((Collection<? extends Team>) newValue);
-                return;
-            case TaskPackage.COMPANY__OWNED_PERSONS:
-                this.getOwnedPersons().clear();
-                this.getOwnedPersons().addAll((Collection<? extends Person>) newValue);
-                return;
-            case TaskPackage.COMPANY__OWNED_PROJECTS:
-                this.getOwnedProjects().clear();
-                this.getOwnedProjects().addAll((Collection<? extends Project>) newValue);
-                return;
-            default:
-                super.eSet(featureID, newValue);
-                return;
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.COMPANY__OWNED_TEAMS:
+				getOwnedTeams().clear();
+				getOwnedTeams().addAll((Collection<? extends Team>)newValue);
+				return;
+			case TaskPackage.COMPANY__OWNED_PERSONS:
+				getOwnedPersons().clear();
+				getOwnedPersons().addAll((Collection<? extends Person>)newValue);
+				return;
+			case TaskPackage.COMPANY__OWNED_PROJECTS:
+				getOwnedProjects().clear();
+				getOwnedProjects().addAll((Collection<? extends Project>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TaskPackage.COMPANY__OWNED_TEAMS:
-                this.getOwnedTeams().clear();
-                return;
-            case TaskPackage.COMPANY__OWNED_PERSONS:
-                this.getOwnedPersons().clear();
-                return;
-            case TaskPackage.COMPANY__OWNED_PROJECTS:
-                this.getOwnedProjects().clear();
-                return;
-            default:
-                super.eUnset(featureID);
-                return;
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.COMPANY__OWNED_TEAMS:
+				getOwnedTeams().clear();
+				return;
+			case TaskPackage.COMPANY__OWNED_PERSONS:
+				getOwnedPersons().clear();
+				return;
+			case TaskPackage.COMPANY__OWNED_PROJECTS:
+				getOwnedProjects().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TaskPackage.COMPANY__OWNED_TEAMS:
-                return this.ownedTeams != null && !this.ownedTeams.isEmpty();
-            case TaskPackage.COMPANY__OWNED_PERSONS:
-                return this.ownedPersons != null && !this.ownedPersons.isEmpty();
-            case TaskPackage.COMPANY__OWNED_PROJECTS:
-                return this.ownedProjects != null && !this.ownedProjects.isEmpty();
-            default:
-                return super.eIsSet(featureID);
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.COMPANY__OWNED_TEAMS:
+				return ownedTeams != null && !ownedTeams.isEmpty();
+			case TaskPackage.COMPANY__OWNED_PERSONS:
+				return ownedPersons != null && !ownedPersons.isEmpty();
+			case TaskPackage.COMPANY__OWNED_PROJECTS:
+				return ownedProjects != null && !ownedProjects.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // CompanyImpl

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,15 +27,11 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getDomainType <em>Domain
- * Type</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getSemanticCandidatesExpression
- * <em>Semantic Candidates Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getPreconditionExpression
- * <em>Precondition Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getSynchronizationPolicy
- * <em>Synchronization Policy</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getDomainType <em>Domain Type</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getSemanticCandidatesExpression <em>Semantic Candidates Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getPreconditionExpression <em>Precondition Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getSynchronizationPolicy <em>Synchronization Policy</em>}</li>
  * </ul>
  *
  * @generated
@@ -63,43 +59,41 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     protected String name = NAME_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getDomainType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDomainType()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String DOMAIN_TYPE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getDomainType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDomainType()
+	 * @generated
+	 * @ordered
+	 */
     protected String domainType = DOMAIN_TYPE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSemanticCandidatesExpression()
-     * @generated
-     * @ordered
-     */
+	 * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getSemanticCandidatesExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "aql:self.eContents()";
 
     /**
-     * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSemanticCandidatesExpression()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getSemanticCandidatesExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
 
     /**
@@ -143,261 +137,246 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
     protected SynchronizationPolicy synchronizationPolicy = SYNCHRONIZATION_POLICY_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DiagramElementDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION;
-    }
+		return DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+		return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME, oldName, this.name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME, oldName, name));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getDomainType() {
-        return this.domainType;
-    }
+		return domainType;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setDomainType(String newDomainType) {
-        String oldDomainType = this.domainType;
-        this.domainType = newDomainType;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE, oldDomainType, this.domainType));
-    }
+		String oldDomainType = domainType;
+		domainType = newDomainType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE, oldDomainType, domainType));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getSemanticCandidatesExpression() {
-        return this.semanticCandidatesExpression;
-    }
+		return semanticCandidatesExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setSemanticCandidatesExpression(String newSemanticCandidatesExpression) {
-        String oldSemanticCandidatesExpression = this.semanticCandidatesExpression;
-        this.semanticCandidatesExpression = newSemanticCandidatesExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, oldSemanticCandidatesExpression,
-                    this.semanticCandidatesExpression));
-    }
+		String oldSemanticCandidatesExpression = semanticCandidatesExpression;
+		semanticCandidatesExpression = newSemanticCandidatesExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, oldSemanticCandidatesExpression, semanticCandidatesExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getPreconditionExpression() {
-        return this.preconditionExpression;
-    }
+		return preconditionExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setPreconditionExpression(String newPreconditionExpression) {
-        String oldPreconditionExpression = this.preconditionExpression;
-        this.preconditionExpression = newPreconditionExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
-    }
+		String oldPreconditionExpression = preconditionExpression;
+		preconditionExpression = newPreconditionExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, preconditionExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public SynchronizationPolicy getSynchronizationPolicy() {
-        return this.synchronizationPolicy;
-    }
+		return synchronizationPolicy;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setSynchronizationPolicy(SynchronizationPolicy newSynchronizationPolicy) {
-        SynchronizationPolicy oldSynchronizationPolicy = this.synchronizationPolicy;
-        this.synchronizationPolicy = newSynchronizationPolicy == null ? SYNCHRONIZATION_POLICY_EDEFAULT : newSynchronizationPolicy;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY, oldSynchronizationPolicy, this.synchronizationPolicy));
-    }
+		SynchronizationPolicy oldSynchronizationPolicy = synchronizationPolicy;
+		synchronizationPolicy = newSynchronizationPolicy == null ? SYNCHRONIZATION_POLICY_EDEFAULT : newSynchronizationPolicy;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY, oldSynchronizationPolicy, synchronizationPolicy));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-                return this.getName();
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-                return this.getDomainType();
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                return this.getSemanticCandidatesExpression();
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
-                return this.getPreconditionExpression();
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
-                return this.getSynchronizationPolicy();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+				return getName();
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
+				return getDomainType();
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+				return getSemanticCandidatesExpression();
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
+				return getPreconditionExpression();
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+				return getSynchronizationPolicy();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-                this.setName((String) newValue);
-                return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-                this.setDomainType((String) newValue);
-                return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                this.setSemanticCandidatesExpression((String) newValue);
-                return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression((String) newValue);
-                return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
-                this.setSynchronizationPolicy((SynchronizationPolicy) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+				setName((String)newValue);
+				return;
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
+				setDomainType((String)newValue);
+				return;
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+				setSemanticCandidatesExpression((String)newValue);
+				return;
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
+				setPreconditionExpression((String)newValue);
+				return;
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+				setSynchronizationPolicy((SynchronizationPolicy)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-                this.setDomainType(DOMAIN_TYPE_EDEFAULT);
-                return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
-                return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
-                return;
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
-                this.setSynchronizationPolicy(SYNCHRONIZATION_POLICY_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
+				setDomainType(DOMAIN_TYPE_EDEFAULT);
+				return;
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+				setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
+				return;
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
+				setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+				return;
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+				setSynchronizationPolicy(SYNCHRONIZATION_POLICY_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
-                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
-                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
-            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
-                return this.synchronizationPolicy != SYNCHRONIZATION_POLICY_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE:
+				return DOMAIN_TYPE_EDEFAULT == null ? domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(domainType);
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+				return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(semanticCandidatesExpression);
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
+				return PRECONDITION_EXPRESSION_EDEFAULT == null ? preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(preconditionExpression);
+			case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+				return synchronizationPolicy != SYNCHRONIZATION_POLICY_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(", domainType: ");
-        result.append(this.domainType);
-        result.append(", semanticCandidatesExpression: ");
-        result.append(this.semanticCandidatesExpression);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
-        result.append(", synchronizationPolicy: ");
-        result.append(this.synchronizationPolicy);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", domainType: ");
+		result.append(domainType);
+		result.append(", semanticCandidatesExpression: ");
+		result.append(semanticCandidatesExpression);
+		result.append(", preconditionExpression: ");
+		result.append(preconditionExpression);
+		result.append(", synchronizationPolicy: ");
+		result.append(synchronizationPolicy);
+		result.append(')');
+		return result.toString();
+	}
 
 } // DiagramElementDescriptionImpl

@@ -24,22 +24,20 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
  */
 public class AnnotationFieldImpl extends TypedElementImpl implements AnnotationField {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected AnnotationFieldImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.ANNOTATION_FIELD;
-    }
+		return PapayaPackage.Literals.ANNOTATION_FIELD;
+	}
 
 } // AnnotationFieldImpl

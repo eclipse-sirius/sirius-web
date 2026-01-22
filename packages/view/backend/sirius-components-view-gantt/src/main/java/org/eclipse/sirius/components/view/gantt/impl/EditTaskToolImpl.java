@@ -23,22 +23,20 @@ import org.eclipse.sirius.components.view.gantt.GanttPackage;
  */
 public class EditTaskToolImpl extends TaskToolImpl implements EditTaskTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EditTaskToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return GanttPackage.Literals.EDIT_TASK_TOOL;
-    }
+		return GanttPackage.Literals.EDIT_TASK_TOOL;
+	}
 
 } // EditTaskToolImpl

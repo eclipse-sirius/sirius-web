@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,10 +21,10 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.domain.Entity#getAttributes <em>Attributes</em>}</li>
- * <li>{@link org.eclipse.sirius.components.domain.Entity#getRelations <em>Relations</em>}</li>
- * <li>{@link org.eclipse.sirius.components.domain.Entity#getSuperTypes <em>Super Types</em>}</li>
- * <li>{@link org.eclipse.sirius.components.domain.Entity#isAbstract <em>Abstract</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.Entity#getAttributes <em>Attributes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.Entity#getRelations <em>Relations</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.Entity#getSuperTypes <em>Super Types</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.Entity#isAbstract <em>Abstract</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.domain.DomainPackage#getEntity()
@@ -33,47 +33,47 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Entity extends NamedElement {
     /**
-     * Returns the value of the '<em><b>Attributes</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.domain.Attribute}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Attributes</em>' containment reference list.
-     * @see org.eclipse.sirius.components.domain.DomainPackage#getEntity_Attributes()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Attributes</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.domain.Attribute}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Attributes</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.domain.DomainPackage#getEntity_Attributes()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Attribute> getAttributes();
 
     /**
-     * Returns the value of the '<em><b>Relations</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.domain.Relation}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Relations</em>' containment reference list.
-     * @see org.eclipse.sirius.components.domain.DomainPackage#getEntity_Relations()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Relations</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.domain.Relation}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Relations</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.domain.DomainPackage#getEntity_Relations()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Relation> getRelations();
 
     /**
-     * Returns the value of the '<em><b>Super Types</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.domain.Entity}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Super Types</em>' reference list.
-     * @see org.eclipse.sirius.components.domain.DomainPackage#getEntity_SuperTypes()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Super Types</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.domain.Entity}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Super Types</em>' reference list.
+	 * @see org.eclipse.sirius.components.domain.DomainPackage#getEntity_SuperTypes()
+	 * @model
+	 * @generated
+	 */
     EList<Entity> getSuperTypes();
 
     /**
-     * Returns the value of the '<em><b>Abstract</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Abstract</em>' attribute.
-     * @see #setAbstract(boolean)
-     * @see org.eclipse.sirius.components.domain.DomainPackage#getEntity_Abstract()
-     * @model required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Abstract</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Abstract</em>' attribute.
+	 * @see #setAbstract(boolean)
+	 * @see org.eclipse.sirius.components.domain.DomainPackage#getEntity_Abstract()
+	 * @model required="true"
+	 * @generated
+	 */
     boolean isAbstract();
 
     /**

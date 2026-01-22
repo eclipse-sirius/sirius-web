@@ -21,7 +21,7 @@ import org.eclipse.sirius.components.view.Operation;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DeleteView#getViewExpression <em>View Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DeleteView#getViewExpression <em>View Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDeleteView()
@@ -30,27 +30,24 @@ import org.eclipse.sirius.components.view.Operation;
  */
 public interface DeleteView extends Operation {
     /**
-     * Returns the value of the '<em><b>View Expression</b></em>' attribute. The default value is
-     * <code>"aql:selectedNode"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>View Expression</em>' attribute.
-     * @see #setViewExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDeleteView_ViewExpression()
-     * @model default="aql:selectedNode" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     *        required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>View Expression</b></em>' attribute.
+	 * The default value is <code>"aql:selectedNode"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>View Expression</em>' attribute.
+	 * @see #setViewExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDeleteView_ViewExpression()
+	 * @model default="aql:selectedNode" dataType="org.eclipse.sirius.components.view.InterpretedExpression" required="true"
+	 * @generated
+	 */
     String getViewExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DeleteView#getViewExpression <em>View
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>View Expression</em>' attribute.
-     * @see #getViewExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DeleteView#getViewExpression <em>View Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>View Expression</em>' attribute.
+	 * @see #getViewExpression()
+	 * @generated
+	 */
     void setViewExpression(String value);
 
 } // DeleteView

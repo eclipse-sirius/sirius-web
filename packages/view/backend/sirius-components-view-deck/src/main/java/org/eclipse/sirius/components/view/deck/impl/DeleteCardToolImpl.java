@@ -24,22 +24,20 @@ import org.eclipse.sirius.components.view.deck.DeleteCardTool;
  */
 public class DeleteCardToolImpl extends DeckToolImpl implements DeleteCardTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DeleteCardToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DeckPackage.Literals.DELETE_CARD_TOOL;
-    }
+		return DeckPackage.Literals.DELETE_CARD_TOOL;
+	}
 
 } // DeleteCardToolImpl

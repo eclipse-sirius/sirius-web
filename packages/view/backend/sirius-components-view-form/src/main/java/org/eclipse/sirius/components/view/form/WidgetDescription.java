@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,14 +44,12 @@ public interface WidgetDescription extends FormElementDescription {
     String getLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.WidgetDescription#getLabelExpression
-     * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Label Expression</em>' attribute.
-     * @see #getLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.WidgetDescription#getLabelExpression <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Label Expression</em>' attribute.
+	 * @see #getLabelExpression()
+	 * @generated
+	 */
     void setLabelExpression(String value);
 
     /**
@@ -67,37 +65,33 @@ public interface WidgetDescription extends FormElementDescription {
     String getHelpExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.WidgetDescription#getHelpExpression
-     * <em>Help Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Help Expression</em>' attribute.
-     * @see #getHelpExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.WidgetDescription#getHelpExpression <em>Help Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Help Expression</em>' attribute.
+	 * @see #getHelpExpression()
+	 * @generated
+	 */
     void setHelpExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Diagnostics Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Diagnostics Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Diagnostics Expression</em>' attribute.
-     * @see #setDiagnosticsExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getWidgetDescription_DiagnosticsExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Diagnostics Expression</em>' attribute.
+	 * @see #setDiagnosticsExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getWidgetDescription_DiagnosticsExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getDiagnosticsExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.WidgetDescription#getDiagnosticsExpression
-     * <em>Diagnostics Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Diagnostics Expression</em>' attribute.
-     * @see #getDiagnosticsExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.WidgetDescription#getDiagnosticsExpression <em>Diagnostics Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Diagnostics Expression</em>' attribute.
+	 * @see #getDiagnosticsExpression()
+	 * @generated
+	 */
     void setDiagnosticsExpression(String value);
 
 } // WidgetDescription

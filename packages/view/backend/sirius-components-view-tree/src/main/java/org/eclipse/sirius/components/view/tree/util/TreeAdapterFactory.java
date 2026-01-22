@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.tree.*;
 import org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription;
@@ -32,128 +33,131 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
- *
  * @see org.eclipse.sirius.components.view.tree.TreePackage
  * @generated
  */
 public class TreeAdapterFactory extends AdapterFactoryImpl {
 
     /**
-     * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * The cached model package.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected static TreePackage modelPackage;
 
     /**
-     * The switch that delegates to the <code>createXXX</code> methods. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected TreeSwitch<Adapter> modelSwitch = new TreeSwitch<>() {
-        @Override
-        public Adapter caseTreeDescription(TreeDescription object) {
-            return TreeAdapterFactory.this.createTreeDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseTreeItemLabelDescription(TreeItemLabelDescription object) {
-            return TreeAdapterFactory.this.createTreeItemLabelDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseIfTreeItemLabelElementDescription(IfTreeItemLabelElementDescription object) {
-            return TreeAdapterFactory.this.createIfTreeItemLabelElementDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseForTreeItemLabelElementDescription(ForTreeItemLabelElementDescription object) {
-            return TreeAdapterFactory.this.createForTreeItemLabelElementDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseTreeItemLabelFragmentDescription(TreeItemLabelFragmentDescription object) {
-            return TreeAdapterFactory.this.createTreeItemLabelFragmentDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseTreeItemLabelElementDescription(TreeItemLabelElementDescription object) {
-            return TreeAdapterFactory.this.createTreeItemLabelElementDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseTreeItemContextMenuEntry(TreeItemContextMenuEntry object) {
-            return TreeAdapterFactory.this.createTreeItemContextMenuEntryAdapter();
-        }
-
-        @Override
-        public Adapter caseSingleClickTreeItemContextMenuEntry(SingleClickTreeItemContextMenuEntry object) {
-            return TreeAdapterFactory.this.createSingleClickTreeItemContextMenuEntryAdapter();
-        }
-
-        @Override
-        public Adapter caseFetchTreeItemContextMenuEntry(FetchTreeItemContextMenuEntry object) {
-            return TreeAdapterFactory.this.createFetchTreeItemContextMenuEntryAdapter();
-        }
-
-        @Override
-        public Adapter caseCustomTreeItemContextMenuEntry(CustomTreeItemContextMenuEntry object) {
-            return TreeAdapterFactory.this.createCustomTreeItemContextMenuEntryAdapter();
-        }
-
-        @Override
-        public Adapter caseRepresentationDescription(RepresentationDescription object) {
-            return TreeAdapterFactory.this.createRepresentationDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter defaultCase(EObject object) {
-            return TreeAdapterFactory.this.createEObjectAdapter();
-        }
-    };
+	 * The switch that delegates to the <code>createXXX</code> methods.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+    protected TreeSwitch<Adapter> modelSwitch = new TreeSwitch<Adapter>()
+		{
+			@Override
+			public Adapter caseTreeDescription(TreeDescription object)
+			{
+				return createTreeDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseTreeItemLabelDescription(TreeItemLabelDescription object)
+			{
+				return createTreeItemLabelDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseIfTreeItemLabelElementDescription(IfTreeItemLabelElementDescription object)
+			{
+				return createIfTreeItemLabelElementDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseForTreeItemLabelElementDescription(ForTreeItemLabelElementDescription object)
+			{
+				return createForTreeItemLabelElementDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseTreeItemLabelFragmentDescription(TreeItemLabelFragmentDescription object)
+			{
+				return createTreeItemLabelFragmentDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseTreeItemLabelElementDescription(TreeItemLabelElementDescription object)
+			{
+				return createTreeItemLabelElementDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseTreeItemContextMenuEntry(TreeItemContextMenuEntry object)
+			{
+				return createTreeItemContextMenuEntryAdapter();
+			}
+			@Override
+			public Adapter caseSingleClickTreeItemContextMenuEntry(SingleClickTreeItemContextMenuEntry object)
+			{
+				return createSingleClickTreeItemContextMenuEntryAdapter();
+			}
+			@Override
+			public Adapter caseFetchTreeItemContextMenuEntry(FetchTreeItemContextMenuEntry object)
+			{
+				return createFetchTreeItemContextMenuEntryAdapter();
+			}
+			@Override
+			public Adapter caseCustomTreeItemContextMenuEntry(CustomTreeItemContextMenuEntry object)
+			{
+				return createCustomTreeItemContextMenuEntryAdapter();
+			}
+			@Override
+			public Adapter caseRepresentationDescription(RepresentationDescription object)
+			{
+				return createRepresentationDescriptionAdapter();
+			}
+			@Override
+			public Adapter defaultCase(EObject object)
+			{
+				return createEObjectAdapter();
+			}
+		};
 
     /**
-     * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates an instance of the adapter factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public TreeAdapterFactory() {
-        if (modelPackage == null) {
-            modelPackage = TreePackage.eINSTANCE;
-        }
-    }
+		if (modelPackage == null)
+		{
+			modelPackage = TreePackage.eINSTANCE;
+		}
+	}
 
     /**
-     * Returns whether this factory is applicable for the type of the object. <!-- begin-user-doc --> This
+	 * Returns whether this factory is applicable for the type of the object.
+	 * <!-- begin-user-doc --> This
      * implementation returns <code>true</code> if the object is either the model's package or is an instance object of
      * the model. <!-- end-user-doc -->
-     *
-     * @return whether this factory is applicable for the type of the object.
-     * @generated
-     */
+	 * @return whether this factory is applicable for the type of the object.
+	 * @generated
+	 */
     @Override
     public boolean isFactoryForType(Object object) {
-        if (object == modelPackage) {
-            return true;
-        }
-        if (object instanceof EObject) {
-            return ((EObject) object).eClass().getEPackage() == modelPackage;
-        }
-        return false;
-    }
+		if (object == modelPackage)
+		{
+			return true;
+		}
+		if (object instanceof EObject)
+		{
+			return ((EObject)object).eClass().getEPackage() == modelPackage;
+		}
+		return false;
+	}
 
     /**
-     * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param target
-     *            the object to adapt.
-     * @return the adapter for the <code>target</code>.
-     * @generated
-     */
+	 * Creates an adapter for the <code>target</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param target the object to adapt.
+	 * @return the adapter for the <code>target</code>.
+	 * @generated
+	 */
     @Override
     public Adapter createAdapter(Notifier target) {
-        return this.modelSwitch.doSwitch((EObject) target);
-    }
+		return modelSwitch.doSwitch((EObject)target);
+	}
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.tree.TreeDescription
@@ -166,8 +170,8 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTreeDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -180,65 +184,57 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTreeItemLabelDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription <em>If Tree Item Label Element
-     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription <em>If Tree Item Label Element Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription
+	 * @generated
+	 */
     public Adapter createIfTreeItemLabelElementDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription <em>For Tree Item Label
-     * Element Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription <em>For Tree Item Label Element Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription
+	 * @generated
+	 */
     public Adapter createForTreeItemLabelElementDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription <em>Item Label Fragment
-     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription <em>Item Label Fragment Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription
+	 * @generated
+	 */
     public Adapter createTreeItemLabelFragmentDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription <em>Item Label Element
-     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription <em>Item Label Element Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription
+	 * @generated
+	 */
     public Adapter createTreeItemLabelElementDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -251,8 +247,8 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTreeItemContextMenuEntryAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -266,60 +262,55 @@ public class TreeAdapterFactory extends AdapterFactoryImpl {
      * @see org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry
      */
     public Adapter createSingleClickTreeItemContextMenuEntryAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry <em>Fetch Tree Item Context Menu
-     * Entry</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry <em>Fetch Tree Item Context Menu Entry</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry
+	 * @generated
+	 */
     public Adapter createFetchTreeItemContextMenuEntryAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry <em>Custom Tree Item Context Menu
-     * Entry</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry <em>Custom Tree Item Context Menu Entry</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry
+	 * @generated
+	 */
     public Adapter createCustomTreeItemContextMenuEntryAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.RepresentationDescription
-     * <em>Representation Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.RepresentationDescription <em>Representation Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that
      * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.RepresentationDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.RepresentationDescription
+	 * @generated
+	 */
     public Adapter createRepresentationDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for the default case. <!-- begin-user-doc --> This default implementation returns null.
+	 * Creates a new adapter for the default case.
+	 * <!-- begin-user-doc --> This default implementation returns null.
      * <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @generated
+	 */
     public Adapter createEObjectAdapter() {
-        return null;
-    }
+		return null;
+	}
 
 } // TreeAdapterFactory

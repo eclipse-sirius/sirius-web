@@ -32,33 +32,32 @@ import org.eclipse.sirius.components.view.form.FormPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementForImpl#getIterator <em>Iterator</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementForImpl#getIterableExpression <em>Iterable
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementForImpl#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementForImpl#getIterator <em>Iterator</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementForImpl#getIterableExpression <em>Iterable Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementForImpl#getChildren <em>Children</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class FormElementForImpl extends FormElementDescriptionImpl implements FormElementFor {
     /**
-     * The default value of the '{@link #getIterator() <em>Iterator</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getIterator() <em>Iterator</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getIterator()
-     * @generated
-     * @ordered
-     */
+	 * @see #getIterator()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String ITERATOR_EDEFAULT = "it";
 
     /**
-     * The cached value of the '{@link #getIterator() <em>Iterator</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getIterator() <em>Iterator</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getIterator()
-     * @generated
-     * @ordered
-     */
+	 * @see #getIterator()
+	 * @generated
+	 * @ordered
+	 */
     protected String iterator = ITERATOR_EDEFAULT;
 
     /**
@@ -92,194 +91,186 @@ public class FormElementForImpl extends FormElementDescriptionImpl implements Fo
     protected EList<FormElementDescription> children;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FormElementForImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.FORM_ELEMENT_FOR;
-    }
+		return FormPackage.Literals.FORM_ELEMENT_FOR;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIterator() {
-        return this.iterator;
-    }
+		return iterator;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIterator(String newIterator) {
-        String oldIterator = this.iterator;
-        this.iterator = newIterator;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_ELEMENT_FOR__ITERATOR, oldIterator, this.iterator));
-    }
+		String oldIterator = iterator;
+		iterator = newIterator;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_ELEMENT_FOR__ITERATOR, oldIterator, iterator));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIterableExpression() {
-        return this.iterableExpression;
-    }
+		return iterableExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIterableExpression(String newIterableExpression) {
-        String oldIterableExpression = this.iterableExpression;
-        this.iterableExpression = newIterableExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION, oldIterableExpression, this.iterableExpression));
-    }
+		String oldIterableExpression = iterableExpression;
+		iterableExpression = newIterableExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION, oldIterableExpression, iterableExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<FormElementDescription> getChildren() {
-        if (this.children == null) {
-            this.children = new EObjectContainmentEList<>(FormElementDescription.class, this, FormPackage.FORM_ELEMENT_FOR__CHILDREN);
-        }
-        return this.children;
-    }
+		if (children == null)
+		{
+			children = new EObjectContainmentEList<FormElementDescription>(FormElementDescription.class, this, FormPackage.FORM_ELEMENT_FOR__CHILDREN);
+		}
+		return children;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
-                return ((InternalEList<?>) this.getChildren()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
+				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_FOR__ITERATOR:
-                return this.getIterator();
-            case FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION:
-                return this.getIterableExpression();
-            case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
-                return this.getChildren();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_FOR__ITERATOR:
+				return getIterator();
+			case FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION:
+				return getIterableExpression();
+			case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
+				return getChildren();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_FOR__ITERATOR:
-                this.setIterator((String) newValue);
-                return;
-            case FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION:
-                this.setIterableExpression((String) newValue);
-                return;
-            case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
-                this.getChildren().clear();
-                this.getChildren().addAll((Collection<? extends FormElementDescription>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_FOR__ITERATOR:
+				setIterator((String)newValue);
+				return;
+			case FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION:
+				setIterableExpression((String)newValue);
+				return;
+			case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
+				getChildren().clear();
+				getChildren().addAll((Collection<? extends FormElementDescription>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_FOR__ITERATOR:
-                this.setIterator(ITERATOR_EDEFAULT);
-                return;
-            case FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION:
-                this.setIterableExpression(ITERABLE_EXPRESSION_EDEFAULT);
-                return;
-            case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
-                this.getChildren().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_FOR__ITERATOR:
+				setIterator(ITERATOR_EDEFAULT);
+				return;
+			case FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION:
+				setIterableExpression(ITERABLE_EXPRESSION_EDEFAULT);
+				return;
+			case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
+				getChildren().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_FOR__ITERATOR:
-                return ITERATOR_EDEFAULT == null ? this.iterator != null : !ITERATOR_EDEFAULT.equals(this.iterator);
-            case FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION:
-                return ITERABLE_EXPRESSION_EDEFAULT == null ? this.iterableExpression != null : !ITERABLE_EXPRESSION_EDEFAULT.equals(this.iterableExpression);
-            case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
-                return this.children != null && !this.children.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_FOR__ITERATOR:
+				return ITERATOR_EDEFAULT == null ? iterator != null : !ITERATOR_EDEFAULT.equals(iterator);
+			case FormPackage.FORM_ELEMENT_FOR__ITERABLE_EXPRESSION:
+				return ITERABLE_EXPRESSION_EDEFAULT == null ? iterableExpression != null : !ITERABLE_EXPRESSION_EDEFAULT.equals(iterableExpression);
+			case FormPackage.FORM_ELEMENT_FOR__CHILDREN:
+				return children != null && !children.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (iterator: ");
-        result.append(this.iterator);
-        result.append(", iterableExpression: ");
-        result.append(this.iterableExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (iterator: ");
+		result.append(iterator);
+		result.append(", iterableExpression: ");
+		result.append(iterableExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // FormElementForImpl

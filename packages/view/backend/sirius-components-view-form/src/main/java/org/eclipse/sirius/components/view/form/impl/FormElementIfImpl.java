@@ -32,9 +32,8 @@ import org.eclipse.sirius.components.view.form.FormPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementIfImpl#getPredicateExpression <em>Predicate
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementIfImpl#getChildren <em>Children</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementIfImpl#getPredicateExpression <em>Predicate Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.FormElementIfImpl#getChildren <em>Children</em>}</li>
  * </ul>
  *
  * @generated
@@ -71,159 +70,153 @@ public class FormElementIfImpl extends FormElementDescriptionImpl implements For
     protected EList<FormElementDescription> children;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FormElementIfImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.FORM_ELEMENT_IF;
-    }
+		return FormPackage.Literals.FORM_ELEMENT_IF;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getPredicateExpression() {
-        return this.predicateExpression;
-    }
+		return predicateExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setPredicateExpression(String newPredicateExpression) {
-        String oldPredicateExpression = this.predicateExpression;
-        this.predicateExpression = newPredicateExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION, oldPredicateExpression, this.predicateExpression));
-    }
+		String oldPredicateExpression = predicateExpression;
+		predicateExpression = newPredicateExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION, oldPredicateExpression, predicateExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<FormElementDescription> getChildren() {
-        if (this.children == null) {
-            this.children = new EObjectContainmentEList<>(FormElementDescription.class, this, FormPackage.FORM_ELEMENT_IF__CHILDREN);
-        }
-        return this.children;
-    }
+		if (children == null)
+		{
+			children = new EObjectContainmentEList<FormElementDescription>(FormElementDescription.class, this, FormPackage.FORM_ELEMENT_IF__CHILDREN);
+		}
+		return children;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_IF__CHILDREN:
-                return ((InternalEList<?>) this.getChildren()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_IF__CHILDREN:
+				return ((InternalEList<?>)getChildren()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION:
-                return this.getPredicateExpression();
-            case FormPackage.FORM_ELEMENT_IF__CHILDREN:
-                return this.getChildren();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION:
+				return getPredicateExpression();
+			case FormPackage.FORM_ELEMENT_IF__CHILDREN:
+				return getChildren();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION:
-                this.setPredicateExpression((String) newValue);
-                return;
-            case FormPackage.FORM_ELEMENT_IF__CHILDREN:
-                this.getChildren().clear();
-                this.getChildren().addAll((Collection<? extends FormElementDescription>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION:
+				setPredicateExpression((String)newValue);
+				return;
+			case FormPackage.FORM_ELEMENT_IF__CHILDREN:
+				getChildren().clear();
+				getChildren().addAll((Collection<? extends FormElementDescription>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION:
-                this.setPredicateExpression(PREDICATE_EXPRESSION_EDEFAULT);
-                return;
-            case FormPackage.FORM_ELEMENT_IF__CHILDREN:
-                this.getChildren().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION:
+				setPredicateExpression(PREDICATE_EXPRESSION_EDEFAULT);
+				return;
+			case FormPackage.FORM_ELEMENT_IF__CHILDREN:
+				getChildren().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION:
-                return PREDICATE_EXPRESSION_EDEFAULT == null ? this.predicateExpression != null : !PREDICATE_EXPRESSION_EDEFAULT.equals(this.predicateExpression);
-            case FormPackage.FORM_ELEMENT_IF__CHILDREN:
-                return this.children != null && !this.children.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_ELEMENT_IF__PREDICATE_EXPRESSION:
+				return PREDICATE_EXPRESSION_EDEFAULT == null ? predicateExpression != null : !PREDICATE_EXPRESSION_EDEFAULT.equals(predicateExpression);
+			case FormPackage.FORM_ELEMENT_IF__CHILDREN:
+				return children != null && !children.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (predicateExpression: ");
-        result.append(this.predicateExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (predicateExpression: ");
+		result.append(predicateExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // FormElementIfImpl

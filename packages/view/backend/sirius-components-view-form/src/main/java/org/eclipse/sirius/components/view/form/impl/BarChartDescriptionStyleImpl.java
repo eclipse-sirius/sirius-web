@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,59 +27,55 @@ import org.eclipse.sirius.components.view.form.FormPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#getFontSize <em>Font
- * Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#isItalic <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#isBold <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#isUnderline
- * <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#isStrikeThrough <em>Strike
- * Through</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#getBarsColor <em>Bars
- * Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#getFontSize <em>Font Size</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#isItalic <em>Italic</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#isBold <em>Bold</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#isUnderline <em>Underline</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#isStrikeThrough <em>Strike Through</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.BarChartDescriptionStyleImpl#getBarsColor <em>Bars Color</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class BarChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl implements BarChartDescriptionStyle {
     /**
-     * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFontSize()
+	 * @generated
+	 * @ordered
+	 */
     protected static final int FONT_SIZE_EDEFAULT = 14;
 
     /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFontSize()
+	 * @generated
+	 * @ordered
+	 */
     protected int fontSize = FONT_SIZE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
+	 * @see #isItalic()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean ITALIC_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
+	 * @see #isItalic()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean italic = ITALIC_EDEFAULT;
 
     /**
@@ -103,407 +99,381 @@ public class BarChartDescriptionStyleImpl extends WidgetDescriptionStyleImpl imp
     protected boolean bold = BOLD_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
+	 * @see #isUnderline()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean UNDERLINE_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
+	 * @see #isUnderline()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean underline = UNDERLINE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+	 * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
+	 * @see #isStrikeThrough()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
+	 * @see #isStrikeThrough()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getBarsColor() <em>Bars Color</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getBarsColor() <em>Bars Color</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getBarsColor()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBarsColor()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String BARS_COLOR_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getBarsColor() <em>Bars Color</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getBarsColor() <em>Bars Color</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getBarsColor()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBarsColor()
+	 * @generated
+	 * @ordered
+	 */
     protected String barsColor = BARS_COLOR_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected BarChartDescriptionStyleImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.BAR_CHART_DESCRIPTION_STYLE;
-    }
+		return FormPackage.Literals.BAR_CHART_DESCRIPTION_STYLE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int getFontSize() {
-        return this.fontSize;
-    }
+		return fontSize;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setFontSize(int newFontSize) {
-        int oldFontSize = this.fontSize;
-        this.fontSize = newFontSize;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE, oldFontSize, this.fontSize));
-    }
+		int oldFontSize = fontSize;
+		fontSize = newFontSize;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE, oldFontSize, fontSize));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isItalic() {
-        return this.italic;
-    }
+		return italic;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setItalic(boolean newItalic) {
-        boolean oldItalic = this.italic;
-        this.italic = newItalic;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC, oldItalic, this.italic));
-    }
+		boolean oldItalic = italic;
+		italic = newItalic;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC, oldItalic, italic));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isBold() {
-        return this.bold;
-    }
+		return bold;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBold(boolean newBold) {
-        boolean oldBold = this.bold;
-        this.bold = newBold;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD, oldBold, this.bold));
-    }
+		boolean oldBold = bold;
+		bold = newBold;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD, oldBold, bold));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isUnderline() {
-        return this.underline;
-    }
+		return underline;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setUnderline(boolean newUnderline) {
-        boolean oldUnderline = this.underline;
-        this.underline = newUnderline;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE, oldUnderline, this.underline));
-    }
+		boolean oldUnderline = underline;
+		underline = newUnderline;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE, oldUnderline, underline));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isStrikeThrough() {
-        return this.strikeThrough;
-    }
+		return strikeThrough;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setStrikeThrough(boolean newStrikeThrough) {
-        boolean oldStrikeThrough = this.strikeThrough;
-        this.strikeThrough = newStrikeThrough;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
-    }
+		boolean oldStrikeThrough = strikeThrough;
+		strikeThrough = newStrikeThrough;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH, oldStrikeThrough, strikeThrough));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getBarsColor() {
-        return this.barsColor;
-    }
+		return barsColor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBarsColor(String newBarsColor) {
-        String oldBarsColor = this.barsColor;
-        this.barsColor = newBarsColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR, oldBarsColor, this.barsColor));
-    }
+		String oldBarsColor = barsColor;
+		barsColor = newBarsColor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR, oldBarsColor, barsColor));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-                return this.getFontSize();
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-                return this.isItalic();
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-                return this.isBold();
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-                return this.isUnderline();
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                return this.isStrikeThrough();
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
-                return this.getBarsColor();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+				return getFontSize();
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
+				return isItalic();
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
+				return isBold();
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
+				return isUnderline();
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				return isStrikeThrough();
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
+				return getBarsColor();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-                this.setFontSize((Integer) newValue);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-                this.setItalic((Boolean) newValue);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-                this.setBold((Boolean) newValue);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-                this.setUnderline((Boolean) newValue);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                this.setStrikeThrough((Boolean) newValue);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
-                this.setBarsColor((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+				setFontSize((Integer)newValue);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
+				setItalic((Boolean)newValue);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
+				setBold((Boolean)newValue);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
+				setUnderline((Boolean)newValue);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				setStrikeThrough((Boolean)newValue);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
+				setBarsColor((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-                this.setFontSize(FONT_SIZE_EDEFAULT);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-                this.setItalic(ITALIC_EDEFAULT);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-                this.setBold(BOLD_EDEFAULT);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-                this.setUnderline(UNDERLINE_EDEFAULT);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
-                this.setBarsColor(BARS_COLOR_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+				setFontSize(FONT_SIZE_EDEFAULT);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
+				setItalic(ITALIC_EDEFAULT);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
+				setBold(BOLD_EDEFAULT);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
+				setUnderline(UNDERLINE_EDEFAULT);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
+				setBarsColor(BARS_COLOR_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-                return this.fontSize != FONT_SIZE_EDEFAULT;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-                return this.italic != ITALIC_EDEFAULT;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-                return this.bold != BOLD_EDEFAULT;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-                return this.underline != UNDERLINE_EDEFAULT;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-            case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
-                return BARS_COLOR_EDEFAULT == null ? this.barsColor != null : !BARS_COLOR_EDEFAULT.equals(this.barsColor);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+				return fontSize != FONT_SIZE_EDEFAULT;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
+				return italic != ITALIC_EDEFAULT;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
+				return bold != BOLD_EDEFAULT;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
+				return underline != UNDERLINE_EDEFAULT;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				return strikeThrough != STRIKE_THROUGH_EDEFAULT;
+			case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BARS_COLOR:
+				return BARS_COLOR_EDEFAULT == null ? barsColor != null : !BARS_COLOR_EDEFAULT.equals(barsColor);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == LabelStyle.class) {
-            switch (derivedFeatureID) {
-                case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-                    return ViewPackage.LABEL_STYLE__FONT_SIZE;
-                case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC:
-                    return ViewPackage.LABEL_STYLE__ITALIC;
-                case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD:
-                    return ViewPackage.LABEL_STYLE__BOLD;
-                case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE:
-                    return ViewPackage.LABEL_STYLE__UNDERLINE;
-                case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                    return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
-                default:
-                    return -1;
-            }
-        }
-        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-    }
+		if (baseClass == LabelStyle.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE: return ViewPackage.LABEL_STYLE__FONT_SIZE;
+				case FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC: return ViewPackage.LABEL_STYLE__ITALIC;
+				case FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD: return ViewPackage.LABEL_STYLE__BOLD;
+				case FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE: return ViewPackage.LABEL_STYLE__UNDERLINE;
+				case FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH: return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == LabelStyle.class) {
-            switch (baseFeatureID) {
-                case ViewPackage.LABEL_STYLE__FONT_SIZE:
-                    return FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE;
-                case ViewPackage.LABEL_STYLE__ITALIC:
-                    return FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC;
-                case ViewPackage.LABEL_STYLE__BOLD:
-                    return FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD;
-                case ViewPackage.LABEL_STYLE__UNDERLINE:
-                    return FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE;
-                case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-                    return FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH;
-                default:
-                    return -1;
-            }
-        }
-        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-    }
+		if (baseClass == LabelStyle.class)
+		{
+			switch (baseFeatureID)
+			{
+				case ViewPackage.LABEL_STYLE__FONT_SIZE: return FormPackage.BAR_CHART_DESCRIPTION_STYLE__FONT_SIZE;
+				case ViewPackage.LABEL_STYLE__ITALIC: return FormPackage.BAR_CHART_DESCRIPTION_STYLE__ITALIC;
+				case ViewPackage.LABEL_STYLE__BOLD: return FormPackage.BAR_CHART_DESCRIPTION_STYLE__BOLD;
+				case ViewPackage.LABEL_STYLE__UNDERLINE: return FormPackage.BAR_CHART_DESCRIPTION_STYLE__UNDERLINE;
+				case ViewPackage.LABEL_STYLE__STRIKE_THROUGH: return FormPackage.BAR_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: ");
-        result.append(this.fontSize);
-        result.append(", italic: ");
-        result.append(this.italic);
-        result.append(", bold: ");
-        result.append(this.bold);
-        result.append(", underline: ");
-        result.append(this.underline);
-        result.append(", strikeThrough: ");
-        result.append(this.strikeThrough);
-        result.append(", barsColor: ");
-        result.append(this.barsColor);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (fontSize: ");
+		result.append(fontSize);
+		result.append(", italic: ");
+		result.append(italic);
+		result.append(", bold: ");
+		result.append(bold);
+		result.append(", underline: ");
+		result.append(underline);
+		result.append(", strikeThrough: ");
+		result.append(strikeThrough);
+		result.append(", barsColor: ");
+		result.append(barsColor);
+		result.append(')');
+		return result.toString();
+	}
 
 } // BarChartDescriptionStyleImpl

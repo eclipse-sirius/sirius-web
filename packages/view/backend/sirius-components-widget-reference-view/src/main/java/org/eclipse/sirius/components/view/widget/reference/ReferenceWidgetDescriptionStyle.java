@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,37 +24,33 @@ import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link ReferenceWidgetDescriptionStyle#getColor
- * <em>Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle#getColor <em>Color</em>}</li>
  * </ul>
  *
- * @see ReferencePackage#getReferenceWidgetDescriptionStyle()
+ * @see org.eclipse.sirius.components.view.widget.reference.ReferencePackage#getReferenceWidgetDescriptionStyle()
  * @model
  * @generated
  */
 public interface ReferenceWidgetDescriptionStyle extends WidgetDescriptionStyle, LabelStyle {
 
     /**
-     * Returns the value of the '<em><b>Color</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Color</em>' reference.
-     * @see #setColor(UserColor)
-     * @see ReferencePackage#getReferenceWidgetDescriptionStyle_Color()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Color</b></em>' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Color</em>' reference.
+	 * @see #setColor(UserColor)
+	 * @see org.eclipse.sirius.components.view.widget.reference.ReferencePackage#getReferenceWidgetDescriptionStyle_Color()
+	 * @model
+	 * @generated
+	 */
     UserColor getColor();
 
     /**
-     * Sets the value of the
-     * '{@link ReferenceWidgetDescriptionStyle#getColor <em>Color</em>}'
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Color</em>' reference.
-     * @see #getColor()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescriptionStyle#getColor <em>Color</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Color</em>' reference.
+	 * @see #getColor()
+	 * @generated
+	 */
     void setColor(UserColor value);
 
 } // ReferenceWidgetDescriptionStyle

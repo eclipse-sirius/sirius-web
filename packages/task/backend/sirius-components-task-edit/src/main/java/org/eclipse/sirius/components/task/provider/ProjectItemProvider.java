@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,8 +50,8 @@ public class ProjectItemProvider extends ItemProviderAdapter implements IEditing
      * @generated
      */
     public ProjectItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
      * This returns the property descriptors for the adapted class. <!--
@@ -61,63 +61,67 @@ public class ProjectItemProvider extends ItemProviderAdapter implements IEditing
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addNamePropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addNamePropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Name feature. <!-- begin-user-doc -->
+	 * This adds a property descriptor for the Name feature.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addNamePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this
-                .createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_Project_name_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Project_name_feature",
-                                "_UI_Project_type"),
-                        TaskPackage.Literals.PROJECT__NAME, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Project_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Project_name_feature", "_UI_Project_type"),
+				 TaskPackage.Literals.PROJECT__NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(TaskPackage.Literals.PROJECT__OWNED_TASKS);
-            this.childrenFeatures.add(TaskPackage.Literals.PROJECT__OWNED_OBJECTIVES);
-            this.childrenFeatures.add(TaskPackage.Literals.PROJECT__OWNED_TAGS);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(TaskPackage.Literals.PROJECT__OWNED_TASKS);
+			childrenFeatures.add(TaskPackage.Literals.PROJECT__OWNED_OBJECTIVES);
+			childrenFeatures.add(TaskPackage.Literals.PROJECT__OWNED_TAGS);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
      * This returns Project.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -130,74 +134,78 @@ public class ProjectItemProvider extends ItemProviderAdapter implements IEditing
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((Project) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Project_type")
-                : this.getString("_UI_Project_type") + " " + label;
-    }
+		String label = ((Project)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Project_type") :
+			getString("_UI_Project_type") + " " + label;
+	}
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This handles model notifications by calling {@link #updateChildren} to update any cached
+	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(Project.class)) {
-        case TaskPackage.PROJECT__NAME:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-            return;
-        case TaskPackage.PROJECT__OWNED_TASKS:
-        case TaskPackage.PROJECT__OWNED_OBJECTIVES:
-        case TaskPackage.PROJECT__OWNED_TAGS:
-            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-            return;
-        default:
-            super.notifyChanged(notification);
-            return;
-        }
-    }
+		switch (notification.getFeatureID(Project.class))
+		{
+			case TaskPackage.PROJECT__NAME:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case TaskPackage.PROJECT__OWNED_TASKS:
+			case TaskPackage.PROJECT__OWNED_OBJECTIVES:
+			case TaskPackage.PROJECT__OWNED_TAGS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(TaskPackage.Literals.PROJECT__OWNED_TASKS,
-                TaskFactory.eINSTANCE.createTask()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TaskPackage.Literals.PROJECT__OWNED_TASKS,
+				 TaskFactory.eINSTANCE.createTask()));
 
-        newChildDescriptors.add(this.createChildParameter(TaskPackage.Literals.PROJECT__OWNED_OBJECTIVES,
-                TaskFactory.eINSTANCE.createObjective()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TaskPackage.Literals.PROJECT__OWNED_OBJECTIVES,
+				 TaskFactory.eINSTANCE.createObjective()));
 
-        newChildDescriptors.add(this.createChildParameter(TaskPackage.Literals.PROJECT__OWNED_TAGS,
-                TaskFactory.eINSTANCE.createTaskTag()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(TaskPackage.Literals.PROJECT__OWNED_TAGS,
+				 TaskFactory.eINSTANCE.createTaskTag()));
+	}
 
     /**
      * Return the resource locator for this item provider's resources. <!--
@@ -207,7 +215,7 @@ public class ProjectItemProvider extends ItemProviderAdapter implements IEditing
      */
     @Override
     public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
-    }
+		return ((IChildCreationExtender)adapterFactory).getResourceLocator();
+	}
 
 }

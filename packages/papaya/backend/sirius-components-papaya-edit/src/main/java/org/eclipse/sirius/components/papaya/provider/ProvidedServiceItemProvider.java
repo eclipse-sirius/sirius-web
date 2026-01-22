@@ -31,86 +31,97 @@ import org.eclipse.sirius.components.papaya.ProvidedService;
  */
 public class ProvidedServiceItemProvider extends NamedElementItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public ProvidedServiceItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addContractsPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addContractsPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Contracts feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Contracts feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addContractsPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_ProvidedService_contracts_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_ProvidedService_contracts_feature", "_UI_ProvidedService_type"),
-                PapayaPackage.Literals.PROVIDED_SERVICE__CONTRACTS, true, false, true, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_ProvidedService_contracts_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ProvidedService_contracts_feature", "_UI_ProvidedService_type"),
+				 PapayaPackage.Literals.PROVIDED_SERVICE__CONTRACTS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
-     * This returns ProvidedService.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns ProvidedService.gif.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/ProvidedService"));
-    }
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/ProvidedService"));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        return ((StyledString) this.getStyledText(object)).getString();
-    }
+		return ((StyledString)getStyledText(object)).getString();
+	}
 
     /**
-     * This returns the label styled text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label styled text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object getStyledText(Object object) {
-        String label = ((ProvidedService) object).getName();
-        StyledString styledLabel = new StyledString();
-        if (label == null || label.length() == 0) {
-            styledLabel.append(this.getString("_UI_ProvidedService_type"), StyledString.Style.QUALIFIER_STYLER);
-        } else {
-            styledLabel.append(this.getString("_UI_ProvidedService_type"), StyledString.Style.QUALIFIER_STYLER).append(" " + label);
-        }
-        return styledLabel;
-    }
+		String label = ((ProvidedService)object).getName();
+    	StyledString styledLabel = new StyledString();
+		if (label == null || label.length() == 0)
+		{
+			styledLabel.append(getString("_UI_ProvidedService_type"), StyledString.Style.QUALIFIER_STYLER); 
+		} else {
+			styledLabel.append(getString("_UI_ProvidedService_type"), StyledString.Style.QUALIFIER_STYLER).append(" " + label);
+		}
+		return styledLabel;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -121,19 +132,19 @@ public class ProvidedServiceItemProvider extends NamedElementItemProvider {
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
-        super.notifyChanged(notification);
-    }
+		updateChildren(notification);
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
 }

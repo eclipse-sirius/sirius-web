@@ -33,142 +33,132 @@ import org.eclipse.sirius.components.view.diagram.LabelEditTool;
  */
 public class LabelEditToolImpl extends ToolImpl implements LabelEditTool {
     /**
-     * The default value of the '{@link #getInitialDirectEditLabelExpression() <em>Initial Direct Edit Label
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getInitialDirectEditLabelExpression()
-     * @generated
-     * @ordered
-     */
+	 * The default value of the '{@link #getInitialDirectEditLabelExpression() <em>Initial Direct Edit Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getInitialDirectEditLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getInitialDirectEditLabelExpression() <em>Initial Direct Edit Label
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getInitialDirectEditLabelExpression()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getInitialDirectEditLabelExpression() <em>Initial Direct Edit Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getInitialDirectEditLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String initialDirectEditLabelExpression = INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected LabelEditToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.LABEL_EDIT_TOOL;
-    }
+		return DiagramPackage.Literals.LABEL_EDIT_TOOL;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getInitialDirectEditLabelExpression() {
-        return this.initialDirectEditLabelExpression;
-    }
+		return initialDirectEditLabelExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setInitialDirectEditLabelExpression(String newInitialDirectEditLabelExpression) {
-        String oldInitialDirectEditLabelExpression = this.initialDirectEditLabelExpression;
-        this.initialDirectEditLabelExpression = newInitialDirectEditLabelExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION, oldInitialDirectEditLabelExpression,
-                    this.initialDirectEditLabelExpression));
-    }
+		String oldInitialDirectEditLabelExpression = initialDirectEditLabelExpression;
+		initialDirectEditLabelExpression = newInitialDirectEditLabelExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION, oldInitialDirectEditLabelExpression, initialDirectEditLabelExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
-                return this.getInitialDirectEditLabelExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
+				return getInitialDirectEditLabelExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
-                this.setInitialDirectEditLabelExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
+				setInitialDirectEditLabelExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
-                this.setInitialDirectEditLabelExpression(INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
+				setInitialDirectEditLabelExpression(INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
-                return INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT == null ? this.initialDirectEditLabelExpression != null
-                        : !INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT.equals(this.initialDirectEditLabelExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION:
+				return INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT == null ? initialDirectEditLabelExpression != null : !INITIAL_DIRECT_EDIT_LABEL_EXPRESSION_EDEFAULT.equals(initialDirectEditLabelExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (initialDirectEditLabelExpression: ");
-        result.append(this.initialDirectEditLabelExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (initialDirectEditLabelExpression: ");
+		result.append(initialDirectEditLabelExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // LabelEditToolImpl

@@ -33,10 +33,8 @@ import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
- *
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription} object.
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
  * @generated
  */
 public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
@@ -49,8 +47,8 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
      * @generated
      */
     public CellLabelWidgetDescriptionItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
      * This returns the property descriptors for the adapted class. <!--
@@ -60,13 +58,14 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addIconExpressionPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addIconExpressionPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
      * This adds a property descriptor for the Icon Expression feature. <!--
@@ -75,14 +74,20 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
      * @generated
      */
     protected void addIconExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CellLabelWidgetDescription_iconExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CellLabelWidgetDescription_iconExpression_feature",
-                        "_UI_CellLabelWidgetDescription_type"),
-                TablePackage.Literals.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_CellLabelWidgetDescription_iconExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CellLabelWidgetDescription_iconExpression_feature", "_UI_CellLabelWidgetDescription_type"),
+				 TablePackage.Literals.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This returns CellLabelWidgetDescription.gif. <!-- begin-user-doc --> <!--
@@ -97,58 +102,58 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((CellLabelWidgetDescription) object).getIconExpression();
-        return label == null || label.length() == 0 ? this.getString("_UI_CellLabelWidgetDescription_type")
-                : this.getString("_UI_CellLabelWidgetDescription_type") + " " + label;
-    }
+		String label = ((CellLabelWidgetDescription)object).getIconExpression();
+		return label == null || label.length() == 0 ?
+			getString("_UI_CellLabelWidgetDescription_type") :
+			getString("_UI_CellLabelWidgetDescription_type") + " " + label;
+	}
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This handles model notifications by calling {@link #updateChildren} to update any cached
+	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(CellLabelWidgetDescription.class)) {
-            case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(CellLabelWidgetDescription.class))
+		{
+			case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
     /**
      * Return the resource locator for this item provider's resources. <!--
@@ -158,7 +163,7 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
      */
     @Override
     public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
-    }
+		return ((IChildCreationExtender)adapterFactory).getResourceLocator();
+	}
 
 }

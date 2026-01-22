@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,67 +35,67 @@ import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramPalette} object.
  * <!-- begin-user-doc --> <!-- end-user-doc -->
- *
  * @generated
  */
 public class DiagramPaletteItemProvider extends ItemProviderAdapter
         implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public DiagramPaletteItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-        }
-        return this.itemPropertyDescriptors;
-    }
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_TOOL);
-            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_NODE_TOOL);
-            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__NODE_TOOLS);
-            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS);
-            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__TOOL_SECTIONS);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_TOOL);
+			childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_NODE_TOOL);
+			childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__NODE_TOOLS);
+			childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS);
+			childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_PALETTE__TOOL_SECTIONS);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
      * This returns DiagramPalette.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -108,24 +108,23 @@ public class DiagramPaletteItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        return this.getString("_UI_DiagramPalette_type");
-    }
+		return getString("_UI_DiagramPalette_type");
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -136,40 +135,56 @@ public class DiagramPaletteItemProvider extends ItemProviderAdapter
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(DiagramPalette.class)) {
-            case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
-            case DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL:
-            case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
-            case DiagramPackage.DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS:
-            case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(DiagramPalette.class))
+		{
+			case DiagramPackage.DIAGRAM_PALETTE__DROP_TOOL:
+			case DiagramPackage.DIAGRAM_PALETTE__DROP_NODE_TOOL:
+			case DiagramPackage.DIAGRAM_PALETTE__NODE_TOOLS:
+			case DiagramPackage.DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS:
+			case DiagramPackage.DIAGRAM_PALETTE__TOOL_SECTIONS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_TOOL, DiagramFactory.eINSTANCE.createDropTool()));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_TOOL,
+				 DiagramFactory.eINSTANCE.createDropTool()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_NODE_TOOL, DiagramFactory.eINSTANCE.createDropNodeTool()));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.DIAGRAM_PALETTE__DROP_NODE_TOOL,
+				 DiagramFactory.eINSTANCE.createDropNodeTool()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__NODE_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.DIAGRAM_PALETTE__NODE_TOOLS,
+				 DiagramFactory.eINSTANCE.createNodeTool()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS, DiagramFactory.eINSTANCE.createNodeTool()));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS,
+				 DiagramFactory.eINSTANCE.createNodeTool()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createDiagramToolSection()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.DIAGRAM_PALETTE__TOOL_SECTIONS,
+				 DiagramFactory.eINSTANCE.createDiagramToolSection()));
+	}
 
     /**
      * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
@@ -183,13 +198,13 @@ public class DiagramPaletteItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Return the resource locator for this item provider's resources.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
-    }
+		return ((IChildCreationExtender)adapterFactory).getResourceLocator();
+	}
 
 }

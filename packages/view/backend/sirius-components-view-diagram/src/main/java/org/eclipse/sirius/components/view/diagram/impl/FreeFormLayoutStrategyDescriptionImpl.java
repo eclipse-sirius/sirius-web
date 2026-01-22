@@ -29,221 +29,211 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.FreeFormLayoutStrategyDescriptionImpl#getOnWestAtCreationBorderNodes
- * <em>On West At Creation Border Nodes</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.FreeFormLayoutStrategyDescriptionImpl#getOnEastAtCreationBorderNodes
- * <em>On East At Creation Border Nodes</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.FreeFormLayoutStrategyDescriptionImpl#getOnSouthAtCreationBorderNodes
- * <em>On South At Creation Border Nodes</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.FreeFormLayoutStrategyDescriptionImpl#getOnNorthAtCreationBorderNodes
- * <em>On North At Creation Border Nodes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.FreeFormLayoutStrategyDescriptionImpl#getOnWestAtCreationBorderNodes <em>On West At Creation Border Nodes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.FreeFormLayoutStrategyDescriptionImpl#getOnEastAtCreationBorderNodes <em>On East At Creation Border Nodes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.FreeFormLayoutStrategyDescriptionImpl#getOnSouthAtCreationBorderNodes <em>On South At Creation Border Nodes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.FreeFormLayoutStrategyDescriptionImpl#getOnNorthAtCreationBorderNodes <em>On North At Creation Border Nodes</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class FreeFormLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Container implements FreeFormLayoutStrategyDescription {
     /**
-     * The cached value of the '{@link #getOnWestAtCreationBorderNodes() <em>On West At Creation Border Nodes</em>}'
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getOnWestAtCreationBorderNodes()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getOnWestAtCreationBorderNodes() <em>On West At Creation Border Nodes</em>}' reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getOnWestAtCreationBorderNodes()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<NodeDescription> onWestAtCreationBorderNodes;
 
     /**
-     * The cached value of the '{@link #getOnEastAtCreationBorderNodes() <em>On East At Creation Border Nodes</em>}'
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getOnEastAtCreationBorderNodes()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getOnEastAtCreationBorderNodes() <em>On East At Creation Border Nodes</em>}' reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getOnEastAtCreationBorderNodes()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<NodeDescription> onEastAtCreationBorderNodes;
 
     /**
-     * The cached value of the '{@link #getOnSouthAtCreationBorderNodes() <em>On South At Creation Border Nodes</em>}'
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getOnSouthAtCreationBorderNodes()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getOnSouthAtCreationBorderNodes() <em>On South At Creation Border Nodes</em>}' reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getOnSouthAtCreationBorderNodes()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<NodeDescription> onSouthAtCreationBorderNodes;
 
     /**
-     * The cached value of the '{@link #getOnNorthAtCreationBorderNodes() <em>On North At Creation Border Nodes</em>}'
-     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getOnNorthAtCreationBorderNodes()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getOnNorthAtCreationBorderNodes() <em>On North At Creation Border Nodes</em>}' reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getOnNorthAtCreationBorderNodes()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<NodeDescription> onNorthAtCreationBorderNodes;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FreeFormLayoutStrategyDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION;
-    }
+		return DiagramPackage.Literals.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeDescription> getOnWestAtCreationBorderNodes() {
-        if (this.onWestAtCreationBorderNodes == null) {
-            this.onWestAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES);
-        }
-        return this.onWestAtCreationBorderNodes;
-    }
+		if (onWestAtCreationBorderNodes == null)
+		{
+			onWestAtCreationBorderNodes = new EObjectResolvingEList<NodeDescription>(NodeDescription.class, this, DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES);
+		}
+		return onWestAtCreationBorderNodes;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeDescription> getOnEastAtCreationBorderNodes() {
-        if (this.onEastAtCreationBorderNodes == null) {
-            this.onEastAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES);
-        }
-        return this.onEastAtCreationBorderNodes;
-    }
+		if (onEastAtCreationBorderNodes == null)
+		{
+			onEastAtCreationBorderNodes = new EObjectResolvingEList<NodeDescription>(NodeDescription.class, this, DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES);
+		}
+		return onEastAtCreationBorderNodes;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeDescription> getOnSouthAtCreationBorderNodes() {
-        if (this.onSouthAtCreationBorderNodes == null) {
-            this.onSouthAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES);
-        }
-        return this.onSouthAtCreationBorderNodes;
-    }
+		if (onSouthAtCreationBorderNodes == null)
+		{
+			onSouthAtCreationBorderNodes = new EObjectResolvingEList<NodeDescription>(NodeDescription.class, this, DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES);
+		}
+		return onSouthAtCreationBorderNodes;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeDescription> getOnNorthAtCreationBorderNodes() {
-        if (this.onNorthAtCreationBorderNodes == null) {
-            this.onNorthAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES);
-        }
-        return this.onNorthAtCreationBorderNodes;
-    }
+		if (onNorthAtCreationBorderNodes == null)
+		{
+			onNorthAtCreationBorderNodes = new EObjectResolvingEList<NodeDescription>(NodeDescription.class, this, DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES);
+		}
+		return onNorthAtCreationBorderNodes;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
-                return this.getOnWestAtCreationBorderNodes();
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
-                return this.getOnEastAtCreationBorderNodes();
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
-                return this.getOnSouthAtCreationBorderNodes();
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
-                return this.getOnNorthAtCreationBorderNodes();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
+				return getOnWestAtCreationBorderNodes();
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
+				return getOnEastAtCreationBorderNodes();
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
+				return getOnSouthAtCreationBorderNodes();
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
+				return getOnNorthAtCreationBorderNodes();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
-                this.getOnWestAtCreationBorderNodes().clear();
-                this.getOnWestAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>) newValue);
-                return;
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
-                this.getOnEastAtCreationBorderNodes().clear();
-                this.getOnEastAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>) newValue);
-                return;
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
-                this.getOnSouthAtCreationBorderNodes().clear();
-                this.getOnSouthAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>) newValue);
-                return;
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
-                this.getOnNorthAtCreationBorderNodes().clear();
-                this.getOnNorthAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
+				getOnWestAtCreationBorderNodes().clear();
+				getOnWestAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>)newValue);
+				return;
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
+				getOnEastAtCreationBorderNodes().clear();
+				getOnEastAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>)newValue);
+				return;
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
+				getOnSouthAtCreationBorderNodes().clear();
+				getOnSouthAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>)newValue);
+				return;
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
+				getOnNorthAtCreationBorderNodes().clear();
+				getOnNorthAtCreationBorderNodes().addAll((Collection<? extends NodeDescription>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
-                this.getOnWestAtCreationBorderNodes().clear();
-                return;
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
-                this.getOnEastAtCreationBorderNodes().clear();
-                return;
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
-                this.getOnSouthAtCreationBorderNodes().clear();
-                return;
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
-                this.getOnNorthAtCreationBorderNodes().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
+				getOnWestAtCreationBorderNodes().clear();
+				return;
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
+				getOnEastAtCreationBorderNodes().clear();
+				return;
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
+				getOnSouthAtCreationBorderNodes().clear();
+				return;
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
+				getOnNorthAtCreationBorderNodes().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
-                return this.onWestAtCreationBorderNodes != null && !this.onWestAtCreationBorderNodes.isEmpty();
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
-                return this.onEastAtCreationBorderNodes != null && !this.onEastAtCreationBorderNodes.isEmpty();
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
-                return this.onSouthAtCreationBorderNodes != null && !this.onSouthAtCreationBorderNodes.isEmpty();
-            case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
-                return this.onNorthAtCreationBorderNodes != null && !this.onNorthAtCreationBorderNodes.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES:
+				return onWestAtCreationBorderNodes != null && !onWestAtCreationBorderNodes.isEmpty();
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES:
+				return onEastAtCreationBorderNodes != null && !onEastAtCreationBorderNodes.isEmpty();
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES:
+				return onSouthAtCreationBorderNodes != null && !onSouthAtCreationBorderNodes.isEmpty();
+			case DiagramPackage.FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES:
+				return onNorthAtCreationBorderNodes != null && !onNorthAtCreationBorderNodes.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // FreeFormLayoutStrategyDescriptionImpl

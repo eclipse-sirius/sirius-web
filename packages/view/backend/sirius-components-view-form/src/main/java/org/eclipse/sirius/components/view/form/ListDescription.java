@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,71 +53,65 @@ public interface ListDescription extends WidgetDescription {
     String getValueExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getValueExpression
-     * <em>Value Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Value Expression</em>' attribute.
-     * @see #getValueExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getValueExpression <em>Value Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Value Expression</em>' attribute.
+	 * @see #getValueExpression()
+	 * @generated
+	 */
     void setValueExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Display Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Display Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Display Expression</em>' attribute.
-     * @see #setDisplayExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_DisplayExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Display Expression</em>' attribute.
+	 * @see #setDisplayExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_DisplayExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getDisplayExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getDisplayExpression
-     * <em>Display Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Display Expression</em>' attribute.
-     * @see #getDisplayExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getDisplayExpression <em>Display Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Display Expression</em>' attribute.
+	 * @see #getDisplayExpression()
+	 * @generated
+	 */
     void setDisplayExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Is Deletable Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Is Deletable Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Is Deletable Expression</em>' attribute.
-     * @see #setIsDeletableExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_IsDeletableExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Is Deletable Expression</em>' attribute.
+	 * @see #setIsDeletableExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_IsDeletableExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getIsDeletableExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getIsDeletableExpression
-     * <em>Is Deletable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Is Deletable Expression</em>' attribute.
-     * @see #getIsDeletableExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getIsDeletableExpression <em>Is Deletable Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Deletable Expression</em>' attribute.
+	 * @see #getIsDeletableExpression()
+	 * @generated
+	 */
     void setIsDeletableExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Body</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_Body()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Body</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.Operation}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Body</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_Body()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Operation> getBody();
 
     /**
@@ -133,49 +127,45 @@ public interface ListDescription extends WidgetDescription {
     ListDescriptionStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getStyle <em>Style</em>}'
-     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getStyle <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Style</em>' containment reference.
+	 * @see #getStyle()
+	 * @generated
+	 */
     void setStyle(ListDescriptionStyle value);
 
     /**
-     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle}. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_ConditionalStyles()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_ConditionalStyles()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<ConditionalListDescriptionStyle> getConditionalStyles();
 
     /**
-     * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Is Enabled Expression</em>' attribute.
-     * @see #setIsEnabledExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_IsEnabledExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Is Enabled Expression</em>' attribute.
+	 * @see #setIsEnabledExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getListDescription_IsEnabledExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getIsEnabledExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getIsEnabledExpression
-     * <em>Is Enabled Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Is Enabled Expression</em>' attribute.
-     * @see #getIsEnabledExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ListDescription#getIsEnabledExpression <em>Is Enabled Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
+	 * @see #getIsEnabledExpression()
+	 * @generated
+	 */
     void setIsEnabledExpression(String value);
 
 } // ListDescription

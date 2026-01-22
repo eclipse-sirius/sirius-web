@@ -31,14 +31,14 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface ProvidedService extends NamedElement {
     /**
-     * Returns the value of the '<em><b>Contracts</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Interface}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Contracts</em>' reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProvidedService_Contracts()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Contracts</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.papaya.Interface}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Contracts</em>' reference list.
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getProvidedService_Contracts()
+	 * @model
+	 * @generated
+	 */
     EList<Interface> getContracts();
 
 } // ProvidedService

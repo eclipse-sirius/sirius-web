@@ -85,457 +85,392 @@ import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
- *
  * @generated
  */
 public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private static boolean isInited = false;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass diagramDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass diagramElementDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass nodeDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass edgeDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass layoutStrategyDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass listLayoutStrategyDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass freeFormLayoutStrategyDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass labelDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass insideLabelDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass outsideLabelDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass styleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass borderStyleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass insideLabelStyleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass outsideLabelStyleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass nodeLabelStyleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass nodeStyleDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass conditionalNodeStyleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass conditionalInsideLabelStyleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass conditionalOutsideLabelStyleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass rectangularNodeStyleDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass imageNodeStyleDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass iconLabelNodeStyleDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass edgeStyleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass conditionalEdgeStyleEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass diagramPaletteEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass groupPaletteEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass nodePaletteEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass edgePaletteEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass toolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass deleteToolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass dropToolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass edgeToolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass edgeReconnectionToolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass labelEditToolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass nodeToolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass sourceEdgeEndReconnectionToolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass targetEdgeEndReconnectionToolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass createViewEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass deleteViewEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass selectionDialogDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass toolSectionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass diagramToolSectionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass nodeToolSectionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass edgeToolSectionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass dropNodeToolEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass dialogDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass selectionDialogTreeDescriptionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass actionEClass = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum arrowStyleEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum layoutDirectionEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum lineStyleEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum nodeContainmentKindEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum synchronizationPolicyEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum insideLabelPositionEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum outsideLabelPositionEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum labelOverflowStrategyEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum arrangeLayoutDirectionEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum labelTextAlignEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum userResizableDirectionEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum headerSeparatorDisplayModeEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EEnum edgeTypeEEnum = null;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private boolean isCreated = false;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private boolean isInitialized = false;
 
     /**
@@ -552,2948 +487,2591 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @see #init()
      */
     private DiagramPackageImpl() {
-        super(eNS_URI, DiagramFactory.eINSTANCE);
-    }
+		super(eNS_URI, DiagramFactory.eINSTANCE);
+	}
 
     /**
-     * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     *
-     * <p>
-     * This method is used to initialize {@link DiagramPackage#eINSTANCE} when that field is accessed. Clients should
-     * not invoke it directly. Instead, they should simply access that field to obtain the package. <!-- begin-user-doc
+	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 *
+	 * <p>This method is used to initialize {@link DiagramPackage#eINSTANCE} when that field is accessed.
+	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #eNS_URI
-     * @see #createPackageContents()
-     * @see #initializePackageContents()
-     * @generated
-     */
+	 * @see #eNS_URI
+	 * @see #createPackageContents()
+	 * @see #initializePackageContents()
+	 * @generated
+	 */
     public static DiagramPackage init() {
-        if (isInited)
-            return (DiagramPackage) EPackage.Registry.INSTANCE.getEPackage(DiagramPackage.eNS_URI);
+		if (isInited) return (DiagramPackage)EPackage.Registry.INSTANCE.getEPackage(DiagramPackage.eNS_URI);
 
-        // Obtain or create and register package
-        Object registeredDiagramPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
-        DiagramPackageImpl theDiagramPackage = registeredDiagramPackage instanceof DiagramPackageImpl ? (DiagramPackageImpl) registeredDiagramPackage : new DiagramPackageImpl();
+		// Obtain or create and register package
+		Object registeredDiagramPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		DiagramPackageImpl theDiagramPackage = registeredDiagramPackage instanceof DiagramPackageImpl ? (DiagramPackageImpl)registeredDiagramPackage : new DiagramPackageImpl();
 
-        isInited = true;
+		isInited = true;
 
-        // Initialize simple dependencies
-        ViewPackage.eINSTANCE.eClass();
+		// Initialize simple dependencies
+		ViewPackage.eINSTANCE.eClass();
 
-        // Create package meta-data objects
-        theDiagramPackage.createPackageContents();
+		// Create package meta-data objects
+		theDiagramPackage.createPackageContents();
 
-        // Initialize created meta-data
-        theDiagramPackage.initializePackageContents();
+		// Initialize created meta-data
+		theDiagramPackage.initializePackageContents();
 
-        // Mark meta-data to indicate it can't be changed
-        theDiagramPackage.freeze();
+		// Mark meta-data to indicate it can't be changed
+		theDiagramPackage.freeze();
 
-        // Update the registry and return the package
-        EPackage.Registry.INSTANCE.put(DiagramPackage.eNS_URI, theDiagramPackage);
-        return theDiagramPackage;
-    }
+		// Update the registry and return the package
+		EPackage.Registry.INSTANCE.put(DiagramPackage.eNS_URI, theDiagramPackage);
+		return theDiagramPackage;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getDiagramDescription() {
-        return this.diagramDescriptionEClass;
-    }
+		return diagramDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getDiagramDescription_AutoLayout() {
-        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)diagramDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramDescription_Palette() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)diagramDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramDescription_NodeDescriptions() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(3);
-    }
+		return (EReference)diagramDescriptionEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramDescription_EdgeDescriptions() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(4);
-    }
+		return (EReference)diagramDescriptionEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getDiagramDescription_ArrangeLayoutDirection() {
-        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(5);
-    }
+		return (EAttribute)diagramDescriptionEClass.getEStructuralFeatures().get(5);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramDescription_GroupPalette() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)diagramDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getDiagramElementDescription() {
-        return this.diagramElementDescriptionEClass;
-    }
+		return diagramElementDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getDiagramElementDescription_Name() {
-        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)diagramElementDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getDiagramElementDescription_DomainType() {
-        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)diagramElementDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getDiagramElementDescription_SemanticCandidatesExpression() {
-        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)diagramElementDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getDiagramElementDescription_PreconditionExpression() {
-        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(3);
-    }
+		return (EAttribute)diagramElementDescriptionEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getDiagramElementDescription_SynchronizationPolicy() {
-        return (EAttribute) this.diagramElementDescriptionEClass.getEStructuralFeatures().get(4);
-    }
+		return (EAttribute)diagramElementDescriptionEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getNodeDescription() {
-        return this.nodeDescriptionEClass;
-    }
+		return nodeDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeDescription_Collapsible() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)nodeDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_Palette() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_Actions() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_Style() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(3);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_ConditionalStyles() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(4);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_ChildrenDescriptions() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(5);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(5);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_BorderNodesDescriptions() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(6);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(6);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_ReusedChildNodeDescriptions() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(7);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(7);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_ReusedBorderNodeDescriptions() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(8);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(8);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeDescription_UserResizable() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(9);
-    }
+		return (EAttribute)nodeDescriptionEClass.getEStructuralFeatures().get(9);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeDescription_DefaultWidthExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(10);
-    }
+		return (EAttribute)nodeDescriptionEClass.getEStructuralFeatures().get(10);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeDescription_DefaultHeightExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(11);
-    }
+		return (EAttribute)nodeDescriptionEClass.getEStructuralFeatures().get(11);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeDescription_KeepAspectRatio() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(12);
-    }
+		return (EAttribute)nodeDescriptionEClass.getEStructuralFeatures().get(12);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeDescription_IsCollapsedByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(13);
-    }
+		return (EAttribute)nodeDescriptionEClass.getEStructuralFeatures().get(13);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_InsideLabel() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(14);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(14);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeDescription_OutsideLabels() {
-        return (EReference) this.nodeDescriptionEClass.getEStructuralFeatures().get(15);
-    }
+		return (EReference)nodeDescriptionEClass.getEStructuralFeatures().get(15);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeDescription_IsHiddenByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(16);
-    }
+		return (EAttribute)nodeDescriptionEClass.getEStructuralFeatures().get(16);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeDescription_IsFadedByDefaultExpression() {
-        return (EAttribute) this.nodeDescriptionEClass.getEStructuralFeatures().get(17);
-    }
+		return (EAttribute)nodeDescriptionEClass.getEStructuralFeatures().get(17);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getEdgeDescription() {
-        return this.edgeDescriptionEClass;
-    }
+		return edgeDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeDescription_BeginLabelExpression() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)edgeDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeDescription_CenterLabelExpression() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)edgeDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeDescription_EndLabelExpression() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)edgeDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeDescription_IsDomainBasedEdge() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(3);
-    }
+		return (EAttribute)edgeDescriptionEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgeDescription_Palette() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(4);
-    }
+		return (EReference)edgeDescriptionEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgeDescription_SourceDescriptions() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(5);
-    }
+		return (EReference)edgeDescriptionEClass.getEStructuralFeatures().get(5);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgeDescription_TargetDescriptions() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(6);
-    }
+		return (EReference)edgeDescriptionEClass.getEStructuralFeatures().get(6);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeDescription_SourceExpression() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(7);
-    }
+		return (EAttribute)edgeDescriptionEClass.getEStructuralFeatures().get(7);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeDescription_TargetExpression() {
-        return (EAttribute) this.edgeDescriptionEClass.getEStructuralFeatures().get(8);
-    }
+		return (EAttribute)edgeDescriptionEClass.getEStructuralFeatures().get(8);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgeDescription_Style() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(9);
-    }
+		return (EReference)edgeDescriptionEClass.getEStructuralFeatures().get(9);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgeDescription_ConditionalStyles() {
-        return (EReference) this.edgeDescriptionEClass.getEStructuralFeatures().get(10);
-    }
+		return (EReference)edgeDescriptionEClass.getEStructuralFeatures().get(10);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getLayoutStrategyDescription() {
-        return this.layoutStrategyDescriptionEClass;
-    }
+		return layoutStrategyDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getLayoutStrategyDescription_OnWestAtCreationBorderNodes() {
-        return (EReference) this.layoutStrategyDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)layoutStrategyDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getLayoutStrategyDescription_OnEastAtCreationBorderNodes() {
-        return (EReference) this.layoutStrategyDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)layoutStrategyDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getLayoutStrategyDescription_OnSouthAtCreationBorderNodes() {
-        return (EReference) this.layoutStrategyDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)layoutStrategyDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getLayoutStrategyDescription_OnNorthAtCreationBorderNodes() {
-        return (EReference) this.layoutStrategyDescriptionEClass.getEStructuralFeatures().get(3);
-    }
+		return (EReference)layoutStrategyDescriptionEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getListLayoutStrategyDescription() {
-        return this.listLayoutStrategyDescriptionEClass;
-    }
+		return listLayoutStrategyDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getListLayoutStrategyDescription_AreChildNodesDraggableExpression() {
-        return (EAttribute) this.listLayoutStrategyDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)listLayoutStrategyDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getListLayoutStrategyDescription_TopGapExpression() {
-        return (EAttribute) this.listLayoutStrategyDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)listLayoutStrategyDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getListLayoutStrategyDescription_BottomGapExpression() {
-        return (EAttribute) this.listLayoutStrategyDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)listLayoutStrategyDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getListLayoutStrategyDescription_GrowableNodes() {
-        return (EReference) this.listLayoutStrategyDescriptionEClass.getEStructuralFeatures().get(3);
-    }
+		return (EReference)listLayoutStrategyDescriptionEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getFreeFormLayoutStrategyDescription() {
-        return this.freeFormLayoutStrategyDescriptionEClass;
-    }
+		return freeFormLayoutStrategyDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getLabelDescription() {
-        return this.labelDescriptionEClass;
-    }
+		return labelDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getLabelDescription_LabelExpression() {
-        return (EAttribute) this.labelDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)labelDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getLabelDescription_OverflowStrategy() {
-        return (EAttribute) this.labelDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)labelDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getLabelDescription_TextAlign() {
-        return (EAttribute) this.labelDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)labelDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getInsideLabelDescription() {
-        return this.insideLabelDescriptionEClass;
-    }
+		return insideLabelDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getInsideLabelDescription_Position() {
-        return (EAttribute) this.insideLabelDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)insideLabelDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getInsideLabelDescription_Style() {
-        return (EReference) this.insideLabelDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)insideLabelDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getInsideLabelDescription_ConditionalStyles() {
-        return (EReference) this.insideLabelDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)insideLabelDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getOutsideLabelDescription() {
-        return this.outsideLabelDescriptionEClass;
-    }
+		return outsideLabelDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getOutsideLabelDescription_Position() {
-        return (EAttribute) this.outsideLabelDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)outsideLabelDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getOutsideLabelDescription_Style() {
-        return (EReference) this.outsideLabelDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)outsideLabelDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getOutsideLabelDescription_ConditionalStyles() {
-        return (EReference) this.outsideLabelDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)outsideLabelDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getStyle() {
-        return this.styleEClass;
-    }
+		return styleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getStyle_Color() {
-        return (EReference) this.styleEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)styleEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getBorderStyle() {
-        return this.borderStyleEClass;
-    }
+		return borderStyleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getBorderStyle_BorderColor() {
-        return (EReference) this.borderStyleEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)borderStyleEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getBorderStyle_BorderRadius() {
-        return (EAttribute) this.borderStyleEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)borderStyleEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getBorderStyle_BorderSize() {
-        return (EAttribute) this.borderStyleEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)borderStyleEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getBorderStyle_BorderLineStyle() {
-        return (EAttribute) this.borderStyleEClass.getEStructuralFeatures().get(3);
-    }
+		return (EAttribute)borderStyleEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getInsideLabelStyle() {
-        return this.insideLabelStyleEClass;
-    }
+		return insideLabelStyleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getInsideLabelStyle_WithHeader() {
-        return (EAttribute) this.insideLabelStyleEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)insideLabelStyleEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getInsideLabelStyle_HeaderSeparatorDisplayMode() {
-        return (EAttribute) this.insideLabelStyleEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)insideLabelStyleEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getOutsideLabelStyle() {
-        return this.outsideLabelStyleEClass;
-    }
+		return outsideLabelStyleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getNodeLabelStyle() {
-        return this.nodeLabelStyleEClass;
-    }
+		return nodeLabelStyleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeLabelStyle_LabelColor() {
-        return (EReference) this.nodeLabelStyleEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)nodeLabelStyleEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeLabelStyle_LabelIcon() {
-        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(3);
-    }
+		return (EAttribute)nodeLabelStyleEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeLabelStyle_MaxWidthExpression() {
-        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(4);
-    }
+		return (EAttribute)nodeLabelStyleEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeLabelStyle_Background() {
-        return (EReference) this.nodeLabelStyleEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)nodeLabelStyleEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeLabelStyle_ShowIconExpression() {
-        return (EAttribute) this.nodeLabelStyleEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)nodeLabelStyleEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getNodeStyleDescription() {
-        return this.nodeStyleDescriptionEClass;
-    }
+		return nodeStyleDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeStyleDescription_ChildrenLayoutStrategy() {
-        return (EReference) this.nodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)nodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getConditionalNodeStyle() {
-        return this.conditionalNodeStyleEClass;
-    }
+		return conditionalNodeStyleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getConditionalNodeStyle_Style() {
-        return (EReference) this.conditionalNodeStyleEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)conditionalNodeStyleEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getConditionalInsideLabelStyle() {
-        return this.conditionalInsideLabelStyleEClass;
-    }
+		return conditionalInsideLabelStyleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getConditionalInsideLabelStyle_Style() {
-        return (EReference) this.conditionalInsideLabelStyleEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)conditionalInsideLabelStyleEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getConditionalOutsideLabelStyle() {
-        return this.conditionalOutsideLabelStyleEClass;
-    }
+		return conditionalOutsideLabelStyleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getConditionalOutsideLabelStyle_Style() {
-        return (EReference) this.conditionalOutsideLabelStyleEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)conditionalOutsideLabelStyleEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getRectangularNodeStyleDescription() {
-        return this.rectangularNodeStyleDescriptionEClass;
-    }
+		return rectangularNodeStyleDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getRectangularNodeStyleDescription_Background() {
-        return (EReference) this.rectangularNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)rectangularNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getImageNodeStyleDescription() {
-        return this.imageNodeStyleDescriptionEClass;
-    }
+		return imageNodeStyleDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getImageNodeStyleDescription_Shape() {
-        return (EAttribute) this.imageNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)imageNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getImageNodeStyleDescription_PositionDependentRotation() {
-        return (EAttribute) this.imageNodeStyleDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)imageNodeStyleDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getIconLabelNodeStyleDescription() {
-        return this.iconLabelNodeStyleDescriptionEClass;
-    }
+		return iconLabelNodeStyleDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getIconLabelNodeStyleDescription_Background() {
-        return (EReference) this.iconLabelNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)iconLabelNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getEdgeStyle() {
-        return this.edgeStyleEClass;
-    }
+		return edgeStyleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeStyle_LineStyle() {
-        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)edgeStyleEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeStyle_SourceArrowStyle() {
-        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)edgeStyleEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeStyle_TargetArrowStyle() {
-        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)edgeStyleEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeStyle_EdgeWidth() {
-        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(3);
-    }
+		return (EAttribute)edgeStyleEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeStyle_ShowIcon() {
-        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(4);
-    }
+		return (EAttribute)edgeStyleEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeStyle_LabelIcon() {
-        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(5);
-    }
+		return (EAttribute)edgeStyleEClass.getEStructuralFeatures().get(5);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgeStyle_Background() {
-        return (EReference) this.edgeStyleEClass.getEStructuralFeatures().get(6);
-    }
+		return (EReference)edgeStyleEClass.getEStructuralFeatures().get(6);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeStyle_MaxWidthExpression() {
-        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(7);
-    }
+		return (EAttribute)edgeStyleEClass.getEStructuralFeatures().get(7);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeStyle_EdgeType() {
-        return (EAttribute) this.edgeStyleEClass.getEStructuralFeatures().get(8);
-    }
+		return (EAttribute)edgeStyleEClass.getEStructuralFeatures().get(8);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getConditionalEdgeStyle() {
-        return this.conditionalEdgeStyleEClass;
-    }
+		return conditionalEdgeStyleEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getDiagramPalette() {
-        return this.diagramPaletteEClass;
-    }
+		return diagramPaletteEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramPalette_DropTool() {
-        return (EReference) this.diagramPaletteEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)diagramPaletteEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramPalette_DropNodeTool() {
-        return (EReference) this.diagramPaletteEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)diagramPaletteEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramPalette_NodeTools() {
-        return (EReference) this.diagramPaletteEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)diagramPaletteEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramPalette_QuickAccessTools() {
-        return (EReference) this.diagramPaletteEClass.getEStructuralFeatures().get(3);
-    }
+		return (EReference)diagramPaletteEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramPalette_ToolSections() {
-        return (EReference) this.diagramPaletteEClass.getEStructuralFeatures().get(4);
-    }
+		return (EReference)diagramPaletteEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getGroupPalette() {
-        return this.groupPaletteEClass;
-    }
+		return groupPaletteEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getGroupPalette_NodeTools() {
-        return (EReference) this.groupPaletteEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)groupPaletteEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getGroupPalette_QuickAccessTools() {
-        return (EReference) this.groupPaletteEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)groupPaletteEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getGroupPalette_ToolSections() {
-        return (EReference) this.groupPaletteEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)groupPaletteEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getNodePalette() {
-        return this.nodePaletteEClass;
-    }
+		return nodePaletteEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodePalette_DeleteTool() {
-        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)nodePaletteEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodePalette_LabelEditTool() {
-        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)nodePaletteEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodePalette_DropNodeTool() {
-        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)nodePaletteEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodePalette_NodeTools() {
-        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(3);
-    }
+		return (EReference)nodePaletteEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodePalette_QuickAccessTools() {
-        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(4);
-    }
+		return (EReference)nodePaletteEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodePalette_EdgeTools() {
-        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(5);
-    }
+		return (EReference)nodePaletteEClass.getEStructuralFeatures().get(5);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodePalette_ToolSections() {
-        return (EReference) this.nodePaletteEClass.getEStructuralFeatures().get(6);
-    }
+		return (EReference)nodePaletteEClass.getEStructuralFeatures().get(6);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getEdgePalette() {
-        return this.edgePaletteEClass;
-    }
+		return edgePaletteEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgePalette_DeleteTool() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)edgePaletteEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgePalette_CenterLabelEditTool() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)edgePaletteEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgePalette_BeginLabelEditTool() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)edgePaletteEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgePalette_EndLabelEditTool() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(3);
-    }
+		return (EReference)edgePaletteEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgePalette_NodeTools() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(4);
-    }
+		return (EReference)edgePaletteEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgePalette_QuickAccessTools() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(5);
-    }
+		return (EReference)edgePaletteEClass.getEStructuralFeatures().get(5);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgePalette_EdgeReconnectionTools() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(6);
-    }
+		return (EReference)edgePaletteEClass.getEStructuralFeatures().get(6);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgePalette_EdgeTools() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(7);
-    }
+		return (EReference)edgePaletteEClass.getEStructuralFeatures().get(7);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgePalette_ToolSections() {
-        return (EReference) this.edgePaletteEClass.getEStructuralFeatures().get(8);
-    }
+		return (EReference)edgePaletteEClass.getEStructuralFeatures().get(8);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getTool() {
-        return this.toolEClass;
-    }
+		return toolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getTool_Name() {
-        return (EAttribute) this.toolEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)toolEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getTool_PreconditionExpression() {
-        return (EAttribute) this.toolEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)toolEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getTool_Body() {
-        return (EReference) this.toolEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)toolEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getDeleteTool() {
-        return this.deleteToolEClass;
-    }
+		return deleteToolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getDropTool() {
-        return this.dropToolEClass;
-    }
+		return dropToolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getEdgeTool() {
-        return this.edgeToolEClass;
-    }
+		return edgeToolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgeTool_TargetElementDescriptions() {
-        return (EReference) this.edgeToolEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)edgeToolEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeTool_IconURLsExpression() {
-        return (EAttribute) this.edgeToolEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)edgeToolEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgeTool_DialogDescription() {
-        return (EReference) this.edgeToolEClass.getEStructuralFeatures().get(2);
-    }
+		return (EReference)edgeToolEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getEdgeTool_ElementsToSelectExpression() {
-        return (EAttribute) this.edgeToolEClass.getEStructuralFeatures().get(3);
-    }
+		return (EAttribute)edgeToolEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getEdgeReconnectionTool() {
-        return this.edgeReconnectionToolEClass;
-    }
+		return edgeReconnectionToolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getLabelEditTool() {
-        return this.labelEditToolEClass;
-    }
+		return labelEditToolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getLabelEditTool_InitialDirectEditLabelExpression() {
-        return (EAttribute) this.labelEditToolEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)labelEditToolEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getNodeTool() {
-        return this.nodeToolEClass;
-    }
+		return nodeToolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeTool_DialogDescription() {
-        return (EReference) this.nodeToolEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)nodeToolEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeTool_IconURLsExpression() {
-        return (EAttribute) this.nodeToolEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)nodeToolEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeTool_ElementsToSelectExpression() {
-        return (EAttribute) this.nodeToolEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)nodeToolEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getNodeTool_WithImpactAnalysis() {
-        return (EAttribute) this.nodeToolEClass.getEStructuralFeatures().get(3);
-    }
+		return (EAttribute)nodeToolEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getSourceEdgeEndReconnectionTool() {
-        return this.sourceEdgeEndReconnectionToolEClass;
-    }
+		return sourceEdgeEndReconnectionToolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getTargetEdgeEndReconnectionTool() {
-        return this.targetEdgeEndReconnectionToolEClass;
-    }
+		return targetEdgeEndReconnectionToolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getCreateView() {
-        return this.createViewEClass;
-    }
+		return createViewEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getCreateView_ParentViewExpression() {
-        return (EAttribute) this.createViewEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)createViewEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getCreateView_ElementDescription() {
-        return (EReference) this.createViewEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)createViewEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getCreateView_SemanticElementExpression() {
-        return (EAttribute) this.createViewEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)createViewEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getCreateView_VariableName() {
-        return (EAttribute) this.createViewEClass.getEStructuralFeatures().get(3);
-    }
+		return (EAttribute)createViewEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getCreateView_ContainmentKind() {
-        return (EAttribute) this.createViewEClass.getEStructuralFeatures().get(4);
-    }
+		return (EAttribute)createViewEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getDeleteView() {
-        return this.deleteViewEClass;
-    }
+		return deleteViewEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getDeleteView_ViewExpression() {
-        return (EAttribute) this.deleteViewEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)deleteViewEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getSelectionDialogDescription() {
-        return this.selectionDialogDescriptionEClass;
-    }
+		return selectionDialogDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getSelectionDialogDescription_SelectionMessage() {
-        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)selectionDialogDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getSelectionDialogDescription_SelectionDialogTreeDescription() {
-        return (EReference) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)selectionDialogDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getSelectionDialogDescription_Multiple() {
-        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)selectionDialogDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getToolSection() {
-        return this.toolSectionEClass;
-    }
+		return toolSectionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getToolSection_Name() {
-        return (EAttribute) this.toolSectionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)toolSectionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getDiagramToolSection() {
-        return this.diagramToolSectionEClass;
-    }
+		return diagramToolSectionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDiagramToolSection_NodeTools() {
-        return (EReference) this.diagramToolSectionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)diagramToolSectionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getNodeToolSection() {
-        return this.nodeToolSectionEClass;
-    }
+		return nodeToolSectionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeToolSection_NodeTools() {
-        return (EReference) this.nodeToolSectionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)nodeToolSectionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getNodeToolSection_EdgeTools() {
-        return (EReference) this.nodeToolSectionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EReference)nodeToolSectionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getEdgeToolSection() {
-        return this.edgeToolSectionEClass;
-    }
+		return edgeToolSectionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEdgeToolSection_NodeTools() {
-        return (EReference) this.edgeToolSectionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)edgeToolSectionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getDropNodeTool() {
-        return this.dropNodeToolEClass;
-    }
+		return dropNodeToolEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getDropNodeTool_AcceptedNodeTypes() {
-        return (EReference) this.dropNodeToolEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)dropNodeToolEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getDialogDescription() {
-        return this.dialogDescriptionEClass;
-    }
+		return dialogDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getSelectionDialogTreeDescription() {
-        return this.selectionDialogTreeDescriptionEClass;
-    }
+		return selectionDialogTreeDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getSelectionDialogTreeDescription_ElementsExpression() {
-        return (EAttribute) this.selectionDialogTreeDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)selectionDialogTreeDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getSelectionDialogTreeDescription_ChildrenExpression() {
-        return (EAttribute) this.selectionDialogTreeDescriptionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)selectionDialogTreeDescriptionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getSelectionDialogTreeDescription_IsSelectableExpression() {
-        return (EAttribute) this.selectionDialogTreeDescriptionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)selectionDialogTreeDescriptionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getAction() {
-        return this.actionEClass;
-    }
+		return actionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getAction_Name() {
-        return (EAttribute) this.actionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getAction_TooltipExpression() {
-        return (EAttribute) this.actionEClass.getEStructuralFeatures().get(1);
-    }
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(1);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getAction_IconURLsExpression() {
-        return (EAttribute) this.actionEClass.getEStructuralFeatures().get(2);
-    }
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(2);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EAttribute getAction_PreconditionExpression() {
-        return (EAttribute) this.actionEClass.getEStructuralFeatures().get(3);
-    }
+		return (EAttribute)actionEClass.getEStructuralFeatures().get(3);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getAction_Body() {
-        return (EReference) this.actionEClass.getEStructuralFeatures().get(4);
-    }
+		return (EReference)actionEClass.getEStructuralFeatures().get(4);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getArrowStyle() {
-        return this.arrowStyleEEnum;
-    }
+		return arrowStyleEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getLayoutDirection() {
-        return this.layoutDirectionEEnum;
-    }
+		return layoutDirectionEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getLineStyle() {
-        return this.lineStyleEEnum;
-    }
+		return lineStyleEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getNodeContainmentKind() {
-        return this.nodeContainmentKindEEnum;
-    }
+		return nodeContainmentKindEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getSynchronizationPolicy() {
-        return this.synchronizationPolicyEEnum;
-    }
+		return synchronizationPolicyEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getInsideLabelPosition() {
-        return this.insideLabelPositionEEnum;
-    }
+		return insideLabelPositionEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getOutsideLabelPosition() {
-        return this.outsideLabelPositionEEnum;
-    }
+		return outsideLabelPositionEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getLabelOverflowStrategy() {
-        return this.labelOverflowStrategyEEnum;
-    }
+		return labelOverflowStrategyEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getArrangeLayoutDirection() {
-        return this.arrangeLayoutDirectionEEnum;
-    }
+		return arrangeLayoutDirectionEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getLabelTextAlign() {
-        return this.labelTextAlignEEnum;
-    }
+		return labelTextAlignEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getUserResizableDirection() {
-        return this.userResizableDirectionEEnum;
-    }
+		return userResizableDirectionEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getHeaderSeparatorDisplayMode() {
-        return this.headerSeparatorDisplayModeEEnum;
-    }
+		return headerSeparatorDisplayModeEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EEnum getEdgeType() {
-        return this.edgeTypeEEnum;
-    }
+		return edgeTypeEEnum;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public DiagramFactory getDiagramFactory() {
-        return (DiagramFactory) this.getEFactoryInstance();
-    }
+		return (DiagramFactory)getEFactoryInstance();
+	}
 
     /**
-     * Creates the meta-model objects for the package. This method is guarded to have no affect on any invocation but
-     * its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public void createPackageContents() {
-        if (this.isCreated)
-            return;
-        this.isCreated = true;
+		if (isCreated) return;
+		isCreated = true;
 
-        // Create classes and their features
-        this.diagramDescriptionEClass = this.createEClass(DIAGRAM_DESCRIPTION);
-        this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__AUTO_LAYOUT);
-        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__PALETTE);
-        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__GROUP_PALETTE);
-        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
-        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
-        this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION);
+		// Create classes and their features
+		diagramDescriptionEClass = createEClass(DIAGRAM_DESCRIPTION);
+		createEAttribute(diagramDescriptionEClass, DIAGRAM_DESCRIPTION__AUTO_LAYOUT);
+		createEReference(diagramDescriptionEClass, DIAGRAM_DESCRIPTION__PALETTE);
+		createEReference(diagramDescriptionEClass, DIAGRAM_DESCRIPTION__GROUP_PALETTE);
+		createEReference(diagramDescriptionEClass, DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
+		createEReference(diagramDescriptionEClass, DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
+		createEAttribute(diagramDescriptionEClass, DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION);
 
-        this.diagramElementDescriptionEClass = this.createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
-        this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__NAME);
-        this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE);
-        this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
-        this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION);
-        this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY);
+		diagramElementDescriptionEClass = createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
+		createEAttribute(diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__NAME);
+		createEAttribute(diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__DOMAIN_TYPE);
+		createEAttribute(diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION);
+		createEAttribute(diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION);
+		createEAttribute(diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY);
 
-        this.nodeDescriptionEClass = this.createEClass(NODE_DESCRIPTION);
-        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__COLLAPSIBLE);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__PALETTE);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__ACTIONS);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__STYLE);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CONDITIONAL_STYLES);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS);
-        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__USER_RESIZABLE);
-        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION);
-        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION);
-        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__KEEP_ASPECT_RATIO);
-        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__INSIDE_LABEL);
-        this.createEReference(this.nodeDescriptionEClass, NODE_DESCRIPTION__OUTSIDE_LABELS);
-        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION);
-        this.createEAttribute(this.nodeDescriptionEClass, NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION);
+		nodeDescriptionEClass = createEClass(NODE_DESCRIPTION);
+		createEAttribute(nodeDescriptionEClass, NODE_DESCRIPTION__COLLAPSIBLE);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__PALETTE);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__ACTIONS);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__STYLE);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__CONDITIONAL_STYLES);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS);
+		createEAttribute(nodeDescriptionEClass, NODE_DESCRIPTION__USER_RESIZABLE);
+		createEAttribute(nodeDescriptionEClass, NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION);
+		createEAttribute(nodeDescriptionEClass, NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION);
+		createEAttribute(nodeDescriptionEClass, NODE_DESCRIPTION__KEEP_ASPECT_RATIO);
+		createEAttribute(nodeDescriptionEClass, NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__INSIDE_LABEL);
+		createEReference(nodeDescriptionEClass, NODE_DESCRIPTION__OUTSIDE_LABELS);
+		createEAttribute(nodeDescriptionEClass, NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION);
+		createEAttribute(nodeDescriptionEClass, NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION);
 
-        this.edgeDescriptionEClass = this.createEClass(EDGE_DESCRIPTION);
-        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION);
-        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION);
-        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__END_LABEL_EXPRESSION);
-        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE);
-        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__PALETTE);
-        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS);
-        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_DESCRIPTIONS);
-        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_EXPRESSION);
-        this.createEAttribute(this.edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_EXPRESSION);
-        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__STYLE);
-        this.createEReference(this.edgeDescriptionEClass, EDGE_DESCRIPTION__CONDITIONAL_STYLES);
+		edgeDescriptionEClass = createEClass(EDGE_DESCRIPTION);
+		createEAttribute(edgeDescriptionEClass, EDGE_DESCRIPTION__BEGIN_LABEL_EXPRESSION);
+		createEAttribute(edgeDescriptionEClass, EDGE_DESCRIPTION__CENTER_LABEL_EXPRESSION);
+		createEAttribute(edgeDescriptionEClass, EDGE_DESCRIPTION__END_LABEL_EXPRESSION);
+		createEAttribute(edgeDescriptionEClass, EDGE_DESCRIPTION__IS_DOMAIN_BASED_EDGE);
+		createEReference(edgeDescriptionEClass, EDGE_DESCRIPTION__PALETTE);
+		createEReference(edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_DESCRIPTIONS);
+		createEReference(edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_DESCRIPTIONS);
+		createEAttribute(edgeDescriptionEClass, EDGE_DESCRIPTION__SOURCE_EXPRESSION);
+		createEAttribute(edgeDescriptionEClass, EDGE_DESCRIPTION__TARGET_EXPRESSION);
+		createEReference(edgeDescriptionEClass, EDGE_DESCRIPTION__STYLE);
+		createEReference(edgeDescriptionEClass, EDGE_DESCRIPTION__CONDITIONAL_STYLES);
 
-        this.layoutStrategyDescriptionEClass = this.createEClass(LAYOUT_STRATEGY_DESCRIPTION);
-        this.createEReference(this.layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES);
-        this.createEReference(this.layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES);
-        this.createEReference(this.layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES);
-        this.createEReference(this.layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES);
+		layoutStrategyDescriptionEClass = createEClass(LAYOUT_STRATEGY_DESCRIPTION);
+		createEReference(layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES);
+		createEReference(layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES);
+		createEReference(layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES);
+		createEReference(layoutStrategyDescriptionEClass, LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES);
 
-        this.listLayoutStrategyDescriptionEClass = this.createEClass(LIST_LAYOUT_STRATEGY_DESCRIPTION);
-        this.createEAttribute(this.listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION);
-        this.createEAttribute(this.listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__TOP_GAP_EXPRESSION);
-        this.createEAttribute(this.listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION);
-        this.createEReference(this.listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES);
+		listLayoutStrategyDescriptionEClass = createEClass(LIST_LAYOUT_STRATEGY_DESCRIPTION);
+		createEAttribute(listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__ARE_CHILD_NODES_DRAGGABLE_EXPRESSION);
+		createEAttribute(listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__TOP_GAP_EXPRESSION);
+		createEAttribute(listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__BOTTOM_GAP_EXPRESSION);
+		createEReference(listLayoutStrategyDescriptionEClass, LIST_LAYOUT_STRATEGY_DESCRIPTION__GROWABLE_NODES);
 
-        this.freeFormLayoutStrategyDescriptionEClass = this.createEClass(FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION);
+		freeFormLayoutStrategyDescriptionEClass = createEClass(FREE_FORM_LAYOUT_STRATEGY_DESCRIPTION);
 
-        this.labelDescriptionEClass = this.createEClass(LABEL_DESCRIPTION);
-        this.createEAttribute(this.labelDescriptionEClass, LABEL_DESCRIPTION__LABEL_EXPRESSION);
-        this.createEAttribute(this.labelDescriptionEClass, LABEL_DESCRIPTION__OVERFLOW_STRATEGY);
-        this.createEAttribute(this.labelDescriptionEClass, LABEL_DESCRIPTION__TEXT_ALIGN);
+		labelDescriptionEClass = createEClass(LABEL_DESCRIPTION);
+		createEAttribute(labelDescriptionEClass, LABEL_DESCRIPTION__LABEL_EXPRESSION);
+		createEAttribute(labelDescriptionEClass, LABEL_DESCRIPTION__OVERFLOW_STRATEGY);
+		createEAttribute(labelDescriptionEClass, LABEL_DESCRIPTION__TEXT_ALIGN);
 
-        this.insideLabelDescriptionEClass = this.createEClass(INSIDE_LABEL_DESCRIPTION);
-        this.createEAttribute(this.insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__POSITION);
-        this.createEReference(this.insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__STYLE);
-        this.createEReference(this.insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__CONDITIONAL_STYLES);
+		insideLabelDescriptionEClass = createEClass(INSIDE_LABEL_DESCRIPTION);
+		createEAttribute(insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__POSITION);
+		createEReference(insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__STYLE);
+		createEReference(insideLabelDescriptionEClass, INSIDE_LABEL_DESCRIPTION__CONDITIONAL_STYLES);
 
-        this.outsideLabelDescriptionEClass = this.createEClass(OUTSIDE_LABEL_DESCRIPTION);
-        this.createEAttribute(this.outsideLabelDescriptionEClass, OUTSIDE_LABEL_DESCRIPTION__POSITION);
-        this.createEReference(this.outsideLabelDescriptionEClass, OUTSIDE_LABEL_DESCRIPTION__STYLE);
-        this.createEReference(this.outsideLabelDescriptionEClass, OUTSIDE_LABEL_DESCRIPTION__CONDITIONAL_STYLES);
+		outsideLabelDescriptionEClass = createEClass(OUTSIDE_LABEL_DESCRIPTION);
+		createEAttribute(outsideLabelDescriptionEClass, OUTSIDE_LABEL_DESCRIPTION__POSITION);
+		createEReference(outsideLabelDescriptionEClass, OUTSIDE_LABEL_DESCRIPTION__STYLE);
+		createEReference(outsideLabelDescriptionEClass, OUTSIDE_LABEL_DESCRIPTION__CONDITIONAL_STYLES);
 
-        this.styleEClass = this.createEClass(STYLE);
-        this.createEReference(this.styleEClass, STYLE__COLOR);
+		styleEClass = createEClass(STYLE);
+		createEReference(styleEClass, STYLE__COLOR);
 
-        this.borderStyleEClass = this.createEClass(BORDER_STYLE);
-        this.createEReference(this.borderStyleEClass, BORDER_STYLE__BORDER_COLOR);
-        this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_RADIUS);
-        this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_SIZE);
-        this.createEAttribute(this.borderStyleEClass, BORDER_STYLE__BORDER_LINE_STYLE);
+		borderStyleEClass = createEClass(BORDER_STYLE);
+		createEReference(borderStyleEClass, BORDER_STYLE__BORDER_COLOR);
+		createEAttribute(borderStyleEClass, BORDER_STYLE__BORDER_RADIUS);
+		createEAttribute(borderStyleEClass, BORDER_STYLE__BORDER_SIZE);
+		createEAttribute(borderStyleEClass, BORDER_STYLE__BORDER_LINE_STYLE);
 
-        this.insideLabelStyleEClass = this.createEClass(INSIDE_LABEL_STYLE);
-        this.createEAttribute(this.insideLabelStyleEClass, INSIDE_LABEL_STYLE__WITH_HEADER);
-        this.createEAttribute(this.insideLabelStyleEClass, INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE);
+		insideLabelStyleEClass = createEClass(INSIDE_LABEL_STYLE);
+		createEAttribute(insideLabelStyleEClass, INSIDE_LABEL_STYLE__WITH_HEADER);
+		createEAttribute(insideLabelStyleEClass, INSIDE_LABEL_STYLE__HEADER_SEPARATOR_DISPLAY_MODE);
 
-        this.outsideLabelStyleEClass = this.createEClass(OUTSIDE_LABEL_STYLE);
+		outsideLabelStyleEClass = createEClass(OUTSIDE_LABEL_STYLE);
 
-        this.nodeLabelStyleEClass = this.createEClass(NODE_LABEL_STYLE);
-        this.createEReference(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_COLOR);
-        this.createEReference(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__BACKGROUND);
-        this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION);
-        this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_ICON);
-        this.createEAttribute(this.nodeLabelStyleEClass, NODE_LABEL_STYLE__MAX_WIDTH_EXPRESSION);
+		nodeLabelStyleEClass = createEClass(NODE_LABEL_STYLE);
+		createEReference(nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_COLOR);
+		createEReference(nodeLabelStyleEClass, NODE_LABEL_STYLE__BACKGROUND);
+		createEAttribute(nodeLabelStyleEClass, NODE_LABEL_STYLE__SHOW_ICON_EXPRESSION);
+		createEAttribute(nodeLabelStyleEClass, NODE_LABEL_STYLE__LABEL_ICON);
+		createEAttribute(nodeLabelStyleEClass, NODE_LABEL_STYLE__MAX_WIDTH_EXPRESSION);
 
-        this.nodeStyleDescriptionEClass = this.createEClass(NODE_STYLE_DESCRIPTION);
-        this.createEReference(this.nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY);
+		nodeStyleDescriptionEClass = createEClass(NODE_STYLE_DESCRIPTION);
+		createEReference(nodeStyleDescriptionEClass, NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY);
 
-        this.conditionalNodeStyleEClass = this.createEClass(CONDITIONAL_NODE_STYLE);
-        this.createEReference(this.conditionalNodeStyleEClass, CONDITIONAL_NODE_STYLE__STYLE);
+		conditionalNodeStyleEClass = createEClass(CONDITIONAL_NODE_STYLE);
+		createEReference(conditionalNodeStyleEClass, CONDITIONAL_NODE_STYLE__STYLE);
 
-        this.conditionalInsideLabelStyleEClass = this.createEClass(CONDITIONAL_INSIDE_LABEL_STYLE);
-        this.createEReference(this.conditionalInsideLabelStyleEClass, CONDITIONAL_INSIDE_LABEL_STYLE__STYLE);
+		conditionalInsideLabelStyleEClass = createEClass(CONDITIONAL_INSIDE_LABEL_STYLE);
+		createEReference(conditionalInsideLabelStyleEClass, CONDITIONAL_INSIDE_LABEL_STYLE__STYLE);
 
-        this.conditionalOutsideLabelStyleEClass = this.createEClass(CONDITIONAL_OUTSIDE_LABEL_STYLE);
-        this.createEReference(this.conditionalOutsideLabelStyleEClass, CONDITIONAL_OUTSIDE_LABEL_STYLE__STYLE);
+		conditionalOutsideLabelStyleEClass = createEClass(CONDITIONAL_OUTSIDE_LABEL_STYLE);
+		createEReference(conditionalOutsideLabelStyleEClass, CONDITIONAL_OUTSIDE_LABEL_STYLE__STYLE);
 
-        this.rectangularNodeStyleDescriptionEClass = this.createEClass(RECTANGULAR_NODE_STYLE_DESCRIPTION);
-        this.createEReference(this.rectangularNodeStyleDescriptionEClass, RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND);
+		rectangularNodeStyleDescriptionEClass = createEClass(RECTANGULAR_NODE_STYLE_DESCRIPTION);
+		createEReference(rectangularNodeStyleDescriptionEClass, RECTANGULAR_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
-        this.imageNodeStyleDescriptionEClass = this.createEClass(IMAGE_NODE_STYLE_DESCRIPTION);
-        this.createEAttribute(this.imageNodeStyleDescriptionEClass, IMAGE_NODE_STYLE_DESCRIPTION__SHAPE);
-        this.createEAttribute(this.imageNodeStyleDescriptionEClass, IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION);
+		imageNodeStyleDescriptionEClass = createEClass(IMAGE_NODE_STYLE_DESCRIPTION);
+		createEAttribute(imageNodeStyleDescriptionEClass, IMAGE_NODE_STYLE_DESCRIPTION__SHAPE);
+		createEAttribute(imageNodeStyleDescriptionEClass, IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION);
 
-        this.iconLabelNodeStyleDescriptionEClass = this.createEClass(ICON_LABEL_NODE_STYLE_DESCRIPTION);
-        this.createEReference(this.iconLabelNodeStyleDescriptionEClass, ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND);
+		iconLabelNodeStyleDescriptionEClass = createEClass(ICON_LABEL_NODE_STYLE_DESCRIPTION);
+		createEReference(iconLabelNodeStyleDescriptionEClass, ICON_LABEL_NODE_STYLE_DESCRIPTION__BACKGROUND);
 
-        this.edgeStyleEClass = this.createEClass(EDGE_STYLE);
-        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__LINE_STYLE);
-        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__SOURCE_ARROW_STYLE);
-        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__TARGET_ARROW_STYLE);
-        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__EDGE_WIDTH);
-        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__SHOW_ICON);
-        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__LABEL_ICON);
-        this.createEReference(this.edgeStyleEClass, EDGE_STYLE__BACKGROUND);
-        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__MAX_WIDTH_EXPRESSION);
-        this.createEAttribute(this.edgeStyleEClass, EDGE_STYLE__EDGE_TYPE);
+		edgeStyleEClass = createEClass(EDGE_STYLE);
+		createEAttribute(edgeStyleEClass, EDGE_STYLE__LINE_STYLE);
+		createEAttribute(edgeStyleEClass, EDGE_STYLE__SOURCE_ARROW_STYLE);
+		createEAttribute(edgeStyleEClass, EDGE_STYLE__TARGET_ARROW_STYLE);
+		createEAttribute(edgeStyleEClass, EDGE_STYLE__EDGE_WIDTH);
+		createEAttribute(edgeStyleEClass, EDGE_STYLE__SHOW_ICON);
+		createEAttribute(edgeStyleEClass, EDGE_STYLE__LABEL_ICON);
+		createEReference(edgeStyleEClass, EDGE_STYLE__BACKGROUND);
+		createEAttribute(edgeStyleEClass, EDGE_STYLE__MAX_WIDTH_EXPRESSION);
+		createEAttribute(edgeStyleEClass, EDGE_STYLE__EDGE_TYPE);
 
-        this.conditionalEdgeStyleEClass = this.createEClass(CONDITIONAL_EDGE_STYLE);
+		conditionalEdgeStyleEClass = createEClass(CONDITIONAL_EDGE_STYLE);
 
-        this.diagramPaletteEClass = this.createEClass(DIAGRAM_PALETTE);
-        this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__DROP_TOOL);
-        this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__DROP_NODE_TOOL);
-        this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__NODE_TOOLS);
-        this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS);
-        this.createEReference(this.diagramPaletteEClass, DIAGRAM_PALETTE__TOOL_SECTIONS);
+		diagramPaletteEClass = createEClass(DIAGRAM_PALETTE);
+		createEReference(diagramPaletteEClass, DIAGRAM_PALETTE__DROP_TOOL);
+		createEReference(diagramPaletteEClass, DIAGRAM_PALETTE__DROP_NODE_TOOL);
+		createEReference(diagramPaletteEClass, DIAGRAM_PALETTE__NODE_TOOLS);
+		createEReference(diagramPaletteEClass, DIAGRAM_PALETTE__QUICK_ACCESS_TOOLS);
+		createEReference(diagramPaletteEClass, DIAGRAM_PALETTE__TOOL_SECTIONS);
 
-        this.groupPaletteEClass = this.createEClass(GROUP_PALETTE);
-        this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__NODE_TOOLS);
-        this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__QUICK_ACCESS_TOOLS);
-        this.createEReference(this.groupPaletteEClass, GROUP_PALETTE__TOOL_SECTIONS);
+		groupPaletteEClass = createEClass(GROUP_PALETTE);
+		createEReference(groupPaletteEClass, GROUP_PALETTE__NODE_TOOLS);
+		createEReference(groupPaletteEClass, GROUP_PALETTE__QUICK_ACCESS_TOOLS);
+		createEReference(groupPaletteEClass, GROUP_PALETTE__TOOL_SECTIONS);
 
-        this.nodePaletteEClass = this.createEClass(NODE_PALETTE);
-        this.createEReference(this.nodePaletteEClass, NODE_PALETTE__DELETE_TOOL);
-        this.createEReference(this.nodePaletteEClass, NODE_PALETTE__LABEL_EDIT_TOOL);
-        this.createEReference(this.nodePaletteEClass, NODE_PALETTE__DROP_NODE_TOOL);
-        this.createEReference(this.nodePaletteEClass, NODE_PALETTE__NODE_TOOLS);
-        this.createEReference(this.nodePaletteEClass, NODE_PALETTE__QUICK_ACCESS_TOOLS);
-        this.createEReference(this.nodePaletteEClass, NODE_PALETTE__EDGE_TOOLS);
-        this.createEReference(this.nodePaletteEClass, NODE_PALETTE__TOOL_SECTIONS);
+		nodePaletteEClass = createEClass(NODE_PALETTE);
+		createEReference(nodePaletteEClass, NODE_PALETTE__DELETE_TOOL);
+		createEReference(nodePaletteEClass, NODE_PALETTE__LABEL_EDIT_TOOL);
+		createEReference(nodePaletteEClass, NODE_PALETTE__DROP_NODE_TOOL);
+		createEReference(nodePaletteEClass, NODE_PALETTE__NODE_TOOLS);
+		createEReference(nodePaletteEClass, NODE_PALETTE__QUICK_ACCESS_TOOLS);
+		createEReference(nodePaletteEClass, NODE_PALETTE__EDGE_TOOLS);
+		createEReference(nodePaletteEClass, NODE_PALETTE__TOOL_SECTIONS);
 
-        this.edgePaletteEClass = this.createEClass(EDGE_PALETTE);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__DELETE_TOOL);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__END_LABEL_EDIT_TOOL);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__NODE_TOOLS);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__QUICK_ACCESS_TOOLS);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__EDGE_TOOLS);
-        this.createEReference(this.edgePaletteEClass, EDGE_PALETTE__TOOL_SECTIONS);
+		edgePaletteEClass = createEClass(EDGE_PALETTE);
+		createEReference(edgePaletteEClass, EDGE_PALETTE__DELETE_TOOL);
+		createEReference(edgePaletteEClass, EDGE_PALETTE__CENTER_LABEL_EDIT_TOOL);
+		createEReference(edgePaletteEClass, EDGE_PALETTE__BEGIN_LABEL_EDIT_TOOL);
+		createEReference(edgePaletteEClass, EDGE_PALETTE__END_LABEL_EDIT_TOOL);
+		createEReference(edgePaletteEClass, EDGE_PALETTE__NODE_TOOLS);
+		createEReference(edgePaletteEClass, EDGE_PALETTE__QUICK_ACCESS_TOOLS);
+		createEReference(edgePaletteEClass, EDGE_PALETTE__EDGE_RECONNECTION_TOOLS);
+		createEReference(edgePaletteEClass, EDGE_PALETTE__EDGE_TOOLS);
+		createEReference(edgePaletteEClass, EDGE_PALETTE__TOOL_SECTIONS);
 
-        this.toolEClass = this.createEClass(TOOL);
-        this.createEAttribute(this.toolEClass, TOOL__NAME);
-        this.createEAttribute(this.toolEClass, TOOL__PRECONDITION_EXPRESSION);
-        this.createEReference(this.toolEClass, TOOL__BODY);
+		toolEClass = createEClass(TOOL);
+		createEAttribute(toolEClass, TOOL__NAME);
+		createEAttribute(toolEClass, TOOL__PRECONDITION_EXPRESSION);
+		createEReference(toolEClass, TOOL__BODY);
 
-        this.deleteToolEClass = this.createEClass(DELETE_TOOL);
+		deleteToolEClass = createEClass(DELETE_TOOL);
 
-        this.dropToolEClass = this.createEClass(DROP_TOOL);
+		dropToolEClass = createEClass(DROP_TOOL);
 
-        this.edgeToolEClass = this.createEClass(EDGE_TOOL);
-        this.createEReference(this.edgeToolEClass, EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS);
-        this.createEAttribute(this.edgeToolEClass, EDGE_TOOL__ICON_UR_LS_EXPRESSION);
-        this.createEReference(this.edgeToolEClass, EDGE_TOOL__DIALOG_DESCRIPTION);
-        this.createEAttribute(this.edgeToolEClass, EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION);
+		edgeToolEClass = createEClass(EDGE_TOOL);
+		createEReference(edgeToolEClass, EDGE_TOOL__TARGET_ELEMENT_DESCRIPTIONS);
+		createEAttribute(edgeToolEClass, EDGE_TOOL__ICON_UR_LS_EXPRESSION);
+		createEReference(edgeToolEClass, EDGE_TOOL__DIALOG_DESCRIPTION);
+		createEAttribute(edgeToolEClass, EDGE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION);
 
-        this.edgeReconnectionToolEClass = this.createEClass(EDGE_RECONNECTION_TOOL);
+		edgeReconnectionToolEClass = createEClass(EDGE_RECONNECTION_TOOL);
 
-        this.labelEditToolEClass = this.createEClass(LABEL_EDIT_TOOL);
-        this.createEAttribute(this.labelEditToolEClass, LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION);
+		labelEditToolEClass = createEClass(LABEL_EDIT_TOOL);
+		createEAttribute(labelEditToolEClass, LABEL_EDIT_TOOL__INITIAL_DIRECT_EDIT_LABEL_EXPRESSION);
 
-        this.nodeToolEClass = this.createEClass(NODE_TOOL);
-        this.createEReference(this.nodeToolEClass, NODE_TOOL__DIALOG_DESCRIPTION);
-        this.createEAttribute(this.nodeToolEClass, NODE_TOOL__ICON_UR_LS_EXPRESSION);
-        this.createEAttribute(this.nodeToolEClass, NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION);
-        this.createEAttribute(this.nodeToolEClass, NODE_TOOL__WITH_IMPACT_ANALYSIS);
+		nodeToolEClass = createEClass(NODE_TOOL);
+		createEReference(nodeToolEClass, NODE_TOOL__DIALOG_DESCRIPTION);
+		createEAttribute(nodeToolEClass, NODE_TOOL__ICON_UR_LS_EXPRESSION);
+		createEAttribute(nodeToolEClass, NODE_TOOL__ELEMENTS_TO_SELECT_EXPRESSION);
+		createEAttribute(nodeToolEClass, NODE_TOOL__WITH_IMPACT_ANALYSIS);
 
-        this.sourceEdgeEndReconnectionToolEClass = this.createEClass(SOURCE_EDGE_END_RECONNECTION_TOOL);
+		sourceEdgeEndReconnectionToolEClass = createEClass(SOURCE_EDGE_END_RECONNECTION_TOOL);
 
-        this.targetEdgeEndReconnectionToolEClass = this.createEClass(TARGET_EDGE_END_RECONNECTION_TOOL);
+		targetEdgeEndReconnectionToolEClass = createEClass(TARGET_EDGE_END_RECONNECTION_TOOL);
 
-        this.createViewEClass = this.createEClass(CREATE_VIEW);
-        this.createEAttribute(this.createViewEClass, CREATE_VIEW__PARENT_VIEW_EXPRESSION);
-        this.createEReference(this.createViewEClass, CREATE_VIEW__ELEMENT_DESCRIPTION);
-        this.createEAttribute(this.createViewEClass, CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION);
-        this.createEAttribute(this.createViewEClass, CREATE_VIEW__VARIABLE_NAME);
-        this.createEAttribute(this.createViewEClass, CREATE_VIEW__CONTAINMENT_KIND);
+		createViewEClass = createEClass(CREATE_VIEW);
+		createEAttribute(createViewEClass, CREATE_VIEW__PARENT_VIEW_EXPRESSION);
+		createEReference(createViewEClass, CREATE_VIEW__ELEMENT_DESCRIPTION);
+		createEAttribute(createViewEClass, CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION);
+		createEAttribute(createViewEClass, CREATE_VIEW__VARIABLE_NAME);
+		createEAttribute(createViewEClass, CREATE_VIEW__CONTAINMENT_KIND);
 
-        this.deleteViewEClass = this.createEClass(DELETE_VIEW);
-        this.createEAttribute(this.deleteViewEClass, DELETE_VIEW__VIEW_EXPRESSION);
+		deleteViewEClass = createEClass(DELETE_VIEW);
+		createEAttribute(deleteViewEClass, DELETE_VIEW__VIEW_EXPRESSION);
 
-        this.selectionDialogDescriptionEClass = this.createEClass(SELECTION_DIALOG_DESCRIPTION);
-        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE);
-        this.createEReference(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION);
-        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__MULTIPLE);
+		selectionDialogDescriptionEClass = createEClass(SELECTION_DIALOG_DESCRIPTION);
+		createEAttribute(selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE);
+		createEReference(selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION);
+		createEAttribute(selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__MULTIPLE);
 
-        this.toolSectionEClass = this.createEClass(TOOL_SECTION);
-        this.createEAttribute(this.toolSectionEClass, TOOL_SECTION__NAME);
+		toolSectionEClass = createEClass(TOOL_SECTION);
+		createEAttribute(toolSectionEClass, TOOL_SECTION__NAME);
 
-        this.diagramToolSectionEClass = this.createEClass(DIAGRAM_TOOL_SECTION);
-        this.createEReference(this.diagramToolSectionEClass, DIAGRAM_TOOL_SECTION__NODE_TOOLS);
+		diagramToolSectionEClass = createEClass(DIAGRAM_TOOL_SECTION);
+		createEReference(diagramToolSectionEClass, DIAGRAM_TOOL_SECTION__NODE_TOOLS);
 
-        this.nodeToolSectionEClass = this.createEClass(NODE_TOOL_SECTION);
-        this.createEReference(this.nodeToolSectionEClass, NODE_TOOL_SECTION__NODE_TOOLS);
-        this.createEReference(this.nodeToolSectionEClass, NODE_TOOL_SECTION__EDGE_TOOLS);
+		nodeToolSectionEClass = createEClass(NODE_TOOL_SECTION);
+		createEReference(nodeToolSectionEClass, NODE_TOOL_SECTION__NODE_TOOLS);
+		createEReference(nodeToolSectionEClass, NODE_TOOL_SECTION__EDGE_TOOLS);
 
-        this.edgeToolSectionEClass = this.createEClass(EDGE_TOOL_SECTION);
-        this.createEReference(this.edgeToolSectionEClass, EDGE_TOOL_SECTION__NODE_TOOLS);
+		edgeToolSectionEClass = createEClass(EDGE_TOOL_SECTION);
+		createEReference(edgeToolSectionEClass, EDGE_TOOL_SECTION__NODE_TOOLS);
 
-        this.dropNodeToolEClass = this.createEClass(DROP_NODE_TOOL);
-        this.createEReference(this.dropNodeToolEClass, DROP_NODE_TOOL__ACCEPTED_NODE_TYPES);
+		dropNodeToolEClass = createEClass(DROP_NODE_TOOL);
+		createEReference(dropNodeToolEClass, DROP_NODE_TOOL__ACCEPTED_NODE_TYPES);
 
-        this.dialogDescriptionEClass = this.createEClass(DIALOG_DESCRIPTION);
+		dialogDescriptionEClass = createEClass(DIALOG_DESCRIPTION);
 
-        this.selectionDialogTreeDescriptionEClass = this.createEClass(SELECTION_DIALOG_TREE_DESCRIPTION);
-        this.createEAttribute(this.selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__ELEMENTS_EXPRESSION);
-        this.createEAttribute(this.selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__CHILDREN_EXPRESSION);
-        this.createEAttribute(this.selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__IS_SELECTABLE_EXPRESSION);
+		selectionDialogTreeDescriptionEClass = createEClass(SELECTION_DIALOG_TREE_DESCRIPTION);
+		createEAttribute(selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__ELEMENTS_EXPRESSION);
+		createEAttribute(selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__CHILDREN_EXPRESSION);
+		createEAttribute(selectionDialogTreeDescriptionEClass, SELECTION_DIALOG_TREE_DESCRIPTION__IS_SELECTABLE_EXPRESSION);
 
-        this.actionEClass = this.createEClass(ACTION);
-        this.createEAttribute(this.actionEClass, ACTION__NAME);
-        this.createEAttribute(this.actionEClass, ACTION__TOOLTIP_EXPRESSION);
-        this.createEAttribute(this.actionEClass, ACTION__ICON_UR_LS_EXPRESSION);
-        this.createEAttribute(this.actionEClass, ACTION__PRECONDITION_EXPRESSION);
-        this.createEReference(this.actionEClass, ACTION__BODY);
+		actionEClass = createEClass(ACTION);
+		createEAttribute(actionEClass, ACTION__NAME);
+		createEAttribute(actionEClass, ACTION__TOOLTIP_EXPRESSION);
+		createEAttribute(actionEClass, ACTION__ICON_UR_LS_EXPRESSION);
+		createEAttribute(actionEClass, ACTION__PRECONDITION_EXPRESSION);
+		createEReference(actionEClass, ACTION__BODY);
 
-        // Create enums
-        this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
-        this.layoutDirectionEEnum = this.createEEnum(LAYOUT_DIRECTION);
-        this.lineStyleEEnum = this.createEEnum(LINE_STYLE);
-        this.nodeContainmentKindEEnum = this.createEEnum(NODE_CONTAINMENT_KIND);
-        this.synchronizationPolicyEEnum = this.createEEnum(SYNCHRONIZATION_POLICY);
-        this.insideLabelPositionEEnum = this.createEEnum(INSIDE_LABEL_POSITION);
-        this.outsideLabelPositionEEnum = this.createEEnum(OUTSIDE_LABEL_POSITION);
-        this.labelOverflowStrategyEEnum = this.createEEnum(LABEL_OVERFLOW_STRATEGY);
-        this.arrangeLayoutDirectionEEnum = this.createEEnum(ARRANGE_LAYOUT_DIRECTION);
-        this.labelTextAlignEEnum = this.createEEnum(LABEL_TEXT_ALIGN);
-        this.userResizableDirectionEEnum = this.createEEnum(USER_RESIZABLE_DIRECTION);
-        this.headerSeparatorDisplayModeEEnum = this.createEEnum(HEADER_SEPARATOR_DISPLAY_MODE);
-        this.edgeTypeEEnum = this.createEEnum(EDGE_TYPE);
-    }
+		// Create enums
+		arrowStyleEEnum = createEEnum(ARROW_STYLE);
+		layoutDirectionEEnum = createEEnum(LAYOUT_DIRECTION);
+		lineStyleEEnum = createEEnum(LINE_STYLE);
+		nodeContainmentKindEEnum = createEEnum(NODE_CONTAINMENT_KIND);
+		synchronizationPolicyEEnum = createEEnum(SYNCHRONIZATION_POLICY);
+		insideLabelPositionEEnum = createEEnum(INSIDE_LABEL_POSITION);
+		outsideLabelPositionEEnum = createEEnum(OUTSIDE_LABEL_POSITION);
+		labelOverflowStrategyEEnum = createEEnum(LABEL_OVERFLOW_STRATEGY);
+		arrangeLayoutDirectionEEnum = createEEnum(ARRANGE_LAYOUT_DIRECTION);
+		labelTextAlignEEnum = createEEnum(LABEL_TEXT_ALIGN);
+		userResizableDirectionEEnum = createEEnum(USER_RESIZABLE_DIRECTION);
+		headerSeparatorDisplayModeEEnum = createEEnum(HEADER_SEPARATOR_DISPLAY_MODE);
+		edgeTypeEEnum = createEEnum(EDGE_TYPE);
+	}
 
     /**
-     * Complete the initialization of the package and its meta-model. This method is guarded to have no affect on any
-     * invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public void initializePackageContents() {
-        if (this.isInitialized)
-            return;
-        this.isInitialized = true;
-
-        // Initialize package
-        this.setName(eNAME);
-        this.setNsPrefix(eNS_PREFIX);
-        this.setNsURI(eNS_URI);
-
-        // Obtain other dependent packages
-        ViewPackage theViewPackage = (ViewPackage) EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI);
-
-        // Create type parameters
-
-        // Set bounds for type parameters
-
-        // Add supertypes to classes
-        this.diagramDescriptionEClass.getESuperTypes().add(theViewPackage.getRepresentationDescription());
-        this.nodeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
-        this.edgeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
-        this.listLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
-        this.freeFormLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
-        this.insideLabelDescriptionEClass.getESuperTypes().add(this.getLabelDescription());
-        this.outsideLabelDescriptionEClass.getESuperTypes().add(this.getLabelDescription());
-        this.insideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
-        this.outsideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
-        this.nodeLabelStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
-        this.nodeLabelStyleEClass.getESuperTypes().add(this.getBorderStyle());
-        this.nodeStyleDescriptionEClass.getESuperTypes().add(this.getBorderStyle());
-        this.conditionalNodeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
-        this.conditionalInsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
-        this.conditionalOutsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
-        this.rectangularNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
-        this.imageNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
-        this.iconLabelNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
-        this.edgeStyleEClass.getESuperTypes().add(this.getStyle());
-        this.edgeStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
-        this.edgeStyleEClass.getESuperTypes().add(this.getBorderStyle());
-        this.conditionalEdgeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
-        this.conditionalEdgeStyleEClass.getESuperTypes().add(this.getEdgeStyle());
-        this.deleteToolEClass.getESuperTypes().add(this.getTool());
-        this.dropToolEClass.getESuperTypes().add(this.getTool());
-        this.edgeToolEClass.getESuperTypes().add(this.getTool());
-        this.edgeReconnectionToolEClass.getESuperTypes().add(this.getTool());
-        this.labelEditToolEClass.getESuperTypes().add(this.getTool());
-        this.nodeToolEClass.getESuperTypes().add(this.getTool());
-        this.sourceEdgeEndReconnectionToolEClass.getESuperTypes().add(this.getEdgeReconnectionTool());
-        this.targetEdgeEndReconnectionToolEClass.getESuperTypes().add(this.getEdgeReconnectionTool());
-        this.createViewEClass.getESuperTypes().add(theViewPackage.getOperation());
-        this.deleteViewEClass.getESuperTypes().add(theViewPackage.getOperation());
-        this.selectionDialogDescriptionEClass.getESuperTypes().add(this.getDialogDescription());
-        this.diagramToolSectionEClass.getESuperTypes().add(this.getToolSection());
-        this.nodeToolSectionEClass.getESuperTypes().add(this.getToolSection());
-        this.edgeToolSectionEClass.getESuperTypes().add(this.getToolSection());
-        this.dropNodeToolEClass.getESuperTypes().add(this.getTool());
-
-        // Initialize classes, features, and operations; add parameters
-        this.initEClass(this.diagramDescriptionEClass, DiagramDescription.class, "DiagramDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getDiagramDescription_AutoLayout(), this.ecorePackage.getEBoolean(), "autoLayout", null, 1, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getDiagramDescription_Palette(), this.getDiagramPalette(), null, "palette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getDiagramDescription_GroupPalette(), this.getGroupPalette(), null, "groupPalette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getDiagramDescription_NodeDescriptions(), this.getNodeDescription(), null, "nodeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getDiagramDescription_NodeDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
-        this.initEReference(this.getDiagramDescription_EdgeDescriptions(), this.getEdgeDescription(), null, "edgeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getDiagramDescription_EdgeDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
-        this.initEAttribute(this.getDiagramDescription_ArrangeLayoutDirection(), this.getArrangeLayoutDirection(), "arrangeLayoutDirection", "UNDEFINED", 1, 1, DiagramDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getDiagramElementDescription_Name(), theViewPackage.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getDiagramElementDescription_DomainType(), theViewPackage.getDomainType(), "domainType", null, 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getDiagramElementDescription_SemanticCandidatesExpression(), theViewPackage.getInterpretedExpression(), "semanticCandidatesExpression", "aql:self.eContents()", 0, 1,
-                DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getDiagramElementDescription_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1,
-                DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getDiagramElementDescription_SynchronizationPolicy(), this.getSynchronizationPolicy(), "synchronizationPolicy", null, 0, 1, DiagramElementDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.nodeDescriptionEClass, NodeDescription.class, "NodeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getNodeDescription_Collapsible(), this.ecorePackage.getEBoolean(), "collapsible", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_Palette(), this.getNodePalette(), null, "palette", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_Actions(), this.getAction(), null, "actions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_ConditionalStyles(), this.getConditionalNodeStyle(), null, "conditionalStyles", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_ChildrenDescriptions(), this.getNodeDescription(), null, "childrenDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodeDescription_ChildrenDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
-        this.initEReference(this.getNodeDescription_BorderNodesDescriptions(), this.getNodeDescription(), null, "borderNodesDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodeDescription_BorderNodesDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
-        this.initEReference(this.getNodeDescription_ReusedChildNodeDescriptions(), this.getNodeDescription(), null, "reusedChildNodeDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_ReusedBorderNodeDescriptions(), this.getNodeDescription(), null, "reusedBorderNodeDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeDescription_UserResizable(), this.getUserResizableDirection(), "userResizable", "BOTH", 1, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeDescription_DefaultWidthExpression(), theViewPackage.getInterpretedExpression(), "defaultWidthExpression", null, 0, 1, NodeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeDescription_DefaultHeightExpression(), theViewPackage.getInterpretedExpression(), "defaultHeightExpression", null, 0, 1, NodeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeDescription_KeepAspectRatio(), this.ecorePackage.getEBoolean(), "keepAspectRatio", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeDescription_IsCollapsedByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isCollapsedByDefaultExpression", null, 0, 1, NodeDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_InsideLabel(), this.getInsideLabelDescription(), null, "insideLabel", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeDescription_OutsideLabels(), this.getOutsideLabelDescription(), null, "outsideLabels", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeDescription_IsHiddenByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isHiddenByDefaultExpression", null, 0, 1, NodeDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeDescription_IsFadedByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isFadedByDefaultExpression", null, 0, 1, NodeDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.edgeDescriptionEClass, EdgeDescription.class, "EdgeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getEdgeDescription_BeginLabelExpression(), theViewPackage.getInterpretedExpression(), "beginLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeDescription_CenterLabelExpression(), theViewPackage.getInterpretedExpression(), "centerLabelExpression", "aql:self.name", 0, 1, EdgeDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeDescription_EndLabelExpression(), theViewPackage.getInterpretedExpression(), "endLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeDescription_IsDomainBasedEdge(), this.ecorePackage.getEBoolean(), "isDomainBasedEdge", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgeDescription_Palette(), this.getEdgePalette(), null, "palette", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgeDescription_SourceDescriptions(), this.getDiagramElementDescription(), null, "sourceDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgeDescription_TargetDescriptions(), this.getDiagramElementDescription(), null, "targetDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeDescription_SourceExpression(), theViewPackage.getInterpretedExpression(), "sourceExpression", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeDescription_TargetExpression(), theViewPackage.getInterpretedExpression(), "targetExpression", "aql:self.eCrossReferences()", 0, 1, EdgeDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgeDescription_Style(), this.getEdgeStyle(), null, "style", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgeDescription_ConditionalStyles(), this.getConditionalEdgeStyle(), null, "conditionalStyles", null, 0, -1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.layoutStrategyDescriptionEClass, LayoutStrategyDescription.class, "LayoutStrategyDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getLayoutStrategyDescription_OnWestAtCreationBorderNodes(), this.getNodeDescription(), null, "onWestAtCreationBorderNodes", null, 0, -1,
-                LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getLayoutStrategyDescription_OnEastAtCreationBorderNodes(), this.getNodeDescription(), null, "onEastAtCreationBorderNodes", null, 0, -1,
-                LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getLayoutStrategyDescription_OnSouthAtCreationBorderNodes(), this.getNodeDescription(), null, "onSouthAtCreationBorderNodes", null, 0, -1,
-                LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getLayoutStrategyDescription_OnNorthAtCreationBorderNodes(), this.getNodeDescription(), null, "onNorthAtCreationBorderNodes", null, 0, -1,
-                LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.listLayoutStrategyDescriptionEClass, ListLayoutStrategyDescription.class, "ListLayoutStrategyDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getListLayoutStrategyDescription_AreChildNodesDraggableExpression(), theViewPackage.getInterpretedExpression(), "areChildNodesDraggableExpression", "aql:true", 1, 1,
-                ListLayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getListLayoutStrategyDescription_TopGapExpression(), theViewPackage.getInterpretedExpression(), "topGapExpression", "", 0, 1, ListLayoutStrategyDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getListLayoutStrategyDescription_BottomGapExpression(), theViewPackage.getInterpretedExpression(), "bottomGapExpression", "", 0, 1,
-                ListLayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getListLayoutStrategyDescription_GrowableNodes(), this.getNodeDescription(), null, "growableNodes", null, 0, -1, ListLayoutStrategyDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.freeFormLayoutStrategyDescriptionEClass, FreeFormLayoutStrategyDescription.class, "FreeFormLayoutStrategyDescription", !IS_ABSTRACT, !IS_INTERFACE,
-                IS_GENERATED_INSTANCE_CLASS);
-
-        this.initEClass(this.labelDescriptionEClass, LabelDescription.class, "LabelDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getLabelDescription_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", "aql:self.name", 0, 1, LabelDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getLabelDescription_OverflowStrategy(), this.getLabelOverflowStrategy(), "overflowStrategy", null, 1, 1, LabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getLabelDescription_TextAlign(), this.getLabelTextAlign(), "textAlign", null, 1, 1, LabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.insideLabelDescriptionEClass, InsideLabelDescription.class, "InsideLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getInsideLabelDescription_Position(), this.getInsideLabelPosition(), "position", null, 1, 1, InsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getInsideLabelDescription_Style(), this.getInsideLabelStyle(), null, "style", null, 0, 1, InsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getInsideLabelDescription_ConditionalStyles(), this.getConditionalInsideLabelStyle(), null, "conditionalStyles", null, 0, -1, InsideLabelDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.outsideLabelDescriptionEClass, OutsideLabelDescription.class, "OutsideLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getOutsideLabelDescription_Position(), this.getOutsideLabelPosition(), "position", null, 1, 1, OutsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getOutsideLabelDescription_Style(), this.getOutsideLabelStyle(), null, "style", null, 0, 1, OutsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getOutsideLabelDescription_ConditionalStyles(), this.getConditionalOutsideLabelStyle(), null, "conditionalStyles", null, 0, -1, OutsideLabelDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.styleEClass, Style.class, "Style", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getStyle_Color(), theViewPackage.getUserColor(), null, "color", null, 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.borderStyleEClass, BorderStyle.class, "BorderStyle", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getBorderStyle_BorderColor(), theViewPackage.getUserColor(), null, "borderColor", null, 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getBorderStyle_BorderRadius(), theViewPackage.getLength(), "borderRadius", "3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getBorderStyle_BorderSize(), theViewPackage.getLength(), "borderSize", "1", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getBorderStyle_BorderLineStyle(), this.getLineStyle(), "borderLineStyle", null, 0, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.insideLabelStyleEClass, InsideLabelStyle.class, "InsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getInsideLabelStyle_WithHeader(), this.ecorePackage.getEBoolean(), "withHeader", null, 0, 1, InsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getInsideLabelStyle_HeaderSeparatorDisplayMode(), this.getHeaderSeparatorDisplayMode(), "headerSeparatorDisplayMode", null, 1, 1, InsideLabelStyle.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.outsideLabelStyleEClass, OutsideLabelStyle.class, "OutsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        this.initEClass(this.nodeLabelStyleEClass, NodeLabelStyle.class, "NodeLabelStyle", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getNodeLabelStyle_LabelColor(), theViewPackage.getUserColor(), null, "labelColor", null, 1, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodeLabelStyle_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeLabelStyle_ShowIconExpression(), theViewPackage.getInterpretedExpression(), "showIconExpression", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeLabelStyle_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeLabelStyle_MaxWidthExpression(), theViewPackage.getInterpretedExpression(), "maxWidthExpression", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getNodeStyleDescription_ChildrenLayoutStrategy(), this.getLayoutStrategyDescription(), null, "childrenLayoutStrategy", null, 0, 1, NodeStyleDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.conditionalNodeStyleEClass, ConditionalNodeStyle.class, "ConditionalNodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getConditionalNodeStyle_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, ConditionalNodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.conditionalInsideLabelStyleEClass, ConditionalInsideLabelStyle.class, "ConditionalInsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getConditionalInsideLabelStyle_Style(), this.getInsideLabelStyle(), null, "style", null, 0, 1, ConditionalInsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.conditionalOutsideLabelStyleEClass, ConditionalOutsideLabelStyle.class, "ConditionalOutsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getConditionalOutsideLabelStyle_Style(), this.getOutsideLabelStyle(), null, "style", null, 0, 1, ConditionalOutsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.rectangularNodeStyleDescriptionEClass, RectangularNodeStyleDescription.class, "RectangularNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getRectangularNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, RectangularNodeStyleDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.imageNodeStyleDescriptionEClass, ImageNodeStyleDescription.class, "ImageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getImageNodeStyleDescription_Shape(), this.ecorePackage.getEString(), "shape", null, 0, 1, ImageNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getImageNodeStyleDescription_PositionDependentRotation(), this.ecorePackage.getEBoolean(), "positionDependentRotation", null, 0, 1, ImageNodeStyleDescription.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.iconLabelNodeStyleDescriptionEClass, IconLabelNodeStyleDescription.class, "IconLabelNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getIconLabelNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, IconLabelNodeStyleDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.edgeStyleEClass, EdgeStyle.class, "EdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getEdgeStyle_LineStyle(), this.getLineStyle(), "lineStyle", "Solid", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeStyle_SourceArrowStyle(), this.getArrowStyle(), "sourceArrowStyle", "None", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeStyle_TargetArrowStyle(), this.getArrowStyle(), "targetArrowStyle", "InputArrow", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeStyle_EdgeWidth(), theViewPackage.getLength(), "edgeWidth", "1", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeStyle_ShowIcon(), this.ecorePackage.getEBoolean(), "showIcon", "false", 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeStyle_LabelIcon(), this.ecorePackage.getEString(), "labelIcon", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgeStyle_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
-                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeStyle_MaxWidthExpression(), theViewPackage.getInterpretedExpression(), "maxWidthExpression", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeStyle_EdgeType(), this.getEdgeType(), "edgeType", "Manhattan", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        this.initEClass(this.diagramPaletteEClass, DiagramPalette.class, "DiagramPalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getDiagramPalette_DropTool(), this.getDropTool(), null, "dropTool", null, 0, 1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getDiagramPalette_DropNodeTool(), this.getDropNodeTool(), null, "dropNodeTool", null, 0, 1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getDiagramPalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getDiagramPalette_NodeTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getDiagramPalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getDiagramPalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getDiagramPalette_ToolSections(), this.getDiagramToolSection(), null, "toolSections", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getDiagramPalette_ToolSections().getEKeys().add(this.getToolSection_Name());
-
-        this.initEClass(this.groupPaletteEClass, GroupPalette.class, "GroupPalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getGroupPalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getGroupPalette_NodeTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getGroupPalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getGroupPalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getGroupPalette_ToolSections(), this.getToolSection(), null, "toolSections", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getGroupPalette_ToolSections().getEKeys().add(this.getToolSection_Name());
-
-        this.initEClass(this.nodePaletteEClass, NodePalette.class, "NodePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getNodePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodePalette_LabelEditTool(), this.getLabelEditTool(), null, "labelEditTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodePalette_DropNodeTool(), this.getDropNodeTool(), null, "dropNodeTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getNodePalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodePalette_NodeTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getNodePalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodePalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getNodePalette_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodePalette_EdgeTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getNodePalette_ToolSections(), this.getNodeToolSection(), null, "toolSections", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodePalette_ToolSections().getEKeys().add(this.getToolSection_Name());
-
-        this.initEClass(this.edgePaletteEClass, EdgePalette.class, "EdgePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getEdgePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgePalette_CenterLabelEditTool(), this.getLabelEditTool(), null, "centerLabelEditTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgePalette_BeginLabelEditTool(), this.getLabelEditTool(), null, "beginLabelEditTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgePalette_EndLabelEditTool(), this.getLabelEditTool(), null, "endLabelEditTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgePalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getEdgePalette_NodeTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getEdgePalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getEdgePalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getEdgePalette_EdgeReconnectionTools(), this.getEdgeReconnectionTool(), null, "edgeReconnectionTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getEdgePalette_EdgeReconnectionTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getEdgePalette_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgePalette_ToolSections(), this.getEdgeToolSection(), null, "toolSections", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getEdgePalette_ToolSections().getEKeys().add(this.getToolSection_Name());
-
-        this.initEClass(this.toolEClass, Tool.class, "Tool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getTool_Name(), theViewPackage.getIdentifier(), "name", "Tool", 1, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getTool_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getTool_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.deleteToolEClass, DeleteTool.class, "DeleteTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        this.initEClass(this.dropToolEClass, DropTool.class, "DropTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        this.initEClass(this.edgeToolEClass, EdgeTool.class, "EdgeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getEdgeTool_TargetElementDescriptions(), this.getDiagramElementDescription(), null, "targetElementDescriptions", null, 0, -1, EdgeTool.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeTool_IconURLsExpression(), theViewPackage.getInterpretedExpression(), "iconURLsExpression", null, 0, 1, EdgeTool.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getEdgeTool_DialogDescription(), this.getDialogDescription(), null, "dialogDescription", null, 0, 1, EdgeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getEdgeTool_ElementsToSelectExpression(), theViewPackage.getInterpretedExpression(), "elementsToSelectExpression", null, 0, 1, EdgeTool.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.edgeReconnectionToolEClass, EdgeReconnectionTool.class, "EdgeReconnectionTool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        this.initEClass(this.labelEditToolEClass, LabelEditTool.class, "LabelEditTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getLabelEditTool_InitialDirectEditLabelExpression(), theViewPackage.getInterpretedExpression(), "initialDirectEditLabelExpression", null, 0, 1, LabelEditTool.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.nodeToolEClass, NodeTool.class, "NodeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getNodeTool_DialogDescription(), this.getDialogDescription(), null, "dialogDescription", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeTool_IconURLsExpression(), theViewPackage.getInterpretedExpression(), "iconURLsExpression", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeTool_ElementsToSelectExpression(), theViewPackage.getInterpretedExpression(), "elementsToSelectExpression", null, 0, 1, NodeTool.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getNodeTool_WithImpactAnalysis(), this.ecorePackage.getEBoolean(), "withImpactAnalysis", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.sourceEdgeEndReconnectionToolEClass, SourceEdgeEndReconnectionTool.class, "SourceEdgeEndReconnectionTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        this.initEClass(this.targetEdgeEndReconnectionToolEClass, TargetEdgeEndReconnectionTool.class, "TargetEdgeEndReconnectionTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        this.initEClass(this.createViewEClass, CreateView.class, "CreateView", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getCreateView_ParentViewExpression(), theViewPackage.getInterpretedExpression(), "parentViewExpression", "aql:selectedNode", 1, 1, CreateView.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getCreateView_ElementDescription(), this.getDiagramElementDescription(), null, "elementDescription", null, 0, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getCreateView_SemanticElementExpression(), theViewPackage.getInterpretedExpression(), "semanticElementExpression", "aql:self", 1, 1, CreateView.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getCreateView_VariableName(), this.ecorePackage.getEString(), "variableName", null, 0, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getCreateView_ContainmentKind(), this.getNodeContainmentKind(), "containmentKind", "CHILD_NODE", 1, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.deleteViewEClass, DeleteView.class, "DeleteView", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getDeleteView_ViewExpression(), theViewPackage.getInterpretedExpression(), "viewExpression", "aql:selectedNode", 1, 1, DeleteView.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.selectionDialogDescriptionEClass, SelectionDialogDescription.class, "SelectionDialogDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getSelectionDialogDescription_SelectionMessage(), this.ecorePackage.getEString(), "selectionMessage", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getSelectionDialogDescription_SelectionDialogTreeDescription(), this.getSelectionDialogTreeDescription(), null, "selectionDialogTreeDescription", null, 0, 1,
-                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getSelectionDialogDescription_Multiple(), this.ecorePackage.getEBoolean(), "multiple", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.toolSectionEClass, ToolSection.class, "ToolSection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getToolSection_Name(), theViewPackage.getIdentifier(), "name", "Tool Section", 1, 1, ToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.diagramToolSectionEClass, DiagramToolSection.class, "DiagramToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getDiagramToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, DiagramToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getDiagramToolSection_NodeTools().getEKeys().add(this.getTool_Name());
-
-        this.initEClass(this.nodeToolSectionEClass, NodeToolSection.class, "NodeToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getNodeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodeToolSection_NodeTools().getEKeys().add(this.getTool_Name());
-        this.initEReference(this.getNodeToolSection_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getNodeToolSection_EdgeTools().getEKeys().add(this.getTool_Name());
-
-        this.initEClass(this.edgeToolSectionEClass, EdgeToolSection.class, "EdgeToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getEdgeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, EdgeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.getEdgeToolSection_NodeTools().getEKeys().add(this.getTool_Name());
-
-        this.initEClass(this.dropNodeToolEClass, DropNodeTool.class, "DropNodeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getDropNodeTool_AcceptedNodeTypes(), this.getNodeDescription(), null, "acceptedNodeTypes", null, 0, -1, DropNodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.dialogDescriptionEClass, DialogDescription.class, "DialogDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-        this.initEClass(this.selectionDialogTreeDescriptionEClass, SelectionDialogTreeDescription.class, "SelectionDialogTreeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getSelectionDialogTreeDescription_ElementsExpression(), theViewPackage.getInterpretedExpression(), "elementsExpression", "", 1, 1,
-                SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getSelectionDialogTreeDescription_ChildrenExpression(), theViewPackage.getInterpretedExpression(), "childrenExpression", null, 0, 1,
-                SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getSelectionDialogTreeDescription_IsSelectableExpression(), theViewPackage.getInterpretedExpression(), "isSelectableExpression", null, 0, 1,
-                SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        this.initEClass(this.actionEClass, Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getAction_Name(), theViewPackage.getIdentifier(), "name", "Action", 1, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
-                !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getAction_TooltipExpression(), theViewPackage.getInterpretedExpression(), "tooltipExpression", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getAction_IconURLsExpression(), theViewPackage.getInterpretedExpression(), "iconURLsExpression", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getAction_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getAction_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
-                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        // Initialize enums and add enum literals
-        this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.NONE);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.OUTPUT_ARROW);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.INPUT_ARROW);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.OUTPUT_CLOSED_ARROW);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.INPUT_CLOSED_ARROW);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.OUTPUT_FILL_CLOSED_ARROW);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.INPUT_FILL_CLOSED_ARROW);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.DIAMOND);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.FILL_DIAMOND);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.INPUT_ARROW_WITH_DIAMOND);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.INPUT_ARROW_WITH_FILL_DIAMOND);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CIRCLE);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.FILL_CIRCLE);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CROSSED_CIRCLE);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH_VERTICAL_BAR);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH_DOTS);
-        this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH4_DOTS);
-
-        this.initEEnum(this.layoutDirectionEEnum, LayoutDirection.class, "LayoutDirection");
-        this.addEEnumLiteral(this.layoutDirectionEEnum, LayoutDirection.COLUMN);
-
-        this.initEEnum(this.lineStyleEEnum, LineStyle.class, "LineStyle");
-        this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.SOLID);
-        this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.DASH);
-        this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.DOT);
-        this.addEEnumLiteral(this.lineStyleEEnum, LineStyle.DASH_DOT);
-
-        this.initEEnum(this.nodeContainmentKindEEnum, NodeContainmentKind.class, "NodeContainmentKind");
-        this.addEEnumLiteral(this.nodeContainmentKindEEnum, NodeContainmentKind.CHILD_NODE);
-        this.addEEnumLiteral(this.nodeContainmentKindEEnum, NodeContainmentKind.BORDER_NODE);
-
-        this.initEEnum(this.synchronizationPolicyEEnum, SynchronizationPolicy.class, "SynchronizationPolicy");
-        this.addEEnumLiteral(this.synchronizationPolicyEEnum, SynchronizationPolicy.SYNCHRONIZED);
-        this.addEEnumLiteral(this.synchronizationPolicyEEnum, SynchronizationPolicy.UNSYNCHRONIZED);
-
-        this.initEEnum(this.insideLabelPositionEEnum, InsideLabelPosition.class, "InsideLabelPosition");
-        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.TOP_CENTER);
-        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.TOP_LEFT);
-        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.TOP_RIGHT);
-        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.MIDDLE_LEFT);
-        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.MIDDLE_CENTER);
-        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.MIDDLE_RIGHT);
-        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.BOTTOM_LEFT);
-        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.BOTTOM_CENTER);
-        this.addEEnumLiteral(this.insideLabelPositionEEnum, InsideLabelPosition.BOTTOM_RIGHT);
-
-        this.initEEnum(this.outsideLabelPositionEEnum, OutsideLabelPosition.class, "OutsideLabelPosition");
-        this.addEEnumLiteral(this.outsideLabelPositionEEnum, OutsideLabelPosition.BOTTOM_CENTER);
-
-        this.initEEnum(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.class, "LabelOverflowStrategy");
-        this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.NONE);
-        this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.WRAP);
-        this.addEEnumLiteral(this.labelOverflowStrategyEEnum, LabelOverflowStrategy.ELLIPSIS);
-
-        this.initEEnum(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.class, "ArrangeLayoutDirection");
-        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.UNDEFINED);
-        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.RIGHT);
-        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.DOWN);
-        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.LEFT);
-        this.addEEnumLiteral(this.arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.UP);
-
-        this.initEEnum(this.labelTextAlignEEnum, LabelTextAlign.class, "LabelTextAlign");
-        this.addEEnumLiteral(this.labelTextAlignEEnum, LabelTextAlign.LEFT);
-        this.addEEnumLiteral(this.labelTextAlignEEnum, LabelTextAlign.RIGHT);
-        this.addEEnumLiteral(this.labelTextAlignEEnum, LabelTextAlign.CENTER);
-        this.addEEnumLiteral(this.labelTextAlignEEnum, LabelTextAlign.JUSTIFY);
-
-        this.initEEnum(this.userResizableDirectionEEnum, UserResizableDirection.class, "UserResizableDirection");
-        this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.BOTH);
-        this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.HORIZONTAL);
-        this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.VERTICAL);
-        this.addEEnumLiteral(this.userResizableDirectionEEnum, UserResizableDirection.NONE);
-
-        this.initEEnum(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.class, "HeaderSeparatorDisplayMode");
-        this.addEEnumLiteral(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.NEVER);
-        this.addEEnumLiteral(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.ALWAYS);
-        this.addEEnumLiteral(this.headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.IF_CHILDREN);
-
-        this.initEEnum(this.edgeTypeEEnum, EdgeType.class, "EdgeType");
-        this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.MANHATTAN);
-        this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.SMART_MANHATTAN);
-        this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.OBLIQUE);
-
-        // Create resource
-        this.createResource(eNS_URI);
-    }
+		if (isInitialized) return;
+		isInitialized = true;
+
+		// Initialize package
+		setName(eNAME);
+		setNsPrefix(eNS_PREFIX);
+		setNsURI(eNS_URI);
+
+		// Obtain other dependent packages
+		ViewPackage theViewPackage = (ViewPackage)EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI);
+
+		// Create type parameters
+
+		// Set bounds for type parameters
+
+		// Add supertypes to classes
+		diagramDescriptionEClass.getESuperTypes().add(theViewPackage.getRepresentationDescription());
+		nodeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
+		edgeDescriptionEClass.getESuperTypes().add(this.getDiagramElementDescription());
+		listLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
+		freeFormLayoutStrategyDescriptionEClass.getESuperTypes().add(this.getLayoutStrategyDescription());
+		insideLabelDescriptionEClass.getESuperTypes().add(this.getLabelDescription());
+		outsideLabelDescriptionEClass.getESuperTypes().add(this.getLabelDescription());
+		insideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
+		outsideLabelStyleEClass.getESuperTypes().add(this.getNodeLabelStyle());
+		nodeLabelStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+		nodeLabelStyleEClass.getESuperTypes().add(this.getBorderStyle());
+		nodeStyleDescriptionEClass.getESuperTypes().add(this.getBorderStyle());
+		conditionalNodeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+		conditionalInsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+		conditionalOutsideLabelStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+		rectangularNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
+		imageNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
+		iconLabelNodeStyleDescriptionEClass.getESuperTypes().add(this.getNodeStyleDescription());
+		edgeStyleEClass.getESuperTypes().add(this.getStyle());
+		edgeStyleEClass.getESuperTypes().add(theViewPackage.getLabelStyle());
+		edgeStyleEClass.getESuperTypes().add(this.getBorderStyle());
+		conditionalEdgeStyleEClass.getESuperTypes().add(theViewPackage.getConditional());
+		conditionalEdgeStyleEClass.getESuperTypes().add(this.getEdgeStyle());
+		deleteToolEClass.getESuperTypes().add(this.getTool());
+		dropToolEClass.getESuperTypes().add(this.getTool());
+		edgeToolEClass.getESuperTypes().add(this.getTool());
+		edgeReconnectionToolEClass.getESuperTypes().add(this.getTool());
+		labelEditToolEClass.getESuperTypes().add(this.getTool());
+		nodeToolEClass.getESuperTypes().add(this.getTool());
+		sourceEdgeEndReconnectionToolEClass.getESuperTypes().add(this.getEdgeReconnectionTool());
+		targetEdgeEndReconnectionToolEClass.getESuperTypes().add(this.getEdgeReconnectionTool());
+		createViewEClass.getESuperTypes().add(theViewPackage.getOperation());
+		deleteViewEClass.getESuperTypes().add(theViewPackage.getOperation());
+		selectionDialogDescriptionEClass.getESuperTypes().add(this.getDialogDescription());
+		diagramToolSectionEClass.getESuperTypes().add(this.getToolSection());
+		nodeToolSectionEClass.getESuperTypes().add(this.getToolSection());
+		edgeToolSectionEClass.getESuperTypes().add(this.getToolSection());
+		dropNodeToolEClass.getESuperTypes().add(this.getTool());
+
+		// Initialize classes, features, and operations; add parameters
+		initEClass(diagramDescriptionEClass, DiagramDescription.class, "DiagramDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDiagramDescription_AutoLayout(), ecorePackage.getEBoolean(), "autoLayout", null, 1, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDiagramDescription_Palette(), this.getDiagramPalette(), null, "palette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDiagramDescription_GroupPalette(), this.getGroupPalette(), null, "groupPalette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDiagramDescription_NodeDescriptions(), this.getNodeDescription(), null, "nodeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getDiagramDescription_NodeDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
+		initEReference(getDiagramDescription_EdgeDescriptions(), this.getEdgeDescription(), null, "edgeDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getDiagramDescription_EdgeDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
+		initEAttribute(getDiagramDescription_ArrangeLayoutDirection(), this.getArrangeLayoutDirection(), "arrangeLayoutDirection", "UNDEFINED", 1, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDiagramElementDescription_Name(), theViewPackage.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDiagramElementDescription_DomainType(), theViewPackage.getDomainType(), "domainType", null, 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDiagramElementDescription_SemanticCandidatesExpression(), theViewPackage.getInterpretedExpression(), "semanticCandidatesExpression", "aql:self.eContents()", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDiagramElementDescription_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDiagramElementDescription_SynchronizationPolicy(), this.getSynchronizationPolicy(), "synchronizationPolicy", null, 0, 1, DiagramElementDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(nodeDescriptionEClass, NodeDescription.class, "NodeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getNodeDescription_Collapsible(), ecorePackage.getEBoolean(), "collapsible", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodeDescription_Palette(), this.getNodePalette(), null, "palette", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodeDescription_Actions(), this.getAction(), null, "actions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodeDescription_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodeDescription_ConditionalStyles(), this.getConditionalNodeStyle(), null, "conditionalStyles", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodeDescription_ChildrenDescriptions(), this.getNodeDescription(), null, "childrenDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getNodeDescription_ChildrenDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
+		initEReference(getNodeDescription_BorderNodesDescriptions(), this.getNodeDescription(), null, "borderNodesDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getNodeDescription_BorderNodesDescriptions().getEKeys().add(this.getDiagramElementDescription_Name());
+		initEReference(getNodeDescription_ReusedChildNodeDescriptions(), this.getNodeDescription(), null, "reusedChildNodeDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodeDescription_ReusedBorderNodeDescriptions(), this.getNodeDescription(), null, "reusedBorderNodeDescriptions", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeDescription_UserResizable(), this.getUserResizableDirection(), "userResizable", "BOTH", 1, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeDescription_DefaultWidthExpression(), theViewPackage.getInterpretedExpression(), "defaultWidthExpression", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeDescription_DefaultHeightExpression(), theViewPackage.getInterpretedExpression(), "defaultHeightExpression", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeDescription_KeepAspectRatio(), ecorePackage.getEBoolean(), "keepAspectRatio", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeDescription_IsCollapsedByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isCollapsedByDefaultExpression", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodeDescription_InsideLabel(), this.getInsideLabelDescription(), null, "insideLabel", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodeDescription_OutsideLabels(), this.getOutsideLabelDescription(), null, "outsideLabels", null, 0, -1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeDescription_IsHiddenByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isHiddenByDefaultExpression", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeDescription_IsFadedByDefaultExpression(), theViewPackage.getInterpretedExpression(), "isFadedByDefaultExpression", null, 0, 1, NodeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(edgeDescriptionEClass, EdgeDescription.class, "EdgeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEdgeDescription_BeginLabelExpression(), theViewPackage.getInterpretedExpression(), "beginLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeDescription_CenterLabelExpression(), theViewPackage.getInterpretedExpression(), "centerLabelExpression", "aql:self.name", 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeDescription_EndLabelExpression(), theViewPackage.getInterpretedExpression(), "endLabelExpression", "", 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeDescription_IsDomainBasedEdge(), ecorePackage.getEBoolean(), "isDomainBasedEdge", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgeDescription_Palette(), this.getEdgePalette(), null, "palette", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgeDescription_SourceDescriptions(), this.getDiagramElementDescription(), null, "sourceDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgeDescription_TargetDescriptions(), this.getDiagramElementDescription(), null, "targetDescriptions", null, 1, -1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeDescription_SourceExpression(), theViewPackage.getInterpretedExpression(), "sourceExpression", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeDescription_TargetExpression(), theViewPackage.getInterpretedExpression(), "targetExpression", "aql:self.eCrossReferences()", 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgeDescription_Style(), this.getEdgeStyle(), null, "style", null, 0, 1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgeDescription_ConditionalStyles(), this.getConditionalEdgeStyle(), null, "conditionalStyles", null, 0, -1, EdgeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(layoutStrategyDescriptionEClass, LayoutStrategyDescription.class, "LayoutStrategyDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getLayoutStrategyDescription_OnWestAtCreationBorderNodes(), this.getNodeDescription(), null, "onWestAtCreationBorderNodes", null, 0, -1, LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLayoutStrategyDescription_OnEastAtCreationBorderNodes(), this.getNodeDescription(), null, "onEastAtCreationBorderNodes", null, 0, -1, LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLayoutStrategyDescription_OnSouthAtCreationBorderNodes(), this.getNodeDescription(), null, "onSouthAtCreationBorderNodes", null, 0, -1, LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getLayoutStrategyDescription_OnNorthAtCreationBorderNodes(), this.getNodeDescription(), null, "onNorthAtCreationBorderNodes", null, 0, -1, LayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(listLayoutStrategyDescriptionEClass, ListLayoutStrategyDescription.class, "ListLayoutStrategyDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getListLayoutStrategyDescription_AreChildNodesDraggableExpression(), theViewPackage.getInterpretedExpression(), "areChildNodesDraggableExpression", "aql:true", 1, 1, ListLayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getListLayoutStrategyDescription_TopGapExpression(), theViewPackage.getInterpretedExpression(), "topGapExpression", "", 0, 1, ListLayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getListLayoutStrategyDescription_BottomGapExpression(), theViewPackage.getInterpretedExpression(), "bottomGapExpression", "", 0, 1, ListLayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getListLayoutStrategyDescription_GrowableNodes(), this.getNodeDescription(), null, "growableNodes", null, 0, -1, ListLayoutStrategyDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(freeFormLayoutStrategyDescriptionEClass, FreeFormLayoutStrategyDescription.class, "FreeFormLayoutStrategyDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(labelDescriptionEClass, LabelDescription.class, "LabelDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getLabelDescription_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", "aql:self.name", 0, 1, LabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLabelDescription_OverflowStrategy(), this.getLabelOverflowStrategy(), "overflowStrategy", null, 1, 1, LabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getLabelDescription_TextAlign(), this.getLabelTextAlign(), "textAlign", null, 1, 1, LabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(insideLabelDescriptionEClass, InsideLabelDescription.class, "InsideLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getInsideLabelDescription_Position(), this.getInsideLabelPosition(), "position", null, 1, 1, InsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getInsideLabelDescription_Style(), this.getInsideLabelStyle(), null, "style", null, 0, 1, InsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getInsideLabelDescription_ConditionalStyles(), this.getConditionalInsideLabelStyle(), null, "conditionalStyles", null, 0, -1, InsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(outsideLabelDescriptionEClass, OutsideLabelDescription.class, "OutsideLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getOutsideLabelDescription_Position(), this.getOutsideLabelPosition(), "position", null, 1, 1, OutsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOutsideLabelDescription_Style(), this.getOutsideLabelStyle(), null, "style", null, 0, 1, OutsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getOutsideLabelDescription_ConditionalStyles(), this.getConditionalOutsideLabelStyle(), null, "conditionalStyles", null, 0, -1, OutsideLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(styleEClass, Style.class, "Style", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getStyle_Color(), theViewPackage.getUserColor(), null, "color", null, 0, 1, Style.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(borderStyleEClass, BorderStyle.class, "BorderStyle", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getBorderStyle_BorderColor(), theViewPackage.getUserColor(), null, "borderColor", null, 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBorderStyle_BorderRadius(), theViewPackage.getLength(), "borderRadius", "3", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBorderStyle_BorderSize(), theViewPackage.getLength(), "borderSize", "1", 1, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getBorderStyle_BorderLineStyle(), this.getLineStyle(), "borderLineStyle", null, 0, 1, BorderStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(insideLabelStyleEClass, InsideLabelStyle.class, "InsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getInsideLabelStyle_WithHeader(), ecorePackage.getEBoolean(), "withHeader", null, 0, 1, InsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getInsideLabelStyle_HeaderSeparatorDisplayMode(), this.getHeaderSeparatorDisplayMode(), "headerSeparatorDisplayMode", null, 1, 1, InsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(outsideLabelStyleEClass, OutsideLabelStyle.class, "OutsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(nodeLabelStyleEClass, NodeLabelStyle.class, "NodeLabelStyle", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getNodeLabelStyle_LabelColor(), theViewPackage.getUserColor(), null, "labelColor", null, 1, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodeLabelStyle_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeLabelStyle_ShowIconExpression(), theViewPackage.getInterpretedExpression(), "showIconExpression", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeLabelStyle_LabelIcon(), ecorePackage.getEString(), "labelIcon", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeLabelStyle_MaxWidthExpression(), theViewPackage.getInterpretedExpression(), "maxWidthExpression", null, 0, 1, NodeLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(nodeStyleDescriptionEClass, NodeStyleDescription.class, "NodeStyleDescription", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getNodeStyleDescription_ChildrenLayoutStrategy(), this.getLayoutStrategyDescription(), null, "childrenLayoutStrategy", null, 0, 1, NodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(conditionalNodeStyleEClass, ConditionalNodeStyle.class, "ConditionalNodeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getConditionalNodeStyle_Style(), this.getNodeStyleDescription(), null, "style", null, 0, 1, ConditionalNodeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(conditionalInsideLabelStyleEClass, ConditionalInsideLabelStyle.class, "ConditionalInsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getConditionalInsideLabelStyle_Style(), this.getInsideLabelStyle(), null, "style", null, 0, 1, ConditionalInsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(conditionalOutsideLabelStyleEClass, ConditionalOutsideLabelStyle.class, "ConditionalOutsideLabelStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getConditionalOutsideLabelStyle_Style(), this.getOutsideLabelStyle(), null, "style", null, 0, 1, ConditionalOutsideLabelStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(rectangularNodeStyleDescriptionEClass, RectangularNodeStyleDescription.class, "RectangularNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getRectangularNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, RectangularNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(imageNodeStyleDescriptionEClass, ImageNodeStyleDescription.class, "ImageNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getImageNodeStyleDescription_Shape(), ecorePackage.getEString(), "shape", null, 0, 1, ImageNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getImageNodeStyleDescription_PositionDependentRotation(), ecorePackage.getEBoolean(), "positionDependentRotation", null, 0, 1, ImageNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(iconLabelNodeStyleDescriptionEClass, IconLabelNodeStyleDescription.class, "IconLabelNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getIconLabelNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, IconLabelNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(edgeStyleEClass, EdgeStyle.class, "EdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getEdgeStyle_LineStyle(), this.getLineStyle(), "lineStyle", "Solid", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeStyle_SourceArrowStyle(), this.getArrowStyle(), "sourceArrowStyle", "None", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeStyle_TargetArrowStyle(), this.getArrowStyle(), "targetArrowStyle", "InputArrow", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeStyle_EdgeWidth(), theViewPackage.getLength(), "edgeWidth", "1", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeStyle_ShowIcon(), ecorePackage.getEBoolean(), "showIcon", "false", 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeStyle_LabelIcon(), ecorePackage.getEString(), "labelIcon", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgeStyle_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeStyle_MaxWidthExpression(), theViewPackage.getInterpretedExpression(), "maxWidthExpression", null, 0, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeStyle_EdgeType(), this.getEdgeType(), "edgeType", "Manhattan", 1, 1, EdgeStyle.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(conditionalEdgeStyleEClass, ConditionalEdgeStyle.class, "ConditionalEdgeStyle", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(diagramPaletteEClass, DiagramPalette.class, "DiagramPalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDiagramPalette_DropTool(), this.getDropTool(), null, "dropTool", null, 0, 1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDiagramPalette_DropNodeTool(), this.getDropNodeTool(), null, "dropNodeTool", null, 0, 1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDiagramPalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getDiagramPalette_NodeTools().getEKeys().add(this.getTool_Name());
+		initEReference(getDiagramPalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getDiagramPalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
+		initEReference(getDiagramPalette_ToolSections(), this.getDiagramToolSection(), null, "toolSections", null, 0, -1, DiagramPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getDiagramPalette_ToolSections().getEKeys().add(this.getToolSection_Name());
+
+		initEClass(groupPaletteEClass, GroupPalette.class, "GroupPalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getGroupPalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getGroupPalette_NodeTools().getEKeys().add(this.getTool_Name());
+		initEReference(getGroupPalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getGroupPalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
+		initEReference(getGroupPalette_ToolSections(), this.getToolSection(), null, "toolSections", null, 0, -1, GroupPalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getGroupPalette_ToolSections().getEKeys().add(this.getToolSection_Name());
+
+		initEClass(nodePaletteEClass, NodePalette.class, "NodePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getNodePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodePalette_LabelEditTool(), this.getLabelEditTool(), null, "labelEditTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodePalette_DropNodeTool(), this.getDropNodeTool(), null, "dropNodeTool", null, 0, 1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNodePalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getNodePalette_NodeTools().getEKeys().add(this.getTool_Name());
+		initEReference(getNodePalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getNodePalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
+		initEReference(getNodePalette_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getNodePalette_EdgeTools().getEKeys().add(this.getTool_Name());
+		initEReference(getNodePalette_ToolSections(), this.getNodeToolSection(), null, "toolSections", null, 0, -1, NodePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getNodePalette_ToolSections().getEKeys().add(this.getToolSection_Name());
+
+		initEClass(edgePaletteEClass, EdgePalette.class, "EdgePalette", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEdgePalette_DeleteTool(), this.getDeleteTool(), null, "deleteTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgePalette_CenterLabelEditTool(), this.getLabelEditTool(), null, "centerLabelEditTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgePalette_BeginLabelEditTool(), this.getLabelEditTool(), null, "beginLabelEditTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgePalette_EndLabelEditTool(), this.getLabelEditTool(), null, "endLabelEditTool", null, 0, 1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgePalette_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getEdgePalette_NodeTools().getEKeys().add(this.getTool_Name());
+		initEReference(getEdgePalette_QuickAccessTools(), this.getNodeTool(), null, "quickAccessTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getEdgePalette_QuickAccessTools().getEKeys().add(this.getTool_Name());
+		initEReference(getEdgePalette_EdgeReconnectionTools(), this.getEdgeReconnectionTool(), null, "edgeReconnectionTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getEdgePalette_EdgeReconnectionTools().getEKeys().add(this.getTool_Name());
+		initEReference(getEdgePalette_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgePalette_ToolSections(), this.getEdgeToolSection(), null, "toolSections", null, 0, -1, EdgePalette.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getEdgePalette_ToolSections().getEKeys().add(this.getToolSection_Name());
+
+		initEClass(toolEClass, Tool.class, "Tool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getTool_Name(), theViewPackage.getIdentifier(), "name", "Tool", 1, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTool_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTool_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, Tool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(deleteToolEClass, DeleteTool.class, "DeleteTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(dropToolEClass, DropTool.class, "DropTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(edgeToolEClass, EdgeTool.class, "EdgeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEdgeTool_TargetElementDescriptions(), this.getDiagramElementDescription(), null, "targetElementDescriptions", null, 0, -1, EdgeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeTool_IconURLsExpression(), theViewPackage.getInterpretedExpression(), "iconURLsExpression", null, 0, 1, EdgeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getEdgeTool_DialogDescription(), this.getDialogDescription(), null, "dialogDescription", null, 0, 1, EdgeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getEdgeTool_ElementsToSelectExpression(), theViewPackage.getInterpretedExpression(), "elementsToSelectExpression", null, 0, 1, EdgeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(edgeReconnectionToolEClass, EdgeReconnectionTool.class, "EdgeReconnectionTool", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(labelEditToolEClass, LabelEditTool.class, "LabelEditTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getLabelEditTool_InitialDirectEditLabelExpression(), theViewPackage.getInterpretedExpression(), "initialDirectEditLabelExpression", null, 0, 1, LabelEditTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(nodeToolEClass, NodeTool.class, "NodeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getNodeTool_DialogDescription(), this.getDialogDescription(), null, "dialogDescription", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeTool_IconURLsExpression(), theViewPackage.getInterpretedExpression(), "iconURLsExpression", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeTool_ElementsToSelectExpression(), theViewPackage.getInterpretedExpression(), "elementsToSelectExpression", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNodeTool_WithImpactAnalysis(), ecorePackage.getEBoolean(), "withImpactAnalysis", null, 0, 1, NodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(sourceEdgeEndReconnectionToolEClass, SourceEdgeEndReconnectionTool.class, "SourceEdgeEndReconnectionTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(targetEdgeEndReconnectionToolEClass, TargetEdgeEndReconnectionTool.class, "TargetEdgeEndReconnectionTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(createViewEClass, CreateView.class, "CreateView", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getCreateView_ParentViewExpression(), theViewPackage.getInterpretedExpression(), "parentViewExpression", "aql:selectedNode", 1, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getCreateView_ElementDescription(), this.getDiagramElementDescription(), null, "elementDescription", null, 0, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCreateView_SemanticElementExpression(), theViewPackage.getInterpretedExpression(), "semanticElementExpression", "aql:self", 1, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCreateView_VariableName(), ecorePackage.getEString(), "variableName", null, 0, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCreateView_ContainmentKind(), this.getNodeContainmentKind(), "containmentKind", "CHILD_NODE", 1, 1, CreateView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(deleteViewEClass, DeleteView.class, "DeleteView", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getDeleteView_ViewExpression(), theViewPackage.getInterpretedExpression(), "viewExpression", "aql:selectedNode", 1, 1, DeleteView.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(selectionDialogDescriptionEClass, SelectionDialogDescription.class, "SelectionDialogDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSelectionDialogDescription_SelectionMessage(), ecorePackage.getEString(), "selectionMessage", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSelectionDialogDescription_SelectionDialogTreeDescription(), this.getSelectionDialogTreeDescription(), null, "selectionDialogTreeDescription", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSelectionDialogDescription_Multiple(), ecorePackage.getEBoolean(), "multiple", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(toolSectionEClass, ToolSection.class, "ToolSection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getToolSection_Name(), theViewPackage.getIdentifier(), "name", "Tool Section", 1, 1, ToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(diagramToolSectionEClass, DiagramToolSection.class, "DiagramToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDiagramToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, DiagramToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getDiagramToolSection_NodeTools().getEKeys().add(this.getTool_Name());
+
+		initEClass(nodeToolSectionEClass, NodeToolSection.class, "NodeToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getNodeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getNodeToolSection_NodeTools().getEKeys().add(this.getTool_Name());
+		initEReference(getNodeToolSection_EdgeTools(), this.getEdgeTool(), null, "edgeTools", null, 0, -1, NodeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getNodeToolSection_EdgeTools().getEKeys().add(this.getTool_Name());
+
+		initEClass(edgeToolSectionEClass, EdgeToolSection.class, "EdgeToolSection", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEdgeToolSection_NodeTools(), this.getNodeTool(), null, "nodeTools", null, 0, -1, EdgeToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		getEdgeToolSection_NodeTools().getEKeys().add(this.getTool_Name());
+
+		initEClass(dropNodeToolEClass, DropNodeTool.class, "DropNodeTool", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDropNodeTool_AcceptedNodeTypes(), this.getNodeDescription(), null, "acceptedNodeTypes", null, 0, -1, DropNodeTool.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(dialogDescriptionEClass, DialogDescription.class, "DialogDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(selectionDialogTreeDescriptionEClass, SelectionDialogTreeDescription.class, "SelectionDialogTreeDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSelectionDialogTreeDescription_ElementsExpression(), theViewPackage.getInterpretedExpression(), "elementsExpression", "", 1, 1, SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSelectionDialogTreeDescription_ChildrenExpression(), theViewPackage.getInterpretedExpression(), "childrenExpression", null, 0, 1, SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getSelectionDialogTreeDescription_IsSelectableExpression(), theViewPackage.getInterpretedExpression(), "isSelectableExpression", null, 0, 1, SelectionDialogTreeDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(actionEClass, Action.class, "Action", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAction_Name(), theViewPackage.getIdentifier(), "name", "Action", 1, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_TooltipExpression(), theViewPackage.getInterpretedExpression(), "tooltipExpression", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_IconURLsExpression(), theViewPackage.getInterpretedExpression(), "iconURLsExpression", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAction_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getAction_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		// Initialize enums and add enum literals
+		initEEnum(arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.NONE);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.OUTPUT_ARROW);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.INPUT_ARROW);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.OUTPUT_CLOSED_ARROW);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.INPUT_CLOSED_ARROW);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.OUTPUT_FILL_CLOSED_ARROW);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.INPUT_FILL_CLOSED_ARROW);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.DIAMOND);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.FILL_DIAMOND);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.INPUT_ARROW_WITH_DIAMOND);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.INPUT_ARROW_WITH_FILL_DIAMOND);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.CIRCLE);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.FILL_CIRCLE);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.CROSSED_CIRCLE);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH_VERTICAL_BAR);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH_DOTS);
+		addEEnumLiteral(arrowStyleEEnum, ArrowStyle.CLOSED_ARROW_WITH4_DOTS);
+
+		initEEnum(layoutDirectionEEnum, LayoutDirection.class, "LayoutDirection");
+		addEEnumLiteral(layoutDirectionEEnum, LayoutDirection.COLUMN);
+
+		initEEnum(lineStyleEEnum, LineStyle.class, "LineStyle");
+		addEEnumLiteral(lineStyleEEnum, LineStyle.SOLID);
+		addEEnumLiteral(lineStyleEEnum, LineStyle.DASH);
+		addEEnumLiteral(lineStyleEEnum, LineStyle.DOT);
+		addEEnumLiteral(lineStyleEEnum, LineStyle.DASH_DOT);
+
+		initEEnum(nodeContainmentKindEEnum, NodeContainmentKind.class, "NodeContainmentKind");
+		addEEnumLiteral(nodeContainmentKindEEnum, NodeContainmentKind.CHILD_NODE);
+		addEEnumLiteral(nodeContainmentKindEEnum, NodeContainmentKind.BORDER_NODE);
+
+		initEEnum(synchronizationPolicyEEnum, SynchronizationPolicy.class, "SynchronizationPolicy");
+		addEEnumLiteral(synchronizationPolicyEEnum, SynchronizationPolicy.SYNCHRONIZED);
+		addEEnumLiteral(synchronizationPolicyEEnum, SynchronizationPolicy.UNSYNCHRONIZED);
+
+		initEEnum(insideLabelPositionEEnum, InsideLabelPosition.class, "InsideLabelPosition");
+		addEEnumLiteral(insideLabelPositionEEnum, InsideLabelPosition.TOP_CENTER);
+		addEEnumLiteral(insideLabelPositionEEnum, InsideLabelPosition.TOP_LEFT);
+		addEEnumLiteral(insideLabelPositionEEnum, InsideLabelPosition.TOP_RIGHT);
+		addEEnumLiteral(insideLabelPositionEEnum, InsideLabelPosition.MIDDLE_LEFT);
+		addEEnumLiteral(insideLabelPositionEEnum, InsideLabelPosition.MIDDLE_CENTER);
+		addEEnumLiteral(insideLabelPositionEEnum, InsideLabelPosition.MIDDLE_RIGHT);
+		addEEnumLiteral(insideLabelPositionEEnum, InsideLabelPosition.BOTTOM_LEFT);
+		addEEnumLiteral(insideLabelPositionEEnum, InsideLabelPosition.BOTTOM_CENTER);
+		addEEnumLiteral(insideLabelPositionEEnum, InsideLabelPosition.BOTTOM_RIGHT);
+
+		initEEnum(outsideLabelPositionEEnum, OutsideLabelPosition.class, "OutsideLabelPosition");
+		addEEnumLiteral(outsideLabelPositionEEnum, OutsideLabelPosition.BOTTOM_CENTER);
+
+		initEEnum(labelOverflowStrategyEEnum, LabelOverflowStrategy.class, "LabelOverflowStrategy");
+		addEEnumLiteral(labelOverflowStrategyEEnum, LabelOverflowStrategy.NONE);
+		addEEnumLiteral(labelOverflowStrategyEEnum, LabelOverflowStrategy.WRAP);
+		addEEnumLiteral(labelOverflowStrategyEEnum, LabelOverflowStrategy.ELLIPSIS);
+
+		initEEnum(arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.class, "ArrangeLayoutDirection");
+		addEEnumLiteral(arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.UNDEFINED);
+		addEEnumLiteral(arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.RIGHT);
+		addEEnumLiteral(arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.DOWN);
+		addEEnumLiteral(arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.LEFT);
+		addEEnumLiteral(arrangeLayoutDirectionEEnum, ArrangeLayoutDirection.UP);
+
+		initEEnum(labelTextAlignEEnum, LabelTextAlign.class, "LabelTextAlign");
+		addEEnumLiteral(labelTextAlignEEnum, LabelTextAlign.LEFT);
+		addEEnumLiteral(labelTextAlignEEnum, LabelTextAlign.RIGHT);
+		addEEnumLiteral(labelTextAlignEEnum, LabelTextAlign.CENTER);
+		addEEnumLiteral(labelTextAlignEEnum, LabelTextAlign.JUSTIFY);
+
+		initEEnum(userResizableDirectionEEnum, UserResizableDirection.class, "UserResizableDirection");
+		addEEnumLiteral(userResizableDirectionEEnum, UserResizableDirection.BOTH);
+		addEEnumLiteral(userResizableDirectionEEnum, UserResizableDirection.HORIZONTAL);
+		addEEnumLiteral(userResizableDirectionEEnum, UserResizableDirection.VERTICAL);
+		addEEnumLiteral(userResizableDirectionEEnum, UserResizableDirection.NONE);
+
+		initEEnum(headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.class, "HeaderSeparatorDisplayMode");
+		addEEnumLiteral(headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.NEVER);
+		addEEnumLiteral(headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.ALWAYS);
+		addEEnumLiteral(headerSeparatorDisplayModeEEnum, HeaderSeparatorDisplayMode.IF_CHILDREN);
+
+		initEEnum(edgeTypeEEnum, EdgeType.class, "EdgeType");
+		addEEnumLiteral(edgeTypeEEnum, EdgeType.MANHATTAN);
+		addEEnumLiteral(edgeTypeEEnum, EdgeType.SMART_MANHATTAN);
+		addEEnumLiteral(edgeTypeEEnum, EdgeType.OBLIQUE);
+
+		// Create resource
+		createResource(eNS_URI);
+	}
 
 } // DiagramPackageImpl

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.view.Conditional;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.RepresentationDescription;
+import org.eclipse.sirius.components.view.form.*;
 import org.eclipse.sirius.components.view.form.BarChartDescription;
 import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
 import org.eclipse.sirius.components.view.form.ButtonDescription;
@@ -81,372 +82,375 @@ import org.eclipse.sirius.components.view.form.WidgetGridLayout;
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
- *
  * @see org.eclipse.sirius.components.view.form.FormPackage
  * @generated
  */
 public class FormAdapterFactory extends AdapterFactoryImpl {
     /**
-     * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * The cached model package.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected static FormPackage modelPackage;
 
     /**
-     * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates an instance of the adapter factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public FormAdapterFactory() {
-        if (modelPackage == null) {
-            modelPackage = FormPackage.eINSTANCE;
-        }
-    }
+		if (modelPackage == null)
+		{
+			modelPackage = FormPackage.eINSTANCE;
+		}
+	}
 
     /**
-     * Returns whether this factory is applicable for the type of the object. <!-- begin-user-doc --> This
+	 * Returns whether this factory is applicable for the type of the object.
+	 * <!-- begin-user-doc --> This
      * implementation returns <code>true</code> if the object is either the model's package or is an instance object of
      * the model. <!-- end-user-doc -->
-     *
-     * @return whether this factory is applicable for the type of the object.
-     * @generated
-     */
+	 * @return whether this factory is applicable for the type of the object.
+	 * @generated
+	 */
     @Override
     public boolean isFactoryForType(Object object) {
-        if (object == modelPackage) {
-            return true;
-        }
-        if (object instanceof EObject) {
-            return ((EObject) object).eClass().getEPackage() == modelPackage;
-        }
-        return false;
-    }
+		if (object == modelPackage)
+		{
+			return true;
+		}
+		if (object instanceof EObject)
+		{
+			return ((EObject)object).eClass().getEPackage() == modelPackage;
+		}
+		return false;
+	}
 
     /**
-     * The switch that delegates to the <code>createXXX</code> methods. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected FormSwitch<Adapter> modelSwitch = new FormSwitch<>() {
-        @Override
-        public Adapter caseFormDescription(FormDescription object) {
-            return FormAdapterFactory.this.createFormDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseFormVariable(FormVariable object) {
-            return FormAdapterFactory.this.createFormVariableAdapter();
-        }
-
-        @Override
-        public Adapter casePageDescription(PageDescription object) {
-            return FormAdapterFactory.this.createPageDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseGroupDescription(GroupDescription object) {
-            return FormAdapterFactory.this.createGroupDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseFormElementDescription(FormElementDescription object) {
-            return FormAdapterFactory.this.createFormElementDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseWidgetDescription(WidgetDescription object) {
-            return FormAdapterFactory.this.createWidgetDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseBarChartDescription(BarChartDescription object) {
-            return FormAdapterFactory.this.createBarChartDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseButtonDescription(ButtonDescription object) {
-            return FormAdapterFactory.this.createButtonDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseCheckboxDescription(CheckboxDescription object) {
-            return FormAdapterFactory.this.createCheckboxDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseDateTimeDescription(DateTimeDescription object) {
-            return FormAdapterFactory.this.createDateTimeDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseFlexboxContainerDescription(FlexboxContainerDescription object) {
-            return FormAdapterFactory.this.createFlexboxContainerDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseImageDescription(ImageDescription object) {
-            return FormAdapterFactory.this.createImageDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseLabelDescription(LabelDescription object) {
-            return FormAdapterFactory.this.createLabelDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseLinkDescription(LinkDescription object) {
-            return FormAdapterFactory.this.createLinkDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseListDescription(ListDescription object) {
-            return FormAdapterFactory.this.createListDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseMultiSelectDescription(MultiSelectDescription object) {
-            return FormAdapterFactory.this.createMultiSelectDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter casePieChartDescription(PieChartDescription object) {
-            return FormAdapterFactory.this.createPieChartDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseRadioDescription(RadioDescription object) {
-            return FormAdapterFactory.this.createRadioDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseRichTextDescription(RichTextDescription object) {
-            return FormAdapterFactory.this.createRichTextDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseSelectDescription(SelectDescription object) {
-            return FormAdapterFactory.this.createSelectDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseSplitButtonDescription(SplitButtonDescription object) {
-            return FormAdapterFactory.this.createSplitButtonDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseTextAreaDescription(TextAreaDescription object) {
-            return FormAdapterFactory.this.createTextAreaDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseTextfieldDescription(TextfieldDescription object) {
-            return FormAdapterFactory.this.createTextfieldDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseTreeDescription(TreeDescription object) {
-            return FormAdapterFactory.this.createTreeDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseSliderDescription(SliderDescription object) {
-            return FormAdapterFactory.this.createSliderDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseWidgetDescriptionStyle(WidgetDescriptionStyle object) {
-            return FormAdapterFactory.this.createWidgetDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseWidgetGridLayout(WidgetGridLayout object) {
-            return FormAdapterFactory.this.createWidgetGridLayoutAdapter();
-        }
-
-        @Override
-        public Adapter caseBarChartDescriptionStyle(BarChartDescriptionStyle object) {
-            return FormAdapterFactory.this.createBarChartDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalBarChartDescriptionStyle(ConditionalBarChartDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalBarChartDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseButtonDescriptionStyle(ButtonDescriptionStyle object) {
-            return FormAdapterFactory.this.createButtonDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalButtonDescriptionStyle(ConditionalButtonDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalButtonDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseCheckboxDescriptionStyle(CheckboxDescriptionStyle object) {
-            return FormAdapterFactory.this.createCheckboxDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalCheckboxDescriptionStyle(ConditionalCheckboxDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalCheckboxDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseDateTimeDescriptionStyle(DateTimeDescriptionStyle object) {
-            return FormAdapterFactory.this.createDateTimeDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalDateTimeDescriptionStyle(ConditionalDateTimeDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalDateTimeDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseLabelDescriptionStyle(LabelDescriptionStyle object) {
-            return FormAdapterFactory.this.createLabelDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalLabelDescriptionStyle(ConditionalLabelDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalLabelDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseLinkDescriptionStyle(LinkDescriptionStyle object) {
-            return FormAdapterFactory.this.createLinkDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalLinkDescriptionStyle(ConditionalLinkDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalLinkDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseListDescriptionStyle(ListDescriptionStyle object) {
-            return FormAdapterFactory.this.createListDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalListDescriptionStyle(ConditionalListDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalListDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseMultiSelectDescriptionStyle(MultiSelectDescriptionStyle object) {
-            return FormAdapterFactory.this.createMultiSelectDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalMultiSelectDescriptionStyle(ConditionalMultiSelectDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalMultiSelectDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter casePieChartDescriptionStyle(PieChartDescriptionStyle object) {
-            return FormAdapterFactory.this.createPieChartDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalPieChartDescriptionStyle(ConditionalPieChartDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalPieChartDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseRadioDescriptionStyle(RadioDescriptionStyle object) {
-            return FormAdapterFactory.this.createRadioDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalRadioDescriptionStyle(ConditionalRadioDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalRadioDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseSelectDescriptionStyle(SelectDescriptionStyle object) {
-            return FormAdapterFactory.this.createSelectDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalSelectDescriptionStyle(ConditionalSelectDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalSelectDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseTextareaDescriptionStyle(TextareaDescriptionStyle object) {
-            return FormAdapterFactory.this.createTextareaDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalTextareaDescriptionStyle(ConditionalTextareaDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalTextareaDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseTextfieldDescriptionStyle(TextfieldDescriptionStyle object) {
-            return FormAdapterFactory.this.createTextfieldDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalTextfieldDescriptionStyle(ConditionalTextfieldDescriptionStyle object) {
-            return FormAdapterFactory.this.createConditionalTextfieldDescriptionStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseContainerBorderStyle(ContainerBorderStyle object) {
-            return FormAdapterFactory.this.createContainerBorderStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditionalContainerBorderStyle(ConditionalContainerBorderStyle object) {
-            return FormAdapterFactory.this.createConditionalContainerBorderStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseFormElementFor(FormElementFor object) {
-            return FormAdapterFactory.this.createFormElementForAdapter();
-        }
-
-        @Override
-        public Adapter caseFormElementIf(FormElementIf object) {
-            return FormAdapterFactory.this.createFormElementIfAdapter();
-        }
-
-        @Override
-        public Adapter caseRepresentationDescription(RepresentationDescription object) {
-            return FormAdapterFactory.this.createRepresentationDescriptionAdapter();
-        }
-
-        @Override
-        public Adapter caseLabelStyle(LabelStyle object) {
-            return FormAdapterFactory.this.createLabelStyleAdapter();
-        }
-
-        @Override
-        public Adapter caseConditional(Conditional object) {
-            return FormAdapterFactory.this.createConditionalAdapter();
-        }
-
-        @Override
-        public Adapter defaultCase(EObject object) {
-            return FormAdapterFactory.this.createEObjectAdapter();
-        }
-    };
+	 * The switch that delegates to the <code>createXXX</code> methods.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+    protected FormSwitch<Adapter> modelSwitch = new FormSwitch<Adapter>()
+		{
+			@Override
+			public Adapter caseFormDescription(FormDescription object)
+			{
+				return createFormDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseFormVariable(FormVariable object)
+			{
+				return createFormVariableAdapter();
+			}
+			@Override
+			public Adapter casePageDescription(PageDescription object)
+			{
+				return createPageDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseGroupDescription(GroupDescription object)
+			{
+				return createGroupDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseFormElementDescription(FormElementDescription object)
+			{
+				return createFormElementDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseWidgetDescription(WidgetDescription object)
+			{
+				return createWidgetDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseBarChartDescription(BarChartDescription object)
+			{
+				return createBarChartDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseButtonDescription(ButtonDescription object)
+			{
+				return createButtonDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseCheckboxDescription(CheckboxDescription object)
+			{
+				return createCheckboxDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseDateTimeDescription(DateTimeDescription object)
+			{
+				return createDateTimeDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseFlexboxContainerDescription(FlexboxContainerDescription object)
+			{
+				return createFlexboxContainerDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseImageDescription(ImageDescription object)
+			{
+				return createImageDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseLabelDescription(LabelDescription object)
+			{
+				return createLabelDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseLinkDescription(LinkDescription object)
+			{
+				return createLinkDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseListDescription(ListDescription object)
+			{
+				return createListDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseMultiSelectDescription(MultiSelectDescription object)
+			{
+				return createMultiSelectDescriptionAdapter();
+			}
+			@Override
+			public Adapter casePieChartDescription(PieChartDescription object)
+			{
+				return createPieChartDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseRadioDescription(RadioDescription object)
+			{
+				return createRadioDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseRichTextDescription(RichTextDescription object)
+			{
+				return createRichTextDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseSelectDescription(SelectDescription object)
+			{
+				return createSelectDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseSplitButtonDescription(SplitButtonDescription object)
+			{
+				return createSplitButtonDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseTextAreaDescription(TextAreaDescription object)
+			{
+				return createTextAreaDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseTextfieldDescription(TextfieldDescription object)
+			{
+				return createTextfieldDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseTreeDescription(TreeDescription object)
+			{
+				return createTreeDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseSliderDescription(SliderDescription object)
+			{
+				return createSliderDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseWidgetDescriptionStyle(WidgetDescriptionStyle object)
+			{
+				return createWidgetDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseWidgetGridLayout(WidgetGridLayout object)
+			{
+				return createWidgetGridLayoutAdapter();
+			}
+			@Override
+			public Adapter caseBarChartDescriptionStyle(BarChartDescriptionStyle object)
+			{
+				return createBarChartDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalBarChartDescriptionStyle(ConditionalBarChartDescriptionStyle object)
+			{
+				return createConditionalBarChartDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseButtonDescriptionStyle(ButtonDescriptionStyle object)
+			{
+				return createButtonDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalButtonDescriptionStyle(ConditionalButtonDescriptionStyle object)
+			{
+				return createConditionalButtonDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseCheckboxDescriptionStyle(CheckboxDescriptionStyle object)
+			{
+				return createCheckboxDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalCheckboxDescriptionStyle(ConditionalCheckboxDescriptionStyle object)
+			{
+				return createConditionalCheckboxDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseDateTimeDescriptionStyle(DateTimeDescriptionStyle object)
+			{
+				return createDateTimeDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalDateTimeDescriptionStyle(ConditionalDateTimeDescriptionStyle object)
+			{
+				return createConditionalDateTimeDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseLabelDescriptionStyle(LabelDescriptionStyle object)
+			{
+				return createLabelDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalLabelDescriptionStyle(ConditionalLabelDescriptionStyle object)
+			{
+				return createConditionalLabelDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseLinkDescriptionStyle(LinkDescriptionStyle object)
+			{
+				return createLinkDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalLinkDescriptionStyle(ConditionalLinkDescriptionStyle object)
+			{
+				return createConditionalLinkDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseListDescriptionStyle(ListDescriptionStyle object)
+			{
+				return createListDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalListDescriptionStyle(ConditionalListDescriptionStyle object)
+			{
+				return createConditionalListDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseMultiSelectDescriptionStyle(MultiSelectDescriptionStyle object)
+			{
+				return createMultiSelectDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalMultiSelectDescriptionStyle(ConditionalMultiSelectDescriptionStyle object)
+			{
+				return createConditionalMultiSelectDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter casePieChartDescriptionStyle(PieChartDescriptionStyle object)
+			{
+				return createPieChartDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalPieChartDescriptionStyle(ConditionalPieChartDescriptionStyle object)
+			{
+				return createConditionalPieChartDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseRadioDescriptionStyle(RadioDescriptionStyle object)
+			{
+				return createRadioDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalRadioDescriptionStyle(ConditionalRadioDescriptionStyle object)
+			{
+				return createConditionalRadioDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseSelectDescriptionStyle(SelectDescriptionStyle object)
+			{
+				return createSelectDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalSelectDescriptionStyle(ConditionalSelectDescriptionStyle object)
+			{
+				return createConditionalSelectDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseTextareaDescriptionStyle(TextareaDescriptionStyle object)
+			{
+				return createTextareaDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalTextareaDescriptionStyle(ConditionalTextareaDescriptionStyle object)
+			{
+				return createConditionalTextareaDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseTextfieldDescriptionStyle(TextfieldDescriptionStyle object)
+			{
+				return createTextfieldDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalTextfieldDescriptionStyle(ConditionalTextfieldDescriptionStyle object)
+			{
+				return createConditionalTextfieldDescriptionStyleAdapter();
+			}
+			@Override
+			public Adapter caseContainerBorderStyle(ContainerBorderStyle object)
+			{
+				return createContainerBorderStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditionalContainerBorderStyle(ConditionalContainerBorderStyle object)
+			{
+				return createConditionalContainerBorderStyleAdapter();
+			}
+			@Override
+			public Adapter caseFormElementFor(FormElementFor object)
+			{
+				return createFormElementForAdapter();
+			}
+			@Override
+			public Adapter caseFormElementIf(FormElementIf object)
+			{
+				return createFormElementIfAdapter();
+			}
+			@Override
+			public Adapter caseRepresentationDescription(RepresentationDescription object)
+			{
+				return createRepresentationDescriptionAdapter();
+			}
+			@Override
+			public Adapter caseLabelStyle(LabelStyle object)
+			{
+				return createLabelStyleAdapter();
+			}
+			@Override
+			public Adapter caseConditional(Conditional object)
+			{
+				return createConditionalAdapter();
+			}
+			@Override
+			public Adapter defaultCase(EObject object)
+			{
+				return createEObjectAdapter();
+			}
+		};
 
     /**
-     * Creates an adapter for the <code>target</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param target
-     *            the object to adapt.
-     * @return the adapter for the <code>target</code>.
-     * @generated
-     */
+	 * Creates an adapter for the <code>target</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param target the object to adapt.
+	 * @return the adapter for the <code>target</code>.
+	 * @generated
+	 */
     @Override
     public Adapter createAdapter(Notifier target) {
-        return this.modelSwitch.doSwitch((EObject) target);
-    }
+		return modelSwitch.doSwitch((EObject)target);
+	}
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.FormDescription
@@ -459,8 +463,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFormDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.FormVariable
@@ -473,36 +477,34 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFormVariableAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.PageDescription
-     * <em>Page Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.PageDescription <em>Page Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.PageDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.PageDescription
+	 * @generated
+	 */
     public Adapter createPageDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.GroupDescription
-     * <em>Group Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.GroupDescription <em>Group Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.GroupDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.GroupDescription
+	 * @generated
+	 */
     public Adapter createGroupDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -515,36 +517,34 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFormElementDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.WidgetDescription
-     * <em>Widget Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.WidgetDescription <em>Widget Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.WidgetDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.WidgetDescription
+	 * @generated
+	 */
     public Adapter createWidgetDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.BarChartDescription
-     * <em>Bar Chart Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.BarChartDescription <em>Bar Chart Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.BarChartDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.BarChartDescription
+	 * @generated
+	 */
     public Adapter createBarChartDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -557,106 +557,98 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSplitButtonDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ButtonDescription
-     * <em>Button Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ButtonDescription <em>Button Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.ButtonDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.ButtonDescription
+	 * @generated
+	 */
     public Adapter createButtonDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.CheckboxDescription
-     * <em>Checkbox Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.CheckboxDescription <em>Checkbox Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.CheckboxDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.CheckboxDescription
+	 * @generated
+	 */
     public Adapter createCheckboxDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription <em>Flexbox Container
-     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription <em>Flexbox Container Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.FlexboxContainerDescription
+	 * @generated
+	 */
     public Adapter createFlexboxContainerDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ImageDescription
-     * <em>Image Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ImageDescription <em>Image Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.ImageDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.ImageDescription
+	 * @generated
+	 */
     public Adapter createImageDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.LabelDescription
-     * <em>Label Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.LabelDescription <em>Label Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.LabelDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.LabelDescription
+	 * @generated
+	 */
     public Adapter createLabelDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.LinkDescription
-     * <em>Link Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.LinkDescription <em>Link Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.LinkDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.LinkDescription
+	 * @generated
+	 */
     public Adapter createLinkDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ListDescription
-     * <em>List Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ListDescription <em>List Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.ListDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.ListDescription
+	 * @generated
+	 */
     public Adapter createListDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -669,134 +661,125 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createMultiSelectDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.TreeDescription
-     * <em>Tree Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.TreeDescription <em>Tree Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.TreeDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.TreeDescription
+	 * @generated
+	 */
     public Adapter createTreeDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.DateTimeDescription
-     * <em>Date Time Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.DateTimeDescription <em>Date Time Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.DateTimeDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.DateTimeDescription
+	 * @generated
+	 */
     public Adapter createDateTimeDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.SliderDescription
-     * <em>Slider Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.SliderDescription <em>Slider Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.SliderDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.SliderDescription
+	 * @generated
+	 */
     public Adapter createSliderDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.PieChartDescription
-     * <em>Pie Chart Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.PieChartDescription <em>Pie Chart Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.PieChartDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.PieChartDescription
+	 * @generated
+	 */
     public Adapter createPieChartDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.RadioDescription
-     * <em>Radio Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.RadioDescription <em>Radio Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.RadioDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.RadioDescription
+	 * @generated
+	 */
     public Adapter createRadioDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.RichTextDescription
-     * <em>Rich Text Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.RichTextDescription <em>Rich Text Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.RichTextDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.RichTextDescription
+	 * @generated
+	 */
     public Adapter createRichTextDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.SelectDescription
-     * <em>Select Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.SelectDescription <em>Select Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.SelectDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.SelectDescription
+	 * @generated
+	 */
     public Adapter createSelectDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.TextAreaDescription
-     * <em>Text Area Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.TextAreaDescription <em>Text Area Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.TextAreaDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.TextAreaDescription
+	 * @generated
+	 */
     public Adapter createTextAreaDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.TextfieldDescription
-     * <em>Textfield Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.TextfieldDescription <em>Textfield Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.TextfieldDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.TextfieldDescription
+	 * @generated
+	 */
     public Adapter createTextfieldDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -809,36 +792,33 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createWidgetDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.WidgetGridLayout
-     * <em>Widget Grid Layout</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.WidgetGridLayout <em>Widget Grid Layout</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.WidgetGridLayout
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.WidgetGridLayout
+	 * @generated
+	 */
     public Adapter createWidgetGridLayoutAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.BarChartDescriptionStyle <em>Bar Chart Description Style</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.BarChartDescriptionStyle <em>Bar Chart Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.BarChartDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.BarChartDescriptionStyle
+	 * @generated
+	 */
     public Adapter createBarChartDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -852,8 +832,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalBarChartDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -866,8 +846,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createButtonDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -881,22 +861,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalButtonDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle <em>Checkbox Description Style</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle <em>Checkbox Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle
+	 * @generated
+	 */
     public Adapter createCheckboxDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -910,8 +888,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalCheckboxDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -924,8 +902,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createLabelDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -939,107 +917,95 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalLabelDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.LinkDescriptionStyle
-     * <em>Link Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.LinkDescriptionStyle <em>Link Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.LinkDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.LinkDescriptionStyle
+	 * @generated
+	 */
     public Adapter createLinkDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle <em>Conditional Link Description
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle <em>Conditional Link Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle
+	 * @generated
+	 */
     public Adapter createConditionalLinkDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ListDescriptionStyle
-     * <em>List Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ListDescriptionStyle <em>List Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.ListDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.ListDescriptionStyle
+	 * @generated
+	 */
     public Adapter createListDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle <em>Conditional List Description
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle <em>Conditional List Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle
+	 * @generated
+	 */
     public Adapter createConditionalListDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle <em>Multi Select Description
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle <em>Multi Select Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle
+	 * @generated
+	 */
     public Adapter createMultiSelectDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle <em>Conditional Multi
-     * Select Description Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle <em>Conditional Multi Select Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can
      * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.ConditionalMultiSelectDescriptionStyle
+	 * @generated
+	 */
     public Adapter createConditionalMultiSelectDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.PieChartDescriptionStyle <em>Pie Chart Description Style</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.PieChartDescriptionStyle <em>Pie Chart Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.PieChartDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.PieChartDescriptionStyle
+	 * @generated
+	 */
     public Adapter createPieChartDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -1053,8 +1019,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalPieChartDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -1067,8 +1033,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRadioDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -1082,8 +1048,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalRadioDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -1096,8 +1062,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createSelectDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -1111,22 +1077,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalSelectDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.TextareaDescriptionStyle <em>Textarea Description Style</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.TextareaDescriptionStyle <em>Textarea Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.TextareaDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.TextareaDescriptionStyle
+	 * @generated
+	 */
     public Adapter createTextareaDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -1140,22 +1104,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalTextareaDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle <em>Textfield Description Style</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle <em>Textfield Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle
+	 * @generated
+	 */
     public Adapter createTextfieldDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -1169,22 +1131,20 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalTextfieldDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle <em>Date Time Description Style</em>}'.
-     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle <em>Date Time Description Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful
      * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle
+	 * @generated
+	 */
     public Adapter createDateTimeDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class
@@ -1198,36 +1158,33 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalDateTimeDescriptionStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ContainerBorderStyle
-     * <em>Container Border Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ContainerBorderStyle <em>Container Border Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we
      * can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.ContainerBorderStyle
+	 * @generated
+	 */
     public Adapter createContainerBorderStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class
-     * '{@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle <em>Conditional Container Border
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle <em>Conditional Container Border Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle
+	 * @generated
+	 */
     public Adapter createConditionalContainerBorderStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.FormElementFor
@@ -1240,8 +1197,8 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFormElementForAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.form.FormElementIf
@@ -1254,35 +1211,33 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createFormElementIfAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.RepresentationDescription
-     * <em>Representation Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.RepresentationDescription <em>Representation Description</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that
      * we can easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.RepresentationDescription
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.RepresentationDescription
+	 * @generated
+	 */
     public Adapter createRepresentationDescriptionAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label
-     * Style</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+	 * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label Style</em>}'.
+	 * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.eclipse.sirius.components.view.LabelStyle
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @see org.eclipse.sirius.components.view.LabelStyle
+	 * @generated
+	 */
     public Adapter createLabelStyleAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
      * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.Conditional
@@ -1295,18 +1250,18 @@ public class FormAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createConditionalAdapter() {
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * Creates a new adapter for the default case. <!-- begin-user-doc --> This default implementation returns null.
+	 * Creates a new adapter for the default case.
+	 * <!-- begin-user-doc --> This default implementation returns null.
      * <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @generated
-     */
+	 * @return the new adapter.
+	 * @generated
+	 */
     public Adapter createEObjectAdapter() {
-        return null;
-    }
+		return null;
+	}
 
 } // FormAdapterFactory

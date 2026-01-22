@@ -29,8 +29,7 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalInsideLabelStyleImpl#getStyle
- * <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalInsideLabelStyleImpl#getStyle <em>Style</em>}</li>
  * </ul>
  *
  * @generated
@@ -38,152 +37,146 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
 public class ConditionalInsideLabelStyleImpl extends ConditionalImpl implements ConditionalInsideLabelStyle {
 
     /**
-     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getStyle()
-     * @generated
-     * @ordered
-     */
+	 * @see #getStyle()
+	 * @generated
+	 * @ordered
+	 */
     protected InsideLabelStyle style;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ConditionalInsideLabelStyleImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.CONDITIONAL_INSIDE_LABEL_STYLE;
-    }
+		return DiagramPackage.Literals.CONDITIONAL_INSIDE_LABEL_STYLE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public InsideLabelStyle getStyle() {
-        return this.style;
-    }
+		return style;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setStyle(InsideLabelStyle newStyle) {
-        if (newStyle != this.style) {
-            NotificationChain msgs = null;
-            if (this.style != null)
-                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE, null, msgs);
-            if (newStyle != null)
-                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE, null, msgs);
-            msgs = this.basicSetStyle(newStyle, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE, newStyle, newStyle));
-    }
+		if (newStyle != style)
+		{
+			NotificationChain msgs = null;
+			if (style != null)
+				msgs = ((InternalEObject)style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE, null, msgs);
+			if (newStyle != null)
+				msgs = ((InternalEObject)newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE, null, msgs);
+			msgs = basicSetStyle(newStyle, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE, newStyle, newStyle));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public NotificationChain basicSetStyle(InsideLabelStyle newStyle, NotificationChain msgs) {
-        InsideLabelStyle oldStyle = this.style;
-        this.style = newStyle;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE, oldStyle, newStyle);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
+		InsideLabelStyle oldStyle = style;
+		style = newStyle;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE, oldStyle, newStyle);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
-                return this.basicSetStyle(null, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
+				return basicSetStyle(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
-                return this.getStyle();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
+				return getStyle();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
-                this.setStyle((InsideLabelStyle) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
+				setStyle((InsideLabelStyle)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
-                this.setStyle((InsideLabelStyle) null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
+				setStyle((InsideLabelStyle)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
-                return this.style != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.CONDITIONAL_INSIDE_LABEL_STYLE__STYLE:
+				return style != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // ConditionalInsideLabelStyleImpl

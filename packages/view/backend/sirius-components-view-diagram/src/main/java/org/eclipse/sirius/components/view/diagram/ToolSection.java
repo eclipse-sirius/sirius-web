@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.ToolSection#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.ToolSection#getName <em>Name</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getToolSection()
@@ -43,14 +43,12 @@ public interface ToolSection extends EObject {
     String getName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.ToolSection#getName <em>Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.ToolSection#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
     void setName(String value);
 
 } // ToolSection

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,387 +67,366 @@ public class ReferenceWidgetDescriptionImpl extends WidgetDescriptionImpl implem
     protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getReferenceOwnerExpression()
-     * @generated
-     * @ordered
-     */
+	 * The default value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getReferenceOwnerExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String REFERENCE_OWNER_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getReferenceOwnerExpression()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getReferenceOwnerExpression() <em>Reference Owner Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getReferenceOwnerExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String referenceOwnerExpression = REFERENCE_OWNER_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getReferenceNameExpression()
-     * @generated
-     * @ordered
-     */
+	 * The default value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getReferenceNameExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String REFERENCE_NAME_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getReferenceNameExpression()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getReferenceNameExpression() <em>Reference Name Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getReferenceNameExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String referenceNameExpression = REFERENCE_NAME_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getBody()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Operation> body;
 
     /**
-     * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getStyle() <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getStyle()
-     * @generated
-     * @ordered
-     */
+	 * @see #getStyle()
+	 * @generated
+	 * @ordered
+	 */
     protected ReferenceWidgetDescriptionStyle style;
 
     /**
-     * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getConditionalStyles()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getConditionalStyles() <em>Conditional Styles</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getConditionalStyles()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<ConditionalReferenceWidgetDescriptionStyle> conditionalStyles;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ReferenceWidgetDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION;
-    }
+		return ReferencePackage.Literals.REFERENCE_WIDGET_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getReferenceOwnerExpression() {
-        return this.referenceOwnerExpression;
-    }
+		return referenceOwnerExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setReferenceOwnerExpression(String newReferenceOwnerExpression) {
-        String oldReferenceOwnerExpression = this.referenceOwnerExpression;
-        this.referenceOwnerExpression = newReferenceOwnerExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION, oldReferenceOwnerExpression,
-                    this.referenceOwnerExpression));
-    }
+		String oldReferenceOwnerExpression = referenceOwnerExpression;
+		referenceOwnerExpression = newReferenceOwnerExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION, oldReferenceOwnerExpression, referenceOwnerExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getReferenceNameExpression() {
-        return this.referenceNameExpression;
-    }
+		return referenceNameExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setReferenceNameExpression(String newReferenceNameExpression) {
-        String oldReferenceNameExpression = this.referenceNameExpression;
-        this.referenceNameExpression = newReferenceNameExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(
-                    new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION, oldReferenceNameExpression, this.referenceNameExpression));
-    }
+		String oldReferenceNameExpression = referenceNameExpression;
+		referenceNameExpression = newReferenceNameExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION, oldReferenceNameExpression, referenceNameExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Operation> getBody() {
-        if (this.body == null) {
-            this.body = new EObjectContainmentEList<>(Operation.class, this, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY);
-        }
-        return this.body;
-    }
+		if (body == null)
+		{
+			body = new EObjectContainmentEList<Operation>(Operation.class, this, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY);
+		}
+		return body;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ReferenceWidgetDescriptionStyle getStyle() {
-        return this.style;
-    }
+		return style;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setStyle(ReferenceWidgetDescriptionStyle newStyle) {
-        if (newStyle != this.style) {
-            NotificationChain msgs = null;
-            if (this.style != null)
-                msgs = ((InternalEObject) this.style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, null, msgs);
-            if (newStyle != null)
-                msgs = ((InternalEObject) newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, null, msgs);
-            msgs = this.basicSetStyle(newStyle, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, newStyle, newStyle));
-    }
+		if (newStyle != style)
+		{
+			NotificationChain msgs = null;
+			if (style != null)
+				msgs = ((InternalEObject)style).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, null, msgs);
+			if (newStyle != null)
+				msgs = ((InternalEObject)newStyle).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, null, msgs);
+			msgs = basicSetStyle(newStyle, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, newStyle, newStyle));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public NotificationChain basicSetStyle(ReferenceWidgetDescriptionStyle newStyle, NotificationChain msgs) {
-        ReferenceWidgetDescriptionStyle oldStyle = this.style;
-        this.style = newStyle;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, oldStyle, newStyle);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
+		ReferenceWidgetDescriptionStyle oldStyle = style;
+		style = newStyle;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE, oldStyle, newStyle);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<ConditionalReferenceWidgetDescriptionStyle> getConditionalStyles() {
-        if (this.conditionalStyles == null) {
-            this.conditionalStyles = new EObjectContainmentEList<>(ConditionalReferenceWidgetDescriptionStyle.class, this, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
-        }
-        return this.conditionalStyles;
-    }
+		if (conditionalStyles == null)
+		{
+			conditionalStyles = new EObjectContainmentEList<ConditionalReferenceWidgetDescriptionStyle>(ConditionalReferenceWidgetDescriptionStyle.class, this, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES);
+		}
+		return conditionalStyles;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
-                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
-                return this.basicSetStyle(null, msgs);
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
-                return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+				return ((InternalEList<?>)getBody()).basicRemove(otherEnd, msgs);
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+				return basicSetStyle(null, msgs);
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+				return ((InternalEList<?>)getConditionalStyles()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIsEnabledExpression() {
-        return this.isEnabledExpression;
-    }
+		return isEnabledExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIsEnabledExpression(String newIsEnabledExpression) {
-        String oldIsEnabledExpression = this.isEnabledExpression;
-        this.isEnabledExpression = newIsEnabledExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, this.isEnabledExpression));
-    }
+		String oldIsEnabledExpression = isEnabledExpression;
+		isEnabledExpression = newIsEnabledExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, isEnabledExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return this.getIsEnabledExpression();
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                return this.getReferenceOwnerExpression();
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                return this.getReferenceNameExpression();
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
-                return this.getBody();
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
-                return this.getStyle();
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
-                return this.getConditionalStyles();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				return getIsEnabledExpression();
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
+				return getReferenceOwnerExpression();
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
+				return getReferenceNameExpression();
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+				return getBody();
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+				return getStyle();
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+				return getConditionalStyles();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.setIsEnabledExpression((String) newValue);
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                this.setReferenceOwnerExpression((String) newValue);
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                this.setReferenceNameExpression((String) newValue);
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
-                this.getBody().clear();
-                this.getBody().addAll((Collection<? extends Operation>) newValue);
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
-                this.setStyle((ReferenceWidgetDescriptionStyle) newValue);
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
-                this.getConditionalStyles().clear();
-                this.getConditionalStyles().addAll((Collection<? extends ConditionalReferenceWidgetDescriptionStyle>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				setIsEnabledExpression((String)newValue);
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
+				setReferenceOwnerExpression((String)newValue);
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
+				setReferenceNameExpression((String)newValue);
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+				getBody().clear();
+				getBody().addAll((Collection<? extends Operation>)newValue);
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+				setStyle((ReferenceWidgetDescriptionStyle)newValue);
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+				getConditionalStyles().clear();
+				getConditionalStyles().addAll((Collection<? extends ConditionalReferenceWidgetDescriptionStyle>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                this.setReferenceOwnerExpression(REFERENCE_OWNER_EXPRESSION_EDEFAULT);
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                this.setReferenceNameExpression(REFERENCE_NAME_EXPRESSION_EDEFAULT);
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
-                this.getBody().clear();
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
-                this.setStyle((ReferenceWidgetDescriptionStyle) null);
-                return;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
-                this.getConditionalStyles().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
+				setReferenceOwnerExpression(REFERENCE_OWNER_EXPRESSION_EDEFAULT);
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
+				setReferenceNameExpression(REFERENCE_NAME_EXPRESSION_EDEFAULT);
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+				getBody().clear();
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+				setStyle((ReferenceWidgetDescriptionStyle)null);
+				return;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+				getConditionalStyles().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
-                return REFERENCE_OWNER_EXPRESSION_EDEFAULT == null ? this.referenceOwnerExpression != null : !REFERENCE_OWNER_EXPRESSION_EDEFAULT.equals(this.referenceOwnerExpression);
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
-                return REFERENCE_NAME_EXPRESSION_EDEFAULT == null ? this.referenceNameExpression != null : !REFERENCE_NAME_EXPRESSION_EDEFAULT.equals(this.referenceNameExpression);
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
-                return this.body != null && !this.body.isEmpty();
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
-                return this.style != null;
-            case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
-                return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				return IS_ENABLED_EXPRESSION_EDEFAULT == null ? isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(isEnabledExpression);
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_OWNER_EXPRESSION:
+				return REFERENCE_OWNER_EXPRESSION_EDEFAULT == null ? referenceOwnerExpression != null : !REFERENCE_OWNER_EXPRESSION_EDEFAULT.equals(referenceOwnerExpression);
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__REFERENCE_NAME_EXPRESSION:
+				return REFERENCE_NAME_EXPRESSION_EDEFAULT == null ? referenceNameExpression != null : !REFERENCE_NAME_EXPRESSION_EDEFAULT.equals(referenceNameExpression);
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__BODY:
+				return body != null && !body.isEmpty();
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__STYLE:
+				return style != null;
+			case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION__CONDITIONAL_STYLES:
+				return conditionalStyles != null && !conditionalStyles.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (isEnabledExpression: ");
-        result.append(this.isEnabledExpression);
-        result.append(", referenceOwnerExpression: ");
-        result.append(this.referenceOwnerExpression);
-        result.append(", referenceNameExpression: ");
-        result.append(this.referenceNameExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (isEnabledExpression: ");
+		result.append(isEnabledExpression);
+		result.append(", referenceOwnerExpression: ");
+		result.append(referenceOwnerExpression);
+		result.append(", referenceNameExpression: ");
+		result.append(referenceNameExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ReferenceWidgetDescriptionImpl

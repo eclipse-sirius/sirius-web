@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,22 +25,20 @@ import org.eclipse.sirius.components.view.form.WidgetDescriptionStyle;
  */
 public abstract class WidgetDescriptionStyleImpl extends MinimalEObjectImpl.Container implements WidgetDescriptionStyle {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected WidgetDescriptionStyleImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.WIDGET_DESCRIPTION_STYLE;
-    }
+		return FormPackage.Literals.WIDGET_DESCRIPTION_STYLE;
+	}
 
 } // WidgetDescriptionStyleImpl

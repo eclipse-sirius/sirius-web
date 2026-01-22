@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,37 +40,35 @@ import org.eclipse.sirius.components.view.Operation;
 public interface ButtonDescription extends WidgetDescription {
 
     /**
-     * Returns the value of the '<em><b>Button Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Button Label Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Button Label Expression</em>' attribute.
-     * @see #setButtonLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getButtonDescription_ButtonLabelExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Button Label Expression</em>' attribute.
+	 * @see #setButtonLabelExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getButtonDescription_ButtonLabelExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getButtonLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getButtonLabelExpression
-     * <em>Button Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Button Label Expression</em>' attribute.
-     * @see #getButtonLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getButtonLabelExpression <em>Button Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Button Label Expression</em>' attribute.
+	 * @see #getButtonLabelExpression()
+	 * @generated
+	 */
     void setButtonLabelExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Body</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getButtonDescription_Body()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Body</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.Operation}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Body</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getButtonDescription_Body()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<Operation> getBody();
 
     /**
@@ -86,14 +84,12 @@ public interface ButtonDescription extends WidgetDescription {
     String getImageExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getImageExpression
-     * <em>Image Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Image Expression</em>' attribute.
-     * @see #getImageExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getImageExpression <em>Image Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Image Expression</em>' attribute.
+	 * @see #getImageExpression()
+	 * @generated
+	 */
     void setImageExpression(String value);
 
     /**
@@ -109,49 +105,45 @@ public interface ButtonDescription extends WidgetDescription {
     ButtonDescriptionStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getStyle <em>Style</em>}'
-     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getStyle <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Style</em>' containment reference.
+	 * @see #getStyle()
+	 * @generated
+	 */
     void setStyle(ButtonDescriptionStyle value);
 
     /**
-     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle}. <!-- begin-user-doc
+	 * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle}.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getButtonDescription_ConditionalStyles()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getButtonDescription_ConditionalStyles()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<ConditionalButtonDescriptionStyle> getConditionalStyles();
 
     /**
-     * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Is Enabled Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Is Enabled Expression</em>' attribute.
-     * @see #setIsEnabledExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getButtonDescription_IsEnabledExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Is Enabled Expression</em>' attribute.
+	 * @see #setIsEnabledExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getButtonDescription_IsEnabledExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getIsEnabledExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getIsEnabledExpression
-     * <em>Is Enabled Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Is Enabled Expression</em>' attribute.
-     * @see #getIsEnabledExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ButtonDescription#getIsEnabledExpression <em>Is Enabled Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Enabled Expression</em>' attribute.
+	 * @see #getIsEnabledExpression()
+	 * @generated
+	 */
     void setIsEnabledExpression(String value);
 
 } // ButtonDescription

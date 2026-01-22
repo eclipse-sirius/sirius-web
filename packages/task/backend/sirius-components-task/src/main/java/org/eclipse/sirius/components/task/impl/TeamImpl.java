@@ -27,118 +27,110 @@ import org.eclipse.sirius.components.task.Team;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.task.impl.TeamImpl#getMembers <em>Members</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.impl.TeamImpl#getMembers <em>Members</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class TeamImpl extends ResourceImpl implements Team {
     /**
-     * The cached value of the '{@link #getMembers() <em>Members</em>}' reference list. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getMembers() <em>Members</em>}' reference list.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getMembers()
-     * @generated
-     * @ordered
-     */
+	 * @see #getMembers()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Person> members;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TeamImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TaskPackage.Literals.TEAM;
-    }
+		return TaskPackage.Literals.TEAM;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Person> getMembers() {
-        if (this.members == null) {
-            this.members = new EObjectResolvingEList<>(Person.class, this, TaskPackage.TEAM__MEMBERS);
-        }
-        return this.members;
-    }
+		if (members == null)
+		{
+			members = new EObjectResolvingEList<Person>(Person.class, this, TaskPackage.TEAM__MEMBERS);
+		}
+		return members;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TaskPackage.TEAM__MEMBERS:
-                return this.getMembers();
-            default:
-                return super.eGet(featureID, resolve, coreType);
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.TEAM__MEMBERS:
+				return getMembers();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TaskPackage.TEAM__MEMBERS:
-                this.getMembers().clear();
-                this.getMembers().addAll((Collection<? extends Person>) newValue);
-                return;
-            default:
-                super.eSet(featureID, newValue);
-                return;
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.TEAM__MEMBERS:
+				getMembers().clear();
+				getMembers().addAll((Collection<? extends Person>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TaskPackage.TEAM__MEMBERS:
-                this.getMembers().clear();
-                return;
-            default:
-                super.eUnset(featureID);
-                return;
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.TEAM__MEMBERS:
+				getMembers().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TaskPackage.TEAM__MEMBERS:
-                return this.members != null && !this.members.isEmpty();
-            default:
-                return super.eIsSet(featureID);
-        }
-    }
+		switch (featureID)
+		{
+			case TaskPackage.TEAM__MEMBERS:
+				return members != null && !members.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // TeamImpl

@@ -24,22 +24,20 @@ import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
  */
 public class TargetEdgeEndReconnectionToolImpl extends EdgeReconnectionToolImpl implements TargetEdgeEndReconnectionTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TargetEdgeEndReconnectionToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.TARGET_EDGE_END_RECONNECTION_TOOL;
-    }
+		return DiagramPackage.Literals.TARGET_EDGE_END_RECONNECTION_TOOL;
+	}
 
 } // TargetEdgeEndReconnectionToolImpl

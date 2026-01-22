@@ -20,9 +20,8 @@ package org.eclipse.sirius.components.view.diagram;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#getShape <em>Shape</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#isPositionDependentRotation
- * <em>Position Dependent Rotation</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#getShape <em>Shape</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#isPositionDependentRotation <em>Position Dependent Rotation</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getImageNodeStyleDescription()
@@ -31,49 +30,44 @@ package org.eclipse.sirius.components.view.diagram;
  */
 public interface ImageNodeStyleDescription extends NodeStyleDescription {
     /**
-     * Returns the value of the '<em><b>Shape</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Shape</em>' attribute.
-     * @see #setShape(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getImageNodeStyleDescription_Shape()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Shape</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Shape</em>' attribute.
+	 * @see #setShape(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getImageNodeStyleDescription_Shape()
+	 * @model
+	 * @generated
+	 */
     String getShape();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#getShape
-     * <em>Shape</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Shape</em>' attribute.
-     * @see #getShape()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#getShape <em>Shape</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Shape</em>' attribute.
+	 * @see #getShape()
+	 * @generated
+	 */
     void setShape(String value);
 
     /**
-     * Returns the value of the '<em><b>Position Dependent Rotation</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Position Dependent Rotation</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Position Dependent Rotation</em>' attribute.
-     * @see #setPositionDependentRotation(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getImageNodeStyleDescription_PositionDependentRotation()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Position Dependent Rotation</em>' attribute.
+	 * @see #setPositionDependentRotation(boolean)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getImageNodeStyleDescription_PositionDependentRotation()
+	 * @model
+	 * @generated
+	 */
     boolean isPositionDependentRotation();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#isPositionDependentRotation
-     * <em>Position Dependent Rotation</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Position Dependent Rotation</em>' attribute.
-     * @see #isPositionDependentRotation()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription#isPositionDependentRotation <em>Position Dependent Rotation</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Position Dependent Rotation</em>' attribute.
+	 * @see #isPositionDependentRotation()
+	 * @generated
+	 */
     void setPositionDependentRotation(boolean value);
 
 } // ImageNodeStyleDescription

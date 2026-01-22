@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,37 +43,33 @@ public interface ImageDescription extends WidgetDescription {
     String getUrlExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ImageDescription#getUrlExpression <em>Url
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Url Expression</em>' attribute.
-     * @see #getUrlExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ImageDescription#getUrlExpression <em>Url Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Url Expression</em>' attribute.
+	 * @see #getUrlExpression()
+	 * @generated
+	 */
     void setUrlExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Max Width Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Max Width Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Max Width Expression</em>' attribute.
-     * @see #setMaxWidthExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getImageDescription_MaxWidthExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Max Width Expression</em>' attribute.
+	 * @see #setMaxWidthExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getImageDescription_MaxWidthExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getMaxWidthExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ImageDescription#getMaxWidthExpression
-     * <em>Max Width Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Max Width Expression</em>' attribute.
-     * @see #getMaxWidthExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.ImageDescription#getMaxWidthExpression <em>Max Width Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Max Width Expression</em>' attribute.
+	 * @see #getMaxWidthExpression()
+	 * @generated
+	 */
     void setMaxWidthExpression(String value);
 
 } // ImageDescription

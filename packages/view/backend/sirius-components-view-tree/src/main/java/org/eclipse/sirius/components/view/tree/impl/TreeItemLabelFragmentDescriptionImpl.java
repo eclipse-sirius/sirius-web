@@ -27,10 +27,8 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemLabelFragmentDescriptionImpl#getLabelExpression
- * <em>Label Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemLabelFragmentDescriptionImpl#getStyle
- * <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemLabelFragmentDescriptionImpl#getLabelExpression <em>Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeItemLabelFragmentDescriptionImpl#getStyle <em>Style</em>}</li>
  * </ul>
  *
  * @generated
@@ -38,23 +36,23 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
 public class TreeItemLabelFragmentDescriptionImpl extends TreeItemLabelElementDescriptionImpl implements TreeItemLabelFragmentDescription {
 
     /**
-     * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String LABEL_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getLabelExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
 
     /**
@@ -68,172 +66,164 @@ public class TreeItemLabelFragmentDescriptionImpl extends TreeItemLabelElementDe
     protected TextStyleDescription style;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TreeItemLabelFragmentDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TreePackage.Literals.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION;
-    }
+		return TreePackage.Literals.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getLabelExpression() {
-        return this.labelExpression;
-    }
+		return labelExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setLabelExpression(String newLabelExpression) {
-        String oldLabelExpression = this.labelExpression;
-        this.labelExpression = newLabelExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION, oldLabelExpression, this.labelExpression));
-    }
+		String oldLabelExpression = labelExpression;
+		labelExpression = newLabelExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION, oldLabelExpression, labelExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public TextStyleDescription getStyle() {
-        if (this.style != null && this.style.eIsProxy()) {
-            InternalEObject oldStyle = (InternalEObject) this.style;
-            this.style = (TextStyleDescription) this.eResolveProxy(oldStyle);
-            if (this.style != oldStyle) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE, oldStyle, this.style));
-            }
-        }
-        return this.style;
-    }
+		if (style != null && style.eIsProxy())
+		{
+			InternalEObject oldStyle = (InternalEObject)style;
+			style = (TextStyleDescription)eResolveProxy(oldStyle);
+			if (style != oldStyle)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE, oldStyle, style));
+			}
+		}
+		return style;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setStyle(TextStyleDescription newStyle) {
-        TextStyleDescription oldStyle = this.style;
-        this.style = newStyle;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE, oldStyle, this.style));
-    }
+		TextStyleDescription oldStyle = style;
+		style = newStyle;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE, oldStyle, style));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public TextStyleDescription basicGetStyle() {
-        return this.style;
-    }
+		return style;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
-                return this.getLabelExpression();
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
-                if (resolve)
-                    return this.getStyle();
-                return this.basicGetStyle();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
+				return getLabelExpression();
+			case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
+				if (resolve) return getStyle();
+				return basicGetStyle();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
-                this.setLabelExpression((String) newValue);
-                return;
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
-                this.setStyle((TextStyleDescription) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
+				setLabelExpression((String)newValue);
+				return;
+			case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
+				setStyle((TextStyleDescription)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
-                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
-                return;
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
-                this.setStyle((TextStyleDescription) null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
+				setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
+				return;
+			case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
+				setStyle((TextStyleDescription)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
-                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
-            case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
-                return this.style != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__LABEL_EXPRESSION:
+				return LABEL_EXPRESSION_EDEFAULT == null ? labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(labelExpression);
+			case TreePackage.TREE_ITEM_LABEL_FRAGMENT_DESCRIPTION__STYLE:
+				return style != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (labelExpression: ");
-        result.append(this.labelExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (labelExpression: ");
+		result.append(labelExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // TreeItemLabelFragmentDescriptionImpl

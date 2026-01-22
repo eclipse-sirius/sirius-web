@@ -22,10 +22,9 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getNodeTools <em>Node Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getQuickAccessTools <em>Quick Access
- * Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getToolSections <em>Tool Sections</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getNodeTools <em>Node Tools</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getQuickAccessTools <em>Quick Access Tools</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.GroupPalette#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getGroupPalette()
@@ -34,14 +33,14 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface GroupPalette extends EObject {
     /**
-     * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.diagram.NodeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Node Tools</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getGroupPalette_NodeTools()
-     * @model containment="true" keys="name"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.diagram.NodeTool}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Node Tools</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getGroupPalette_NodeTools()
+	 * @model containment="true" keys="name"
+	 * @generated
+	 */
     EList<NodeTool> getNodeTools();
 
     /**

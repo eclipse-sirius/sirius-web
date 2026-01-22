@@ -27,8 +27,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DropNodeToolImpl#getAcceptedNodeTypes <em>Accepted Node
- * Types</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.DropNodeToolImpl#getAcceptedNodeTypes <em>Accepted Node Types</em>}</li>
  * </ul>
  *
  * @generated
@@ -45,95 +44,93 @@ public class DropNodeToolImpl extends ToolImpl implements DropNodeTool {
     protected EList<NodeDescription> acceptedNodeTypes;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DropNodeToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.DROP_NODE_TOOL;
-    }
+		return DiagramPackage.Literals.DROP_NODE_TOOL;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeDescription> getAcceptedNodeTypes() {
-        if (this.acceptedNodeTypes == null) {
-            this.acceptedNodeTypes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES);
-        }
-        return this.acceptedNodeTypes;
-    }
+		if (acceptedNodeTypes == null)
+		{
+			acceptedNodeTypes = new EObjectResolvingEList<NodeDescription>(NodeDescription.class, this, DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES);
+		}
+		return acceptedNodeTypes;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES:
-                return this.getAcceptedNodeTypes();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES:
+				return getAcceptedNodeTypes();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES:
-                this.getAcceptedNodeTypes().clear();
-                this.getAcceptedNodeTypes().addAll((Collection<? extends NodeDescription>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES:
+				getAcceptedNodeTypes().clear();
+				getAcceptedNodeTypes().addAll((Collection<? extends NodeDescription>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES:
-                this.getAcceptedNodeTypes().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES:
+				getAcceptedNodeTypes().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES:
-                return this.acceptedNodeTypes != null && !this.acceptedNodeTypes.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DROP_NODE_TOOL__ACCEPTED_NODE_TYPES:
+				return acceptedNodeTypes != null && !acceptedNodeTypes.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // DropNodeToolImpl

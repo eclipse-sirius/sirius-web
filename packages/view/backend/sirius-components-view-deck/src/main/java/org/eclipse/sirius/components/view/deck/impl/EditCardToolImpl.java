@@ -23,22 +23,20 @@ import org.eclipse.sirius.components.view.deck.EditCardTool;
  */
 public class EditCardToolImpl extends DeckToolImpl implements EditCardTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EditCardToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DeckPackage.Literals.EDIT_CARD_TOOL;
-    }
+		return DeckPackage.Literals.EDIT_CARD_TOOL;
+	}
 
 } // EditCardToolImpl

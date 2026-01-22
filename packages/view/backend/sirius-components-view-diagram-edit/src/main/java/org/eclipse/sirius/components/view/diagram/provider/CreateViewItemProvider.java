@@ -35,32 +35,33 @@ import org.eclipse.sirius.components.view.provider.OperationItemProvider;
  */
 public class CreateViewItemProvider extends OperationItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public CreateViewItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addParentViewExpressionPropertyDescriptor(object);
-            this.addElementDescriptionPropertyDescriptor(object);
-            this.addSemanticElementExpressionPropertyDescriptor(object);
-            this.addVariableNamePropertyDescriptor(object);
-            this.addContainmentKindPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addParentViewExpressionPropertyDescriptor(object);
+			addElementDescriptionPropertyDescriptor(object);
+			addSemanticElementExpressionPropertyDescriptor(object);
+			addVariableNamePropertyDescriptor(object);
+			addContainmentKindPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
      * This adds a property descriptor for the Parent View Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
@@ -69,11 +70,20 @@ public class CreateViewItemProvider extends OperationItemProvider {
      * @generated
      */
     protected void addParentViewExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_parentViewExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_parentViewExpression_feature", "_UI_CreateView_type"), DiagramPackage.Literals.CREATE_VIEW__PARENT_VIEW_EXPRESSION,
-                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_CreateView_parentViewExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CreateView_parentViewExpression_feature", "_UI_CreateView_type"),
+				 DiagramPackage.Literals.CREATE_VIEW__PARENT_VIEW_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Element Description feature. <!-- begin-user-doc --> <!-- end-user-doc
@@ -82,45 +92,84 @@ public class CreateViewItemProvider extends OperationItemProvider {
      * @generated
      */
     protected void addElementDescriptionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_elementDescription_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_elementDescription_feature", "_UI_CreateView_type"),
-                DiagramPackage.Literals.CREATE_VIEW__ELEMENT_DESCRIPTION, true, false, true, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_CreateView_elementDescription_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CreateView_elementDescription_feature", "_UI_CreateView_type"),
+				 DiagramPackage.Literals.CREATE_VIEW__ELEMENT_DESCRIPTION,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Semantic Element Expression feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Semantic Element Expression feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addSemanticElementExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_semanticElementExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_semanticElementExpression_feature", "_UI_CreateView_type"),
-                DiagramPackage.Literals.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_CreateView_semanticElementExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CreateView_semanticElementExpression_feature", "_UI_CreateView_type"),
+				 DiagramPackage.Literals.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Variable Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Variable Name feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addVariableNamePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_variableName_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_variableName_feature", "_UI_CreateView_type"),
-                DiagramPackage.Literals.CREATE_VIEW__VARIABLE_NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_CreateView_variableName_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CreateView_variableName_feature", "_UI_CreateView_type"),
+				 DiagramPackage.Literals.CREATE_VIEW__VARIABLE_NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Containment Kind feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Containment Kind feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addContainmentKindPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CreateView_containmentKind_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_CreateView_containmentKind_feature", "_UI_CreateView_type"),
-                DiagramPackage.Literals.CREATE_VIEW__CONTAINMENT_KIND, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_CreateView_containmentKind_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CreateView_containmentKind_feature", "_UI_CreateView_type"),
+				 DiagramPackage.Literals.CREATE_VIEW__CONTAINMENT_KIND,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This returns CreateView.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -133,25 +182,26 @@ public class CreateViewItemProvider extends OperationItemProvider {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((CreateView) object).getVariableName();
-        return label == null || label.length() == 0 ? this.getString("_UI_CreateView_type") : this.getString("_UI_CreateView_type") + " " + label;
-    }
+		String label = ((CreateView)object).getVariableName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_CreateView_type") :
+			getString("_UI_CreateView_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -162,32 +212,39 @@ public class CreateViewItemProvider extends OperationItemProvider {
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(CreateView.class)) {
-            case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
-            case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
-            case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
-            case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(CreateView.class))
+		{
+			case DiagramPackage.CREATE_VIEW__PARENT_VIEW_EXPRESSION:
+			case DiagramPackage.CREATE_VIEW__SEMANTIC_ELEMENT_EXPRESSION:
+			case DiagramPackage.CREATE_VIEW__VARIABLE_NAME:
+			case DiagramPackage.CREATE_VIEW__CONTAINMENT_KIND:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, DiagramFactory.eINSTANCE.createCreateView()));
+		newChildDescriptors.add
+			(createChildParameter
+				(ViewPackage.Literals.OPERATION__CHILDREN,
+				 DiagramFactory.eINSTANCE.createCreateView()));
 
-        newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.OPERATION__CHILDREN, DiagramFactory.eINSTANCE.createDeleteView()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(ViewPackage.Literals.OPERATION__CHILDREN,
+				 DiagramFactory.eINSTANCE.createDeleteView()));
+	}
 
 }

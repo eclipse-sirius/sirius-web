@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,148 +25,141 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.OperationalCapabilityImpl#getConstraints
- * <em>Constraints</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.OperationalCapabilityImpl#getConstraints <em>Constraints</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class OperationalCapabilityImpl extends NamedElementImpl implements OperationalCapability {
     /**
-     * The default value of the '{@link #getConstraints() <em>Constraints</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getConstraints() <em>Constraints</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getConstraints()
-     * @generated
-     * @ordered
-     */
+	 * @see #getConstraints()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String CONSTRAINTS_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getConstraints() <em>Constraints</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getConstraints() <em>Constraints</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getConstraints()
-     * @generated
-     * @ordered
-     */
+	 * @see #getConstraints()
+	 * @generated
+	 * @ordered
+	 */
     protected String constraints = CONSTRAINTS_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected OperationalCapabilityImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.OPERATIONAL_CAPABILITY;
-    }
+		return PapayaPackage.Literals.OPERATIONAL_CAPABILITY;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getConstraints() {
-        return this.constraints;
-    }
+		return constraints;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setConstraints(String newConstraints) {
-        String oldConstraints = this.constraints;
-        this.constraints = newConstraints;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS, oldConstraints, this.constraints));
-    }
+		String oldConstraints = constraints;
+		constraints = newConstraints;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS, oldConstraints, constraints));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS:
-                return this.getConstraints();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS:
+				return getConstraints();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS:
-                this.setConstraints((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS:
+				setConstraints((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS:
-                this.setConstraints(CONSTRAINTS_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS:
+				setConstraints(CONSTRAINTS_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS:
-                return CONSTRAINTS_EDEFAULT == null ? this.constraints != null : !CONSTRAINTS_EDEFAULT.equals(this.constraints);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.OPERATIONAL_CAPABILITY__CONSTRAINTS:
+				return CONSTRAINTS_EDEFAULT == null ? constraints != null : !CONSTRAINTS_EDEFAULT.equals(constraints);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (constraints: ");
-        result.append(this.constraints);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (constraints: ");
+		result.append(constraints);
+		result.append(')');
+		return result.toString();
+	}
 
 } // OperationalCapabilityImpl

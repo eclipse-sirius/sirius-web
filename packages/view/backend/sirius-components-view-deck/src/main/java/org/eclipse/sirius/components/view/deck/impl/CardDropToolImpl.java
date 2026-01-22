@@ -23,22 +23,20 @@ import org.eclipse.sirius.components.view.deck.DeckPackage;
  */
 public class CardDropToolImpl extends DeckToolImpl implements CardDropTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CardDropToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DeckPackage.Literals.CARD_DROP_TOOL;
-    }
+		return DeckPackage.Literals.CARD_DROP_TOOL;
+	}
 
 } // CardDropToolImpl

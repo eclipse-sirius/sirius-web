@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,32 +24,31 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.impl.UnsetValueImpl#getFeatureName <em>Feature Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.UnsetValueImpl#getElementExpression <em>Element
- * Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.UnsetValueImpl#getFeatureName <em>Feature Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.UnsetValueImpl#getElementExpression <em>Element Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class UnsetValueImpl extends OperationImpl implements UnsetValue {
     /**
-     * The default value of the '{@link #getFeatureName() <em>Feature Name</em>}' attribute. <!-- begin-user-doc -->
+	 * The default value of the '{@link #getFeatureName() <em>Feature Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getFeatureName()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFeatureName()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String FEATURE_NAME_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getFeatureName() <em>Feature Name</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getFeatureName() <em>Feature Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getFeatureName()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFeatureName()
+	 * @generated
+	 * @ordered
+	 */
     protected String featureName = FEATURE_NAME_EDEFAULT;
 
     /**
@@ -73,155 +72,147 @@ public class UnsetValueImpl extends OperationImpl implements UnsetValue {
     protected String elementExpression = ELEMENT_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected UnsetValueImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return ViewPackage.Literals.UNSET_VALUE;
-    }
+		return ViewPackage.Literals.UNSET_VALUE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getFeatureName() {
-        return this.featureName;
-    }
+		return featureName;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setFeatureName(String newFeatureName) {
-        String oldFeatureName = this.featureName;
-        this.featureName = newFeatureName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.UNSET_VALUE__FEATURE_NAME, oldFeatureName, this.featureName));
-    }
+		String oldFeatureName = featureName;
+		featureName = newFeatureName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.UNSET_VALUE__FEATURE_NAME, oldFeatureName, featureName));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getElementExpression() {
-        return this.elementExpression;
-    }
+		return elementExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setElementExpression(String newElementExpression) {
-        String oldElementExpression = this.elementExpression;
-        this.elementExpression = newElementExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION, oldElementExpression, this.elementExpression));
-    }
+		String oldElementExpression = elementExpression;
+		elementExpression = newElementExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION, oldElementExpression, elementExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case ViewPackage.UNSET_VALUE__FEATURE_NAME:
-                return this.getFeatureName();
-            case ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION:
-                return this.getElementExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.UNSET_VALUE__FEATURE_NAME:
+				return getFeatureName();
+			case ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION:
+				return getElementExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case ViewPackage.UNSET_VALUE__FEATURE_NAME:
-                this.setFeatureName((String) newValue);
-                return;
-            case ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION:
-                this.setElementExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.UNSET_VALUE__FEATURE_NAME:
+				setFeatureName((String)newValue);
+				return;
+			case ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION:
+				setElementExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case ViewPackage.UNSET_VALUE__FEATURE_NAME:
-                this.setFeatureName(FEATURE_NAME_EDEFAULT);
-                return;
-            case ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION:
-                this.setElementExpression(ELEMENT_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.UNSET_VALUE__FEATURE_NAME:
+				setFeatureName(FEATURE_NAME_EDEFAULT);
+				return;
+			case ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION:
+				setElementExpression(ELEMENT_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case ViewPackage.UNSET_VALUE__FEATURE_NAME:
-                return FEATURE_NAME_EDEFAULT == null ? this.featureName != null : !FEATURE_NAME_EDEFAULT.equals(this.featureName);
-            case ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION:
-                return ELEMENT_EXPRESSION_EDEFAULT == null ? this.elementExpression != null : !ELEMENT_EXPRESSION_EDEFAULT.equals(this.elementExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.UNSET_VALUE__FEATURE_NAME:
+				return FEATURE_NAME_EDEFAULT == null ? featureName != null : !FEATURE_NAME_EDEFAULT.equals(featureName);
+			case ViewPackage.UNSET_VALUE__ELEMENT_EXPRESSION:
+				return ELEMENT_EXPRESSION_EDEFAULT == null ? elementExpression != null : !ELEMENT_EXPRESSION_EDEFAULT.equals(elementExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (featureName: ");
-        result.append(this.featureName);
-        result.append(", elementExpression: ");
-        result.append(this.elementExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (featureName: ");
+		result.append(featureName);
+		result.append(", elementExpression: ");
+		result.append(elementExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // UnsetValueImpl

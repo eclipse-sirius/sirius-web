@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,61 +29,79 @@ import org.eclipse.sirius.components.view.form.FormPackage;
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.form.BarChartDescription} object.
  * <!-- begin-user-doc --> <!-- end-user-doc -->
- *
  * @generated
  */
 public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public BarChartDescriptionItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addValuesExpressionPropertyDescriptor(object);
-            this.addKeysExpressionPropertyDescriptor(object);
-            this.addYAxisLabelExpressionPropertyDescriptor(object);
-            this.addWidthPropertyDescriptor(object);
-            this.addHeightPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addValuesExpressionPropertyDescriptor(object);
+			addKeysExpressionPropertyDescriptor(object);
+			addYAxisLabelExpressionPropertyDescriptor(object);
+			addWidthPropertyDescriptor(object);
+			addHeightPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Values Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Values Expression feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addValuesExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_valuesExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_valuesExpression_feature", "_UI_BarChartDescription_type"),
-                FormPackage.Literals.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BarChartDescription_valuesExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_valuesExpression_feature", "_UI_BarChartDescription_type"),
+				 FormPackage.Literals.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Keys Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Keys Expression feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addKeysExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_keysExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_keysExpression_feature", "_UI_BarChartDescription_type"),
-                FormPackage.Literals.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BarChartDescription_keysExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_keysExpression_feature", "_UI_BarChartDescription_type"),
+				 FormPackage.Literals.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the YAxis Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
@@ -92,65 +110,93 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
      * @generated
      */
     protected void addYAxisLabelExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_yAxisLabelExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_yAxisLabelExpression_feature", "_UI_BarChartDescription_type"),
-                FormPackage.Literals.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BarChartDescription_yAxisLabelExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_yAxisLabelExpression_feature", "_UI_BarChartDescription_type"),
+				 FormPackage.Literals.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Width feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Width feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addWidthPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_width_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_width_feature", "_UI_BarChartDescription_type"),
-                FormPackage.Literals.BAR_CHART_DESCRIPTION__WIDTH, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BarChartDescription_width_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_width_feature", "_UI_BarChartDescription_type"),
+				 FormPackage.Literals.BAR_CHART_DESCRIPTION__WIDTH,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Height feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Height feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addHeightPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_BarChartDescription_height_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_height_feature", "_UI_BarChartDescription_type"), FormPackage.Literals.BAR_CHART_DESCRIPTION__HEIGHT,
-                true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_BarChartDescription_height_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_BarChartDescription_height_feature", "_UI_BarChartDescription_type"),
+				 FormPackage.Literals.BAR_CHART_DESCRIPTION__HEIGHT,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(FormPackage.Literals.BAR_CHART_DESCRIPTION__STYLE);
-            this.childrenFeatures.add(FormPackage.Literals.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(FormPackage.Literals.BAR_CHART_DESCRIPTION__STYLE);
+			childrenFeatures.add(FormPackage.Literals.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
      * This returns BarChartDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -163,25 +209,26 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((BarChartDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_BarChartDescription_type") : this.getString("_UI_BarChartDescription_type") + " " + label;
-    }
+		String label = ((BarChartDescription)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_BarChartDescription_type") :
+			getString("_UI_BarChartDescription_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -192,23 +239,24 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(BarChartDescription.class)) {
-            case FormPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
-            case FormPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
-            case FormPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
-            case FormPackage.BAR_CHART_DESCRIPTION__WIDTH:
-            case FormPackage.BAR_CHART_DESCRIPTION__HEIGHT:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-            case FormPackage.BAR_CHART_DESCRIPTION__STYLE:
-            case FormPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(BarChartDescription.class))
+		{
+			case FormPackage.BAR_CHART_DESCRIPTION__VALUES_EXPRESSION:
+			case FormPackage.BAR_CHART_DESCRIPTION__KEYS_EXPRESSION:
+			case FormPackage.BAR_CHART_DESCRIPTION__YAXIS_LABEL_EXPRESSION:
+			case FormPackage.BAR_CHART_DESCRIPTION__WIDTH:
+			case FormPackage.BAR_CHART_DESCRIPTION__HEIGHT:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case FormPackage.BAR_CHART_DESCRIPTION__STYLE:
+			case FormPackage.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
@@ -226,22 +274,27 @@ public class BarChartDescriptionItemProvider extends WidgetDescriptionItemProvid
     }
 
     /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
+		Object childFeature = feature;
+		Object childObject = child;
 
-        boolean qualify = childFeature == FormPackage.Literals.BAR_CHART_DESCRIPTION__STYLE || childFeature == FormPackage.Literals.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES;
+		boolean qualify =
+			childFeature == FormPackage.Literals.BAR_CHART_DESCRIPTION__STYLE ||
+			childFeature == FormPackage.Literals.BAR_CHART_DESCRIPTION__CONDITIONAL_STYLES;
 
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
-        return super.getCreateChildText(owner, feature, child, selection);
-    }
+		if (qualify)
+		{
+			return getString
+				("_UI_CreateChild_text2",
+				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+		}
+		return super.getCreateChildText(owner, feature, child, selection);
+	}
 
 }

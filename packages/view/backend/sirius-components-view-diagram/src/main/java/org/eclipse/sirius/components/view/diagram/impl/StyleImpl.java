@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.view.diagram.Style;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.StyleImpl#getColor <em>Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.StyleImpl#getColor <em>Color</em>}</li>
  * </ul>
  *
  * @generated
@@ -44,122 +44,118 @@ public abstract class StyleImpl extends MinimalEObjectImpl.Container implements 
     protected UserColor color;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected StyleImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.STYLE;
-    }
+		return DiagramPackage.Literals.STYLE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public UserColor getColor() {
-        if (this.color != null && this.color.eIsProxy()) {
-            InternalEObject oldColor = (InternalEObject) this.color;
-            this.color = (UserColor) this.eResolveProxy(oldColor);
-            if (this.color != oldColor) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.STYLE__COLOR, oldColor, this.color));
-            }
-        }
-        return this.color;
-    }
+		if (color != null && color.eIsProxy())
+		{
+			InternalEObject oldColor = (InternalEObject)color;
+			color = (UserColor)eResolveProxy(oldColor);
+			if (color != oldColor)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.STYLE__COLOR, oldColor, color));
+			}
+		}
+		return color;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public UserColor basicGetColor() {
-        return this.color;
-    }
+		return color;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setColor(UserColor newColor) {
-        UserColor oldColor = this.color;
-        this.color = newColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.STYLE__COLOR, oldColor, this.color));
-    }
+		UserColor oldColor = color;
+		color = newColor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.STYLE__COLOR, oldColor, color));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.STYLE__COLOR:
-                if (resolve)
-                    return this.getColor();
-                return this.basicGetColor();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.STYLE__COLOR:
+				if (resolve) return getColor();
+				return basicGetColor();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.STYLE__COLOR:
-                this.setColor((UserColor) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.STYLE__COLOR:
+				setColor((UserColor)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.STYLE__COLOR:
-                this.setColor((UserColor) null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.STYLE__COLOR:
+				setColor((UserColor)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.STYLE__COLOR:
-                return this.color != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.STYLE__COLOR:
+				return color != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // StyleImpl

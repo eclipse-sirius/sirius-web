@@ -23,22 +23,20 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
  */
 public class DeleteToolImpl extends ToolImpl implements DeleteTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DeleteToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.DELETE_TOOL;
-    }
+		return DiagramPackage.Literals.DELETE_TOOL;
+	}
 
 } // DeleteToolImpl

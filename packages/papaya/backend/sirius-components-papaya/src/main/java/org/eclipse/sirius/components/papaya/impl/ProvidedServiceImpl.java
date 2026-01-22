@@ -35,105 +35,103 @@ import org.eclipse.sirius.components.papaya.ProvidedService;
  */
 public class ProvidedServiceImpl extends NamedElementImpl implements ProvidedService {
     /**
-     * The cached value of the '{@link #getContracts() <em>Contracts</em>}' reference list. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getContracts() <em>Contracts</em>}' reference list.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getContracts()
-     * @generated
-     * @ordered
-     */
+	 * @see #getContracts()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Interface> contracts;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ProvidedServiceImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.PROVIDED_SERVICE;
-    }
+		return PapayaPackage.Literals.PROVIDED_SERVICE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Interface> getContracts() {
-        if (this.contracts == null) {
-            this.contracts = new EObjectResolvingEList<>(Interface.class, this, PapayaPackage.PROVIDED_SERVICE__CONTRACTS);
-        }
-        return this.contracts;
-    }
+		if (contracts == null)
+		{
+			contracts = new EObjectResolvingEList<Interface>(Interface.class, this, PapayaPackage.PROVIDED_SERVICE__CONTRACTS);
+		}
+		return contracts;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.PROVIDED_SERVICE__CONTRACTS:
-                return this.getContracts();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.PROVIDED_SERVICE__CONTRACTS:
+				return getContracts();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.PROVIDED_SERVICE__CONTRACTS:
-                this.getContracts().clear();
-                this.getContracts().addAll((Collection<? extends Interface>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.PROVIDED_SERVICE__CONTRACTS:
+				getContracts().clear();
+				getContracts().addAll((Collection<? extends Interface>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.PROVIDED_SERVICE__CONTRACTS:
-                this.getContracts().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.PROVIDED_SERVICE__CONTRACTS:
+				getContracts().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.PROVIDED_SERVICE__CONTRACTS:
-                return this.contracts != null && !this.contracts.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.PROVIDED_SERVICE__CONTRACTS:
+				return contracts != null && !contracts.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // ProvidedServiceImpl

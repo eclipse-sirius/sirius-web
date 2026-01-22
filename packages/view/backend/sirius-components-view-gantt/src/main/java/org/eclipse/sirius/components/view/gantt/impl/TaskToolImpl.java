@@ -33,8 +33,8 @@ import org.eclipse.sirius.components.view.gantt.TaskTool;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.gantt.impl.TaskToolImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.gantt.impl.TaskToolImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.gantt.impl.TaskToolImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.gantt.impl.TaskToolImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
@@ -61,169 +61,163 @@ public abstract class TaskToolImpl extends MinimalEObjectImpl.Container implemen
     protected String name = NAME_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getBody()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Operation> body;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TaskToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return GanttPackage.Literals.TASK_TOOL;
-    }
+		return GanttPackage.Literals.TASK_TOOL;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+		return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_TOOL__NAME, oldName, this.name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, GanttPackage.TASK_TOOL__NAME, oldName, name));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Operation> getBody() {
-        if (this.body == null) {
-            this.body = new EObjectContainmentEList<>(Operation.class, this, GanttPackage.TASK_TOOL__BODY);
-        }
-        return this.body;
-    }
+		if (body == null)
+		{
+			body = new EObjectContainmentEList<Operation>(Operation.class, this, GanttPackage.TASK_TOOL__BODY);
+		}
+		return body;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case GanttPackage.TASK_TOOL__BODY:
-                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case GanttPackage.TASK_TOOL__BODY:
+				return ((InternalEList<?>)getBody()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case GanttPackage.TASK_TOOL__NAME:
-                return this.getName();
-            case GanttPackage.TASK_TOOL__BODY:
-                return this.getBody();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case GanttPackage.TASK_TOOL__NAME:
+				return getName();
+			case GanttPackage.TASK_TOOL__BODY:
+				return getBody();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case GanttPackage.TASK_TOOL__NAME:
-                this.setName((String) newValue);
-                return;
-            case GanttPackage.TASK_TOOL__BODY:
-                this.getBody().clear();
-                this.getBody().addAll((Collection<? extends Operation>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case GanttPackage.TASK_TOOL__NAME:
+				setName((String)newValue);
+				return;
+			case GanttPackage.TASK_TOOL__BODY:
+				getBody().clear();
+				getBody().addAll((Collection<? extends Operation>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case GanttPackage.TASK_TOOL__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
-            case GanttPackage.TASK_TOOL__BODY:
-                this.getBody().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case GanttPackage.TASK_TOOL__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case GanttPackage.TASK_TOOL__BODY:
+				getBody().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case GanttPackage.TASK_TOOL__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case GanttPackage.TASK_TOOL__BODY:
-                return this.body != null && !this.body.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case GanttPackage.TASK_TOOL__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case GanttPackage.TASK_TOOL__BODY:
+				return body != null && !body.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(')');
+		return result.toString();
+	}
 
 } // TaskToolImpl

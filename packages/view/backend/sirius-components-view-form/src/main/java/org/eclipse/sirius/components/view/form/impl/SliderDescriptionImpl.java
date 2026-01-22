@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -108,13 +108,13 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected String currentValueExpression = CURRENT_VALUE_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getBody()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Operation> body;
 
     /**
@@ -138,264 +138,252 @@ public class SliderDescriptionImpl extends WidgetDescriptionImpl implements Slid
     protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected SliderDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.SLIDER_DESCRIPTION;
-    }
+		return FormPackage.Literals.SLIDER_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getMinValueExpression() {
-        return this.minValueExpression;
-    }
+		return minValueExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setMinValueExpression(String newMinValueExpression) {
-        String oldMinValueExpression = this.minValueExpression;
-        this.minValueExpression = newMinValueExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION, oldMinValueExpression, this.minValueExpression));
-    }
+		String oldMinValueExpression = minValueExpression;
+		minValueExpression = newMinValueExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION, oldMinValueExpression, minValueExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getMaxValueExpression() {
-        return this.maxValueExpression;
-    }
+		return maxValueExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setMaxValueExpression(String newMaxValueExpression) {
-        String oldMaxValueExpression = this.maxValueExpression;
-        this.maxValueExpression = newMaxValueExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION, oldMaxValueExpression, this.maxValueExpression));
-    }
+		String oldMaxValueExpression = maxValueExpression;
+		maxValueExpression = newMaxValueExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION, oldMaxValueExpression, maxValueExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getCurrentValueExpression() {
-        return this.currentValueExpression;
-    }
+		return currentValueExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setCurrentValueExpression(String newCurrentValueExpression) {
-        String oldCurrentValueExpression = this.currentValueExpression;
-        this.currentValueExpression = newCurrentValueExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION, oldCurrentValueExpression, this.currentValueExpression));
-    }
+		String oldCurrentValueExpression = currentValueExpression;
+		currentValueExpression = newCurrentValueExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION, oldCurrentValueExpression, currentValueExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Operation> getBody() {
-        if (this.body == null) {
-            this.body = new EObjectContainmentEList<>(Operation.class, this, FormPackage.SLIDER_DESCRIPTION__BODY);
-        }
-        return this.body;
-    }
+		if (body == null)
+		{
+			body = new EObjectContainmentEList<Operation>(Operation.class, this, FormPackage.SLIDER_DESCRIPTION__BODY);
+		}
+		return body;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIsEnabledExpression() {
-        return this.isEnabledExpression;
-    }
+		return isEnabledExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIsEnabledExpression(String newIsEnabledExpression) {
-        String oldIsEnabledExpression = this.isEnabledExpression;
-        this.isEnabledExpression = newIsEnabledExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, this.isEnabledExpression));
-    }
+		String oldIsEnabledExpression = isEnabledExpression;
+		isEnabledExpression = newIsEnabledExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, isEnabledExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case FormPackage.SLIDER_DESCRIPTION__BODY:
-                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case FormPackage.SLIDER_DESCRIPTION__BODY:
+				return ((InternalEList<?>)getBody()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
-                return this.getMinValueExpression();
-            case FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
-                return this.getMaxValueExpression();
-            case FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
-                return this.getCurrentValueExpression();
-            case FormPackage.SLIDER_DESCRIPTION__BODY:
-                return this.getBody();
-            case FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return this.getIsEnabledExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
+				return getMinValueExpression();
+			case FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
+				return getMaxValueExpression();
+			case FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
+				return getCurrentValueExpression();
+			case FormPackage.SLIDER_DESCRIPTION__BODY:
+				return getBody();
+			case FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				return getIsEnabledExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
-                this.setMinValueExpression((String) newValue);
-                return;
-            case FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
-                this.setMaxValueExpression((String) newValue);
-                return;
-            case FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
-                this.setCurrentValueExpression((String) newValue);
-                return;
-            case FormPackage.SLIDER_DESCRIPTION__BODY:
-                this.getBody().clear();
-                this.getBody().addAll((Collection<? extends Operation>) newValue);
-                return;
-            case FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.setIsEnabledExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
+				setMinValueExpression((String)newValue);
+				return;
+			case FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
+				setMaxValueExpression((String)newValue);
+				return;
+			case FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
+				setCurrentValueExpression((String)newValue);
+				return;
+			case FormPackage.SLIDER_DESCRIPTION__BODY:
+				getBody().clear();
+				getBody().addAll((Collection<? extends Operation>)newValue);
+				return;
+			case FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				setIsEnabledExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
-                this.setMinValueExpression(MIN_VALUE_EXPRESSION_EDEFAULT);
-                return;
-            case FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
-                this.setMaxValueExpression(MAX_VALUE_EXPRESSION_EDEFAULT);
-                return;
-            case FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
-                this.setCurrentValueExpression(CURRENT_VALUE_EXPRESSION_EDEFAULT);
-                return;
-            case FormPackage.SLIDER_DESCRIPTION__BODY:
-                this.getBody().clear();
-                return;
-            case FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
+				setMinValueExpression(MIN_VALUE_EXPRESSION_EDEFAULT);
+				return;
+			case FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
+				setMaxValueExpression(MAX_VALUE_EXPRESSION_EDEFAULT);
+				return;
+			case FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
+				setCurrentValueExpression(CURRENT_VALUE_EXPRESSION_EDEFAULT);
+				return;
+			case FormPackage.SLIDER_DESCRIPTION__BODY:
+				getBody().clear();
+				return;
+			case FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
-                return MIN_VALUE_EXPRESSION_EDEFAULT == null ? this.minValueExpression != null : !MIN_VALUE_EXPRESSION_EDEFAULT.equals(this.minValueExpression);
-            case FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
-                return MAX_VALUE_EXPRESSION_EDEFAULT == null ? this.maxValueExpression != null : !MAX_VALUE_EXPRESSION_EDEFAULT.equals(this.maxValueExpression);
-            case FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
-                return CURRENT_VALUE_EXPRESSION_EDEFAULT == null ? this.currentValueExpression != null : !CURRENT_VALUE_EXPRESSION_EDEFAULT.equals(this.currentValueExpression);
-            case FormPackage.SLIDER_DESCRIPTION__BODY:
-                return this.body != null && !this.body.isEmpty();
-            case FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.SLIDER_DESCRIPTION__MIN_VALUE_EXPRESSION:
+				return MIN_VALUE_EXPRESSION_EDEFAULT == null ? minValueExpression != null : !MIN_VALUE_EXPRESSION_EDEFAULT.equals(minValueExpression);
+			case FormPackage.SLIDER_DESCRIPTION__MAX_VALUE_EXPRESSION:
+				return MAX_VALUE_EXPRESSION_EDEFAULT == null ? maxValueExpression != null : !MAX_VALUE_EXPRESSION_EDEFAULT.equals(maxValueExpression);
+			case FormPackage.SLIDER_DESCRIPTION__CURRENT_VALUE_EXPRESSION:
+				return CURRENT_VALUE_EXPRESSION_EDEFAULT == null ? currentValueExpression != null : !CURRENT_VALUE_EXPRESSION_EDEFAULT.equals(currentValueExpression);
+			case FormPackage.SLIDER_DESCRIPTION__BODY:
+				return body != null && !body.isEmpty();
+			case FormPackage.SLIDER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				return IS_ENABLED_EXPRESSION_EDEFAULT == null ? isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(isEnabledExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (minValueExpression: ");
-        result.append(this.minValueExpression);
-        result.append(", maxValueExpression: ");
-        result.append(this.maxValueExpression);
-        result.append(", currentValueExpression: ");
-        result.append(this.currentValueExpression);
-        result.append(", isEnabledExpression: ");
-        result.append(this.isEnabledExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (minValueExpression: ");
+		result.append(minValueExpression);
+		result.append(", maxValueExpression: ");
+		result.append(maxValueExpression);
+		result.append(", currentValueExpression: ");
+		result.append(currentValueExpression);
+		result.append(", isEnabledExpression: ");
+		result.append(isEnabledExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // SliderDescriptionImpl

@@ -20,10 +20,8 @@ package org.eclipse.sirius.components.view.tree;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getContributionId <em>Contribution
- * Id</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#isWithImpactAnalysis <em>With
- * Impact Analysis</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getContributionId <em>Contribution Id</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#isWithImpactAnalysis <em>With Impact Analysis</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.tree.TreePackage#getCustomTreeItemContextMenuEntry()
@@ -44,39 +42,33 @@ public interface CustomTreeItemContextMenuEntry extends TreeItemContextMenuEntry
     String getContributionId();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getContributionId <em>Contribution
-     * Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Contribution Id</em>' attribute.
-     * @see #getContributionId()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getContributionId <em>Contribution Id</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Contribution Id</em>' attribute.
+	 * @see #getContributionId()
+	 * @generated
+	 */
     void setContributionId(String value);
 
     /**
-     * Returns the value of the '<em><b>With Impact Analysis</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>With Impact Analysis</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>With Impact Analysis</em>' attribute.
-     * @see #setWithImpactAnalysis(boolean)
-     * @see org.eclipse.sirius.components.view.tree.TreePackage#getCustomTreeItemContextMenuEntry_WithImpactAnalysis()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>With Impact Analysis</em>' attribute.
+	 * @see #setWithImpactAnalysis(boolean)
+	 * @see org.eclipse.sirius.components.view.tree.TreePackage#getCustomTreeItemContextMenuEntry_WithImpactAnalysis()
+	 * @model
+	 * @generated
+	 */
     boolean isWithImpactAnalysis();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#isWithImpactAnalysis <em>With
-     * Impact Analysis</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>With Impact Analysis</em>' attribute.
-     * @see #isWithImpactAnalysis()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#isWithImpactAnalysis <em>With Impact Analysis</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>With Impact Analysis</em>' attribute.
+	 * @see #isWithImpactAnalysis()
+	 * @generated
+	 */
     void setWithImpactAnalysis(boolean value);
 
 } // CustomTreeItemContextMenuEntry

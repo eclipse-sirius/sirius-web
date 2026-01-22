@@ -21,58 +21,62 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.sirius.components.view.provider.ViewEditPlugin;
 
 /**
- * This is the central singleton for the Table edit plugin. <!-- begin-user-doc
+ * This is the central singleton for the Table edit plugin.
+ * <!-- begin-user-doc
  * --> <!-- end-user-doc -->
- *
  * @generated
  */
 public final class TableEditPlugin extends EMFPlugin {
 
     /**
-     * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Keep track of the singleton.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public static final TableEditPlugin INSTANCE = new TableEditPlugin();
 
     /**
-     * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Keep track of the singleton.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private static Implementation plugin;
 
     /**
-     * Create the instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Create the instance.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public TableEditPlugin() {
-        super(new ResourceLocator[] {ViewEditPlugin.INSTANCE,});
-    }
+		super
+		  (new ResourceLocator [] 
+		   {
+		     ViewEditPlugin.INSTANCE,
+		   });
+	}
 
     /**
-     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
+	 * Returns the singleton instance of the Eclipse plugin.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @return the singleton instance.
-     * @generated
-     */
+	 * @return the singleton instance.
+	 * @generated
+	 */
     @Override
     public ResourceLocator getPluginResourceLocator() {
-        return plugin;
-    }
+		return plugin;
+	}
 
     /**
-     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
+	 * Returns the singleton instance of the Eclipse plugin.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @return the singleton instance.
-     * @generated
-     */
+	 * @return the singleton instance.
+	 * @generated
+	 */
     public static Implementation getPlugin() {
-        return plugin;
-    }
+		return plugin;
+	}
 
     @Override
     protected Object doGetImage(String key) throws IOException {
@@ -108,25 +112,25 @@ public final class TableEditPlugin extends EMFPlugin {
     }
 
     /**
-     * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc
+	 * The actual implementation of the Eclipse <b>Plugin</b>.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     public static class Implementation extends EclipsePlugin {
 
         /**
-         * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
+		 * Creates an instance.
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * @generated
+		 */
         public Implementation() {
-            super();
+			super();
 
-            // Remember the static instance.
-            //
-            plugin = this;
-        }
+			// Remember the static instance.
+			//
+			plugin = this;
+		}
     }
 
 }

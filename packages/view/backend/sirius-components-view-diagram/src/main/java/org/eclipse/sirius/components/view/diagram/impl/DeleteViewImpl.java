@@ -25,148 +25,141 @@ import org.eclipse.sirius.components.view.impl.OperationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DeleteViewImpl#getViewExpression <em>View
- * Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.DeleteViewImpl#getViewExpression <em>View Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class DeleteViewImpl extends OperationImpl implements DeleteView {
     /**
-     * The default value of the '{@link #getViewExpression() <em>View Expression</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getViewExpression() <em>View Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getViewExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getViewExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String VIEW_EXPRESSION_EDEFAULT = "aql:selectedNode";
 
     /**
-     * The cached value of the '{@link #getViewExpression() <em>View Expression</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getViewExpression() <em>View Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getViewExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getViewExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String viewExpression = VIEW_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DeleteViewImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.DELETE_VIEW;
-    }
+		return DiagramPackage.Literals.DELETE_VIEW;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getViewExpression() {
-        return this.viewExpression;
-    }
+		return viewExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setViewExpression(String newViewExpression) {
-        String oldViewExpression = this.viewExpression;
-        this.viewExpression = newViewExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION, oldViewExpression, this.viewExpression));
-    }
+		String oldViewExpression = viewExpression;
+		viewExpression = newViewExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION, oldViewExpression, viewExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION:
-                return this.getViewExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION:
+				return getViewExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION:
-                this.setViewExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION:
+				setViewExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION:
-                this.setViewExpression(VIEW_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION:
+				setViewExpression(VIEW_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION:
-                return VIEW_EXPRESSION_EDEFAULT == null ? this.viewExpression != null : !VIEW_EXPRESSION_EDEFAULT.equals(this.viewExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DELETE_VIEW__VIEW_EXPRESSION:
+				return VIEW_EXPRESSION_EDEFAULT == null ? viewExpression != null : !VIEW_EXPRESSION_EDEFAULT.equals(viewExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (viewExpression: ");
-        result.append(this.viewExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (viewExpression: ");
+		result.append(viewExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // DeleteViewImpl

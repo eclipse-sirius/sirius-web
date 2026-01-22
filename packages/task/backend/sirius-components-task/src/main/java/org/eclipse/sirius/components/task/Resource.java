@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.task.Resource#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.Resource#getName <em>Name</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.task.TaskPackage#getResource()
@@ -30,14 +30,14 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Resource extends EObject {
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.eclipse.sirius.components.task.TaskPackage#getResource_Name()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.sirius.components.task.TaskPackage#getResource_Name()
+	 * @model
+	 * @generated
+	 */
     String getName();
 
     /**

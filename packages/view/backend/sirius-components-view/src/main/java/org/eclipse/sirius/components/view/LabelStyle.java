@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,11 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.LabelStyle#getFontSize <em>Font Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.LabelStyle#isItalic <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.LabelStyle#isBold <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.LabelStyle#isUnderline <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.LabelStyle#isStrikeThrough <em>Strike Through</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.LabelStyle#getFontSize <em>Font Size</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.LabelStyle#isItalic <em>Italic</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.LabelStyle#isBold <em>Bold</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.LabelStyle#isUnderline <em>Underline</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.LabelStyle#isStrikeThrough <em>Strike Through</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getLabelStyle()
@@ -46,14 +46,12 @@ public interface LabelStyle extends EObject {
     int getFontSize();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#getFontSize <em>Font Size</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Font Size</em>' attribute.
-     * @see #getFontSize()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#getFontSize <em>Font Size</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Font Size</em>' attribute.
+	 * @see #getFontSize()
+	 * @generated
+	 */
     void setFontSize(int value);
 
     /**
@@ -69,14 +67,12 @@ public interface LabelStyle extends EObject {
     boolean isItalic();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isItalic <em>Italic</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Italic</em>' attribute.
-     * @see #isItalic()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isItalic <em>Italic</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Italic</em>' attribute.
+	 * @see #isItalic()
+	 * @generated
+	 */
     void setItalic(boolean value);
 
     /**
@@ -92,14 +88,12 @@ public interface LabelStyle extends EObject {
     boolean isBold();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isBold <em>Bold</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Bold</em>' attribute.
-     * @see #isBold()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isBold <em>Bold</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Bold</em>' attribute.
+	 * @see #isBold()
+	 * @generated
+	 */
     void setBold(boolean value);
 
     /**
@@ -115,37 +109,33 @@ public interface LabelStyle extends EObject {
     boolean isUnderline();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isUnderline <em>Underline</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Underline</em>' attribute.
-     * @see #isUnderline()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isUnderline <em>Underline</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Underline</em>' attribute.
+	 * @see #isUnderline()
+	 * @generated
+	 */
     void setUnderline(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Strike Through</b></em>' attribute. The default value is <code>"false"</code>.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Strike Through</em>' attribute.
-     * @see #setStrikeThrough(boolean)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getLabelStyle_StrikeThrough()
-     * @model default="false" required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Strike Through</b></em>' attribute.
+	 * The default value is <code>"false"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Strike Through</em>' attribute.
+	 * @see #setStrikeThrough(boolean)
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getLabelStyle_StrikeThrough()
+	 * @model default="false" required="true"
+	 * @generated
+	 */
     boolean isStrikeThrough();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isStrikeThrough <em>Strike
-     * Through</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Strike Through</em>' attribute.
-     * @see #isStrikeThrough()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.LabelStyle#isStrikeThrough <em>Strike Through</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Strike Through</em>' attribute.
+	 * @see #isStrikeThrough()
+	 * @generated
+	 */
     void setStrikeThrough(boolean value);
 
 } // LabelStyle

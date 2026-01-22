@@ -22,61 +22,53 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getUseStripedRowsExpression <em>Use Striped Rows
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getColumnDescriptions <em>Column
- * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getRowDescription <em>Row Description</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getCellDescriptions <em>Cell
- * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows <em>Enable Sub Rows</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getRowFilters <em>Row Filters</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getPageSizeOptionsExpression <em>Page Size
- * Options Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getDefaultPageSizeIndexExpression <em>Default
- * Page Size Index Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getUseStripedRowsExpression <em>Use Striped Rows Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getColumnDescriptions <em>Column Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getRowDescription <em>Row Description</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getCellDescriptions <em>Cell Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows <em>Enable Sub Rows</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getRowFilters <em>Row Filters</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getPageSizeOptionsExpression <em>Page Size Options Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.TableDescription#getDefaultPageSizeIndexExpression <em>Default Page Size Index Expression</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription()
  */
 public interface TableDescription extends RepresentationDescription {
 
     /**
-     * Returns the value of the '<em><b>Use Striped Rows Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Use Striped Rows Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Use Striped Rows Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     * @see #setUseStripedRowsExpression(String)
-     * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_UseStripedRowsExpression()
-     */
+	 * @return the value of the '<em>Use Striped Rows Expression</em>' attribute.
+	 * @see #setUseStripedRowsExpression(String)
+	 * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_UseStripedRowsExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getUseStripedRowsExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.table.TableDescription#getUseStripedRowsExpression <em>Use Striped
-     * Rows Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Use Striped Rows Expression</em>' attribute.
-     * @generated
-     * @see #getUseStripedRowsExpression()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.table.TableDescription#getUseStripedRowsExpression <em>Use Striped Rows Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Use Striped Rows Expression</em>' attribute.
+	 * @see #getUseStripedRowsExpression()
+	 * @generated
+	 */
     void setUseStripedRowsExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Column Descriptions</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.table.ColumnDescription}. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Column Descriptions</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.table.ColumnDescription}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Column Descriptions</em>' containment reference list.
-     * @model containment="true" keys="name"
-     * @generated
-     * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_ColumnDescriptions()
-     */
+	 * @return the value of the '<em>Column Descriptions</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_ColumnDescriptions()
+	 * @model containment="true" keys="name"
+	 * @generated
+	 */
     EList<ColumnDescription> getColumnDescriptions();
 
     /**
@@ -92,14 +84,12 @@ public interface TableDescription extends RepresentationDescription {
     RowDescription getRowDescription();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.TableDescription#getRowDescription <em>Row
-     * Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Row Description</em>' containment reference.
-     * @generated
-     * @see #getRowDescription()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.table.TableDescription#getRowDescription <em>Row Description</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Row Description</em>' containment reference.
+	 * @see #getRowDescription()
+	 * @generated
+	 */
     void setRowDescription(RowDescription value);
 
     /**
@@ -127,14 +117,12 @@ public interface TableDescription extends RepresentationDescription {
     boolean isEnableSubRows();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows
-     * <em>Enable Sub Rows</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Enable Sub Rows</em>' attribute.
-     * @generated
-     * @see #isEnableSubRows()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows <em>Enable Sub Rows</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Enable Sub Rows</em>' attribute.
+	 * @see #isEnableSubRows()
+	 * @generated
+	 */
     void setEnableSubRows(boolean value);
 
     /**
@@ -150,51 +138,45 @@ public interface TableDescription extends RepresentationDescription {
     EList<RowFilterDescription> getRowFilters();
 
     /**
-     * Returns the value of the '<em><b>Page Size Options Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Page Size Options Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Page Size Options Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     * @see #setPageSizeOptionsExpression(String)
-     * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_PageSizeOptionsExpression()
-     */
+	 * @return the value of the '<em>Page Size Options Expression</em>' attribute.
+	 * @see #setPageSizeOptionsExpression(String)
+	 * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_PageSizeOptionsExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getPageSizeOptionsExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.table.TableDescription#getPageSizeOptionsExpression <em>Page Size
-     * Options Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Page Size Options Expression</em>' attribute.
-     * @generated
-     * @see #getPageSizeOptionsExpression()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.table.TableDescription#getPageSizeOptionsExpression <em>Page Size Options Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Page Size Options Expression</em>' attribute.
+	 * @see #getPageSizeOptionsExpression()
+	 * @generated
+	 */
     void setPageSizeOptionsExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Default Page Size Index Expression</b></em>' attribute. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Default Page Size Index Expression</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Default Page Size Index Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     * @see #setDefaultPageSizeIndexExpression(String)
-     * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_DefaultPageSizeIndexExpression()
-     */
+	 * @return the value of the '<em>Default Page Size Index Expression</em>' attribute.
+	 * @see #setDefaultPageSizeIndexExpression(String)
+	 * @see org.eclipse.sirius.components.view.table.TablePackage#getTableDescription_DefaultPageSizeIndexExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getDefaultPageSizeIndexExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.table.TableDescription#getDefaultPageSizeIndexExpression <em>Default
-     * Page Size Index Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Default Page Size Index Expression</em>' attribute.
-     * @generated
-     * @see #getDefaultPageSizeIndexExpression()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.table.TableDescription#getDefaultPageSizeIndexExpression <em>Default Page Size Index Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Default Page Size Index Expression</em>' attribute.
+	 * @see #getDefaultPageSizeIndexExpression()
+	 * @generated
+	 */
     void setDefaultPageSizeIndexExpression(String value);
 
 } // TableDescription

@@ -35,12 +35,12 @@ import org.eclipse.sirius.components.papaya.Service;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getServices <em>Services</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getRepositories <em>Repositories</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getEvents <em>Events</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getCommands <em>Commands</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getQueries <em>Queries</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getDependencies <em>Dependencies</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getServices <em>Services</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getRepositories <em>Repositories</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getEvents <em>Events</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getCommands <em>Commands</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getQueries <em>Queries</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.DomainImpl#getDependencies <em>Dependencies</em>}</li>
  * </ul>
  *
  * @generated
@@ -67,13 +67,13 @@ public class DomainImpl extends NamedElementImpl implements Domain {
     protected EList<Repository> repositories;
 
     /**
-     * The cached value of the '{@link #getEvents() <em>Events</em>}' containment reference list. <!-- begin-user-doc
+	 * The cached value of the '{@link #getEvents() <em>Events</em>}' containment reference list.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getEvents()
-     * @generated
-     * @ordered
-     */
+	 * @see #getEvents()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Event> events;
 
     /**
@@ -87,257 +87,255 @@ public class DomainImpl extends NamedElementImpl implements Domain {
     protected EList<Command> commands;
 
     /**
-     * The cached value of the '{@link #getQueries() <em>Queries</em>}' containment reference list. <!-- begin-user-doc
+	 * The cached value of the '{@link #getQueries() <em>Queries</em>}' containment reference list.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getQueries()
-     * @generated
-     * @ordered
-     */
+	 * @see #getQueries()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Query> queries;
 
     /**
-     * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}' reference list. <!-- begin-user-doc
+	 * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}' reference list.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getDependencies()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDependencies()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Domain> dependencies;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DomainImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.DOMAIN;
-    }
+		return PapayaPackage.Literals.DOMAIN;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Service> getServices() {
-        if (this.services == null) {
-            this.services = new EObjectContainmentEList<>(Service.class, this, PapayaPackage.DOMAIN__SERVICES);
-        }
-        return this.services;
-    }
+		if (services == null)
+		{
+			services = new EObjectContainmentEList<Service>(Service.class, this, PapayaPackage.DOMAIN__SERVICES);
+		}
+		return services;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Repository> getRepositories() {
-        if (this.repositories == null) {
-            this.repositories = new EObjectContainmentEList<>(Repository.class, this, PapayaPackage.DOMAIN__REPOSITORIES);
-        }
-        return this.repositories;
-    }
+		if (repositories == null)
+		{
+			repositories = new EObjectContainmentEList<Repository>(Repository.class, this, PapayaPackage.DOMAIN__REPOSITORIES);
+		}
+		return repositories;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Event> getEvents() {
-        if (this.events == null) {
-            this.events = new EObjectContainmentEList<>(Event.class, this, PapayaPackage.DOMAIN__EVENTS);
-        }
-        return this.events;
-    }
+		if (events == null)
+		{
+			events = new EObjectContainmentEList<Event>(Event.class, this, PapayaPackage.DOMAIN__EVENTS);
+		}
+		return events;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Command> getCommands() {
-        if (this.commands == null) {
-            this.commands = new EObjectContainmentEList<>(Command.class, this, PapayaPackage.DOMAIN__COMMANDS);
-        }
-        return this.commands;
-    }
+		if (commands == null)
+		{
+			commands = new EObjectContainmentEList<Command>(Command.class, this, PapayaPackage.DOMAIN__COMMANDS);
+		}
+		return commands;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Query> getQueries() {
-        if (this.queries == null) {
-            this.queries = new EObjectContainmentEList<>(Query.class, this, PapayaPackage.DOMAIN__QUERIES);
-        }
-        return this.queries;
-    }
+		if (queries == null)
+		{
+			queries = new EObjectContainmentEList<Query>(Query.class, this, PapayaPackage.DOMAIN__QUERIES);
+		}
+		return queries;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Domain> getDependencies() {
-        if (this.dependencies == null) {
-            this.dependencies = new EObjectResolvingEList<>(Domain.class, this, PapayaPackage.DOMAIN__DEPENDENCIES);
-        }
-        return this.dependencies;
-    }
+		if (dependencies == null)
+		{
+			dependencies = new EObjectResolvingEList<Domain>(Domain.class, this, PapayaPackage.DOMAIN__DEPENDENCIES);
+		}
+		return dependencies;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PapayaPackage.DOMAIN__SERVICES:
-                return ((InternalEList<?>) this.getServices()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.DOMAIN__REPOSITORIES:
-                return ((InternalEList<?>) this.getRepositories()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.DOMAIN__EVENTS:
-                return ((InternalEList<?>) this.getEvents()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.DOMAIN__COMMANDS:
-                return ((InternalEList<?>) this.getCommands()).basicRemove(otherEnd, msgs);
-            case PapayaPackage.DOMAIN__QUERIES:
-                return ((InternalEList<?>) this.getQueries()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.DOMAIN__SERVICES:
+				return ((InternalEList<?>)getServices()).basicRemove(otherEnd, msgs);
+			case PapayaPackage.DOMAIN__REPOSITORIES:
+				return ((InternalEList<?>)getRepositories()).basicRemove(otherEnd, msgs);
+			case PapayaPackage.DOMAIN__EVENTS:
+				return ((InternalEList<?>)getEvents()).basicRemove(otherEnd, msgs);
+			case PapayaPackage.DOMAIN__COMMANDS:
+				return ((InternalEList<?>)getCommands()).basicRemove(otherEnd, msgs);
+			case PapayaPackage.DOMAIN__QUERIES:
+				return ((InternalEList<?>)getQueries()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.DOMAIN__SERVICES:
-                return this.getServices();
-            case PapayaPackage.DOMAIN__REPOSITORIES:
-                return this.getRepositories();
-            case PapayaPackage.DOMAIN__EVENTS:
-                return this.getEvents();
-            case PapayaPackage.DOMAIN__COMMANDS:
-                return this.getCommands();
-            case PapayaPackage.DOMAIN__QUERIES:
-                return this.getQueries();
-            case PapayaPackage.DOMAIN__DEPENDENCIES:
-                return this.getDependencies();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.DOMAIN__SERVICES:
+				return getServices();
+			case PapayaPackage.DOMAIN__REPOSITORIES:
+				return getRepositories();
+			case PapayaPackage.DOMAIN__EVENTS:
+				return getEvents();
+			case PapayaPackage.DOMAIN__COMMANDS:
+				return getCommands();
+			case PapayaPackage.DOMAIN__QUERIES:
+				return getQueries();
+			case PapayaPackage.DOMAIN__DEPENDENCIES:
+				return getDependencies();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.DOMAIN__SERVICES:
-                this.getServices().clear();
-                this.getServices().addAll((Collection<? extends Service>) newValue);
-                return;
-            case PapayaPackage.DOMAIN__REPOSITORIES:
-                this.getRepositories().clear();
-                this.getRepositories().addAll((Collection<? extends Repository>) newValue);
-                return;
-            case PapayaPackage.DOMAIN__EVENTS:
-                this.getEvents().clear();
-                this.getEvents().addAll((Collection<? extends Event>) newValue);
-                return;
-            case PapayaPackage.DOMAIN__COMMANDS:
-                this.getCommands().clear();
-                this.getCommands().addAll((Collection<? extends Command>) newValue);
-                return;
-            case PapayaPackage.DOMAIN__QUERIES:
-                this.getQueries().clear();
-                this.getQueries().addAll((Collection<? extends Query>) newValue);
-                return;
-            case PapayaPackage.DOMAIN__DEPENDENCIES:
-                this.getDependencies().clear();
-                this.getDependencies().addAll((Collection<? extends Domain>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.DOMAIN__SERVICES:
+				getServices().clear();
+				getServices().addAll((Collection<? extends Service>)newValue);
+				return;
+			case PapayaPackage.DOMAIN__REPOSITORIES:
+				getRepositories().clear();
+				getRepositories().addAll((Collection<? extends Repository>)newValue);
+				return;
+			case PapayaPackage.DOMAIN__EVENTS:
+				getEvents().clear();
+				getEvents().addAll((Collection<? extends Event>)newValue);
+				return;
+			case PapayaPackage.DOMAIN__COMMANDS:
+				getCommands().clear();
+				getCommands().addAll((Collection<? extends Command>)newValue);
+				return;
+			case PapayaPackage.DOMAIN__QUERIES:
+				getQueries().clear();
+				getQueries().addAll((Collection<? extends Query>)newValue);
+				return;
+			case PapayaPackage.DOMAIN__DEPENDENCIES:
+				getDependencies().clear();
+				getDependencies().addAll((Collection<? extends Domain>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.DOMAIN__SERVICES:
-                this.getServices().clear();
-                return;
-            case PapayaPackage.DOMAIN__REPOSITORIES:
-                this.getRepositories().clear();
-                return;
-            case PapayaPackage.DOMAIN__EVENTS:
-                this.getEvents().clear();
-                return;
-            case PapayaPackage.DOMAIN__COMMANDS:
-                this.getCommands().clear();
-                return;
-            case PapayaPackage.DOMAIN__QUERIES:
-                this.getQueries().clear();
-                return;
-            case PapayaPackage.DOMAIN__DEPENDENCIES:
-                this.getDependencies().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.DOMAIN__SERVICES:
+				getServices().clear();
+				return;
+			case PapayaPackage.DOMAIN__REPOSITORIES:
+				getRepositories().clear();
+				return;
+			case PapayaPackage.DOMAIN__EVENTS:
+				getEvents().clear();
+				return;
+			case PapayaPackage.DOMAIN__COMMANDS:
+				getCommands().clear();
+				return;
+			case PapayaPackage.DOMAIN__QUERIES:
+				getQueries().clear();
+				return;
+			case PapayaPackage.DOMAIN__DEPENDENCIES:
+				getDependencies().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.DOMAIN__SERVICES:
-                return this.services != null && !this.services.isEmpty();
-            case PapayaPackage.DOMAIN__REPOSITORIES:
-                return this.repositories != null && !this.repositories.isEmpty();
-            case PapayaPackage.DOMAIN__EVENTS:
-                return this.events != null && !this.events.isEmpty();
-            case PapayaPackage.DOMAIN__COMMANDS:
-                return this.commands != null && !this.commands.isEmpty();
-            case PapayaPackage.DOMAIN__QUERIES:
-                return this.queries != null && !this.queries.isEmpty();
-            case PapayaPackage.DOMAIN__DEPENDENCIES:
-                return this.dependencies != null && !this.dependencies.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.DOMAIN__SERVICES:
+				return services != null && !services.isEmpty();
+			case PapayaPackage.DOMAIN__REPOSITORIES:
+				return repositories != null && !repositories.isEmpty();
+			case PapayaPackage.DOMAIN__EVENTS:
+				return events != null && !events.isEmpty();
+			case PapayaPackage.DOMAIN__COMMANDS:
+				return commands != null && !commands.isEmpty();
+			case PapayaPackage.DOMAIN__QUERIES:
+				return queries != null && !queries.isEmpty();
+			case PapayaPackage.DOMAIN__DEPENDENCIES:
+				return dependencies != null && !dependencies.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // DomainImpl

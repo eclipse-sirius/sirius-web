@@ -36,22 +36,22 @@ import org.eclipse.sirius.components.papaya.Visibility;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.ConstructorImpl#getAnnotations <em>Annotations</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.ConstructorImpl#getParameters <em>Parameters</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.ConstructorImpl#getVisibility <em>Visibility</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.ConstructorImpl#getAnnotations <em>Annotations</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.ConstructorImpl#getParameters <em>Parameters</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.ConstructorImpl#getVisibility <em>Visibility</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ConstructorImpl extends MinimalEObjectImpl.Container implements Constructor {
     /**
-     * The cached value of the '{@link #getAnnotations() <em>Annotations</em>}' reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getAnnotations() <em>Annotations</em>}' reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getAnnotations()
-     * @generated
-     * @ordered
-     */
+	 * @see #getAnnotations()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Annotation> annotations;
 
     /**
@@ -65,203 +65,197 @@ public class ConstructorImpl extends MinimalEObjectImpl.Container implements Con
     protected EList<Parameter> parameters;
 
     /**
-     * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getVisibility()
-     * @generated
-     * @ordered
-     */
+	 * @see #getVisibility()
+	 * @generated
+	 * @ordered
+	 */
     protected static final Visibility VISIBILITY_EDEFAULT = Visibility.PUBLIC;
 
     /**
-     * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getVisibility() <em>Visibility</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getVisibility()
-     * @generated
-     * @ordered
-     */
+	 * @see #getVisibility()
+	 * @generated
+	 * @ordered
+	 */
     protected Visibility visibility = VISIBILITY_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ConstructorImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.CONSTRUCTOR;
-    }
+		return PapayaPackage.Literals.CONSTRUCTOR;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Annotation> getAnnotations() {
-        if (this.annotations == null) {
-            this.annotations = new EObjectResolvingEList<>(Annotation.class, this, PapayaPackage.CONSTRUCTOR__ANNOTATIONS);
-        }
-        return this.annotations;
-    }
+		if (annotations == null)
+		{
+			annotations = new EObjectResolvingEList<Annotation>(Annotation.class, this, PapayaPackage.CONSTRUCTOR__ANNOTATIONS);
+		}
+		return annotations;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Parameter> getParameters() {
-        if (this.parameters == null) {
-            this.parameters = new EObjectContainmentEList<>(Parameter.class, this, PapayaPackage.CONSTRUCTOR__PARAMETERS);
-        }
-        return this.parameters;
-    }
+		if (parameters == null)
+		{
+			parameters = new EObjectContainmentEList<Parameter>(Parameter.class, this, PapayaPackage.CONSTRUCTOR__PARAMETERS);
+		}
+		return parameters;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Visibility getVisibility() {
-        return this.visibility;
-    }
+		return visibility;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setVisibility(Visibility newVisibility) {
-        Visibility oldVisibility = this.visibility;
-        this.visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.CONSTRUCTOR__VISIBILITY, oldVisibility, this.visibility));
-    }
+		Visibility oldVisibility = visibility;
+		visibility = newVisibility == null ? VISIBILITY_EDEFAULT : newVisibility;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.CONSTRUCTOR__VISIBILITY, oldVisibility, visibility));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case PapayaPackage.CONSTRUCTOR__PARAMETERS:
-                return ((InternalEList<?>) this.getParameters()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.CONSTRUCTOR__PARAMETERS:
+				return ((InternalEList<?>)getParameters()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.CONSTRUCTOR__ANNOTATIONS:
-                return this.getAnnotations();
-            case PapayaPackage.CONSTRUCTOR__PARAMETERS:
-                return this.getParameters();
-            case PapayaPackage.CONSTRUCTOR__VISIBILITY:
-                return this.getVisibility();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.CONSTRUCTOR__ANNOTATIONS:
+				return getAnnotations();
+			case PapayaPackage.CONSTRUCTOR__PARAMETERS:
+				return getParameters();
+			case PapayaPackage.CONSTRUCTOR__VISIBILITY:
+				return getVisibility();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.CONSTRUCTOR__ANNOTATIONS:
-                this.getAnnotations().clear();
-                this.getAnnotations().addAll((Collection<? extends Annotation>) newValue);
-                return;
-            case PapayaPackage.CONSTRUCTOR__PARAMETERS:
-                this.getParameters().clear();
-                this.getParameters().addAll((Collection<? extends Parameter>) newValue);
-                return;
-            case PapayaPackage.CONSTRUCTOR__VISIBILITY:
-                this.setVisibility((Visibility) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.CONSTRUCTOR__ANNOTATIONS:
+				getAnnotations().clear();
+				getAnnotations().addAll((Collection<? extends Annotation>)newValue);
+				return;
+			case PapayaPackage.CONSTRUCTOR__PARAMETERS:
+				getParameters().clear();
+				getParameters().addAll((Collection<? extends Parameter>)newValue);
+				return;
+			case PapayaPackage.CONSTRUCTOR__VISIBILITY:
+				setVisibility((Visibility)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.CONSTRUCTOR__ANNOTATIONS:
-                this.getAnnotations().clear();
-                return;
-            case PapayaPackage.CONSTRUCTOR__PARAMETERS:
-                this.getParameters().clear();
-                return;
-            case PapayaPackage.CONSTRUCTOR__VISIBILITY:
-                this.setVisibility(VISIBILITY_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.CONSTRUCTOR__ANNOTATIONS:
+				getAnnotations().clear();
+				return;
+			case PapayaPackage.CONSTRUCTOR__PARAMETERS:
+				getParameters().clear();
+				return;
+			case PapayaPackage.CONSTRUCTOR__VISIBILITY:
+				setVisibility(VISIBILITY_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.CONSTRUCTOR__ANNOTATIONS:
-                return this.annotations != null && !this.annotations.isEmpty();
-            case PapayaPackage.CONSTRUCTOR__PARAMETERS:
-                return this.parameters != null && !this.parameters.isEmpty();
-            case PapayaPackage.CONSTRUCTOR__VISIBILITY:
-                return this.visibility != VISIBILITY_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.CONSTRUCTOR__ANNOTATIONS:
+				return annotations != null && !annotations.isEmpty();
+			case PapayaPackage.CONSTRUCTOR__PARAMETERS:
+				return parameters != null && !parameters.isEmpty();
+			case PapayaPackage.CONSTRUCTOR__VISIBILITY:
+				return visibility != VISIBILITY_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (visibility: ");
-        result.append(this.visibility);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (visibility: ");
+		result.append(visibility);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ConstructorImpl

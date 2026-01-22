@@ -31,274 +31,266 @@ import org.eclipse.sirius.components.papaya.Task;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.IterationImpl#getStartDate <em>Start Date</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.IterationImpl#getEndDate <em>End Date</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.IterationImpl#getTasks <em>Tasks</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.IterationImpl#getContributions <em>Contributions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.IterationImpl#getStartDate <em>Start Date</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.IterationImpl#getEndDate <em>End Date</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.IterationImpl#getTasks <em>Tasks</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.IterationImpl#getContributions <em>Contributions</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class IterationImpl extends NamedElementImpl implements Iteration {
     /**
-     * The default value of the '{@link #getStartDate() <em>Start Date</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getStartDate() <em>Start Date</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getStartDate()
-     * @generated
-     * @ordered
-     */
+	 * @see #getStartDate()
+	 * @generated
+	 * @ordered
+	 */
     protected static final Instant START_DATE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getStartDate() <em>Start Date</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getStartDate() <em>Start Date</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getStartDate()
-     * @generated
-     * @ordered
-     */
+	 * @see #getStartDate()
+	 * @generated
+	 * @ordered
+	 */
     protected Instant startDate = START_DATE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getEndDate() <em>End Date</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getEndDate() <em>End Date</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getEndDate()
-     * @generated
-     * @ordered
-     */
+	 * @see #getEndDate()
+	 * @generated
+	 * @ordered
+	 */
     protected static final Instant END_DATE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getEndDate() <em>End Date</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getEndDate() <em>End Date</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getEndDate()
-     * @generated
-     * @ordered
-     */
+	 * @see #getEndDate()
+	 * @generated
+	 * @ordered
+	 */
     protected Instant endDate = END_DATE_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getTasks() <em>Tasks</em>}' reference list. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getTasks() <em>Tasks</em>}' reference list.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getTasks()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTasks()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Task> tasks;
 
     /**
-     * The cached value of the '{@link #getContributions() <em>Contributions</em>}' reference list. <!-- begin-user-doc
+	 * The cached value of the '{@link #getContributions() <em>Contributions</em>}' reference list.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getContributions()
-     * @generated
-     * @ordered
-     */
+	 * @see #getContributions()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Contribution> contributions;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected IterationImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.ITERATION;
-    }
+		return PapayaPackage.Literals.ITERATION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Instant getStartDate() {
-        return this.startDate;
-    }
+		return startDate;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setStartDate(Instant newStartDate) {
-        Instant oldStartDate = this.startDate;
-        this.startDate = newStartDate;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.ITERATION__START_DATE, oldStartDate, this.startDate));
-    }
+		Instant oldStartDate = startDate;
+		startDate = newStartDate;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.ITERATION__START_DATE, oldStartDate, startDate));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Instant getEndDate() {
-        return this.endDate;
-    }
+		return endDate;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setEndDate(Instant newEndDate) {
-        Instant oldEndDate = this.endDate;
-        this.endDate = newEndDate;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.ITERATION__END_DATE, oldEndDate, this.endDate));
-    }
+		Instant oldEndDate = endDate;
+		endDate = newEndDate;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.ITERATION__END_DATE, oldEndDate, endDate));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Task> getTasks() {
-        if (this.tasks == null) {
-            this.tasks = new EObjectResolvingEList<>(Task.class, this, PapayaPackage.ITERATION__TASKS);
-        }
-        return this.tasks;
-    }
+		if (tasks == null)
+		{
+			tasks = new EObjectResolvingEList<Task>(Task.class, this, PapayaPackage.ITERATION__TASKS);
+		}
+		return tasks;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Contribution> getContributions() {
-        if (this.contributions == null) {
-            this.contributions = new EObjectResolvingEList<>(Contribution.class, this, PapayaPackage.ITERATION__CONTRIBUTIONS);
-        }
-        return this.contributions;
-    }
+		if (contributions == null)
+		{
+			contributions = new EObjectResolvingEList<Contribution>(Contribution.class, this, PapayaPackage.ITERATION__CONTRIBUTIONS);
+		}
+		return contributions;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.ITERATION__START_DATE:
-                return this.getStartDate();
-            case PapayaPackage.ITERATION__END_DATE:
-                return this.getEndDate();
-            case PapayaPackage.ITERATION__TASKS:
-                return this.getTasks();
-            case PapayaPackage.ITERATION__CONTRIBUTIONS:
-                return this.getContributions();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ITERATION__START_DATE:
+				return getStartDate();
+			case PapayaPackage.ITERATION__END_DATE:
+				return getEndDate();
+			case PapayaPackage.ITERATION__TASKS:
+				return getTasks();
+			case PapayaPackage.ITERATION__CONTRIBUTIONS:
+				return getContributions();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.ITERATION__START_DATE:
-                this.setStartDate((Instant) newValue);
-                return;
-            case PapayaPackage.ITERATION__END_DATE:
-                this.setEndDate((Instant) newValue);
-                return;
-            case PapayaPackage.ITERATION__TASKS:
-                this.getTasks().clear();
-                this.getTasks().addAll((Collection<? extends Task>) newValue);
-                return;
-            case PapayaPackage.ITERATION__CONTRIBUTIONS:
-                this.getContributions().clear();
-                this.getContributions().addAll((Collection<? extends Contribution>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ITERATION__START_DATE:
+				setStartDate((Instant)newValue);
+				return;
+			case PapayaPackage.ITERATION__END_DATE:
+				setEndDate((Instant)newValue);
+				return;
+			case PapayaPackage.ITERATION__TASKS:
+				getTasks().clear();
+				getTasks().addAll((Collection<? extends Task>)newValue);
+				return;
+			case PapayaPackage.ITERATION__CONTRIBUTIONS:
+				getContributions().clear();
+				getContributions().addAll((Collection<? extends Contribution>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.ITERATION__START_DATE:
-                this.setStartDate(START_DATE_EDEFAULT);
-                return;
-            case PapayaPackage.ITERATION__END_DATE:
-                this.setEndDate(END_DATE_EDEFAULT);
-                return;
-            case PapayaPackage.ITERATION__TASKS:
-                this.getTasks().clear();
-                return;
-            case PapayaPackage.ITERATION__CONTRIBUTIONS:
-                this.getContributions().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ITERATION__START_DATE:
+				setStartDate(START_DATE_EDEFAULT);
+				return;
+			case PapayaPackage.ITERATION__END_DATE:
+				setEndDate(END_DATE_EDEFAULT);
+				return;
+			case PapayaPackage.ITERATION__TASKS:
+				getTasks().clear();
+				return;
+			case PapayaPackage.ITERATION__CONTRIBUTIONS:
+				getContributions().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.ITERATION__START_DATE:
-                return START_DATE_EDEFAULT == null ? this.startDate != null : !START_DATE_EDEFAULT.equals(this.startDate);
-            case PapayaPackage.ITERATION__END_DATE:
-                return END_DATE_EDEFAULT == null ? this.endDate != null : !END_DATE_EDEFAULT.equals(this.endDate);
-            case PapayaPackage.ITERATION__TASKS:
-                return this.tasks != null && !this.tasks.isEmpty();
-            case PapayaPackage.ITERATION__CONTRIBUTIONS:
-                return this.contributions != null && !this.contributions.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.ITERATION__START_DATE:
+				return START_DATE_EDEFAULT == null ? startDate != null : !START_DATE_EDEFAULT.equals(startDate);
+			case PapayaPackage.ITERATION__END_DATE:
+				return END_DATE_EDEFAULT == null ? endDate != null : !END_DATE_EDEFAULT.equals(endDate);
+			case PapayaPackage.ITERATION__TASKS:
+				return tasks != null && !tasks.isEmpty();
+			case PapayaPackage.ITERATION__CONTRIBUTIONS:
+				return contributions != null && !contributions.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (startDate: ");
-        result.append(this.startDate);
-        result.append(", endDate: ");
-        result.append(this.endDate);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (startDate: ");
+		result.append(startDate);
+		result.append(", endDate: ");
+		result.append(endDate);
+		result.append(')');
+		return result.toString();
+	}
 
 } // IterationImpl

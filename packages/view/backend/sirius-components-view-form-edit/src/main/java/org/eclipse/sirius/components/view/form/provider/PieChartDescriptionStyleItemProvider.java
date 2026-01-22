@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,133 +26,210 @@ import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.PieChartDescriptionStyle;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.form.PieChartDescriptionStyle}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
- *
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.form.PieChartDescriptionStyle} object.
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
  * @generated
  */
 public class PieChartDescriptionStyleItemProvider extends WidgetDescriptionStyleItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public PieChartDescriptionStyleItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addFontSizePropertyDescriptor(object);
-            this.addItalicPropertyDescriptor(object);
-            this.addBoldPropertyDescriptor(object);
-            this.addUnderlinePropertyDescriptor(object);
-            this.addStrikeThroughPropertyDescriptor(object);
-            this.addColorsPropertyDescriptor(object);
-            this.addStrokeWidthPropertyDescriptor(object);
-            this.addStrokeColorPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addFontSizePropertyDescriptor(object);
+			addItalicPropertyDescriptor(object);
+			addBoldPropertyDescriptor(object);
+			addUnderlinePropertyDescriptor(object);
+			addStrikeThroughPropertyDescriptor(object);
+			addColorsPropertyDescriptor(object);
+			addStrokeWidthPropertyDescriptor(object);
+			addStrokeColorPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Font Size feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Font Size feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addFontSizePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_fontSize_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__FONT_SIZE, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_LabelStyle_fontSize_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_fontSize_feature", "_UI_LabelStyle_type"),
+				 ViewPackage.Literals.LABEL_STYLE__FONT_SIZE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Italic feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Italic feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addItalicPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_italic_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__ITALIC, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_LabelStyle_italic_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_italic_feature", "_UI_LabelStyle_type"),
+				 ViewPackage.Literals.LABEL_STYLE__ITALIC,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Bold feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Bold feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addBoldPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_bold_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__BOLD, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_LabelStyle_bold_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_bold_feature", "_UI_LabelStyle_type"),
+				 ViewPackage.Literals.LABEL_STYLE__BOLD,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Underline feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Underline feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addUnderlinePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_underline_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__UNDERLINE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_LabelStyle_underline_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_underline_feature", "_UI_LabelStyle_type"),
+				 ViewPackage.Literals.LABEL_STYLE__UNDERLINE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Strike Through feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Strike Through feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addStrikeThroughPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_LabelStyle_strikeThrough_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
-                ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_LabelStyle_strikeThrough_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_LabelStyle_strikeThrough_feature", "_UI_LabelStyle_type"),
+				 ViewPackage.Literals.LABEL_STYLE__STRIKE_THROUGH,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Colors feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Colors feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addColorsPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_PieChartDescriptionStyle_colors_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_colors_feature", "_UI_PieChartDescriptionStyle_type"),
-                FormPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__COLORS, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_PieChartDescriptionStyle_colors_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_colors_feature", "_UI_PieChartDescriptionStyle_type"),
+				 FormPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__COLORS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Stroke Width feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Stroke Width feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addStrokeWidthPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_PieChartDescriptionStyle_strokeWidth_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_strokeWidth_feature", "_UI_PieChartDescriptionStyle_type"),
-                FormPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH, true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_PieChartDescriptionStyle_strokeWidth_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_strokeWidth_feature", "_UI_PieChartDescriptionStyle_type"),
+				 FormPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Stroke Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Stroke Color feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addStrokeColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_PieChartDescriptionStyle_strokeColor_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_strokeColor_feature", "_UI_PieChartDescriptionStyle_type"),
-                FormPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR, true, false, false, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_PieChartDescriptionStyle_strokeColor_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_PieChartDescriptionStyle_strokeColor_feature", "_UI_PieChartDescriptionStyle_type"),
+				 FormPackage.Literals.PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR,
+				 true,
+				 false,
+				 false,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
      * This returns PieChartDescriptionStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -165,25 +242,24 @@ public class PieChartDescriptionStyleItemProvider extends WidgetDescriptionStyle
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        PieChartDescriptionStyle pieChartDescriptionStyle = (PieChartDescriptionStyle) object;
-        return this.getString("_UI_PieChartDescriptionStyle_type") + " " + pieChartDescriptionStyle.getFontSize();
-    }
+		PieChartDescriptionStyle pieChartDescriptionStyle = (PieChartDescriptionStyle)object;
+		return getString("_UI_PieChartDescriptionStyle_type") + " " + pieChartDescriptionStyle.getFontSize();
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -194,32 +270,33 @@ public class PieChartDescriptionStyleItemProvider extends WidgetDescriptionStyle
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(PieChartDescriptionStyle.class)) {
-            case FormPackage.PIE_CHART_DESCRIPTION_STYLE__FONT_SIZE:
-            case FormPackage.PIE_CHART_DESCRIPTION_STYLE__ITALIC:
-            case FormPackage.PIE_CHART_DESCRIPTION_STYLE__BOLD:
-            case FormPackage.PIE_CHART_DESCRIPTION_STYLE__UNDERLINE:
-            case FormPackage.PIE_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
-            case FormPackage.PIE_CHART_DESCRIPTION_STYLE__COLORS:
-            case FormPackage.PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH:
-            case FormPackage.PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(PieChartDescriptionStyle.class))
+		{
+			case FormPackage.PIE_CHART_DESCRIPTION_STYLE__FONT_SIZE:
+			case FormPackage.PIE_CHART_DESCRIPTION_STYLE__ITALIC:
+			case FormPackage.PIE_CHART_DESCRIPTION_STYLE__BOLD:
+			case FormPackage.PIE_CHART_DESCRIPTION_STYLE__UNDERLINE:
+			case FormPackage.PIE_CHART_DESCRIPTION_STYLE__STRIKE_THROUGH:
+			case FormPackage.PIE_CHART_DESCRIPTION_STYLE__COLORS:
+			case FormPackage.PIE_CHART_DESCRIPTION_STYLE__STROKE_WIDTH:
+			case FormPackage.PIE_CHART_DESCRIPTION_STYLE__STROKE_COLOR:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
 }

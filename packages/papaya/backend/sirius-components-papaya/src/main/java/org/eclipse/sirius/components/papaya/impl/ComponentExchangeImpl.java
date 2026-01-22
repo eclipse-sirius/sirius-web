@@ -35,105 +35,103 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
  */
 public class ComponentExchangeImpl extends NamedElementImpl implements ComponentExchange {
     /**
-     * The cached value of the '{@link #getPorts() <em>Ports</em>}' reference list. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getPorts() <em>Ports</em>}' reference list.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getPorts()
-     * @generated
-     * @ordered
-     */
+	 * @see #getPorts()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<ComponentPort> ports;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ComponentExchangeImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.COMPONENT_EXCHANGE;
-    }
+		return PapayaPackage.Literals.COMPONENT_EXCHANGE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<ComponentPort> getPorts() {
-        if (this.ports == null) {
-            this.ports = new EObjectResolvingEList<>(ComponentPort.class, this, PapayaPackage.COMPONENT_EXCHANGE__PORTS);
-        }
-        return this.ports;
-    }
+		if (ports == null)
+		{
+			ports = new EObjectResolvingEList<ComponentPort>(ComponentPort.class, this, PapayaPackage.COMPONENT_EXCHANGE__PORTS);
+		}
+		return ports;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.COMPONENT_EXCHANGE__PORTS:
-                return this.getPorts();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.COMPONENT_EXCHANGE__PORTS:
+				return getPorts();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.COMPONENT_EXCHANGE__PORTS:
-                this.getPorts().clear();
-                this.getPorts().addAll((Collection<? extends ComponentPort>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.COMPONENT_EXCHANGE__PORTS:
+				getPorts().clear();
+				getPorts().addAll((Collection<? extends ComponentPort>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.COMPONENT_EXCHANGE__PORTS:
-                this.getPorts().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.COMPONENT_EXCHANGE__PORTS:
+				getPorts().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.COMPONENT_EXCHANGE__PORTS:
-                return this.ports != null && !this.ports.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.COMPONENT_EXCHANGE__PORTS:
+				return ports != null && !ports.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // ComponentExchangeImpl

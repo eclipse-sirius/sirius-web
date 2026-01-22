@@ -24,147 +24,141 @@ import org.eclipse.sirius.components.papaya.PapayaPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentPortImpl#getProtocol <em>Protocol</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.impl.ComponentPortImpl#getProtocol <em>Protocol</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ComponentPortImpl extends NamedElementImpl implements ComponentPort {
     /**
-     * The default value of the '{@link #getProtocol() <em>Protocol</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getProtocol() <em>Protocol</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getProtocol()
-     * @generated
-     * @ordered
-     */
+	 * @see #getProtocol()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String PROTOCOL_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getProtocol() <em>Protocol</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getProtocol() <em>Protocol</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getProtocol()
-     * @generated
-     * @ordered
-     */
+	 * @see #getProtocol()
+	 * @generated
+	 * @ordered
+	 */
     protected String protocol = PROTOCOL_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ComponentPortImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.COMPONENT_PORT;
-    }
+		return PapayaPackage.Literals.COMPONENT_PORT;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getProtocol() {
-        return this.protocol;
-    }
+		return protocol;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setProtocol(String newProtocol) {
-        String oldProtocol = this.protocol;
-        this.protocol = newProtocol;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.COMPONENT_PORT__PROTOCOL, oldProtocol, this.protocol));
-    }
+		String oldProtocol = protocol;
+		protocol = newProtocol;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.COMPONENT_PORT__PROTOCOL, oldProtocol, protocol));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.COMPONENT_PORT__PROTOCOL:
-                return this.getProtocol();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.COMPONENT_PORT__PROTOCOL:
+				return getProtocol();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.COMPONENT_PORT__PROTOCOL:
-                this.setProtocol((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.COMPONENT_PORT__PROTOCOL:
+				setProtocol((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.COMPONENT_PORT__PROTOCOL:
-                this.setProtocol(PROTOCOL_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.COMPONENT_PORT__PROTOCOL:
+				setProtocol(PROTOCOL_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.COMPONENT_PORT__PROTOCOL:
-                return PROTOCOL_EDEFAULT == null ? this.protocol != null : !PROTOCOL_EDEFAULT.equals(this.protocol);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.COMPONENT_PORT__PROTOCOL:
+				return PROTOCOL_EDEFAULT == null ? protocol != null : !PROTOCOL_EDEFAULT.equals(protocol);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (protocol: ");
-        result.append(this.protocol);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (protocol: ");
+		result.append(protocol);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ComponentPortImpl

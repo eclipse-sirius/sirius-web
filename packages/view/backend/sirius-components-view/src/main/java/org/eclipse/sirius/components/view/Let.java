@@ -19,8 +19,8 @@ package org.eclipse.sirius.components.view;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.Let#getVariableName <em>Variable Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.Let#getValueExpression <em>Value Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.Let#getVariableName <em>Variable Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.Let#getValueExpression <em>Value Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getLet()
@@ -29,25 +29,23 @@ package org.eclipse.sirius.components.view;
  */
 public interface Let extends Operation {
     /**
-     * Returns the value of the '<em><b>Variable Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Variable Name</em>' attribute.
-     * @see #setVariableName(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getLet_VariableName()
-     * @model required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Variable Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Variable Name</em>' attribute.
+	 * @see #setVariableName(String)
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getLet_VariableName()
+	 * @model required="true"
+	 * @generated
+	 */
     String getVariableName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.Let#getVariableName <em>Variable Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Variable Name</em>' attribute.
-     * @see #getVariableName()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.Let#getVariableName <em>Variable Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Variable Name</em>' attribute.
+	 * @see #getVariableName()
+	 * @generated
+	 */
     void setVariableName(String value);
 
     /**
@@ -63,14 +61,12 @@ public interface Let extends Operation {
     String getValueExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.Let#getValueExpression <em>Value
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Value Expression</em>' attribute.
-     * @see #getValueExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.Let#getValueExpression <em>Value Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Value Expression</em>' attribute.
+	 * @see #getValueExpression()
+	 * @generated
+	 */
     void setValueExpression(String value);
 
 } // Let

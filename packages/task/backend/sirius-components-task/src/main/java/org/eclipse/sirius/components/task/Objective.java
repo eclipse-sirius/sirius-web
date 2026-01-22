@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.task.Objective#getOwnedKeyResults <em>Owned Key Results</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.Objective#getOwnedKeyResults <em>Owned Key Results</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.task.TaskPackage#getObjective()
@@ -30,14 +30,14 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Objective extends AbstractTask {
     /**
-     * Returns the value of the '<em><b>Owned Key Results</b></em>' containment reference list. The list contents are of
-     * type {@link org.eclipse.sirius.components.task.KeyResult}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Owned Key Results</em>' containment reference list.
-     * @see org.eclipse.sirius.components.task.TaskPackage#getObjective_OwnedKeyResults()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Owned Key Results</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.task.KeyResult}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Owned Key Results</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.task.TaskPackage#getObjective_OwnedKeyResults()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<KeyResult> getOwnedKeyResults();
 
 } // Objective

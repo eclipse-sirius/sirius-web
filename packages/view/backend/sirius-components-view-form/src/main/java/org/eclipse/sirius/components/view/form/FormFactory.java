@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,80 +17,79 @@ import org.eclipse.emf.ecore.EFactory;
 /**
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each non-abstract class of
  * the model. <!-- end-user-doc -->
- *
  * @see org.eclipse.sirius.components.view.form.FormPackage
  * @generated
  */
 public interface FormFactory extends EFactory {
     /**
-     * The singleton instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * The singleton instance of the factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     FormFactory eINSTANCE = org.eclipse.sirius.components.view.form.impl.FormFactoryImpl.init();
 
     /**
-     * Returns a new object of class '<em>Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Description</em>'.
+	 * @generated
+	 */
     FormDescription createFormDescription();
 
     /**
-     * Returns a new object of class '<em>Variable</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Variable</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Variable</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Variable</em>'.
+	 * @generated
+	 */
     FormVariable createFormVariable();
 
     /**
-     * Returns a new object of class '<em>Page Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Page Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Page Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Page Description</em>'.
+	 * @generated
+	 */
     PageDescription createPageDescription();
 
     /**
-     * Returns a new object of class '<em>Group Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Group Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Group Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Group Description</em>'.
+	 * @generated
+	 */
     GroupDescription createGroupDescription();
 
     /**
-     * Returns a new object of class '<em>Bar Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Bar Chart Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Bar Chart Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Bar Chart Description</em>'.
+	 * @generated
+	 */
     BarChartDescription createBarChartDescription();
 
     /**
-     * Returns a new object of class '<em>Split Button Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Split Button Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Split Button Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Split Button Description</em>'.
+	 * @generated
+	 */
     SplitButtonDescription createSplitButtonDescription();
 
     /**
-     * Returns a new object of class '<em>Button Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Button Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Button Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Button Description</em>'.
+	 * @generated
+	 */
     ButtonDescription createButtonDescription();
 
     /**
-     * Returns a new object of class '<em>Checkbox Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Checkbox Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Checkbox Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Checkbox Description</em>'.
+	 * @generated
+	 */
     CheckboxDescription createCheckboxDescription();
 
     /**
@@ -103,115 +102,115 @@ public interface FormFactory extends EFactory {
     FlexboxContainerDescription createFlexboxContainerDescription();
 
     /**
-     * Returns a new object of class '<em>Image Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Image Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Image Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Image Description</em>'.
+	 * @generated
+	 */
     ImageDescription createImageDescription();
 
     /**
-     * Returns a new object of class '<em>Label Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Label Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Label Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Label Description</em>'.
+	 * @generated
+	 */
     LabelDescription createLabelDescription();
 
     /**
-     * Returns a new object of class '<em>Link Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Link Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Link Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Link Description</em>'.
+	 * @generated
+	 */
     LinkDescription createLinkDescription();
 
     /**
-     * Returns a new object of class '<em>List Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>List Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>List Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>List Description</em>'.
+	 * @generated
+	 */
     ListDescription createListDescription();
 
     /**
-     * Returns a new object of class '<em>Multi Select Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Multi Select Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Multi Select Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Multi Select Description</em>'.
+	 * @generated
+	 */
     MultiSelectDescription createMultiSelectDescription();
 
     /**
-     * Returns a new object of class '<em>Tree Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Tree Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Tree Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Tree Description</em>'.
+	 * @generated
+	 */
     TreeDescription createTreeDescription();
 
     /**
-     * Returns a new object of class '<em>Date Time Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Date Time Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Date Time Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Date Time Description</em>'.
+	 * @generated
+	 */
     DateTimeDescription createDateTimeDescription();
 
     /**
-     * Returns a new object of class '<em>Slider Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Slider Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Slider Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Slider Description</em>'.
+	 * @generated
+	 */
     SliderDescription createSliderDescription();
 
     /**
-     * Returns a new object of class '<em>Pie Chart Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Pie Chart Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Pie Chart Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Pie Chart Description</em>'.
+	 * @generated
+	 */
     PieChartDescription createPieChartDescription();
 
     /**
-     * Returns a new object of class '<em>Radio Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Radio Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Radio Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Radio Description</em>'.
+	 * @generated
+	 */
     RadioDescription createRadioDescription();
 
     /**
-     * Returns a new object of class '<em>Rich Text Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Rich Text Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Rich Text Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Rich Text Description</em>'.
+	 * @generated
+	 */
     RichTextDescription createRichTextDescription();
 
     /**
-     * Returns a new object of class '<em>Select Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Select Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Select Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Select Description</em>'.
+	 * @generated
+	 */
     SelectDescription createSelectDescription();
 
     /**
-     * Returns a new object of class '<em>Text Area Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Text Area Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Text Area Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Text Area Description</em>'.
+	 * @generated
+	 */
     TextAreaDescription createTextAreaDescription();
 
     /**
-     * Returns a new object of class '<em>Textfield Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Textfield Description</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Textfield Description</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Textfield Description</em>'.
+	 * @generated
+	 */
     TextfieldDescription createTextfieldDescription();
 
     /**
@@ -224,29 +223,29 @@ public interface FormFactory extends EFactory {
     BarChartDescriptionStyle createBarChartDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Bar Chart Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Bar Chart Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Bar Chart Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Bar Chart Description Style</em>'.
+	 * @generated
+	 */
     ConditionalBarChartDescriptionStyle createConditionalBarChartDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Button Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Button Description Style</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Button Description Style</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Button Description Style</em>'.
+	 * @generated
+	 */
     ButtonDescriptionStyle createButtonDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Button Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Button Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Button Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Button Description Style</em>'.
+	 * @generated
+	 */
     ConditionalButtonDescriptionStyle createConditionalButtonDescriptionStyle();
 
     /**
@@ -259,81 +258,81 @@ public interface FormFactory extends EFactory {
     CheckboxDescriptionStyle createCheckboxDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Checkbox Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Checkbox Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Checkbox Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Checkbox Description Style</em>'.
+	 * @generated
+	 */
     ConditionalCheckboxDescriptionStyle createConditionalCheckboxDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Label Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Label Description Style</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Label Description Style</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Label Description Style</em>'.
+	 * @generated
+	 */
     LabelDescriptionStyle createLabelDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Label Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Label Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Label Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Label Description Style</em>'.
+	 * @generated
+	 */
     ConditionalLabelDescriptionStyle createConditionalLabelDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Link Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Link Description Style</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Link Description Style</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Link Description Style</em>'.
+	 * @generated
+	 */
     LinkDescriptionStyle createLinkDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Link Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Link Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Link Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Link Description Style</em>'.
+	 * @generated
+	 */
     ConditionalLinkDescriptionStyle createConditionalLinkDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>List Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>List Description Style</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>List Description Style</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>List Description Style</em>'.
+	 * @generated
+	 */
     ListDescriptionStyle createListDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional List Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional List Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional List Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional List Description Style</em>'.
+	 * @generated
+	 */
     ConditionalListDescriptionStyle createConditionalListDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Multi Select Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Multi Select Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Multi Select Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Multi Select Description Style</em>'.
+	 * @generated
+	 */
     MultiSelectDescriptionStyle createMultiSelectDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Multi Select Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Multi Select Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Multi Select Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Multi Select Description Style</em>'.
+	 * @generated
+	 */
     ConditionalMultiSelectDescriptionStyle createConditionalMultiSelectDescriptionStyle();
 
     /**
@@ -346,46 +345,46 @@ public interface FormFactory extends EFactory {
     PieChartDescriptionStyle createPieChartDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Pie Chart Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Pie Chart Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Pie Chart Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Pie Chart Description Style</em>'.
+	 * @generated
+	 */
     ConditionalPieChartDescriptionStyle createConditionalPieChartDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Radio Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Radio Description Style</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Radio Description Style</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Radio Description Style</em>'.
+	 * @generated
+	 */
     RadioDescriptionStyle createRadioDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Radio Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Radio Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Radio Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Radio Description Style</em>'.
+	 * @generated
+	 */
     ConditionalRadioDescriptionStyle createConditionalRadioDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Select Description Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Select Description Style</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Select Description Style</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Select Description Style</em>'.
+	 * @generated
+	 */
     SelectDescriptionStyle createSelectDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Select Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Select Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Select Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Select Description Style</em>'.
+	 * @generated
+	 */
     ConditionalSelectDescriptionStyle createConditionalSelectDescriptionStyle();
 
     /**
@@ -398,12 +397,12 @@ public interface FormFactory extends EFactory {
     TextareaDescriptionStyle createTextareaDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Textarea Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Textarea Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Textarea Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Textarea Description Style</em>'.
+	 * @generated
+	 */
     ConditionalTextareaDescriptionStyle createConditionalTextareaDescriptionStyle();
 
     /**
@@ -416,12 +415,12 @@ public interface FormFactory extends EFactory {
     TextfieldDescriptionStyle createTextfieldDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Textfield Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Textfield Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Textfield Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Textfield Description Style</em>'.
+	 * @generated
+	 */
     ConditionalTextfieldDescriptionStyle createConditionalTextfieldDescriptionStyle();
 
     /**
@@ -434,53 +433,53 @@ public interface FormFactory extends EFactory {
     DateTimeDescriptionStyle createDateTimeDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Date Time Description Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Date Time Description Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Date Time Description Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Date Time Description Style</em>'.
+	 * @generated
+	 */
     ConditionalDateTimeDescriptionStyle createConditionalDateTimeDescriptionStyle();
 
     /**
-     * Returns a new object of class '<em>Container Border Style</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Container Border Style</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Container Border Style</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Container Border Style</em>'.
+	 * @generated
+	 */
     ContainerBorderStyle createContainerBorderStyle();
 
     /**
-     * Returns a new object of class '<em>Conditional Container Border Style</em>'. <!-- begin-user-doc --> <!--
+	 * Returns a new object of class '<em>Conditional Container Border Style</em>'.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return a new object of class '<em>Conditional Container Border Style</em>'.
-     * @generated
-     */
+	 * @return a new object of class '<em>Conditional Container Border Style</em>'.
+	 * @generated
+	 */
     ConditionalContainerBorderStyle createConditionalContainerBorderStyle();
 
     /**
-     * Returns a new object of class '<em>Element For</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Element For</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Element For</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Element For</em>'.
+	 * @generated
+	 */
     FormElementFor createFormElementFor();
 
     /**
-     * Returns a new object of class '<em>Element If</em>'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Element If</em>'.
-     * @generated
-     */
+	 * Returns a new object of class '<em>Element If</em>'.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return a new object of class '<em>Element If</em>'.
+	 * @generated
+	 */
     FormElementIf createFormElementIf();
 
     /**
-     * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the package supported by this factory.
-     * @generated
-     */
+	 * Returns the package supported by this factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the package supported by this factory.
+	 * @generated
+	 */
     FormPackage getFormPackage();
 
 } // FormFactory

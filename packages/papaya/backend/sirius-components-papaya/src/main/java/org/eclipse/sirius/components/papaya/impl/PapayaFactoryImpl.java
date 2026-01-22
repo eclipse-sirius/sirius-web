@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,332 +78,275 @@ import org.eclipse.sirius.components.papaya.spec.RecordSpec;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
  * @generated
  */
 public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     /**
-     * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates the default factory implementation.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public static PapayaFactory init() {
-        try {
-            PapayaFactory thePapayaFactory = (PapayaFactory) EPackage.Registry.INSTANCE.getEFactory(PapayaPackage.eNS_URI);
-            if (thePapayaFactory != null) {
-                return thePapayaFactory;
-            }
-        } catch (Exception exception) {
-            EcorePlugin.INSTANCE.log(exception);
-        }
-        return new PapayaFactoryImpl();
-    }
+		try
+		{
+			PapayaFactory thePapayaFactory = (PapayaFactory)EPackage.Registry.INSTANCE.getEFactory(PapayaPackage.eNS_URI);
+			if (thePapayaFactory != null)
+			{
+				return thePapayaFactory;
+			}
+		}
+		catch (Exception exception)
+		{
+			EcorePlugin.INSTANCE.log(exception);
+		}
+		return new PapayaFactoryImpl();
+	}
 
     /**
-     * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates an instance of the factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public PapayaFactoryImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EObject create(EClass eClass) {
-        switch (eClass.getClassifierID()) {
-            case PapayaPackage.TAG:
-                return this.createTag();
-            case PapayaPackage.REFERENCING_LINK:
-                return this.createReferencingLink();
-            case PapayaPackage.CONTAINING_LINK:
-                return this.createContainingLink();
-            case PapayaPackage.FOLDER:
-                return this.createFolder();
-            case PapayaPackage.PROJECT:
-                return this.createProject();
-            case PapayaPackage.OPERATIONAL_CAPABILITY:
-                return this.createOperationalCapability();
-            case PapayaPackage.OPERATIONAL_ENTITY:
-                return this.createOperationalEntity();
-            case PapayaPackage.OPERATIONAL_ACTOR:
-                return this.createOperationalActor();
-            case PapayaPackage.OPERATIONAL_PROCESS:
-                return this.createOperationalProcess();
-            case PapayaPackage.OPERATIONAL_ACTIVITY:
-                return this.createOperationalActivity();
-            case PapayaPackage.OPERATIONAL_INTERACTION:
-                return this.createOperationalInteraction();
-            case PapayaPackage.ITERATION:
-                return this.createIteration();
-            case PapayaPackage.TASK:
-                return this.createTask();
-            case PapayaPackage.CONTRIBUTION:
-                return this.createContribution();
-            case PapayaPackage.COMPONENT:
-                return this.createComponent();
-            case PapayaPackage.COMPONENT_PORT:
-                return this.createComponentPort();
-            case PapayaPackage.COMPONENT_EXCHANGE:
-                return this.createComponentExchange();
-            case PapayaPackage.PROVIDED_SERVICE:
-                return this.createProvidedService();
-            case PapayaPackage.REQUIRED_SERVICE:
-                return this.createRequiredService();
-            case PapayaPackage.PACKAGE:
-                return this.createPackage();
-            case PapayaPackage.GENERIC_TYPE:
-                return this.createGenericType();
-            case PapayaPackage.ANNOTATION:
-                return this.createAnnotation();
-            case PapayaPackage.ANNOTATION_FIELD:
-                return this.createAnnotationField();
-            case PapayaPackage.TYPE_PARAMETER:
-                return this.createTypeParameter();
-            case PapayaPackage.INTERFACE:
-                return this.createInterface();
-            case PapayaPackage.CLASS:
-                return this.createClass();
-            case PapayaPackage.CONSTRUCTOR:
-                return this.createConstructor();
-            case PapayaPackage.ATTRIBUTE:
-                return this.createAttribute();
-            case PapayaPackage.OPERATION:
-                return this.createOperation();
-            case PapayaPackage.PARAMETER:
-                return this.createParameter();
-            case PapayaPackage.RECORD:
-                return this.createRecord();
-            case PapayaPackage.RECORD_COMPONENT:
-                return this.createRecordComponent();
-            case PapayaPackage.DATA_TYPE:
-                return this.createDataType();
-            case PapayaPackage.ENUM:
-                return this.createEnum();
-            case PapayaPackage.ENUM_LITERAL:
-                return this.createEnumLiteral();
-            case PapayaPackage.APPLICATION_CONCERN:
-                return this.createApplicationConcern();
-            case PapayaPackage.CONTROLLER:
-                return this.createController();
-            case PapayaPackage.DOMAIN:
-                return this.createDomain();
-            case PapayaPackage.SERVICE:
-                return this.createService();
-            case PapayaPackage.EVENT:
-                return this.createEvent();
-            case PapayaPackage.COMMAND:
-                return this.createCommand();
-            case PapayaPackage.QUERY:
-                return this.createQuery();
-            case PapayaPackage.REPOSITORY:
-                return this.createRepository();
-            case PapayaPackage.CHANNEL:
-                return this.createChannel();
-            case PapayaPackage.SUBSCRIPTION:
-                return this.createSubscription();
-            case PapayaPackage.PUBLICATION:
-                return this.createPublication();
-            default:
-                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-        }
-    }
+		switch (eClass.getClassifierID())
+		{
+			case PapayaPackage.TAG: return createTag();
+			case PapayaPackage.REFERENCING_LINK: return createReferencingLink();
+			case PapayaPackage.CONTAINING_LINK: return createContainingLink();
+			case PapayaPackage.FOLDER: return createFolder();
+			case PapayaPackage.PROJECT: return createProject();
+			case PapayaPackage.OPERATIONAL_CAPABILITY: return createOperationalCapability();
+			case PapayaPackage.OPERATIONAL_ENTITY: return createOperationalEntity();
+			case PapayaPackage.OPERATIONAL_ACTOR: return createOperationalActor();
+			case PapayaPackage.OPERATIONAL_PROCESS: return createOperationalProcess();
+			case PapayaPackage.OPERATIONAL_ACTIVITY: return createOperationalActivity();
+			case PapayaPackage.OPERATIONAL_INTERACTION: return createOperationalInteraction();
+			case PapayaPackage.ITERATION: return createIteration();
+			case PapayaPackage.TASK: return createTask();
+			case PapayaPackage.CONTRIBUTION: return createContribution();
+			case PapayaPackage.COMPONENT: return createComponent();
+			case PapayaPackage.COMPONENT_PORT: return createComponentPort();
+			case PapayaPackage.COMPONENT_EXCHANGE: return createComponentExchange();
+			case PapayaPackage.PROVIDED_SERVICE: return createProvidedService();
+			case PapayaPackage.REQUIRED_SERVICE: return createRequiredService();
+			case PapayaPackage.PACKAGE: return createPackage();
+			case PapayaPackage.GENERIC_TYPE: return createGenericType();
+			case PapayaPackage.ANNOTATION: return createAnnotation();
+			case PapayaPackage.ANNOTATION_FIELD: return createAnnotationField();
+			case PapayaPackage.TYPE_PARAMETER: return createTypeParameter();
+			case PapayaPackage.INTERFACE: return createInterface();
+			case PapayaPackage.CLASS: return createClass();
+			case PapayaPackage.CONSTRUCTOR: return createConstructor();
+			case PapayaPackage.ATTRIBUTE: return createAttribute();
+			case PapayaPackage.OPERATION: return createOperation();
+			case PapayaPackage.PARAMETER: return createParameter();
+			case PapayaPackage.RECORD: return createRecord();
+			case PapayaPackage.RECORD_COMPONENT: return createRecordComponent();
+			case PapayaPackage.DATA_TYPE: return createDataType();
+			case PapayaPackage.ENUM: return createEnum();
+			case PapayaPackage.ENUM_LITERAL: return createEnumLiteral();
+			case PapayaPackage.APPLICATION_CONCERN: return createApplicationConcern();
+			case PapayaPackage.CONTROLLER: return createController();
+			case PapayaPackage.DOMAIN: return createDomain();
+			case PapayaPackage.SERVICE: return createService();
+			case PapayaPackage.EVENT: return createEvent();
+			case PapayaPackage.COMMAND: return createCommand();
+			case PapayaPackage.QUERY: return createQuery();
+			case PapayaPackage.REPOSITORY: return createRepository();
+			case PapayaPackage.CHANNEL: return createChannel();
+			case PapayaPackage.SUBSCRIPTION: return createSubscription();
+			case PapayaPackage.PUBLICATION: return createPublication();
+			default:
+				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		}
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object createFromString(EDataType eDataType, String initialValue) {
-        switch (eDataType.getClassifierID()) {
-            case PapayaPackage.PRIORITY:
-                return this.createPriorityFromString(eDataType, initialValue);
-            case PapayaPackage.VISIBILITY:
-                return this.createVisibilityFromString(eDataType, initialValue);
-            case PapayaPackage.INSTANT:
-                return this.createInstantFromString(eDataType, initialValue);
-            default:
-                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-        }
-    }
+		switch (eDataType.getClassifierID())
+		{
+			case PapayaPackage.PRIORITY:
+				return createPriorityFromString(eDataType, initialValue);
+			case PapayaPackage.VISIBILITY:
+				return createVisibilityFromString(eDataType, initialValue);
+			case PapayaPackage.INSTANT:
+				return createInstantFromString(eDataType, initialValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String convertToString(EDataType eDataType, Object instanceValue) {
-        switch (eDataType.getClassifierID()) {
-            case PapayaPackage.PRIORITY:
-                return this.convertPriorityToString(eDataType, instanceValue);
-            case PapayaPackage.VISIBILITY:
-                return this.convertVisibilityToString(eDataType, instanceValue);
-            case PapayaPackage.INSTANT:
-                return this.convertInstantToString(eDataType, instanceValue);
-            default:
-                throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
-        }
-    }
+		switch (eDataType.getClassifierID())
+		{
+			case PapayaPackage.PRIORITY:
+				return convertPriorityToString(eDataType, instanceValue);
+			case PapayaPackage.VISIBILITY:
+				return convertVisibilityToString(eDataType, instanceValue);
+			case PapayaPackage.INSTANT:
+				return convertInstantToString(eDataType, instanceValue);
+			default:
+				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		}
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Tag createTag() {
-        TagImpl tag = new TagImpl();
-        return tag;
-    }
+		TagImpl tag = new TagImpl();
+		return tag;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ReferencingLink createReferencingLink() {
-        ReferencingLinkImpl referencingLink = new ReferencingLinkImpl();
-        return referencingLink;
-    }
+		ReferencingLinkImpl referencingLink = new ReferencingLinkImpl();
+		return referencingLink;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ContainingLink createContainingLink() {
-        ContainingLinkImpl containingLink = new ContainingLinkImpl();
-        return containingLink;
-    }
+		ContainingLinkImpl containingLink = new ContainingLinkImpl();
+		return containingLink;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Folder createFolder() {
-        FolderImpl folder = new FolderImpl();
-        return folder;
-    }
+		FolderImpl folder = new FolderImpl();
+		return folder;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Project createProject() {
-        ProjectImpl project = new ProjectImpl();
-        return project;
-    }
+		ProjectImpl project = new ProjectImpl();
+		return project;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public OperationalCapability createOperationalCapability() {
-        OperationalCapabilityImpl operationalCapability = new OperationalCapabilityImpl();
-        return operationalCapability;
-    }
+		OperationalCapabilityImpl operationalCapability = new OperationalCapabilityImpl();
+		return operationalCapability;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public OperationalEntity createOperationalEntity() {
-        OperationalEntityImpl operationalEntity = new OperationalEntityImpl();
-        return operationalEntity;
-    }
+		OperationalEntityImpl operationalEntity = new OperationalEntityImpl();
+		return operationalEntity;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public OperationalActor createOperationalActor() {
-        OperationalActorImpl operationalActor = new OperationalActorImpl();
-        return operationalActor;
-    }
+		OperationalActorImpl operationalActor = new OperationalActorImpl();
+		return operationalActor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public OperationalProcess createOperationalProcess() {
-        OperationalProcessImpl operationalProcess = new OperationalProcessImpl();
-        return operationalProcess;
-    }
+		OperationalProcessImpl operationalProcess = new OperationalProcessImpl();
+		return operationalProcess;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public OperationalActivity createOperationalActivity() {
-        OperationalActivityImpl operationalActivity = new OperationalActivityImpl();
-        return operationalActivity;
-    }
+		OperationalActivityImpl operationalActivity = new OperationalActivityImpl();
+		return operationalActivity;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public OperationalInteraction createOperationalInteraction() {
-        OperationalInteractionImpl operationalInteraction = new OperationalInteractionImpl();
-        return operationalInteraction;
-    }
+		OperationalInteractionImpl operationalInteraction = new OperationalInteractionImpl();
+		return operationalInteraction;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Iteration createIteration() {
-        IterationImpl iteration = new IterationImpl();
-        return iteration;
-    }
+		IterationImpl iteration = new IterationImpl();
+		return iteration;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Task createTask() {
-        TaskImpl task = new TaskImpl();
-        return task;
-    }
+		TaskImpl task = new TaskImpl();
+		return task;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Contribution createContribution() {
-        ContributionImpl contribution = new ContributionImpl();
-        return contribution;
-    }
+		ContributionImpl contribution = new ContributionImpl();
+		return contribution;
+	}
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -417,48 +360,44 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ComponentPort createComponentPort() {
-        ComponentPortImpl componentPort = new ComponentPortImpl();
-        return componentPort;
-    }
+		ComponentPortImpl componentPort = new ComponentPortImpl();
+		return componentPort;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ComponentExchange createComponentExchange() {
-        ComponentExchangeImpl componentExchange = new ComponentExchangeImpl();
-        return componentExchange;
-    }
+		ComponentExchangeImpl componentExchange = new ComponentExchangeImpl();
+		return componentExchange;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ProvidedService createProvidedService() {
-        ProvidedServiceImpl providedService = new ProvidedServiceImpl();
-        return providedService;
-    }
+		ProvidedServiceImpl providedService = new ProvidedServiceImpl();
+		return providedService;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public RequiredService createRequiredService() {
-        RequiredServiceImpl requiredService = new RequiredServiceImpl();
-        return requiredService;
-    }
+		RequiredServiceImpl requiredService = new RequiredServiceImpl();
+		return requiredService;
+	}
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -472,15 +411,14 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public GenericType createGenericType() {
-        GenericTypeImpl genericType = new GenericTypeImpl();
-        return genericType;
-    }
+		GenericTypeImpl genericType = new GenericTypeImpl();
+		return genericType;
+	}
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -494,26 +432,24 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public AnnotationField createAnnotationField() {
-        AnnotationFieldImpl annotationField = new AnnotationFieldImpl();
-        return annotationField;
-    }
+		AnnotationFieldImpl annotationField = new AnnotationFieldImpl();
+		return annotationField;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public TypeParameter createTypeParameter() {
-        TypeParameterImpl typeParameter = new TypeParameterImpl();
-        return typeParameter;
-    }
+		TypeParameterImpl typeParameter = new TypeParameterImpl();
+		return typeParameter;
+	}
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -538,48 +474,44 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Constructor createConstructor() {
-        ConstructorImpl constructor = new ConstructorImpl();
-        return constructor;
-    }
+		ConstructorImpl constructor = new ConstructorImpl();
+		return constructor;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Attribute createAttribute() {
-        AttributeImpl attribute = new AttributeImpl();
-        return attribute;
-    }
+		AttributeImpl attribute = new AttributeImpl();
+		return attribute;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Operation createOperation() {
-        OperationImpl operation = new OperationImpl();
-        return operation;
-    }
+		OperationImpl operation = new OperationImpl();
+		return operation;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Parameter createParameter() {
-        ParameterImpl parameter = new ParameterImpl();
-        return parameter;
-    }
+		ParameterImpl parameter = new ParameterImpl();
+		return parameter;
+	}
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -593,15 +525,14 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public RecordComponent createRecordComponent() {
-        RecordComponentImpl recordComponent = new RecordComponentImpl();
-        return recordComponent;
-    }
+		RecordComponentImpl recordComponent = new RecordComponentImpl();
+		return recordComponent;
+	}
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -626,178 +557,160 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EnumLiteral createEnumLiteral() {
-        EnumLiteralImpl enumLiteral = new EnumLiteralImpl();
-        return enumLiteral;
-    }
+		EnumLiteralImpl enumLiteral = new EnumLiteralImpl();
+		return enumLiteral;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ApplicationConcern createApplicationConcern() {
-        ApplicationConcernImpl applicationConcern = new ApplicationConcernImpl();
-        return applicationConcern;
-    }
+		ApplicationConcernImpl applicationConcern = new ApplicationConcernImpl();
+		return applicationConcern;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Controller createController() {
-        ControllerImpl controller = new ControllerImpl();
-        return controller;
-    }
+		ControllerImpl controller = new ControllerImpl();
+		return controller;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Domain createDomain() {
-        DomainImpl domain = new DomainImpl();
-        return domain;
-    }
+		DomainImpl domain = new DomainImpl();
+		return domain;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Service createService() {
-        ServiceImpl service = new ServiceImpl();
-        return service;
-    }
+		ServiceImpl service = new ServiceImpl();
+		return service;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Event createEvent() {
-        EventImpl event = new EventImpl();
-        return event;
-    }
+		EventImpl event = new EventImpl();
+		return event;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Command createCommand() {
-        CommandImpl command = new CommandImpl();
-        return command;
-    }
+		CommandImpl command = new CommandImpl();
+		return command;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Query createQuery() {
-        QueryImpl query = new QueryImpl();
-        return query;
-    }
+		QueryImpl query = new QueryImpl();
+		return query;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Repository createRepository() {
-        RepositoryImpl repository = new RepositoryImpl();
-        return repository;
-    }
+		RepositoryImpl repository = new RepositoryImpl();
+		return repository;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Channel createChannel() {
-        ChannelImpl channel = new ChannelImpl();
-        return channel;
-    }
+		ChannelImpl channel = new ChannelImpl();
+		return channel;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Subscription createSubscription() {
-        SubscriptionImpl subscription = new SubscriptionImpl();
-        return subscription;
-    }
+		SubscriptionImpl subscription = new SubscriptionImpl();
+		return subscription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Publication createPublication() {
-        PublicationImpl publication = new PublicationImpl();
-        return publication;
-    }
+		PublicationImpl publication = new PublicationImpl();
+		return publication;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public Priority createPriorityFromString(EDataType eDataType, String initialValue) {
-        Priority result = Priority.get(initialValue);
-        if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-        return result;
-    }
+		Priority result = Priority.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public String convertPriorityToString(EDataType eDataType, Object instanceValue) {
-        return instanceValue == null ? null : instanceValue.toString();
-    }
+		return instanceValue == null ? null : instanceValue.toString();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public Visibility createVisibilityFromString(EDataType eDataType, String initialValue) {
-        Visibility result = Visibility.get(initialValue);
-        if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
-        return result;
-    }
+		Visibility result = Visibility.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public String convertVisibilityToString(EDataType eDataType, Object instanceValue) {
-        return instanceValue == null ? null : instanceValue.toString();
-    }
+		return instanceValue == null ? null : instanceValue.toString();
+	}
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -821,24 +734,22 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public PapayaPackage getPapayaPackage() {
-        return (PapayaPackage) this.getEPackage();
-    }
+		return (PapayaPackage)getEPackage();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @deprecated
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @deprecated
+	 * @generated
+	 */
     @Deprecated
     public static PapayaPackage getPackage() {
-        return PapayaPackage.eINSTANCE;
-    }
+		return PapayaPackage.eINSTANCE;
+	}
 
 } // PapayaFactoryImpl

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,18 +32,12 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescri
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#getFontSize
- * <em>Font Size</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isItalic
- * <em>Italic</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isBold
- * <em>Bold</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isUnderline
- * <em>Underline</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isStrikeThrough
- * <em>Strike Through</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#getColor
- * <em>Color</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#getFontSize <em>Font Size</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isItalic <em>Italic</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isBold <em>Bold</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isUnderline <em>Underline</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#isStrikeThrough <em>Strike Through</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.widget.reference.impl.ConditionalReferenceWidgetDescriptionStyleImpl#getColor <em>Color</em>}</li>
  * </ul>
  *
  * @generated
@@ -51,43 +45,43 @@ import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescri
 public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalImpl implements ConditionalReferenceWidgetDescriptionStyle {
 
     /**
-     * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getFontSize() <em>Font Size</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFontSize()
+	 * @generated
+	 * @ordered
+	 */
     protected static final int FONT_SIZE_EDEFAULT = 14;
 
     /**
-     * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getFontSize() <em>Font Size</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getFontSize()
-     * @generated
-     * @ordered
-     */
+	 * @see #getFontSize()
+	 * @generated
+	 * @ordered
+	 */
     protected int fontSize = FONT_SIZE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isItalic() <em>Italic</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
+	 * @see #isItalic()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean ITALIC_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isItalic() <em>Italic</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isItalic()
-     * @generated
-     * @ordered
-     */
+	 * @see #isItalic()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean italic = ITALIC_EDEFAULT;
 
     /**
@@ -111,43 +105,43 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
     protected boolean bold = BOLD_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isUnderline() <em>Underline</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
+	 * @see #isUnderline()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean UNDERLINE_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isUnderline() <em>Underline</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isUnderline()
-     * @generated
-     * @ordered
-     */
+	 * @see #isUnderline()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean underline = UNDERLINE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+	 * The default value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
+	 * @see #isStrikeThrough()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean STRIKE_THROUGH_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #isStrikeThrough() <em>Strike Through</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #isStrikeThrough()
-     * @generated
-     * @ordered
-     */
+	 * @see #isStrikeThrough()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean strikeThrough = STRIKE_THROUGH_EDEFAULT;
 
     /**
@@ -161,392 +155,368 @@ public class ConditionalReferenceWidgetDescriptionStyleImpl extends ConditionalI
     protected UserColor color;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ConditionalReferenceWidgetDescriptionStyleImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return ReferencePackage.Literals.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE;
-    }
+		return ReferencePackage.Literals.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int getFontSize() {
-        return this.fontSize;
-    }
+		return fontSize;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setFontSize(int newFontSize) {
-        int oldFontSize = this.fontSize;
-        this.fontSize = newFontSize;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE, oldFontSize, this.fontSize));
-    }
+		int oldFontSize = fontSize;
+		fontSize = newFontSize;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE, oldFontSize, fontSize));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isItalic() {
-        return this.italic;
-    }
+		return italic;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setItalic(boolean newItalic) {
-        boolean oldItalic = this.italic;
-        this.italic = newItalic;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC, oldItalic, this.italic));
-    }
+		boolean oldItalic = italic;
+		italic = newItalic;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC, oldItalic, italic));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isBold() {
-        return this.bold;
-    }
+		return bold;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBold(boolean newBold) {
-        boolean oldBold = this.bold;
-        this.bold = newBold;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD, oldBold, this.bold));
-    }
+		boolean oldBold = bold;
+		bold = newBold;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD, oldBold, bold));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isUnderline() {
-        return this.underline;
-    }
+		return underline;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setUnderline(boolean newUnderline) {
-        boolean oldUnderline = this.underline;
-        this.underline = newUnderline;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE, oldUnderline, this.underline));
-    }
+		boolean oldUnderline = underline;
+		underline = newUnderline;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE, oldUnderline, underline));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isStrikeThrough() {
-        return this.strikeThrough;
-    }
+		return strikeThrough;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setStrikeThrough(boolean newStrikeThrough) {
-        boolean oldStrikeThrough = this.strikeThrough;
-        this.strikeThrough = newStrikeThrough;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH, oldStrikeThrough, this.strikeThrough));
-    }
+		boolean oldStrikeThrough = strikeThrough;
+		strikeThrough = newStrikeThrough;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH, oldStrikeThrough, strikeThrough));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public UserColor getColor() {
-        if (this.color != null && this.color.eIsProxy()) {
-            InternalEObject oldColor = (InternalEObject) this.color;
-            this.color = (UserColor) this.eResolveProxy(oldColor);
-            if (this.color != oldColor) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR, oldColor, this.color));
-            }
-        }
-        return this.color;
-    }
+		if (color != null && color.eIsProxy())
+		{
+			InternalEObject oldColor = (InternalEObject)color;
+			color = (UserColor)eResolveProxy(oldColor);
+			if (color != oldColor)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR, oldColor, color));
+			}
+		}
+		return color;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setColor(UserColor newColor) {
-        UserColor oldColor = this.color;
-        this.color = newColor;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR, oldColor, this.color));
-    }
+		UserColor oldColor = color;
+		color = newColor;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR, oldColor, color));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public UserColor basicGetColor() {
-        return this.color;
-    }
+		return color;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE:
-                return this.getFontSize();
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC:
-                return this.isItalic();
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD:
-                return this.isBold();
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE:
-                return this.isUnderline();
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                return this.isStrikeThrough();
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
-                if (resolve)
-                    return this.getColor();
-                return this.basicGetColor();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE:
+				return getFontSize();
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC:
+				return isItalic();
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD:
+				return isBold();
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE:
+				return isUnderline();
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				return isStrikeThrough();
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
+				if (resolve) return getColor();
+				return basicGetColor();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE:
-                this.setFontSize((Integer) newValue);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC:
-                this.setItalic((Boolean) newValue);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD:
-                this.setBold((Boolean) newValue);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE:
-                this.setUnderline((Boolean) newValue);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                this.setStrikeThrough((Boolean) newValue);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
-                this.setColor((UserColor) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE:
+				setFontSize((Integer)newValue);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC:
+				setItalic((Boolean)newValue);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD:
+				setBold((Boolean)newValue);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE:
+				setUnderline((Boolean)newValue);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				setStrikeThrough((Boolean)newValue);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
+				setColor((UserColor)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE:
-                this.setFontSize(FONT_SIZE_EDEFAULT);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC:
-                this.setItalic(ITALIC_EDEFAULT);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD:
-                this.setBold(BOLD_EDEFAULT);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE:
-                this.setUnderline(UNDERLINE_EDEFAULT);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                this.setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
-                return;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
-                this.setColor((UserColor) null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE:
+				setFontSize(FONT_SIZE_EDEFAULT);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC:
+				setItalic(ITALIC_EDEFAULT);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD:
+				setBold(BOLD_EDEFAULT);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE:
+				setUnderline(UNDERLINE_EDEFAULT);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				setStrikeThrough(STRIKE_THROUGH_EDEFAULT);
+				return;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
+				setColor((UserColor)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE:
-                return this.fontSize != FONT_SIZE_EDEFAULT;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC:
-                return this.italic != ITALIC_EDEFAULT;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD:
-                return this.bold != BOLD_EDEFAULT;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE:
-                return this.underline != UNDERLINE_EDEFAULT;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                return this.strikeThrough != STRIKE_THROUGH_EDEFAULT;
-            case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
-                return this.color != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE:
+				return fontSize != FONT_SIZE_EDEFAULT;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC:
+				return italic != ITALIC_EDEFAULT;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD:
+				return bold != BOLD_EDEFAULT;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE:
+				return underline != UNDERLINE_EDEFAULT;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH:
+				return strikeThrough != STRIKE_THROUGH_EDEFAULT;
+			case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
+				return color != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-        if (baseClass == WidgetDescriptionStyle.class) {
-            switch (derivedFeatureID) {
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == LabelStyle.class) {
-            switch (derivedFeatureID) {
-                case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE:
-                    return ViewPackage.LABEL_STYLE__FONT_SIZE;
-                case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC:
-                    return ViewPackage.LABEL_STYLE__ITALIC;
-                case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD:
-                    return ViewPackage.LABEL_STYLE__BOLD;
-                case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE:
-                    return ViewPackage.LABEL_STYLE__UNDERLINE;
-                case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH:
-                    return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == ReferenceWidgetDescriptionStyle.class) {
-            switch (derivedFeatureID) {
-                case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
-                    return ReferencePackage.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR;
-                default:
-                    return -1;
-            }
-        }
-        return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
-    }
+		if (baseClass == WidgetDescriptionStyle.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == LabelStyle.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE: return ViewPackage.LABEL_STYLE__FONT_SIZE;
+				case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC: return ViewPackage.LABEL_STYLE__ITALIC;
+				case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD: return ViewPackage.LABEL_STYLE__BOLD;
+				case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE: return ViewPackage.LABEL_STYLE__UNDERLINE;
+				case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH: return ViewPackage.LABEL_STYLE__STRIKE_THROUGH;
+				default: return -1;
+			}
+		}
+		if (baseClass == ReferenceWidgetDescriptionStyle.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR: return ReferencePackage.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-        if (baseClass == WidgetDescriptionStyle.class) {
-            switch (baseFeatureID) {
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == LabelStyle.class) {
-            switch (baseFeatureID) {
-                case ViewPackage.LABEL_STYLE__FONT_SIZE:
-                    return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE;
-                case ViewPackage.LABEL_STYLE__ITALIC:
-                    return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC;
-                case ViewPackage.LABEL_STYLE__BOLD:
-                    return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD;
-                case ViewPackage.LABEL_STYLE__UNDERLINE:
-                    return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE;
-                case ViewPackage.LABEL_STYLE__STRIKE_THROUGH:
-                    return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH;
-                default:
-                    return -1;
-            }
-        }
-        if (baseClass == ReferenceWidgetDescriptionStyle.class) {
-            switch (baseFeatureID) {
-                case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR:
-                    return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR;
-                default:
-                    return -1;
-            }
-        }
-        return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
-    }
+		if (baseClass == WidgetDescriptionStyle.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == LabelStyle.class)
+		{
+			switch (baseFeatureID)
+			{
+				case ViewPackage.LABEL_STYLE__FONT_SIZE: return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__FONT_SIZE;
+				case ViewPackage.LABEL_STYLE__ITALIC: return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__ITALIC;
+				case ViewPackage.LABEL_STYLE__BOLD: return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__BOLD;
+				case ViewPackage.LABEL_STYLE__UNDERLINE: return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__UNDERLINE;
+				case ViewPackage.LABEL_STYLE__STRIKE_THROUGH: return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__STRIKE_THROUGH;
+				default: return -1;
+			}
+		}
+		if (baseClass == ReferenceWidgetDescriptionStyle.class)
+		{
+			switch (baseFeatureID)
+			{
+				case ReferencePackage.REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR: return ReferencePackage.CONDITIONAL_REFERENCE_WIDGET_DESCRIPTION_STYLE__COLOR;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (fontSize: ");
-        result.append(this.fontSize);
-        result.append(", italic: ");
-        result.append(this.italic);
-        result.append(", bold: ");
-        result.append(this.bold);
-        result.append(", underline: ");
-        result.append(this.underline);
-        result.append(", strikeThrough: ");
-        result.append(this.strikeThrough);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (fontSize: ");
+		result.append(fontSize);
+		result.append(", italic: ");
+		result.append(italic);
+		result.append(", bold: ");
+		result.append(bold);
+		result.append(", underline: ");
+		result.append(underline);
+		result.append(", strikeThrough: ");
+		result.append(strikeThrough);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ConditionalReferenceWidgetDescriptionStyleImpl

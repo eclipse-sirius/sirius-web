@@ -51,8 +51,8 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
      * @generated
      */
     public RowDescriptionItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
      * This returns the property descriptors for the adapted class. <!--
@@ -62,53 +62,65 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addNamePropertyDescriptor(object);
-            this.addSemanticCandidatesExpressionPropertyDescriptor(object);
-            this.addHeaderLabelExpressionPropertyDescriptor(object);
-            this.addHeaderIconExpressionPropertyDescriptor(object);
-            this.addHeaderIndexLabelExpressionPropertyDescriptor(object);
-            this.addInitialHeightExpressionPropertyDescriptor(object);
-            this.addIsResizableExpressionPropertyDescriptor(object);
-            this.addDepthLevelExpressionPropertyDescriptor(object);
-            this.addHasChildrenExpressionPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addNamePropertyDescriptor(object);
+			addSemanticCandidatesExpressionPropertyDescriptor(object);
+			addHeaderLabelExpressionPropertyDescriptor(object);
+			addHeaderIconExpressionPropertyDescriptor(object);
+			addHeaderIndexLabelExpressionPropertyDescriptor(object);
+			addInitialHeightExpressionPropertyDescriptor(object);
+			addIsResizableExpressionPropertyDescriptor(object);
+			addDepthLevelExpressionPropertyDescriptor(object);
+			addHasChildrenExpressionPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Name feature. <!-- begin-user-doc -->
+	 * This adds a property descriptor for the Name feature.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addNamePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_RowDescription_name_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_name_feature",
-                                "_UI_RowDescription_type"),
-                        TablePackage.Literals.ROW_DESCRIPTION__NAME, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_RowDescription_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_name_feature", "_UI_RowDescription_type"),
+				 TablePackage.Literals.ROW_DESCRIPTION__NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Semantic Candidates Expression
-     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Semantic Candidates Expression feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addSemanticCandidatesExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_RowDescription_semanticCandidatesExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_RowDescription_semanticCandidatesExpression_feature", "_UI_RowDescription_type"),
-                        TablePackage.Literals.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_RowDescription_semanticCandidatesExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_semanticCandidatesExpression_feature", "_UI_RowDescription_type"),
+				 TablePackage.Literals.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Header Label Expression feature. <!--
@@ -117,14 +129,20 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
      * @generated
      */
     protected void addHeaderLabelExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RowDescription_headerLabelExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerLabelExpression_feature",
-                        "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_RowDescription_headerLabelExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerLabelExpression_feature", "_UI_RowDescription_type"),
+				 TablePackage.Literals.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Header Icon Expression feature. <!--
@@ -133,46 +151,62 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
      * @generated
      */
     protected void addHeaderIconExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RowDescription_headerIconExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerIconExpression_feature",
-                        "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_RowDescription_headerIconExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerIconExpression_feature", "_UI_RowDescription_type"),
+				 TablePackage.Literals.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Header Index Label Expression
-     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Header Index Label Expression feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addHeaderIndexLabelExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_RowDescription_headerIndexLabelExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_RowDescription_headerIndexLabelExpression_feature", "_UI_RowDescription_type"),
-                        TablePackage.Literals.ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_RowDescription_headerIndexLabelExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerIndexLabelExpression_feature", "_UI_RowDescription_type"),
+				 TablePackage.Literals.ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Initial Height Expression feature.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Initial Height Expression feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addInitialHeightExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RowDescription_initialHeightExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_initialHeightExpression_feature",
-                        "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_RowDescription_initialHeightExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_initialHeightExpression_feature", "_UI_RowDescription_type"),
+				 TablePackage.Literals.ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Is Resizable Expression feature. <!--
@@ -181,14 +215,20 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
      * @generated
      */
     protected void addIsResizableExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RowDescription_isResizableExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_isResizableExpression_feature",
-                        "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_RowDescription_isResizableExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_isResizableExpression_feature", "_UI_RowDescription_type"),
+				 TablePackage.Literals.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Depth Level Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
@@ -197,55 +237,72 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
      * @generated
      */
     protected void addDepthLevelExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RowDescription_depthLevelExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_depthLevelExpression_feature", "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_RowDescription_depthLevelExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_depthLevelExpression_feature", "_UI_RowDescription_type"),
+				 TablePackage.Literals.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Has Children Expression feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Has Children Expression feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addHasChildrenExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_RowDescription_hasChildrenExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_hasChildrenExpression_feature", "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_RowDescription_hasChildrenExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_hasChildrenExpression_feature", "_UI_RowDescription_type"),
+				 TablePackage.Literals.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(TablePackage.Literals.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(TablePackage.Literals.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
      * This returns RowDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc
@@ -259,72 +316,74 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((RowDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_RowDescription_type")
-                : this.getString("_UI_RowDescription_type") + " " + label;
-    }
+		String label = ((RowDescription)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_RowDescription_type") :
+			getString("_UI_RowDescription_type") + " " + label;
+	}
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This handles model notifications by calling {@link #updateChildren} to update any cached
+	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(RowDescription.class)) {
-            case TablePackage.ROW_DESCRIPTION__NAME:
-            case TablePackage.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-            case TablePackage.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION:
-            case TablePackage.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION:
-            case TablePackage.ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
-            case TablePackage.ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION:
-            case TablePackage.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
-            case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
-            case TablePackage.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-            case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(RowDescription.class))
+		{
+			case TablePackage.ROW_DESCRIPTION__NAME:
+			case TablePackage.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+			case TablePackage.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION:
+			case TablePackage.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION:
+			case TablePackage.ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
+			case TablePackage.ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION:
+			case TablePackage.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
+			case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
+			case TablePackage.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES,
-                TableFactory.eINSTANCE.createRowContextMenuEntry()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(TablePackage.Literals.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES,
+				 TableFactory.eINSTANCE.createRowContextMenuEntry()));
+	}
 
     /**
      * Return the resource locator for this item provider's resources. <!--
@@ -334,7 +393,7 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
      */
     @Override
     public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
-    }
+		return ((IChildCreationExtender)adapterFactory).getResourceLocator();
+	}
 
 }

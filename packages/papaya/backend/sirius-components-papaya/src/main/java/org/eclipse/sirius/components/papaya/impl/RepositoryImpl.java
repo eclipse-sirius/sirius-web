@@ -23,22 +23,20 @@ import org.eclipse.sirius.components.papaya.Repository;
  */
 public class RepositoryImpl extends NamedElementImpl implements Repository {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RepositoryImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.REPOSITORY;
-    }
+		return PapayaPackage.Literals.REPOSITORY;
+	}
 
 } // RepositoryImpl

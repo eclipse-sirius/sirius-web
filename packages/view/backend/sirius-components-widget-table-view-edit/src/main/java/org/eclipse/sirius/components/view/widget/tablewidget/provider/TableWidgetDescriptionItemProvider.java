@@ -29,10 +29,8 @@ import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescript
 import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetPackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
- *
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription} object.
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
  * @generated
  */
 public class TableWidgetDescriptionItemProvider extends WidgetDescriptionItemProvider {
@@ -44,8 +42,8 @@ public class TableWidgetDescriptionItemProvider extends WidgetDescriptionItemPro
      * @generated
      */
     public TableWidgetDescriptionItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
      * This returns the property descriptors for the adapted class. <!--
@@ -55,31 +53,36 @@ public class TableWidgetDescriptionItemProvider extends WidgetDescriptionItemPro
      */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addUseStripedRowsExpressionPropertyDescriptor(object);
-            this.addIsEnabledExpressionPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addUseStripedRowsExpressionPropertyDescriptor(object);
+			addIsEnabledExpressionPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Use Striped Rows Expression feature.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Use Striped Rows Expression feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addUseStripedRowsExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_TableWidgetDescription_useStripedRowsExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_TableWidgetDescription_useStripedRowsExpression_feature",
-                                "_UI_TableWidgetDescription_type"),
-                        TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION, true, false,
-                        false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TableWidgetDescription_useStripedRowsExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TableWidgetDescription_useStripedRowsExpression_feature", "_UI_TableWidgetDescription_type"),
+				 TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Is Enabled Expression feature. <!--
@@ -88,48 +91,51 @@ public class TableWidgetDescriptionItemProvider extends WidgetDescriptionItemPro
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TableWidgetDescription_IsEnabledExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description",
-                        "_UI_TableWidgetDescription_IsEnabledExpression_feature", "_UI_TableWidgetDescription_type"),
-                TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TableWidgetDescription_IsEnabledExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TableWidgetDescription_IsEnabledExpression_feature", "_UI_TableWidgetDescription_type"),
+				 TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__COLUMN_DESCRIPTIONS);
-            this.childrenFeatures.add(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__ROW_DESCRIPTION);
-            this.childrenFeatures.add(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__CELL_DESCRIPTIONS);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__COLUMN_DESCRIPTIONS);
+			childrenFeatures.add(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__ROW_DESCRIPTION);
+			childrenFeatures.add(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__CELL_DESCRIPTIONS);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
      * This returns TableWidgetDescription.gif. <!-- begin-user-doc --> <!--
@@ -143,76 +149,79 @@ public class TableWidgetDescriptionItemProvider extends WidgetDescriptionItemPro
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((TableWidgetDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_TableWidgetDescription_type")
-                : this.getString("_UI_TableWidgetDescription_type") + " " + label;
-    }
+		String label = ((TableWidgetDescription)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_TableWidgetDescription_type") :
+			getString("_UI_TableWidgetDescription_type") + " " + label;
+	}
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This handles model notifications by calling {@link #updateChildren} to update any cached
+	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(TableWidgetDescription.class)) {
-            case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION:
-            case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-            case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__COLUMN_DESCRIPTIONS:
-            case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__ROW_DESCRIPTION:
-            case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__CELL_DESCRIPTIONS:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(TableWidgetDescription.class))
+		{
+			case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION:
+			case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__COLUMN_DESCRIPTIONS:
+			case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__ROW_DESCRIPTION:
+			case TableWidgetPackage.TABLE_WIDGET_DESCRIPTION__CELL_DESCRIPTIONS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors
-                .add(this.createChildParameter(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__COLUMN_DESCRIPTIONS,
-                        TableFactory.eINSTANCE.createColumnDescription()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__COLUMN_DESCRIPTIONS,
+				 TableFactory.eINSTANCE.createColumnDescription()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__ROW_DESCRIPTION,
-                        TableFactory.eINSTANCE.createRowDescription()));
+		newChildDescriptors.add
+			(createChildParameter
+				(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__ROW_DESCRIPTION,
+				 TableFactory.eINSTANCE.createRowDescription()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__CELL_DESCRIPTIONS,
-                        TableFactory.eINSTANCE.createCellDescription()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(TableWidgetPackage.Literals.TABLE_WIDGET_DESCRIPTION__CELL_DESCRIPTIONS,
+				 TableFactory.eINSTANCE.createCellDescription()));
+	}
 
     /**
      * Return the resource locator for this item provider's resources. <!--
@@ -222,7 +231,7 @@ public class TableWidgetDescriptionItemProvider extends WidgetDescriptionItemPro
      */
     @Override
     public ResourceLocator getResourceLocator() {
-        return TableWidgetEditPlugin.INSTANCE;
-    }
+		return TableWidgetEditPlugin.INSTANCE;
+	}
 
 }

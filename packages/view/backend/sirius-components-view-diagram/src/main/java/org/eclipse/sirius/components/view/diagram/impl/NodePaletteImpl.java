@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,17 +38,13 @@ import org.eclipse.sirius.components.view.diagram.NodeToolSection;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getDeleteTool <em>Delete Tool</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getLabelEditTool <em>Label Edit
- * Tool</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getDropNodeTool <em>Drop Node
- * Tool</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getNodeTools <em>Node Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getQuickAccessTools <em>Quick Access
- * Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getEdgeTools <em>Edge Tools</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getToolSections <em>Tool
- * Sections</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getDeleteTool <em>Delete Tool</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getLabelEditTool <em>Label Edit Tool</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getDropNodeTool <em>Drop Node Tool</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getNodeTools <em>Node Tools</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getQuickAccessTools <em>Quick Access Tools</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getEdgeTools <em>Edge Tools</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodePaletteImpl#getToolSections <em>Tool Sections</em>}</li>
  * </ul>
  *
  * @generated
@@ -95,13 +91,12 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
     protected EList<NodeTool> nodeTools;
 
     /**
-     * The cached value of the '{@link #getQuickAccessTools() <em>Quick Access Tools</em>}' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getQuickAccessTools()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getQuickAccessTools() <em>Quick Access Tools</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getQuickAccessTools()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<NodeTool> quickAccessTools;
 
     /**
@@ -125,367 +120,353 @@ public class NodePaletteImpl extends MinimalEObjectImpl.Container implements Nod
     protected EList<NodeToolSection> toolSections;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected NodePaletteImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.NODE_PALETTE;
-    }
+		return DiagramPackage.Literals.NODE_PALETTE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public DeleteTool getDeleteTool() {
-        return this.deleteTool;
-    }
+		return deleteTool;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public NotificationChain basicSetDeleteTool(DeleteTool newDeleteTool, NotificationChain msgs) {
-        DeleteTool oldDeleteTool = this.deleteTool;
-        this.deleteTool = newDeleteTool;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__DELETE_TOOL, oldDeleteTool, newDeleteTool);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
+		DeleteTool oldDeleteTool = deleteTool;
+		deleteTool = newDeleteTool;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__DELETE_TOOL, oldDeleteTool, newDeleteTool);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setDeleteTool(DeleteTool newDeleteTool) {
-        if (newDeleteTool != this.deleteTool) {
-            NotificationChain msgs = null;
-            if (this.deleteTool != null)
-                msgs = ((InternalEObject) this.deleteTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__DELETE_TOOL, null, msgs);
-            if (newDeleteTool != null)
-                msgs = ((InternalEObject) newDeleteTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__DELETE_TOOL, null, msgs);
-            msgs = this.basicSetDeleteTool(newDeleteTool, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__DELETE_TOOL, newDeleteTool, newDeleteTool));
-    }
+		if (newDeleteTool != deleteTool)
+		{
+			NotificationChain msgs = null;
+			if (deleteTool != null)
+				msgs = ((InternalEObject)deleteTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__DELETE_TOOL, null, msgs);
+			if (newDeleteTool != null)
+				msgs = ((InternalEObject)newDeleteTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__DELETE_TOOL, null, msgs);
+			msgs = basicSetDeleteTool(newDeleteTool, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__DELETE_TOOL, newDeleteTool, newDeleteTool));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public LabelEditTool getLabelEditTool() {
-        return this.labelEditTool;
-    }
+		return labelEditTool;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public NotificationChain basicSetLabelEditTool(LabelEditTool newLabelEditTool, NotificationChain msgs) {
-        LabelEditTool oldLabelEditTool = this.labelEditTool;
-        this.labelEditTool = newLabelEditTool;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL, oldLabelEditTool, newLabelEditTool);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
+		LabelEditTool oldLabelEditTool = labelEditTool;
+		labelEditTool = newLabelEditTool;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL, oldLabelEditTool, newLabelEditTool);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setLabelEditTool(LabelEditTool newLabelEditTool) {
-        if (newLabelEditTool != this.labelEditTool) {
-            NotificationChain msgs = null;
-            if (this.labelEditTool != null)
-                msgs = ((InternalEObject) this.labelEditTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL, null, msgs);
-            if (newLabelEditTool != null)
-                msgs = ((InternalEObject) newLabelEditTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL, null, msgs);
-            msgs = this.basicSetLabelEditTool(newLabelEditTool, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL, newLabelEditTool, newLabelEditTool));
-    }
+		if (newLabelEditTool != labelEditTool)
+		{
+			NotificationChain msgs = null;
+			if (labelEditTool != null)
+				msgs = ((InternalEObject)labelEditTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL, null, msgs);
+			if (newLabelEditTool != null)
+				msgs = ((InternalEObject)newLabelEditTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL, null, msgs);
+			msgs = basicSetLabelEditTool(newLabelEditTool, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL, newLabelEditTool, newLabelEditTool));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public DropNodeTool getDropNodeTool() {
-        return this.dropNodeTool;
-    }
+		return dropNodeTool;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public NotificationChain basicSetDropNodeTool(DropNodeTool newDropNodeTool, NotificationChain msgs) {
-        DropNodeTool oldDropNodeTool = this.dropNodeTool;
-        this.dropNodeTool = newDropNodeTool;
-        if (this.eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL, oldDropNodeTool, newDropNodeTool);
-            if (msgs == null)
-                msgs = notification;
-            else
-                msgs.add(notification);
-        }
-        return msgs;
-    }
+		DropNodeTool oldDropNodeTool = dropNodeTool;
+		dropNodeTool = newDropNodeTool;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL, oldDropNodeTool, newDropNodeTool);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setDropNodeTool(DropNodeTool newDropNodeTool) {
-        if (newDropNodeTool != this.dropNodeTool) {
-            NotificationChain msgs = null;
-            if (this.dropNodeTool != null)
-                msgs = ((InternalEObject) this.dropNodeTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL, null, msgs);
-            if (newDropNodeTool != null)
-                msgs = ((InternalEObject) newDropNodeTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL, null, msgs);
-            msgs = this.basicSetDropNodeTool(newDropNodeTool, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL, newDropNodeTool, newDropNodeTool));
-    }
+		if (newDropNodeTool != dropNodeTool)
+		{
+			NotificationChain msgs = null;
+			if (dropNodeTool != null)
+				msgs = ((InternalEObject)dropNodeTool).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL, null, msgs);
+			if (newDropNodeTool != null)
+				msgs = ((InternalEObject)newDropNodeTool).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL, null, msgs);
+			msgs = basicSetDropNodeTool(newDropNodeTool, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL, newDropNodeTool, newDropNodeTool));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeTool> getNodeTools() {
-        if (this.nodeTools == null) {
-            this.nodeTools = new EObjectContainmentEList<>(NodeTool.class, this, DiagramPackage.NODE_PALETTE__NODE_TOOLS);
-        }
-        return this.nodeTools;
-    }
+		if (nodeTools == null)
+		{
+			nodeTools = new EObjectContainmentEList<NodeTool>(NodeTool.class, this, DiagramPackage.NODE_PALETTE__NODE_TOOLS);
+		}
+		return nodeTools;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeTool> getQuickAccessTools() {
-        if (this.quickAccessTools == null) {
-            this.quickAccessTools = new EObjectContainmentEList<>(NodeTool.class, this, DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS);
-        }
-        return this.quickAccessTools;
-    }
+		if (quickAccessTools == null)
+		{
+			quickAccessTools = new EObjectContainmentEList<NodeTool>(NodeTool.class, this, DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS);
+		}
+		return quickAccessTools;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<EdgeTool> getEdgeTools() {
-        if (this.edgeTools == null) {
-            this.edgeTools = new EObjectContainmentEList<>(EdgeTool.class, this, DiagramPackage.NODE_PALETTE__EDGE_TOOLS);
-        }
-        return this.edgeTools;
-    }
+		if (edgeTools == null)
+		{
+			edgeTools = new EObjectContainmentEList<EdgeTool>(EdgeTool.class, this, DiagramPackage.NODE_PALETTE__EDGE_TOOLS);
+		}
+		return edgeTools;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeToolSection> getToolSections() {
-        if (this.toolSections == null) {
-            this.toolSections = new EObjectContainmentEList<>(NodeToolSection.class, this, DiagramPackage.NODE_PALETTE__TOOL_SECTIONS);
-        }
-        return this.toolSections;
-    }
+		if (toolSections == null)
+		{
+			toolSections = new EObjectContainmentEList<NodeToolSection>(NodeToolSection.class, this, DiagramPackage.NODE_PALETTE__TOOL_SECTIONS);
+		}
+		return toolSections;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
-                return this.basicSetDeleteTool(null, msgs);
-            case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
-                return this.basicSetLabelEditTool(null, msgs);
-            case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
-                return this.basicSetDropNodeTool(null, msgs);
-            case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
-                return ((InternalEList<?>) this.getNodeTools()).basicRemove(otherEnd, msgs);
-            case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
-                return ((InternalEList<?>) this.getQuickAccessTools()).basicRemove(otherEnd, msgs);
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                return ((InternalEList<?>) this.getEdgeTools()).basicRemove(otherEnd, msgs);
-            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
-                return ((InternalEList<?>) this.getToolSections()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
+				return basicSetDeleteTool(null, msgs);
+			case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
+				return basicSetLabelEditTool(null, msgs);
+			case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
+				return basicSetDropNodeTool(null, msgs);
+			case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
+				return ((InternalEList<?>)getNodeTools()).basicRemove(otherEnd, msgs);
+			case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
+				return ((InternalEList<?>)getQuickAccessTools()).basicRemove(otherEnd, msgs);
+			case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
+				return ((InternalEList<?>)getEdgeTools()).basicRemove(otherEnd, msgs);
+			case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+				return ((InternalEList<?>)getToolSections()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
-                return this.getDeleteTool();
-            case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
-                return this.getLabelEditTool();
-            case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
-                return this.getDropNodeTool();
-            case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
-                return this.getNodeTools();
-            case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
-                return this.getQuickAccessTools();
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                return this.getEdgeTools();
-            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
-                return this.getToolSections();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
+				return getDeleteTool();
+			case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
+				return getLabelEditTool();
+			case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
+				return getDropNodeTool();
+			case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
+				return getNodeTools();
+			case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
+				return getQuickAccessTools();
+			case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
+				return getEdgeTools();
+			case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+				return getToolSections();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
-                this.setDeleteTool((DeleteTool) newValue);
-                return;
-            case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
-                this.setLabelEditTool((LabelEditTool) newValue);
-                return;
-            case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
-                this.setDropNodeTool((DropNodeTool) newValue);
-                return;
-            case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
-                this.getNodeTools().clear();
-                this.getNodeTools().addAll((Collection<? extends NodeTool>) newValue);
-                return;
-            case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
-                this.getQuickAccessTools().clear();
-                this.getQuickAccessTools().addAll((Collection<? extends NodeTool>) newValue);
-                return;
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                this.getEdgeTools().clear();
-                this.getEdgeTools().addAll((Collection<? extends EdgeTool>) newValue);
-                return;
-            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
-                this.getToolSections().clear();
-                this.getToolSections().addAll((Collection<? extends NodeToolSection>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
+				setDeleteTool((DeleteTool)newValue);
+				return;
+			case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
+				setLabelEditTool((LabelEditTool)newValue);
+				return;
+			case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
+				setDropNodeTool((DropNodeTool)newValue);
+				return;
+			case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
+				getNodeTools().clear();
+				getNodeTools().addAll((Collection<? extends NodeTool>)newValue);
+				return;
+			case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
+				getQuickAccessTools().clear();
+				getQuickAccessTools().addAll((Collection<? extends NodeTool>)newValue);
+				return;
+			case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
+				getEdgeTools().clear();
+				getEdgeTools().addAll((Collection<? extends EdgeTool>)newValue);
+				return;
+			case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+				getToolSections().clear();
+				getToolSections().addAll((Collection<? extends NodeToolSection>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
-                this.setDeleteTool((DeleteTool) null);
-                return;
-            case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
-                this.setLabelEditTool((LabelEditTool) null);
-                return;
-            case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
-                this.setDropNodeTool((DropNodeTool) null);
-                return;
-            case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
-                this.getNodeTools().clear();
-                return;
-            case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
-                this.getQuickAccessTools().clear();
-                return;
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                this.getEdgeTools().clear();
-                return;
-            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
-                this.getToolSections().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
+				setDeleteTool((DeleteTool)null);
+				return;
+			case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
+				setLabelEditTool((LabelEditTool)null);
+				return;
+			case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
+				setDropNodeTool((DropNodeTool)null);
+				return;
+			case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
+				getNodeTools().clear();
+				return;
+			case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
+				getQuickAccessTools().clear();
+				return;
+			case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
+				getEdgeTools().clear();
+				return;
+			case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+				getToolSections().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
-                return this.deleteTool != null;
-            case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
-                return this.labelEditTool != null;
-            case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
-                return this.dropNodeTool != null;
-            case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
-                return this.nodeTools != null && !this.nodeTools.isEmpty();
-            case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
-                return this.quickAccessTools != null && !this.quickAccessTools.isEmpty();
-            case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
-                return this.edgeTools != null && !this.edgeTools.isEmpty();
-            case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
-                return this.toolSections != null && !this.toolSections.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.NODE_PALETTE__DELETE_TOOL:
+				return deleteTool != null;
+			case DiagramPackage.NODE_PALETTE__LABEL_EDIT_TOOL:
+				return labelEditTool != null;
+			case DiagramPackage.NODE_PALETTE__DROP_NODE_TOOL:
+				return dropNodeTool != null;
+			case DiagramPackage.NODE_PALETTE__NODE_TOOLS:
+				return nodeTools != null && !nodeTools.isEmpty();
+			case DiagramPackage.NODE_PALETTE__QUICK_ACCESS_TOOLS:
+				return quickAccessTools != null && !quickAccessTools.isEmpty();
+			case DiagramPackage.NODE_PALETTE__EDGE_TOOLS:
+				return edgeTools != null && !edgeTools.isEmpty();
+			case DiagramPackage.NODE_PALETTE__TOOL_SECTIONS:
+				return toolSections != null && !toolSections.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // NodePaletteImpl

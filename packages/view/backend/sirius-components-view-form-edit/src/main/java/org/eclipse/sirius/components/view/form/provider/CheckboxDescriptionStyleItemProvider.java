@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,43 +25,43 @@ import org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle;
 import org.eclipse.sirius.components.view.form.FormPackage;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
- *
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle} object.
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
  * @generated
  */
 public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyleItemProvider {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public CheckboxDescriptionStyleItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addGridTemplateColumnsPropertyDescriptor(object);
-            this.addGridTemplateRowsPropertyDescriptor(object);
-            this.addLabelGridRowPropertyDescriptor(object);
-            this.addLabelGridColumnPropertyDescriptor(object);
-            this.addWidgetGridRowPropertyDescriptor(object);
-            this.addWidgetGridColumnPropertyDescriptor(object);
-            this.addGapPropertyDescriptor(object);
-            this.addColorPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addGridTemplateColumnsPropertyDescriptor(object);
+			addGridTemplateRowsPropertyDescriptor(object);
+			addLabelGridRowPropertyDescriptor(object);
+			addLabelGridColumnPropertyDescriptor(object);
+			addWidgetGridRowPropertyDescriptor(object);
+			addWidgetGridColumnPropertyDescriptor(object);
+			addGapPropertyDescriptor(object);
+			addColorPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
      * This adds a property descriptor for the Grid Template Columns feature. <!-- begin-user-doc --> <!-- end-user-doc
@@ -70,94 +70,167 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
      * @generated
      */
     protected void addGridTemplateColumnsPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_WidgetGridLayout_gridTemplateColumns_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_gridTemplateColumns_feature", "_UI_WidgetGridLayout_type"),
-                FormPackage.Literals.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_COLUMNS, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_WidgetGridLayout_gridTemplateColumns_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_gridTemplateColumns_feature", "_UI_WidgetGridLayout_type"),
+				 FormPackage.Literals.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_COLUMNS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Grid Template Rows feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Grid Template Rows feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addGridTemplateRowsPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_WidgetGridLayout_gridTemplateRows_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_gridTemplateRows_feature", "_UI_WidgetGridLayout_type"),
-                FormPackage.Literals.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_ROWS, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_WidgetGridLayout_gridTemplateRows_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_gridTemplateRows_feature", "_UI_WidgetGridLayout_type"),
+				 FormPackage.Literals.WIDGET_GRID_LAYOUT__GRID_TEMPLATE_ROWS,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Label Grid Row feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Label Grid Row feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addLabelGridRowPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_WidgetGridLayout_labelGridRow_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_labelGridRow_feature", "_UI_WidgetGridLayout_type"), FormPackage.Literals.WIDGET_GRID_LAYOUT__LABEL_GRID_ROW,
-                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_WidgetGridLayout_labelGridRow_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_labelGridRow_feature", "_UI_WidgetGridLayout_type"),
+				 FormPackage.Literals.WIDGET_GRID_LAYOUT__LABEL_GRID_ROW,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Label Grid Column feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Label Grid Column feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addLabelGridColumnPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_WidgetGridLayout_labelGridColumn_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_labelGridColumn_feature", "_UI_WidgetGridLayout_type"),
-                FormPackage.Literals.WIDGET_GRID_LAYOUT__LABEL_GRID_COLUMN, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_WidgetGridLayout_labelGridColumn_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_labelGridColumn_feature", "_UI_WidgetGridLayout_type"),
+				 FormPackage.Literals.WIDGET_GRID_LAYOUT__LABEL_GRID_COLUMN,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Widget Grid Row feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Widget Grid Row feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addWidgetGridRowPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_WidgetGridLayout_widgetGridRow_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_widgetGridRow_feature", "_UI_WidgetGridLayout_type"),
-                FormPackage.Literals.WIDGET_GRID_LAYOUT__WIDGET_GRID_ROW, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_WidgetGridLayout_widgetGridRow_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_widgetGridRow_feature", "_UI_WidgetGridLayout_type"),
+				 FormPackage.Literals.WIDGET_GRID_LAYOUT__WIDGET_GRID_ROW,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Widget Grid Column feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Widget Grid Column feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addWidgetGridColumnPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_WidgetGridLayout_widgetGridColumn_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_widgetGridColumn_feature", "_UI_WidgetGridLayout_type"),
-                FormPackage.Literals.WIDGET_GRID_LAYOUT__WIDGET_GRID_COLUMN, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_WidgetGridLayout_widgetGridColumn_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_widgetGridColumn_feature", "_UI_WidgetGridLayout_type"),
+				 FormPackage.Literals.WIDGET_GRID_LAYOUT__WIDGET_GRID_COLUMN,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Gap feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Gap feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addGapPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_WidgetGridLayout_gap_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_gap_feature", "_UI_WidgetGridLayout_type"),
-                FormPackage.Literals.WIDGET_GRID_LAYOUT__GAP, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_WidgetGridLayout_gap_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_WidgetGridLayout_gap_feature", "_UI_WidgetGridLayout_type"),
+				 FormPackage.Literals.WIDGET_GRID_LAYOUT__GAP,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Color feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Color feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addColorPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_CheckboxDescriptionStyle_color_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescriptionStyle_color_feature", "_UI_CheckboxDescriptionStyle_type"),
-                FormPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__COLOR, true, false, false, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_CheckboxDescriptionStyle_color_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_CheckboxDescriptionStyle_color_feature", "_UI_CheckboxDescriptionStyle_type"),
+				 FormPackage.Literals.CHECKBOX_DESCRIPTION_STYLE__COLOR,
+				 true,
+				 false,
+				 false,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
      * This returns CheckboxDescriptionStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -170,25 +243,26 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
     }
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((CheckboxDescriptionStyle) object).getGridTemplateColumns();
-        return label == null || label.length() == 0 ? this.getString("_UI_CheckboxDescriptionStyle_type") : this.getString("_UI_CheckboxDescriptionStyle_type") + " " + label;
-    }
+		String label = ((CheckboxDescriptionStyle)object).getGridTemplateColumns();
+		return label == null || label.length() == 0 ?
+			getString("_UI_CheckboxDescriptionStyle_type") :
+			getString("_UI_CheckboxDescriptionStyle_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -199,32 +273,33 @@ public class CheckboxDescriptionStyleItemProvider extends WidgetDescriptionStyle
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(CheckboxDescriptionStyle.class)) {
-            case FormPackage.CHECKBOX_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
-            case FormPackage.CHECKBOX_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
-            case FormPackage.CHECKBOX_DESCRIPTION_STYLE__LABEL_GRID_ROW:
-            case FormPackage.CHECKBOX_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
-            case FormPackage.CHECKBOX_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
-            case FormPackage.CHECKBOX_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
-            case FormPackage.CHECKBOX_DESCRIPTION_STYLE__GAP:
-            case FormPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(CheckboxDescriptionStyle.class))
+		{
+			case FormPackage.CHECKBOX_DESCRIPTION_STYLE__GRID_TEMPLATE_COLUMNS:
+			case FormPackage.CHECKBOX_DESCRIPTION_STYLE__GRID_TEMPLATE_ROWS:
+			case FormPackage.CHECKBOX_DESCRIPTION_STYLE__LABEL_GRID_ROW:
+			case FormPackage.CHECKBOX_DESCRIPTION_STYLE__LABEL_GRID_COLUMN:
+			case FormPackage.CHECKBOX_DESCRIPTION_STYLE__WIDGET_GRID_ROW:
+			case FormPackage.CHECKBOX_DESCRIPTION_STYLE__WIDGET_GRID_COLUMN:
+			case FormPackage.CHECKBOX_DESCRIPTION_STYLE__GAP:
+			case FormPackage.CHECKBOX_DESCRIPTION_STYLE__COLOR:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
 }

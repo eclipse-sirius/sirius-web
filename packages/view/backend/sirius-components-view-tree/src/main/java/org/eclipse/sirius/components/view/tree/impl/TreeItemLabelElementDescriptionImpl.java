@@ -25,22 +25,20 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  */
 public abstract class TreeItemLabelElementDescriptionImpl extends MinimalEObjectImpl.Container implements TreeItemLabelElementDescription {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TreeItemLabelElementDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TreePackage.Literals.TREE_ITEM_LABEL_ELEMENT_DESCRIPTION;
-    }
+		return TreePackage.Literals.TREE_ITEM_LABEL_ELEMENT_DESCRIPTION;
+	}
 
 } // TreeItemLabelElementDescriptionImpl

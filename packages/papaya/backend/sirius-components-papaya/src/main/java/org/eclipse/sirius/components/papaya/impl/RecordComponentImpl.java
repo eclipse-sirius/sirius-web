@@ -24,22 +24,20 @@ import org.eclipse.sirius.components.papaya.RecordComponent;
  */
 public class RecordComponentImpl extends TypedElementImpl implements RecordComponent {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RecordComponentImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.RECORD_COMPONENT;
-    }
+		return PapayaPackage.Literals.RECORD_COMPONENT;
+	}
 
 } // RecordComponentImpl

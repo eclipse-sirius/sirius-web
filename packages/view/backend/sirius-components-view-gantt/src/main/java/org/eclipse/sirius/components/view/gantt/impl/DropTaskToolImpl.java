@@ -23,22 +23,20 @@ import org.eclipse.sirius.components.view.gantt.GanttPackage;
  */
 public class DropTaskToolImpl extends TaskToolImpl implements DropTaskTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DropTaskToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return GanttPackage.Literals.DROP_TASK_TOOL;
-    }
+		return GanttPackage.Literals.DROP_TASK_TOOL;
+	}
 
 } // DropTaskToolImpl

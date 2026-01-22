@@ -24,22 +24,20 @@ import org.eclipse.sirius.components.view.gantt.GanttPackage;
  */
 public class DeleteTaskToolImpl extends TaskToolImpl implements DeleteTaskTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DeleteTaskToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return GanttPackage.Literals.DELETE_TASK_TOOL;
-    }
+		return GanttPackage.Literals.DELETE_TASK_TOOL;
+	}
 
 } // DeleteTaskToolImpl

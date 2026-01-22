@@ -20,8 +20,7 @@ package org.eclipse.sirius.components.view.table;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription#getIconExpression <em>Icon
- * Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription#getIconExpression <em>Icon Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.table.TablePackage#getCellLabelWidgetDescription()
@@ -43,15 +42,12 @@ public interface CellLabelWidgetDescription extends CellWidgetDescription {
     String getIconExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription#getIconExpression <em>Icon
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Icon Expression</em>' attribute.
-     * @see #getIconExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription#getIconExpression <em>Icon Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Icon Expression</em>' attribute.
+	 * @see #getIconExpression()
+	 * @generated
+	 */
     void setIconExpression(String value);
 
 } // CellLabelWidgetDescription
