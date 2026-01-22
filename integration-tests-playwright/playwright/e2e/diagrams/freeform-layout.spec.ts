@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,9 +37,16 @@ test.describe('diagram - freeform layout', () => {
     const applicationLayerNode = new PlaywrightNode(page, 'Application Concern', 'FreeForm', 1);
     const controllerNode = new PlaywrightNode(page, 'Controller');
 
-    const applicationLayerSize = await applicationLayerNode.getReactFlowSize();
-    const controllerSize = await controllerNode.getReactFlowSize();
-    const controllerPosition = await controllerNode.getReactFlowXYPosition();
+    await applicationLayerNode.click();
+    // Hide Node Panel Info to avoid overlap in diagram
+    const panel = page.locator('.react-flow__panel.bottom.left').first();
+    await panel.evaluate((node) => {
+      node.style.visibility = 'hidden';
+    });
+
+    const applicationLayerSize = await applicationLayerNode.getReactFlowSize('Application Layer', false);
+    const controllerSize = await controllerNode.getReactFlowSize('Controller');
+    const controllerPosition = await controllerNode.getReactFlowXYPosition('Controller');
     const nodePadding = 8;
 
     expect(applicationLayerSize.height).toBe(controllerPosition.y + controllerSize.height + nodePadding);

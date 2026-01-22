@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -80,9 +80,12 @@ test.describe('diagram - arrange all', () => {
 
     const sourceNode = new PlaywrightNode(page, 'source');
     const targetNode = new PlaywrightNode(page, 'target');
-    const sourcePosition = await sourceNode.getReactFlowXYPosition();
-    const sourceSize = await sourceNode.getReactFlowSize(null, false);
-    const targetPosition = await targetNode.getReactFlowXYPosition();
+
+    await targetNode.waitForAnimationToFinish();
+
+    const sourcePosition = await sourceNode.getReactFlowXYPosition('source');
+    const sourceSize = await sourceNode.getReactFlowSize('source', false);
+    const targetPosition = await targetNode.getReactFlowXYPosition('target');
     expect(targetPosition.x).toBeGreaterThan(sourcePosition.x + sourceSize.width);
   });
 

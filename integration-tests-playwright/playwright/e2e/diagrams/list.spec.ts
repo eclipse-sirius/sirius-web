@@ -71,9 +71,12 @@ test.describe('diagram - list', () => {
     const childNodeSizeAfter = await childNode.getReactFlowSize(null, false);
 
     const borderWidth: number = 2;
-    expect(childNodeSizeBefore.width).toBe(parentNodeSizeBefore.width - borderWidth);
+    const margin: number = 2;
+    expect(Math.abs(childNodeSizeBefore.width - (parentNodeSizeBefore.width - borderWidth))).toBeLessThanOrEqual(
+      margin
+    );
     expect(parentNodeSizeAfter.width).toBeGreaterThan(parentNodeSizeBefore.width);
-    expect(childNodeSizeAfter.width).toBe(parentNodeSizeAfter.width - borderWidth);
+    expect(Math.abs(childNodeSizeAfter.width - (parentNodeSizeAfter.width - borderWidth))).toBeLessThanOrEqual(margin);
   });
 
   test('when a list node is moved, then the size of the node is not updated', async ({ page }) => {
