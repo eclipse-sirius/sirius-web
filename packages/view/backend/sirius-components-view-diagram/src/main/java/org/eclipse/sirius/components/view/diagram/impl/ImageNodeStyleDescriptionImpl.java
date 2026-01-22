@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,8 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
  * <em>Border Line Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getChildrenLayoutStrategy
  * <em>Children Layout Strategy</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getDescription
+ * <em>Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#getShape
  * <em>Shape</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ImageNodeStyleDescriptionImpl#isPositionDependentRotation
@@ -130,6 +132,26 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
      * @ordered
      */
     protected LayoutStrategyDescription childrenLayoutStrategy;
+
+    /**
+     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected String description = DESCRIPTION_EDEFAULT;
 
     /**
      * The default value of the '{@link #getShape() <em>Shape</em>}' attribute. <!-- begin-user-doc --> <!--
@@ -354,6 +376,29 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
      * @generated
      */
     @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescription(String newDescription) {
+        String oldDescription = this.description;
+        this.description = newDescription;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION, oldDescription, this.description));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public String getShape() {
         return this.shape;
     }
@@ -429,6 +474,8 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
                 return this.getBorderLineStyle();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.getChildrenLayoutStrategy();
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                return this.getDescription();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 return this.getShape();
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:
@@ -459,6 +506,9 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
                 return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) newValue);
+                return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                this.setDescription((String) newValue);
                 return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 this.setShape((String) newValue);
@@ -493,6 +543,9 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 this.setChildrenLayoutStrategy((LayoutStrategyDescription) null);
                 return;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                this.setDescription(DESCRIPTION_EDEFAULT);
+                return;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 this.setShape(SHAPE_EDEFAULT);
                 return;
@@ -521,6 +574,8 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
                 return this.borderLineStyle != BORDER_LINE_STYLE_EDEFAULT;
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__CHILDREN_LAYOUT_STRATEGY:
                 return this.childrenLayoutStrategy != null;
+            case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__DESCRIPTION:
+                return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__SHAPE:
                 return SHAPE_EDEFAULT == null ? this.shape != null : !SHAPE_EDEFAULT.equals(this.shape);
             case DiagramPackage.IMAGE_NODE_STYLE_DESCRIPTION__POSITION_DEPENDENT_ROTATION:
@@ -546,6 +601,8 @@ public class ImageNodeStyleDescriptionImpl extends MinimalEObjectImpl.Container 
         result.append(this.borderSize);
         result.append(", borderLineStyle: ");
         result.append(this.borderLineStyle);
+        result.append(", description: ");
+        result.append(this.description);
         result.append(", shape: ");
         result.append(this.shape);
         result.append(", positionDependentRotation: ");

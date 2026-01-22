@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,6 +63,7 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
 
             this.addNamePropertyDescriptor(object);
             this.addPreconditionExpressionPropertyDescriptor(object);
+            this.addDescriptionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -88,6 +89,17 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Tool_preconditionExpression_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Tool_preconditionExpression_feature", "_UI_Tool_type"),
                 DiagramPackage.Literals.TOOL__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Description feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDescriptionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Tool_description_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Tool_description_feature", "_UI_Tool_type"),
+                DiagramPackage.Literals.TOOL__DESCRIPTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -155,6 +167,7 @@ public class ToolItemProvider extends ItemProviderAdapter implements IEditingDom
         switch (notification.getFeatureID(Tool.class)) {
             case DiagramPackage.TOOL__NAME:
             case DiagramPackage.TOOL__PRECONDITION_EXPRESSION:
+            case DiagramPackage.TOOL__DESCRIPTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.TOOL__BODY:

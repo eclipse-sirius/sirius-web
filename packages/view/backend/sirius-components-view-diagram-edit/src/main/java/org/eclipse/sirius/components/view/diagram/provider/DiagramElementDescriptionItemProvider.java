@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,6 +65,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
             this.addSemanticCandidatesExpressionPropertyDescriptor(object);
             this.addPreconditionExpressionPropertyDescriptor(object);
             this.addSynchronizationPolicyPropertyDescriptor(object);
+            this.addDescriptionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -133,6 +134,18 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
     }
 
     /**
+     * This adds a property descriptor for the Description feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDescriptionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramElementDescription_description_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramElementDescription_description_feature", "_UI_DiagramElementDescription_type"),
+                DiagramPackage.Literals.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -170,6 +183,7 @@ public class DiagramElementDescriptionItemProvider extends ItemProviderAdapter
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__PRECONDITION_EXPRESSION:
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

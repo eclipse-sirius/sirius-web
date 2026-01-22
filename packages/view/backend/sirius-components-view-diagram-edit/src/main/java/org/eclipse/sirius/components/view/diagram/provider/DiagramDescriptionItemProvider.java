@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
 
             this.addAutoLayoutPropertyDescriptor(object);
             this.addArrangeLayoutDirectionPropertyDescriptor(object);
+            this.addDescriptionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -87,6 +88,18 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
                 this.getString("_UI_DiagramDescription_arrangeLayoutDirection_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_arrangeLayoutDirection_feature", "_UI_DiagramDescription_type"),
                 DiagramPackage.Literals.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Description feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDescriptionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramDescription_description_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_description_feature", "_UI_DiagramDescription_type"),
+                DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DESCRIPTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -167,6 +180,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         switch (notification.getFeatureID(DiagramDescription.class)) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DESCRIPTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
