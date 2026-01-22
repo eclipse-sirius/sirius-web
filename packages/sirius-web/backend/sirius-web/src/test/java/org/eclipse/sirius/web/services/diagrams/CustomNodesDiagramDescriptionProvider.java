@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -93,6 +93,7 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
         var nodeStyle = new EllipseNodeStyleDescriptionBuilder()
                 .borderSize(1)
                 .borderLineStyle(LineStyle.SOLID)
+                .description("Represent an Ellipse Style")
                 .build();
 
         var insideLabel = new InsideLabelDescriptionBuilder()
@@ -108,6 +109,7 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
                                 .expression("aql:self.defaultDelete()")
                                 .build()
                 )
+                .description("The Papaya Component Delete Tool")
                 .build();
 
         var nodeDescription = new NodeDescriptionBuilder()
@@ -117,6 +119,7 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
                 .palette(new NodePaletteBuilder()
                         .deleteTool(deleteTool)
                         .build())
+                .description("Represents the Component concept node.")
                 .insideLabel(insideLabel)
                 .style(nodeStyle)
                 .build();
@@ -124,6 +127,7 @@ public class CustomNodesDiagramDescriptionProvider implements IEditingContextPro
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'CustomNodesDiagram'")
+                .description("Represents a specific Papaya Diagram with the custom node")
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()

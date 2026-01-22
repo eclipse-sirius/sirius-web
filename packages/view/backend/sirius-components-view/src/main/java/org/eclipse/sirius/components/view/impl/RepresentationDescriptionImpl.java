@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getIconExpression <em>Icon
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getDescription
+ * <em>Description</em>}</li>
  * </ul>
  *
  * @generated
@@ -139,6 +141,26 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @ordered
      */
     protected String iconExpression = ICON_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected String description = DESCRIPTION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -280,6 +302,29 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescription(String newDescription) {
+        String oldDescription = this.description;
+        this.description = newDescription;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION, oldDescription, this.description));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
@@ -292,6 +337,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
                 return this.getTitleExpression();
             case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
                 return this.getIconExpression();
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
+                return this.getDescription();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -318,6 +365,9 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
                 return;
             case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
                 this.setIconExpression((String) newValue);
+                return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
+                this.setDescription((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -346,6 +396,9 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
             case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
                 this.setIconExpression(ICON_EXPRESSION_EDEFAULT);
                 return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
+                this.setDescription(DESCRIPTION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -368,6 +421,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
                 return TITLE_EXPRESSION_EDEFAULT == null ? this.titleExpression != null : !TITLE_EXPRESSION_EDEFAULT.equals(this.titleExpression);
             case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
                 return ICON_EXPRESSION_EDEFAULT == null ? this.iconExpression != null : !ICON_EXPRESSION_EDEFAULT.equals(this.iconExpression);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
+                return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
         }
         return super.eIsSet(featureID);
     }
@@ -382,18 +437,21 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (name: " +
-                this.name +
-                ", domainType: " +
-                this.domainType +
-                ", preconditionExpression: " +
-                this.preconditionExpression +
-                ", titleExpression: " +
-                this.titleExpression +
-                ", iconExpression: " +
-                this.iconExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (name: ");
+        result.append(this.name);
+        result.append(", domainType: ");
+        result.append(this.domainType);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
+        result.append(", titleExpression: ");
+        result.append(this.titleExpression);
+        result.append(", iconExpression: ");
+        result.append(this.iconExpression);
+        result.append(", description: ");
+        result.append(this.description);
+        result.append(')');
+        return result.toString();
     }
 
 } // RepresentationDescriptionImpl

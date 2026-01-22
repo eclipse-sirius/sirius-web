@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,6 +82,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
                 .style(interfaceNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .childrenDescriptions(operationNodeDescription)
+                .description("Represents the Papaya::Interface concept as a Node. An Interface node also displays the operations of the interface.")
                 .build();
     }
 
@@ -113,6 +114,7 @@ public class InterfaceNodeDescriptionProvider implements INodeDescriptionProvide
                 .insideLabel(insideLabel)
                 .style(operationNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .description("Represents an Operation of the interface.")
                 .build();
     }
 

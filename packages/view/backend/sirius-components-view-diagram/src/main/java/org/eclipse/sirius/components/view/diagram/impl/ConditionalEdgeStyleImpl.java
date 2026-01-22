@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -71,6 +71,8 @@ import org.eclipse.sirius.components.view.impl.ConditionalImpl;
  * Width Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl#getEdgeType <em>Edge
  * Type</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ConditionalEdgeStyleImpl#getDescription
+ * <em>Description</em>}</li>
  * </ul>
  *
  * @generated
@@ -426,6 +428,26 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      * @ordered
      */
     protected EdgeType edgeType = EDGE_TYPE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected String description = DESCRIPTION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -930,6 +952,29 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
      *
      * @generated
      */
+    @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescription(String newDescription) {
+        String oldDescription = this.description;
+        this.description = newDescription;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.CONDITIONAL_EDGE_STYLE__DESCRIPTION, oldDescription, this.description));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public UserColor basicGetBackground() {
         return this.background;
     }
@@ -986,6 +1031,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return this.getMaxWidthExpression();
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__EDGE_TYPE:
                 return this.getEdgeType();
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__DESCRIPTION:
+                return this.getDescription();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -1054,6 +1101,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return;
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__EDGE_TYPE:
                 this.setEdgeType((EdgeType) newValue);
+                return;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__DESCRIPTION:
+                this.setDescription((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -1124,6 +1174,9 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__EDGE_TYPE:
                 this.setEdgeType(EDGE_TYPE_EDEFAULT);
                 return;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__DESCRIPTION:
+                this.setDescription(DESCRIPTION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -1174,6 +1227,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                 return MAX_WIDTH_EXPRESSION_EDEFAULT == null ? this.maxWidthExpression != null : !MAX_WIDTH_EXPRESSION_EDEFAULT.equals(this.maxWidthExpression);
             case DiagramPackage.CONDITIONAL_EDGE_STYLE__EDGE_TYPE:
                 return this.edgeType != EDGE_TYPE_EDEFAULT;
+            case DiagramPackage.CONDITIONAL_EDGE_STYLE__DESCRIPTION:
+                return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
         }
         return super.eIsSet(featureID);
     }
@@ -1243,6 +1298,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                     return DiagramPackage.EDGE_STYLE__MAX_WIDTH_EXPRESSION;
                 case DiagramPackage.CONDITIONAL_EDGE_STYLE__EDGE_TYPE:
                     return DiagramPackage.EDGE_STYLE__EDGE_TYPE;
+                case DiagramPackage.CONDITIONAL_EDGE_STYLE__DESCRIPTION:
+                    return DiagramPackage.EDGE_STYLE__DESCRIPTION;
                 default:
                     return -1;
             }
@@ -1315,6 +1372,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
                     return DiagramPackage.CONDITIONAL_EDGE_STYLE__MAX_WIDTH_EXPRESSION;
                 case DiagramPackage.EDGE_STYLE__EDGE_TYPE:
                     return DiagramPackage.CONDITIONAL_EDGE_STYLE__EDGE_TYPE;
+                case DiagramPackage.EDGE_STYLE__DESCRIPTION:
+                    return DiagramPackage.CONDITIONAL_EDGE_STYLE__DESCRIPTION;
                 default:
                     return -1;
             }
@@ -1365,6 +1424,8 @@ public class ConditionalEdgeStyleImpl extends ConditionalImpl implements Conditi
         result.append(this.maxWidthExpression);
         result.append(", edgeType: ");
         result.append(this.edgeType);
+        result.append(", description: ");
+        result.append(this.description);
         result.append(')');
         return result.toString();
     }

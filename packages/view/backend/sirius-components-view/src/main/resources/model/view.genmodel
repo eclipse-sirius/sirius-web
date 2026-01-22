@@ -38,6 +38,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RepresentationDescription/preconditionExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RepresentationDescription/titleExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RepresentationDescription/iconExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//RepresentationDescription/description"/>
     </genClasses>
     <genClasses ecoreClass="view.ecore#//LabelStyle">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//LabelStyle/fontSize"/>

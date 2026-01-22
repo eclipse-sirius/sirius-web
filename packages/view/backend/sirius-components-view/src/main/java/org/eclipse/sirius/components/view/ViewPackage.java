@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -290,13 +290,21 @@ public interface ViewPackage extends EPackage {
     int REPRESENTATION_DESCRIPTION__ICON_EXPRESSION = 4;
 
     /**
+     * The feature id for the '<em><b>Description</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int REPRESENTATION_DESCRIPTION__DESCRIPTION = 5;
+
+    /**
      * The number of structural features of the '<em>Representation Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int REPRESENTATION_DESCRIPTION_FEATURE_COUNT = 5;
+    int REPRESENTATION_DESCRIPTION_FEATURE_COUNT = 6;
 
     /**
      * The number of operations of the '<em>Representation Description</em>' class. <!-- begin-user-doc --> <!--
@@ -1201,6 +1209,18 @@ public interface ViewPackage extends EPackage {
     EAttribute getRepresentationDescription_IconExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getDescription <em>Description</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Description</em>'.
+     * @see org.eclipse.sirius.components.view.RepresentationDescription#getDescription()
+     * @see #getRepresentationDescription()
+     * @generated
+     */
+    EAttribute getRepresentationDescription_Description();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.LabelStyle <em>Label Style</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1868,6 +1888,14 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute REPRESENTATION_DESCRIPTION__ICON_EXPRESSION = eINSTANCE.getRepresentationDescription_IconExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Description</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute REPRESENTATION_DESCRIPTION__DESCRIPTION = eINSTANCE.getRepresentationDescription_Description();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.LabelStyleImpl <em>Label
