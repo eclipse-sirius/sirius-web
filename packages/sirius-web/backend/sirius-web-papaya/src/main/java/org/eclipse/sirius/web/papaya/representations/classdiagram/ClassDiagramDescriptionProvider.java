@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,7 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
         classDiagramDescription.setAutoLayout(false);
         classDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         classDiagramDescription.setIconExpression("aql:'/papaya-representations/class-diagram.svg'");
+        classDiagramDescription.setDescription("Represents a simplified Class Diagram. It can display classes, records, interfaces or enums. It can also represent the relationships between them.");
 
         var cache = new DefaultViewDiagramElementFinder();
 
