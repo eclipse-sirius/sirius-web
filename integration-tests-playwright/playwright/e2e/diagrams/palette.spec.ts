@@ -39,13 +39,17 @@ test.describe('diagram - palette', () => {
     const playwrightNode = new PlaywrightNode(page, 'DataSource1');
     const playwrightNode2 = new PlaywrightNode(page, 'CompositeProcessor1');
     await playwrightNode.click();
+    // Hide Node Panel Info to avoid overlap in diagram
+    const panel = await page.locator('.react-flow__panel.bottom.left');
+    await panel.evaluate((node) => {
+      node.style.visibility = 'hidden';
+    });
     await playwrightNode2.controlClick();
     await playwrightNode2.openPalette();
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('toolSection-Layout').click();
     await page.getByTestId('Palette').getByTestId('tool-Align bottom').click();
-    //Check the last tool used is the one proposed as quick tool (disabled until the layout section is using the reworked palette extension point)
-    //await page.getByTestId('Palette').getByTestId('Align bottom').click();
+    await playwrightNode.waitForAnimationToFinish();
     const playwrightNodeXYPosition = await playwrightNode.getReactFlowXYPosition('DataSource1', false);
     const playwrightNode2XYPosition = await playwrightNode2.getReactFlowXYPosition('CompositeProcessor1', false);
     const playwrightNodeSize = await playwrightNode.getReactFlowSize('DataSource1', false);

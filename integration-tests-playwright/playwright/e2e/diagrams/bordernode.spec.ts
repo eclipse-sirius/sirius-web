@@ -75,16 +75,16 @@ test.describe('diagram - borderNode', () => {
     const playwrightBorderNodeEast = new PlaywrightNode(page, 'east');
     await playwrightBorderNodeEast.click();
 
-    const reactFlowXYPositionEast = await playwrightBorderNodeEast.getReactFlowXYPosition();
+    const reactFlowXYPositionEast = await playwrightBorderNodeEast.getReactFlowXYPosition('east');
     expect(reactFlowXYPositionEast.x).toBe(145);
     expect(reactFlowXYPositionEast.y).toBe(8);
 
     const playwrightParentNode = new PlaywrightNode(page, 'Entity1');
     await playwrightParentNode.click();
     await playwrightParentNode.resize({ height: 20, width: 50 }, 'bottom.right');
-    const parentSizeAfterBottomRight = await playwrightParentNode.getReactFlowSize();
+    const parentSizeAfterBottomRight = await playwrightParentNode.getReactFlowSize('Entity1');
 
-    const reactFlowXYPositionEastAfterBottomRight = await playwrightBorderNodeEast.getReactFlowXYPosition();
+    const reactFlowXYPositionEastAfterBottomRight = await playwrightBorderNodeEast.getReactFlowXYPosition('east');
     expect(reactFlowXYPositionEastAfterBottomRight.x).toBe(parentSizeAfterBottomRight.width - borderNodeGap);
     expect(reactFlowXYPositionEastAfterBottomRight.y).toBe(8);
 
@@ -92,9 +92,9 @@ test.describe('diagram - borderNode', () => {
 
     await playwrightParentNode.click();
     await playwrightParentNode.resize({ height: -20, width: -50 }, 'top.left');
-    const parentSizeAfterTopLeft = await playwrightParentNode.getReactFlowSize();
+    const parentSizeAfterTopLeft = await playwrightParentNode.getReactFlowSize('Entity1');
 
-    const reactFlowXYPositionEastAfterTopLeft = await playwrightBorderNodeEast.getReactFlowXYPosition();
+    const reactFlowXYPositionEastAfterTopLeft = await playwrightBorderNodeEast.getReactFlowXYPosition('east');
     expect(reactFlowXYPositionEastAfterTopLeft.x).toBe(parentSizeAfterTopLeft.width - borderNodeGap);
   });
 });
