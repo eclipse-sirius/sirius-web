@@ -41,9 +41,9 @@ test.describe('diagram - growable list', () => {
     const list2Node = new PlaywrightNode(page, 'Growable', 'FreeForm', 2);
     const list3Node = new PlaywrightNode(page, 'List 3', 'List');
 
-    const list1NodeSize = await list1Node.getReactFlowSize();
+    const list1NodeSize = await list1Node.getReactFlowSize('List 1');
     const list2NodeSize = await list2Node.getReactFlowSize('List 2');
-    const list3NodeSize = await list3Node.getReactFlowSize();
+    const list3NodeSize = await list3Node.getReactFlowSize('List 3');
 
     expect(list1NodeSize.height).toBeGreaterThanOrEqual(173);
     expect(list1NodeSize.height).toBeLessThanOrEqual(174);
