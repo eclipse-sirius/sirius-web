@@ -12,11 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.graphql.datafetchers;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.collaborative.workbenchconfiguration.api.IWorkbenchConfigurationCustomizer;
 import org.eclipse.sirius.components.collaborative.workbenchconfiguration.api.IWorkbenchConfigurationProvider;
 import org.eclipse.sirius.components.collaborative.workbenchconfiguration.dto.WorkbenchConfiguration;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
@@ -34,8 +36,11 @@ public class EditingContextWorkbenchConfigurationDataFetcher implements IDataFet
 
     private final IWorkbenchConfigurationProvider workbenchConfigurationProvider;
 
-    public EditingContextWorkbenchConfigurationDataFetcher(IWorkbenchConfigurationProvider workbenchConfigurationProvider) {
+    private final List<IWorkbenchConfigurationCustomizer> workbenchConfigurationCustomizers;
+
+    public EditingContextWorkbenchConfigurationDataFetcher(IWorkbenchConfigurationProvider workbenchConfigurationProvider, List<IWorkbenchConfigurationCustomizer> workbenchConfigurationCustomizers) {
         this.workbenchConfigurationProvider = Objects.requireNonNull(workbenchConfigurationProvider);
+        this.workbenchConfigurationCustomizers = Objects.requireNonNull(workbenchConfigurationCustomizers);
     }
 
     @Override
@@ -44,6 +49,10 @@ public class EditingContextWorkbenchConfigurationDataFetcher implements IDataFet
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID))
                 .map(Object::toString)
                 .orElse("");
-        return this.workbenchConfigurationProvider.getWorkbenchConfiguration(editingContextId);
+        var workbenchConfiguration = this.workbenchConfigurationProvider.getWorkbenchConfiguration(editingContextId);
+        for (var customizer: this.workbenchConfigurationCustomizers) {
+            workbenchConfiguration = customizer.customize(editingContextId, workbenchConfiguration);
+        }
+        return workbenchConfiguration;
     }
 }
