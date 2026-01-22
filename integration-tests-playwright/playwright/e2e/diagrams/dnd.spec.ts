@@ -258,6 +258,12 @@ test.describe('diagram - drag and drop', () => {
     await entity31Node.page.mouse.move(xyTargetPosition.x + 100, xyTargetPosition.y + 50, { steps: 5 });
     await entity31Node.page.mouse.up();
 
+    await page.waitForFunction(
+      () => {
+        return !!document.querySelector(`[data-testid="FreeForm - E3-1-dropped"]`);
+      },
+      { timeout: 2000 }
+    );
     expect(requestTriggered).toBe(true);
 
     const entity31DroppedNode = new PlaywrightNode(page, 'E3-1-dropped');

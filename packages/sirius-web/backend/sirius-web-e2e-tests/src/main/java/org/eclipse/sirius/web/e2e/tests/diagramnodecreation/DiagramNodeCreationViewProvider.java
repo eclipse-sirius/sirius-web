@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,7 +97,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                                                                 .expression("aql:newInstance")
                                                                 .children(new ViewBuilders().newSetValue()
                                                                         .featureName("name")
-                                                                        .valueExpression("New node created")
+                                                                        .valueExpression("aql:'New'+self.eContainer().eContents()->filter(diagramNodeCreation::Entity2)->size()")
                                                                         .build())
                                                                 .build(),
                                                         new ViewBuilders().newChangeContext()
@@ -130,10 +130,18 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                                 .body(new ViewBuilders().newCreateInstance()
                                                 .typeName(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::Entity1")
                                                 .referenceName("entity1s")
+                                                .variableName("newInstance")
+                                                .children(new ViewBuilders().newChangeContext().expression("aql:newInstance")
+                                                        .children(new ViewBuilders().newSetValue().featureName("name").valueExpression("E1").build())
+                                                        .build())
                                                 .build(),
                                         new ViewBuilders().newCreateInstance()
                                                 .typeName(DiagramNodeCreationDomainProvider.DOMAIN_NAME + "::Entity2")
                                                 .referenceName("entity2s")
+                                                .variableName("newInstance")
+                                                .children(new ViewBuilders().newChangeContext().expression("aql:newInstance")
+                                                        .children(new ViewBuilders().newSetValue().featureName("name").valueExpression("E2").build())
+                                                        .build())
                                                 .build())
                                 .build())
                         .build())
