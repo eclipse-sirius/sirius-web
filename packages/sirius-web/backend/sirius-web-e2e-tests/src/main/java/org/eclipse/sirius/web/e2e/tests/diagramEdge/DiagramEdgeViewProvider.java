@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,9 @@ import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DeleteToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.diagram.EdgePaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
@@ -196,6 +198,15 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
     }
 
     private EdgeDescription getEdgeDescription(IColorProvider colorProvider, String entityName, DiagramElementDescription sourceDescription, DiagramElementDescription targetDescription) {
+        var deleteTool = new DeleteToolBuilder()
+                .name("Delete")
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:self.defaultDelete()")
+                                .build()
+                )
+                .build();
+
         return new DiagramBuilders()
                 .newEdgeDescription()
                 .name(entityName)
@@ -208,6 +219,9 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .sourceDescriptions(sourceDescription)
                 .targetExpression("aql:self.target")
                 .targetDescriptions(targetDescription)
+                .palette(new EdgePaletteBuilder()
+                        .deleteTool(deleteTool)
+                        .build())
                 .style(
                         new DiagramBuilders()
                                 .newEdgeStyle()
