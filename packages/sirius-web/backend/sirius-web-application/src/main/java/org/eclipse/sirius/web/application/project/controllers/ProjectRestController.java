@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,10 @@ import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.RestProject;
 import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectCreationApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectDeletionApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectUpdateApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IRestDefaultProjectTemplateProvider;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.domain.ScrollPosition;
@@ -71,12 +74,21 @@ public class ProjectRestController {
 
     private static final OffsetDateTime DEFAULT_CREATED = Instant.EPOCH.atOffset(ZoneOffset.UTC);
 
-    private final IProjectApplicationService projectApplicationService;
+    private final IProjectSearchApplicationService projectSearchApplicationService;
+
+    private final IProjectCreationApplicationService projectCreationApplicationService;
+
+    private final IProjectUpdateApplicationService projectUpdateApplicationService;
+
+    private final IProjectDeletionApplicationService projectDeletionApplicationService;
 
     private final Optional<IRestDefaultProjectTemplateProvider> defaultProjectTemplateProvider;
 
-    public ProjectRestController(IProjectApplicationService projectApplicationService, Optional<IRestDefaultProjectTemplateProvider> defaultProjectTemplateProvider) {
-        this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+    public ProjectRestController(IProjectSearchApplicationService projectSearchApplicationService, IProjectCreationApplicationService projectCreationApplicationService, IProjectUpdateApplicationService projectUpdateApplicationService, IProjectDeletionApplicationService projectDeletionApplicationService, Optional<IRestDefaultProjectTemplateProvider> defaultProjectTemplateProvider) {
+        this.projectSearchApplicationService = Objects.requireNonNull(projectSearchApplicationService);
+        this.projectCreationApplicationService = Objects.requireNonNull(projectCreationApplicationService);
+        this.projectUpdateApplicationService = Objects.requireNonNull(projectUpdateApplicationService);
+        this.projectDeletionApplicationService = Objects.requireNonNull(projectDeletionApplicationService);
         this.defaultProjectTemplateProvider = Objects.requireNonNull(defaultProjectTemplateProvider);
     }
 
@@ -101,7 +113,7 @@ public class ProjectRestController {
             position = ScrollPosition.keyset();
         }
         int limit = pageSize.orElse(DEFAULT_PAGE_SIZE);
-        var window = this.projectApplicationService.findAll(position, limit, Map.of());
+        var window = this.projectSearchApplicationService.findAll(position, limit, Map.of());
         var restProjects = window
                 .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()))
                 .toList();
@@ -118,7 +130,7 @@ public class ProjectRestController {
     })
     @GetMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> getProjectById(@PathVariable String projectId) {
-        var restProject = this.projectApplicationService.findById(projectId)
+        var restProject = this.projectSearchApplicationService.findById(projectId)
                 .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()));
 
         return restProject.map(project -> new ResponseEntity<>(project, HttpStatus.OK))
@@ -139,7 +151,7 @@ public class ProjectRestController {
             projectTemplateId = this.defaultProjectTemplateProvider.get().getDefaultProjectTemplateId();
         }
         var createProjectInput = new CreateProjectInput(UUID.randomUUID(), name, projectTemplateId, List.of());
-        var newProjectPayload = this.projectApplicationService.createProject(createProjectInput);
+        var newProjectPayload = this.projectCreationApplicationService.createProject(createProjectInput);
 
         if (newProjectPayload instanceof CreateProjectSuccessPayload createProjectSuccessPayload) {
             var projectDTO = createProjectSuccessPayload.project();
@@ -161,7 +173,7 @@ public class ProjectRestController {
     public ResponseEntity<RestProject> updateProject(@PathVariable String projectId, @RequestParam Optional<String> name, @RequestParam Optional<String> description, @RequestParam Optional<RestBranch> branch) {
         if (name.isPresent()) {
             var renameProjectInput = new RenameProjectInput(UUID.randomUUID(), projectId, name.get());
-            var renamedProjectPayload = this.projectApplicationService.renameProject(renameProjectInput);
+            var renamedProjectPayload = this.projectUpdateApplicationService.renameProject(renameProjectInput);
             if (renamedProjectPayload instanceof RenameProjectSuccessPayload) {
                 var restProject = new RestProject(projectId, DEFAULT_CREATED, new Identified(projectId), null, name.get());
                 return new ResponseEntity<>(restProject, HttpStatus.OK);
@@ -180,12 +192,12 @@ public class ProjectRestController {
     })
     @DeleteMapping(path = "/{projectId}")
     public ResponseEntity<RestProject> deleteProject(@PathVariable String projectId) {
-        var restProject = this.projectApplicationService.findById(projectId)
+        var restProject = this.projectSearchApplicationService.findById(projectId)
                 .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()))
                 .orElse(null);
 
         var deleteProjectInput = new DeleteProjectInput(UUID.randomUUID(), projectId);
-        var deleteProjectPayload = this.projectApplicationService.deleteProject(deleteProjectInput);
+        var deleteProjectPayload = this.projectDeletionApplicationService.deleteProject(deleteProjectInput);
 
         if (deleteProjectPayload instanceof ErrorPayload) {
             return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);

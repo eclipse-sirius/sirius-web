@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,8 @@ import org.eclipse.sirius.web.application.project.data.versioning.dto.GetBranche
 import org.eclipse.sirius.web.application.project.data.versioning.dto.GetBranchesRestSuccessPayload;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranch;
 import org.eclipse.sirius.web.application.project.data.versioning.dto.RestBranchRequest;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -61,13 +61,13 @@ public class BranchRestController {
 
     private final IEditingContextDispatcher editingContextDispatcher;
 
-    private final IProjectApplicationService projectApplicationService;
+    private final IProjectSearchApplicationService projectSearchApplicationService;
 
     private final IProjectEditingContextService projectEditingContextService;
 
-    public BranchRestController(IEditingContextDispatcher editingContextDispatcher, IProjectApplicationService projectApplicationService, IProjectEditingContextService projectEditingContextService) {
+    public BranchRestController(IEditingContextDispatcher editingContextDispatcher, IProjectSearchApplicationService projectSearchApplicationService, IProjectEditingContextService projectEditingContextService) {
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
-        this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+        this.projectSearchApplicationService = Objects.requireNonNull(projectSearchApplicationService);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
     }
 
@@ -151,7 +151,7 @@ public class BranchRestController {
         var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
         if (optionalEditingContextId.isPresent()) {
             var editingContextId = optionalEditingContextId.get();
-            var restProject = this.projectApplicationService.findById(projectId);
+            var restProject = this.projectSearchApplicationService.findById(projectId);
             if (restProject.isPresent()) {
                 var payload = this.editingContextDispatcher.dispatchQuery(editingContextId, new DeleteBranchRestInput(UUID.randomUUID(), branchId)).block(Duration.ofSeconds(TIMEOUT));
                 if (payload instanceof DeleteBranchRestSuccessPayload successPayload) {

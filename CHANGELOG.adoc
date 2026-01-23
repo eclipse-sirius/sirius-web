@@ -16,6 +16,7 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] The service `IProjectApplicationService` has been deleted and replaced with `IProjectSearchApplicationService`, `IProjectCreationApplicationService`, `IProjectUpdateApplicationService`, `IProjectDeletionApplicationService`.
 
 
 === Dependency update
@@ -33,6 +34,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
 
 
 

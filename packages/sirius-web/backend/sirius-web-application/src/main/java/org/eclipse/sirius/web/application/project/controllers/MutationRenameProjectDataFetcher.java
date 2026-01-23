@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 
-import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -24,8 +23,10 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectUpdateApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field Mutation#renameProject.
@@ -41,14 +42,14 @@ public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final ICapabilityEvaluator capabilityEvaluator;
 
-    private final IProjectApplicationService projectApplicationService;
+    private final IProjectUpdateApplicationService projectUpdateApplicationService;
 
     private final IMessageService messageService;
 
-    public MutationRenameProjectDataFetcher(ObjectMapper objectMapper, ICapabilityEvaluator capabilityEvaluator, IProjectApplicationService projectApplicationService, IMessageService messageService) {
+    public MutationRenameProjectDataFetcher(ObjectMapper objectMapper, ICapabilityEvaluator capabilityEvaluator, IProjectUpdateApplicationService projectUpdateApplicationService, IMessageService messageService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
-        this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+        this.projectUpdateApplicationService = Objects.requireNonNull(projectUpdateApplicationService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -62,6 +63,6 @@ public class MutationRenameProjectDataFetcher implements IDataFetcherWithFieldCo
             return new ErrorPayload(input.id(), this.messageService.unauthorized());
         }
 
-        return this.projectApplicationService.renameProject(input);
+        return this.projectUpdateApplicationService.renameProject(input);
     }
 }

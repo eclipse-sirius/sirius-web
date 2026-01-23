@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,19 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.projects;
 
-import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
-import org.eclipse.sirius.web.domain.pagination.Window;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.KeysetScrollPosition;
-import org.springframework.data.domain.ScrollPosition;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.transaction.annotation.Transactional;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +26,19 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.StreamSupport;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
+import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
+import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
+import org.eclipse.sirius.web.domain.pagination.Window;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.domain.ScrollPosition;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlConfig;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration tests of the project pagination.
@@ -51,7 +51,7 @@ import static org.assertj.core.api.Assertions.fail;
 public class ProjectPaginationIntegrationTests extends AbstractIntegrationTests {
 
     @Autowired
-    private IProjectApplicationService projectApplicationService;
+    private IProjectSearchApplicationService projectSearchApplicationService;
 
     @Test
     @Sql(scripts = {
@@ -217,7 +217,7 @@ public class ProjectPaginationIntegrationTests extends AbstractIntegrationTests 
         List<Window<ProjectDTO>> projectReceived = new ArrayList<>();
 
         while (shouldContinue) {
-            var window = this.projectApplicationService.findAll(position, limit, Map.of());
+            var window = this.projectSearchApplicationService.findAll(position, limit, Map.of());
             projectReceived.add(window);
 
             shouldContinue = window.hasNext();

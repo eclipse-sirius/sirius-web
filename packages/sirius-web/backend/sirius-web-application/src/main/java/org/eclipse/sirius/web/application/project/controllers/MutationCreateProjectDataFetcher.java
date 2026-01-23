@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinate
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectCreationApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 
 import graphql.schema.DataFetchingEnvironment;
@@ -42,14 +42,14 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final ICapabilityEvaluator capabilityEvaluator;
 
-    private final IProjectApplicationService projectApplicationService;
+    private final IProjectCreationApplicationService projectCreationApplicationService;
 
     private final IMessageService messageService;
 
-    public MutationCreateProjectDataFetcher(ObjectMapper objectMapper, ICapabilityEvaluator capabilityEvaluator, IProjectApplicationService projectApplicationService, IMessageService messageService) {
+    public MutationCreateProjectDataFetcher(ObjectMapper objectMapper, ICapabilityEvaluator capabilityEvaluator, IProjectCreationApplicationService projectCreationApplicationService, IMessageService messageService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
-        this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+        this.projectCreationApplicationService = Objects.requireNonNull(projectCreationApplicationService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -63,6 +63,6 @@ public class MutationCreateProjectDataFetcher implements IDataFetcherWithFieldCo
             return new ErrorPayload(input.id(), this.messageService.unauthorized());
         }
 
-        return this.projectApplicationService.createProject(input);
+        return this.projectCreationApplicationService.createProject(input);
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,27 +15,18 @@ package org.eclipse.sirius.web.application.project.services.api;
 import java.util.Map;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.web.application.project.api.ICreateProjectInput;
-import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
-import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 
 /**
- * Application services used to manipulate projects.
+ * Application service used to search projects.
  *
  * @author sbegaudeau
+ * @since v2026.1.0
  */
-public interface IProjectApplicationService {
+public interface IProjectSearchApplicationService {
     Optional<ProjectDTO> findById(String id);
 
     Window<ProjectDTO> findAll(KeysetScrollPosition position, int limit, Map<String, Object> filter);
-
-    IPayload createProject(ICreateProjectInput input);
-
-    IPayload renameProject(RenameProjectInput input);
-
-    IPayload deleteProject(DeleteProjectInput input);
 }

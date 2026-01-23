@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.CapabilityVote;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityVoter;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -30,16 +30,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class DisableProjectSettingsViewCapabilityVoter implements ICapabilityVoter {
 
-    private final IProjectApplicationService projectApplicationService;
+    private final IProjectSearchApplicationService projectSearchApplicationService;
 
-    public DisableProjectSettingsViewCapabilityVoter(IProjectApplicationService projectApplicationService) {
-        this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+    public DisableProjectSettingsViewCapabilityVoter(IProjectSearchApplicationService projectSearchApplicationService) {
+        this.projectSearchApplicationService = Objects.requireNonNull(projectSearchApplicationService);
     }
 
     @Override
     public CapabilityVote vote(String type, String identifier, String capability) {
         if (SiriusWebCapabilities.PROJECT_SETTINGS.equals(type) && SiriusWebCapabilities.ProjectSettings.VIEW.equals(capability) && identifier != null && !identifier.isBlank()) {
-            var optionalProject = this.projectApplicationService.findById(identifier);
+            var optionalProject = this.projectSearchApplicationService.findById(identifier);
             if (optionalProject.isPresent()) {
                 var project = optionalProject.get();
                 if (project.name().contains("Cypress - Disabled Settings Project")) {
