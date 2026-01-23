@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
+import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
+import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
+import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
+import org.eclipse.sirius.web.domain.pagination.Window;
+import org.springframework.data.domain.KeysetScrollPosition;
+import org.springframework.data.domain.ScrollPosition;
+
 import graphql.execution.DataFetcherResult;
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
@@ -27,18 +40,6 @@ import graphql.relay.DefaultEdge;
 import graphql.relay.Edge;
 import graphql.relay.Relay;
 import graphql.schema.DataFetchingEnvironment;
-import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
-import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
-import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
-import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
-import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
-import org.eclipse.sirius.web.application.project.services.api.IProjectApplicationService;
-import org.eclipse.sirius.web.domain.pagination.Window;
-import org.springframework.data.domain.KeysetScrollPosition;
-import org.springframework.data.domain.ScrollPosition;
 
 /**
  * Data fetcher for the field Viewer#projects.
@@ -60,13 +61,13 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
 
     private final ICapabilityEvaluator capabilityEvaluator;
 
-    private final IProjectApplicationService projectApplicationService;
+    private final IProjectSearchApplicationService projectSearchApplicationService;
 
     private final ILimitProvider limitProvider;
 
-    public ViewerProjectsDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectApplicationService projectApplicationService, ILimitProvider limitProvider) {
+    public ViewerProjectsDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectSearchApplicationService projectSearchApplicationService, ILimitProvider limitProvider) {
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
-        this.projectApplicationService = Objects.requireNonNull(projectApplicationService);
+        this.projectSearchApplicationService = Objects.requireNonNull(projectSearchApplicationService);
         this.limitProvider = Objects.requireNonNull(limitProvider);
     }
 
@@ -86,7 +87,7 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
         KeysetScrollPosition position = this.getPosition(after, before);
         int limit = this.limitProvider.getLimit(20, first, last, after, before);
 
-        var projectPage = this.projectApplicationService.findAll(position, limit, filter);
+        var projectPage = this.projectSearchApplicationService.findAll(position, limit, filter);
         return this.toConnection(projectPage);
     }
 
