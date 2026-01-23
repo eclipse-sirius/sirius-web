@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,22 +12,15 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import java.util.UUID;
-
-import org.eclipse.sirius.components.representations.IRepresentation;
-
 /**
- * Used to get representation data from the exported project.
+ * Used to get representation metadata from the manifest of the exported project.
  *
- * @author jmallet
+ * @author tgiraudet
  */
-public record RepresentationImportData(
-        UUID id,
-        String projectId,
-        String descriptionId,
-        String targetObjectId,
-        String label,
-        String kind,
-        IRepresentation representation
+public record RepresentationImportMetadata(
+        String descriptionUri,
+        String targetObjectUri,
+        String lastMigrationPerformed,
+        String migrationVersion
 ) {
 }

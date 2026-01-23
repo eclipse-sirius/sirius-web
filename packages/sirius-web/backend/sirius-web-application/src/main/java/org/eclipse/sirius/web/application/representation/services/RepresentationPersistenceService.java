@@ -77,9 +77,36 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
 
             String content = this.toString(representation);
 
-            var exists = this.representationContentSearchService.existsById(AggregateReference.to(semanticDataId), AggregateReference.to(representationId));
+            var optionalContent = this.representationContentSearchService.findContentById(AggregateReference.to(semanticDataId), AggregateReference.to(representationId));
 
-            if (exists) {
+            if (optionalContent.isPresent()) {
+                var migrationData = this.getLastMigrationData(representation.getKind());
+                if (!migrationData.migrationVersion().equals(optionalContent.get().getMigrationVersion())) {
+                    this.representationContentUpdateService.updateContentByRepresentationIdWithMigrationData(cause, AggregateReference.to(semanticDataId), AggregateReference.to(representationId),
+                            content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
+                } else {
+                    this.representationContentUpdateService.updateContentByRepresentationId(cause, AggregateReference.to(semanticDataId), AggregateReference.to(representationId), content);
+                }
+            } else {
+                var migrationData = this.getInitialMigrationData(representation.getKind());
+                this.representationContentCreationService.create(cause, AggregateReference.to(semanticDataId), AggregateReference.to(representationId), content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
+            }
+        }
+    }
+
+    @Override
+    public void saveMigrated(ICause cause, IEditingContext editingContext, IRepresentation representation) {
+        var optionalSemanticDataId = new UUIDParser().parse(editingContext.getId());
+        var optionalRepresentationId = new UUIDParser().parse(representation.getId());
+        if (optionalSemanticDataId.isPresent() && optionalRepresentationId.isPresent()) {
+            var semanticDataId = optionalSemanticDataId.get();
+            var representationId = optionalRepresentationId.get();
+
+            String content = this.toString(representation);
+
+            var exist = this.representationContentSearchService.existsById(AggregateReference.to(semanticDataId), AggregateReference.to(representationId));
+
+            if (exist) {
                 var migrationData = this.getLastMigrationData(representation.getKind());
                 this.representationContentUpdateService.updateContentByRepresentationIdWithMigrationData(cause, AggregateReference.to(semanticDataId), AggregateReference.to(representationId), content, migrationData.lastMigrationPerformed(), migrationData.migrationVersion());
             } else {
