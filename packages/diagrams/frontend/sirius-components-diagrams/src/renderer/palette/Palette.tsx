@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteSearchField, PaletteSearchResult, PaletteToolList } from '@eclipse-sirius/sirius-components-palette';
+import {
+  PaletteQuickAccessToolBar,
+  PaletteSearchField,
+  PaletteSearchResult,
+  PaletteToolList,
+} from '@eclipse-sirius/sirius-components-palette';
 import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
@@ -36,7 +41,6 @@ import {
   PaletteProps,
   PaletteState,
 } from './Palette.types';
-import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
 import { useDiagramPalette } from './useDiagramPalette';
 
 export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
