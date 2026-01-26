@@ -91,6 +91,9 @@ export type {
   DiagramPaletteToolContributionProps,
 } from './renderer/palette/extensions/DiagramPaletteToolContribution.types';
 export { diagramPaletteToolExtensionPoint } from './renderer/palette/extensions/DiagramPaletteToolExtensionPoints';
+export { useDiagramPalette } from './renderer/palette/useDiagramPalette';
+export type { DiagramPanelActionProps } from './renderer/panel/DiagramPanel.types';
+export { diagramPanelActionExtensionPoint } from './renderer/panel/DiagramPanelExtensionPoints';
 export type { DiagramToolbarActionProps } from './renderer/toolbar/DiagramToolbar.types';
 export { diagramToolbarActionExtensionPoint } from './renderer/toolbar/DiagramToolbarExtensionPoints';
 export type { IElementSVGExportHandler } from './renderer/toolbar/experimental-svg-export/SVGExportEngine.types';
