@@ -1,5 +1,8 @@
 = Changelog
 
+https://github.com/eclipse-sirius/sirius-web/issues/6123[#6123] [diagram] Improve PaletteToolList rendering
+
+
 == 2026.1.0 (work in progress)
 
 === Shapes
