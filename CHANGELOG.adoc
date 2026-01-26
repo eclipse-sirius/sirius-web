@@ -21,6 +21,7 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6055[#6055] [releng] Sirius Web now requires **Java 21** or later to build *and* to run.
 - https://github.com/eclipse-sirius/sirius-web/issues/6400[#6400] [gantt] Add a new `dependencyLink` concept to improve dependency management in Gantt. The Gantt descriptions have been changed.
+- https://github.com/eclipse-sirius/sirius-web/issues/6126[#6126] [diagram] The extension point `diagramPalette#tool` has been removed in favor of `palette#quickTool`. This new extension point now supports quick tools formultiple elements selected at once.
 
 
 === Dependency update

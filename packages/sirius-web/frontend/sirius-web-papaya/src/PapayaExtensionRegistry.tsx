@@ -21,12 +21,10 @@ import {
 import {
   ActionProps,
   DiagramNodeActionOverrideContribution,
-  DiagramPaletteToolContributionProps,
   EdgeData,
   NodeData,
   ReactFlowPropsCustomizer,
   diagramNodeActionOverrideContributionExtensionPoint,
-  diagramPaletteToolExtensionPoint,
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
@@ -35,6 +33,10 @@ import {
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  PaletteQuickToolComponentProps,
+  paletteQuickToolExtensionPoint,
+} from '@eclipse-sirius/sirius-components-palette';
 import {
   NavigationBarProps,
   navigationBarCenterContributionExtensionPoint,
@@ -100,24 +102,19 @@ const papayaDiagramToolbarExtension: DataExtension<Array<ReactFlowPropsCustomize
   data: [reactFlowPropsCustomizer],
 };
 papayaExtensionRegistry.putData(diagramRendererReactFlowPropsCustomizerExtensionPoint, papayaDiagramToolbarExtension);
-const diagramPaletteToolContributions: DiagramPaletteToolContributionProps[] = [
-  {
-    canHandle: (diagramElement: Node<NodeData> | Edge<EdgeData> | null) => {
-      return diagramElement?.data
-        ? diagramElement.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component')
-        : false;
-    },
-    component: PapayaComponentLabelDetailToolContribution,
-  },
-  {
-    canHandle: (diagramElement: Node<NodeData> | Edge<EdgeData> | null) => diagramElement === null,
-    component: PapayaComponentDiagramToolContribution,
-  },
-];
-papayaExtensionRegistry.putData<DiagramPaletteToolContributionProps[]>(diagramPaletteToolExtensionPoint, {
-  identifier: `papaya_${diagramPaletteToolExtensionPoint.identifier}`,
-  data: diagramPaletteToolContributions,
-});
+
+const papayaComponentLabelDetailToolContribution: ComponentExtension<PaletteQuickToolComponentProps> = {
+  identifier: `papaya_${paletteQuickToolExtensionPoint.identifier}`,
+  Component: PapayaComponentLabelDetailToolContribution,
+};
+papayaExtensionRegistry.addComponent(paletteQuickToolExtensionPoint, papayaComponentLabelDetailToolContribution);
+
+const papayaComponentDiagramToolContribution: ComponentExtension<PaletteQuickToolComponentProps> = {
+  identifier: `papaya_${paletteQuickToolExtensionPoint.identifier}`,
+  Component: PapayaComponentDiagramToolContribution,
+};
+
+papayaExtensionRegistry.addComponent(paletteQuickToolExtensionPoint, papayaComponentDiagramToolContribution);
 
 /*******************************************************************************
  *
