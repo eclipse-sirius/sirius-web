@@ -12,14 +12,12 @@
  *******************************************************************************/
 
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
-import {
-  PaletteQuickToolContributionProps,
-  paletteQuickToolExtensionPoint,
-} from '@eclipse-sirius/sirius-components-palette';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
+import { PaletteQuickToolContributionProps } from '../extensions/PaletteQuickToolContribution.types';
+import { paletteQuickToolExtensionPoint } from '../extensions/PaletteQuickToolExtensionPoints';
 import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.types';
 import { Tool } from './Tool';
 
