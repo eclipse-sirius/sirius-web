@@ -21,12 +21,10 @@ import {
 import {
   ActionProps,
   DiagramNodeActionOverrideContribution,
-  DiagramPaletteToolContributionProps,
   EdgeData,
   NodeData,
   ReactFlowPropsCustomizer,
   diagramNodeActionOverrideContributionExtensionPoint,
-  diagramPaletteToolExtensionPoint,
   diagramRendererReactFlowPropsCustomizerExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import {
@@ -35,6 +33,10 @@ import {
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  PaletteQuickToolContributionProps,
+  paletteQuickToolExtensionPoint,
+} from '@eclipse-sirius/sirius-components-palette';
 import {
   NavigationBarProps,
   navigationBarCenterContributionExtensionPoint,
@@ -45,7 +47,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { Edge, Node, ReactFlowProps } from '@xyflow/react';
+import { Edge, Node, ReactFlowProps, useStoreApi } from '@xyflow/react';
 import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
 import { PapayaComponentLabelDetailNodeActionContribution } from './nodeactions/PapayaComponentLabelDetailNodeActionContribution';
 import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
@@ -100,22 +102,34 @@ const papayaDiagramToolbarExtension: DataExtension<Array<ReactFlowPropsCustomize
   data: [reactFlowPropsCustomizer],
 };
 papayaExtensionRegistry.putData(diagramRendererReactFlowPropsCustomizerExtensionPoint, papayaDiagramToolbarExtension);
-const diagramPaletteToolContributions: DiagramPaletteToolContributionProps[] = [
+const diagramPaletteToolContributions: PaletteQuickToolContributionProps[] = [
   {
-    canHandle: (diagramElement: Node<NodeData> | Edge<EdgeData> | null) => {
-      return diagramElement?.data
-        ? diagramElement.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component')
-        : false;
+    canHandle: (representationElementIds: string[]) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return representationElementIds.every((elementId) =>
+        store
+          .getState()
+          .nodeLookup.get(elementId)
+          ?.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component')
+      );
     },
     component: PapayaComponentLabelDetailToolContribution,
   },
   {
-    canHandle: (diagramElement: Node<NodeData> | Edge<EdgeData> | null) => diagramElement === null,
+    canHandle: (representationElementIds: string[]) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return !(
+        representationElementIds.length === 1 &&
+        representationElementIds[0] &&
+        (store.getState().nodeLookup.get(representationElementIds[0]) ||
+          store.getState().edgeLookup.get(representationElementIds[0]))
+      );
+    },
     component: PapayaComponentDiagramToolContribution,
   },
 ];
-papayaExtensionRegistry.putData<DiagramPaletteToolContributionProps[]>(diagramPaletteToolExtensionPoint, {
-  identifier: `papaya_${diagramPaletteToolExtensionPoint.identifier}`,
+papayaExtensionRegistry.putData<PaletteQuickToolContributionProps[]>(paletteQuickToolExtensionPoint, {
+  identifier: `papaya_${paletteQuickToolExtensionPoint.identifier}`,
   data: diagramPaletteToolContributions,
 });
 
