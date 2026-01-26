@@ -85,12 +85,7 @@ export { useResetNodeAppearance } from './renderer/palette/appearance/useResetNo
 export { AppearanceColorPicker } from './renderer/palette/appearance/widget/AppearanceColorPicker';
 export { AppearanceNumberTextfield } from './renderer/palette/appearance/widget/AppearanceNumberTextfield ';
 export { AppearanceSelect } from './renderer/palette/appearance/widget/AppearanceSelect';
-export type { DiagramPaletteToolComponentProps } from './renderer/palette/extensions/DiagramPaletteTool.types';
-export type {
-  DiagramPaletteToolContributionComponentProps,
-  DiagramPaletteToolContributionProps,
-} from './renderer/palette/extensions/DiagramPaletteToolContribution.types';
-export { diagramPaletteToolExtensionPoint } from './renderer/palette/extensions/DiagramPaletteToolExtensionPoints';
+export { useDiagramPalette } from './renderer/palette/useDiagramPalette';
 export type { DiagramPanelActionProps } from './renderer/panel/DiagramPanel.types';
 export { diagramPanelActionExtensionPoint } from './renderer/panel/DiagramPanelExtensionPoints';
 export type { IElementSVGExportHandler } from './renderer/panel/experimental-svg-export/SVGExportEngine.types';
