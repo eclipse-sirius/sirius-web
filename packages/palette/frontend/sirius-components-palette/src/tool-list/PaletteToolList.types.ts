@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLPalette, GQLTool, GQLToolSection } from '../Palette.types';
+import { GQLPalette, GQLTool } from '../Palette.types';
 import { PaletteExtensionSectionProps } from '../PaletteExtensionSection.types';
 
 export interface PaletteToolListProps {
@@ -25,6 +25,5 @@ export interface PaletteToolListProps {
 }
 
 export interface PaletteToolListStateValue {
-  toolSection: GQLToolSection | null;
-  extensionSection: string | null;
+  openedToolSectionId: string | null;
 }
