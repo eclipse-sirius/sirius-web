@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,6 +81,7 @@ public class GetNodeDescriptionsEventHandlerTests {
                 }
                 return desc;
             }
+
             @Override
             public Map<String, IRepresentationDescription> findAll(IEditingContext editingContext) {
                 var descriptions = new HashMap<String, IRepresentationDescription>();
@@ -103,7 +104,7 @@ public class GetNodeDescriptionsEventHandlerTests {
         var diagram = Diagram.newDiagram(UUID.randomUUID().toString())
                 .descriptionId(DIAGRAM_DESCRIPTION_ID)
                 .edges(List.of())
-                .layoutData(new DiagramLayoutData(Map.of(), Map.of(), Map.of()))
+                .layoutData(new DiagramLayoutData(Map.of(), Map.of(), Map.of(), false))
                 .nodes(List.of())
                 .targetObjectId("")
                 .build();
