@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,6 +37,7 @@ import org.eclipse.sirius.components.view.diagram.Tool;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ToolImpl#getPreconditionExpression <em>Precondition
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ToolImpl#getBody <em>Body</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.ToolImpl#getDescription <em>Description</em>}</li>
  * </ul>
  *
  * @generated
@@ -91,6 +92,26 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
      * @ordered
      */
     protected EList<Operation> body;
+
+    /**
+     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected String description = DESCRIPTION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -176,6 +197,29 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
      * @generated
      */
     @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescription(String newDescription) {
+        String oldDescription = this.description;
+        this.description = newDescription;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.TOOL__DESCRIPTION, oldDescription, this.description));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.TOOL__BODY:
@@ -198,6 +242,8 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
                 return this.getPreconditionExpression();
             case DiagramPackage.TOOL__BODY:
                 return this.getBody();
+            case DiagramPackage.TOOL__DESCRIPTION:
+                return this.getDescription();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -221,6 +267,9 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
                 this.getBody().clear();
                 this.getBody().addAll((Collection<? extends Operation>) newValue);
                 return;
+            case DiagramPackage.TOOL__DESCRIPTION:
+                this.setDescription((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -242,6 +291,9 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
             case DiagramPackage.TOOL__BODY:
                 this.getBody().clear();
                 return;
+            case DiagramPackage.TOOL__DESCRIPTION:
+                this.setDescription(DESCRIPTION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -260,6 +312,8 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case DiagramPackage.TOOL__BODY:
                 return this.body != null && !this.body.isEmpty();
+            case DiagramPackage.TOOL__DESCRIPTION:
+                return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
         }
         return super.eIsSet(featureID);
     }
@@ -279,6 +333,8 @@ public abstract class ToolImpl extends MinimalEObjectImpl.Container implements T
         result.append(this.name);
         result.append(", preconditionExpression: ");
         result.append(this.preconditionExpression);
+        result.append(", description: ");
+        result.append(this.description);
         result.append(')');
         return result.toString();
     }
