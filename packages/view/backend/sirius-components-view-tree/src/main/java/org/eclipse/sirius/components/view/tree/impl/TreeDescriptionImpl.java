@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,8 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * Item Label Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getContextMenuEntries <em>Context Menu
  * Entries</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.impl.TreeDescriptionImpl#getTreeItemTooltipExpression <em>Tree
+ * Item Tooltip Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -305,6 +307,26 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
      * @ordered
      */
     protected EList<TreeItemContextMenuEntry> contextMenuEntries;
+
+    /**
+     * The default value of the '{@link #getTreeItemTooltipExpression() <em>Tree Item Tooltip Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getTreeItemTooltipExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String TREE_ITEM_TOOLTIP_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getTreeItemTooltipExpression() <em>Tree Item Tooltip Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getTreeItemTooltipExpression()
+     * @generated
+     * @ordered
+     */
+    protected String treeItemTooltipExpression = TREE_ITEM_TOOLTIP_EXPRESSION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -610,6 +632,29 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
      * @generated
      */
     @Override
+    public String getTreeItemTooltipExpression() {
+        return this.treeItemTooltipExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setTreeItemTooltipExpression(String newTreeItemTooltipExpression) {
+        String oldTreeItemTooltipExpression = this.treeItemTooltipExpression;
+        this.treeItemTooltipExpression = newTreeItemTooltipExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION, oldTreeItemTooltipExpression, this.treeItemTooltipExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
@@ -654,6 +699,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
                 return this.getTreeItemLabelDescriptions();
             case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
                 return this.getContextMenuEntries();
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION:
+                return this.getTreeItemTooltipExpression();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -708,6 +755,9 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
                 this.getContextMenuEntries().clear();
                 this.getContextMenuEntries().addAll((Collection<? extends TreeItemContextMenuEntry>) newValue);
                 return;
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION:
+                this.setTreeItemTooltipExpression((String) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -759,6 +809,9 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
             case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
                 this.getContextMenuEntries().clear();
                 return;
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION:
+                this.setTreeItemTooltipExpression(TREE_ITEM_TOOLTIP_EXPRESSION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -797,6 +850,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
                 return this.treeItemLabelDescriptions != null && !this.treeItemLabelDescriptions.isEmpty();
             case TreePackage.TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES:
                 return this.contextMenuEntries != null && !this.contextMenuEntries.isEmpty();
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION:
+                return TREE_ITEM_TOOLTIP_EXPRESSION_EDEFAULT == null ? this.treeItemTooltipExpression != null : !TREE_ITEM_TOOLTIP_EXPRESSION_EDEFAULT.equals(this.treeItemTooltipExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -834,6 +889,8 @@ public class TreeDescriptionImpl extends RepresentationDescriptionImpl implement
         result.append(this.selectableExpression);
         result.append(", deletableExpression: ");
         result.append(this.deletableExpression);
+        result.append(", treeItemTooltipExpression: ");
+        result.append(this.treeItemTooltipExpression);
         result.append(')');
         return result.toString();
     }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ public class DomainServiceProvider implements IJavaServiceProvider {
         if (isDomainDiagramView) {
             result = List.of(DomainDiagramServices.class);
         } else if (isDomainTreeView) {
-            result = List.of(DomainExplorerServices.class);
+            result = List.of(DomainExplorerServices.class, DomainExplorerTooltipServices.class);
         }
 
         return result;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,6 +47,8 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.TreeDescription#getContextMenuEntries <em>Context Menu
  * Entries</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.TreeDescription#getTreeItemTooltipExpression <em>Tree Item Tooltip
+ * Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription()
@@ -331,5 +333,29 @@ public interface TreeDescription extends RepresentationDescription {
      * @generated
      */
     EList<TreeItemContextMenuEntry> getContextMenuEntries();
+
+    /**
+     * Returns the value of the '<em><b>Tree Item Tooltip Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Tree Item Tooltip Expression</em>' attribute.
+     * @see #setTreeItemTooltipExpression(String)
+     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeDescription_TreeItemTooltipExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getTreeItemTooltipExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.tree.TreeDescription#getTreeItemTooltipExpression <em>Tree Item
+     * Tooltip Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Tree Item Tooltip Expression</em>' attribute.
+     * @see #getTreeItemTooltipExpression()
+     * @generated
+     */
+    void setTreeItemTooltipExpression(String value);
 
 } // TreeDescription
