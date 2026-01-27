@@ -31,6 +31,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/deletableExpression"/>
       <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference tree.ecore#//TreeDescription/treeItemLabelDescriptions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference tree.ecore#//TreeDescription/contextMenuEntries"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeDescription/treeItemTooltipExpression"/>
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//TreeItemLabelDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//TreeItemLabelDescription/name"/>

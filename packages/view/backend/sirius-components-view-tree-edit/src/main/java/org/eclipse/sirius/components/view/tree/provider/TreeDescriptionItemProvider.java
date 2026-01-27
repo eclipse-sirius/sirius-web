@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,6 +66,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
             this.addSelectableExpressionPropertyDescriptor(object);
             this.addDeletableExpressionPropertyDescriptor(object);
             this.addTreeItemLabelDescriptionsPropertyDescriptor(object);
+            this.addTreeItemTooltipExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -225,6 +226,19 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
     }
 
     /**
+     * This adds a property descriptor for the Tree Item Tooltip Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addTreeItemTooltipExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_TreeDescription_treeItemTooltipExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TreeDescription_treeItemTooltipExpression_feature", "_UI_TreeDescription_type"),
+                TreePackage.Literals.TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
      * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
@@ -309,6 +323,7 @@ public class TreeDescriptionItemProvider extends RepresentationDescriptionItemPr
             case TreePackage.TREE_DESCRIPTION__EDITABLE_EXPRESSION:
             case TreePackage.TREE_DESCRIPTION__SELECTABLE_EXPRESSION:
             case TreePackage.TREE_DESCRIPTION__DELETABLE_EXPRESSION:
+            case TreePackage.TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case TreePackage.TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS:
