@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2026.1.0</version>
+		<version>2026.1.1</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-annotations-spring</artifactId>
-	<version>2026.1.0</version>
+	<version>2026.1.1</version>
 	<name>sirius-components-annotations-spring</name>
 	<description>Sirius Components Annotations Spring</description>
 
