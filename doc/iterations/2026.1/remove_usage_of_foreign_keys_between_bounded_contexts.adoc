@@ -1,0 +1,55 @@
+= Remove usage of foreign keys between bounded contexts
+
+== Problem
+
+We have been making some compromises with the best practices of the domain driven approach by using foreign keys between bounded contexts.
+This has always been indicated in the architecture documentation of Sirius Web:
+
+> While we are following a domain driven design approach, we will use foreign keys to create relations between tables in our database.
+> This includes foreign keys between concepts from different aggregates.
+> In theory, one could say that only events should be used to synchronize various aggregates.
+> For the time being, since we are not trying to build a set of micro-services, we will not prevent ourselves from leveraging our database to perform some cascade effects during the deletion of a concept.
+
+This had the advantages of providing us with the ability to both:
+
+- Ensure easily the consistency of the application
+- Give us the ability to delete related elements automatically
+
+This coupling prevented us from being able to move easily to a micro-service approach but it's not a major issue.
+On the other hand, our ability to delete eneities relied on the direction of the foreign key between tables.
+
+=== Project deletion
+
+One of the first issue we encountered came with `Project`, `ProjectSemanticData` and `SemanticData`.
+Given that `ProjectSemanticData` has a foreign key to both `Project` and `SemanticData`, the deletion of the `Project` triggered the deletion of the `ProjectSemanticData` (thanks to the `ON CASCASE DELETE` clause).
+Since the `ProjectSemanticData` was automatically deleted, we couldn't know which `SemanticData` to delete because the link had already been erased.
+
+In order to patch this issue quickly, we introduced a temporary workaround with `ProjectDeletionRequestedEvent` which was manually sent to give us the ability to delete the `SemanticData` and `ProjectSemanticData` before the deletion of the project.
+It was not perfect since it worked completely in reverse (deleting the semantic data of a project not yet deleted).
+
+This was always conceived as a temporary solution and identified as such in the javadoc of the code.
+This needs to be properly fixed now.
+
+== Key Result
+
+Foreign keys between bounded contexts should be removed and replaced with the appropriate `XxxDeletedEvent` fired from the relevant aggregate root.
+This will give our code and downstream projects the ability to listen to additional events to react to the deletion of some concepts (i.e. `ProjectSemanticDataDeletedEvent`).
+Instead the real deletion will be performed by an application service which will listen to those new events.
+The behavior of the application should stay the same for the end users.
+
+Downstream projects should not rely on foreign keys between bounded contexts either.
+In some basic use cases, they may work fine but for complex use cases, they would not be able to do the job.
+On top of that, this will easily create undesired coupling leaking between concepts.
+Keeping this kind of foreign keys in downstream applications will probably not create any issue for the moment but this is not the philosophy that Sirius Web is embracing.
+
+
+=== Cutting backs
+
+Some entities will not have any `XxxDeletedEvent` if they are deleted thanks to a foreign key within a bounded context.
+For example, their will probably not be any `SemanticDataDomainDeletedEvent` anytime soon since `SemanticDataDomain` objects are deleted automatically when a `SemanticData` entry is deleted.
+
+
+== Rabbit holes
+
+
+== No-gos
