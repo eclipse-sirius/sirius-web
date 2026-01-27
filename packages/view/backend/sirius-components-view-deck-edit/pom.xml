@@ -17,13 +17,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2025.12.6</version>
+		<version>2026.1.0</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-deck-edit</artifactId>
-	<version>2025.12.6</version>
+	<version>2026.1.0</version>
 	<name>sirius-components-view-deck-edit</name>
 	<description>Sirius Components Deck View Definition DSL - Edit Support</description>
 
@@ -36,17 +36,17 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-edit</artifactId>
-			<version>2025.12.6</version>
+			<version>2026.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view-deck</artifactId>
-			<version>2025.12.6</version>
+			<version>2026.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-emf</artifactId>
-			<version>2025.12.6</version>
+			<version>2026.1.0</version>
 		</dependency>
 	</dependencies>
 
