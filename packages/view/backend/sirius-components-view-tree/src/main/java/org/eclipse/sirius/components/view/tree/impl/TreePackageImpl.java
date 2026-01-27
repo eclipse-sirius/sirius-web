@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -333,6 +333,16 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
     @Override
     public EReference getTreeDescription_ContextMenuEntries() {
         return (EReference) this.treeDescriptionEClass.getEStructuralFeatures().get(12);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTreeDescription_TreeItemTooltipExpression() {
+        return (EAttribute) this.treeDescriptionEClass.getEStructuralFeatures().get(13);
     }
 
     /**
@@ -691,6 +701,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__DELETABLE_EXPRESSION);
         this.createEReference(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_LABEL_DESCRIPTIONS);
         this.createEReference(this.treeDescriptionEClass, TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES);
+        this.createEAttribute(this.treeDescriptionEClass, TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION);
 
         this.treeItemLabelDescriptionEClass = this.createEClass(TREE_ITEM_LABEL_DESCRIPTION);
         this.createEAttribute(this.treeItemLabelDescriptionEClass, TREE_ITEM_LABEL_DESCRIPTION__NAME);
@@ -797,6 +808,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.getTreeDescription_TreeItemLabelDescriptions().getEKeys().add(this.getTreeItemLabelDescription_Name());
         this.initEReference(this.getTreeDescription_ContextMenuEntries(), this.getTreeItemContextMenuEntry(), null, "contextMenuEntries", null, 0, -1, TreeDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTreeDescription_TreeItemTooltipExpression(), theViewPackage.getInterpretedExpression(), "treeItemTooltipExpression", null, 0, 1, TreeDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.treeItemLabelDescriptionEClass, TreeItemLabelDescription.class, "TreeItemLabelDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getTreeItemLabelDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, TreeItemLabelDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,

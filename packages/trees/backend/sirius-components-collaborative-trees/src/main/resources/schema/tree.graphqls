@@ -100,6 +100,7 @@ type TreeDescription implements RepresentationDescription {
   contextMenu(treeItemId: ID!): [TreeItemContextMenuEntry!]!
   fetchTreeItemContextMenuEntryData(treeItemId: ID!, menuEntryId: ID!): FetchTreeItemContextMenuEntryData!
   treeImpactAnalysisReport(treeItemId: ID!, menuEntryId: ID!): ImpactAnalysisReport!
+  treeItemTooltip(treeItemId: ID!): String!
 }
 
 type TreeFilter {

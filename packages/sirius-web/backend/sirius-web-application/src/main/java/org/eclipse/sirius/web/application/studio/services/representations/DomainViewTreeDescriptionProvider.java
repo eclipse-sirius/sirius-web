@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -142,6 +142,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .preconditionExpression("aql:false") // -> set canCreate to false to avoid to be display in New representation menu
                 .treeItemLabelDescriptions(this.entityStyle(domainTextStylePalette), this.attributeStyle(domainTextStylePalette), this.defaultStyle())
                 .contextMenuEntries(this.getContextMenuEntries().toArray(TreeItemContextMenuEntry[] ::new))
+                .treeItemTooltipExpression("aql:self.getTreeItemTooltip()")
                 .build();
         return this.viewDescription;
     }

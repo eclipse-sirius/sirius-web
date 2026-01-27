@@ -97,6 +97,9 @@ Implementations of `IExternalResourceLoaderService` now return an `ExternalResou
 `LoadingReport` instances are automatically handled by Sirius Web and displayed to the end user.
 Alternative implementations of `ILoadingReport` can be provided and consumed by a matching `IUploadDocumentReportProvider` implementation.
 - https://github.com/eclipse-sirius/sirius-web/issues/5899[#5899] [table] Add the possibility to retrieve table tool menu entries from backend
+- https://github.com/eclipse-sirius/sirius-web/issues/5941[#5941] [tree] Add support for customizing tree item tooltips.
+It is now possible to implement `ITreeItemTooltipProvider` to provide tooltips for any tree.
+Trees defined via the view DSL can alternatively provide a tooltip expression via `TreeDescription#setTreeItemTooltipExpression`.
 
 
 

@@ -90,7 +90,6 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
-
         var treeDescription = TreeDescription.newTreeDescription(DESCRIPTION_ID)
                 .label("Domain Tree")
                 .idProvider(new GetOrCreateRandomIdProvider())

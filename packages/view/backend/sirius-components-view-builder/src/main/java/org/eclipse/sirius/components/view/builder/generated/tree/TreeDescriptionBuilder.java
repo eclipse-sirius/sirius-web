@@ -220,6 +220,16 @@ public class TreeDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for TreeItemTooltipExpression.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder treeItemTooltipExpression(java.lang.String value) {
+        this.getTreeDescription().setTreeItemTooltipExpression(value);
+        return this;
+    }
+
 
 }
 

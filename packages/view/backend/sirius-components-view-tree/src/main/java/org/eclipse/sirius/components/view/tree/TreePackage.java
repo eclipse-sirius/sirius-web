@@ -234,13 +234,22 @@ public interface TreePackage extends EPackage {
     int TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 12;
 
     /**
+     * The feature id for the '<em><b>Tree Item Tooltip Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 13;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int TREE_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 13;
+    int TREE_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 14;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -934,6 +943,18 @@ public interface TreePackage extends EPackage {
     EReference getTreeDescription_ContextMenuEntries();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.TreeDescription#getTreeItemTooltipExpression <em>Tree Item
+     * Tooltip Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Tree Item Tooltip Expression</em>'.
+     * @see org.eclipse.sirius.components.view.tree.TreeDescription#getTreeItemTooltipExpression()
+     * @see #getTreeDescription()
+     * @generated
+     */
+    EAttribute getTreeDescription_TreeItemTooltipExpression();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.tree.TreeItemLabelDescription
      * <em>Item Label Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1438,6 +1459,14 @@ public interface TreePackage extends EPackage {
          * @generated
          */
         EReference TREE_DESCRIPTION__CONTEXT_MENU_ENTRIES = eINSTANCE.getTreeDescription_ContextMenuEntries();
+
+        /**
+         * The meta object literal for the '<em><b>Tree Item Tooltip Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TREE_DESCRIPTION__TREE_ITEM_TOOLTIP_EXPRESSION = eINSTANCE.getTreeDescription_TreeItemTooltipExpression();
 
         /**
          * The meta object literal for the
