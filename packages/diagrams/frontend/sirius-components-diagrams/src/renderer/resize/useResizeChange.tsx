@@ -15,6 +15,7 @@ import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
 import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getBorderNodeExtent } from '../layout/layoutBorderNodes';
+import { borderNodeOffset } from '../layout/layoutParams';
 import { ListNodeData } from '../node/ListNode.types';
 import { UseResizeChangeValue } from './useResizeChange.types';
 
@@ -119,8 +120,6 @@ const applyMoveToListContain = (
 const applyMoveToBorderNodes = (resizedNode: Node<NodeData>, nodes: Node<NodeData>[], change: NodeDimensionChange) => {
   const newChanges: NodeChange<Node<NodeData>>[] = [];
   if (resizedNode.width && resizedNode.height && change.dimensions) {
-    const offsetX: number = resizedNode.width - change.dimensions.width;
-    const offsetY: number = resizedNode.height - change.dimensions?.height;
     nodes
       .filter((node) => node.data.isBorderNode)
       .forEach((node) => {
@@ -134,16 +133,18 @@ const applyMoveToBorderNodes = (resizedNode: Node<NodeData>, nodes: Node<NodeDat
             node
           );
           if (node.data.borderNodePosition === BorderNodePosition.EAST) {
+            const eastBorderNodePositionX = (change.dimensions?.width ?? 0) - borderNodeOffset;
             newChanges.push({
               id: node.id,
               type: 'position',
-              position: { x: node.position.x - offsetX, y: node.position.y },
+              position: { x: eastBorderNodePositionX, y: node.position.y },
             });
           } else if (node.data.borderNodePosition === BorderNodePosition.SOUTH) {
+            const southBorderNodePositionY = (change.dimensions?.height ?? 0) - borderNodeOffset;
             newChanges.push({
               id: node.id,
               type: 'position',
-              position: { x: node.position.x, y: node.position.y - offsetY },
+              position: { x: node.position.x, y: southBorderNodePositionY },
             });
           } else {
             newChanges.push({
@@ -222,6 +223,18 @@ export const useResizeChange = (): UseResizeChangeValue => {
             .find((node) => change.id === node.id);
           if (movedNode) {
             return applyMoveToListContain(movedNode, getNodes(), change);
+          }
+          const borderNodeMoved = getNodes()
+            .filter((node) => node.data.isBorderNode)
+            .find((node) => change.id === node.id);
+          if (
+            borderNodeMoved &&
+            newBorderNodeMoveChanges.some(
+              (borderNodeMoveChange) => isMove(borderNodeMoveChange) && borderNodeMoveChange.id === borderNodeMoved.id
+            )
+          ) {
+            // We have already computed a new position for this border node
+            change.position = undefined;
           }
         }
         return change;
