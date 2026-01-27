@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2026.1.0</version>
+		<version>2026.1.1</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-flow-starter</artifactId>
-	<version>2026.1.0</version>
+	<version>2026.1.1</version>
 	<name>sirius-components-flow-starter</name>
 	<description>Sirius Components Flow Starter</description>
 
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-application</artifactId>
-			<version>2026.1.0</version>
+			<version>2026.1.1</version>
 		</dependency>
 
 		<dependency>
@@ -63,13 +63,13 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
-			<version>2026.1.0</version>
+			<version>2026.1.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-spring-tests</artifactId>
-			<version>2026.1.0</version>
+			<version>2026.1.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
