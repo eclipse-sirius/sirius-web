@@ -43,6 +43,7 @@
 === Shapes
 
 - Allow configuration of workbench panels
+- Remove usage of foreign keys between bounded contexts
 
 
 === Architectural decision records
