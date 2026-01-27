@@ -79,7 +79,7 @@ export const useArrangeAll = (): UseArrangeAllValue => {
               edges: laidOutDiagram.edges,
             };
             fitView({ duration: 200, nodes: laidOutNodesWithElk });
-            synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+            synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, false, true);
             resolve();
           });
         });

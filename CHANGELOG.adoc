@@ -220,6 +220,7 @@ In conjunction of the `workbenchViewContributionExtensionPoint` frontend extensi
 - https://github.com/eclipse-sirius/sirius-web/issues/5300[#5300] [diagram] Add undo redo for node layout
 - https://github.com/eclipse-sirius/sirius-web/issues/5651[#5651] [diagram] Add undo redo for label layout and appearance
 - https://github.com/eclipse-sirius/sirius-web/issues/3488[#3488] [diagram] Restore auto-layout support for diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/6118[#6118] [diagram] Add support for auto layout until change
 
 
 === Improvements

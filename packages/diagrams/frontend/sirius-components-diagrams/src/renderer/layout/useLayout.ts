@@ -97,7 +97,11 @@ export const useLayout = (): UseLayoutValue => {
       }));
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
       prepareLayoutLabels(state.previousDiagram, state.diagramToLayout);
-      if (diagramDescription?.layoutOption === 'AUTO_LAYOUT' && layoutConfigurations[0]) {
+      if (
+        layoutConfigurations[0] &&
+        (diagramDescription?.layoutOption === 'AUTO_LAYOUT' ||
+          (diagramDescription?.layoutOption === 'AUTO_UNTIL_MANUAL' && state.diagramToLayout.autoLaidOut))
+      ) {
         elkLayout(state.diagramToLayout.nodes, state.diagramToLayout.edges, layoutConfigurations[0].layoutOptions).then(
           (layoutNodes) => {
             const updatedLayoutNodes = layoutNodes.map((n) => {

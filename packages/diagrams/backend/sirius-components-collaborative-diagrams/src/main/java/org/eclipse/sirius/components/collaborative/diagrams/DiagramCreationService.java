@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.components.DiagramComponent;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps;
 import org.eclipse.sirius.components.diagrams.components.DiagramComponentProps.Builder;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramLabelLayoutEvent;
 import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramNodeLayoutEvent;
@@ -183,7 +184,8 @@ public class DiagramCreationService implements IDiagramCreationService {
                 .map(DiagramLabelLayoutEvent.class::cast)
                 .toList();
 
-        var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of()));
+        var newLayoutData = optionalPreviousDiagram.map(Diagram::getLayoutData).orElse(new DiagramLayoutData(Map.of(), Map.of(), Map.of(),
+                !diagramDescription.getLayoutOption().equals(DiagramLayoutOption.NONE)));
 
         diagramNodeLayoutEvents.forEach(nodeLayoutDataEvent -> newLayoutData.nodeLayoutData().put(nodeLayoutDataEvent.nodeId(), nodeLayoutDataEvent.nodeLayoutData()));
         diagramLabelLayoutEvents.forEach(nodeLabelDataEvent -> newLayoutData.labelLayoutData().put(nodeLabelDataEvent.nodeId(), nodeLabelDataEvent.labelLayoutData()));
@@ -223,7 +225,14 @@ public class DiagramCreationService implements IDiagramCreationService {
                         (oldValue, newValue) -> newValue
                 ));
 
-        var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData);
+        boolean autoLaidOut = diagram.getLayoutData().autoLaidOut();
+        if (layoutDiagramInput.diagramLayoutData().cancelAutoLayout()) {
+            autoLaidOut = false;
+        }
+        if (layoutDiagramInput.diagramLayoutData().startAutoLayout()) {
+            autoLaidOut = true;
+        }
+        var layoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData, autoLaidOut);
         var laidOutDiagram = Diagram.newDiagram(diagram)
                 .layoutData(layoutData)
                 .build();

@@ -160,7 +160,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 Map<String, NodeLayoutData> nodeLayoutData = new HashMap<>();
                 Map<String, EdgeLayoutData> edgeLayoutData = new HashMap<>();
                 Map<String, LabelLayoutData> labelLayoutData = new HashMap<>();
-                var newLayoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData);
+                var newLayoutData = new DiagramLayoutData(nodeLayoutData, edgeLayoutData, labelLayoutData, false);
                 this.handleLayout(newLayoutData, oldRepresentation.getLayoutData(), nodeElementOldNewIds, edgeElementOldNewIds, labelElementOldNewIds);
 
                 var updatedDiagram = this.diagramCreationService.refresh(editingContext.get(), diagramContext)

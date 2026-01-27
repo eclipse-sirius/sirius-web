@@ -41,6 +41,7 @@ type DiagramLayoutData {
   nodeLayoutData: [NodeLayoutData!]!
   edgeLayoutData: [EdgeLayoutData!]!
   labelLayoutData: [LabelLayoutData!]!
+  autoLaidOut: Boolean!
 }
 
 type NodeLayoutData {
@@ -721,6 +722,8 @@ input DiagramLayoutDataInput {
   nodeLayoutData: [NodeLayoutDataInput!]!
   edgeLayoutData: [EdgeLayoutDataInput!]!
   labelLayoutData: [LabelLayoutDataInput!]!
+  cancelAutoLayout: Boolean!
+  startAutoLayout: Boolean!
 }
 
 input NodeLayoutDataInput {

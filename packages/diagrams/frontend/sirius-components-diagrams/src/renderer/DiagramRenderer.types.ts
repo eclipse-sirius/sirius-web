@@ -28,6 +28,7 @@ export interface DiagramRendererProps {
 export interface Diagram {
   nodes: Node<NodeData, DiagramNodeType>[];
   edges: Edge<MultiLabelEdgeData>[];
+  autoLaidOut: boolean;
 }
 
 export type OutsideLabelLocation = 'BOTTOM_BEGIN' | 'BOTTOM_MIDDLE' | 'BOTTOM_END';

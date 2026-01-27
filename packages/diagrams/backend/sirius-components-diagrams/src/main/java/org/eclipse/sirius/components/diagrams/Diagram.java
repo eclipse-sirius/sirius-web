@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.representations.IRepresentation;
  */
 @Immutable
 public final class Diagram implements IRepresentation {
+
     public static final String KIND = IRepresentation.KIND_PREFIX + "?type=Diagram";
 
     private String id;
@@ -101,9 +102,10 @@ public final class Diagram implements IRepresentation {
      */
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
-        private String id;
 
-        private String kind = KIND;
+        private final String id;
+
+        private final String kind = KIND;
 
         private String targetObjectId;
 
@@ -113,7 +115,7 @@ public final class Diagram implements IRepresentation {
 
         private List<Edge> edges;
 
-        private DiagramLayoutData layoutData = new DiagramLayoutData(Map.of(), Map.of(), Map.of());
+        private DiagramLayoutData layoutData = new DiagramLayoutData(Map.of(), Map.of(), Map.of(), false);
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
