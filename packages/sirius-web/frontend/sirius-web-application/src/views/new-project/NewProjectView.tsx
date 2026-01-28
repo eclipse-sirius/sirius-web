@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,6 +97,7 @@ export const NewProjectView = () => {
     viewer: {
       capabilities: {
         projects: { canCreate },
+        libraries: { canList: canListLibraries },
       },
     },
   } = useCurrentViewer();
@@ -187,6 +188,17 @@ export const NewProjectView = () => {
     }
   }, [newProjectId]);
 
+  const showTemplateSelection = state.availableTemplates !== null && state.availableTemplates.length > 1;
+  const showLibrariesSelection = canListLibraries;
+  let description = t('description');
+  if (!showTemplateSelection && !showLibrariesSelection) {
+    description = t('descriptionNameOnly');
+  } else if (showTemplateSelection && !showLibrariesSelection) {
+    description = t('descriptionNameAndTemplate');
+  } else if (!showTemplateSelection && showLibrariesSelection) {
+    description = t('descriptionNameAndLibraries');
+  }
+
   const isError = isNameInvalid(state.name);
   return (
     <>
@@ -200,7 +212,7 @@ export const NewProjectView = () => {
                   {t('title')}
                 </Typography>
                 <Typography variant="h4" align="center" gutterBottom>
-                  {t('description')}
+                  {description}
                 </Typography>
               </div>
               <Paper>
@@ -221,94 +233,98 @@ export const NewProjectView = () => {
                     autoFocus={true}
                     onChange={onNameChange}
                   />
-                  <List dense>
-                    <ListItemButton
-                      onClick={toggleTemplateSelection}
-                      data-testid="template-selection-toggle"
-                      disableGutters>
-                      <ListItemText
-                        sx={(theme) => ({
-                          display: 'flex',
-                          flexDirection: 'row',
-                          columnGap: theme.spacing(0.5),
-                          alignItems: 'center',
-                        })}
-                        slots={{
-                          primary: Typography,
-                        }}
-                        slotProps={{
-                          primary: { variant: 'h6' },
-                        }}
-                        primary="Project Template"
-                      />
-                      {state.templateSelectionOpen ? (
-                        <ExpandLess
+                  {showTemplateSelection ? (
+                    <List dense>
+                      <ListItemButton
+                        onClick={toggleTemplateSelection}
+                        data-testid="template-selection-toggle"
+                        disableGutters>
+                        <ListItemText
                           sx={(theme) => ({
-                            color: theme.palette.text.secondary,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            columnGap: theme.spacing(0.5),
+                            alignItems: 'center',
                           })}
+                          slots={{
+                            primary: Typography,
+                          }}
+                          slotProps={{
+                            primary: { variant: 'h6' },
+                          }}
+                          primary="Project Template"
                         />
-                      ) : (
-                        <ExpandMore
+                        {state.templateSelectionOpen ? (
+                          <ExpandLess
+                            sx={(theme) => ({
+                              color: theme.palette.text.secondary,
+                            })}
+                          />
+                        ) : (
+                          <ExpandMore
+                            sx={(theme) => ({
+                              color: theme.palette.text.secondary,
+                            })}
+                          />
+                        )}
+                      </ListItemButton>
+                      <Collapse in={state.templateSelectionOpen} timeout="auto">
+                        <Select
+                          variant="standard"
+                          value={state.selectedTemplateId}
+                          onChange={handleTemplateSelectionChange}
+                          fullWidth
+                          data-testid="template">
+                          {(state.availableTemplates || []).map((template) => (
+                            <MenuItem value={template.id} key={template.id} data-testid={`template-${template.label}`}>
+                              <ListItemText primary={template.label}></ListItemText>
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </Collapse>
+                    </List>
+                  ) : null}
+                  {showLibrariesSelection ? (
+                    <List dense>
+                      <ListItemButton
+                        onClick={toggleLibrariesImport}
+                        data-testid="libraries-selection-toggle"
+                        disableGutters>
+                        <ListItemText
                           sx={(theme) => ({
-                            color: theme.palette.text.secondary,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            columnGap: theme.spacing(0.5),
+                            alignItems: 'center',
                           })}
+                          slots={{
+                            primary: Typography,
+                          }}
+                          slotProps={{
+                            primary: { variant: 'h6' },
+                          }}
+                          primary={t('libraries')}
+                          secondary={'(' + t('optional') + ')'}
                         />
-                      )}
-                    </ListItemButton>
-                    <Collapse in={state.templateSelectionOpen} timeout="auto">
-                      <Select
-                        variant="standard"
-                        value={state.selectedTemplateId}
-                        onChange={handleTemplateSelectionChange}
-                        fullWidth
-                        data-testid="template">
-                        {(state.availableTemplates || []).map((template) => (
-                          <MenuItem value={template.id} key={template.id} data-testid={`template-${template.label}`}>
-                            <ListItemText primary={template.label}></ListItemText>
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </Collapse>
-                  </List>
-                  <List dense>
-                    <ListItemButton
-                      onClick={toggleLibrariesImport}
-                      data-testid="libraries-selection-toggle"
-                      disableGutters>
-                      <ListItemText
-                        sx={(theme) => ({
-                          display: 'flex',
-                          flexDirection: 'row',
-                          columnGap: theme.spacing(0.5),
-                          alignItems: 'center',
-                        })}
-                        slots={{
-                          primary: Typography,
-                        }}
-                        slotProps={{
-                          primary: { variant: 'h6' },
-                        }}
-                        primary={t('libraries')}
-                        secondary={'(' + t('optional') + ')'}
-                      />
-                      {state.librariesImportOpen ? (
-                        <ExpandLess
-                          sx={(theme) => ({
-                            color: theme.palette.text.secondary,
-                          })}
-                        />
-                      ) : (
-                        <ExpandMore
-                          sx={(theme) => ({
-                            color: theme.palette.text.secondary,
-                          })}
-                        />
-                      )}
-                    </ListItemButton>
-                    <Collapse in={state.librariesImportOpen} timeout="auto">
-                      <LibrariesImportTable onSelectedLibrariesChange={handleSelectedLibrariesChange} />
-                    </Collapse>
-                  </List>
+                        {state.librariesImportOpen ? (
+                          <ExpandLess
+                            sx={(theme) => ({
+                              color: theme.palette.text.secondary,
+                            })}
+                          />
+                        ) : (
+                          <ExpandMore
+                            sx={(theme) => ({
+                              color: theme.palette.text.secondary,
+                            })}
+                          />
+                        )}
+                      </ListItemButton>
+                      <Collapse in={state.librariesImportOpen} timeout="auto">
+                        <LibrariesImportTable onSelectedLibrariesChange={handleSelectedLibrariesChange} />
+                      </Collapse>
+                    </List>
+                  ) : null}
                   <div className={classes.buttons}>
                     <Button
                       variant="contained"
