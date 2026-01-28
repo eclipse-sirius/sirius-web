@@ -14,7 +14,6 @@ package org.eclipse.sirius.web.application.undo.services.recorder;
 
 import org.eclipse.sirius.components.diagrams.LabelStyle;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-import org.eclipse.sirius.components.diagrams.events.appearance.ResetNodeAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.ILabelAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBackgroundAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelBoldAppearanceChange;
@@ -52,84 +51,84 @@ public class LabelAppearanceChangeProvider implements ILabelAppearanceChangeProv
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.BOLD)) {
                 appearanceChanges.add(new LabelBoldAppearanceChange(change.labelId(), previousLabelStyle.isBold()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.BOLD));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.BOLD));
             }
         }
         if (change instanceof LabelItalicAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.ITALIC)) {
                 appearanceChanges.add(new LabelItalicAppearanceChange(change.labelId(), previousLabelStyle.isItalic()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.ITALIC));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.ITALIC));
             }
         }
         if (change instanceof LabelUnderlineAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.UNDERLINE)) {
                 appearanceChanges.add(new LabelUnderlineAppearanceChange(change.labelId(), previousLabelStyle.isUnderline()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.UNDERLINE));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.UNDERLINE));
             }
         }
         if (change instanceof LabelStrikeThroughAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.STRIKE_THROUGH)) {
                 appearanceChanges.add(new LabelStrikeThroughAppearanceChange(change.labelId(), previousLabelStyle.isStrikeThrough()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.STRIKE_THROUGH));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.STRIKE_THROUGH));
             }
         }
         if (change instanceof LabelColorAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.COLOR)) {
                 appearanceChanges.add(new LabelColorAppearanceChange(change.labelId(), previousLabelStyle.getColor()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.COLOR));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.COLOR));
             }
         }
         if (change instanceof LabelFontSizeAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.FONT_SIZE)) {
                 appearanceChanges.add(new LabelFontSizeAppearanceChange(change.labelId(), previousLabelStyle.getFontSize()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.FONT_SIZE));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.FONT_SIZE));
             }
         }
         if (change instanceof LabelBackgroundAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.BACKGROUND)) {
                 appearanceChanges.add(new LabelBackgroundAppearanceChange(change.labelId(), previousLabelStyle.getBackground()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.BACKGROUND));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.BACKGROUND));
             }
         }
         if (change instanceof LabelBorderColorAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.BORDER_COLOR)) {
                 appearanceChanges.add(new LabelBorderColorAppearanceChange(change.labelId(), previousLabelStyle.getBorderColor()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.BORDER_COLOR));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.BORDER_COLOR));
             }
         }
         if (change instanceof LabelBorderSizeAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.BORDER_SIZE)) {
                 appearanceChanges.add(new LabelBorderSizeAppearanceChange(change.labelId(), previousLabelStyle.getBorderSize()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.BORDER_SIZE));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.BORDER_SIZE));
             }
         }
         if (change instanceof LabelBorderRadiusAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.BORDER_RADIUS)) {
                 appearanceChanges.add(new LabelBorderRadiusAppearanceChange(change.labelId(), previousLabelStyle.getBorderRadius()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.BORDER_RADIUS));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.BORDER_RADIUS));
             }
         }
         if (change instanceof LabelBorderStyleAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.BORDER_STYLE)) {
                 appearanceChanges.add(new LabelBorderStyleAppearanceChange(change.labelId(), previousLabelStyle.getBorderStyle()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.BORDER_STYLE));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.BORDER_STYLE));
             }
         }
         if (change instanceof LabelVisibilityAppearanceChange) {
             if (previousCustomizedStyleProperties.contains(LabelAppearanceHandler.VISIBILITY)) {
                 appearanceChanges.add(new LabelVisibilityAppearanceChange(change.labelId(), previousLabelStyle.getVisibility()));
             } else {
-                appearanceChanges.add(new ResetNodeAppearanceChange(change.labelId(), LabelAppearanceHandler.VISIBILITY));
+                appearanceChanges.add(new ResetLabelAppearanceChange(change.labelId(), LabelAppearanceHandler.VISIBILITY));
             }
         }
         if (change instanceof ResetLabelAppearanceChange) {
