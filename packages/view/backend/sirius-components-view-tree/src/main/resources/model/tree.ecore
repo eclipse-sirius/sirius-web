@@ -20,6 +20,8 @@
         upperBound="-1" eType="#//TreeItemLabelDescription" containment="true" eKeys="#//TreeItemLabelDescription/name"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="contextMenuEntries" upperBound="-1"
         eType="#//TreeItemContextMenuEntry" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="treeItemTooltipExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TreeItemLabelDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>

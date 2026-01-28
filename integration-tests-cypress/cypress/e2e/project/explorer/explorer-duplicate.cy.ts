@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,8 +31,8 @@ describe('Explorer - duplicate object', () => {
 
           const explorer = new Explorer();
           explorer.expandWithDoubleClick('DomainNewModel');
-          cy.get('[title="domain::Domain"]').then(($div) => {
-            domainName = $div.data().testid;
+          cy.get('[data-treeitemkind$="entity=Domain"]').then(($div) => {
+            domainName = $div.data().treeitemlabel;
             explorer.expandWithDoubleClick(domainName);
             explorer.expandWithDoubleClick('Entity1');
             explorer.expandWithDoubleClick('Entity2');

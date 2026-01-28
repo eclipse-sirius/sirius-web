@@ -20,10 +20,13 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.EditingDomain;
+import org.eclipse.sirius.components.core.URLParser;
 import org.eclipse.sirius.components.core.api.IContentService;
 import org.eclipse.sirius.components.core.api.IDefaultObjectSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -226,5 +229,17 @@ public class ExplorerServices implements IExplorerServices {
                 .orElseGet(ArrayList::new);
     }
 
-
+    @Override
+    public String getTreeItemTooltip(Object self) {
+        String result = "";
+        if (self instanceof RepresentationMetadata representationMetadata) {
+            String kind = representationMetadata.getKind();
+            result = new URLParser().getParameterValues(kind).get("type").get(0);
+        } else if (self instanceof EObject eObject) {
+            EClass eClass = eObject.eClass();
+            EPackage ePackage = eClass.getEPackage();
+            result = ePackage.getName() + "::" + eClass.getName();
+        }
+        return result;
+    }
 }

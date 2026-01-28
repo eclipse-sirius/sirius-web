@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 import { DRAG_SOURCES_TYPE, GQLStyledString, StyledLabel } from '@eclipse-sirius/sirius-components-core';
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { GQLTreeItem } from '../views/TreeView.types';
 import { PartHovered, TreeItemProps, TreeItemState } from './TreeItem.types';
 import { TreeItemAction } from './TreeItemAction';
 import { TreeItemArrow } from './TreeItemArrow';
@@ -21,6 +20,7 @@ import { TreeItemDirectEditInput } from './TreeItemDirectEditInput';
 import { TreeItemIcon } from './TreeItemIcon';
 import { isFilterCandidate } from './filterTreeItem';
 import { useDropTreeItem } from './useDropTreeItem';
+import { useTreeItemTooltip } from './useTreeItemTooltip';
 
 interface TreeItemStyleProps {
   depth: number;
@@ -98,24 +98,6 @@ export const getString = (styledString: GQLStyledString): string => {
   return styledString.styledStringFragments.map((fragments) => fragments.text).join('');
 };
 
-const getTooltipText = (item: GQLTreeItem) => {
-  let tooltipText = '';
-  if (item.kind.startsWith('siriusComponents://semantic')) {
-    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
-    const params = new URLSearchParams(query);
-    if (params.has('domain') && params.has('entity')) {
-      tooltipText = params.get('domain') + '::' + params.get('entity');
-    }
-  } else if (item.kind.startsWith('siriusComponents://representation')) {
-    const query = item.kind.substring(item.kind.indexOf('?') + 1, item.kind.length);
-    const params = new URLSearchParams(query);
-    if (params.has('type')) {
-      tooltipText = params.get('type') ?? 'representation';
-    }
-  }
-  return tooltipText;
-};
-
 // The list of characters that will enable the direct edit mechanism.
 const directEditActivationValidCharacters = /[\p{L}\p{N}\p{P}]/u;
 
@@ -150,6 +132,7 @@ export const TreeItem = ({
 
   const { classes } = useTreeItemStyle({ depth });
   const { onDropTreeItem } = useDropTreeItem(editingContextId, treeId);
+  const { tooltip } = useTreeItemTooltip(editingContextId, treeId, item.id, state.partHovered !== 'item');
 
   const handleMouseEnter = (partHovered: PartHovered) => {
     setState((prevState) => ({ ...prevState, partHovered }));
@@ -303,7 +286,6 @@ export const TreeItem = ({
     currentTreeItem = null;
   } else {
     const label = getString(item.label);
-    const tooltipText = getTooltipText(item);
     /* ref, tabindex and onFocus are used to set the React component focusabled and to set the focus to the corresponding DOM part */
     currentTreeItem = (
       <>
@@ -358,7 +340,7 @@ export const TreeItem = ({
                   item.selectable ? classes.imageAndLabelSelectable : ''
                 } iconAndText`}
                 onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
-                title={tooltipText}
+                title={tooltip}
                 data-testid={label}>
                 <TreeItemIcon item={item} />
                 {text}
