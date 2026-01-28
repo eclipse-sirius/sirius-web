@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.test.StepVerifier;
 
 /**
@@ -81,20 +82,20 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                 StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString()
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(3);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(2).getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(2).getChildren()).anyMatch(treeItem -> treeItem.getId()
                     .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
         });
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     explorerRepresentationId,
                     List.of(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()),
                     StudioIdentifiers.ROOT_ENTITY_OBJECT.toString(),
@@ -111,9 +112,9 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
 
         Consumer<Object> updateTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(0);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(4);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(2).getChildren()).hasSize(0);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
                     .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
         });
 
@@ -136,20 +137,20 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                 StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString()
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(3);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(2).getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(2).getChildren()).anyMatch(treeItem -> treeItem.getId()
                     .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
         });
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     explorerRepresentationId,
                     List.of(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()),
                     StudioIdentifiers.DESCRIPTION_ATTRIBUTE_OBJECT.toString(),
@@ -166,9 +167,9 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
 
         Consumer<Object> updateTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(4);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(0);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).anyMatch(treeItem -> treeItem.getId()
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(4);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(2).getChildren()).hasSize(0);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId()
                     .equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
         });
 
@@ -191,19 +192,19 @@ public class ExplorerDropTreeItemControllerTests extends AbstractIntegrationTest
                 StudioIdentifiers.NAMED_ELEMENT_ENTITY_OBJECT.toString()
         );
         var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(ExplorerDescriptionProvider.DESCRIPTION_ID, expandedIds, List.of());
-        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(), explorerRepresentationId);
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, explorerRepresentationId);
         var flux = this.treeEventSubscriptionRunner.run(input).flux();
 
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> {
             assertThat(tree).isNotNull();
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(0).getChildren()).hasSize(3);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(1);
-            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).anyMatch(treeItem -> treeItem.getId().equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(1).getChildren()).hasSize(3);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(2).getChildren()).hasSize(1);
+            assertThat(tree.getChildren().get(1).getChildren().get(0).getChildren().get(2).getChildren()).anyMatch(treeItem -> treeItem.getId().equals(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()));
         });
 
         Runnable dropItemMutation = () -> {
             DropTreeItemInput dropTreeItemInput = new DropTreeItemInput(
-                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID.toString(),
+                    UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                     explorerRepresentationId,
                     List.of(StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString()),
                     StudioIdentifiers.NAME_ATTRIBUTE_OBJECT.toString(),

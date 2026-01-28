@@ -26,6 +26,7 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6105[#6105] [sirius-web] Fix representation opening in library browser.
 
 
 === New Features
@@ -35,7 +36,7 @@
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6105[#6105] [sirius-web] Publishing a studio now publishes its representations.
 
 
 == 2026.1.0

@@ -50,6 +50,8 @@ import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
+import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
@@ -107,6 +109,9 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Autowired
     private IObjectSearchService objectSearchService;
+
+    @Autowired
+    private IRepresentationMetadataSearchService representationMetadataSearchService;
 
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
@@ -182,6 +187,9 @@ public class LibraryControllerIntegrationTests extends AbstractIntegrationTests 
         var buckLibrary = optionalBuckLibrary.get();
         this.assertThatLibraryHasCorrectDescriptionAndDependencies(buckLibrary, description, List.of());
         this.assertThatLibraryDocumentsAreReadOnly(buckLibrary);
+        List<RepresentationMetadata> buckRepresentationMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(buckLibrary.getSemanticData());
+        assertThat(buckRepresentationMetadata).hasSize(1)
+                .anySatisfy(representationMetadata -> assertThat(representationMetadata.getLabel()).isEqualTo("Domain"));
 
         Optional<Library> humanFormLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion(StudioIdentifiers.SAMPLE_STUDIO_PROJECT, "Human Form", version);
         assertThat(humanFormLibrary).isPresent();
