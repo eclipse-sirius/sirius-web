@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { AlignHorizontalCenterIcon } from '../../icons/AlignHorizontalCenterIcon';
 import { AlignHorizontalLeftIcon } from '../../icons/AlignHorizontalLeftIcon';
@@ -109,6 +110,7 @@ export const GroupPaletteLayoutSection = ({
   diagramElementIds,
 }: PaletteExtensionSectionComponentProps) => {
   const { classes } = useStyle();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'groupPalette' });
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
     onBackToMainList();
@@ -150,95 +152,95 @@ export const GroupPaletteLayoutSection = ({
 
   return (
     <List className={classes.toolList} component="nav">
-      <Tooltip title="Layout" key="tooltip_layout" placement="right">
+      <Tooltip title={t('layout')} key="tooltip_layout" placement="right">
         <ListItemButton
           className={classes.toolListItemButton}
           onClick={handleBackToMainListClick}
           data-testid={`back-layout`}
           autoFocus={true}>
           <NavigateBeforeIcon />
-          <ListItemText className={classes.sectionTitleListItemText} primary="Layout" />
+          <ListItemText className={classes.sectionTitleListItemText} primary={t('layout')} />
         </ListItemButton>
       </Tooltip>
 
       <ListItem
         id={'align-left'}
-        label={'Align left'}
+        label={t('alignLeft')}
         icon={<AlignHorizontalLeftIcon fontSize="small" />}
         onClick={() => distributeAlignLeft(filteredNodeIds, refElementId)}></ListItem>
       <ListItem
         id={'align-center'}
-        label={'Align center'}
+        label={t('alignCenter')}
         icon={<AlignHorizontalCenterIcon fontSize="small" />}
         onClick={() => distributeAlignCenter(filteredNodeIds, refElementId)}></ListItem>
       <ListItem
         id={'align-right'}
-        label={'Align right'}
+        label={t('alignRight')}
         icon={<AlignHorizontalRightIcon fontSize="small" />}
         onClick={() => distributeAlignRight(filteredNodeIds, refElementId)}></ListItem>
       <Divider />
 
       <ListItem
         id={'align-top'}
-        label={'Align top'}
+        label={t('alignTop')}
         icon={<AlignVerticalTopIcon fontSize="small" />}
         onClick={() => distributeAlignTop(filteredNodeIds, refElementId)}></ListItem>
       <ListItem
         id={'align-middle'}
-        label={'Align middle'}
+        label={t('alignMiddle')}
         icon={<AlignVerticalCenterIcon fontSize="small" />}
         onClick={() => distributeAlignMiddle(filteredNodeIds, refElementId)}></ListItem>
       <ListItem
         id={'align-bottom'}
-        label={'Align bottom'}
+        label={t('alignBottom')}
         icon={<AlignVerticalBottomIcon fontSize="small" />}
         onClick={() => distributeAlignBottom(filteredNodeIds, refElementId)}></ListItem>
       <Divider />
 
       <ListItem
         id={'arrange-in-row'}
-        label={'Arrange in row'}
+        label={t('arrangeInRow')}
         icon={<ViewColumnIcon fontSize="small" />}
         onClick={() => arrangeInRow(filteredNodeIds)}></ListItem>
       <ListItem
         id={'arrange-in-column'}
-        label={'Arrange in column'}
+        label={t('arrangeInColumn')}
         icon={<ViewStreamIcon fontSize="small" />}
         onClick={() => arrangeInColumn(filteredNodeIds)}></ListItem>
       <ListItem
         id={'arrange-in-grid'}
-        label={'Arrange in grid'}
+        label={t('arrangeInGrid')}
         icon={<ViewModuleIcon fontSize="small" />}
         onClick={() => arrangeInGrid(filteredNodeIds)}></ListItem>
       <Divider />
 
       <ListItem
         id={'distribute-horizontal'}
-        label={'Distribute horizontal'}
+        label={t('distributeHorizontal')}
         icon={<VerticalAlignCenterIcon style={{ transform: 'rotate(90deg)' }} fontSize="small" />}
         onClick={() => distributeGapHorizontally(filteredNodeIds)}></ListItem>
       <ListItem
         id={'distribute-vertical'}
-        label={'Distribute vertical'}
+        label={t('distributeVertical')}
         icon={<VerticalAlignCenterIcon fontSize="small" />}
         onClick={() => distributeGapVertically(filteredNodeIds)}></ListItem>
       <Divider />
 
       <ListItem
         id={'justify-horizontally'}
-        label={'Justify horizontally'}
+        label={t('justifyHorizontally')}
         icon={<JustifyHorizontalIcon fontSize="small" />}
         onClick={() => justifyHorizontally(filteredNodeIds, refElementId)}></ListItem>
       <ListItem
         id={'justify-vertically'}
-        label={'Justify vertically'}
+        label={t('justifyVertically')}
         icon={<JustifyVerticalIcon fontSize="small" />}
         onClick={() => justifyVertically(filteredNodeIds, refElementId)}></ListItem>
       <Divider />
 
       <ListItem
         id={'make-same-size'}
-        label={'Make same size'}
+        label={t('makeSameSize')}
         icon={<PhotoSizeSelectSmallIcon fontSize="small" />}
         onClick={() => makeNodesSameSize(filteredNodeIds, refElementId)}></ListItem>
     </List>
