@@ -30,6 +30,7 @@
     "experimentalFeature": "Expérimental"
   },
   "groupPalette": {
+    "layout": "Disposition",
     "alignBottom": "Aligner en bas",
     "alignCenter": "Aligner au centre",
     "alignLeft": "Aligner à gauche",
@@ -101,6 +102,7 @@
   },
   "diagramPalette": {
     "appearance": "Apparence",
+    "layout": "Disposition",
     "showIn": "Afficher dans"
   },
   "resetMovedByUserTool": {
