@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -103,31 +103,32 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
     if (diagramElementIds.length >= 1) {
       sectionComponents.push(
         <PaletteExtensionSection
-          component={PaletteAppearanceSection}
-          title={t('appearance')}
           id="appearance"
+          key="appearance"
+          title={t('appearance')}
+          component={PaletteAppearanceSection}
           onClose={hideDiagramPalette}
-          key={'appearance'}
         />
       );
     }
     if (diagramElementIds.length > 1) {
       sectionComponents.push(
         <PaletteExtensionSection
+          id="layout_section"
+          key="layout_section"
+          title={t('layout')}
           component={GroupPaletteLayoutSection}
-          id={'layout_section'}
-          title={'Layout'}
           onClose={hideDiagramPalette}
         />
       );
     }
-    if (diagramElementIds.length === 1) {
+    if (diagramElementIds.length >= 1) {
       sectionComponents.push(
         <PaletteExtensionSection
-          component={ShowInSection}
-          title={t('showIn')}
           id="show_in"
-          key={'show_in'}
+          key="show_in"
+          title={t('showIn')}
+          component={ShowInSection}
           onClose={hideDiagramPalette}
         />
       );
