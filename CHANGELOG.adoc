@@ -1,3 +1,6 @@
+=== Breaking changes
+- https://github.com/eclipse-sirius/sirius-web/issues/6126[#6126] [diagram] `DiagramPaletteToolExtensionPoints` has been removed, use `PaletteQuickToolExtensionPoints` instead that supports multiple elements.
+
 = Changelog
 
 == 2026.3.0 (work in progress)
