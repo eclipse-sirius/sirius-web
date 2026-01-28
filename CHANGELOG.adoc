@@ -69,6 +69,7 @@ If the tab cannot be found the first tab of the form will be opened instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] [diagram] Make it possible to have transient diagrams: delegate the save operation to a new `IRepresentationPersistenceStrategy` service which persists only when the representation exists in the database, and add a transient diagram sample in Papaya.
 - https://github.com/eclipse-sirius/sirius-web/issues/6146[#6146] [sirius-web] Add an option to search in libraries in the search view.
 - https://github.com/eclipse-sirius/sirius-web/issues/6173[#6173] Add the hook `useCurrentLibrary` to access the current library in the library workbench.
+- https://github.com/eclipse-sirius/sirius-web/issues/6129[#6129] [diagram] Added support for _Show in_ actions from multi selection on diagrams
 
 
 
@@ -355,7 +356,6 @@ The only difference is that this new marker has a second range of two dots after
 Downstream applications can now implement `IUndoRedoIgnoreInputPredicate` to ignore additional inputs from the `UndoRedoRecorder`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6027[#6027] [diagram] Improve visual feedback when dragging a node to show which targets are compatible/valid/invalid for a drop
 - https://github.com/eclipse-sirius/sirius-web/issues/6113[#6113] [core] Allow the customization of the workbench configuration
-
 
 
 == 2025.12.0

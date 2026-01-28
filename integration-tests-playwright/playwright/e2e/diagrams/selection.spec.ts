@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,6 +75,34 @@ test.describe('selection', () => {
     await expect(treeItem).toBeVisible();
     const selectedItem = await page.getByTestId('selected');
     await expect(selectedItem).toHaveText('CompositeProcessor1');
+  });
+
+  test('the diagram can push a multi-selection to the explorer', async ({ page }) => {
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    await playwrightNode.click();
+
+    const playwrightEdge = new PlaywrightEdge(page, 0);
+    await playwrightEdge.controlClick();
+
+    const explorer = new PlaywrightExplorer(page);
+    let treeItem1 = await explorer.getTreeItemLabel('CompositeProcessor1');
+    await expect(treeItem1).not.toBeVisible();
+
+    let treeItem2 = await explorer.getTreeItemLabel('standard');
+    await expect(treeItem2).not.toBeVisible();
+
+    await playwrightNode.openPalette();
+    await page.getByTestId('toolSection-Show in').click();
+    await page.getByTestId('push-diagram-selection-to-explorer').click();
+
+    treeItem1 = await explorer.getTreeItemLabel('CompositeProcessor1');
+    await expect(treeItem1).toBeVisible();
+    treeItem2 = await explorer.getTreeItemLabel('standard');
+    await expect(treeItem2).toBeVisible();
+    const selectedItems = await page.getByTestId('selected');
+    await expect(selectedItems).toHaveCount(2);
+    // await expect(selectedItems.filter({ hasText: 'CompositeProcessor1' })).toHaveCount(1);
+    // await expect(selectedItems.filter({ hasText: 'selected' })).toHaveCount(1);
   });
 
   test('selecting an element in the explorer does not select it in the diagram', async ({ page }) => {

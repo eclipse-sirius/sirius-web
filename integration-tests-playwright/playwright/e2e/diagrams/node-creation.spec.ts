@@ -52,8 +52,8 @@ test.describe('diagram - node creation', () => {
   test('when trigger a node creation tool on a compartment, then all the nodes are properly placed', async ({
     page,
   }) => {
-    const playwrightExplorer = new PlaywrightExplorer(page);
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.createNewObject('Root', 'entity3s-Entity3');
     await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
