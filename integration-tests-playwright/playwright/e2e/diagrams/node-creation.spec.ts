@@ -14,7 +14,6 @@ import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
-import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 
 test.describe('diagram - node creation', () => {
   let projectId;
@@ -38,11 +37,11 @@ test.describe('diagram - node creation', () => {
     await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 250, y: 250 } });
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-create nodes').click();
-    const entity1Node = new PlaywrightNode(page, 'Entity1');
-    const entity2Node = new PlaywrightNode(page, 'Entity2');
+    const entity1Node = new PlaywrightNode(page, 'E1');
+    const entity2Node = new PlaywrightNode(page, 'E2');
 
-    const reactFlowXYPositionEntity1 = await entity1Node.getReactFlowXYPosition();
-    const reactFlowXYPositionEntity2 = await entity2Node.getReactFlowXYPosition();
+    const reactFlowXYPositionEntity1 = await entity1Node.getReactFlowXYPosition('E1');
+    const reactFlowXYPositionEntity2 = await entity2Node.getReactFlowXYPosition('E2');
 
     const entityNode1Width = 150;
     const nodeGap = 25;
@@ -54,8 +53,8 @@ test.describe('diagram - node creation', () => {
     page,
   }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
-    playwrightExplorer.createNewObject('Root', 'entity3s-Entity3');
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await playwrightExplorer.createNewObject('Root', 'entity3s-Entity3');
     await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').click();
@@ -118,24 +117,20 @@ test.describe('diagram - node creation', () => {
     const nodeWidth = 150;
     const nodeGap = 25;
 
-    const firstCreatedNode = new PlaywrightNode(page, 'New node created');
-    const reactFlowXYPositionFirstCreatedNode = await firstCreatedNode.getReactFlowXYPosition('New node created');
+    const firstCreatedNode = new PlaywrightNode(page, 'New1');
+    const reactFlowXYPositionFirstCreatedNode = await firstCreatedNode.getReactFlowXYPosition('New1');
 
     expect(reactFlowXYPositionFirstCreatedNode.y).toBe(reactFlowXYPositionEntity1.y);
     expect(reactFlowXYPositionFirstCreatedNode.x).toBe(reactFlowXYPositionEntity1.x + nodeWidth + nodeGap);
 
     await page.keyboard.press('Escape'); // remove selection
-    await firstCreatedNode.click();
-
-    const playwrightDetails = new PlaywrightDetails(page);
-    await playwrightDetails.setText('Name', 'first');
 
     await entity1Node.openPalette();
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-creationNode').first().click();
 
-    const secondCreatedNode = new PlaywrightNode(page, 'New node created');
-    const reactFlowXYPositionSecondCreatedNode = await secondCreatedNode.getReactFlowXYPosition('New node created');
+    const secondCreatedNode = new PlaywrightNode(page, 'New2');
+    const reactFlowXYPositionSecondCreatedNode = await secondCreatedNode.getReactFlowXYPosition('New2');
 
     expect(reactFlowXYPositionSecondCreatedNode.y).toBe(reactFlowXYPositionEntity1.y);
     expect(reactFlowXYPositionSecondCreatedNode.x).toBe(reactFlowXYPositionFirstCreatedNode.x + nodeWidth + nodeGap);

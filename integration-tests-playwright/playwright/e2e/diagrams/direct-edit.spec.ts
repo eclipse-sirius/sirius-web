@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -90,8 +90,10 @@ test.describe('diagram - direct edit', () => {
     await playwrightNode.openPalette();
     await page.getByTestId('Palette').getByTestId('Edit - Tool').click();
     await expect(page.getByTestId('Palette')).toBeHidden();
+    await expect(page.getByTestId('name-edit')).toBeAttached();
     await page.keyboard.type('Edited');
     await page.keyboard.press('Enter');
+    await expect(page.getByTestId('name-edit')).not.toBeAttached();
     const editedNode = new PlaywrightNode(page, 'Edited');
     await expect(editedNode.nodeLocator).toBeAttached();
   });
@@ -102,8 +104,10 @@ test.describe('diagram - direct edit', () => {
     await playwrightEdge.openPalette();
     await page.getByTestId('Palette').getByTestId('Edit - Tool').click();
     await expect(page.getByTestId('Palette')).toBeHidden();
+    await expect(page.getByTestId('name-edit')).toBeAttached();
     await page.keyboard.type('10');
     await page.keyboard.press('Enter');
+    await expect(page.getByTestId('name-edit')).not.toBeAttached();
     await expect(page.getByTestId('Label - 10')).toBeAttached();
   });
 });

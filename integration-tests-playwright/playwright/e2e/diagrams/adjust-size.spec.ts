@@ -55,13 +55,33 @@ test.describe('diagram - adjust size', () => {
     await page.getByTestId('toolSection-Layout').click();
     await page.getByTestId('Palette').getByTestId('Adjust size - Tool').click();
 
+    const nodeDefaultWidth = 150;
+    const nodeDefaultHeight = 70;
+
+    // Wait for animation to finish
+    await page.waitForFunction(
+      ({ expectedWidth }) => {
+        const spans = Array.from(document.querySelectorAll('div[data-testid="nodePanelInfos"] span'));
+        const widthSpan = spans.find((span) => span.textContent?.includes('Width'));
+        if (!widthSpan) {
+          return false;
+        }
+        const widthText = widthSpan.textContent?.trim();
+        return widthText && parseInt(widthText.replace('Width : ', ''), 10) === expectedWidth;
+      },
+      { expectedWidth: nodeDefaultWidth },
+      { timeout: 2000 }
+    );
+
     const c1SizeAfter = await c1Node.getReactFlowSize('C1', false);
     const c2SizeAfter = await c2Node.getReactFlowSize('C2', false);
     const c3SizeAfter = await c2Node.getReactFlowSize('C3', false);
 
-    expect(c1SizeAfter.width).toBe(c2SizeAfter.width);
-    expect(c1SizeAfter.height).toBe(c2SizeAfter.height);
-    expect(c1SizeAfter.width).toBe(c3SizeAfter.width);
-    expect(c1SizeAfter.height).toBe(c3SizeAfter.height);
+    expect(c1SizeAfter.width).toBe(nodeDefaultWidth);
+    expect(c1SizeAfter.height).toBe(nodeDefaultHeight);
+    expect(c2SizeAfter.width).toBe(nodeDefaultWidth);
+    expect(c2SizeAfter.height).toBe(nodeDefaultHeight);
+    expect(c3SizeAfter.width).toBe(nodeDefaultWidth);
+    expect(c3SizeAfter.height).toBe(nodeDefaultHeight);
   });
 });
