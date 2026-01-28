@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.TextStyleDescription;
 import org.eclipse.sirius.components.view.TextStylePalette;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.tree.TreeBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.KeyBindingBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.emf.tree.ITreeIdProvider;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind;
@@ -291,12 +292,29 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
                 .urlExression("https://eclipse.dev/sirius/sirius-web.html")
                 .kind(FetchTreeItemContextMenuEntryKind.OPEN)
+                .keyBindings(new KeyBindingBuilder()
+                                .ctrl(true)
+                                .key("h")
+                                .build(),
+                        new KeyBindingBuilder()
+                                .meta(true)
+                                .key("h")
+                                .build()
+                )
                 .build();
         this.toggleAbstractMenuEntry = new TreeBuilders().newSingleClickTreeItemContextMenuEntry()
                 .labelExpression("Toggle abstract")
                 .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
                 .body(callService.build())
                 .withImpactAnalysis(true)
+                .keyBindings(new KeyBindingBuilder()
+                                .ctrl(true)
+                                .key("a")
+                                .build(),
+                        new KeyBindingBuilder()
+                                .meta(true)
+                                .key("a")
+                                .build())
                 .build();
 
         var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()

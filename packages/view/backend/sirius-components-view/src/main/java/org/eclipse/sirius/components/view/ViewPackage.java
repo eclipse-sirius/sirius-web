@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -965,13 +965,72 @@ public interface ViewPackage extends EPackage {
     int TEXT_STYLE_DESCRIPTION_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.view.impl.KeyBindingImpl <em>Key Binding</em>}'
+     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.impl.KeyBindingImpl
+     * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getKeyBinding()
+     * @generated
+     */
+    int KEY_BINDING = 18;
+
+    /**
+     * The feature id for the '<em><b>Ctrl</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int KEY_BINDING__CTRL = 0;
+
+    /**
+     * The feature id for the '<em><b>Alt</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int KEY_BINDING__ALT = 1;
+
+    /**
+     * The feature id for the '<em><b>Meta</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int KEY_BINDING__META = 2;
+
+    /**
+     * The feature id for the '<em><b>Key</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int KEY_BINDING__KEY = 3;
+
+    /**
+     * The number of structural features of the '<em>Key Binding</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int KEY_BINDING_FEATURE_COUNT = 4;
+
+    /**
+     * The number of operations of the '<em>Key Binding</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int KEY_BINDING_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @see java.lang.String
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getIdentifier()
      * @generated
      */
-    int IDENTIFIER = 18;
+    int IDENTIFIER = 19;
 
     /**
      * The meta object id for the '<em>Interpreted Expression</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc
@@ -981,7 +1040,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getInterpretedExpression()
      * @generated
      */
-    int INTERPRETED_EXPRESSION = 19;
+    int INTERPRETED_EXPRESSION = 20;
 
     /**
      * The meta object id for the '<em>Domain Type</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -990,7 +1049,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getDomainType()
      * @generated
      */
-    int DOMAIN_TYPE = 20;
+    int DOMAIN_TYPE = 21;
 
     /**
      * The meta object id for the '<em>Color</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -999,7 +1058,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getColor()
      * @generated
      */
-    int COLOR = 21;
+    int COLOR = 22;
 
     /**
      * The meta object id for the '<em>Length</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1007,7 +1066,7 @@ public interface ViewPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getLength()
      * @generated
      */
-    int LENGTH = 22;
+    int LENGTH = 23;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.View <em>View</em>}'. <!--
@@ -1649,6 +1708,60 @@ public interface ViewPackage extends EPackage {
     EAttribute getTextStyleDescription_IsUnderlineExpression();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.KeyBinding <em>Key Binding</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Key Binding</em>'.
+     * @see org.eclipse.sirius.components.view.KeyBinding
+     * @generated
+     */
+    EClass getKeyBinding();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.KeyBinding#isCtrl
+     * <em>Ctrl</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Ctrl</em>'.
+     * @see org.eclipse.sirius.components.view.KeyBinding#isCtrl()
+     * @see #getKeyBinding()
+     * @generated
+     */
+    EAttribute getKeyBinding_Ctrl();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.KeyBinding#isAlt
+     * <em>Alt</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Alt</em>'.
+     * @see org.eclipse.sirius.components.view.KeyBinding#isAlt()
+     * @see #getKeyBinding()
+     * @generated
+     */
+    EAttribute getKeyBinding_Alt();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.KeyBinding#isMeta
+     * <em>Meta</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Meta</em>'.
+     * @see org.eclipse.sirius.components.view.KeyBinding#isMeta()
+     * @see #getKeyBinding()
+     * @generated
+     */
+    EAttribute getKeyBinding_Meta();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.view.KeyBinding#getKey
+     * <em>Key</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Key</em>'.
+     * @see org.eclipse.sirius.components.view.KeyBinding#getKey()
+     * @see #getKeyBinding()
+     * @generated
+     */
+    EAttribute getKeyBinding_Key();
+
+    /**
      * Returns the meta object for data type '{@link java.lang.String <em>Identifier</em>}'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
@@ -2222,6 +2335,48 @@ public interface ViewPackage extends EPackage {
          * @generated
          */
         EAttribute TEXT_STYLE_DESCRIPTION__IS_UNDERLINE_EXPRESSION = eINSTANCE.getTextStyleDescription_IsUnderlineExpression();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.view.impl.KeyBindingImpl <em>Key
+         * Binding</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.impl.KeyBindingImpl
+         * @see org.eclipse.sirius.components.view.impl.ViewPackageImpl#getKeyBinding()
+         * @generated
+         */
+        EClass KEY_BINDING = eINSTANCE.getKeyBinding();
+
+        /**
+         * The meta object literal for the '<em><b>Ctrl</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute KEY_BINDING__CTRL = eINSTANCE.getKeyBinding_Ctrl();
+
+        /**
+         * The meta object literal for the '<em><b>Alt</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute KEY_BINDING__ALT = eINSTANCE.getKeyBinding_Alt();
+
+        /**
+         * The meta object literal for the '<em><b>Meta</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute KEY_BINDING__META = eINSTANCE.getKeyBinding_Meta();
+
+        /**
+         * The meta object literal for the '<em><b>Key</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute KEY_BINDING__KEY = eINSTANCE.getKeyBinding_Key();
 
         /**
          * The meta object literal for the '<em>Identifier</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc

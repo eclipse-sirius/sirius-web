@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -521,6 +521,16 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
+    public EReference getTreeItemContextMenuEntry_KeyBindings() {
+        return (EReference) this.treeItemContextMenuEntryEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getSingleClickTreeItemContextMenuEntry() {
         return this.singleClickTreeItemContextMenuEntryEClass;
     }
@@ -715,6 +725,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.treeItemContextMenuEntryEClass = this.createEClass(TREE_ITEM_CONTEXT_MENU_ENTRY);
         this.createEAttribute(this.treeItemContextMenuEntryEClass, TREE_ITEM_CONTEXT_MENU_ENTRY__NAME);
         this.createEAttribute(this.treeItemContextMenuEntryEClass, TREE_ITEM_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION);
+        this.createEReference(this.treeItemContextMenuEntryEClass, TREE_ITEM_CONTEXT_MENU_ENTRY__KEY_BINDINGS);
 
         this.singleClickTreeItemContextMenuEntryEClass = this.createEClass(SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY);
         this.createEReference(this.singleClickTreeItemContextMenuEntryEClass, SINGLE_CLICK_TREE_ITEM_CONTEXT_MENU_ENTRY__BODY);
@@ -836,6 +847,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getTreeItemContextMenuEntry_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, TreeItemContextMenuEntry.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTreeItemContextMenuEntry_KeyBindings(), theViewPackage.getKeyBinding(), null, "keyBindings", null, 0, -1, TreeItemContextMenuEntry.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.singleClickTreeItemContextMenuEntryEClass, SingleClickTreeItemContextMenuEntry.class, "SingleClickTreeItemContextMenuEntry", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
