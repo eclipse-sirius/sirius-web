@@ -12,22 +12,33 @@
  *******************************************************************************/
 
 import { HandleType, Node } from '@xyflow/react';
+import { GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
+import { GQLPosition } from '../graphql/subscription/nodeFragment.types';
 import { NodeData } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { convertHandles } from './convertHandles';
 
-export const createEdgeAnchorNode = (edge: GQLEdge, type: HandleType, gqlEdges: GQLEdge[]): Node<NodeData> => {
+export const createEdgeAnchorNode = (
+  edge: GQLEdge,
+  type: HandleType,
+  gqlEdges: GQLEdge[],
+  nodeLayoutData: GQLNodeLayoutData[]
+): Node<NodeData> => {
   const id = type === 'source' ? edge.sourceId : edge.targetId;
   const connectionHandles: ConnectionHandle[] = convertHandles(id, gqlEdges, []);
+
+  const position: GQLPosition = nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id)?.position ?? {
+    x: 0,
+    y: 0,
+  };
 
   return {
     type: 'edgeAnchorNode',
     id,
-    position: {
-      x: 0,
-      y: 0,
-    },
+    position,
+    height: 5, // The size is fixed for this type of node
+    width: 5, // The size is fixed for this type of node
     data: {
       edgeId: edge.id,
       targetObjectId: '',
