@@ -215,11 +215,15 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         var oldNodeLayoutData = oldLayoutData.nodeLayoutData();
 
         oldNodeLayoutData.keySet().forEach(key -> {
-            if (nodeElementOldNewIds.get(key) != null) {
+            var newNodeLayoutId = nodeElementOldNewIds.get(key);
+            if (newNodeLayoutId == null) {
+                newNodeLayoutId = edgeElementOldNewIds.get(key);
+            }
+            if (newNodeLayoutId != null) {
                 var oldLayoutNodeData = oldNodeLayoutData.get(key);
-                var newNodeLayoutData = new NodeLayoutData(nodeElementOldNewIds.get(key), oldLayoutNodeData.position(), oldLayoutNodeData.size(), oldLayoutNodeData.resizedByUser(),
+                var newNodeLayoutData = new NodeLayoutData(newNodeLayoutId, oldLayoutNodeData.position(), oldLayoutNodeData.size(), oldLayoutNodeData.resizedByUser(),
                         oldLayoutNodeData.movedByUser(), oldLayoutNodeData.handleLayoutData(), oldLayoutNodeData.minComputedSize());
-                newLayoutData.nodeLayoutData().put(nodeElementOldNewIds.get(key), newNodeLayoutData);
+                newLayoutData.nodeLayoutData().put(newNodeLayoutId, newNodeLayoutData);
             }
         });
 

@@ -109,9 +109,10 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
         height,
         width,
         position: { x, y },
+        type,
       } = node;
       const { resizedByUser, movedByUser, minComputedHeight, minComputedWidth } = node.data;
-      if (height && width) {
+      if ((height && width) || type === 'edgeAnchorNode') {
         const handleLayoutDatas: GQLHandleLayoutData[] = [];
         node.data.connectionHandles.forEach((handle) => {
           if (handle.XYPosition && (handle.XYPosition.x || handle.XYPosition.y)) {
@@ -131,8 +132,8 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
             y,
           },
           size: {
-            height,
-            width,
+            height: height ?? 0,
+            width: width ?? 0,
           },
           resizedByUser,
           movedByUser,
