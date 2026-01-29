@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,18 +16,27 @@ import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { NodeData } from '../renderer/DiagramRenderer.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
 import { convertHandles } from './convertHandles';
+import { GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
+import { GQLPosition } from '../graphql/subscription/nodeFragment.types';
 
-export const createEdgeAnchorNode = (edge: GQLEdge, type: HandleType, gqlEdges: GQLEdge[]): Node<NodeData> => {
+export const createEdgeAnchorNode = (
+  edge: GQLEdge,
+  type: HandleType,
+  gqlEdges: GQLEdge[],
+  nodeLayoutData: GQLNodeLayoutData[]
+): Node<NodeData> => {
   const id = type === 'source' ? edge.sourceId : edge.targetId;
   const connectionHandles: ConnectionHandle[] = convertHandles(id, gqlEdges, []);
+
+  const position: GQLPosition = nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id)?.position ?? {
+    x: 0,
+    y: 0,
+  };
 
   return {
     type: 'edgeAnchorNode',
     id,
-    position: {
-      x: 0,
-      y: 0,
-    },
+    position,
     data: {
       edgeId: edge.id,
       targetObjectId: '',

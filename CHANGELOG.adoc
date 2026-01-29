@@ -26,7 +26,7 @@
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6138[#6138] [diagram] Prevent handle position to move between two refreshes
 
 === New Features
 
