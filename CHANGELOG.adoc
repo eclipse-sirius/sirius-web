@@ -86,6 +86,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6260[#6260] [diagram] Prevent unselected nodes from being resized
 - https://github.com/eclipse-sirius/sirius-web/issues/6202[#6202] [diagram] Prevent compatible nodes from being highlighted when dragging a border node
 - https://github.com/eclipse-sirius/sirius-web/issues/6258[#6258] [diagram] Prevent child nodes from detaching during parent node resize
+- https://github.com/eclipse-sirius/sirius-web/issues/6138[#6138] [diagram] Prevent handle position to move between two refreshes
 
 
 === New Features
