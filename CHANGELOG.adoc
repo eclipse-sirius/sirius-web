@@ -77,8 +77,7 @@ If the tab cannot be found the first tab of the form will be opened instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/6129[#6129] [diagram] Added support for _Show in_ actions from multi selection on diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/6148[#6148] [sirius-web] Add an extension point to contribute actions to the query result button.
 The contribution should provide the `label` to display in the split button menu as well as the component to render when the action is selected in the menu.
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5888[#5888] [sirius-web] The _Search_ now remembers the last query parameters used on a per-project basis
 
 == 2026.1.0
 

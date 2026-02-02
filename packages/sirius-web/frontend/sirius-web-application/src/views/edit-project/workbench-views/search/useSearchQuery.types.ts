@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,14 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLSearchResult, SearchQuery } from './useSearch.types';
-
-export interface SearchViewConfiguration {
-  searchQuery: SearchQuery;
+export interface SearchQuery {
+  text: string;
+  matchCase: boolean;
+  matchWholeWord: boolean;
+  useRegularExpression: boolean;
+  searchInAttributes: boolean;
+  searchInLibraries: boolean;
 }
 
-export interface SearchViewState {
-  query: SearchQuery | null;
-  result: GQLSearchResult | null;
-  resultsReceivedTimestamp: number | null;
+export interface UseSearchQueryValue {
+  searchQuery: SearchQuery;
+  onSearchQueryChange: (newQuery: SearchQuery) => void;
 }

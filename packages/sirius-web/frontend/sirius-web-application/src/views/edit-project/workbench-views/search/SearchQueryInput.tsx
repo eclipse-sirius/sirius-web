@@ -23,186 +23,181 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { ForwardedRef, forwardRef, useImperativeHandle } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SearchQueryInputProps, SearchQueryInputState } from './SearchQueryInput.types';
+import { SearchQueryInputProps } from './SearchQueryInput.types';
+import { SearchQuery } from './useSearch.types';
+import { EMPTY_QUERY, useSearchQuery } from './useSearchQuery';
 
-const initialState: SearchQueryInputState = {
-  text: '',
-  matchCase: false,
-  matchWholeWord: false,
-  useRegularExpression: false,
-  searchInAttributes: false,
-  searchInLibraries: false,
-};
+export const SearchQueryInput = forwardRef<SearchQuery, SearchQueryInputProps>(
+  ({ editingContextId, initialQuery, onLaunchSearch }: SearchQueryInputProps, ref: ForwardedRef<SearchQuery>) => {
+    const { searchQuery, onSearchQueryChange } = useSearchQuery(editingContextId, initialQuery);
 
-export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
-  const [state, setState] = useState<SearchQueryInputState>(initialState);
-  const theme: Theme = useTheme();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'searchQueryInput' });
-  const onToggleMatchCase = () => {
-    setState((prevState) => ({ ...prevState, matchCase: !prevState.matchCase }));
-  };
+    useImperativeHandle(
+      ref,
+      () => {
+        return searchQuery;
+      },
+      [searchQuery]
+    );
 
-  const onToggleMatchWholeWord = () => {
-    setState((prevState) => ({ ...prevState, matchWholeWord: !prevState.matchWholeWord }));
-  };
+    const theme: Theme = useTheme();
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'searchQueryInput' });
+    const onToggleMatchCase = () => {
+      onSearchQueryChange({ ...searchQuery, matchCase: !searchQuery.matchCase });
+    };
 
-  const onToggleUseRegularExpression = () => {
-    setState((prevState) => ({ ...prevState, useRegularExpression: !prevState.useRegularExpression }));
-  };
+    const onToggleMatchWholeWord = () => {
+      onSearchQueryChange({ ...searchQuery, matchWholeWord: !searchQuery.matchWholeWord });
+    };
 
-  const onClearText = () => {
-    setState((prevState) => ({
-      ...prevState,
-      text: '',
-    }));
-  };
+    const onToggleUseRegularExpression = () => {
+      onSearchQueryChange({ ...searchQuery, useRegularExpression: !searchQuery.useRegularExpression });
+    };
 
-  const onClearAll = () => {
-    setState(initialState);
-  };
+    const onClearText = () => {
+      onSearchQueryChange({ ...searchQuery, text: '' });
+    };
 
-  const onToggleSearchInAttributes = () => {
-    setState((prevState) => ({ ...prevState, searchInAttributes: !prevState.searchInAttributes }));
-  };
+    const onClearAll = () => {
+      onSearchQueryChange(EMPTY_QUERY);
+    };
 
-  const onToggleSearchInLibraries = () => {
-    setState((prevState) => ({ ...prevState, searchInLibraries: !prevState.searchInLibraries }));
-  };
+    const onToggleSearchInAttributes = () => {
+      onSearchQueryChange({ ...searchQuery, searchInAttributes: !searchQuery.searchInAttributes });
+    };
 
-  return (
-    <Box data-role="query">
-      <Box sx={{ padding: theme.spacing(1) }}>
-        <TextField
-          value={state.text}
-          onChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-            setState((prevState) => ({ ...prevState, text: event.target.value }));
-          }}
-          onKeyDown={(event) => {
-            if ('Enter' === event.key && (event.ctrlKey || event.metaKey)) {
-              const { text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes, searchInLibraries } =
-                state;
-              onLaunchSearch({
-                text,
-                matchCase,
-                matchWholeWord,
-                useRegularExpression,
-                searchInAttributes,
-                searchInLibraries,
-              });
-            }
-          }}
-          spellCheck={false}
-          variant="outlined"
-          size="small"
-          fullWidth
-          autoFocus
-          placeholder={t('launchSearchPlaceholder')}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchOutlinedIcon />
-                </InputAdornment>
-              ),
-              sx: { paddingRight: theme.spacing(1) },
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Tooltip title={t('matchCase')}>
-                    <IconButton
-                      size="small"
-                      onClick={onToggleMatchCase}
-                      color={state.matchCase ? 'primary' : 'default'}>
-                      <TextFieldsIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={t('matchWholeWord')}>
-                    <IconButton
-                      size="small"
-                      onClick={onToggleMatchWholeWord}
-                      color={state.matchWholeWord ? 'primary' : 'default'}>
-                      <TextFormatIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={t('useRegularExpression')}>
-                    <IconButton
-                      size="small"
-                      onClick={onToggleUseRegularExpression}
-                      color={state.useRegularExpression ? 'primary' : 'default'}>
-                      <Typography>.*</Typography>
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={t('clearText')}>
-                    <IconButton size="small" edge="end" onClick={onClearText}>
-                      <CancelIcon />
-                    </IconButton>
-                  </Tooltip>
-                </InputAdornment>
-              ),
-            },
-          }}
-        />
+    const onToggleSearchInLibraries = () => {
+      onSearchQueryChange({ ...searchQuery, searchInLibraries: !searchQuery.searchInLibraries });
+    };
+
+    return (
+      <Box data-role="query">
+        <Box sx={{ padding: theme.spacing(1) }}>
+          <TextField
+            data-testid="search-textfield"
+            value={searchQuery.text}
+            onChange={(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+              onSearchQueryChange({ ...searchQuery, text: event.target.value });
+            }}
+            onKeyDown={(event) => {
+              if ('Enter' === event.key && (event.ctrlKey || event.metaKey)) {
+                onLaunchSearch(searchQuery);
+              }
+            }}
+            spellCheck={false}
+            variant="outlined"
+            size="small"
+            fullWidth
+            autoFocus
+            placeholder={t('launchSearchPlaceholder')}
+            slotProps={{
+              input: {
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchOutlinedIcon />
+                  </InputAdornment>
+                ),
+                sx: { paddingRight: theme.spacing(1) },
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <Tooltip title={t('matchCase')}>
+                      <IconButton
+                        size="small"
+                        onClick={onToggleMatchCase}
+                        color={searchQuery.matchCase ? 'primary' : 'default'}>
+                        <TextFieldsIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t('matchWholeWord')}>
+                      <IconButton
+                        size="small"
+                        onClick={onToggleMatchWholeWord}
+                        color={searchQuery.matchWholeWord ? 'primary' : 'default'}>
+                        <TextFormatIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t('useRegularExpression')}>
+                      <IconButton
+                        size="small"
+                        onClick={onToggleUseRegularExpression}
+                        color={searchQuery.useRegularExpression ? 'primary' : 'default'}>
+                        <Typography>.*</Typography>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title={t('clearText')}>
+                      <IconButton size="small" edge="end" onClick={onClearText}>
+                        <CancelIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </InputAdornment>
+                ),
+              },
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            paddingLeft: theme.spacing(1),
+            paddingRight: theme.spacing(1),
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <Typography variant="body1">{t('searchInAttributes')}</Typography>
+          <Switch
+            data-testid="search-in-attributes-toggle"
+            color="secondary"
+            checked={searchQuery.searchInAttributes}
+            onClick={onToggleSearchInAttributes}
+          />
+        </Box>
+        <Box
+          sx={{
+            paddingLeft: theme.spacing(1),
+            paddingRight: theme.spacing(1),
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <Typography variant="body1">{t('searchInLibraries')}</Typography>
+          <Switch
+            data-testid="search-in-libraries-toggle"
+            color="secondary"
+            checked={searchQuery.searchInLibraries}
+            onClick={onToggleSearchInLibraries}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            padding: theme.spacing(1),
+            display: 'flex',
+            gap: theme.spacing(1),
+          }}>
+          <Button
+            data-testid="launch-search"
+            disabled={searchQuery.text.trim() === ''}
+            onClick={() => {
+              onLaunchSearch(searchQuery);
+            }}
+            variant="contained"
+            color="secondary"
+            sx={{ flexGrow: 1 }}>
+            {t('search')}
+          </Button>
+          <Button
+            data-testid="clear-search"
+            onClick={onClearAll}
+            variant="outlined"
+            color="secondary"
+            sx={{ flexGrow: 0 }}>
+            {t('clearAll')}
+          </Button>
+        </Box>
       </Box>
-      <Box
-        sx={{
-          paddingLeft: theme.spacing(1),
-          paddingRight: theme.spacing(1),
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <Typography variant="body1">{t('searchInAttributes')}</Typography>
-        <Switch color="secondary" checked={state.searchInAttributes} onClick={onToggleSearchInAttributes} />
-      </Box>
-      <Box
-        sx={{
-          paddingLeft: theme.spacing(1),
-          paddingRight: theme.spacing(1),
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <Typography variant="body1">{t('searchInLibraries')}</Typography>
-        <Switch color="secondary" checked={state.searchInLibraries} onClick={onToggleSearchInLibraries} />
-      </Box>
-      <Box
-        sx={{
-          padding: theme.spacing(1),
-          display: 'flex',
-          gap: theme.spacing(1),
-        }}>
-        <Button
-          data-testid="launch-search"
-          disabled={state.text.trim() === ''}
-          onClick={() => {
-            const { text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes, searchInLibraries } =
-              state;
-            onLaunchSearch({
-              text,
-              matchCase,
-              matchWholeWord,
-              useRegularExpression,
-              searchInAttributes,
-              searchInLibraries,
-            });
-          }}
-          variant="contained"
-          color="secondary"
-          sx={{ flexGrow: 1 }}>
-          {t('search')}
-        </Button>
-        <Button
-          data-testid="clear-search"
-          onClick={onClearAll}
-          variant="outlined"
-          color="secondary"
-          sx={{ flexGrow: 0 }}>
-          {t('clearAll')}
-        </Button>
-      </Box>
-    </Box>
-  );
-};
+    );
+  }
+);

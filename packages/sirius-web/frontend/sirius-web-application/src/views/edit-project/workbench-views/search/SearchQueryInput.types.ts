@@ -14,14 +14,7 @@
 import { SearchQuery } from './useSearch.types';
 
 export interface SearchQueryInputProps {
+  editingContextId: string;
+  initialQuery: SearchQuery | null;
   onLaunchSearch: (query: SearchQuery) => void;
-}
-
-export interface SearchQueryInputState {
-  text: string;
-  matchCase: boolean;
-  matchWholeWord: boolean;
-  useRegularExpression: boolean;
-  searchInAttributes: boolean;
-  searchInLibraries: boolean;
 }
