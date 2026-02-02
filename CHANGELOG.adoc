@@ -36,6 +36,7 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
 - https://github.com/eclipse-sirius/sirius-web/issues/5889[#5889] [sirius-web] In the _Search_ view, a placeholder text has been added to indicate that _Ctrl+Enter_ can be used to launch the search directly from the keyboard
+- https://github.com/eclipse-sirius/sirius-web/issues/5888[#5888] [sirius-web] The _Search_ now remembers the last query parameters used on a per-project basis
 
 == 2026.1.0
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { WorkbenchViewComponentProps, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
-import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
+import { ForwardedRef, forwardRef, RefObject, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { SearchQueryInput } from './SearchQueryInput';
 import { SearchResults } from './SearchResults';
-import { SearchViewState } from './SearchView.types';
+import { SearchViewConfiguration, SearchViewState } from './SearchView.types';
 import { useSearch } from './useSearch';
-import { GQLSearchPayload, GQLSearchSuccessPayload } from './useSearch.types';
+import { GQLSearchPayload, GQLSearchSuccessPayload, SearchQuery } from './useSearch.types';
 import { useSearchViewHandle } from './useSearchViewHandle';
 
 const useSearchViewStyles = makeStyles()((theme) => ({
@@ -36,10 +36,14 @@ const isSearchSuccessPayload = (payload: GQLSearchPayload): payload is GQLSearch
   payload && payload.__typename === 'SearchSuccessPayload';
 
 export const SearchView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
-  ({ editingContextId, id }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
+  (
+    { id, editingContextId, initialConfiguration }: WorkbenchViewComponentProps,
+    ref: ForwardedRef<WorkbenchViewHandle>
+  ) => {
     const { classes } = useSearchViewStyles();
 
-    useSearchViewHandle(id, ref);
+    const searchQueryRef: RefObject<SearchQuery | null> = useRef<SearchQuery | null>(null);
+    useSearchViewHandle(id, searchQueryRef, ref);
 
     const [state, setState] = useState<SearchViewState>({
       query: null,
@@ -57,13 +61,20 @@ export const SearchView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponent
       }
     }, [loading, data]);
 
+    const initialSearchViewConfiguration: SearchViewConfiguration =
+      initialConfiguration as unknown as SearchViewConfiguration;
+    const initialQuery: SearchQuery | null = initialSearchViewConfiguration?.searchQuery || null;
+
     return (
       <div className={classes.view} data-representation-kind="search-view">
         <SearchQueryInput
+          editingContextId={editingContextId}
+          initialQuery={initialQuery}
           onLaunchSearch={(newQuery) => {
             setState((prevState) => ({ ...prevState, query: newQuery }));
             launchSearch(editingContextId, newQuery);
           }}
+          ref={searchQueryRef}
         />
         <div className={classes.separator} />
         <SearchResults

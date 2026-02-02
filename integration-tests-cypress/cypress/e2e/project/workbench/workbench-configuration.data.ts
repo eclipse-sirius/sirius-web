@@ -86,3 +86,26 @@ export const workbenchConfigurationWithPapayaView: WorkbenchConfiguration = {
     },
   ],
 };
+
+const searchViewConfiguration = {
+  id: 'search',
+  isActive: true,
+  searchQuery: {
+    text: 'search term',
+    matChase: false,
+    matchWoleWord: false,
+    useRegularExpression: false,
+    searchInAttributes: true,
+  },
+};
+
+export const workbenchConfigurationWithSearchView: WorkbenchConfiguration = {
+  mainPanel: null,
+  workbenchPanels: [
+    {
+      id: 'left',
+      isOpen: true,
+      views: [searchViewConfiguration],
+    },
+  ],
+};
