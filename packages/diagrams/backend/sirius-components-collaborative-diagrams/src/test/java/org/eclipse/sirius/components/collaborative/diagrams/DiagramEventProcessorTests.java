@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import java.util.function.Predicate;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramCreationService;
@@ -148,7 +148,7 @@ public class DiagramEventProcessorTests {
                 .representationDescriptionSearchService(new IRepresentationDescriptionSearchService.NoOp())
                 .representationRefreshPolicyRegistry(new IRepresentationRefreshPolicyRegistry.NoOp())
                 .representationSearchService(new IRepresentationSearchService.NoOp())
-                .representationPersistenceService(new IRepresentationPersistenceService.NoOp())
+                .representationPersistenceStrategy(new IRepresentationPersistenceStrategy.NoOp())
                 .diagramEventConsumers(List.of())
                 .diagramInputReferencePositionProviders(List.of())
                 .build();

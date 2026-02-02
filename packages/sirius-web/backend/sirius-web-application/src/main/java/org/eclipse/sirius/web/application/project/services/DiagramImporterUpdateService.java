@@ -133,13 +133,13 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         Diagram oldRepresentation = (Diagram) representationImportData.representation();
         var editingContext = this.editingContextSearchService.findById(editingContextId);
         if (editingContext.isPresent()) {
-            var newRepresentation = this.representationSearchService.findById(editingContext.get(), newRepresentationId, Diagram.class);
+            var optionalNewRepresentation = this.representationSearchService.findById(editingContext.get(), newRepresentationId, Diagram.class);
             var diagramDescription = this.representationDescriptionSearchService.findById(editingContext.get(), oldRepresentation.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
                     .map(DiagramDescription.class::cast);
 
-            if (diagramDescription.isPresent() && newRepresentation.isPresent()) {
-                var diagramContext = new DiagramContext(newRepresentation.get());
+            if (diagramDescription.isPresent() && optionalNewRepresentation.isPresent()) {
+                var diagramContext = new DiagramContext(optionalNewRepresentation.get());
                 Map<String, String> nodeElementOldNewIds = new HashMap<>();
                 Map<String, String> edgeElementOldNewIds = new HashMap<>();
                 Map<String, String> labelElementOldNewIds = new HashMap<>();
