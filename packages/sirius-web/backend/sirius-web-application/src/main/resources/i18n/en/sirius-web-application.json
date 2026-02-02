@@ -283,7 +283,8 @@
     "matchCase": "Match Case",
     "matchWholeWord": "Match Whole Word",
     "useRegularExpression": "Use Regular Expression",
-    "clearText": "Clear Text"
+    "clearText": "Clear Text",
+    "launchSearchPlaceholder": "Hit Ctrl+Enter to launch search"
   },
   "searchResults": {
     "searchInProgress": "Search in progress...",

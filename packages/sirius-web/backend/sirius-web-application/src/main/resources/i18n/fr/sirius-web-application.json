@@ -283,7 +283,8 @@
     "matchCase": "Respecter la casse",
     "matchWholeWord": "Mot entier",
     "useRegularExpression": "Utiliser une expression régulière",
-    "clearText": "Effacer le texte"
+    "clearText": "Effacer le texte",
+    "launchSearchPlaceholder": "Appuyez sur Ctrl+Entrée pour lancer la recherche"
   },
   "searchResults": {
     "searchInProgress": "Recherche en cours...",
