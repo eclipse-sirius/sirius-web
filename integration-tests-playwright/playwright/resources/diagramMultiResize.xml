@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:flow="http://www.obeo.fr/dsl/designer/sample/flow" name="NewSystem">
+  <elements xmi:type="flow:CompositeProcessor" name="CompositeProcessor1"/>
+  <elements xmi:type="flow:DataSource" name="DataSource1" volume="6">
+    <outgoingFlows usage="standard" capacity="6" load="6"/>
+  </elements>
+  <elements xmi:type="flow:CompositeProcessor" name="CompositeProcessor2"/>
+</flow:System>

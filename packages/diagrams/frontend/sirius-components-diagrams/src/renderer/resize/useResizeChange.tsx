@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useSelection, Selection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, NodeChange, NodeDimensionChange, NodePositionChange, useStoreApi } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
@@ -193,8 +194,46 @@ const applyMoveToListChild = (
   return [];
 };
 
-const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
+const applyMultiSelectResize = (
+  change: NodeDimensionChange,
+  resizedNode: Node<NodeData>,
+  selection: Selection,
+  nodes: Node<NodeData>[]
+): NodeChange<Node<NodeData>>[] => {
+  const resizeWidthOffset: number = (change.dimensions?.width ?? 0) - (resizedNode.width ?? 0);
+  const resizeHeightOffset: number = (change.dimensions?.height ?? 0) - (resizedNode.height ?? 0);
+  return nodes
+    .filter((node) => node.id !== change.id && selection.entries.some((entry) => entry.id === node.data.targetObjectId))
+    .filter((node) => node.data.nodeDescription?.userResizable !== 'NONE' && !node.data.isListChild)
+    .map((node) => {
+      let newWidth: number = (node.width ?? 0) + resizeWidthOffset;
+      let newHeight: number = (node.height ?? 0) + resizeHeightOffset;
+      if (node.data.nodeDescription?.userResizable === 'HORIZONTAL') {
+        newHeight = node.height ?? 0;
+      }
+      if (node.data.nodeDescription?.userResizable === 'VERTICAL') {
+        newWidth = node.width ?? 0;
+      }
+      if (node.data.minComputedHeight && newHeight < node.data.minComputedHeight) {
+        newHeight = node.data.minComputedHeight;
+      }
+      if (node.data.minComputedWidth && newWidth < node.data.minComputedWidth) {
+        newWidth = node.data.minComputedWidth;
+      }
+      return {
+        ...change,
+        id: node.id,
+        dimensions: {
+          height: newHeight,
+          width: newWidth,
+        },
+      };
+    });
+};
+
+const isResizing = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
   change.type === 'dimensions' && (change.resizing ?? false);
+const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange => change.type === 'dimensions';
 const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
   change.type === 'position' && !change.dragging;
 
@@ -202,13 +241,15 @@ export const useResizeChange = (): UseResizeChangeValue => {
   const { getNodes } = useStore();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const zoom = store.getState().transform[2];
+  const { selection } = useSelection();
 
   const transformResizeListNodeChanges = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       const newResizeListContainChanges: NodeChange<Node<NodeData>>[] = [];
       const newBorderNodeMoveChanges: NodeChange<Node<NodeData>>[] = [];
+      const newMultiSelectResizeChanges: NodeChange<Node<NodeData>>[] = [];
       const updatedChanges: NodeChange<Node<NodeData>>[] = changes.map((change) => {
-        if (isResize(change)) {
+        if (isResizing(change)) {
           const resizedNode = getNodes().find((node) => change.id === node.id);
           if (resizedNode) {
             newResizeListContainChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
@@ -224,9 +265,20 @@ export const useResizeChange = (): UseResizeChangeValue => {
             return applyMoveToListContain(movedNode, getNodes(), change);
           }
         }
+        if (isResize(change)) {
+          const resizedNode = getNodes().find((node) => change.id === node.id);
+          if (resizedNode) {
+            newMultiSelectResizeChanges.push(...applyMultiSelectResize(change, resizedNode, selection, getNodes()));
+          }
+        }
         return change;
       });
-      return [...newBorderNodeMoveChanges, ...updatedChanges, ...newResizeListContainChanges];
+      return [
+        ...newBorderNodeMoveChanges,
+        ...updatedChanges,
+        ...newResizeListContainChanges,
+        ...newMultiSelectResizeChanges,
+      ];
     },
     [getNodes]
   );

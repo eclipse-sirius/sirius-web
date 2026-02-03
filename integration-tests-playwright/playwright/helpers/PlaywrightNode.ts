@@ -103,7 +103,7 @@ export class PlaywrightNode {
   }
 
   async resize(offset: { height: number; width: number }, anchor: string = 'bottom.right') {
-    const resizeAnchor = this.page.locator(`.react-flow__resize-control.${anchor}`);
+    const resizeAnchor = this.nodeLocator.locator(`.react-flow__resize-control.${anchor}`).first();
 
     const box = (await resizeAnchor.boundingBox())!;
     await resizeAnchor.hover();
