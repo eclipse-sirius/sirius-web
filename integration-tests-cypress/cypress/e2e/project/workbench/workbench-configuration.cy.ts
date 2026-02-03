@@ -21,6 +21,7 @@ import {
   workbenchConfigurationWithExpandedPanels,
   workbenchConfigurationWithPapayaView,
   workbenchConfigurationWithQueryView,
+  workbenchConfigurationWithSearchView,
 } from './workbench-configuration.data';
 
 const projectName = 'Cypress - Workbench Configuration Resolution';
@@ -254,6 +255,26 @@ describe('Workbench Configuration Resolution', () => {
           .should('equal', 'aql:self');
       });
     });
+
+    context(
+      'When opening the project with a workbench configuration with a configuration for the "Search" view',
+      () => {
+        let workbench: Workbench;
+        beforeEach(() => {
+          new Project().visit(projectId, undefined, {
+            qs: {
+              workbenchConfiguration: JSON.stringify(workbenchConfigurationWithSearchView),
+            },
+          });
+          workbench = new Workbench();
+        });
+        it('Then, in the "Search" view, the query is set as specified in the configuration', () => {
+          workbench.checkPanelContent('left', ['Search']);
+          cy.getByTestId('search-textfield').should('exist').get('input').invoke('val').should('equal', 'search term');
+          cy.getByTestId('search-in-attributes-toggle').should('have.class', 'Mui-checked');
+        });
+      }
+    );
   });
 });
 
