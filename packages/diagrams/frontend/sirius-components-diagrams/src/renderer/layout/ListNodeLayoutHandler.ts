@@ -26,8 +26,8 @@ import {
   getDefaultOrMinHeight,
   getDefaultOrMinWidth,
   getEastBorderNodeFootprintHeight,
-  getInsideLabelWidthConstraint,
   getHeaderHeightFootprint,
+  getInsideLabelWidthConstraint,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -107,13 +107,13 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       if (nodeMinComputeHeight > previousDimensions.height) {
         node.height = nodeMinComputeHeight;
       } else {
-        node.height = getDefaultOrMinHeight(previousDimensions.height - heightLostSincePrevDiagram, node);
+        node.height = previousDimensions.height - heightLostSincePrevDiagram;
       }
     } else {
       node.height = nodeHeight;
     }
-    node.data.minComputedWidth = getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    node.data.minComputedHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
+    node.data.minComputedWidth = nodeMinComputeWidth;
+    node.data.minComputedHeight = nodeMinComputeHeight;
   }
 
   private handleParentNode(
