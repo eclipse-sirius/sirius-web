@@ -30,7 +30,7 @@
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6151[#6151] [diagram] Allow the resize of several elements during multi selection
 
 === Improvements
 
