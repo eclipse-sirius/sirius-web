@@ -381,5 +381,8 @@
     "personalBadge": "Personnel",
     "sectionDescription": "Vos préférences personnelles - ces paramètres sont stockés dans votre navigateur",
     "title": "Paramètres généraux"
+  },
+  "viewsView": {
+    "noRepresentation": "Aucune représentation disponible pour le projet actuel"
   }
 }
