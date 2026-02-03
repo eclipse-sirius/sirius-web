@@ -26,6 +26,7 @@
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5648[#5648] [core] Make hotkeys independent of keyboard layout
 
 
 === New Features

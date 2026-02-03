@@ -75,7 +75,7 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
             setState((prevState) => ({ ...prevState, text: event.target.value }));
           }}
           onKeyDown={(event) => {
-            if ('Enter' === event.key && (event.ctrlKey || event.metaKey)) {
+            if (event.code === 'Enter' && (event.ctrlKey || event.metaKey)) {
               const { text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes } = state;
               onLaunchSearch({ text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes });
             }
