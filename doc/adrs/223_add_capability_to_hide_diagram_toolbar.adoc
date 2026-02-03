@@ -1,0 +1,41 @@
+= ADR-223 - Add the ability to hide the diagram toolbar
+
+== Context
+
+The diagram toolbar is always present, but in some contexts it can become useless.
+For instance, when displaying it as a read-only non-interactable view.
+
+== Decision
+
+We will provide an API to determine the state of this toolbar directly from the backend.
+It will currently only determine its visibility, but it needs to be thought with the ability to directly modify it in the future, by adding tools, for instance.
+
+The GraphQL API will be evolved to add a new type.
+The presence of the `toolbar` field determines its visibility.
+`DiagramToolbar` could be filled in the future to describe the content of the toolbar itself.
+
+[source,graphql]
+----
+type DiagramDescription {
+  toolbar: DiagramToolbar
+}
+
+type DiagramToolbar {
+
+}
+----
+
+The View DSL will be modified too to allow instantiation of `DiagramToolbar`.
+
+=== Status
+
+Proposed.
+
+== Consequences
+
+Since the presence of the toolbar will be determined by the presence of an instance of `DiagramToolbar` in a View metamodel, we will need to manage out-of-date models to keep their toolbar visible.
+This will be achieved by implementing a migration participant.
+
+== Cutting backs
+
+/
