@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,16 @@
 
 package org.eclipse.sirius.web.e2e.tests.diagramResize;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
@@ -36,9 +40,6 @@ import org.eclipse.sirius.web.e2e.tests.services.SiriusWebE2EColorProvider;
 import org.eclipse.sirius.web.e2e.tests.services.api.IE2EViewProvider;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * The view provider for the diagram-resize test suite.
@@ -87,12 +88,25 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
                 .nodeDescriptions(this.getNodeDescription(colorProvider, "Entity1 - Resize Both", "::Entity1", UserResizableDirection.BOTH),
                         this.getNodeDescription(colorProvider, "Entity2 - Resize NONE", "::Entity2", UserResizableDirection.NONE),
                         this.getNodeDescription(colorProvider, "Entity3 - Resize HORIZONTAL", "::Entity3", UserResizableDirection.HORIZONTAL),
-                        this.getNodeDescription(colorProvider, "Entity4 - Resize VERTICAL", "::Entity4", UserResizableDirection.VERTICAL))
+                        this.getNodeDescription(colorProvider, "Entity4 - Resize VERTICAL", "::Entity4", UserResizableDirection.VERTICAL),
+                        this.getNodeDescriptionWithDefaultSize(colorProvider, "Entity5 - Resize Both - default size: (200, 100)", "::Entity5", UserResizableDirection.BOTH, "200", "100"))
                 .build();
     }
 
 
     private NodeDescription getNodeDescription(IColorProvider colorProvider, String name, String domain, UserResizableDirection resizeDirection) {
+        return this.getDefaultNodeDescriptionBuilder(colorProvider, name, domain, resizeDirection)
+                .build();
+    }
+
+    private NodeDescription getNodeDescriptionWithDefaultSize(IColorProvider colorProvider, String name, String domain, UserResizableDirection resizeDirection, String defaultWidth, String defaultHeight) {
+        return this.getDefaultNodeDescriptionBuilder(colorProvider, name, domain, resizeDirection)
+                .defaultWidthExpression(defaultWidth)
+                .defaultHeightExpression(defaultHeight)
+                .build();
+    }
+
+    private NodeDescriptionBuilder getDefaultNodeDescriptionBuilder(IColorProvider colorProvider, String name, String domain, UserResizableDirection resizeDirection) {
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name(name)
@@ -137,8 +151,7 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
                                                 .build()
                                 )
                                 .build()
-                )
-                .build();
+                );
     }
 
 }

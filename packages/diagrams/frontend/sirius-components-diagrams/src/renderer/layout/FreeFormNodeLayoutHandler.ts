@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -241,7 +241,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
       applyRatioOnNewNodeSizeValue(node);
     }
 
-    node.data.minComputedWidth = getDefaultOrMinWidth(nodeMinComputeWidth, node);
-    node.data.minComputedHeight = getDefaultOrMinHeight(nodeMinComputeHeight, node);
+    node.data.minComputedWidth = nodeMinComputeWidth;
+    node.data.minComputedHeight = nodeMinComputeHeight;
   }
 }
