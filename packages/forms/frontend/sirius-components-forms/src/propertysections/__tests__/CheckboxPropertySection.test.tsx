@@ -28,7 +28,7 @@ afterEach(() => {
   vi.clearAllMocks();
 });
 
-const mockEnqueue = vi.fn<[string, MessageOptions?], void>();
+const mockEnqueue = vi.fn<(body: string, options?: MessageOptions) => void>();
 
 const toastContextMock: ToastContextValue = {
   enqueueSnackbar: mockEnqueue,
