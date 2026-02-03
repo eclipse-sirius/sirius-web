@@ -9,6 +9,7 @@
 === Architectural decision records
 
 - [ADR-222] Add auto layout until manual change on diagram
+- [ADR-223] Add the ability to hide the diagram toolbar
 
 === Deprecation warning
 
