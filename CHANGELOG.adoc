@@ -52,6 +52,7 @@ The resize is still constrained by its inside label
 
 - https://github.com/eclipse-sirius/sirius-web/issues/2503[#2503] Add a dedicated documentation field in the View model
   * In the View model, added a `description` attribute (documentation) on multiple model elements (diagram and view models: diagram element descriptions, node/edge style descriptions, tools, etc.).
+- https://github.com/eclipse-sirius/sirius-web/issues/6151[#6151] [diagram] Allow the resize of several elements during multi selection
   
 
 === Improvements

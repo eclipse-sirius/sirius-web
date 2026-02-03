@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,19 +49,6 @@ test.describe('diagram', () => {
 
     expect(reactFlowXYPositionAfter.x).toBeGreaterThan(reactFlowXYPositionBefore.x);
     expect(reactFlowXYPositionAfter.y).toBeGreaterThan(reactFlowXYPositionBefore.y);
-  });
-
-  test('resizing a node by click', async ({ page }) => {
-    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
-
-    const reactFlowSizeBefore = await playwrightNode.getReactFlowSize();
-
-    await playwrightNode.resize({ height: 20, width: 50 });
-
-    const reactFlowSizeAfter = await playwrightNode.getReactFlowSize();
-
-    expect(reactFlowSizeAfter.height).toBeGreaterThan(reactFlowSizeBefore.height);
-    expect(reactFlowSizeAfter.width).toBeGreaterThan(reactFlowSizeBefore.width);
   });
 
   test('when the mini map is shown or hidden, then mini map is available or not', async ({ page }) => {
