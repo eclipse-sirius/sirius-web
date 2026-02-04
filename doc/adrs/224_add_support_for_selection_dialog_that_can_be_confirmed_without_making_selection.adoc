@@ -1,0 +1,44 @@
+= ADR-224 - Add support for Selection Dialog that can be confirmed without making selection
+
+== Context
+
+The current version of the Selection Dialog requires the user to make a selection to confirm it, thus, specifiers must declare two tools if they want to support both cases: one with a selection and one without selection.
+
+== Decision
+
+=== Backend
+
+We will update the View DSL to add two properties to the Selection Dialog:
+* `optional`: a boolean property to allow confirming the Selection Dialog without making a selection.
+  The default value of this property is `false`.
+* `No Selection Label`: a string property the specifier can provide to describe what the tool will do when the user confirms the Selection Dialog without making a selection.
+  If the specifier does not provide a label, a default label "Confirm without selection" will be used.
+
+We will update the GraphQL schema accordingly:
+
+[source,graphql]
+====
+type SelectionDescription implements RepresentationDescription {
+
+  # Existing properties...
+
+  optional: Boolean!
+  noSelectionLabel(variables: [SelectionDialogVariable!]!): String!
+}
+====
+
+We will add a new data fetcher (`SelectionDescriptionNoSelectionLabelDataFetcher`) to compute the label to display for the option to confirm without selection in the Selection Dialog.
+
+=== Frontend
+
+The selection dialog will be updated according to the new properties requested from the backend.
+
+== Status
+
+Proposed
+
+== Consequences
+
+The current `Selection Message` set in the Selection Dialog description will be used as a label.
+Long messages set in the `Selection Message` may feel a bit odd.
+Except that UI change, the behavior of existing Selection Dialogs will be kept as is.
