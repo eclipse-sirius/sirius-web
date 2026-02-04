@@ -243,4 +243,28 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
                 .isNotEmpty()
                 .noneSatisfy(toolId -> assertThat(toolId).isEqualTo("reset-handles-position"));
     }
+
+
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with deletable nodes and edges, when the palette is requested for nodes and edges, then the delete tool is available")
+    public void givenDiagramWithDeletableNodesAndEdgesWhenThePaletteIsRequestedForNodesAndEdgesThenTheDeleteToolIsAvailable() {
+        Map<String, Object> variables = Map.of(
+                "editingContextId", FlowIdentifier.FLOW_EDITING_CONTEXT_ID,
+                "representationId", FlowIdentifier.FLOW_DIAGRAM_REPRESENTATION_ID,
+                "diagramElementIds", List.of(
+                        FlowIdentifier.FLOW_EDGE_DATA_FLOW_1,
+                        FlowIdentifier.FLOW_EDGE_DATA_FLOW_2,
+                        FlowIdentifier.FLOW_DATA_SOURCE_1,
+                        FlowIdentifier.FLOW_COMPOSITE_PROCESSOR_1
+                )
+        );
+        var result = this.paletteQueryRunner.run(variables);
+
+        List<String> quickAccessToolsIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].id");
+        assertThat(quickAccessToolsIds)
+                .isNotEmpty()
+                .anyMatch("semantic-delete"::equals);
+    }
 }

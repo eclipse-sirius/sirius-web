@@ -24,7 +24,9 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
+import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
+import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.api.IGroupPaletteToolsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.tools.FadeElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.HideElementToolHandler;
@@ -33,7 +35,7 @@ import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.springframework.stereotype.Service;
 
 /**
- * An helper to build default tools in the group palette.
+ * A helper to build default tools in the group palette.
  *
  * @author mcharfadi
  */
@@ -69,7 +71,37 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
 
         var hideTool = this.createHideTool(targetDescriptions);
         extraTools.add(hideTool);
+
+        if (this.hasDeleteTool(targetDescriptions)) {
+            // Semantic Delete Tool (the handler is never called)
+            var semanticDeleteTool = this.createExtraSemanticDeleteTool(targetDescriptions);
+            extraTools.add(semanticDeleteTool);
+        }
+
         return  extraTools;
+    }
+
+    private boolean hasDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
+        return targetDescriptions.stream().allMatch(diagramElementDescription -> {
+            boolean result = false;
+            if (diagramElementDescription instanceof NodeDescription nodeDescription) {
+                result = nodeDescription.getDeleteHandler() != null;
+            } else if (diagramElementDescription instanceof EdgeDescription edgeDescription) {
+                result = edgeDescription.getDeleteHandler() != null;
+            }
+            return result;
+        });
+    }
+
+    private ITool createExtraSemanticDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
+                .label(this.messageService.defaultQuickToolDeleteFromModel())
+                .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
+                .targetDescriptions(targetDescriptions)
+                .appliesToDiagramRoot(false)
+                .withImpactAnalysis(false)
+                .keyBindings(List.of())
+                .build();
     }
 
     private boolean containsFadedElement(List<Object> diagramElements) {

@@ -27,6 +27,10 @@ public class FlowIdentifier {
 
     public static final String FLOW_ROOT_SYSTEM_OBJECT = "5b75dcbe-10af-452a-af98-4461ee13ea40";
 
+    public static final String FLOW_DATA_SOURCE_1 = "2c6c3606-5ed2-35f1-b05e-cba434e1a812";
+
+    public static final String FLOW_COMPOSITE_PROCESSOR_1 = "655fe01a-0a64-3b6f-91d6-1eff88b11dbf";
+
     public static final String FLOW_EDGE_DATA_FLOW_1 = "2415b5f8-c769-3999-ada1-c4d07e629e83";
 
     public static final String FLOW_EDGE_DATA_FLOW_2 = "f2bab5c4-7e0b-3c1e-b224-b1172e445a53";
