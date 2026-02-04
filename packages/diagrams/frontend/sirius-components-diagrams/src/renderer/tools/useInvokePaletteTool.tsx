@@ -39,12 +39,10 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
   const { adjustSize } = useAdjustSize();
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
-  const invokeDelete = (diagramElementId: string) => {
-    if (!!nodeLookup.get(diagramElementId)) {
-      deleteDiagramElements(editingContextId, diagramId, [diagramElementId], []);
-    } else if (!!edgeLookup.get(diagramElementId)) {
-      deleteDiagramElements(editingContextId, diagramId, [], [diagramElementId]);
-    }
+  const invokeDelete = (diagramElementIds: string[]) => {
+    const nodeIds = diagramElementIds.filter((id) => nodeLookup.has(id) && !!nodeLookup.get(id));
+    const edgeIds = diagramElementIds.filter((id) => edgeLookup.has(id) && !!edgeLookup.get(id));
+    deleteDiagramElements(editingContextId, diagramId, nodeIds, edgeIds);
   };
 
   const invokeTool = (
@@ -60,13 +58,9 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
         onDirectEditClick();
         break;
       case 'semantic-delete':
-        if (diagramElementIds.length === 1) {
-          showDeletionConfirmation(() => {
-            if (diagramElementIds[0]) {
-              invokeDelete(diagramElementIds[0]);
-            }
-          });
-        }
+        showDeletionConfirmation(() => {
+          invokeDelete(diagramElementIds);
+        });
         break;
       case 'reset-outside-label-position':
         if (diagramElementIds.length === 1 && diagramElementIds[0]) {
