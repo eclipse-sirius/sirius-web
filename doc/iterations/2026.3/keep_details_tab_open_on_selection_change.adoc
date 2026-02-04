@@ -1,0 +1,30 @@
+= Keep details tab open on selection change
+
+== Problem
+
+The open tab in the details view is reset to the first tab every time the selection changes.
+
+== Key Result
+
+Sirius Web should keep the same tab open when the selection changes.
+A tab should be considered the same as another tab if their _labels_ are equal.
+From a user perspective, it doesn't make much sense to base this feature on the technical identifier of the tab, which may not be the same for tabs with the same label, and may be the same for tabs with different labels. 
+
+=== Acceptance Criteria
+
+- A Cypress test should leverage the new functionality and validate the whole user experience.
+
+== Solution
+
+Sirius Web's frontend will store the label of the open tab and look for a tab with the same label when rendering a new form in the details view.
+If a tab is found it is opened, if not the first tab is opened (as it is done now).
+
+=== Cutting backs
+
+- (To discuss): the _share_ action could include the tab label instead of the page identifier.
+This would simplify a bit the frontend code that wouldn't have to mix labels and IDs to select a page.
+This could be leveraged in the future to configure the default tab to open via xref:../2026.1/allow_configuration_of_workbench_panels.adoc[the workbench configuration].  
+
+== Rabbit holes
+
+== No-gos
