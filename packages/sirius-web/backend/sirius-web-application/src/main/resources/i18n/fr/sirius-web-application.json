@@ -281,6 +281,7 @@
   },
   "searchQueryInput": {
     "searchInAttributes": "Rechercher dans les attributs",
+    "searchInLibraries": "Rechercher dans les librairies",
     "search": "Rechercher",
     "clearAll": "Tout effacer",
     "matchCase": "Respecter la casse",

@@ -33,6 +33,7 @@ const initialState: SearchQueryInputState = {
   matchWholeWord: false,
   useRegularExpression: false,
   searchInAttributes: false,
+  searchInLibraries: false,
 };
 
 export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
@@ -66,6 +67,10 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
     setState((prevState) => ({ ...prevState, searchInAttributes: !prevState.searchInAttributes }));
   };
 
+  const onToggleSearchInLibraries = () => {
+    setState((prevState) => ({ ...prevState, searchInLibraries: !prevState.searchInLibraries }));
+  };
+
   return (
     <Box data-role="query">
       <Box sx={{ padding: theme.spacing(1) }}>
@@ -76,8 +81,16 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
           }}
           onKeyDown={(event) => {
             if ('Enter' === event.key && (event.ctrlKey || event.metaKey)) {
-              const { text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes } = state;
-              onLaunchSearch({ text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes });
+              const { text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes, searchInLibraries } =
+                state;
+              onLaunchSearch({
+                text,
+                matchCase,
+                matchWholeWord,
+                useRegularExpression,
+                searchInAttributes,
+                searchInLibraries,
+              });
             }
           }}
           spellCheck={false}
@@ -145,6 +158,18 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
       </Box>
       <Box
         sx={{
+          paddingLeft: theme.spacing(1),
+          paddingRight: theme.spacing(1),
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        <Typography variant="body1">{t('searchInLibraries')}</Typography>
+        <Switch color="secondary" checked={state.searchInLibraries} onClick={onToggleSearchInLibraries} />
+      </Box>
+      <Box
+        sx={{
           padding: theme.spacing(1),
           display: 'flex',
           gap: theme.spacing(1),
@@ -153,8 +178,16 @@ export const SearchQueryInput = ({ onLaunchSearch }: SearchQueryInputProps) => {
           data-testid="launch-search"
           disabled={state.text.trim() === ''}
           onClick={() => {
-            const { text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes } = state;
-            onLaunchSearch({ text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes });
+            const { text, matchCase, matchWholeWord, useRegularExpression, searchInAttributes, searchInLibraries } =
+              state;
+            onLaunchSearch({
+              text,
+              matchCase,
+              matchWholeWord,
+              useRegularExpression,
+              searchInAttributes,
+              searchInLibraries,
+            });
           }}
           variant="contained"
           color="secondary"
