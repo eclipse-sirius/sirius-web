@@ -59,7 +59,7 @@ If the tab cannot be found the first tab of the form will be opened instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/6040[#6040] [sirius-web] Only propose to select project template or libraries when it is relevant
 - https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Standardize font sizes on the _New Project_ creation page
 - https://github.com/eclipse-sirius/sirius-web/issues/3305[#3305] [diagram] Make it possible to have transient diagrams: delegate the save operation to a new `IRepresentationPersistenceStrategy` service which persists only when the representation exists in the database, and add a transient diagram sample in Papaya.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6020[#6020] [diagram] Allow the execution of the hardcoded semantic delete tool on a multi selection
 
 
 == 2026.1.0
