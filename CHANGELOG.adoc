@@ -5,11 +5,13 @@
 === Shapes
 
 - Keep details tab open on selection change
+- Add support the for selection dialog that can be confirmed without making a selection
 
 === Architectural decision records
 
 - [ADR-222] Add auto layout until manual change on diagram
 - [ADR-223] Add the ability to hide the diagram toolbar
+- [ADR-224] Add support for Selection Dialog that can be confirmed without making selection
 
 === Deprecation warning
 
@@ -56,7 +58,7 @@ The resize is still constrained by its inside label
   * In the View model, added a `description` attribute (documentation) on multiple model elements (diagram and view models: diagram element descriptions, node/edge style descriptions, tools, etc.).
 - https://github.com/eclipse-sirius/sirius-web/issues/6151[#6151] [diagram] Allow the resize of several elements during multi selection
 - https://github.com/eclipse-sirius/sirius-web/issues/6157[#6157] [diagram] Add a new API endpoint to enable or disable the diagram toolbar.
-  
+
 
 
 === Improvements
