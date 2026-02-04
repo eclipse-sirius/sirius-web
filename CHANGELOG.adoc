@@ -4,7 +4,7 @@
 
 === Shapes
 
-
+- Add an option to skip a selection dialog
 
 === Architectural decision records
 
