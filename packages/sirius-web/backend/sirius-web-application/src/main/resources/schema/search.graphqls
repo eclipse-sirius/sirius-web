@@ -8,6 +8,7 @@ input SearchQuery {
   matchWholeWord: Boolean!
   useRegularExpression: Boolean!
   searchInAttributes: Boolean!
+  searchInLibraries: Boolean!
 }
 
 union SearchPayload = ErrorPayload | SearchSuccessPayload

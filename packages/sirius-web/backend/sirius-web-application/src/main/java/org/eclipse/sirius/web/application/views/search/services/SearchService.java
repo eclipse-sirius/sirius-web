@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,12 +19,15 @@ import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
+import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.views.search.dto.SearchQuery;
 import org.eclipse.sirius.web.application.views.search.services.api.ISearchService;
 import org.slf4j.Logger;
@@ -42,19 +45,24 @@ public class SearchService implements ISearchService {
 
     private final Logger logger = LoggerFactory.getLogger(SearchService.class);
 
-    private ILabelService labelService;
+    private final ILabelService labelService;
 
     public SearchService(ILabelService labelService) {
         this.labelService = Objects.requireNonNull(labelService);
     }
 
+    @Override
     public List<Object> search(IEditingContext editingContext, SearchQuery query) {
         if (editingContext instanceof IEMFEditingContext emfEditingContext) {
             long start = System.nanoTime();
             var textPredicate = this.toTextPredicate(query);
 
-            var iterator = emfEditingContext.getDomain().getResourceSet().getAllContents();
-            var stream = StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
+            Stream<Notifier> stream = emfEditingContext.getDomain().getResourceSet().getResources().stream()
+                    .filter(resource -> query.searchInLibraries() || resource.eAdapters().stream().noneMatch(LibraryMetadataAdapter.class::isInstance))
+                    .map(resource -> Stream.concat(Stream.of(resource), StreamSupport.stream(Spliterators.spliteratorUnknownSize(resource.getAllContents(), Spliterator.ORDERED), false)))
+                    .reduce(Stream::concat)
+                    .orElse(Stream.empty());
+
             var result = stream.filter(obj -> this.matches(obj, query.searchInAttributes(), textPredicate))
                     .limit(MAX_RESULT_SIZE)
                     .map(Object.class::cast).toList();

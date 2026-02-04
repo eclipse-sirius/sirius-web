@@ -17,6 +17,9 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] The service `IProjectApplicationService` has been deleted and replaced with `IProjectSearchApplicationService`, `IProjectCreationApplicationService`, `IProjectUpdateApplicationService`, `IProjectDeletionApplicationService`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6146[#6146] [sirius-web] Add an option to search in libraries in the search view.
+`SearchQuery` now requires a new `searchInLibraries` parameter.
+The GraphQL schema has been updated to reflect this change.
 
 
 === Dependency update
@@ -37,6 +40,7 @@ The resize is still constrained by its inside label
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
 - https://github.com/eclipse-sirius/sirius-web/issues/5889[#5889] [sirius-web] In the _Search_ view, a placeholder text has been added to indicate that _Ctrl+Enter_ can be used to launch the search directly from the keyboard
+- https://github.com/eclipse-sirius/sirius-web/issues/6146[#6146] [sirius-web] Add an option to search in libraries in the search view.
 
 == 2026.1.0
 

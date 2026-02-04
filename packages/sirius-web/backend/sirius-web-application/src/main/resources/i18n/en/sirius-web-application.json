@@ -278,6 +278,7 @@
   },
   "searchQueryInput": {
     "searchInAttributes": "Search in attributes",
+    "searchInLibraries": "Search in libraries",
     "search": "Search",
     "clearAll": "Clear All",
     "matchCase": "Match Case",
