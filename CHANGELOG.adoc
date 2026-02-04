@@ -37,6 +37,7 @@ The resize is still constrained by its inside label
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
 - https://github.com/eclipse-sirius/sirius-web/issues/5889[#5889] [sirius-web] In the _Search_ view, a placeholder text has been added to indicate that _Ctrl+Enter_ can be used to launch the search directly from the keyboard
+- https://github.com/eclipse-sirius/sirius-web/issues/6020[#6020] [diagram] Allow the execution of the hardcoded semantic delete tool on a multi selection
 
 == 2026.1.0
 
