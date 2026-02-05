@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -115,7 +115,7 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
     const { classes } = useDetailsViewStyles();
 
     const detailsViewConfiguration = initialConfiguration as unknown as DetailsViewConfiguration;
-    const initialSelectedPageId = detailsViewConfiguration?.selectedPageId ?? null;
+    const initialSelectedPageLabel = detailsViewConfiguration?.selectedPageLabel ?? null;
 
     const toolbar = (
       <SynchronizationButton
@@ -155,7 +155,7 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
                 <FormBasedView
                   editingContextId={editingContextId}
                   form={state.form}
-                  initialSelectedPageId={initialSelectedPageId}
+                  initialSelectedPageLabel={initialSelectedPageLabel}
                   readOnly={!state.canEdit}
                   ref={formBasedViewRef}
                 />
