@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import type { Page, Locator } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 export class PlaywrightDetails {
   readonly page: Page;
@@ -31,5 +31,13 @@ export class PlaywrightDetails {
     await inputField.press('ControlOrMeta+A');
     await inputField.fill(text);
     await inputField.press('Enter');
+  }
+
+  async selectTab(label: string) {
+    await this.page.getByTestId(`page-tab-${label}`).click();
+  }
+
+  async isTabSelected(label: string): Promise<boolean> {
+    return (await this.page.getByTestId(`page-tab-${label}`).getAttribute('aria-selected')) === 'true';
   }
 }
