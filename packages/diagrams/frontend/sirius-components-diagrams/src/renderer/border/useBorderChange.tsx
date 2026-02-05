@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -67,7 +67,7 @@ export const useBorderChange = (): UseBorderChangeValue => {
   const transformBorderNodeChanges = useCallback(
     (changes: NodeChange<Node<NodeData>>[], oldNodes: Node<NodeData>[]): NodeChange<Node<NodeData>>[] => {
       return changes.map((change) => {
-        if (change.type === 'position' && change.position) {
+        if (change.type === 'position' && change.position && change.dragging) {
           const nodeLookup = storeApi.getState().nodeLookup;
           const movedNodePositionAbsolute = getPositionAbsoluteFromNodeChange(change, nodeLookup);
           const movedNode = nodeLookup.get(change.id || '');

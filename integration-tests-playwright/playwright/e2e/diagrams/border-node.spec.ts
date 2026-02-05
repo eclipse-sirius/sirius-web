@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -119,5 +120,46 @@ test.describe('diagram - borderNode', () => {
   test('When an edge is on a border node, then its handle is on the opposite', async ({ page }) => {
     await expect(page.locator('.target_handle_right')).toHaveCount(1);
     await expect(page.locator('.source_handle_top')).toHaveCount(1);
+  });
+});
+test.describe('diagram - borderNode', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectBorderNodesPositionAfterResize.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('borderNodes');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('When resizing a node with border nodes, then each border node preserve its side', async ({ page }) => {
+    const parentNode = new PlaywrightNode(page, 'ParentNode');
+    await parentNode.click();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+    await parentNode.resize({ height: -200, width: 200 }, 'bottom.left');
+
+    const posONode = new PlaywrightNode(page, 'Pos0');
+    const pos0Position = await posONode.getReactFlowXYPosition('Pos0');
+    const pos1Node = new PlaywrightNode(page, 'Pos1');
+    const pos1Position = await pos1Node.getReactFlowXYPosition('Pos1');
+    const pos2Node = new PlaywrightNode(page, 'Pos2');
+    const pos2Position = await pos2Node.getReactFlowXYPosition('Pos2');
+    const pos3Node = new PlaywrightNode(page, 'Pos3');
+    const pos3Position = await pos3Node.getReactFlowXYPosition('Pos3');
+    const parentNodeSize = await parentNode.getReactFlowSize('ParentNode');
+    const borderNodeGap: number = 5;
+    const borderNodeSize: number = 20;
+    expect(pos3Position.x).toBe(-borderNodeSize + borderNodeGap);
+    expect(pos1Position.x).toBe(parentNodeSize.width - borderNodeGap);
+    expect(pos0Position.y).toBe(-borderNodeSize + borderNodeGap);
+    expect(pos2Position.y).toBe(parentNodeSize.height - borderNodeGap);
   });
 });
