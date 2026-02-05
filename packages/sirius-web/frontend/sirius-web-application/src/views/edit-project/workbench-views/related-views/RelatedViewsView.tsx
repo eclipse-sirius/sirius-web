@@ -190,7 +190,7 @@ export const RelatedViewsView = forwardRef<WorkbenchViewHandle, WorkbenchViewCom
                 <FormBasedView
                   editingContextId={editingContextId}
                   form={state.form}
-                  initialSelectedPageId={null}
+                  initialSelectedPageLabel={null}
                   readOnly={!state.canEdit}
                   postProcessor={extractPlainList}
                   ref={formBasedViewRef}

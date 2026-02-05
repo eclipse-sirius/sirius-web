@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import { formBasedViewFormConverterExtensionPoint } from './FormBasedViewExtensi
 export const FormBasedView = memo(
   forwardRef<FormHandle | null, FormBasedViewProps>(
     (
-      { editingContextId, form, initialSelectedPageId, readOnly, postProcessor }: FormBasedViewProps,
+      { editingContextId, form, initialSelectedPageLabel, readOnly, postProcessor }: FormBasedViewProps,
       ref: ForwardedRef<FormHandle | null>
     ) => {
       const { data: formConverters }: DataExtension<FormConverter[]> = useData(
@@ -43,7 +43,7 @@ export const FormBasedView = memo(
         <Form
           editingContextId={editingContextId}
           form={convertedForm}
-          initialSelectedPageId={initialSelectedPageId}
+          initialSelectedPageLabel={initialSelectedPageLabel}
           readOnly={readOnly}
           ref={ref}
         />

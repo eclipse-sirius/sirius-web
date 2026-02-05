@@ -17,7 +17,10 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] The service `IProjectApplicationService` has been deleted and replaced with `IProjectSearchApplicationService`, `IProjectCreationApplicationService`, `IProjectUpdateApplicationService`, `IProjectDeletionApplicationService`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6039[#6039] [sirius-web] Keep active tab open in the details view on selection change.
+The `initialSelectedPageId` prop in `FormProps` has been changed to `initialSelectedPageLabel`.
+`DetailsView`, `DiagramFilterForm`, `FormBasedView`, `FormRepresentation`, `RelatedElementsView`, and `RelatedViewsView` have been updated to reflect this change.
+The link produced by the _Share_ action on a project now includes the `selectedPageLabel` instead of the `selectedPageId`.
 
 === Dependency update
 
@@ -40,6 +43,10 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
 - https://github.com/eclipse-sirius/sirius-web/issues/5889[#5889] [sirius-web] In the _Search_ view, a placeholder text has been added to indicate that _Ctrl+Enter_ can be used to launch the search directly from the keyboard
 - https://github.com/eclipse-sirius/sirius-web/issues/6105[#6105] [sirius-web] Publishing a studio now publishes its representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/6039[#6039] [sirius-web] Keep active tab open in the details view on selection change.
+When the selection changes, the details view will attempt to re-open the same tab (i.e. the tab with the same _label_) when rendering the view for the new selection.
+If the tab cannot be found the first tab of the form will be opened instead.
+
 
 
 == 2026.1.0

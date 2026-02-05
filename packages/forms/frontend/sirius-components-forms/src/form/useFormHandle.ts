@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,11 @@
 import { ForwardedRef, useImperativeHandle } from 'react';
 import { FormHandle } from './Form.types';
 
-export const useFormHandle = (selectedPageId: string | null, ref: ForwardedRef<FormHandle>) => {
+export const useFormHandle = (selectedPageLabel: string | null, ref: ForwardedRef<FormHandle>) => {
   const formHandleProvider = (): FormHandle => {
     return {
-      selectedPageId,
+      selectedPageLabel,
     };
   };
-  useImperativeHandle(ref, formHandleProvider, [selectedPageId]);
+  useImperativeHandle(ref, formHandleProvider, [selectedPageLabel]);
 };

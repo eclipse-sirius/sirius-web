@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,29 +75,29 @@ const a11yProps = (id: string) => {
 };
 
 export const Form = forwardRef<FormHandle | null, FormProps>(
-  ({ editingContextId, form, initialSelectedPageId, readOnly }: FormProps, ref: ForwardedRef<FormHandle | null>) => {
+  ({ editingContextId, form, initialSelectedPageLabel, readOnly }: FormProps, ref: ForwardedRef<FormHandle | null>) => {
     const { classes } = useFormStyles();
     const { id, pages } = form;
 
     let selectedPage: GQLPage | null = null;
-    if (initialSelectedPageId) {
-      selectedPage = pages.find((page) => page.id === initialSelectedPageId) ?? null;
+    if (initialSelectedPageLabel) {
+      selectedPage = pages.find((page) => page.label === initialSelectedPageLabel) ?? null;
     } else if (pages[0]) {
       selectedPage = pages[0];
     }
     const [state, setState] = useState<FormState>({ selectedPage, pages });
 
-    useFormHandle(state.selectedPage?.id ?? null, ref);
+    useFormHandle(state.selectedPage?.label ?? null, ref);
 
     useEffect(() => {
       setState(() => {
-        const selectedPage: GQLPage | null = pages.find((page) => page.id === state.selectedPage?.id) ?? null;
+        const selectedPage: GQLPage | null = pages.find((page) => page.label === state.selectedPage?.label) ?? null;
         if (selectedPage) {
           return { selectedPage, pages };
         }
         return { selectedPage: pages[0] ?? null, pages };
       });
-    }, [pages, state.selectedPage?.id]);
+    }, [pages, state.selectedPage?.label]);
 
     const onChangeTab = (_: React.ChangeEvent<{}>, value: string) => {
       const selectedPage: GQLPage | null = pages.find((page) => page.id === value) ?? null;
