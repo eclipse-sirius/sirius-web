@@ -117,6 +117,7 @@ import { QueryView } from '../views/edit-project/workbench-views/query/QueryView
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
 import { RelatedViewsView } from '../views/edit-project/workbench-views/related-views/RelatedViewsView';
 import { SearchView } from '../views/edit-project/workbench-views/search/SearchView';
+import { ViewsView } from '../views/edit-project/workbench-views/views/ViewsView';
 import { LibraryBrowserView } from '../views/library-browser/LibraryBrowserView';
 import { NewProjectView } from '../views/new-project/NewProjectView';
 import { ProjectBrowserView } from '../views/project-browser/ProjectBrowserView';
@@ -166,6 +167,12 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Explorer',
     icon: <AccountTreeIcon />,
     component: ExplorerView,
+  },
+  {
+    id: 'views',
+    title: 'Views',
+    icon: <Filter />,
+    component: ViewsView,
   },
   {
     id: 'validation',

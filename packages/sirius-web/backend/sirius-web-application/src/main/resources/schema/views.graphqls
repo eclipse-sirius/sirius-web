@@ -1,0 +1,9 @@
+extend type Subscription {
+  viewsEvent(input: ViewsEventInput!): TreeEventPayload!
+}
+
+input ViewsEventInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: String!
+}

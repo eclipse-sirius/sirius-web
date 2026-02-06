@@ -33,7 +33,7 @@ The resize is still constrained by its inside label
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5062[#5062] [sirius-web] Add new "views" view
 
 === Improvements
 
