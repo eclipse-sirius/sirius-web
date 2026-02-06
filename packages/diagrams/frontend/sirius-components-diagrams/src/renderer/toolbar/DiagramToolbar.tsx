@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,25 +48,25 @@ import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { SnapToGridContextValue } from '../snap-to-grid/SnapToGridContext.types';
 import { SnapToGridContext } from '../snap-to-grid/SnapToGridContext';
 import { ArrangeAllButton } from './ArrangeAllButton';
-import { DiagramPanelActionProps, DiagramPanelProps, DiagramPanelState } from './DiagramPanel.types';
-import { diagramPanelActionExtensionPoint } from './DiagramPanelExtensionPoints';
+import { DiagramToolbarActionProps, DiagramToolbarProps, DiagramToolbarState } from './DiagramToolbar.types';
+import { diagramToolbarActionExtensionPoint } from './DiagramToolbarExtensionPoints';
 import { ExportImageButton } from './ExportImageButton';
 import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
 
-export const DiagramPanel = memo(({ reactFlowWrapper }: DiagramPanelProps) => {
-  const [state, setState] = useState<DiagramPanelState>({
+export const DiagramToolbar = memo(({ reactFlowWrapper }: DiagramToolbarProps) => {
+  const [state, setState] = useState<DiagramToolbarState>({
     dialogOpen: null,
     arrangeAllDone: false,
     arrangeAllInProgress: false,
   });
-  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPanel' });
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramToolbar' });
 
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isMiniMapVisible, setMiniMapVisibility } = useContext<MiniMapContextValue>(MiniMapContext);
   const { isHelperLineEnabled, setHelperLineEnabled } = useContext<HelperLinesContextValue>(HelperLinesContext);
   const { isSnapToGridEnabled, setSnapToGridEnabled } = useContext<SnapToGridContextValue>(SnapToGridContext);
-  const diagramPanelActionComponents: ComponentExtension<DiagramPanelActionProps>[] = useComponents(
-    diagramPanelActionExtensionPoint
+  const diagramToolbarActionComponents: ComponentExtension<DiagramToolbarActionProps>[] = useComponents(
+    diagramToolbarActionExtensionPoint
   );
 
   const { getNodes, getEdges, zoomIn, zoomOut } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
@@ -247,8 +247,8 @@ export const DiagramPanel = memo(({ reactFlowWrapper }: DiagramPanelProps) => {
             </span>
           </Tooltip>
           <RevealSelectionInDiagramButton editingContextId={editingContextId} />
-          {diagramPanelActionComponents.map(({ Component: DiagramPanelActionComponent }, index) => (
-            <DiagramPanelActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
+          {diagramToolbarActionComponents.map(({ Component: DiagramToolbarActionComponent }, index) => (
+            <DiagramToolbarActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
           ))}
         </Paper>
       </Panel>
