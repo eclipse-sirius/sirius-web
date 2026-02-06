@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,8 @@ import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
  * <em>Precondition Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getSynchronizationPolicy
  * <em>Synchronization Policy</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramElementDescriptionImpl#getDescription
+ * <em>Description</em>}</li>
  * </ul>
  *
  * @generated
@@ -141,6 +143,26 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @see #getSynchronizationPolicy()
      */
     protected SynchronizationPolicy synchronizationPolicy = SYNCHRONIZATION_POLICY_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected static final String DESCRIPTION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getDescription() <em>Description</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDescription()
+     * @generated
+     * @ordered
+     */
+    protected String description = DESCRIPTION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -283,6 +305,29 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDescription(String newDescription) {
+        String oldDescription = this.description;
+        this.description = newDescription;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION, oldDescription, this.description));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__NAME:
@@ -295,6 +340,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return this.getPreconditionExpression();
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 return this.getSynchronizationPolicy();
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
+                return this.getDescription();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -321,6 +368,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return;
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 this.setSynchronizationPolicy((SynchronizationPolicy) newValue);
+                return;
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
+                this.setDescription((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -349,6 +399,9 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 this.setSynchronizationPolicy(SYNCHRONIZATION_POLICY_EDEFAULT);
                 return;
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
+                this.setDescription(DESCRIPTION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -371,6 +424,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__SYNCHRONIZATION_POLICY:
                 return this.synchronizationPolicy != SYNCHRONIZATION_POLICY_EDEFAULT;
+            case DiagramPackage.DIAGRAM_ELEMENT_DESCRIPTION__DESCRIPTION:
+                return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
         }
         return super.eIsSet(featureID);
     }
@@ -396,6 +451,8 @@ public abstract class DiagramElementDescriptionImpl extends MinimalEObjectImpl.C
         result.append(this.preconditionExpression);
         result.append(", synchronizationPolicy: ");
         result.append(this.synchronizationPolicy);
+        result.append(", description: ");
+        result.append(this.description);
         result.append(')');
         return result.toString();
     }

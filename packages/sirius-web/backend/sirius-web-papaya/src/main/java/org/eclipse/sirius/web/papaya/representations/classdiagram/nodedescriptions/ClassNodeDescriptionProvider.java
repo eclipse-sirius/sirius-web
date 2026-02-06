@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,6 +94,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .borderRadius(0)
                 .borderLineStyle(LineStyle.SOLID)
                 .childrenLayoutStrategy(childrenLayoutStrategy)
+                .description("The Style of the Class Diagram Node.")
                 .build();
 
         var newAttributeAction = new DiagramBuilders().newAction()
@@ -141,6 +142,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .userResizable(UserResizableDirection.BOTH)
                 .collapsible(true)
                 .actions(newAttributeAction, newOperationAction)
+                .description("Represents the Papaya::Class concept as a Node. A Class node also displays the constructors, attributes and operations of the class.")
                 .build();
     }
 
@@ -182,6 +184,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .isHiddenByDefaultExpression("aql:true")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .childrenDescriptions(constructorNodeDescription)
+                .description("Represents the constructors compartment. Constructors nodes are displayed in the compartment.")
                 .build();
     }
 
@@ -213,6 +216,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(constructorNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .description("Represents a Constructor entry in the constructors compartment.")
                 .build();
     }
 
@@ -253,6 +257,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(attributesNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .childrenDescriptions(attributeNodeDescription)
+                .description("Represents the attributes compartment. Attribute nodes are displayed in the compartment.")
                 .build();
     }
 
@@ -284,6 +289,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(attributeNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .description("Represents an Attribute entry in the attributes compartment.")
                 .build();
     }
 
@@ -324,6 +330,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(operationsNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .childrenDescriptions(operationNodeDescription)
+                .description("Represents the operations compartment. Operation nodes are displayed in the compartment.")
                 .build();
     }
 
@@ -355,6 +362,7 @@ public class ClassNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(operationNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .description("Represents an Operation entry in the Operations compartment.")
                 .build();
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,6 +81,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .style(enumNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.UNSYNCHRONIZED)
                 .childrenDescriptions(enumLiteralNodeDescription)
+                .description("Represents the Papaya::Enum concept as a Node. An Enum Node can contain enum Literals.")
                 .build();
     }
 
@@ -112,6 +113,7 @@ public class EnumNodeDescriptionProvider implements INodeDescriptionProvider {
                 .insideLabel(insideLabel)
                 .style(enumLiteralNodeStyle)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .description("Represents the Papaya::EnumLiteral concept as in the EENum node.")
                 .build();
     }
 
