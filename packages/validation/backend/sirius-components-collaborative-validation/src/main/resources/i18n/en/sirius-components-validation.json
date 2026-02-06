@@ -2,6 +2,7 @@
   "validationView": {
     "diagnosticCount_one": "{{count}} diagnostic",
     "diagnosticCount_other": "{{count}} diagnostics",
-    "noDiagnostic": "No diagnostic available"
+    "noDiagnostic": "No diagnostic available",
+    "validationTitle": "Validation"
   }
 }
