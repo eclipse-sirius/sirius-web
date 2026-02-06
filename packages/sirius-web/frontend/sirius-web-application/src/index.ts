@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -98,6 +98,8 @@ export {
 export type { EditProjectNavbarSubtitleProps } from './views/edit-project/navbar/EditProjectNavbar.types';
 export { useCurrentProject } from './views/edit-project/useCurrentProject';
 export type { UseCurrentProjectValue } from './views/edit-project/useCurrentProject.types';
+export { useInitialWorkbenchConfiguration } from './views/edit-project/useInitialWorkbenchConfiguration';
+export type { UseInitialWorkbenchConfigurationValue } from './views/edit-project/useInitialWorkbenchConfiguration.types';
 export type { GQLProject } from './views/edit-project/useProjectAndRepresentationMetadata.types';
 export { DetailsView } from './views/edit-project/workbench-views/details/DetailsView';
 export type { GQLDetailsEventPayload } from './views/edit-project/workbench-views/details/useDetailsViewSubscription.types';
