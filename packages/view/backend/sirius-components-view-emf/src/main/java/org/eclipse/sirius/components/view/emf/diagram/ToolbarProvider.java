@@ -68,7 +68,7 @@ public class ToolbarProvider implements IToolbarProvider {
                     .filter(bar -> interpreter.evaluateExpression(variableManager.getVariables(), bar.getPreconditionExpression())
                         .asBoolean()
                         .orElse(true))
-                    .map(bar -> new DiagramToolbar());
+                    .map(bar -> new DiagramToolbar(bar.isDefaultExpanded()));
             }
         }
         return toolbar;

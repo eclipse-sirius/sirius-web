@@ -51,7 +51,11 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
         classDiagramDescription.setAutoLayout(false);
         classDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         classDiagramDescription.setIconExpression("aql:'/papaya-representations/class-diagram.svg'");
-        classDiagramDescription.setToolbar(new DiagramBuilders().newDiagramToolbar().build());
+
+        var toolbar = DiagramFactory.eINSTANCE.createDiagramToolbar();
+        toolbar.setDefaultExpanded(true);
+
+        classDiagramDescription.setToolbar(toolbar);
 
         var cache = new DefaultViewDiagramElementFinder();
 

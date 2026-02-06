@@ -23,7 +23,9 @@
     "toggleSnapToGrid": "Basculer le mode alignement sur la grille",
     "unpinAll": "Détacher tous les éléments",
     "zoomIn": "Agrandir",
-    "zoomOut": "Réduire"
+    "zoomOut": "Réduire",
+    "expand": "Étendre la barre d'outils",
+    "collapse": "Plier la barre d'outils"
   },
   "exportImageButton": {
     "exportDiagram": "Exporter le diagramme en image",

@@ -66,7 +66,7 @@ export interface GQLDiagramDescription {
 }
 
 export interface GQLDiagramToolbar {
-  __typename: 'DiagramToolbar';
+  defaultExpanded: boolean;
 }
 
 export type GQLArrangeLayoutDirection = 'UNDEFINED' | 'RIGHT' | 'DOWN' | 'LEFT' | 'UP';

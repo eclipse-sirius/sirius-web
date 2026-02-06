@@ -108,7 +108,9 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 this.createEgeCreationTool("E2ToEdge1B", edgeDescription1, edgeDescription5.getDomainType(), "toEdge5")
         ).build());
 
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .defaultExpanded(true)
+            .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()

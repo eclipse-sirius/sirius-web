@@ -23,7 +23,9 @@
     "toggleSnapToGrid": "Toggle snap to grid mode",
     "unpinAll": "Unpin all elements",
     "zoomIn": "Zoom in",
-    "zoomOut": "Zoom out"
+    "zoomOut": "Zoom out",
+    "expand": "Expand toolbar",
+    "collapse": "Collapse toolbar"
   },
   "exportImageButton": {
     "exportDiagram": "Export the diagram as an image",

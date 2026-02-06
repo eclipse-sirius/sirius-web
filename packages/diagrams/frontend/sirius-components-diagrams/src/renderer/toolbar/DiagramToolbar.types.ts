@@ -13,12 +13,14 @@
 
 export interface DiagramToolbarProps {
   reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
+  defaultExpanded: boolean;
 }
 
 export interface DiagramToolbarState {
   dialogOpen: DiagramToolbarDialog | null;
   arrangeAllDone: boolean;
   arrangeAllInProgress: boolean;
+  expanded: boolean;
 }
 
 export type DiagramToolbarDialog = 'Share';

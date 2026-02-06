@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**
  * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
@@ -9,7 +9,7 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- *******************************************************************************/
+ */
 package org.eclipse.sirius.components.view.diagram.provider;
 
 import java.util.Collection;
@@ -60,6 +60,7 @@ public class DiagramToolbarItemProvider extends ItemProviderAdapter
             super.getPropertyDescriptors(object);
 
             this.addPreconditionExpressionPropertyDescriptor(object);
+            this.addDefaultExpandedPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -78,13 +79,25 @@ public class DiagramToolbarItemProvider extends ItemProviderAdapter
     }
 
     /**
+     * This adds a property descriptor for the Default Expanded feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addDefaultExpandedPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramToolbar_defaultExpanded_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramToolbar_defaultExpanded_feature", "_UI_DiagramToolbar_type"),
+                DiagramPackage.Literals.DIAGRAM_TOOLBAR__DEFAULT_EXPANDED, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns DiagramToolbar.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DiagramToolbar.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DiagramToolbar"));
     }
 
     /**
@@ -121,6 +134,7 @@ public class DiagramToolbarItemProvider extends ItemProviderAdapter
 
         switch (notification.getFeatureID(DiagramToolbar.class)) {
             case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
+            case DiagramPackage.DIAGRAM_TOOLBAR__DEFAULT_EXPANDED:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

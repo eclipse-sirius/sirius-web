@@ -3942,12 +3942,21 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION = 0;
 
     /**
+     * The feature id for the '<em><b>Default Expanded</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_TOOLBAR__DEFAULT_EXPANDED = 1;
+
+    /**
      * The number of structural features of the '<em>Toolbar</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_TOOLBAR_FEATURE_COUNT = 1;
+    int DIAGRAM_TOOLBAR_FEATURE_COUNT = 2;
 
     /**
      * The number of operations of the '<em>Toolbar</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6393,6 +6402,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getDiagramToolbar_PreconditionExpression();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramToolbar#isDefaultExpanded <em>Default Expanded</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Default Expanded</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramToolbar#isDefaultExpanded()
+     * @see #getDiagramToolbar()
+     * @generated
+     */
+    EAttribute getDiagramToolbar_DefaultExpanded();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow
      * Style</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -8229,6 +8250,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION = eINSTANCE.getDiagramToolbar_PreconditionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Default Expanded</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DIAGRAM_TOOLBAR__DEFAULT_EXPANDED = eINSTANCE.getDiagramToolbar_DefaultExpanded();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow

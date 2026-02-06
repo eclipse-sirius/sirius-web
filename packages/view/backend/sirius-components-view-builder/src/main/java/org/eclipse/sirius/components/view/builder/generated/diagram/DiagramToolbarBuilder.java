@@ -52,5 +52,15 @@ public class DiagramToolbarBuilder {
         return this;
     }
 
+    /**
+     * Setter for DefaultExpanded.
+     *
+     * @generated
+     */
+    public DiagramToolbarBuilder defaultExpanded(java.lang.Boolean value) {
+        this.getDiagramToolbar().setDefaultExpanded(value);
+        return this;
+    }
+
 }
 

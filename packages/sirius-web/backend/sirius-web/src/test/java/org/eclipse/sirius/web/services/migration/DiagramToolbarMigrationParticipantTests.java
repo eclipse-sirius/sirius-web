@@ -58,6 +58,7 @@ public class DiagramToolbarMigrationParticipantTests extends AbstractIntegration
             optionalDiagramDescription.ifPresent(representationDescription -> {
                 if (representationDescription instanceof DiagramDescription diagramDescription) {
                     assertThat(diagramDescription.getToolbar()).isNotNull();
+                    assertThat(diagramDescription.getToolbar().isDefaultExpanded()).isTrue();
                 }
             });
         }

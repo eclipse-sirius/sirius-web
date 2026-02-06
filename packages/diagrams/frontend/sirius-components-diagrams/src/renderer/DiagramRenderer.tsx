@@ -479,7 +479,9 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         ) : (
           <Background style={{ backgroundColor }} color={backgroundColor} />
         )}
-        {diagramDescription.toolbar ? <DiagramToolbar reactFlowWrapper={ref} /> : null}
+        {diagramDescription.toolbar ? (
+          <DiagramToolbar reactFlowWrapper={ref} defaultExpanded={diagramDescription.toolbar.defaultExpanded} />
+        ) : null}
 
         {isOpened ? (
           <DiagramPalette

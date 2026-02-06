@@ -333,6 +333,7 @@
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//DiagramToolbar">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramToolbar/preconditionExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramToolbar/defaultExpanded"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
