@@ -8,7 +8,7 @@
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
   },
-  "diagramPanel": {
+  "diagramToolbar": {
     "exitFullScreen": "Quitter le mode plein écran",
     "exitSnapToGrid": "Quitter le mode alignement sur la grille",
     "fitToScreen": "Ajuster à l’écran",

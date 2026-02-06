@@ -421,6 +421,7 @@ type DiagramDescription implements RepresentationDescription {
   nodeDescriptions: [NodeDescription!]!
   childNodeDescriptionIds: [ID!]!
   edgeDescriptions: [EdgeDescription!]!
+  toolbar: DiagramToolbar
   palette(diagramElementIds: [ID!]): Palette!
   actions(diagramElementId: ID!): [Action!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
@@ -429,6 +430,10 @@ type DiagramDescription implements RepresentationDescription {
   initialDirectEditElementLabel(labelId: ID!): String!
   diagramImpactAnalysisReport(toolId: ID!, diagramElementId: ID!, variables: [ToolVariable!]!): ImpactAnalysisReport!
   debug: Boolean
+}
+
+type DiagramToolbar {
+  _: Boolean
 }
 
 enum ArrangeLayoutDirection {
