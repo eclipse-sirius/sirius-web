@@ -34,6 +34,7 @@ If you directly instantiate or extend those factories in downstream code or test
 - https://github.com/eclipse-sirius/sirius-web/issues/6146[#6146] [sirius-web] Add an option to search in libraries in the search view.
 `SearchQuery` now requires a new `searchInLibraries` parameter.
 The GraphQL schema has been updated to reflect this change.
+- https://github.com/eclipse-sirius/sirius-web/issues/6157[#6157] [diagram] On the frontend, `DiagramPanelActionProps` and `diagramPanelActionExtensionPoint` have been renamed to `DiagramToolbarActionProps` and `diagramToolbarActionExtensionPoint`.
 
 
 === Dependency update
@@ -54,7 +55,9 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/2503[#2503] Add a dedicated documentation field in the View model
   * In the View model, added a `description` attribute (documentation) on multiple model elements (diagram and view models: diagram element descriptions, node/edge style descriptions, tools, etc.).
 - https://github.com/eclipse-sirius/sirius-web/issues/6151[#6151] [diagram] Allow the resize of several elements during multi selection
+- https://github.com/eclipse-sirius/sirius-web/issues/6157[#6157] [diagram] Add a new API endpoint to enable or disable the diagram toolbar.
   
+
 
 === Improvements
 

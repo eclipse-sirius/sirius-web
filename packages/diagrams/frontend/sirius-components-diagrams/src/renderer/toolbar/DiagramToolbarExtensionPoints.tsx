@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,17 @@
  *******************************************************************************/
 
 import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { DiagramPanelActionProps } from './DiagramPanel.types';
+import { DiagramToolbarActionProps } from './DiagramToolbar.types';
 
 /**
- * Extension point for diagram panel actions.
+ * Extension point for diagram toolbar actions.
  *
- * This extension point allows the addition of custom actions to the diagram panel.
+ * This extension point allows the addition of custom actions to the diagram toolbar.
  * Each contribution can define how an action should be rendered or behave.
  *
  * @since v2024.7.0
  */
-export const diagramPanelActionExtensionPoint: ComponentExtensionPoint<DiagramPanelActionProps> = {
-  identifier: 'diagramPanel#action',
+export const diagramToolbarActionExtensionPoint: ComponentExtensionPoint<DiagramToolbarActionProps> = {
+  identifier: 'diagramToolbar#action',
   FallbackComponent: () => null,
 };

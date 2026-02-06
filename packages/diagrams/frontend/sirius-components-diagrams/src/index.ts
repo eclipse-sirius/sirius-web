@@ -91,10 +91,10 @@ export type {
   DiagramPaletteToolContributionProps,
 } from './renderer/palette/extensions/DiagramPaletteToolContribution.types';
 export { diagramPaletteToolExtensionPoint } from './renderer/palette/extensions/DiagramPaletteToolExtensionPoints';
-export type { DiagramPanelActionProps } from './renderer/panel/DiagramPanel.types';
-export { diagramPanelActionExtensionPoint } from './renderer/panel/DiagramPanelExtensionPoints';
-export type { IElementSVGExportHandler } from './renderer/panel/experimental-svg-export/SVGExportEngine.types';
-export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/panel/experimental-svg-export/SVGExportHandlerExtensionPoints';
+export type { DiagramToolbarActionProps } from './renderer/toolbar/DiagramToolbar.types';
+export { diagramToolbarActionExtensionPoint } from './renderer/toolbar/DiagramToolbarExtensionPoints';
+export type { IElementSVGExportHandler } from './renderer/toolbar/experimental-svg-export/SVGExportEngine.types';
+export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/toolbar/experimental-svg-export/SVGExportHandlerExtensionPoints';
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,19 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface DiagramPanelProps {
-  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
-}
-
-export interface DiagramPanelState {
-  dialogOpen: DiagramPanelDialog | null;
-  arrangeAllDone: boolean;
-  arrangeAllInProgress: boolean;
-}
-
-export type DiagramPanelDialog = 'Share';
-
-export interface DiagramPanelActionProps {
-  editingContextId: string;
-  diagramId: string;
+export interface UseExportToImage {
+  exportToSVG: (callback: (dataUrl: string) => void) => void;
+  exportToPNG: (callback: (dataUrl: string) => void) => void;
 }
