@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,20 +13,27 @@
 import {
   IconOverlay,
   Selection,
-  ServerContext,
-  ServerContextValue,
+  useData,
   useSelection,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
 import Skeleton from '@mui/material/Skeleton';
 import { SxProps, Theme, useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
@@ -37,25 +44,27 @@ import {
   ForwardedRef,
   forwardRef,
   RefObject,
-  useContext,
   useEffect,
   useImperativeHandle,
   useRef,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { List as FixedSizeList, RowComponentProps } from 'react-window';
 import { makeStyles } from 'tss-react/mui';
-import { useCurrentProject } from '../../useCurrentProject';
 import { SynchronizationButton } from '../SynchronizationButton';
 import {
-  ExportResultButtonProps,
   ExpressionAreaHandle,
   ExpressionAreaProps,
   ExpressionResultViewerProps,
   QueryViewConfiguration,
   QueryViewState,
   ResultAreaProps,
+  ResultSplitButtonProps,
+  ResultSplitButtonState,
 } from './QueryView.types';
+import { queryViewResultButtonExtensionPoint } from './QueryViewExtensionPoints';
+import { QueryResultButtonContribution } from './QueryViewExtensionPoints.types';
 import { useEvaluateExpression } from './useEvaluateExpression';
 import {
   GQLBooleanExpressionResult,
@@ -68,7 +77,6 @@ import {
 } from './useEvaluateExpression.types';
 import { useExpression } from './useExpression';
 import { useQueryViewHandle } from './useQueryViewHandle';
-import { useTranslation } from 'react-i18next';
 
 const useQueryViewStyles = makeStyles()((theme) => ({
   view: {
@@ -269,7 +277,7 @@ const ObjectExpressionResultViewer = ({ result }: ExpressionResultViewerProps) =
           </ListItem>
         </List>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <ExportResultButton objectIds={[objectValue.id]} />
+          <ResultSplitButton objectIds={[objectValue.id]} />
         </Box>
       </Box>
     </Box>
@@ -333,7 +341,7 @@ const ObjectsExpressionResultViewer = ({ result }: ExpressionResultViewerProps) 
           />
         </List>
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <ExportResultButton objectIds={objectsValue.map((objectValue) => objectValue.id)} />
+          <ResultSplitButton objectIds={objectsValue.map((objectValue) => objectValue.id)} />
         </Box>
       </Box>
     </Box>
@@ -535,23 +543,105 @@ const ResultArea = ({ loading, payload }: ResultAreaProps) => {
   );
 };
 
-const ExportResultButton = ({ objectIds }: ExportResultButtonProps) => {
-  const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const { project } = useCurrentProject();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'exportResultButton' });
+const ResultSplitButton = ({ objectIds }: ResultSplitButtonProps) => {
+  const { data: queryResultButtonContributions } = useData<QueryResultButtonContribution[]>(
+    queryViewResultButtonExtensionPoint
+  );
+
+  const [state, setState] = useState<ResultSplitButtonState>({
+    selected: false,
+    open: false,
+    selectedIndex: 0,
+    message: '',
+  });
+
+  const buttonGroupRef = useRef<HTMLDivElement>(null);
+  const widgetRef = useRef<HTMLDivElement>(null);
+
+  const handleMenuItemClick = (_event, index) => {
+    setState((prevState) => ({ ...prevState, open: false, selectedIndex: index }));
+  };
+
+  const handleToggle = () => {
+    setState((prevState) => ({ ...prevState, open: !prevState.open }));
+  };
+
+  const handleClose = (event) => {
+    event.preventDefault();
+    setState((prevState) => ({ ...prevState, open: false }));
+  };
+
+  if (queryResultButtonContributions.length === 0) {
+    return null;
+  }
+
+  const QueryResultButton = queryResultButtonContributions.at(state.selectedIndex).component;
+
   return (
-    <Button
-      data-testid="export-csv-button"
-      variant="contained"
-      color="primary"
-      component="a"
-      href={encodeURI(
-        `${httpOrigin}/api/editingcontexts/${
-          project.currentEditingContext.id
-        }/objects?contentType=text/csv&objectIds=${objectIds.join(',')}`
-      )}
-      type="application/octet-stream">
-      {t('exportAsCsv')}
-    </Button>
+    <div ref={widgetRef}>
+      <ButtonGroup
+        variant="contained"
+        color="primary"
+        ref={buttonGroupRef}
+        aria-label="split button"
+        onFocus={() =>
+          setState((prevState) => {
+            return {
+              ...prevState,
+              selected: true,
+            };
+          })
+        }
+        onBlur={() =>
+          setState((prevState) => {
+            return {
+              ...prevState,
+              selected: false,
+            };
+          })
+        }>
+        <QueryResultButton objectIds={objectIds} />
+        <Button
+          color="primary"
+          size="small"
+          aria-controls={state.open ? 'split-button-menu' : undefined}
+          aria-expanded={state.open ? 'true' : undefined}
+          aria-label="select button action"
+          aria-haspopup="menu"
+          role={'show-actions'}
+          onClick={handleToggle}>
+          <ArrowDropDownIcon />
+        </Button>
+      </ButtonGroup>
+      <Popper
+        open={state.open}
+        anchorEl={buttonGroupRef.current}
+        transition
+        placement="bottom"
+        style={{ zIndex: 1400 }}>
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+            }}>
+            <Paper>
+              <ClickAwayListener onClickAway={handleClose}>
+                <MenuList id="split-button-menu">
+                  {queryResultButtonContributions.map((action, index) => (
+                    <MenuItem
+                      key={index}
+                      selected={index === state.selectedIndex}
+                      onClick={(event) => handleMenuItemClick(event, index)}>
+                      {action.label}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </div>
   );
 };

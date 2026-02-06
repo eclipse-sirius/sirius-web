@@ -121,6 +121,12 @@ export {
   type GQLTreeRefreshedEventPayload,
   type UseExplorerSubscriptionValue,
 } from './views/edit-project/workbench-views/explorer/useExplorerSubscription.types';
+export { ExportAsCsvButton } from './views/edit-project/workbench-views/query/ExportAsCsvButton';
+export { queryViewResultButtonExtensionPoint } from './views/edit-project/workbench-views/query/QueryViewExtensionPoints';
+export {
+  type QueryResultButtonComponentProps,
+  type QueryResultButtonContribution,
+} from './views/edit-project/workbench-views/query/QueryViewExtensionPoints.types';
 export { useRelatedElementsViewSubscription } from './views/edit-project/workbench-views/related-elements/useRelatedElementsViewSubscription';
 export {
   type GQLFormRefreshedEventPayload,
