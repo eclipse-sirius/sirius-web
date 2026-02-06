@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@
 import {
   DiagramContext,
   DiagramContextValue,
-  DiagramPanelActionProps,
+  DiagramToolbarActionProps,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import IconButton from '@mui/material/IconButton';
@@ -24,7 +24,7 @@ import { useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiagramFilterForm } from './DiagramFilterForm';
 
-export const DiagramFilter = ({ editingContextId, diagramId }: DiagramPanelActionProps) => {
+export const DiagramFilter = ({ editingContextId, diagramId }: DiagramToolbarActionProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handlePanel = () => setIsOpen(() => true);

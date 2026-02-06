@@ -76,7 +76,7 @@ import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
-import { DiagramPanel } from './panel/DiagramPanel';
+import { DiagramToolbar } from './toolbar/DiagramToolbar';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
@@ -479,7 +479,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         ) : (
           <Background style={{ backgroundColor }} color={backgroundColor} />
         )}
-        <DiagramPanel reactFlowWrapper={ref} />
+        {diagramDescription.toolbar ? <DiagramToolbar reactFlowWrapper={ref} /> : null}
 
         {isOpened ? (
           <DiagramPalette

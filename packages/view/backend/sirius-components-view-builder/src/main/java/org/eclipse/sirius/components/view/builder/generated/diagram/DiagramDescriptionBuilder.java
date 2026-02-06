@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,6 +96,16 @@ public class DiagramDescriptionBuilder {
         this.getDiagramDescription().setAutoLayout(value);
         return this;
     }
+    /**
+     * Setter for Toolbar.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder toolbar(org.eclipse.sirius.components.view.diagram.DiagramToolbar value) {
+        this.getDiagramDescription().setToolbar(value);
+        return this;
+    }
+
     /**
      * Setter for Palette.
      *

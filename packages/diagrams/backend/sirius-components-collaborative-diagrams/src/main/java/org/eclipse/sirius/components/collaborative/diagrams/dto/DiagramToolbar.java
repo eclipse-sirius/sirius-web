@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface RevealSelectionInDiagramButtonProps {
-  editingContextId: string;
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
+
+/**
+ * The toolbar of a diagram.
+ *
+ * @author tgiraudet
+ */
+public record DiagramToolbar() {
 }

@@ -78,6 +78,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
+        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramBorderNodeDomainProvider.DOMAIN_NAME + " - simple border")
@@ -86,6 +87,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                 .autoLayout(false)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
+                .toolbar(toolbar)
                 .build();
     }
 

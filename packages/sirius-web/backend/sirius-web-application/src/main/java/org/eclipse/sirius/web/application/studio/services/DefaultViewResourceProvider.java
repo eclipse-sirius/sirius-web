@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.view.UserColor;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -91,6 +92,9 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         this.addEdgeTool(entity1Node, entity2Node);
 
         this.addEdgeDescription(entity1Node, entity2Node, defaultToolsFactory, viewDiagramDescription, view);
+
+        DiagramToolbar toolbar = DiagramFactory.eINSTANCE.createDiagramToolbar();
+        viewDiagramDescription.setToolbar(toolbar);
 
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());
         var resourceMetadataAdapter = new ResourceMetadataAdapter(VIEW_DOCUMENT_NAME);

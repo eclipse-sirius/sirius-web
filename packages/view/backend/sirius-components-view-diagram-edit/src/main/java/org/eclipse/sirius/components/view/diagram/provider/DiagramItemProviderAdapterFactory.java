@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -976,6 +976,30 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.DiagramToolbar} instances. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected DiagramToolbarItemProvider diagramToolbarItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramToolbar}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createDiagramToolbarAdapter() {
+        if (this.diagramToolbarItemProvider == null) {
+            this.diagramToolbarItemProvider = new DiagramToolbarItemProvider(this);
+        }
+
+        return this.diagramToolbarItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1178,6 +1202,8 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.selectionDialogTreeDescriptionItemProvider.dispose();
         if (this.actionItemProvider != null)
             this.actionItemProvider.dispose();
+        if (this.diagramToolbarItemProvider != null)
+            this.diagramToolbarItemProvider.dispose();
     }
 
     /**

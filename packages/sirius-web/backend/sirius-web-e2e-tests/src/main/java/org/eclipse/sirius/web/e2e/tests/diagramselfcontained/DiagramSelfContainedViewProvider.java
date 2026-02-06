@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,6 +74,8 @@ public class DiagramSelfContainedViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
+        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramSelfContainedDomainProvider.DOMAIN_NAME + " - self contained")
@@ -82,6 +84,7 @@ public class DiagramSelfContainedViewProvider implements IE2EViewProvider {
                 .autoLayout(false)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
+                .toolbar(toolbar)
                 .build();
     }
 

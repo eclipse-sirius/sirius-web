@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,7 @@ public class ComponentDiagramDescriptionProvider implements IRepresentationDescr
         componentDiagramDescription.setAutoLayout(false);
         componentDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.DOWN);
         componentDiagramDescription.setIconExpression("aql:'/papaya-representations/component-diagram.svg'");
+        componentDiagramDescription.setToolbar(new DiagramBuilders().newDiagramToolbar().build());
 
         var cache = new DefaultViewDiagramElementFinder();
 

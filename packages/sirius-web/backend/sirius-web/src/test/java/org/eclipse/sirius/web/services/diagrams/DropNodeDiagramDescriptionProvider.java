@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -144,6 +144,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 )
                 .build();
 
+        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
                 .name("Diagram")
                 .titleExpression("aql:'DropNodeDiagram'")
@@ -151,6 +152,7 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 .nodeDescriptions(componentNodeDescription)
                 .edgeDescriptions(edgeDescription)
                 .palette(diagramPalette)
+                .toolbar(toolbar)
                 .autoLayout(false)
                 .build();
 
