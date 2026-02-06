@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,5 +53,15 @@ public class ProjectSearchRepositoryImpl implements ProjectSearchRepository<Proj
     @Override
     public List<Project> findAllBefore(String cursorProjectId, int limit, Map<String, Object> filter) {
         return this.projectSearchRepositoryDelegate.findAllBefore(cursorProjectId, limit, filter);
+    }
+
+    @Override
+    public List<Project> findAllAfter(List<String> projectIds, String cursorProjectId, int limit, Map<String, Object> filter) {
+        return this.projectSearchRepositoryDelegate.findAllAfter(projectIds, cursorProjectId, limit, filter);
+    }
+
+    @Override
+    public List<Project> findAllBefore(List<String> projectIds, String cursorProjectId, int limit, Map<String, Object> filter) {
+        return this.projectSearchRepositoryDelegate.findAllBefore(projectIds, cursorProjectId, limit, filter);
     }
 }

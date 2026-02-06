@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,4 +36,8 @@ public interface ProjectSearchRepository<T, ID> {
     List<Project> findAllBefore(String cursorProjectId, int limit, Map<String, Object> filter);
 
     List<Project> findAllAfter(String cursorProjectId, int limit, Map<String, Object> filter);
+
+    List<Project> findAllBefore(List<String> projectIds, String cursorProjectId, int limit, Map<String, Object> filter);
+
+    List<Project> findAllAfter(List<String> projectIds, String cursorProjectId, int limit, Map<String, Object> filter);
 }

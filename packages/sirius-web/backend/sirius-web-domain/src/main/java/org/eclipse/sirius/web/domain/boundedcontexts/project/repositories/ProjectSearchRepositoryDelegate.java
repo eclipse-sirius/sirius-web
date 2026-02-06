@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,9 +38,12 @@ import org.springframework.stereotype.Service;
  * @author sbegaudeau
  */
 @Service
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ProjectSearchRepositoryDelegate implements IProjectSearchRepositoryDelegate {
 
     private static final String ID = "id";
+
+    private static final String PROJECT_IDS = "projectIds";
 
     private static final String CURSOR_PROJECT_ID = "cursorProjectId";
 
@@ -80,6 +83,65 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
                 SELECT row_number() over( ORDER BY p.created_on desc, p.name asc, p.id asc ), p.*
                 FROM project p
                 WHERE CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
+                ORDER BY p.created_on desc, p.name asc, p.id asc
+            ),
+            cursor_index as (
+                SELECT coalesce(
+                    (
+                        SELECT p.row_number
+                        FROM filtered_projects p
+                        WHERE p.id = :cursorProjectId
+                        LIMIT 1
+                    ),
+                    0
+                ) as row_number
+            )
+            SELECT p.*
+            FROM filtered_projects p, cursor_index c
+            WHERE
+            CASE WHEN :cursorProjectId <> '' THEN
+                p.row_number <= c.row_number + :limit AND p.row_number > c.row_number
+            ELSE
+                p.row_number <= :limit
+            END
+            """;
+
+    private static final String FIND_ALL_IN_LIST_BEFORE = """
+            WITH
+            filtered_projects as (
+                SELECT row_number() over( ORDER BY p.created_on desc, p.name asc, p.id asc ), p.*
+                FROM project p
+                WHERE CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
+                AND p.id IN (:projectIds)
+                ORDER BY p.created_on desc, p.name asc, p.id asc
+            ),
+            cursor_index as (
+                SELECT coalesce(
+                    (
+                        SELECT p.row_number
+                        FROM filtered_projects p
+                        WHERE p.id = :cursorProjectId
+                        LIMIT 1
+                    ),
+                    (
+                        SELECT max(p.row_number) + 1
+                        FROM filtered_projects p
+                    )
+                ) as row_number
+            )
+            SELECT p.id, p.name, p.created_on, p.last_modified_on
+            FROM filtered_projects p, cursor_index c
+            WHERE p.row_number >= greatest(0, c.row_number - :limit)
+            AND p.row_number < c.row_number
+            """;
+
+    private static final String FIND_ALL_IN_LIST_AFTER = """
+            WITH
+            filtered_projects as (
+                SELECT row_number() over( ORDER BY p.created_on desc, p.name asc, p.id asc ), p.*
+                FROM project p
+                WHERE CASE WHEN :name <> '' THEN LOWER(p.name) LIKE CONCAT('%', CONCAT(LOWER(:name), '%')) ELSE true END
+                AND p.id IN (:projectIds)
                 ORDER BY p.created_on desc, p.name asc, p.id asc
             ),
             cursor_index as (
@@ -150,6 +212,32 @@ public class ProjectSearchRepositoryDelegate implements IProjectSearchRepository
             parameters.put(LIMIT, limit);
             this.handleFilter(parameters, filter, "name", "contains");
             return this.getAllProjectsQuery(FIND_ALL_AFTER, parameters);
+        }
+        return List.of();
+    }
+
+    @Override
+    public List<Project> findAllBefore(List<String> projectIds, String cursorProjectId, int limit, Map<String, Object> filter) {
+        if (limit > 0) {
+            Map<String, Object>  parameters = new HashMap<>();
+            parameters.put(PROJECT_IDS, projectIds);
+            parameters.put(CURSOR_PROJECT_ID, cursorProjectId);
+            parameters.put(LIMIT, limit);
+            this.handleFilter(parameters, filter, "name", "contains");
+            return this.getAllProjectsQuery(FIND_ALL_IN_LIST_BEFORE, parameters);
+        }
+        return List.of();
+    }
+
+    @Override
+    public List<Project> findAllAfter(List<String> projectIds, String cursorProjectId, int limit, Map<String, Object> filter) {
+        if (limit > 0) {
+            Map<String, Object>  parameters = new HashMap<>();
+            parameters.put(PROJECT_IDS, projectIds);
+            parameters.put(CURSOR_PROJECT_ID, cursorProjectId);
+            parameters.put(LIMIT, limit);
+            this.handleFilter(parameters, filter, "name", "contains");
+            return this.getAllProjectsQuery(FIND_ALL_IN_LIST_AFTER, parameters);
         }
         return List.of();
     }
