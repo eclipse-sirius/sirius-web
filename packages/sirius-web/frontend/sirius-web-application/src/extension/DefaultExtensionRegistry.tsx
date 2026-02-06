@@ -33,7 +33,7 @@ import {
   RectangularNodeAppearanceSection,
   diagramDialogContributionExtensionPoint,
   diagramNodeActionOverrideContributionExtensionPoint,
-  diagramPanelActionExtensionPoint,
+  diagramToolbarActionExtensionPoint,
   paletteAppearanceSectionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
@@ -259,14 +259,14 @@ defaultExtensionRegistry.addComponent(navigationBarRightContributionExtensionPoi
 
 /*******************************************************************************
  *
- * Diagram panel
+ * Diagram toolbar
  *
- * Used to register new components in the diagram panel
+ * Used to register new components in the diagram toolbar
  *
  *******************************************************************************/
 
-defaultExtensionRegistry.addComponent(diagramPanelActionExtensionPoint, {
-  identifier: `siriusweb_${diagramPanelActionExtensionPoint.identifier}_filter`,
+defaultExtensionRegistry.addComponent(diagramToolbarActionExtensionPoint, {
+  identifier: `siriusweb_${diagramToolbarActionExtensionPoint.identifier}_filter`,
   Component: DiagramFilter,
 });
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,6 +74,10 @@ public class DiagramPaletteViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription getDiagramDescription(IColorProvider colorProvider) {
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .defaultExpanded(true)
+            .build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramPaletteDomainProvider.DOMAIN_NAME + " - palette")
@@ -82,6 +86,7 @@ public class DiagramPaletteViewProvider implements IE2EViewProvider {
                 .autoLayout(false)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
+                .toolbar(toolbar)
                 .palette(new DiagramBuilders().newDiagramPalette()
                         .toolSections(new DiagramBuilders().newDiagramToolSection()
                                         .name("DiagramToolSection")

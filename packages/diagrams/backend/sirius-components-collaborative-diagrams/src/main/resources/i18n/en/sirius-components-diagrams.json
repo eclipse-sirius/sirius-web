@@ -8,7 +8,7 @@
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
   },
-  "diagramPanel": {
+  "diagramToolbar": {
     "exitFullScreen": "Exit full screen mode",
     "exitSnapToGrid": "Exit snap to grid mode",
     "fitToScreen": "Fit to screen",
@@ -23,7 +23,9 @@
     "toggleSnapToGrid": "Toggle snap to grid mode",
     "unpinAll": "Unpin all elements",
     "zoomIn": "Zoom in",
-    "zoomOut": "Zoom out"
+    "zoomOut": "Zoom out",
+    "expand": "Expand toolbar",
+    "collapse": "Collapse toolbar"
   },
   "exportImageButton": {
     "exportDiagram": "Export the diagram as an image",

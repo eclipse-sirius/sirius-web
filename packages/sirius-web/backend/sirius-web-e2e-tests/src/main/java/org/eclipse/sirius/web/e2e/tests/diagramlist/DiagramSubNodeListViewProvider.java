@@ -76,6 +76,10 @@ public class DiagramSubNodeListViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .defaultExpanded(true)
+            .build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramListDomainProvider.DOMAIN_NAME + " - list with subnode")
@@ -84,6 +88,7 @@ public class DiagramSubNodeListViewProvider implements IE2EViewProvider {
                 .autoLayout(false)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
+                .toolbar(toolbar)
                 .build();
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -139,6 +139,10 @@ public class EdgePaletteDiagramDescriptionProvider implements IEditingContextPro
                 .style(edgeStyle)
                 .build();
 
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .defaultExpanded(true)
+            .build();
+
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
                 .name("Diagram")
                 .titleExpression("aql:'DomainDiagram'")
@@ -146,6 +150,7 @@ public class EdgePaletteDiagramDescriptionProvider implements IEditingContextPro
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions(edgeDescription)
                 .autoLayout(false)
+                .toolbar(toolbar)
                 .build();
 
         return this.diagramDescription;

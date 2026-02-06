@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -83,6 +83,10 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .defaultExpanded(true)
+            .build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - Fully display the inside label Diagram")
@@ -92,10 +96,15 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .palette(this.getDiagramPalette())
                 .nodeDescriptions(this.getNodeDescription(colorProvider, LabelOverflowStrategy.NONE))
+                .toolbar(toolbar)
                 .build();
     }
 
     private DiagramDescription wrapLabelWithoutChangingNodeWidthDiagramDescription(IColorProvider colorProvider) {
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .defaultExpanded(true)
+            .build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - Wrap the label without changing the node width")
@@ -105,10 +114,15 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .palette(this.getDiagramPalette())
                 .nodeDescriptions(this.getNodeDescription(colorProvider, LabelOverflowStrategy.WRAP))
+                .toolbar(toolbar)
                 .build();
     }
 
     private DiagramDescription labelIsTruncatedWithoutChangingNodeWidthDiagramDescription(IColorProvider colorProvider) {
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .defaultExpanded(true)
+            .build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramLabelDomainProvider.DOMAIN_NAME + " - The label is truncated without changing the node width")
@@ -118,6 +132,7 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .palette(this.getDiagramPalette())
                 .nodeDescriptions(this.getNodeDescription(colorProvider, LabelOverflowStrategy.ELLIPSIS))
+                .toolbar(toolbar)
                 .build();
     }
 

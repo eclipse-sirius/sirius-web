@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface RevealSelectionInDiagramButtonProps {
+export interface DiagramToolbarProps {
+  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
+  defaultExpanded: boolean;
+}
+
+export interface DiagramToolbarState {
+  dialogOpen: DiagramToolbarDialog | null;
+  arrangeAllDone: boolean;
+  arrangeAllInProgress: boolean;
+  expanded: boolean;
+}
+
+export type DiagramToolbarDialog = 'Share';
+
+export interface DiagramToolbarActionProps {
   editingContextId: string;
+  diagramId: string;
 }
