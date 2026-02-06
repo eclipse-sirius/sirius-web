@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -105,4 +105,55 @@ public class ProjectSearchService implements IProjectSearchService {
         return new Window<>(projects, index -> position, hasNext, hasPrevious);
     }
 
+    @Override
+    public Window<Project> findAll(List<String> projectIds, KeysetScrollPosition position, int limit, Map<String, Object> filter) {
+        Window<Project> window = new Window<>(List.of(), index -> position, false, false);
+        if (limit > 0) {
+            var cursorProjectKey = position.getKeys().get("id");
+            if (cursorProjectKey instanceof String cursorProjectId) {
+                if (this.existsById(cursorProjectId)) {
+                    if (position.scrollsForward()) {
+                        window = this.findAllForward(projectIds, position, cursorProjectId, limit, filter);
+                    } else if (position.scrollsBackward()) {
+                        window = this.findAllBackward(projectIds, position, cursorProjectId, limit, filter);
+                    }
+                }
+            } else {
+                var projects = this.projectRepository.findAllAfter(projectIds, null, limit + 1, filter);
+                boolean hasNext = projects.size() > limit;
+                boolean hasPrevious = false;
+                window = new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
+            }
+        }
+        return window;
+    }
+
+    private Window<Project> findAllForward(List<String> projectIds, KeysetScrollPosition position, String cursorId, int limit, Map<String, Object> filter) {
+        var projects = this.projectRepository.findAllAfter(projectIds, cursorId, limit + 1, filter);
+        boolean hasNext = projects.size() > limit;
+        boolean hasPrevious = false;
+
+        if (!projects.isEmpty()) {
+            var firstProjectId = projects.get(0).getId();
+            hasPrevious = !this.projectRepository.findAllBefore(projectIds, firstProjectId, 1, filter).isEmpty();
+        }
+
+        return new Window<>(projects.subList(0, Math.min(projects.size(), limit)), index -> position, hasNext, hasPrevious);
+    }
+
+    private Window<Project> findAllBackward(List<String> projectIds, KeysetScrollPosition position, String cursorId, int limit, Map<String, Object> filter) {
+        var projects = this.projectRepository.findAllBefore(projectIds, cursorId, limit + 1, filter);
+        boolean hasPrevious = projects.size() > limit;
+        boolean hasNext = false;
+
+        if (!projects.isEmpty()) {
+            var lastProjectId = projects.get(projects.size() - 1).getId();
+            hasNext = !this.projectRepository.findAllAfter(projectIds, lastProjectId, 1, filter).isEmpty();
+        }
+
+        if (hasPrevious) {
+            return new Window<>(projects.subList(projects.size() - limit, limit + 1), index -> position, hasNext, hasPrevious);
+        }
+        return new Window<>(projects, index -> position, hasNext, hasPrevious);
+    }
 }
