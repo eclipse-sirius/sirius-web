@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import {
 } from '@eclipse-sirius/sirius-components-core';
 import { diagramNodeActionOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-diagrams';
 import { omniboxCommandOverrideContributionExtensionPoint } from '@eclipse-sirius/sirius-components-omnibox';
+import { queryViewResultButtonExtensionPoint } from '@eclipse-sirius/sirius-web-application';
 
 export class SiriusWebExtensionRegistryMergeStrategy implements ExtensionRegistryMergeStrategy {
   public mergeComponentExtensions(
@@ -48,6 +49,11 @@ export class SiriusWebExtensionRegistryMergeStrategy implements ExtensionRegistr
       return {
         identifier: `siriusweb_${workbenchViewContributionExtensionPoint.identifier}`,
         data: [...existingValue.data, ...newValue.data],
+      };
+    } else if (identifier === queryViewResultButtonExtensionPoint.identifier) {
+      return {
+        identifier: `siriusweb_${queryViewResultButtonExtensionPoint.identifier}`,
+        data: [...existingValue.data, newValue.data],
       };
     }
     console.debug(

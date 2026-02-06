@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -119,6 +119,12 @@ export {
   type GQLTreeRefreshedEventPayload,
   type UseExplorerSubscriptionValue,
 } from './views/edit-project/workbench-views/explorer/useExplorerSubscription.types';
+export { ExportAsCsvButton } from './views/edit-project/workbench-views/query/ExportAsCsvButton';
+export { queryViewResultButtonExtensionPoint } from './views/edit-project/workbench-views/query/QueryViewExtensionPoints';
+export {
+  type QueryResultButtonComponentProps,
+  type QueryResultButtonContribution,
+} from './views/edit-project/workbench-views/query/QueryViewExtensionPoints.types';
 export { useRelatedElementsViewSubscription } from './views/edit-project/workbench-views/related-elements/useRelatedElementsViewSubscription';
 export {
   type GQLFormRefreshedEventPayload,
