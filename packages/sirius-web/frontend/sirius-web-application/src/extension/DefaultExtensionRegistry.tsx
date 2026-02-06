@@ -113,7 +113,10 @@ import { NewRepresentationTreeItemContextMenuContribution } from '../views/edit-
 import { NewRootObjectTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/new-root-object/NewRootObjectTreeItemContextMenuContribution';
 import { UpdateLibraryTreeItemContextMenuContribution } from '../views/edit-project/workbench-views/explorer/context-menu-contributions/update-library/UpdateLibraryTreeItemContextMenuContribution';
 import { ExplorerView } from '../views/edit-project/workbench-views/explorer/ExplorerView';
+import { ExportAsCsvButton } from '../views/edit-project/workbench-views/query/ExportAsCsvButton';
 import { QueryView } from '../views/edit-project/workbench-views/query/QueryView';
+import { queryViewResultButtonExtensionPoint } from '../views/edit-project/workbench-views/query/QueryViewExtensionPoints';
+import { QueryResultButtonContribution } from '../views/edit-project/workbench-views/query/QueryViewExtensionPoints.types';
 import { RelatedElementsView } from '../views/edit-project/workbench-views/related-elements/RelatedElementsView';
 import { RelatedViewsView } from '../views/edit-project/workbench-views/related-views/RelatedViewsView';
 import { SearchView } from '../views/edit-project/workbench-views/search/SearchView';
@@ -691,6 +694,25 @@ const diagramElementPaletteAppearanceSectionContribution: PaletteAppearanceSecti
 defaultExtensionRegistry.putData<PaletteAppearanceSectionContributionProps[]>(paletteAppearanceSectionExtensionPoint, {
   identifier: `siriusweb_${paletteAppearanceSectionExtensionPoint.identifier}`,
   data: diagramElementPaletteAppearanceSectionContribution,
+});
+
+/*******************************************************************************
+ *
+ * Query result button contributions
+ *
+ * Used to provide query result buttons
+ *
+ *******************************************************************************/
+const queryResultButtonContributions: QueryResultButtonContribution[] = [
+  {
+    label: 'Export as CSV',
+    component: ExportAsCsvButton,
+  },
+];
+
+defaultExtensionRegistry.putData<QueryResultButtonContribution[]>(queryViewResultButtonExtensionPoint, {
+  identifier: `siriusweb_${queryViewResultButtonExtensionPoint.identifier}`,
+  data: queryResultButtonContributions,
 });
 
 export { defaultExtensionRegistry };
