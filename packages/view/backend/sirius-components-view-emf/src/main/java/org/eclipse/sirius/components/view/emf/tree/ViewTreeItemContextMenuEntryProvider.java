@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.function.Function;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.components.collaborative.trees.dto.ITreeItemContextMenuEntry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -33,6 +34,7 @@ import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.ViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.api.IViewAQLInterpreterFactory;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.IKeyBindingFactory;
 import org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry;
@@ -53,12 +55,15 @@ public class ViewTreeItemContextMenuEntryProvider implements ITreeItemContextMen
 
     private final IViewAQLInterpreterFactory aqlInterpreterFactory;
 
+    private final IKeyBindingFactory keyBindingFactory;
+
     private final Function<EObject, UUID> idProvider = (eObject) -> UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
 
-    public ViewTreeItemContextMenuEntryProvider(ViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IViewAQLInterpreterFactory aqlInterpreterFactory) {
+    public ViewTreeItemContextMenuEntryProvider(ViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IViewAQLInterpreterFactory aqlInterpreterFactory, IKeyBindingFactory keyBindingFactory) {
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
         this.aqlInterpreterFactory = Objects.requireNonNull(aqlInterpreterFactory);
+        this.keyBindingFactory = Objects.requireNonNull(keyBindingFactory);
     }
 
     @Override
@@ -96,17 +101,20 @@ public class ViewTreeItemContextMenuEntryProvider implements ITreeItemContextMen
     private ITreeItemContextMenuEntry convertContextAction(TreeItemContextMenuEntry viewTreeItemContextAction, VariableManager variableManager, AQLInterpreter interpreter) {
         ITreeItemContextMenuEntry result = null;
         var id = this.idProvider.apply(viewTreeItemContextAction).toString();
+        List<KeyBinding> keyBindings = viewTreeItemContextAction.getKeyBindings().stream()
+                .map(this.keyBindingFactory::createKeyBinding)
+                .toList();
         if (viewTreeItemContextAction instanceof SingleClickTreeItemContextMenuEntry singleClickTreeItemContextMenuEntry) {
             var label = this.evaluateString(variableManager, interpreter, singleClickTreeItemContextMenuEntry.getLabelExpression());
             var iconURL = this.evaluateStringList(variableManager, interpreter, singleClickTreeItemContextMenuEntry.getIconURLExpression());
-            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(id, label, iconURL, singleClickTreeItemContextMenuEntry.isWithImpactAnalysis());
+            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(id, label, iconURL, singleClickTreeItemContextMenuEntry.isWithImpactAnalysis(), keyBindings);
         } else if (viewTreeItemContextAction instanceof FetchTreeItemContextMenuEntry fetchTreeItemContextMenuEntry) {
             var label = this.evaluateString(variableManager, interpreter, fetchTreeItemContextMenuEntry.getLabelExpression());
             var iconURL = this.evaluateStringList(variableManager, interpreter, fetchTreeItemContextMenuEntry.getIconURLExpression());
-            result = new org.eclipse.sirius.components.collaborative.trees.dto.FetchTreeItemContextMenuEntry(id, label, iconURL);
+            result = new org.eclipse.sirius.components.collaborative.trees.dto.FetchTreeItemContextMenuEntry(id, label, iconURL, keyBindings);
         } else if (viewTreeItemContextAction instanceof CustomTreeItemContextMenuEntry customTreeItemContextMenuEntry) {
             // Use a SingleClickTreeItemContextMenuEntry instance with a dedicated ID to pass the information to the frontend.
-            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(customTreeItemContextMenuEntry.getContributionId(), "", List.of(), customTreeItemContextMenuEntry.isWithImpactAnalysis());
+            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(customTreeItemContextMenuEntry.getContributionId(), "", List.of(), customTreeItemContextMenuEntry.isWithImpactAnalysis(), keyBindings);
         }
         return result;
     }

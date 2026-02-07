@@ -17,6 +17,8 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] The service `IProjectApplicationService` has been deleted and replaced with `IProjectSearchApplicationService`, `IProjectCreationApplicationService`, `IProjectUpdateApplicationService`, `IProjectDeletionApplicationService`.
+- https://github.com/eclipse-sirius/sirius-web/issues/1626[#1626] [diagram] Add the ability to trigger tools using key bindings.
+The `SingleClickOnDiagramElementTool` builder now requires a list of key bindings.
 
 
 === Dependency update
@@ -33,6 +35,15 @@ The resize is still constrained by its inside label
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/1626[#1626] [diagram] Add the ability to trigger tools using key bindings
+It is now possible to add `KeyBinding` instances to node tools in a diagram (see `NoteToolBuilder#keyBindings`), and specify the keys to press to trigger the tool.
+The key bindings that can be triggered at a given time are computed from the palette of the selected diagram elements.
+For example, the tools contained in a given `NodeDescription` can only be triggered via key bindings if the selected diagram element is a node with the given `NodeDescription`.
+The key bindings are visible in the tooltip of the tools in the palette.
+A key binding needs to contain at least one of `Control`, `Alt`, or `Meta` to be executed by the frontend.
+- https://github.com/eclipse-sirius/sirius-web/issues/5982[#5982] [tree] Add the ability to trigger context menu entries using key bindings.
+As for diagram tools, it is now possible to add `KeyBinding` instances to context menu entries in trees.
+Note that for the moment, only entries that aren't overridden in the frontend can be triggered with key bindings, although it is possible to define key bindings for any entry.
 
 
 === Improvements
