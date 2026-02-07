@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,10 +40,10 @@ public interface CellDescription extends EObject {
      * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Name</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.Identifier"
-     * @generated
      * @see #setName(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_Name()
+     * @model dataType="org.eclipse.sirius.components.view.Identifier"
+     * @generated
      */
     String getName();
 
@@ -52,9 +52,9 @@ public interface CellDescription extends EObject {
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Name</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Name</em>' attribute.
      * @see #getName()
+     * @generated
      */
     void setName(String value);
 
@@ -63,10 +63,10 @@ public interface CellDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Precondition Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setPreconditionExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_PreconditionExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getPreconditionExpression();
 
@@ -75,9 +75,9 @@ public interface CellDescription extends EObject {
      * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Precondition Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Precondition Expression</em>' attribute.
      * @see #getPreconditionExpression()
+     * @generated
      */
     void setPreconditionExpression(String value);
 
@@ -86,10 +86,10 @@ public interface CellDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Selected Target Object Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setSelectedTargetObjectExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_SelectedTargetObjectExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getSelectedTargetObjectExpression();
 
@@ -99,9 +99,9 @@ public interface CellDescription extends EObject {
      * Target Object Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Selected Target Object Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Selected Target Object Expression</em>' attribute.
      * @see #getSelectedTargetObjectExpression()
+     * @generated
      */
     void setSelectedTargetObjectExpression(String value);
 
@@ -122,9 +122,9 @@ public interface CellDescription extends EObject {
      * <em>Value Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Value Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Value Expression</em>' attribute.
      * @see #getValueExpression()
+     * @generated
      */
     void setValueExpression(String value);
 
@@ -133,10 +133,10 @@ public interface CellDescription extends EObject {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Tooltip Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setTooltipExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_TooltipExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getTooltipExpression();
 
@@ -145,9 +145,9 @@ public interface CellDescription extends EObject {
      * <em>Tooltip Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Tooltip Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Tooltip Expression</em>' attribute.
      * @see #getTooltipExpression()
+     * @generated
      */
     void setTooltipExpression(String value);
 
@@ -156,10 +156,10 @@ public interface CellDescription extends EObject {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>Cell Widget Description</em>' containment reference.
-     * @model containment="true"
-     * @generated
      * @see #setCellWidgetDescription(CellWidgetDescription)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getCellDescription_CellWidgetDescription()
+     * @model containment="true"
+     * @generated
      */
     CellWidgetDescription getCellWidgetDescription();
 
@@ -168,9 +168,9 @@ public interface CellDescription extends EObject {
      * <em>Cell Widget Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Cell Widget Description</em>' containment reference.
-     * @generated
+     *            the new value of the '<em>Cell Widget Description</em>' containment reference.
      * @see #getCellWidgetDescription()
+     * @generated
      */
     void setCellWidgetDescription(CellWidgetDescription value);
 

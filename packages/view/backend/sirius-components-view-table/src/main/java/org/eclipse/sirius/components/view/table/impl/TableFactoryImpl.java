@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,10 +82,10 @@ public class TableFactoryImpl extends EFactoryImpl implements TableFactory {
                 return this.createCellTextfieldWidgetDescription();
             case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION:
                 return this.createCellLabelWidgetDescription();
-            case TablePackage.CELL_TEXTAREA_WIDGET_DESCRIPTION:
-                return this.createCellTextareaWidgetDescription();
             case TablePackage.ROW_CONTEXT_MENU_ENTRY:
                 return this.createRowContextMenuEntry();
+            case TablePackage.CELL_TEXTAREA_WIDGET_DESCRIPTION:
+                return this.createCellTextareaWidgetDescription();
             case TablePackage.ROW_FILTER_DESCRIPTION:
                 return this.createRowFilterDescription();
             default:

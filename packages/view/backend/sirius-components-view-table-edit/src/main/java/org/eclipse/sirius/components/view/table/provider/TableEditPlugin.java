@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,7 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.sirius.components.view.provider.ViewEditPlugin;
 
 /**
- * This is the central singleton for the Table edit plugin. <!-- begin-user-doc
- * --> <!-- end-user-doc -->
+ * This is the central singleton for the Table edit plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
@@ -48,12 +47,11 @@ public final class TableEditPlugin extends EMFPlugin {
      * @generated
      */
     public TableEditPlugin() {
-        super(new ResourceLocator[] {ViewEditPlugin.INSTANCE,});
+        super(new ResourceLocator[] { ViewEditPlugin.INSTANCE, });
     }
 
     /**
-     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the singleton instance.
      * @generated
@@ -64,8 +62,7 @@ public final class TableEditPlugin extends EMFPlugin {
     }
 
     /**
-     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the singleton instance.
      * @generated
@@ -83,24 +80,19 @@ public final class TableEditPlugin extends EMFPlugin {
     }
 
     /**
-     * Computes the file extension to be used with the key to specify an image
-     * resource.
+     * Computes the file extension to be used with the key to specify an image resource.
      *
      * @param key
-     *         the key for the imagine.
-     * @return the file extension to be used with the key to specify an image
-     * resource.
+     *            the key for the imagine.
+     * @return the file extension to be used with the key to specify an image resource.
      */
     protected static String extensionFor(String key) {
         String result = ".gif";
         int index = key.lastIndexOf('.');
         if (index != -1) {
             String extension = key.substring(index + 1);
-            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension)
-                    || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension)
-                    || "jpg".equalsIgnoreCase(extension) || "jpeg".equalsIgnoreCase(extension)
-                    || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension)
-                    || "svg".equalsIgnoreCase(extension)) {
+            if ("png".equalsIgnoreCase(extension) || "gif".equalsIgnoreCase(extension) || "bmp".equalsIgnoreCase(extension) || "ico".equalsIgnoreCase(extension) || "jpg".equalsIgnoreCase(extension)
+                    || "jpeg".equalsIgnoreCase(extension) || "tif".equalsIgnoreCase(extension) || "tiff".equalsIgnoreCase(extension) || "svg".equalsIgnoreCase(extension)) {
                 result = "";
             }
         }
@@ -108,8 +100,7 @@ public final class TableEditPlugin extends EMFPlugin {
     }
 
     /**
-     * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

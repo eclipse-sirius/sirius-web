@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -84,7 +84,8 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
      */
     protected void addRowDescriptionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TableDescription_rowDescription_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_rowDescription_feature", "_UI_TableDescription_type"),
+                this.getString("_UI_TableDescription_rowDescription_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_rowDescription_feature", "_UI_TableDescription_type"),
                 TablePackage.Literals.TABLE_DESCRIPTION__ROW_DESCRIPTION, true, false, true, null, null, null));
     }
 
@@ -95,7 +96,8 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
      */
     protected void addEnableSubRowsPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TableDescription_enableSubRows_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_enableSubRows_feature", "_UI_TableDescription_type"),
+                this.getString("_UI_TableDescription_enableSubRows_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_TableDescription_enableSubRows_feature", "_UI_TableDescription_type"),
                 TablePackage.Literals.TABLE_DESCRIPTION__ENABLE_SUB_ROWS, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 

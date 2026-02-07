@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,10 +46,10 @@ public interface ColumnDescription extends EObject {
      * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Name</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.Identifier"
-     * @generated
      * @see #setName(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_Name()
+     * @model dataType="org.eclipse.sirius.components.view.Identifier"
+     * @generated
      */
     String getName();
 
@@ -58,9 +58,9 @@ public interface ColumnDescription extends EObject {
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Name</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Name</em>' attribute.
      * @see #getName()
+     * @generated
      */
     void setName(String value);
 
@@ -81,9 +81,9 @@ public interface ColumnDescription extends EObject {
      * Type</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Domain Type</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Domain Type</em>' attribute.
      * @see #getDomainType()
+     * @generated
      */
     void setDomainType(String value);
 
@@ -92,10 +92,10 @@ public interface ColumnDescription extends EObject {
      * end-user-doc -->
      *
      * @return the value of the '<em>Semantic Candidates Expression</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setSemanticCandidatesExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_SemanticCandidatesExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getSemanticCandidatesExpression();
 
@@ -105,9 +105,9 @@ public interface ColumnDescription extends EObject {
      * Candidates Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Semantic Candidates Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Semantic Candidates Expression</em>' attribute.
      * @see #getSemanticCandidatesExpression()
+     * @generated
      */
     void setSemanticCandidatesExpression(String value);
 
@@ -116,10 +116,10 @@ public interface ColumnDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Precondition Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setPreconditionExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_PreconditionExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getPreconditionExpression();
 
@@ -129,9 +129,9 @@ public interface ColumnDescription extends EObject {
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Precondition Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Precondition Expression</em>' attribute.
      * @see #getPreconditionExpression()
+     * @generated
      */
     void setPreconditionExpression(String value);
 
@@ -140,10 +140,10 @@ public interface ColumnDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Header Index Label Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setHeaderIndexLabelExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_HeaderIndexLabelExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getHeaderIndexLabelExpression();
 
@@ -153,9 +153,9 @@ public interface ColumnDescription extends EObject {
      * Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Header Index Label Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Header Index Label Expression</em>' attribute.
      * @see #getHeaderIndexLabelExpression()
+     * @generated
      */
     void setHeaderIndexLabelExpression(String value);
 
@@ -164,10 +164,10 @@ public interface ColumnDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Header Label Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setHeaderLabelExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_HeaderLabelExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getHeaderLabelExpression();
 
@@ -176,9 +176,9 @@ public interface ColumnDescription extends EObject {
      * <em>Header Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Header Label Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Header Label Expression</em>' attribute.
      * @see #getHeaderLabelExpression()
+     * @generated
      */
     void setHeaderLabelExpression(String value);
 
@@ -187,10 +187,10 @@ public interface ColumnDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Header Icon Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setHeaderIconExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_HeaderIconExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getHeaderIconExpression();
 
@@ -199,9 +199,9 @@ public interface ColumnDescription extends EObject {
      * <em>Header Icon Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Header Icon Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Header Icon Expression</em>' attribute.
      * @see #getHeaderIconExpression()
+     * @generated
      */
     void setHeaderIconExpression(String value);
 
@@ -210,10 +210,10 @@ public interface ColumnDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Initial Width Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setInitialWidthExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_InitialWidthExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getInitialWidthExpression();
 
@@ -223,9 +223,9 @@ public interface ColumnDescription extends EObject {
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Initial Width Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Initial Width Expression</em>' attribute.
      * @see #getInitialWidthExpression()
+     * @generated
      */
     void setInitialWidthExpression(String value);
 
@@ -234,10 +234,10 @@ public interface ColumnDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Is Resizable Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIsResizableExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_IsResizableExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIsResizableExpression();
 
@@ -246,9 +246,9 @@ public interface ColumnDescription extends EObject {
      * <em>Is Resizable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Is Resizable Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Is Resizable Expression</em>' attribute.
      * @see #getIsResizableExpression()
+     * @generated
      */
     void setIsResizableExpression(String value);
 
@@ -257,10 +257,10 @@ public interface ColumnDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Filter Widget Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setFilterWidgetExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_FilterWidgetExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getFilterWidgetExpression();
 
@@ -270,9 +270,9 @@ public interface ColumnDescription extends EObject {
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Filter Widget Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Filter Widget Expression</em>' attribute.
      * @see #getFilterWidgetExpression()
+     * @generated
      */
     void setFilterWidgetExpression(String value);
 
@@ -281,10 +281,10 @@ public interface ColumnDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Is Sortable Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setIsSortableExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getColumnDescription_IsSortableExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getIsSortableExpression();
 
@@ -293,9 +293,9 @@ public interface ColumnDescription extends EObject {
      * <em>Is Sortable Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Is Sortable Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Is Sortable Expression</em>' attribute.
      * @see #getIsSortableExpression()
+     * @generated
      */
     void setIsSortableExpression(String value);
 
