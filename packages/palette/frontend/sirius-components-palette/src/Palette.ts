@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,3 +28,24 @@ export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSect
   entry.__typename === 'PaletteDivider';
 
 export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
+
+export const getToolTooltip = (tool: GQLTool) => {
+  let tooltip: string = tool.label;
+  if (isSingleClickOnDiagramElementTool(tool) && tool.keyBindings.length > 0) {
+    tooltip =
+      tooltip +
+      ' (' +
+      tool.keyBindings
+        .map((keyBinding) => {
+          return (
+            (keyBinding.isCtrl ? 'CTRL + ' : '') +
+            (keyBinding.isMeta ? 'META + ' : '') +
+            (keyBinding.isAlt ? 'ALT + ' : '') +
+            keyBinding.key
+          );
+        })
+        .join(', ') +
+      ')';
+  }
+  return tooltip;
+};
