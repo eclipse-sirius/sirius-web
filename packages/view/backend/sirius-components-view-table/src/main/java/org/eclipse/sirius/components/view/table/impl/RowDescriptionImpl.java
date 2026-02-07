@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@
 package org.eclipse.sirius.components.view.table.impl;
 
 import java.util.Collection;
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -54,78 +53,7 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @see #getName()
      */
     protected static final String NAME_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getSemanticCandidatesExpression()
-     */
-    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getHeaderLabelExpression() <em>Header Label Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getHeaderLabelExpression()
-     */
-    protected static final String HEADER_LABEL_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getHeaderIconExpression() <em>Header Icon Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getHeaderIconExpression()
-     */
-    protected static final String HEADER_ICON_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getHeaderIndexLabelExpression()
-     */
-    protected static final String HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getInitialHeightExpression() <em>Initial Height Expression</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getInitialHeightExpression()
-     */
-    protected static final String INITIAL_HEIGHT_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getIsResizableExpression() <em>Is Resizable Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getIsResizableExpression()
-     */
-    protected static final String IS_RESIZABLE_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getDepthLevelExpression() <em>Depth Level Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getDepthLevelExpression()
-     */
-    protected static final String DEPTH_LEVEL_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getHasChildrenExpression() <em>Has Children Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getHasChildrenExpression()
-     */
-    protected static final String HAS_CHILDREN_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -135,15 +63,37 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @see #getName()
      */
     protected String name = NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getSemanticCandidatesExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSemanticCandidatesExpression()
      * @generated
      * @ordered
-     * @see #getSemanticCandidatesExpression()
      */
     protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHeaderLabelExpression() <em>Header Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getHeaderLabelExpression()
+     */
+    protected static final String HEADER_LABEL_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getHeaderLabelExpression() <em>Header Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -153,6 +103,17 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @see #getHeaderLabelExpression()
      */
     protected String headerLabelExpression = HEADER_LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHeaderIconExpression() <em>Header Icon Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getHeaderIconExpression()
+     */
+    protected static final String HEADER_ICON_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getHeaderIconExpression() <em>Header Icon Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -162,24 +123,57 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @see #getHeaderIconExpression()
      */
     protected String headerIconExpression = HEADER_ICON_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getHeaderIndexLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getHeaderIndexLabelExpression()
      * @generated
      * @ordered
-     * @see #getHeaderIndexLabelExpression()
      */
     protected String headerIndexLabelExpression = HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getInitialHeightExpression() <em>Initial Height Expression</em>}' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getInitialHeightExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String INITIAL_HEIGHT_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getInitialHeightExpression() <em>Initial Height Expression</em>}' attribute.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getInitialHeightExpression()
      * @generated
      * @ordered
-     * @see #getInitialHeightExpression()
      */
     protected String initialHeightExpression = INITIAL_HEIGHT_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getIsResizableExpression() <em>Is Resizable Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsResizableExpression()
+     */
+    protected static final String IS_RESIZABLE_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getIsResizableExpression() <em>Is Resizable Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -189,15 +183,27 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @see #getIsResizableExpression()
      */
     protected String isResizableExpression = IS_RESIZABLE_EXPRESSION_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getContextMenuEntries() <em>Context Menu Entries</em>}' containment reference
      * list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getContextMenuEntries()
      * @generated
      * @ordered
-     * @see #getContextMenuEntries()
      */
     protected EList<RowContextMenuEntry> contextMenuEntries;
+
+    /**
+     * The default value of the '{@link #getDepthLevelExpression() <em>Depth Level Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getDepthLevelExpression()
+     */
+    protected static final String DEPTH_LEVEL_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getDepthLevelExpression() <em>Depth Level Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -207,6 +213,17 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
      * @see #getDepthLevelExpression()
      */
     protected String depthLevelExpression = DEPTH_LEVEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHasChildrenExpression() <em>Has Children Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getHasChildrenExpression()
+     */
+    protected static final String HAS_CHILDREN_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getHasChildrenExpression() <em>Has Children Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -598,7 +615,7 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TablePackage.ROW_DESCRIPTION__NAME:
-                return !Objects.equals(NAME_EDEFAULT, this.name);
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case TablePackage.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
                 return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
             case TablePackage.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION:
@@ -606,7 +623,7 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
             case TablePackage.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION:
                 return HEADER_ICON_EXPRESSION_EDEFAULT == null ? this.headerIconExpression != null : !HEADER_ICON_EXPRESSION_EDEFAULT.equals(this.headerIconExpression);
             case TablePackage.ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
-                return !Objects.equals(HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT, this.headerIndexLabelExpression);
+                return HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT == null ? this.headerIndexLabelExpression != null : !HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT.equals(this.headerIndexLabelExpression);
             case TablePackage.ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION:
                 return INITIAL_HEIGHT_EXPRESSION_EDEFAULT == null ? this.initialHeightExpression != null : !INITIAL_HEIGHT_EXPRESSION_EDEFAULT.equals(this.initialHeightExpression);
             case TablePackage.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
@@ -614,9 +631,9 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
             case TablePackage.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES:
                 return this.contextMenuEntries != null && !this.contextMenuEntries.isEmpty();
             case TablePackage.ROW_DESCRIPTION__DEPTH_LEVEL_EXPRESSION:
-                return !Objects.equals(DEPTH_LEVEL_EXPRESSION_EDEFAULT, this.depthLevelExpression);
+                return DEPTH_LEVEL_EXPRESSION_EDEFAULT == null ? this.depthLevelExpression != null : !DEPTH_LEVEL_EXPRESSION_EDEFAULT.equals(this.depthLevelExpression);
             case TablePackage.ROW_DESCRIPTION__HAS_CHILDREN_EXPRESSION:
-                return !Objects.equals(HAS_CHILDREN_EXPRESSION_EDEFAULT, this.hasChildrenExpression);
+                return HAS_CHILDREN_EXPRESSION_EDEFAULT == null ? this.hasChildrenExpression != null : !HAS_CHILDREN_EXPRESSION_EDEFAULT.equals(this.hasChildrenExpression);
         }
         return super.eIsSet(featureID);
     }
@@ -631,26 +648,27 @@ public class RowDescriptionImpl extends MinimalEObjectImpl.Container implements 
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (name: " +
-                this.name +
-                ", semanticCandidatesExpression: " +
-                this.semanticCandidatesExpression +
-                ", headerLabelExpression: " +
-                this.headerLabelExpression +
-                ", headerIconExpression: " +
-                this.headerIconExpression +
-                ", headerIndexLabelExpression: " +
-                this.headerIndexLabelExpression +
-                ", initialHeightExpression: " +
-                this.initialHeightExpression +
-                ", isResizableExpression: " +
-                this.isResizableExpression +
-                ", depthLevelExpression: " +
-                this.depthLevelExpression +
-                ", hasChildrenExpression: " +
-                this.hasChildrenExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (name: ");
+        result.append(this.name);
+        result.append(", semanticCandidatesExpression: ");
+        result.append(this.semanticCandidatesExpression);
+        result.append(", headerLabelExpression: ");
+        result.append(this.headerLabelExpression);
+        result.append(", headerIconExpression: ");
+        result.append(this.headerIconExpression);
+        result.append(", headerIndexLabelExpression: ");
+        result.append(this.headerIndexLabelExpression);
+        result.append(", initialHeightExpression: ");
+        result.append(this.initialHeightExpression);
+        result.append(", isResizableExpression: ");
+        result.append(this.isResizableExpression);
+        result.append(", depthLevelExpression: ");
+        result.append(this.depthLevelExpression);
+        result.append(", hasChildrenExpression: ");
+        result.append(this.hasChildrenExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // RowDescriptionImpl

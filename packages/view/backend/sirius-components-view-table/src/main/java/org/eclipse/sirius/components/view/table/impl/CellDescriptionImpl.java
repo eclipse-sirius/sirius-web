@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table.impl;
-
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -52,42 +50,7 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @see #getName()
      */
     protected static final String NAME_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getPreconditionExpression()
-     */
-    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getSelectedTargetObjectExpression() <em>Selected Target Object
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getSelectedTargetObjectExpression()
-     */
-    protected static final String SELECTED_TARGET_OBJECT_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getValueExpression()
-     */
-    protected static final String VALUE_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getTooltipExpression() <em>Tooltip Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getTooltipExpression()
-     */
-    protected static final String TOOLTIP_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -97,6 +60,17 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @see #getName()
      */
     protected String name = NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPreconditionExpression()
+     */
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -106,24 +80,57 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
      * @see #getPreconditionExpression()
      */
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getSelectedTargetObjectExpression() <em>Selected Target Object
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getSelectedTargetObjectExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String SELECTED_TARGET_OBJECT_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getSelectedTargetObjectExpression() <em>Selected Target Object Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSelectedTargetObjectExpression()
      * @generated
      * @ordered
-     * @see #getSelectedTargetObjectExpression()
      */
     protected String selectedTargetObjectExpression = SELECTED_TARGET_OBJECT_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getValueExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String VALUE_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getValueExpression()
      * @generated
      * @ordered
-     * @see #getValueExpression()
      */
     protected String valueExpression = VALUE_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getTooltipExpression() <em>Tooltip Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getTooltipExpression()
+     */
+    protected static final String TOOLTIP_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getTooltipExpression() <em>Tooltip Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -138,9 +145,9 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
      * The cached value of the '{@link #getCellWidgetDescription() <em>Cell Widget Description</em>}' containment
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getCellWidgetDescription()
      * @generated
      * @ordered
-     * @see #getCellWidgetDescription()
      */
     protected CellWidgetDescription cellWidgetDescription;
 
@@ -419,7 +426,7 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
                 this.setTooltipExpression(TOOLTIP_EXPRESSION_EDEFAULT);
                 return;
             case TablePackage.CELL_DESCRIPTION__CELL_WIDGET_DESCRIPTION:
-                this.setCellWidgetDescription(null);
+                this.setCellWidgetDescription((CellWidgetDescription) null);
                 return;
         }
         super.eUnset(featureID);
@@ -434,7 +441,7 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TablePackage.CELL_DESCRIPTION__NAME:
-                return !Objects.equals(NAME_EDEFAULT, this.name);
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case TablePackage.CELL_DESCRIPTION__PRECONDITION_EXPRESSION:
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case TablePackage.CELL_DESCRIPTION__SELECTED_TARGET_OBJECT_EXPRESSION:
@@ -460,18 +467,19 @@ public class CellDescriptionImpl extends MinimalEObjectImpl.Container implements
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (name: " +
-                this.name +
-                ", preconditionExpression: " +
-                this.preconditionExpression +
-                ", selectedTargetObjectExpression: " +
-                this.selectedTargetObjectExpression +
-                ", valueExpression: " +
-                this.valueExpression +
-                ", tooltipExpression: " +
-                this.tooltipExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (name: ");
+        result.append(this.name);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
+        result.append(", selectedTargetObjectExpression: ");
+        result.append(this.selectedTargetObjectExpression);
+        result.append(", valueExpression: ");
+        result.append(this.valueExpression);
+        result.append(", tooltipExpression: ");
+        result.append(this.tooltipExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // CellDescriptionImpl

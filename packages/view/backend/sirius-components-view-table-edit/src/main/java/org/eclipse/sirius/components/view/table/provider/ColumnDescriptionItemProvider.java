@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -93,8 +93,9 @@ public class ColumnDescriptionItemProvider extends ItemProviderAdapter
      */
     protected void addDomainTypePropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_ColumnDescription_domainType_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_ColumnDescription_domainType_feature", "_UI_ColumnDescription_type"),
-                TablePackage.Literals.COLUMN_DESCRIPTION__DOMAIN_TYPE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_ColumnDescription_domainType_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_ColumnDescription_domainType_feature", "_UI_ColumnDescription_type"), TablePackage.Literals.COLUMN_DESCRIPTION__DOMAIN_TYPE,
+                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**

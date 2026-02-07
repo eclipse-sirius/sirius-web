@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,9 +29,9 @@ import org.eclipse.emf.ecore.EObject;
  * Expression</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription()
  */
 public interface RowFilterDescription extends EObject {
 
@@ -39,10 +39,10 @@ public interface RowFilterDescription extends EObject {
      * Returns the value of the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Id</em>' attribute.
-     * @model dataType="org.eclipse.sirius.components.view.Identifier" required="true"
-     * @generated
      * @see #setId(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription_Id()
+     * @model dataType="org.eclipse.sirius.components.view.Identifier" required="true"
+     * @generated
      */
     String getId();
 
@@ -51,9 +51,9 @@ public interface RowFilterDescription extends EObject {
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Id</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Id</em>' attribute.
      * @see #getId()
+     * @generated
      */
     void setId(String value);
 
@@ -74,7 +74,7 @@ public interface RowFilterDescription extends EObject {
      * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Label Expression</em>' attribute.
+     *            the new value of the '<em>Label Expression</em>' attribute.
      * @generted
      * @see #getLabelExpression()
      */
@@ -85,10 +85,10 @@ public interface RowFilterDescription extends EObject {
      * <code>""</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the value of the '<em>Initial State Expression</em>' attribute.
-     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
      * @see #setInitialStateExpression(String)
      * @see org.eclipse.sirius.components.view.table.TablePackage#getRowFilterDescription_InitialStateExpression()
+     * @model default="" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
      */
     String getInitialStateExpression();
 
@@ -98,9 +98,9 @@ public interface RowFilterDescription extends EObject {
      * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @param value
-     *         the new value of the '<em>Initial State Expression</em>' attribute.
-     * @generated
+     *            the new value of the '<em>Initial State Expression</em>' attribute.
      * @see #getInitialStateExpression()
+     * @generated
      */
     void setInitialStateExpression(String value);
 

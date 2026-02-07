@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,18 +33,16 @@ import org.eclipse.sirius.components.view.table.CellLabelWidgetDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription}
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription}
  * object. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
-        IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -53,8 +51,7 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -69,31 +66,25 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
     }
 
     /**
-     * This adds a property descriptor for the Icon Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Icon Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addIconExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_CellLabelWidgetDescription_iconExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_CellLabelWidgetDescription_iconExpression_feature",
-                        "_UI_CellLabelWidgetDescription_type"),
-                TablePackage.Literals.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CellLabelWidgetDescription_iconExpression_feature", "_UI_CellLabelWidgetDescription_type"),
+                TablePackage.Literals.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This returns CellLabelWidgetDescription.gif. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This returns CellLabelWidgetDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object,
-                this.getResourceLocator().getImage("full/obj16/CellLabelWidgetDescription.svg"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/CellLabelWidgetDescription.svg"));
     }
 
     /**
@@ -107,22 +98,20 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((CellLabelWidgetDescription) object).getIconExpression();
-        return label == null || label.length() == 0 ? this.getString("_UI_CellLabelWidgetDescription_type")
-                : this.getString("_UI_CellLabelWidgetDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_CellLabelWidgetDescription_type") : this.getString("_UI_CellLabelWidgetDescription_type") + " " + label;
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
@@ -139,9 +128,8 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -151,8 +139,7 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter 
     }
 
     /**
-     * Return the resource locator for this item provider's resources. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

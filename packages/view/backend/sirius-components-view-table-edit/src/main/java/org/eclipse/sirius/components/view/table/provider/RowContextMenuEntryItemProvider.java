@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,18 +35,16 @@ import org.eclipse.sirius.components.view.table.RowContextMenuEntry;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.table.RowContextMenuEntry} object.
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.table.RowContextMenuEntry} object.
  * <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class RowContextMenuEntryItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
-        IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class RowContextMenuEntryItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -55,8 +53,7 @@ public class RowContextMenuEntryItemProvider extends ItemProviderAdapter impleme
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -74,75 +71,59 @@ public class RowContextMenuEntryItemProvider extends ItemProviderAdapter impleme
     }
 
     /**
-     * This adds a property descriptor for the Name feature. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addNamePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_RowContextMenuEntry_name_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_RowContextMenuEntry_name_feature",
-                                "_UI_RowContextMenuEntry_type"),
-                        TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__NAME, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RowContextMenuEntry_name_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_RowContextMenuEntry_name_feature", "_UI_RowContextMenuEntry_type"),
+                TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Label Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addLabelExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_RowContextMenuEntry_labelExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowContextMenuEntry_labelExpression_feature",
-                        "_UI_RowContextMenuEntry_type"),
-                TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowContextMenuEntry_labelExpression_feature", "_UI_RowContextMenuEntry_type"),
+                TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Icon URL Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Icon URL Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
     protected void addIconURLExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_RowContextMenuEntry_iconURLExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_RowContextMenuEntry_iconURLExpression_feature", "_UI_RowContextMenuEntry_type"),
-                        TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RowContextMenuEntry_iconURLExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowContextMenuEntry_iconURLExpression_feature", "_UI_RowContextMenuEntry_type"),
+                TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__ICON_URL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Precondition Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Precondition Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addPreconditionExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_RowContextMenuEntry_preconditionExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description",
-                        "_UI_RowContextMenuEntry_preconditionExpression_feature", "_UI_RowContextMenuEntry_type"),
-                TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowContextMenuEntry_preconditionExpression_feature", "_UI_RowContextMenuEntry_type"),
+                TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an
-     * appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
-     * {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
@@ -162,16 +143,14 @@ public class RowContextMenuEntryItemProvider extends ItemProviderAdapter impleme
      */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
+        // Check the type of the specified child object and return the proper feature to use for
         // adding (see {@link AddCommand}) it as a child.
 
         return super.getChildFeature(object, child);
     }
 
     /**
-     * This returns RowContextMenuEntry.gif. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This returns RowContextMenuEntry.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -191,22 +170,20 @@ public class RowContextMenuEntryItemProvider extends ItemProviderAdapter impleme
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((RowContextMenuEntry) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_RowContextMenuEntry_type")
-                : this.getString("_UI_RowContextMenuEntry_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_RowContextMenuEntry_type") : this.getString("_UI_RowContextMenuEntry_type") + " " + label;
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
@@ -229,9 +206,8 @@ public class RowContextMenuEntryItemProvider extends ItemProviderAdapter impleme
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -239,34 +215,25 @@ public class RowContextMenuEntryItemProvider extends ItemProviderAdapter impleme
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY,
-                ViewFactory.eINSTANCE.createChangeContext()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY,
-                ViewFactory.eINSTANCE.createCreateInstance()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY,
-                ViewFactory.eINSTANCE.createSetValue()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY,
-                ViewFactory.eINSTANCE.createUnsetValue()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY,
-                ViewFactory.eINSTANCE.createDeleteElement()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY,
-                ViewFactory.eINSTANCE.createLet()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createLet()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY,
-                ViewFactory.eINSTANCE.createIf()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createIf()));
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY,
-                ViewFactory.eINSTANCE.createFor()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_CONTEXT_MENU_ENTRY__BODY, ViewFactory.eINSTANCE.createFor()));
     }
 
     /**
-     * Return the resource locator for this item provider's resources. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

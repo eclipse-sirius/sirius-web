@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,9 +29,9 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * </ul>
  * <!-- end-user-doc -->
  *
+ * @see org.eclipse.sirius.components.view.table.TableFactory
  * @model kind="package"
  * @generated
- * @see org.eclipse.sirius.components.view.table.TableFactory
  */
 public interface TablePackage extends EPackage {
 
@@ -60,9 +60,9 @@ public interface TablePackage extends EPackage {
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl
      * <em>Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getTableDescription()
+     * @generated
      */
     int TABLE_DESCRIPTION = 0;
 
@@ -115,7 +115,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TABLE_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT;
+    int TABLE_DESCRIPTION__USE_STRIPED_ROWS_EXPRESSION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Column Descriptions</b></em>' containment reference list. <!-- begin-user-doc -->
@@ -194,15 +194,15 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int TABLE_DESCRIPTION_OPERATION_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_OPERATION_COUNT;
+    int TABLE_DESCRIPTION_OPERATION_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl <em>Column
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getColumnDescription()
+     * @generated
      */
     int COLUMN_DESCRIPTION = 1;
 
@@ -325,9 +325,9 @@ public interface TablePackage extends EPackage {
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.RowDescriptionImpl <em>Row
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.impl.RowDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowDescription()
+     * @generated
      */
     int ROW_DESCRIPTION = 2;
 
@@ -441,9 +441,9 @@ public interface TablePackage extends EPackage {
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl <em>Cell
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellDescription()
+     * @generated
      */
     int CELL_DESCRIPTION = 3;
 
@@ -521,9 +521,9 @@ public interface TablePackage extends EPackage {
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.CellWidgetDescription <em>Cell Widget
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellWidgetDescription
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellWidgetDescription()
+     * @generated
      */
     int CELL_WIDGET_DESCRIPTION = 4;
 
@@ -550,9 +550,9 @@ public interface TablePackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.table.impl.CellTextfieldWidgetDescriptionImpl <em>Cell Textfield
      * Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.impl.CellTextfieldWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellTextfieldWidgetDescription()
+     * @generated
      */
     int CELL_TEXTFIELD_WIDGET_DESCRIPTION = 5;
 
@@ -563,7 +563,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
+    int CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Cell Textfield Widget Description</em>' class. <!-- begin-user-doc
@@ -581,15 +581,15 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_TEXTFIELD_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT;
+    int CELL_TEXTFIELD_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.CellLabelWidgetDescriptionImpl
      * <em>Cell Label Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.impl.CellLabelWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellLabelWidgetDescription()
+     * @generated
      */
     int CELL_LABEL_WIDGET_DESCRIPTION = 6;
 
@@ -599,7 +599,7 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
+    int CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The number of structural features of the '<em>Cell Label Widget Description</em>' class. <!-- begin-user-doc -->
@@ -617,15 +617,15 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_LABEL_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT;
+    int CELL_LABEL_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl <em>Row
      * Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowContextMenuEntry()
+     * @generated
      */
     int ROW_CONTEXT_MENU_ENTRY = 7;
 
@@ -696,9 +696,9 @@ public interface TablePackage extends EPackage {
      * '{@link org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl <em>Cell Textarea Widget
      * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellTextareaWidgetDescription()
+     * @generated
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION = 8;
 
@@ -709,7 +709,8 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT;
+    int CELL_TEXTAREA_WIDGET_DESCRIPTION__BODY = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 0;
+
     /**
      * The number of structural features of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
@@ -718,6 +719,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int CELL_TEXTAREA_WIDGET_DESCRIPTION_FEATURE_COUNT = CELL_WIDGET_DESCRIPTION_FEATURE_COUNT + 1;
+
     /**
      * The number of operations of the '<em>Cell Textarea Widget Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -725,16 +727,18 @@ public interface TablePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CELL_TEXTAREA_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT;
+    int CELL_TEXTAREA_WIDGET_DESCRIPTION_OPERATION_COUNT = CELL_WIDGET_DESCRIPTION_OPERATION_COUNT + 0;
+
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl <em>Row
      * Filter Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
      * @see org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl
      * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowFilterDescription()
+     * @generated
      */
     int ROW_FILTER_DESCRIPTION = 9;
+
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -742,6 +746,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_FILTER_DESCRIPTION__ID = 0;
+
     /**
      * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -750,6 +755,7 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION = 1;
+
     /**
      * The feature id for the '<em><b>Initial State Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -758,12 +764,14 @@ public interface TablePackage extends EPackage {
      * @ordered
      */
     int ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION = 2;
+
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     TablePackage eINSTANCE = org.eclipse.sirius.components.view.table.impl.TablePackageImpl.init();
+
     /**
      * The number of structural features of the '<em>Row Filter Description</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
@@ -787,8 +795,8 @@ public interface TablePackage extends EPackage {
      * <em>Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.TableDescription
+     * @generated
      */
     EClass getTableDescription();
 
@@ -798,9 +806,9 @@ public interface TablePackage extends EPackage {
      * Rows Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Use Striped Rows Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.TableDescription#getUseStripedRowsExpression()
      * @see #getTableDescription()
+     * @generated
      */
     EAttribute getTableDescription_UseStripedRowsExpression();
 
@@ -810,9 +818,9 @@ public interface TablePackage extends EPackage {
      * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Column Descriptions</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.TableDescription#getColumnDescriptions()
      * @see #getTableDescription()
+     * @generated
      */
     EReference getTableDescription_ColumnDescriptions();
 
@@ -822,9 +830,9 @@ public interface TablePackage extends EPackage {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Row Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.TableDescription#getRowDescription()
      * @see #getTableDescription()
+     * @generated
      */
     EReference getTableDescription_RowDescription();
 
@@ -834,9 +842,9 @@ public interface TablePackage extends EPackage {
      * Descriptions</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Cell Descriptions</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.TableDescription#getCellDescriptions()
      * @see #getTableDescription()
+     * @generated
      */
     EReference getTableDescription_CellDescriptions();
 
@@ -846,9 +854,9 @@ public interface TablePackage extends EPackage {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Enable Sub Rows</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.TableDescription#isEnableSubRows()
      * @see #getTableDescription()
+     * @generated
      */
     EAttribute getTableDescription_EnableSubRows();
 
@@ -870,9 +878,9 @@ public interface TablePackage extends EPackage {
      * Options Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Page Size Options Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.TableDescription#getPageSizeOptionsExpression()
      * @see #getTableDescription()
+     * @generated
      */
     EAttribute getTableDescription_PageSizeOptionsExpression();
 
@@ -882,9 +890,9 @@ public interface TablePackage extends EPackage {
      * Page Size Index Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Default Page Size Index Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.TableDescription#getDefaultPageSizeIndexExpression()
      * @see #getTableDescription()
+     * @generated
      */
     EAttribute getTableDescription_DefaultPageSizeIndexExpression();
 
@@ -893,8 +901,8 @@ public interface TablePackage extends EPackage {
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Column Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription
+     * @generated
      */
     EClass getColumnDescription();
 
@@ -904,9 +912,9 @@ public interface TablePackage extends EPackage {
      * --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Name</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getName()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_Name();
 
@@ -928,9 +936,9 @@ public interface TablePackage extends EPackage {
      * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Semantic Candidates Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getSemanticCandidatesExpression()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_SemanticCandidatesExpression();
 
@@ -940,9 +948,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Precondition Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getPreconditionExpression()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_PreconditionExpression();
 
@@ -952,9 +960,9 @@ public interface TablePackage extends EPackage {
      * Label Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Header Index Label Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getHeaderIndexLabelExpression()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_HeaderIndexLabelExpression();
 
@@ -964,9 +972,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Header Label Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getHeaderLabelExpression()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_HeaderLabelExpression();
 
@@ -976,9 +984,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Header Icon Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getHeaderIconExpression()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_HeaderIconExpression();
 
@@ -988,9 +996,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Initial Width Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getInitialWidthExpression()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_InitialWidthExpression();
 
@@ -1000,9 +1008,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Resizable Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getIsResizableExpression()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_IsResizableExpression();
 
@@ -1012,9 +1020,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Filter Widget Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getFilterWidgetExpression()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_FilterWidgetExpression();
 
@@ -1024,9 +1032,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Sortable Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription#getIsSortableExpression()
      * @see #getColumnDescription()
+     * @generated
      */
     EAttribute getColumnDescription_IsSortableExpression();
 
@@ -1035,8 +1043,8 @@ public interface TablePackage extends EPackage {
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Row Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription
+     * @generated
      */
     EClass getRowDescription();
 
@@ -1045,9 +1053,9 @@ public interface TablePackage extends EPackage {
      * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Name</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getName()
      * @see #getRowDescription()
+     * @generated
      */
     EAttribute getRowDescription_Name();
 
@@ -1057,9 +1065,9 @@ public interface TablePackage extends EPackage {
      * Candidates Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Semantic Candidates Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getSemanticCandidatesExpression()
      * @see #getRowDescription()
+     * @generated
      */
     EAttribute getRowDescription_SemanticCandidatesExpression();
 
@@ -1069,9 +1077,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Header Label Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getHeaderLabelExpression()
      * @see #getRowDescription()
+     * @generated
      */
     EAttribute getRowDescription_HeaderLabelExpression();
 
@@ -1081,9 +1089,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Header Icon Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getHeaderIconExpression()
      * @see #getRowDescription()
+     * @generated
      */
     EAttribute getRowDescription_HeaderIconExpression();
 
@@ -1093,9 +1101,9 @@ public interface TablePackage extends EPackage {
      * Label Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Header Index Label Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getHeaderIndexLabelExpression()
      * @see #getRowDescription()
+     * @generated
      */
     EAttribute getRowDescription_HeaderIndexLabelExpression();
 
@@ -1105,9 +1113,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Initial Height Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getInitialHeightExpression()
      * @see #getRowDescription()
+     * @generated
      */
     EAttribute getRowDescription_InitialHeightExpression();
 
@@ -1117,9 +1125,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Is Resizable Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getIsResizableExpression()
      * @see #getRowDescription()
+     * @generated
      */
     EAttribute getRowDescription_IsResizableExpression();
 
@@ -1129,9 +1137,9 @@ public interface TablePackage extends EPackage {
      * Entries</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Context Menu Entries</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getContextMenuEntries()
      * @see #getRowDescription()
+     * @generated
      */
     EReference getRowDescription_ContextMenuEntries();
 
@@ -1141,9 +1149,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Depth Level Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getDepthLevelExpression()
      * @see #getRowDescription()
+     * @generated
      */
     EAttribute getRowDescription_DepthLevelExpression();
 
@@ -1153,9 +1161,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Has Children Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription#getHasChildrenExpression()
      * @see #getRowDescription()
+     * @generated
      */
     EAttribute getRowDescription_HasChildrenExpression();
 
@@ -1164,8 +1172,8 @@ public interface TablePackage extends EPackage {
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Cell Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellDescription
+     * @generated
      */
     EClass getCellDescription();
 
@@ -1175,9 +1183,9 @@ public interface TablePackage extends EPackage {
      * <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Name</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellDescription#getName()
      * @see #getCellDescription()
+     * @generated
      */
     EAttribute getCellDescription_Name();
 
@@ -1187,9 +1195,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Precondition Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellDescription#getPreconditionExpression()
      * @see #getCellDescription()
+     * @generated
      */
     EAttribute getCellDescription_PreconditionExpression();
 
@@ -1199,9 +1207,9 @@ public interface TablePackage extends EPackage {
      * Target Object Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Selected Target Object Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellDescription#getSelectedTargetObjectExpression()
      * @see #getCellDescription()
+     * @generated
      */
     EAttribute getCellDescription_SelectedTargetObjectExpression();
 
@@ -1211,9 +1219,9 @@ public interface TablePackage extends EPackage {
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Value Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellDescription#getValueExpression()
      * @see #getCellDescription()
+     * @generated
      */
     EAttribute getCellDescription_ValueExpression();
 
@@ -1223,9 +1231,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Tooltip Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellDescription#getTooltipExpression()
      * @see #getCellDescription()
+     * @generated
      */
     EAttribute getCellDescription_TooltipExpression();
 
@@ -1235,9 +1243,9 @@ public interface TablePackage extends EPackage {
      * Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference '<em>Cell Widget Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellDescription#getCellWidgetDescription()
      * @see #getCellDescription()
+     * @generated
      */
     EReference getCellDescription_CellWidgetDescription();
 
@@ -1246,8 +1254,8 @@ public interface TablePackage extends EPackage {
      * Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Cell Widget Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellWidgetDescription
+     * @generated
      */
     EClass getCellWidgetDescription();
 
@@ -1256,8 +1264,8 @@ public interface TablePackage extends EPackage {
      * <em>Cell Textfield Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Cell Textfield Widget Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription
+     * @generated
      */
     EClass getCellTextfieldWidgetDescription();
 
@@ -1278,8 +1286,8 @@ public interface TablePackage extends EPackage {
      * <em>Cell Label Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Cell Label Widget Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellLabelWidgetDescription
+     * @generated
      */
     EClass getCellLabelWidgetDescription();
 
@@ -1289,9 +1297,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Icon Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellLabelWidgetDescription#getIconExpression()
      * @see #getCellLabelWidgetDescription()
+     * @generated
      */
     EAttribute getCellLabelWidgetDescription_IconExpression();
 
@@ -1300,8 +1308,8 @@ public interface TablePackage extends EPackage {
      * <em>Cell Textarea Widget Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Cell Textarea Widget Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription
+     * @generated
      */
     EClass getCellTextareaWidgetDescription();
 
@@ -1322,8 +1330,8 @@ public interface TablePackage extends EPackage {
      * Filter Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Row Filter Description</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowFilterDescription
+     * @generated
      */
     EClass getRowFilterDescription();
 
@@ -1333,9 +1341,9 @@ public interface TablePackage extends EPackage {
      * --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Id</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowFilterDescription#getId()
      * @see #getRowFilterDescription()
+     * @generated
      */
     EAttribute getRowFilterDescription_Id();
 
@@ -1345,9 +1353,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Label Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowFilterDescription#getLabelExpression()
      * @see #getRowFilterDescription()
+     * @generated
      */
     EAttribute getRowFilterDescription_LabelExpression();
 
@@ -1357,9 +1365,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Initial State Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowFilterDescription#getInitialStateExpression()
      * @see #getRowFilterDescription()
+     * @generated
      */
     EAttribute getRowFilterDescription_InitialStateExpression();
 
@@ -1368,8 +1376,8 @@ public interface TablePackage extends EPackage {
      * Context Menu Entry</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for class '<em>Row Context Menu Entry</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry
+     * @generated
      */
     EClass getRowContextMenuEntry();
 
@@ -1379,9 +1387,9 @@ public interface TablePackage extends EPackage {
      * --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Name</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getName()
      * @see #getRowContextMenuEntry()
+     * @generated
      */
     EAttribute getRowContextMenuEntry_Name();
 
@@ -1391,9 +1399,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Label Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getLabelExpression()
      * @see #getRowContextMenuEntry()
+     * @generated
      */
     EAttribute getRowContextMenuEntry_LabelExpression();
 
@@ -1403,9 +1411,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Icon URL Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getIconURLExpression()
      * @see #getRowContextMenuEntry()
+     * @generated
      */
     EAttribute getRowContextMenuEntry_IconURLExpression();
 
@@ -1415,9 +1423,9 @@ public interface TablePackage extends EPackage {
      * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the meta object for the attribute '<em>Precondition Expression</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getPreconditionExpression()
      * @see #getRowContextMenuEntry()
+     * @generated
      */
     EAttribute getRowContextMenuEntry_PreconditionExpression();
 
@@ -1427,9 +1435,9 @@ public interface TablePackage extends EPackage {
      * --> <!-- end-user-doc -->
      *
      * @return the meta object for the containment reference list '<em>Body</em>'.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry#getBody()
      * @see #getRowContextMenuEntry()
+     * @generated
      */
     EReference getRowContextMenuEntry_Body();
 
@@ -1460,9 +1468,9 @@ public interface TablePackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl
          * <em>Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.impl.TableDescriptionImpl
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getTableDescription()
+         * @generated
          */
         EClass TABLE_DESCRIPTION = eINSTANCE.getTableDescription();
 
@@ -1534,9 +1542,9 @@ public interface TablePackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl
          * <em>Column Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.impl.ColumnDescriptionImpl
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getColumnDescription()
+         * @generated
          */
         EClass COLUMN_DESCRIPTION = eINSTANCE.getColumnDescription();
 
@@ -1632,9 +1640,9 @@ public interface TablePackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.RowDescriptionImpl
          * <em>Row Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.impl.RowDescriptionImpl
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowDescription()
+         * @generated
          */
         EClass ROW_DESCRIPTION = eINSTANCE.getRowDescription();
 
@@ -1722,9 +1730,9 @@ public interface TablePackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl
          * <em>Cell Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.impl.CellDescriptionImpl
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellDescription()
+         * @generated
          */
         EClass CELL_DESCRIPTION = eINSTANCE.getCellDescription();
 
@@ -1780,9 +1788,9 @@ public interface TablePackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.CellWidgetDescription
          * <em>Cell Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.CellWidgetDescription
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellWidgetDescription()
+         * @generated
          */
         EClass CELL_WIDGET_DESCRIPTION = eINSTANCE.getCellWidgetDescription();
 
@@ -1791,9 +1799,9 @@ public interface TablePackage extends EPackage {
          * '{@link org.eclipse.sirius.components.view.table.impl.CellTextfieldWidgetDescriptionImpl <em>Cell Textfield
          * Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.impl.CellTextfieldWidgetDescriptionImpl
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellTextfieldWidgetDescription()
+         * @generated
          */
         EClass CELL_TEXTFIELD_WIDGET_DESCRIPTION = eINSTANCE.getCellTextfieldWidgetDescription();
 
@@ -1810,9 +1818,9 @@ public interface TablePackage extends EPackage {
          * '{@link org.eclipse.sirius.components.view.table.impl.CellLabelWidgetDescriptionImpl <em>Cell Label Widget
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.impl.CellLabelWidgetDescriptionImpl
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellLabelWidgetDescription()
+         * @generated
          */
         EClass CELL_LABEL_WIDGET_DESCRIPTION = eINSTANCE.getCellLabelWidgetDescription();
 
@@ -1829,9 +1837,9 @@ public interface TablePackage extends EPackage {
          * '{@link org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl <em>Cell Textarea
          * Widget Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.impl.CellTextareaWidgetDescriptionImpl
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getCellTextareaWidgetDescription()
+         * @generated
          */
         EClass CELL_TEXTAREA_WIDGET_DESCRIPTION = eINSTANCE.getCellTextareaWidgetDescription();
 
@@ -1848,9 +1856,9 @@ public interface TablePackage extends EPackage {
          * '{@link org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl <em>Row Filter
          * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.impl.RowFilterDescriptionImpl
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowFilterDescription()
+         * @generated
          */
         EClass ROW_FILTER_DESCRIPTION = eINSTANCE.getRowFilterDescription();
 
@@ -1882,9 +1890,9 @@ public interface TablePackage extends EPackage {
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl
          * <em>Row Context Menu Entry</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
-         * @generated
          * @see org.eclipse.sirius.components.view.table.impl.RowContextMenuEntryImpl
          * @see org.eclipse.sirius.components.view.table.impl.TablePackageImpl#getRowContextMenuEntry()
+         * @generated
          */
         EClass ROW_CONTEXT_MENU_ENTRY = eINSTANCE.getRowContextMenuEntry();
 

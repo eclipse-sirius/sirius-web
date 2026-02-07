@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,8 +33,8 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter <code>createXXX</code>
  * method for each class of the model. <!-- end-user-doc -->
  *
- * @generated
  * @see org.eclipse.sirius.components.view.table.TablePackage
+ * @generated
  */
 public class TableAdapterFactory extends AdapterFactoryImpl {
 
@@ -176,8 +176,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.ColumnDescription
+     * @generated
      */
     public Adapter createColumnDescriptionAdapter() {
         return null;
@@ -190,8 +190,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowDescription
+     * @generated
      */
     public Adapter createRowDescriptionAdapter() {
         return null;
@@ -204,8 +204,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellDescription
+     * @generated
      */
     public Adapter createCellDescriptionAdapter() {
         return null;
@@ -232,8 +232,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription
+     * @generated
      */
     public Adapter createCellTextfieldWidgetDescriptionAdapter() {
         return null;
@@ -246,8 +246,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellLabelWidgetDescription
+     * @generated
      */
     public Adapter createCellLabelWidgetDescriptionAdapter() {
         return null;
@@ -260,8 +260,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription
+     * @generated
      */
     public Adapter createCellTextareaWidgetDescriptionAdapter() {
         return null;
@@ -288,8 +288,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.table.RowContextMenuEntry
+     * @generated
      */
     public Adapter createRowContextMenuEntryAdapter() {
         return null;
@@ -302,8 +302,8 @@ public class TableAdapterFactory extends AdapterFactoryImpl {
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @generated
      * @see org.eclipse.sirius.components.view.RepresentationDescription
+     * @generated
      */
     public Adapter createRepresentationDescriptionAdapter() {
         return null;

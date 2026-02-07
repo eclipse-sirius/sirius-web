@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table.impl;
-
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -42,20 +40,41 @@ public class RowFilterDescriptionImpl extends MinimalEObjectImpl.Container imple
     /**
      * The default value of the '{@link #getId() <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getId()
      * @generated
      * @ordered
-     * @see #getId()
      */
     protected static final String ID_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getId() <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getId()
+     * @generated
+     * @ordered
+     */
+    protected String id = ID_EDEFAULT;
+
     /**
      * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
+     * @see #getLabelExpression()
      * @generated
      * @ordered
-     * @see #getLabelExpression()
      */
     protected static final String LABEL_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
+
     /**
      * The default value of the '{@link #getInitialStateExpression() <em>Initial State Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -65,23 +84,7 @@ public class RowFilterDescriptionImpl extends MinimalEObjectImpl.Container imple
      * @see #getInitialStateExpression()
      */
     protected static final String INITIAL_STATE_EXPRESSION_EDEFAULT = "";
-    /**
-     * The cached value of the '{@link #getId() <em>Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getId()
-     */
-    protected String id = ID_EDEFAULT;
-    /**
-     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getLabelExpression()
-     */
-    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
+
     /**
      * The cached value of the '{@link #getInitialStateExpression() <em>Initial State Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -249,9 +252,9 @@ public class RowFilterDescriptionImpl extends MinimalEObjectImpl.Container imple
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TablePackage.ROW_FILTER_DESCRIPTION__ID:
-                return !Objects.equals(ID_EDEFAULT, this.id);
+                return ID_EDEFAULT == null ? this.id != null : !ID_EDEFAULT.equals(this.id);
             case TablePackage.ROW_FILTER_DESCRIPTION__LABEL_EXPRESSION:
-                return !Objects.equals(LABEL_EXPRESSION_EDEFAULT, this.labelExpression);
+                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
             case TablePackage.ROW_FILTER_DESCRIPTION__INITIAL_STATE_EXPRESSION:
                 return INITIAL_STATE_EXPRESSION_EDEFAULT == null ? this.initialStateExpression != null : !INITIAL_STATE_EXPRESSION_EDEFAULT.equals(this.initialStateExpression);
         }
@@ -268,14 +271,15 @@ public class RowFilterDescriptionImpl extends MinimalEObjectImpl.Container imple
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (id: " +
-                this.id +
-                ", labelExpression: " +
-                this.labelExpression +
-                ", initialStateExpression: " +
-                this.initialStateExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (id: ");
+        result.append(this.id);
+        result.append(", labelExpression: ");
+        result.append(this.labelExpression);
+        result.append(", initialStateExpression: ");
+        result.append(this.initialStateExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // RowFilterDescriptionImpl

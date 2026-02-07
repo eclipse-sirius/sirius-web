@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,18 +35,16 @@ import org.eclipse.sirius.components.view.table.TableFactory;
 import org.eclipse.sirius.components.view.table.TablePackage;
 
 /**
- * This is the item provider adapter for a
- * {@link org.eclipse.sirius.components.view.table.RowDescription} object. <!--
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.table.RowDescription} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class RowDescriptionItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
-        IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
+public class RowDescriptionItemProvider extends ItemProviderAdapter
+        implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -55,8 +53,7 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
     }
 
     /**
-     * This returns the property descriptors for the adapted class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -79,115 +76,92 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
     }
 
     /**
-     * This adds a property descriptor for the Name feature. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     protected void addNamePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_RowDescription_name_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_name_feature",
-                                "_UI_RowDescription_type"),
-                        TablePackage.Literals.ROW_DESCRIPTION__NAME, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RowDescription_name_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_name_feature", "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__NAME, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Semantic Candidates Expression
-     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Semantic Candidates Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addSemanticCandidatesExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_RowDescription_semanticCandidatesExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_RowDescription_semanticCandidatesExpression_feature", "_UI_RowDescription_type"),
-                        TablePackage.Literals.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RowDescription_semanticCandidatesExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_semanticCandidatesExpression_feature", "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Header Label Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Header Label Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addHeaderLabelExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_RowDescription_headerLabelExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerLabelExpression_feature",
-                        "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerLabelExpression_feature", "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__HEADER_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Header Icon Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Header Icon Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
     protected void addHeaderIconExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_RowDescription_headerIconExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerIconExpression_feature",
-                        "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerIconExpression_feature", "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__HEADER_ICON_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Header Index Label Expression
-     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Header Index Label Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addHeaderIndexLabelExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors
-                .add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(),
-                        this.getResourceLocator(), this.getString("_UI_RowDescription_headerIndexLabelExpression_feature"),
-                        this.getString("_UI_PropertyDescriptor_description",
-                                "_UI_RowDescription_headerIndexLabelExpression_feature", "_UI_RowDescription_type"),
-                        TablePackage.Literals.ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION, true, false, false,
-                        ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RowDescription_headerIndexLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_headerIndexLabelExpression_feature", "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Initial Height Expression feature.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Initial Height Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addInitialHeightExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_RowDescription_initialHeightExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_initialHeightExpression_feature",
-                        "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_initialHeightExpression_feature", "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__INITIAL_HEIGHT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
-     * This adds a property descriptor for the Is Resizable Expression feature. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Is Resizable Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
     protected void addIsResizableExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
-                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_RowDescription_isResizableExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_isResizableExpression_feature",
-                        "_UI_RowDescription_type"),
-                TablePackage.Literals.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION, true, false, false,
-                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RowDescription_isResizableExpression_feature", "_UI_RowDescription_type"),
+                TablePackage.Literals.ROW_DESCRIPTION__IS_RESIZABLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -240,16 +214,14 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
      */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to
-        // use for
+        // Check the type of the specified child object and return the proper feature to use for
         // adding (see {@link AddCommand}) it as a child.
 
         return super.getChildFeature(object, child);
     }
 
     /**
-     * This returns RowDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This returns RowDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -269,22 +241,20 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
     }
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public String getText(Object object) {
         String label = ((RowDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_RowDescription_type")
-                : this.getString("_UI_RowDescription_type") + " " + label;
+        return label == null || label.length() == 0 ? this.getString("_UI_RowDescription_type") : this.getString("_UI_RowDescription_type") + " " + label;
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update
-     * any cached children and by creating a viewer notification, which it passes to
-     * {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
+     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
      *
      * @generated
      */
@@ -312,9 +282,8 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing
-     * the children that can be created under this object. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
+     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -322,13 +291,11 @@ public class RowDescriptionItemProvider extends ItemProviderAdapter implements I
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES,
-                TableFactory.eINSTANCE.createRowContextMenuEntry()));
+        newChildDescriptors.add(this.createChildParameter(TablePackage.Literals.ROW_DESCRIPTION__CONTEXT_MENU_ENTRIES, TableFactory.eINSTANCE.createRowContextMenuEntry()));
     }
 
     /**
-     * Return the resource locator for this item provider's resources. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table.impl;
-
-import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
@@ -55,96 +53,7 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @see #getName()
      */
     protected static final String NAME_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getDomainType()
-     */
-    protected static final String DOMAIN_TYPE_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getSemanticCandidatesExpression()
-     */
-    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = null;
-    /**
-     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getPreconditionExpression()
-     */
-    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getHeaderIndexLabelExpression()
-     */
-    protected static final String HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getHeaderLabelExpression() <em>Header Label Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getHeaderLabelExpression()
-     */
-    protected static final String HEADER_LABEL_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getHeaderIconExpression() <em>Header Icon Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getHeaderIconExpression()
-     */
-    protected static final String HEADER_ICON_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getInitialWidthExpression() <em>Initial Width Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getInitialWidthExpression()
-     */
-    protected static final String INITIAL_WIDTH_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getIsResizableExpression() <em>Is Resizable Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getIsResizableExpression()
-     */
-    protected static final String IS_RESIZABLE_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getFilterWidgetExpression() <em>Filter Widget Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getFilterWidgetExpression()
-     */
-    protected static final String FILTER_WIDGET_EXPRESSION_EDEFAULT = "";
-    /**
-     * The default value of the '{@link #getIsSortableExpression() <em>Is Sortable Expression</em>}' attribute. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getIsSortableExpression()
-     */
-    protected static final String IS_SORTABLE_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getName() <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
@@ -154,24 +63,57 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @see #getName()
      */
     protected String name = NAME_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getDomainType()
+     * @generated
+     * @ordered
+     */
+    protected static final String DOMAIN_TYPE_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
+     * @see #getDomainType()
      * @generated
      * @ordered
-     * @see #getDomainType()
      */
     protected String domainType = DOMAIN_TYPE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getSemanticCandidatesExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = null;
+
     /**
      * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getSemanticCandidatesExpression()
      * @generated
      * @ordered
-     * @see #getSemanticCandidatesExpression()
      */
     protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getPreconditionExpression()
+     */
+    protected static final String PRECONDITION_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getPreconditionExpression() <em>Precondition Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -181,15 +123,37 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @see #getPreconditionExpression()
      */
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getHeaderIndexLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
+     * @see #getHeaderIndexLabelExpression()
      * @generated
      * @ordered
-     * @see #getHeaderIndexLabelExpression()
      */
     protected String headerIndexLabelExpression = HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHeaderLabelExpression() <em>Header Label Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getHeaderLabelExpression()
+     */
+    protected static final String HEADER_LABEL_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getHeaderLabelExpression() <em>Header Label Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -199,6 +163,17 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @see #getHeaderLabelExpression()
      */
     protected String headerLabelExpression = HEADER_LABEL_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getHeaderIconExpression() <em>Header Icon Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getHeaderIconExpression()
+     */
+    protected static final String HEADER_ICON_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getHeaderIconExpression() <em>Header Icon Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -208,6 +183,17 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @see #getHeaderIconExpression()
      */
     protected String headerIconExpression = HEADER_ICON_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getInitialWidthExpression() <em>Initial Width Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getInitialWidthExpression()
+     */
+    protected static final String INITIAL_WIDTH_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getInitialWidthExpression() <em>Initial Width Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -217,6 +203,17 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @see #getInitialWidthExpression()
      */
     protected String initialWidthExpression = INITIAL_WIDTH_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getIsResizableExpression() <em>Is Resizable Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsResizableExpression()
+     */
+    protected static final String IS_RESIZABLE_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getIsResizableExpression() <em>Is Resizable Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -226,6 +223,17 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @see #getIsResizableExpression()
      */
     protected String isResizableExpression = IS_RESIZABLE_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getFilterWidgetExpression() <em>Filter Widget Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getFilterWidgetExpression()
+     */
+    protected static final String FILTER_WIDGET_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getFilterWidgetExpression() <em>Filter Widget Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -235,6 +243,17 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
      * @see #getFilterWidgetExpression()
      */
     protected String filterWidgetExpression = FILTER_WIDGET_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getIsSortableExpression() <em>Is Sortable Expression</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     * @see #getIsSortableExpression()
+     */
+    protected static final String IS_SORTABLE_EXPRESSION_EDEFAULT = "";
+
     /**
      * The cached value of the '{@link #getIsSortableExpression() <em>Is Sortable Expression</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -651,11 +670,11 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
     public boolean eIsSet(int featureID) {
         switch (featureID) {
             case TablePackage.COLUMN_DESCRIPTION__NAME:
-                return !Objects.equals(NAME_EDEFAULT, this.name);
+                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
             case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
                 return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
             case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                return !Objects.equals(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT, this.semanticCandidatesExpression);
+                return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
             case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
             case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
@@ -686,30 +705,31 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
         if (this.eIsProxy())
             return super.toString();
 
-        String result = super.toString() + " (name: " +
-                this.name +
-                ", domainType: " +
-                this.domainType +
-                ", semanticCandidatesExpression: " +
-                this.semanticCandidatesExpression +
-                ", preconditionExpression: " +
-                this.preconditionExpression +
-                ", headerIndexLabelExpression: " +
-                this.headerIndexLabelExpression +
-                ", headerLabelExpression: " +
-                this.headerLabelExpression +
-                ", headerIconExpression: " +
-                this.headerIconExpression +
-                ", initialWidthExpression: " +
-                this.initialWidthExpression +
-                ", isResizableExpression: " +
-                this.isResizableExpression +
-                ", filterWidgetExpression: " +
-                this.filterWidgetExpression +
-                ", isSortableExpression: " +
-                this.isSortableExpression +
-                ')';
-        return result;
+        StringBuilder result = new StringBuilder(super.toString());
+        result.append(" (name: ");
+        result.append(this.name);
+        result.append(", domainType: ");
+        result.append(this.domainType);
+        result.append(", semanticCandidatesExpression: ");
+        result.append(this.semanticCandidatesExpression);
+        result.append(", preconditionExpression: ");
+        result.append(this.preconditionExpression);
+        result.append(", headerIndexLabelExpression: ");
+        result.append(this.headerIndexLabelExpression);
+        result.append(", headerLabelExpression: ");
+        result.append(this.headerLabelExpression);
+        result.append(", headerIconExpression: ");
+        result.append(this.headerIconExpression);
+        result.append(", initialWidthExpression: ");
+        result.append(this.initialWidthExpression);
+        result.append(", isResizableExpression: ");
+        result.append(this.isResizableExpression);
+        result.append(", filterWidgetExpression: ");
+        result.append(this.filterWidgetExpression);
+        result.append(", isSortableExpression: ");
+        result.append(this.isSortableExpression);
+        result.append(')');
+        return result.toString();
     }
 
 } // ColumnDescriptionImpl
