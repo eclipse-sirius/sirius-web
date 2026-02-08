@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2026.1.1</version>
+		<version>2026.1.2</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-web-e2e-tests</artifactId>
-	<version>2026.1.1</version>
+	<version>2026.1.2</version>
 	<name>sirius-web-e2e-tests</name>
 	<description>Sirius Web End-to-end Tests</description>
 
@@ -32,12 +32,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-application</artifactId>
-			<version>2026.1.1</version>
+			<version>2026.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web-papaya</artifactId>
-			<version>2026.1.1</version>
+			<version>2026.1.2</version>
 		</dependency>
 	</dependencies>
 

@@ -17,13 +17,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2026.1.1</version>
+		<version>2026.1.2</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-view-table</artifactId>
-	<version>2026.1.1</version>
+	<version>2026.1.2</version>
 	<name>sirius-components-view-table</name>
 	<description>Sirius Components Table View Definition DSL</description>
 
@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-view</artifactId>
-			<version>2026.1.1</version>
+			<version>2026.1.2</version>
 		</dependency>
 	</dependencies>
 
