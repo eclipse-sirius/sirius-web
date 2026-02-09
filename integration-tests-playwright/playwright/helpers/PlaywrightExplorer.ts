@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -90,5 +90,10 @@ export class PlaywrightExplorer {
     await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).click();
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
     await this.page.getByTestId(`push-selection-to-${selectionTargetLabel}`).click();
+  }
+
+  async openExplorer(explorerDescriptionLabel: string) {
+    await this.page.getByTestId('tree-descriptions-menu-icon').click();
+    await this.page.getByRole('menuitem').filter({ hasText: explorerDescriptionLabel }).click();
   }
 }

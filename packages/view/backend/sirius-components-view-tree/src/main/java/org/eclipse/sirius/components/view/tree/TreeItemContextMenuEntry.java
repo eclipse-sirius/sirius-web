@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.tree;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.sirius.components.view.KeyBinding;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Item Context Menu Entry</b></em>'. <!--
@@ -25,6 +27,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getName <em>Name</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getPreconditionExpression
  * <em>Precondition Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getKeyBindings <em>Key
+ * Bindings</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry()
@@ -77,5 +81,16 @@ public interface TreeItemContextMenuEntry extends EObject {
      * @generated
      */
     void setPreconditionExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Key Bindings</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.view.KeyBinding}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Key Bindings</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry_KeyBindings()
+     * @model containment="true"
+     * @generated
+     */
+    EList<KeyBinding> getKeyBindings();
 
 } // TreeItemContextMenuEntry

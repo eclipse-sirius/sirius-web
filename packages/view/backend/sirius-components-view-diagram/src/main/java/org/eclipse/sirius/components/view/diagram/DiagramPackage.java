@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -3210,13 +3210,22 @@ public interface DiagramPackage extends EPackage {
     int NODE_TOOL__WITH_IMPACT_ANALYSIS = TOOL_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Key Bindings</b></em>' containment reference list. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int NODE_TOOL__KEY_BINDINGS = TOOL_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Node Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int NODE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 4;
+    int NODE_TOOL_FEATURE_COUNT = TOOL_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Node Tool</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -5902,6 +5911,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getNodeTool_WithImpactAnalysis();
 
     /**
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeTool#getKeyBindings <em>Key Bindings</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Key Bindings</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.NodeTool#getKeyBindings()
+     * @see #getNodeTool()
+     * @generated
+     */
+    EReference getNodeTool_KeyBindings();
+
+    /**
      * Returns the meta object for class
      * '{@link org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool <em>Source Edge End Reconnection
      * Tool</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7806,6 +7827,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute NODE_TOOL__WITH_IMPACT_ANALYSIS = eINSTANCE.getNodeTool_WithImpactAnalysis();
+
+        /**
+         * The meta object literal for the '<em><b>Key Bindings</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference NODE_TOOL__KEY_BINDINGS = eINSTANCE.getNodeTool_KeyBindings();
 
         /**
          * The meta object literal for the

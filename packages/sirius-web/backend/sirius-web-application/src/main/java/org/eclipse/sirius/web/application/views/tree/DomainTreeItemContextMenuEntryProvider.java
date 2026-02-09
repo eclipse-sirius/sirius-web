@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -63,7 +63,7 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
             result.addAll(this.getRepresentationContextMenuEntries(emfEditingContext, treeItem));
         }
         if (treeItem.isHasChildren()) {
-            result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, "", List.of(), false));
+            result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, "", List.of(), false, List.of()));
         }
         return result;
     }
@@ -77,9 +77,9 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
 
             List<ITreeItemContextMenuEntry> entries = new ArrayList<>();
             if (!this.readOnlyObjectPredicate.test(resource)) {
-                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, "", List.of(), false));
+                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, "", List.of(), false, List.of()));
             }
-            entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, "", List.of(), false));
+            entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, "", List.of(), false, List.of()));
             return entries;
         }
         return List.of();
@@ -93,9 +93,9 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
             var object = optionalEObject.get();
             if (!this.readOnlyObjectPredicate.test(object)) {
                 return List.of(
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false),
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false),
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, "", List.of(), false)
+                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false, List.of()),
+                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false, List.of()),
+                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, "", List.of(), false, List.of())
                 );
             }
         }
@@ -108,7 +108,7 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
                 .map(RepresentationMetadata.class::cast);
         if (optionalRepresentationMetadata.isPresent()) {
             return List.of(
-                    new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, "", List.of(), false)
+                    new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, "", List.of(), false, List.of())
             );
         }
         return List.of();

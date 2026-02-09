@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,11 +19,13 @@ import java.util.UUID;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
+import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ViewToolImageProvider;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.IKeyBindingFactory;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodeToolFactory;
 import org.eclipse.sirius.components.view.emf.form.converters.MultiValueProvider;
 import org.springframework.stereotype.Service;
@@ -38,8 +40,11 @@ public class NodeToolFactory implements INodeToolFactory {
 
     private final IDiagramIdProvider diagramIdProvider;
 
-    public NodeToolFactory(IDiagramIdProvider diagramIdProvider) {
+    private final IKeyBindingFactory keyBindingFactory;
+
+    public NodeToolFactory(IDiagramIdProvider diagramIdProvider, IKeyBindingFactory keyBindingFactory) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
+        this.keyBindingFactory = Objects.requireNonNull(keyBindingFactory);
     }
 
     @Override
@@ -51,6 +56,10 @@ public class NodeToolFactory implements INodeToolFactory {
             dialogDescriptionId = this.diagramIdProvider.getId(viewNodeTool.getDialogDescription());
         }
 
+        List<KeyBinding> keyBindings = viewNodeTool.getKeyBindings().stream()
+                .map(this.keyBindingFactory::createKeyBinding)
+                .toList();
+
         return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(toolId)
                 .label(viewNodeTool.getName())
                 .iconURL(iconURLs)
@@ -58,6 +67,7 @@ public class NodeToolFactory implements INodeToolFactory {
                 .targetDescriptions(List.of())
                 .appliesToDiagramRoot(appliesToDiagramRoot)
                 .withImpactAnalysis(viewNodeTool.isWithImpactAnalysis())
+                .keyBindings(keyBindings)
                 .build();
     }
 

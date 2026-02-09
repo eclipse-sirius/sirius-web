@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.view.DeleteElement;
 import org.eclipse.sirius.components.view.FixedColor;
 import org.eclipse.sirius.components.view.For;
 import org.eclipse.sirius.components.view.If;
+import org.eclipse.sirius.components.view.KeyBinding;
 import org.eclipse.sirius.components.view.LabelStyle;
 import org.eclipse.sirius.components.view.Let;
 import org.eclipse.sirius.components.view.Operation;
@@ -175,6 +176,11 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseTextStyleDescription(TextStyleDescription object) {
             return ViewAdapterFactory.this.createTextStyleDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseKeyBinding(KeyBinding object) {
+            return ViewAdapterFactory.this.createKeyBindingAdapter();
         }
 
         @Override
@@ -432,6 +438,19 @@ public class ViewAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createTextStyleDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.view.KeyBinding <em>Key
+     * Binding</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.KeyBinding
+     * @generated
+     */
+    public Adapter createKeyBindingAdapter() {
         return null;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.EdgeToolBuil
 import org.eclipse.sirius.components.view.builder.generated.diagram.LabelEditToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolSectionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.KeyBindingBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
@@ -232,9 +233,9 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodeToolSection entityNodeCreationTools() {
-        var stringCreationTool = this.entityAttributeCreationTool("Text", "aql:'/icons/full/obj16/StringAttribute.svg'", "newString", "aql:domain::DataType::STRING");
-        var booleanCreationTool = this.entityAttributeCreationTool("Boolean", "aql:'/icons/full/obj16/BooleanAttribute.svg'", "newBoolean", "aql:domain::DataType::BOOLEAN");
-        var numberCreationTool = this.entityAttributeCreationTool("Number", "aql:'/icons/full/obj16/NumberAttribute.svg'", "newNumber", "aql:domain::DataType::NUMBER");
+        var stringCreationTool = this.entityAttributeCreationTool("Text", "aql:'/icons/full/obj16/StringAttribute.svg'", "newString", "aql:domain::DataType::STRING", "s");
+        var booleanCreationTool = this.entityAttributeCreationTool("Boolean", "aql:'/icons/full/obj16/BooleanAttribute.svg'", "newBoolean", "aql:domain::DataType::BOOLEAN", "b");
+        var numberCreationTool = this.entityAttributeCreationTool("Number", "aql:'/icons/full/obj16/NumberAttribute.svg'", "newNumber", "aql:domain::DataType::NUMBER", "n");
 
         return new NodeToolSectionBuilder()
                 .name(ENTITY_NODE_TOOL_SECTION_NAME)
@@ -260,7 +261,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .build();
     }
 
-    private NodeTool entityAttributeCreationTool(String toolName, String iconExpression, String valueExpressionForName, String valueExpressionForType) {
+    private NodeTool entityAttributeCreationTool(String toolName, String iconExpression, String valueExpressionForName, String valueExpressionForType, String keyBinding) {
         var createInstance = new ViewBuilders().newCreateInstance()
                 .typeName("domain::Attribute")
                 .referenceName("attributes")
@@ -292,6 +293,15 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                                 )
                                 .build()
                 )
+                .keyBindings(
+                        new KeyBindingBuilder()
+                                .ctrl(true)
+                                .key(keyBinding)
+                                .build(),
+                        new KeyBindingBuilder()
+                                .meta(true)
+                                .key(keyBinding)
+                                .build())
                 .build();
     }
 

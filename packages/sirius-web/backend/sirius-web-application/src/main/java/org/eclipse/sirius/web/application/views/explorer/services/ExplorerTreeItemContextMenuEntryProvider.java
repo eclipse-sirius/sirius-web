@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -96,7 +96,7 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
             result.addAll(this.getLibraryRelatedEntries(emfEditingContext, treeItem));
         }
         if (treeItem.isHasChildren()) {
-            result.add(new SingleClickTreeItemContextMenuEntry(EXPAND_ALL, "", List.of(), false));
+            result.add(new SingleClickTreeItemContextMenuEntry(EXPAND_ALL, "", List.of(), false, List.of()));
         }
         return result;
     }
@@ -110,9 +110,9 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
 
             List<ITreeItemContextMenuEntry> entries = new ArrayList<>();
             if (!this.readOnlyObjectPredicate.test(resource)) {
-                entries.add(new SingleClickTreeItemContextMenuEntry(NEW_ROOT_OBJECT, "", List.of(), false));
+                entries.add(new SingleClickTreeItemContextMenuEntry(NEW_ROOT_OBJECT, "", List.of(), false, List.of()));
             }
-            entries.add(new SingleClickTreeItemContextMenuEntry(DOWNLOAD_DOCUMENT, "", List.of(), false));
+            entries.add(new SingleClickTreeItemContextMenuEntry(DOWNLOAD_DOCUMENT, "", List.of(), false, List.of()));
             return entries;
         }
         return List.of();
@@ -126,9 +126,9 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
             var object = optionalEObject.get();
             if (!this.readOnlyObjectPredicate.test(object)) {
                 return List.of(
-                        new SingleClickTreeItemContextMenuEntry(NEW_OBJECT, "", List.of(), false),
-                        new SingleClickTreeItemContextMenuEntry(NEW_REPRESENTATION, "", List.of(), false),
-                        new SingleClickTreeItemContextMenuEntry(DUPLICATE_OBJECT, "", List.of(), false)
+                        new SingleClickTreeItemContextMenuEntry(NEW_OBJECT, "", List.of(), false, List.of()),
+                        new SingleClickTreeItemContextMenuEntry(NEW_REPRESENTATION, "", List.of(), false, List.of()),
+                        new SingleClickTreeItemContextMenuEntry(DUPLICATE_OBJECT, "", List.of(), false, List.of())
                 );
             }
         }
@@ -141,7 +141,7 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
                 .map(RepresentationMetadata.class::cast);
         if (optionalRepresentationMetadata.isPresent()) {
             return List.of(
-                    new SingleClickTreeItemContextMenuEntry(DUPLICATE_REPRESENTATION, "", List.of(), false)
+                    new SingleClickTreeItemContextMenuEntry(DUPLICATE_REPRESENTATION, "", List.of(), false, List.of())
             );
         }
         return List.of();
@@ -171,8 +171,8 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
             var libraryMetadataAdapter = optionalLibraryMetadataAdapter.get();
             if (this.isDirectDependency(editingContext, libraryMetadataAdapter)) {
                 // We do not support the update or removal of a transitive dependency for the moment.
-                result.add(new SingleClickTreeItemContextMenuEntry(UPDATE_LIBRARY, "Update the library", List.of(), true));
-                result.add(new SingleClickTreeItemContextMenuEntry(REMOVE_LIBRARY, "Remove library", List.of("/icons/remove_library.svg"), true));
+                result.add(new SingleClickTreeItemContextMenuEntry(UPDATE_LIBRARY, "Update the library", List.of(), true, List.of()));
+                result.add(new SingleClickTreeItemContextMenuEntry(REMOVE_LIBRARY, "Remove library", List.of("/icons/remove_library.svg"), true, List.of()));
             }
         }
         return result;
