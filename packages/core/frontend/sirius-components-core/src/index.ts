@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo and others.
+ * Copyright (c) 2022, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,8 @@ export * from './toast/useReporting';
 export * from './workbench/Panels';
 export { useWorkbench } from './workbench/useWorkbench';
 export { type UseWorkbenchValue } from './workbench/useWorkbench.types';
+export * from './workbench/ViewAccordion';
+export type * from './workbench/ViewAccordion.types';
 export * from './workbench/Workbench';
 export type * from './workbench/Workbench.types';
 export * from './workbench/WorkbenchExtensionPoints';

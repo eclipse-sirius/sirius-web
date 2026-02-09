@@ -78,7 +78,7 @@
     "react-window": "2.2.2",
     "@xyflow/react": "12.6.0",
     "tss-react": "4.9.16",
-    "react-resizable-panels": "3.0.2"
+    "react-resizable-panels": "4.6.1"
   },
   "devDependencies": {
     "@apollo/client": "3.10.4",
@@ -136,7 +136,7 @@
     "react-router-dom": "6.26.0",
     "react-window": "2.2.2",
     "rollup-plugin-peer-deps-external": "2.2.4",
-    "react-resizable-panels": "3.0.2",
+    "react-resizable-panels": "4.6.1",
     "tss-react": "4.9.16",
     "typescript": "5.4.5",
     "vite": "7.1.1"

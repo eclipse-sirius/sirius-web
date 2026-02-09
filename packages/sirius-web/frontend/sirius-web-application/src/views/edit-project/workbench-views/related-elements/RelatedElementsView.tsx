@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,9 @@ import {
   RepresentationLoadingIndicator,
   Selection,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -42,27 +45,6 @@ import {
 const useRelatedElementsViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
-  },
-  view: {
-    display: 'grid',
-    gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto 1fr',
-    justifyItems: 'stretch',
-    overflow: 'auto',
-  },
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    overflow: 'hidden',
-    height: theme.spacing(4),
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    gap: theme.spacing(1),
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    justifyContent: 'right',
-    alignItems: 'center',
-    borderBottomColor: theme.palette.divider,
   },
   content: {
     overflow: 'auto',
@@ -183,10 +165,12 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     }
 
     return (
-      <div className={classes.view}>
-        <div className={classes.toolbar}>{toolbar}</div>
-        <div className={classes.content}>{contents}</div>
-      </div>
+      <ViewAccordion id={id} title={t('relatedElementsTitle')}>
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+        <ViewAccordionContent>
+          <div className={classes.content}>{contents}</div>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );
