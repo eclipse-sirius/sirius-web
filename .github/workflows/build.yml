@@ -112,6 +112,7 @@ jobs:
           npx yalc add @eclipse-sirius/sirius-components-gantt
           npx yalc add @eclipse-sirius/sirius-components-impactanalysis
           npx yalc add @eclipse-sirius/sirius-components-omnibox
+          npx yalc add @eclipse-sirius/sirius-components-palette
           npx yalc add @eclipse-sirius/sirius-components-portals
           npx yalc add @eclipse-sirius/sirius-components-selection
           npx yalc add @eclipse-sirius/sirius-components-tables

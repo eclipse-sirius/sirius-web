@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import {
+  ViewAccordion,
+  ViewAccordionContent,
+  WorkbenchViewComponentProps,
+  WorkbenchViewHandle,
+} from '@eclipse-sirius/sirius-components-core';
 import { ForwardedRef, forwardRef, useEffect, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { SearchQueryInput } from './SearchQueryInput';
@@ -19,6 +24,7 @@ import { SearchViewState } from './SearchView.types';
 import { useSearch } from './useSearch';
 import { GQLSearchPayload, GQLSearchSuccessPayload } from './useSearch.types';
 import { useSearchViewHandle } from './useSearchViewHandle';
+import { useTranslation } from 'react-i18next';
 
 const useSearchViewStyles = makeStyles()((theme) => ({
   view: {
@@ -38,7 +44,7 @@ const isSearchSuccessPayload = (payload: GQLSearchPayload): payload is GQLSearch
 export const SearchView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
   ({ editingContextId, id }: WorkbenchViewComponentProps, ref: ForwardedRef<WorkbenchViewHandle>) => {
     const { classes } = useSearchViewStyles();
-
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'searchView' });
     useSearchViewHandle(id, ref);
 
     const [state, setState] = useState<SearchViewState>({
@@ -58,21 +64,25 @@ export const SearchView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponent
     }, [loading, data]);
 
     return (
-      <div className={classes.view} data-representation-kind="search-view">
-        <SearchQueryInput
-          onLaunchSearch={(newQuery) => {
-            setState((prevState) => ({ ...prevState, query: newQuery }));
-            launchSearch(editingContextId, newQuery);
-          }}
-        />
-        <div className={classes.separator} />
-        <SearchResults
-          loading={loading}
-          query={state.query}
-          result={state.result}
-          timestamp={state.resultsReceivedTimestamp}
-        />
-      </div>
+      <ViewAccordion id={id} title={t('searchTitle')}>
+        <ViewAccordionContent>
+          <div className={classes.view} data-representation-kind="search-view">
+            <SearchQueryInput
+              onLaunchSearch={(newQuery) => {
+                setState((prevState) => ({ ...prevState, query: newQuery }));
+                launchSearch(editingContextId, newQuery);
+              }}
+            />
+            <div className={classes.separator} />
+            <SearchResults
+              loading={loading}
+              query={state.query}
+              result={state.result}
+              timestamp={state.resultsReceivedTimestamp}
+            />
+          </div>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );

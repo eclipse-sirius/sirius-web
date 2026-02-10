@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo and others.
+ * Copyright (c) 2022, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import {
+  ViewAccordion,
+  ViewAccordionContent,
+  WorkbenchViewComponentProps,
+  WorkbenchViewHandle,
+} from '@eclipse-sirius/sirius-components-core';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -91,9 +96,13 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
     const processedValidation: Validation = { categories };
 
     let noDiagnostic: ReactNode = (
-      <div className={classes.idle}>
-        <Typography variant="subtitle2">{t('noDiagnostic')}</Typography>
-      </div>
+      <ViewAccordion id={id} title={t('validationTitle')}>
+        <ViewAccordionContent>
+          <div className={classes.idle}>
+            <Typography variant="subtitle2">{t('noDiagnostic')}</Typography>
+          </div>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
 
     if (state.validationPayload && !complete) {
@@ -133,7 +142,13 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
       });
 
       if (accordions.length > 0) {
-        return <div className={classes.root}>{accordions}</div>;
+        return (
+          <ViewAccordion id={id} title={t('validationTitle')}>
+            <ViewAccordionContent>
+              <div className={classes.root}>{accordions}</div>
+            </ViewAccordionContent>
+          </ViewAccordion>
+        );
       } else {
         return noDiagnostic;
       }

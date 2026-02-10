@@ -270,7 +270,8 @@
     "description": "Description"
   },
   "detailsView": {
-    "noObjectSelected": "Aucun objet sélectionné"
+    "noObjectSelected": "Aucun objet sélectionné",
+    "detailsTitle": "Détails"
   },
   "synchronizationButton": {
     "tooltipPinned": "Attaché. Cliquer pour suivre la sélection globale.",
@@ -343,7 +344,8 @@
     "exportAsCsv": "Exporter en CSV"
   },
   "relatedViewsView": {
-    "noObjectSelected": "Aucun objet sélectionné"
+    "noObjectSelected": "Aucun objet sélectionné",
+    "representationsTitle": "Vues liées"
   },
   "expandAllTreeItemContextMenuContribution": {
     "expandAll": "Tout développer"
@@ -365,7 +367,8 @@
     "backToHomepage": "Retour à la page d'accueil"
   },
   "relatedElementsView": {
-    "noObjectSelected": "Aucun objet sélectionné"
+    "noObjectSelected": "Aucun objet sélectionné",
+    "relatedElementsTitle": "Éléments liés"
   },
   "siriusWebFooter": {
     "poweredBy": "Propulsé par"
@@ -382,5 +385,14 @@
     "personalBadge": "Personnel",
     "sectionDescription": "Vos préférences personnelles - ces paramètres sont stockés dans votre navigateur",
     "title": "Paramètres généraux"
+  },
+  "explorerView": {
+    "explorerTitle": "Explorateur"
+  },
+  "queryView": {
+    "queryTitle": "Requête"
+  },
+  "searchView": {
+    "searchTitle": "Recherche"
   }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import {
-  disableGlobalCursorStyles,
-  ImperativePanelHandle,
-  Panel,
-  PanelGroup,
-  PanelResizeHandle,
-} from 'react-resizable-panels';
+import { useTheme } from '@mui/material/styles';
+import React, { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { Group, Panel, Separator, usePanelRef } from 'react-resizable-panels';
 import { makeStyles } from 'tss-react/mui';
+import { PanelCollapseContextProvider } from './PanelCollapseContext';
 import { PanelsProps, PanelState, WorkbenchPanelHandle } from './Panels.types';
 import { Sidebar } from './Sidebar';
 import {
@@ -53,9 +49,11 @@ const usePanelStyles = makeStyles()((theme) => ({
     borderRightWidth: '1px',
   },
   horizontalResizer: {
+    '&[data-separator="disabled"]': {
+      cursor: 'pointer !important',
+    },
     display: 'grid',
     height: `1px`,
-    cursor: 'row-resize',
     backgroundColor: theme.palette.divider,
     borderColor: theme.palette.divider,
     borderBottomStyle: 'solid',
@@ -78,8 +76,6 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     }: PanelsProps,
     refPanelsHandle: ForwardedRef<WorkbenchPanelsHandle | null>
   ) => {
-    disableGlobalCursorStyles();
-
     let leftInitialActiveConfigurationIds: string[] = [];
     if (leftPanelConfiguration) {
       leftInitialActiveConfigurationIds = leftPanelConfiguration.views
@@ -100,18 +96,22 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
 
     const leftInitialState: PanelState = {
       selectedContributionIds: leftInitialActiveConfigurationIds,
+      collapsedContributionIds: [],
       isOpen: leftPanelConfiguration?.isOpen ?? false,
     };
     const rightInitialState: PanelState = {
       selectedContributionIds: rightInitialActiveConfigurationIds,
+      collapsedContributionIds: [],
       isOpen: rightPanelConfiguration?.isOpen ?? false,
     };
 
     const { classes } = usePanelStyles();
+    const theme = useTheme();
     const leftWorkbenchViewRef = useRef<Map<string, WorkbenchViewHandle>>(new Map());
     const rightWorkbenchViewRef = useRef<Map<string, WorkbenchViewHandle>>(new Map());
-    const leftRef = useRef<ImperativePanelHandle>(null);
-    const rightRef = useRef<ImperativePanelHandle>(null);
+    const leftRef = usePanelRef();
+    const rightRef = usePanelRef();
+    const viewPanelRefs = useRef<Map<string, ReturnType<typeof usePanelRef>['current']>>(new Map());
     const [leftPanelState, setLeftPanelState] = useState<PanelState>(leftInitialState);
     const [rightPanelState, setRightPanelState] = useState<PanelState>(rightInitialState);
 
@@ -183,7 +183,7 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     const handleLeftContributionClicked = (id: string) => {
       if (leftRef.current) {
         if (leftPanelState.selectedContributionIds.includes(id)) {
-          if (leftRef.current.isExpanded() && leftPanelState.selectedContributionIds.length === 1) {
+          if (!leftRef.current.isCollapsed() && leftPanelState.selectedContributionIds.length === 1) {
             leftRef.current.collapse();
           }
         } else {
@@ -200,6 +200,9 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
             selectedContributionIds: prevState.selectedContributionIds.filter(
               (contributionId) => contributionId !== id
             ),
+            collapsedContributionIds: prevState.collapsedContributionIds.filter(
+              (contributionId) => contributionId !== id
+            ),
           };
         } else {
           return {
@@ -213,7 +216,7 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     const handleRightContributionClicked = (id: string) => {
       if (rightRef.current) {
         if (rightPanelState.selectedContributionIds.includes(id)) {
-          if (rightRef.current.isExpanded() && rightPanelState.selectedContributionIds.length === 1) {
+          if (!rightRef.current.isCollapsed() && rightPanelState.selectedContributionIds.length === 1) {
             rightRef.current.collapse();
           }
         } else {
@@ -228,6 +231,9 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
           return {
             ...prevState,
             selectedContributionIds: prevState.selectedContributionIds.filter(
+              (contributionId) => contributionId !== id
+            ),
+            collapsedContributionIds: prevState.collapsedContributionIds.filter(
               (contributionId) => contributionId !== id
             ),
           };
@@ -249,6 +255,101 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     };
 
     const collapsedSize: number = 0;
+    const collapsedPanelPixelSize: string = theme.spacing(3.5);
+
+    const handleCollapseChangeLeft = (id: string, collapsed: boolean) => {
+      if (collapsed) {
+        setLeftPanelState((prevState) => ({
+          ...prevState,
+          collapsedContributionIds: [...prevState.collapsedContributionIds, id],
+        }));
+      } else {
+        setLeftPanelState((prevState) => ({
+          ...prevState,
+          collapsedContributionIds: prevState.collapsedContributionIds.filter(
+            (contributionId) => contributionId !== id
+          ),
+        }));
+      }
+    };
+
+    const handleCollapseChangeRight = (id: string, collapsed: boolean) => {
+      if (collapsed) {
+        setRightPanelState((prevState) => ({
+          ...prevState,
+          collapsedContributionIds: [...prevState.collapsedContributionIds, id],
+        }));
+      } else {
+        setRightPanelState((prevState) => ({
+          ...prevState,
+          collapsedContributionIds: prevState.collapsedContributionIds.filter(
+            (contributionId) => contributionId !== id
+          ),
+        }));
+      }
+    };
+
+    const isSeparatorEnabled = (
+      panelId: string,
+      selectedContributionIds: string[],
+      collapsedContributionIds: string[]
+    ): boolean => {
+      const panelIndex = selectedContributionIds.indexOf(panelId);
+
+      // Don't show separator after the last panel (it would be between last panel and spacer)
+      if (panelIndex >= selectedContributionIds.length - 1) {
+        return false;
+      }
+
+      // Check if there's at least one expanded panel at or before this one
+      const hasExpandedPanelBefore = selectedContributionIds
+        .slice(0, panelIndex + 1)
+        .some((id) => !collapsedContributionIds.includes(id));
+
+      // Check if there's at least one expanded panel after this one
+      const hasExpandedPanelAfter = selectedContributionIds
+        .slice(panelIndex + 1)
+        .some((id) => !collapsedContributionIds.includes(id));
+
+      return hasExpandedPanelBefore && hasExpandedPanelAfter;
+    };
+
+    const changeCollapsePanelState = (
+      selectedContributionIds: string[],
+      collapsedContributionIds: string[],
+      spacerId: string
+    ) => {
+      const nbCollapsed = collapsedContributionIds.length;
+      const nbSelected = selectedContributionIds.length;
+      const nbExpanded = nbSelected - nbCollapsed;
+      // Expanded panels share the remaining space equally
+      const expandedSize = nbExpanded > 0 ? 100 / nbExpanded : 0;
+      // Spacer takes all the space if all panels are collapsed
+      const spacerSize = nbExpanded === 0 ? '100%' : '0%';
+      selectedContributionIds.forEach((contributionId) => {
+        const collapsed = collapsedContributionIds.includes(contributionId);
+        const targetSize = collapsed ? collapsedPanelPixelSize : `${expandedSize}%`;
+        viewPanelRefs.current.get(contributionId)?.resize(targetSize);
+      });
+      viewPanelRefs.current.get(spacerId)?.resize(spacerSize);
+    };
+
+    useEffect(() => {
+      changeCollapsePanelState(
+        leftPanelState.selectedContributionIds,
+        leftPanelState.collapsedContributionIds,
+        'leftSpacer'
+      );
+    }, [leftPanelState.collapsedContributionIds]);
+
+    useEffect(() => {
+      changeCollapsePanelState(
+        rightPanelState.selectedContributionIds,
+        rightPanelState.collapsedContributionIds,
+        'rightSpacer'
+      );
+    }, [rightPanelState.collapsedContributionIds]);
+
     return (
       <div style={{ display: 'flex' }}>
         <Sidebar
@@ -257,117 +358,181 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
           selectedContributionIds={leftPanelState.selectedContributionIds}
           onContributionClick={handleLeftContributionClicked}
         />
-        <PanelGroup direction="horizontal">
-          <Panel
-            id="left"
-            className={classes.panel}
-            defaultSize={leftPanelState.isOpen ? leftPanelInitialSize : collapsedSize}
-            collapsible
-            collapsedSize={collapsedSize}
-            minSize={10}
-            onExpand={() => toggleLeftPanel(true)}
-            onCollapse={() => toggleLeftPanel(false)}
-            ref={leftRef}>
-            {leftPanelState.isOpen ? (
-              <PanelGroup direction="vertical">
-                {leftSelectedContributions.map((leftContribution, index) => (
-                  <>
-                    <Panel
-                      id={leftContribution.id}
-                      key={leftContribution.id}
-                      order={index}
-                      className={classes.panel}
-                      minSize={10}>
-                      <WorkbenchPart
-                        editingContextId={editingContextId}
-                        readOnly={readOnly}
-                        side="left"
-                        contribution={leftContribution}
-                        initialConfiguration={
-                          leftPanelConfiguration?.views.find(
-                            (configuration) => configuration && configuration.id === leftContribution.id
-                          ) ?? null
+        <Group orientation="horizontal" disableCursor>
+          <PanelCollapseContextProvider onCollapseChange={handleCollapseChangeLeft}>
+            <Panel
+              id="left"
+              className={classes.panel}
+              defaultSize={leftPanelState.isOpen ? `${leftPanelInitialSize}%` : `${collapsedSize}%`}
+              collapsible
+              collapsedSize={`${collapsedSize}%`}
+              minSize="10%"
+              onResize={(size, prevSize) => {
+                if (prevSize !== undefined) {
+                  const wasCollapsed = prevSize === 0;
+                  const isCollapsed = size.asPercentage === 0;
+                  if (isCollapsed !== wasCollapsed) {
+                    toggleLeftPanel(isCollapsed);
+                  }
+                }
+              }}
+              panelRef={leftRef}>
+              {leftPanelState.isOpen ? (
+                <Group orientation="vertical">
+                  {leftSelectedContributions.map((leftContribution) => (
+                    <React.Fragment key={leftContribution.id}>
+                      <Panel
+                        id={leftContribution.id}
+                        key={leftContribution.id}
+                        className={classes.panel}
+                        collapsedSize={collapsedPanelPixelSize}
+                        minSize={
+                          leftPanelState.collapsedContributionIds.includes(leftContribution.id)
+                            ? collapsedPanelPixelSize
+                            : '10%'
                         }
-                        ref={(workbenchViewHandle: WorkbenchViewHandle | null) => {
-                          if (workbenchViewHandle) {
-                            leftWorkbenchViewRef.current.set(leftContribution.id, workbenchViewHandle);
+                        maxSize={
+                          leftPanelState.collapsedContributionIds.includes(leftContribution.id)
+                            ? collapsedPanelPixelSize
+                            : '100%'
+                        }
+                        disabled={leftPanelState.collapsedContributionIds.includes(leftContribution.id)}
+                        panelRef={(panelHandle) => {
+                          if (panelHandle) {
+                            viewPanelRefs.current.set(leftContribution.id, panelHandle);
                           }
                           return () => {
-                            leftWorkbenchViewRef.current.delete(leftContribution.id);
+                            viewPanelRefs.current.delete(leftContribution.id);
                           };
-                        }}
-                      />
-                    </Panel>
-                    {index < leftSelectedContributions.length - 1 ? (
-                      <PanelResizeHandle
-                        key={`left-resizer-${leftContribution.id}`}
+                        }}>
+                        <WorkbenchPart
+                          editingContextId={editingContextId}
+                          readOnly={readOnly}
+                          side="left"
+                          contribution={leftContribution}
+                          initialConfiguration={
+                            leftPanelConfiguration?.views.find(
+                              (configuration) => configuration && configuration.id === leftContribution.id
+                            ) ?? null
+                          }
+                          ref={(workbenchViewHandle: WorkbenchViewHandle | null) => {
+                            if (workbenchViewHandle) {
+                              leftWorkbenchViewRef.current.set(leftContribution.id, workbenchViewHandle);
+                            }
+                            return () => {
+                              leftWorkbenchViewRef.current.delete(leftContribution.id);
+                            };
+                          }}
+                        />
+                      </Panel>
+                      <Separator
                         className={classes.horizontalResizer}
                         data-testid="view-resizer"
+                        disabled={
+                          !isSeparatorEnabled(
+                            leftContribution.id,
+                            leftPanelState.selectedContributionIds,
+                            leftPanelState.collapsedContributionIds
+                          )
+                        }
                       />
-                    ) : null}
-                  </>
-                ))}
-              </PanelGroup>
-            ) : null}
-          </Panel>
-          <PanelResizeHandle className={classes.verticalResizer} data-testid="left-resizer" />
-          <Panel id="mainArea" minSize={30}>
+                    </React.Fragment>
+                  ))}
+                  <Panel id="leftSpacer" key="leftSpacer" minSize="0%" defaultSize="0%" maxSize="100%" disabled />
+                </Group>
+              ) : null}
+            </Panel>
+          </PanelCollapseContextProvider>
+          <Separator className={classes.verticalResizer} data-testid="left-resizer" />
+          <Panel id="mainArea" minSize="30%">
             <div className={classes.mainArea}>{mainArea}</div>
           </Panel>
-          <PanelResizeHandle className={classes.verticalResizer} data-testid="right-resizer" />
-          <Panel
-            id="right"
-            className={classes.panel}
-            defaultSize={rightPanelState.isOpen ? rightPanelInitialSize : collapsedSize}
-            collapsible
-            collapsedSize={collapsedSize}
-            minSize={10}
-            onExpand={() => toggleRightPanel(true)}
-            onCollapse={() => toggleRightPanel(false)}
-            ref={rightRef}>
-            {rightPanelState.isOpen ? (
-              <PanelGroup direction="vertical">
-                {rightSelectedContributions.map((rightContribution, index) => (
-                  <>
-                    <Panel
-                      id={rightContribution.id}
-                      key={rightContribution.id}
-                      order={index}
-                      className={classes.panel}
-                      minSize={10}>
-                      <WorkbenchPart
-                        editingContextId={editingContextId}
-                        readOnly={readOnly}
-                        side="right"
-                        contribution={rightContribution}
-                        initialConfiguration={
-                          rightPanelConfiguration?.views.find(
-                            (configuration) => configuration && configuration.id === rightContribution.id
-                          ) ?? null
+          <Separator className={classes.verticalResizer} data-testid="right-resizer" />
+          <PanelCollapseContextProvider onCollapseChange={handleCollapseChangeRight}>
+            <Panel
+              id="right"
+              className={classes.panel}
+              defaultSize={rightPanelState.isOpen ? `${rightPanelInitialSize}%` : `${collapsedSize}%`}
+              collapsible
+              collapsedSize={`${collapsedSize}%`}
+              minSize="10%"
+              onResize={(size, prevSize) => {
+                if (prevSize !== undefined) {
+                  const wasCollapsed = prevSize === 0;
+                  const isCollapsed = size.asPercentage === 0;
+                  if (isCollapsed !== wasCollapsed) {
+                    toggleRightPanel(isCollapsed);
+                  }
+                }
+              }}
+              panelRef={rightRef}>
+              {rightPanelState.isOpen ? (
+                <Group orientation="vertical">
+                  {rightSelectedContributions.map((rightContribution) => (
+                    <React.Fragment key={rightContribution.id}>
+                      <Panel
+                        id={rightContribution.id}
+                        key={rightContribution.id}
+                        className={classes.panel}
+                        collapsedSize={collapsedPanelPixelSize}
+                        minSize={
+                          rightPanelState.collapsedContributionIds.includes(rightContribution.id)
+                            ? collapsedPanelPixelSize
+                            : '10%'
                         }
-                        ref={(workbenchViewHandle: WorkbenchViewHandle | null) => {
-                          if (workbenchViewHandle) {
-                            rightWorkbenchViewRef.current.set(rightContribution.id, workbenchViewHandle);
+                        maxSize={
+                          rightPanelState.collapsedContributionIds.includes(rightContribution.id)
+                            ? collapsedPanelPixelSize
+                            : '100%'
+                        }
+                        disabled={rightPanelState.collapsedContributionIds.includes(rightContribution.id)}
+                        panelRef={(panelHandle) => {
+                          if (panelHandle) {
+                            viewPanelRefs.current.set(rightContribution.id, panelHandle);
                           }
                           return () => {
-                            rightWorkbenchViewRef.current.delete(rightContribution.id);
+                            viewPanelRefs.current.delete(rightContribution.id);
                           };
-                        }}
-                      />
-                    </Panel>
-                    {index < rightSelectedContributions.length - 1 ? (
-                      <PanelResizeHandle
-                        key={`right-resizer-${rightContribution.id}`}
+                        }}>
+                        <WorkbenchPart
+                          editingContextId={editingContextId}
+                          readOnly={readOnly}
+                          side="right"
+                          contribution={rightContribution}
+                          initialConfiguration={
+                            rightPanelConfiguration?.views.find(
+                              (configuration) => configuration && configuration.id === rightContribution.id
+                            ) ?? null
+                          }
+                          ref={(workbenchViewHandle: WorkbenchViewHandle | null) => {
+                            if (workbenchViewHandle) {
+                              rightWorkbenchViewRef.current.set(rightContribution.id, workbenchViewHandle);
+                            }
+                            return () => {
+                              rightWorkbenchViewRef.current.delete(rightContribution.id);
+                            };
+                          }}
+                        />
+                      </Panel>
+                      <Separator
                         className={classes.horizontalResizer}
                         data-testid="view-resizer"
+                        disabled={
+                          !isSeparatorEnabled(
+                            rightContribution.id,
+                            rightPanelState.selectedContributionIds,
+                            rightPanelState.collapsedContributionIds
+                          )
+                        }
                       />
-                    ) : null}
-                  </>
-                ))}
-              </PanelGroup>
-            ) : null}
-          </Panel>
-        </PanelGroup>
+                    </React.Fragment>
+                  ))}
+                  <Panel id="rightSpacer" key="rightSpacer" minSize="0%" defaultSize="0%" maxSize="100%" disabled />
+                </Group>
+              ) : null}
+            </Panel>
+          </PanelCollapseContextProvider>
+        </Group>
         <Sidebar
           contributions={rightContributions}
           side="right"

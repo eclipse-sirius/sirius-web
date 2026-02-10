@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,9 @@ import {
   Selection,
   SelectionEntry,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -42,12 +45,13 @@ import { useExplorerDescriptions } from './useExplorerDescriptions';
 import { useExplorerSubscription } from './useExplorerSubscription';
 import { GQLTreeEventPayload, GQLTreeRefreshedEventPayload } from './useExplorerSubscription.types';
 import { useExplorerViewHandle } from './useExplorerViewHandle';
+import { useTranslation } from 'react-i18next';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto auto 1fr',
+    gridTemplateRows: 'auto 1fr',
     justifyItems: 'stretch',
     overflow: 'auto',
   },
@@ -56,6 +60,15 @@ const useStyles = makeStyles()((theme: Theme) => ({
   },
   treeContent: {
     overflow: 'auto',
+  },
+  viewContent: {
+    flexGrow: 1,
+    overflow: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    '& > *': {
+      flexGrow: 1,
+    },
   },
 }));
 
@@ -87,6 +100,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
 
     // If we are requested to reveal the global selection, we need to compute the tree path to expand
     const { getTreePath, data: treePathData } = useTreePath();
+    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'explorerView' });
 
     const applySelection = (selection: Selection) => {
       const newSelectedTreeItemIds = selection.entries.map((entry) => entry.id);
@@ -324,68 +338,81 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       />
     );
 
+    const toolbar = (
+      <TreeToolBar
+        editingContextId={editingContextId}
+        readOnly={readOnly}
+        treeFilters={state.treeFilters}
+        onRevealSelection={revealSelection}
+        onTreeFilterMenuItemClick={(treeFilters) =>
+          setState((prevState) => {
+            return { ...prevState, treeFilters };
+          })
+        }
+        onFilter={() => {
+          setState((prevState) => {
+            return !prevState.filterBar
+              ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
+              : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+          });
+        }}
+        treeToolBarContributionComponents={treeToolBarContributionComponents}>
+        {treeDescriptionSelector}
+      </TreeToolBar>
+    );
+
     if (!state.tree || loading) {
       return (
-        <div className={styles.treeView} ref={treeElement}>
-          <RepresentationLoadingIndicator />
-        </div>
+        <ViewAccordion id={id} title={t('explorerTitle')}>
+          <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+          <ViewAccordionContent>
+            <div className={styles.treeView} ref={treeElement}>
+              <RepresentationLoadingIndicator />
+            </div>
+          </ViewAccordionContent>
+        </ViewAccordion>
       );
     }
 
     return (
-      <div className={styles.treeView} ref={treeElement}>
-        <TreeToolBar
-          editingContextId={editingContextId}
-          readOnly={readOnly}
-          treeFilters={state.treeFilters}
-          onRevealSelection={revealSelection}
-          onTreeFilterMenuItemClick={(treeFilters) =>
-            setState((prevState) => {
-              return { ...prevState, treeFilters };
-            })
-          }
-          onFilter={() => {
-            setState((prevState) => {
-              return !prevState.filterBar
-                ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
-                : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-            });
-          }}
-          treeToolBarContributionComponents={treeToolBarContributionComponents}>
-          {treeDescriptionSelector}
-        </TreeToolBar>
-        <DuplicateObjectKeyboardShortcut
-          editingContextId={editingContextId}
-          readOnly={readOnly}
-          selectedTreeItem={state.singleTreeItemSelected}
-          selectTreeItems={(selectedTreeItemIds: string[]) =>
-            setState((prevState) => {
-              return { ...prevState, selectedTreeItemIds };
-            })
-          }>
-          {filterBar}
-          <div className={styles.treeContent}>
-            <TreeView
+      <ViewAccordion id={id} title={t('explorerTitle')}>
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+        <ViewAccordionContent>
+          <div className={styles.treeView} ref={treeElement}>
+            <DuplicateObjectKeyboardShortcut
               editingContextId={editingContextId}
               readOnly={readOnly}
-              tree={state.tree}
-              textToHighlight={state.filterBarText}
-              textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-              onExpandedElementChange={onExpandedElementChange}
-              expanded={state.expanded[state.activeTreeDescriptionId]}
-              maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
-              onTreeItemClick={onTreeItemClick}
+              selectedTreeItem={state.singleTreeItemSelected}
               selectTreeItems={(selectedTreeItemIds: string[]) =>
                 setState((prevState) => {
                   return { ...prevState, selectedTreeItemIds };
                 })
-              }
-              selectedTreeItemIds={state.selectedTreeItemIds}
-              data-testid="explorer://"
-            />
+              }>
+              {filterBar}
+              <div className={styles.treeContent}>
+                <TreeView
+                  editingContextId={editingContextId}
+                  readOnly={readOnly}
+                  tree={state.tree}
+                  textToHighlight={state.filterBarText}
+                  textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+                  onExpandedElementChange={onExpandedElementChange}
+                  expanded={state.expanded[state.activeTreeDescriptionId]}
+                  maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
+                  onTreeItemClick={onTreeItemClick}
+                  selectTreeItems={(selectedTreeItemIds: string[]) =>
+                    setState((prevState) => {
+                      return { ...prevState, selectedTreeItemIds };
+                    })
+                  }
+                  selectedTreeItemIds={state.selectedTreeItemIds}
+                  data-testid="explorer://"
+                />
+              </div>
+            </DuplicateObjectKeyboardShortcut>
           </div>
-        </DuplicateObjectKeyboardShortcut>
-      </div>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );

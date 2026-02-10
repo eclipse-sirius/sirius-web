@@ -22,6 +22,9 @@
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.10[Spring Boot 3.5.10]
+- [releng] Switch to https://github.com/bvaughn/react-resizable-panels/releases/tag/4.6.2[React Resizable Panels 4.6.2].
+This switch enables us to use other units such as `px` or `rem` instead of `%` to specify panels' size.
+It also enables us to disable panel resize for a better control when needed.
 
 
 === Bug fixes
@@ -40,6 +43,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
 - https://github.com/eclipse-sirius/sirius-web/issues/5889[#5889] [sirius-web] In the _Search_ view, a placeholder text has been added to indicate that _Ctrl+Enter_ can be used to launch the search directly from the keyboard
 - https://github.com/eclipse-sirius/sirius-web/issues/6105[#6105] [sirius-web] Publishing a studio now publishes its representations.
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [sirius-web] Add collapsible view in workbench panels, merge view header and toolbar inside the same bar.
 
 
 == 2026.1.0
