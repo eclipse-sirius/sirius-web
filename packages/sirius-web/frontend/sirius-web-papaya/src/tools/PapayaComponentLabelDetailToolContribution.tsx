@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DiagramPaletteToolComponentProps, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import { EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
+import { PaletteQuickToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import Slideshow from '@mui/icons-material/Slideshow';
+import { ListItem, ListItemText } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import { Theme } from '@mui/material/styles';
-import { Node, useNodes } from '@xyflow/react';
+import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { Fragment, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
@@ -31,30 +33,34 @@ const useToolStyle = makeStyles()((theme: Theme) => ({
 }));
 
 type Modal = 'dialog';
-export const PapayaComponentLabelDetailToolContribution = ({ diagramElementId }: DiagramPaletteToolComponentProps) => {
+export const PapayaComponentLabelDetailToolContribution = ({
+  representationElementIds,
+}: PaletteQuickToolContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
+  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { classes } = useToolStyle();
-  const nodes = useNodes<Node<NodeData>>();
-  const targetedNode = nodes.find((node) => node.id === diagramElementId);
-  if (
-    !targetedNode ||
-    targetedNode.data.targetObjectKind !== 'siriusComponents://semantic?domain=papaya&entity=Component'
-  ) {
-    return null;
-  }
+
+  const targetedNodes = representationElementIds
+    .map((elementId) => store.getState().nodeLookup.get(elementId))
+    .filter((element) => !!element);
 
   const onClose = () => {
     setModal(null);
   };
 
   let modalElement: JSX.Element | null = null;
-  if (modal === 'dialog' && targetedNode) {
+  if (modal === 'dialog') {
     modalElement = (
       <>
         <Dialog open={true} onClose={onClose} fullWidth>
-          <DialogContent>
-            <DialogContentText>{targetedNode.data.insideLabel?.text}</DialogContentText>
-          </DialogContent>
+          <DialogTitle>Inside labels :</DialogTitle>
+          <List>
+            {targetedNodes.map((node) => (
+              <ListItem disablePadding key={node?.id}>
+                <ListItemText primary={node?.data.insideLabel?.text} />
+              </ListItem>
+            ))}
+          </List>
         </Dialog>
       </>
     );

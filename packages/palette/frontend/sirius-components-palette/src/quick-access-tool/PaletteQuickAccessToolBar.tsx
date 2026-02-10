@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,9 @@ import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { Theme } from '@mui/material/styles';
-import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { makeStyles } from 'tss-react/mui';
-import { EdgeData, NodeData } from '../../DiagramRenderer.types';
-import { diagramPaletteToolExtensionPoint } from '../extensions/DiagramPaletteToolExtensionPoints';
-import { DiagramPaletteToolContributionProps } from './../extensions/DiagramPaletteToolContribution.types';
+import { PaletteQuickToolContributionProps } from '../extensions/PaletteQuickToolContribution.types';
+import { paletteQuickToolExtensionPoint } from '../extensions/PaletteQuickToolExtensionPoints';
 import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.types';
 import { Tool } from './Tool';
 
@@ -40,39 +38,27 @@ export const PaletteQuickAccessToolBar = ({
   diagramElementIds,
   quickAccessTools,
   onToolClick,
-  x,
-  y,
 }: PaletteQuickAccessToolBarProps) => {
   const { classes } = useStyle();
-  const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
 
   const quickAccessToolComponents: JSX.Element[] = [];
   quickAccessTools.forEach((tool) =>
     quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} key={'tool_' + tool.id} />)
   );
 
-  if (diagramElementIds.length === 1 && diagramElementIds[0]) {
-    const diagramElementId = diagramElementIds[0];
-    let diagramElement = edgeLookup.get(diagramElementId) || nodeLookup.get(diagramElementId);
+  const paletteToolData: DataExtension<PaletteQuickToolContributionProps[]> = useData(paletteQuickToolExtensionPoint);
 
-    const paletteToolData: DataExtension<DiagramPaletteToolContributionProps[]> = useData(
-      diagramPaletteToolExtensionPoint
+  paletteToolData.data
+    .filter((data) => data.canHandle(diagramElementIds))
+    .map((data) => data.component)
+    .forEach((PaletteToolComponent, index) =>
+      quickAccessToolComponents.push(
+        <PaletteToolComponent
+          representationElementIds={diagramElementIds}
+          key={'paletteToolComponents_' + index.toString()}
+        />
+      )
     );
-
-    paletteToolData.data
-      .filter((data) => data.canHandle(diagramElement ?? null))
-      .map((data) => data.component)
-      .forEach((PaletteToolComponent, index) =>
-        quickAccessToolComponents.push(
-          <PaletteToolComponent
-            x={x}
-            y={y}
-            diagramElementId={diagramElementId}
-            key={'paletteToolComponents_' + index.toString()}
-          />
-        )
-      );
-  }
 
   return quickAccessToolComponents.length > 0 ? (
     <>

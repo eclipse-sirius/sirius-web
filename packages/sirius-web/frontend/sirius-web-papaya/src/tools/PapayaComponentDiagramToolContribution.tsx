@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { useDiagramPalette } from '@eclipse-sirius/sirius-components-diagrams';
 import { useCurrentProject } from '@eclipse-sirius/sirius-web-application';
 import RadarIcon from '@mui/icons-material/Radar';
 import Dialog from '@mui/material/Dialog';
@@ -30,11 +31,11 @@ const useToolStyle = makeStyles()((theme: Theme) => ({
 }));
 
 type Modal = 'dialog';
-export const PapayaComponentDiagramToolContribution = ({ x, y }) => {
+export const PapayaComponentDiagramToolContribution = ({}) => {
   const { project } = useCurrentProject();
   const [modal, setModal] = useState<Modal | null>(null);
   const { classes } = useToolStyle();
-
+  const { x, y } = useDiagramPalette();
   const onClose = () => {
     setModal(null);
   };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteSearchField, PaletteSearchResult, PaletteToolList } from '@eclipse-sirius/sirius-components-palette';
+import {
+  PaletteQuickAccessToolBar,
+  PaletteSearchField,
+  PaletteSearchResult,
+  PaletteToolList,
+} from '@eclipse-sirius/sirius-components-palette';
 import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
@@ -36,7 +41,6 @@ import {
   PaletteProps,
   PaletteState,
 } from './Palette.types';
-import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
 import { useDiagramPalette } from './useDiagramPalette';
 
 export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
@@ -183,8 +187,6 @@ export const Palette = ({
               diagramElementIds={diagramElementIds}
               onToolClick={handleToolClick}
               quickAccessTools={palette.quickAccessTools}
-              x={paletteX}
-              y={paletteY}
             />
             <PaletteSearchField onValueChanged={onSearchFieldValueChanged} />
             {state.searchToolValue.length > 0 ? (
