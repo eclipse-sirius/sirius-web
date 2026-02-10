@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import { emphasize } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from 'tss-react/mui';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
-import { DisplayLibraryNavbarProps } from './DisplayLibraryNavbar.types';
+import { useCurrentLibrary } from './useCurrentLibrary';
 
 const useDisplayLibraryViewNavbarStyles = makeStyles()((theme) => ({
   center: {
@@ -42,8 +42,9 @@ const useDisplayLibraryViewNavbarStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const DisplayLibraryNavbar = ({ library }: DisplayLibraryNavbarProps) => {
+export const DisplayLibraryNavbar = () => {
   const { classes } = useDisplayLibraryViewNavbarStyles();
+  const { library } = useCurrentLibrary();
   return (
     <NavigationBar>
       <div className={classes.center}>
