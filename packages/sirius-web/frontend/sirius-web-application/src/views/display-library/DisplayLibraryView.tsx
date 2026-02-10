@@ -23,6 +23,7 @@ import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { useInitialWorkbenchConfiguration } from '../edit-project/useInitialWorkbenchConfiguration';
 import { DisplayLibraryNavbar } from './DisplayLibraryNavbar';
 import { DisplayLibraryViewParams, DisplayLibraryViewState } from './DisplayLibraryView.types';
+import { LibraryContext } from './LibraryContext';
 import { useLibrary } from './useLibrary';
 
 const useDisplayLibraryViewStyles = makeStyles()(() => ({
@@ -71,19 +72,21 @@ export const DisplayLibraryView = () => {
     <div className={classes.displayLibraryView}>
       {loading ? <NavigationBar /> : null}
       {data && workbenchConfiguration ? (
-        <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
-          <SelectionContextProvider initialSelection={{ entries: [] }}>
-            <DisplayLibraryNavbar library={data.viewer.library} />
-            <Workbench
-              editingContextId={data.viewer.library.currentEditingContext.id}
-              initialRepresentationSelected={state.representation}
-              onRepresentationSelected={onRepresentationSelected}
-              readOnly
-              initialWorkbenchConfiguration={workbenchConfiguration}
-              ref={null}
-            />
-          </SelectionContextProvider>
-        </RepresentationPathContext.Provider>
+        <LibraryContext.Provider value={{ library: data.viewer.library }}>
+          <RepresentationPathContext.Provider value={{ getRepresentationPath }}>
+            <SelectionContextProvider initialSelection={{ entries: [] }}>
+              <DisplayLibraryNavbar />
+              <Workbench
+                editingContextId={data.viewer.library.currentEditingContext.id}
+                initialRepresentationSelected={state.representation}
+                onRepresentationSelected={onRepresentationSelected}
+                readOnly
+                initialWorkbenchConfiguration={workbenchConfiguration}
+                ref={null}
+              />
+            </SelectionContextProvider>
+          </RepresentationPathContext.Provider>
+        </LibraryContext.Provider>
       ) : null}
       ;
     </div>
