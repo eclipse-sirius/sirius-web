@@ -221,7 +221,7 @@ public class DiagramCreationService implements IDiagramCreationService {
         var edgeLayoutData = layoutDiagramInput.diagramLayoutData().edgeLayoutData().stream()
                 .collect(Collectors.toMap(
                         EdgeLayoutDataInput::id,
-                        edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints(), edgeLayoutDataInput.edgeAnchorLayoutData()),
+                        edgeLayoutDataInput -> new EdgeLayoutData(edgeLayoutDataInput.id(), edgeLayoutDataInput.bendingPoints(), edgeLayoutDataInput.relativePositionBendingPoints(), edgeLayoutDataInput.edgeAnchorLayoutData()),
                         (oldValue, newValue) -> newValue
                 ));
 

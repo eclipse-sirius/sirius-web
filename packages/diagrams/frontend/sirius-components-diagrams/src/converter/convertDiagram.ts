@@ -244,6 +244,8 @@ export const convertDiagram = (
       centerLabelEditable: gqlEdge.centerLabelEditable,
       deletable: gqlEdge.deletable,
       bendingPoints: edgeLayoutData?.bendingPoints ?? null,
+      relativePositionBendingPoints: edgeLayoutData?.relativePositionBendingPoints ?? null,
+      moving: false,
       edgePath,
       isHovered: false,
       edgeAppearanceData: {

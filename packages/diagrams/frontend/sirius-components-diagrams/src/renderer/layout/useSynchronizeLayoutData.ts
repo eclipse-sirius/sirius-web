@@ -220,13 +220,21 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
       let edgeLayout: GQLEdgeLayoutData = {
         id: edge.id,
         bendingPoints: [],
+        relativePositionBendingPoints: [],
         edgeAnchorLayoutData: [],
       };
 
-      if (edge.data && edge.data.bendingPoints) {
-        edge.data.bendingPoints.forEach((point) => {
-          edgeLayout.bendingPoints.push({ x: point.x, y: point.y });
-        });
+      if (edge.data) {
+        if (edge.data.bendingPoints) {
+          edge.data.bendingPoints.forEach((point) => {
+            edgeLayout.bendingPoints.push({ x: point.x, y: point.y });
+          });
+        }
+        if (edge.data.relativePositionBendingPoints) {
+          edge.data.relativePositionBendingPoints.forEach((point) => {
+            edgeLayout.relativePositionBendingPoints.push({ x: point.x, y: point.y });
+          });
+        }
       }
 
       const edgeAnchorNode = nodeId2node.get(edge.id);
