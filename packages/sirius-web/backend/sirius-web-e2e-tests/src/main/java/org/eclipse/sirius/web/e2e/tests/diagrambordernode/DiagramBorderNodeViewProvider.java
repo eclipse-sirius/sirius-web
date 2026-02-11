@@ -93,6 +93,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
     private NodeDescription getNodeDescription(IColorProvider colorProvider) {
         var borderNodeNorthDescription = this.getChildrenBorderDescription(colorProvider, "north");
         var borderNodeEastDescription = this.getChildrenBorderDescription(colorProvider, "east");
+        var borderNodeFreeDescription = this.getFreeChildrenBorderDescription(colorProvider);
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Entity Node 1")
@@ -142,7 +143,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                                 )
                                 .build()
                 )
-                .borderNodesDescriptions(borderNodeNorthDescription, borderNodeEastDescription)
+                .borderNodesDescriptions(borderNodeNorthDescription, borderNodeEastDescription, borderNodeFreeDescription)
                 .build();
     }
 
@@ -191,6 +192,33 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                                                 .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))
                                                 .build()
                                 )
+                                .build()
+                )
+                .build();
+    }
+
+    private NodeDescription getFreeChildrenBorderDescription(IColorProvider colorProvider) {
+        return new DiagramBuilders()
+                .newNodeDescription()
+                .name("Border")
+                .domainType(DiagramBorderNodeDomainProvider.DOMAIN_NAME + "::Border")
+                .semanticCandidatesExpression("aql:self.eContents()")
+                .preconditionExpression("aql:self.name != 'north' && aql:self.name != 'east'")
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .collapsible(false)
+                .userResizable(UserResizableDirection.NONE)
+                .keepAspectRatio(false)
+                .defaultWidthExpression("20")
+                .defaultHeightExpression("20")
+                .style(
+                        new DiagramBuilders()
+                                .newRectangularNodeStyleDescription()
+                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_RED))
+                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                .borderRadius(0)
+                                .borderSize(1)
+                                .borderLineStyle(LineStyle.SOLID)
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                                 .build()
                 )
                 .build();

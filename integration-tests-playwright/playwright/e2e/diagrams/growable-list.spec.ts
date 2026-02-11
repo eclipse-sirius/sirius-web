@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -99,11 +100,7 @@ test.describe('diagram - growable list', () => {
 
     await listNode.click();
 
-    // Hide Node Panel Info to avoid overlap in diagram
-    const panel = await page.locator('.react-flow__panel.bottom.left');
-    await panel.evaluate((node) => {
-      node.style.visibility = 'hidden';
-    });
+    await new PlaywrightDiagram(page).hideDebugPanel();
 
     //issue tested only appear after resize
     await listNode.resize({ height: 20, width: 50 });
