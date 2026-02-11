@@ -75,6 +75,7 @@ type EdgeAnchorLayoutData {
 type EdgeLayoutData {
   id: ID!
   bendingPoints: [Position!]!
+  relativePositionBendingPoints: [Position!]!
   edgeAnchorLayoutData: [EdgeAnchorLayoutData!]!
 }
 
@@ -757,6 +758,7 @@ input EdgeAnchorLayoutDataInput {
 input EdgeLayoutDataInput {
   id: ID!
   bendingPoints: [PositionInput!]!
+  relativePositionBendingPoints: [PositionInput!]!
   edgeAnchorLayoutData: [EdgeAnchorLayoutDataInput!]!
 }
 
