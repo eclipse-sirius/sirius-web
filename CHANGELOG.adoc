@@ -21,6 +21,8 @@
 The `initialSelectedPageId` prop in `FormProps` has been changed to `initialSelectedPageLabel`.
 `DetailsView`, `DiagramFilterForm`, `FormBasedView`, `FormRepresentation`, `RelatedElementsView`, and `RelatedViewsView` have been updated to reflect this change.
 The link produced by the _Share_ action on a project now includes the `selectedPageLabel` instead of the `selectedPageId`.
+-https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] `moving` should be set when converting custom nodes.
+
 
 === Dependency update
 
@@ -48,7 +50,7 @@ When the selection changes, the details view will attempt to re-open the same ta
 If the tab cannot be found the first tab of the form will be opened instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/6040[#6040] [sirius-web] Only propose to select project template or libraries when it is relevant
 - https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Standardize font sizes on the _New Project_ creation page
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] Preserve edge path when moving both source and target
 
 
 == 2026.1.0

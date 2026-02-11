@@ -227,7 +227,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
         oldEdgeLayoutData.keySet().forEach(key -> {
             if (edgeElementOldNewIds.get(key) != null) {
                 var oldLayoutEdgeData = oldEdgeLayoutData.get(key);
-                var newEdgeLayoutData = new EdgeLayoutData(edgeElementOldNewIds.get(key), oldLayoutEdgeData.bendingPoints(), oldLayoutEdgeData.edgeAnchorLayoutData());
+                var newEdgeLayoutData = new EdgeLayoutData(edgeElementOldNewIds.get(key), oldLayoutEdgeData.bendingPoints(), oldLayoutEdgeData.relativePositionBendingPoints(), oldLayoutEdgeData.edgeAnchorLayoutData());
                 newLayoutData.edgeLayoutData().put(edgeElementOldNewIds.get(key), newEdgeLayoutData);
             }
         });

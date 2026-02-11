@@ -65,6 +65,7 @@ export interface NodeData extends Record<string, unknown> {
   nodeAppearanceData: NodeAppearanceData;
   minComputedWidth: number | null;
   minComputedHeight: number | null;
+  moving: boolean;
 }
 
 export type ConnectionLinePositionOnNode = 'none' | 'center' | 'border';
@@ -96,6 +97,7 @@ export interface EdgeData extends Record<string, unknown> {
   centerLabelEditable: boolean;
   deletable: boolean;
   bendingPoints: XYPosition[] | null;
+  relativePositionBendingPoints: XYPosition[] | null;
   edgePath?: string;
   isHovered: boolean;
   edgeAppearanceData: EdgeAppearanceData;

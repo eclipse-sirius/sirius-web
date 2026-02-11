@@ -16,6 +16,39 @@ import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
+const extractPoints = (path: string) => {
+  const points: { x: number; y: number }[] = [];
+  const regex = /[ML]\s*(-?\d+\.?\d*)\s*(-?\d+\.?\d*)/g;
+  let match;
+  while ((match = regex.exec(path)) !== null) {
+    points.push({ x: parseFloat(match[1]), y: parseFloat(match[2]) });
+  }
+  return points;
+};
+
+const checkPathUniformOffsets = (expectedPath, receivedPath, errorMargin = 1) => {
+  const expectedPoints = extractPoints(expectedPath);
+  const receivedPoints = extractPoints(receivedPath);
+  if (expectedPoints.length !== receivedPoints.length) {
+    return false;
+  }
+
+  const deltasX: number[] = [];
+  const deltasY: number[] = [];
+  for (let i = 0; i < expectedPoints.length; i++) {
+    const dx = receivedPoints[i]?.x ?? Number.MAX_VALUE - (expectedPoints[i]?.x ?? 0);
+    const dy = receivedPoints[i]?.y ?? Number.MAX_VALUE - (expectedPoints[i]?.y ?? 0);
+    deltasX.push(dx);
+    deltasY.push(dy);
+  }
+  const dxRef = deltasX[0];
+  const isDxUniform = dxRef && deltasX.every((dx) => Math.abs(dx - dxRef) <= errorMargin);
+  const dyRef = deltasY[0];
+  const isDyUniform = dyRef && deltasY.every((dy) => Math.abs(dy - dyRef) <= errorMargin);
+
+  return isDxUniform && isDyUniform;
+};
+
 test.describe('edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
@@ -420,5 +453,60 @@ test.describe('edge', () => {
       },
       { timeout: 2000 }
     );
+  });
+});
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeOnSelfWithBendingPoints.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('edgeOnSelf');
+    await playwrightExplorer.expand('Root');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when moving source and target nodes, then edge path bending points preserve their relative position', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const playwrightEdge1 = new PlaywrightEdge(page, 0);
+    const playwrightEdge2 = new PlaywrightEdge(page, 1);
+    const playwrightEdge3 = new PlaywrightEdge(page, 2);
+    await expect(playwrightEdge1.edgeLocator).toBeAttached();
+    await expect(playwrightEdge2.edgeLocator).toBeAttached();
+    await expect(playwrightEdge3.edgeLocator).toBeAttached();
+
+    const edge1Path = await playwrightEdge1.getEdgePath();
+    const edge2Path = await playwrightEdge2.getEdgePath();
+    const edge3Path = await playwrightEdge3.getEdgePath();
+
+    const node1 = new PlaywrightNode(page, 'A');
+    await node1.move({ x: 100, y: 100 });
+
+    const edge1PathAfter = await playwrightEdge1.getEdgePath();
+    const edge2PathAfter = await playwrightEdge2.getEdgePath();
+    const edge3PathAfter = await playwrightEdge3.getEdgePath();
+
+    expect(edge1Path).not.toBe(edge1PathAfter);
+    expect(edge2Path).not.toBe(edge2PathAfter);
+    expect(edge3Path).not.toBe(edge3PathAfter);
+
+    const checkPath1 = checkPathUniformOffsets(edge1Path, edge1PathAfter);
+    const checkPath2 = checkPathUniformOffsets(edge2Path, edge2PathAfter);
+    const checkPath3 = checkPathUniformOffsets(edge3Path, edge3PathAfter);
+    expect(checkPath1).toBeTruthy();
+    expect(checkPath2).toBeTruthy();
+    expect(checkPath3).toBeTruthy();
   });
 });
