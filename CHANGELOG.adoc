@@ -38,6 +38,7 @@ The method `IRepresentationDeserializer#handle(...)` has been modified to `Optio
 The switch to Spring Boot 4.0 also come with a switch to Jackson 3, see the official https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md[documentation] for more details.
 Custom deserializers and migration services will probably be impacted.
 - https://github.com/eclipse-sirius/sirius-web/issues/6369[#6369] [diagram] In order to click behind the rectangle selection on a diagram, you'll need to update `ReactFlow.css` as per the `selection rectangle` section.
+-https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] `moving` should be set when converting custom nodes.
 
 
 === Dependency update
@@ -106,7 +107,7 @@ The backend now sends a `canEdit=false` capability when subscribing to such form
 - https://github.com/eclipse-sirius/sirius-web/issues/6336[#6336] [diagram] Move the retrieval of the connector tools in a dedicated hook.
 - https://github.com/eclipse-sirius/sirius-web/issues/6370[#6370] [diagram] Set the xyflow multi selection behavior to `Partial mode`
 - https://github.com/eclipse-sirius/sirius-web/issues/6369[#6369] [diagram] Enable clicking behind the multiple-selection rectangle
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] Preserve edge path when moving both source and target
 
 
 == 2026.3.0
