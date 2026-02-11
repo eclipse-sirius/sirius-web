@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -116,6 +116,12 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
 
   let bendingPoints: XYPosition[] = [];
   if (data && data.bendingPoints && data.bendingPoints.length > 0) {
+    if (data.relativePositionBendingPoints && sourceNode.data.moving && targetNode.data.moving) {
+      data.bendingPoints = data.relativePositionBendingPoints.map((relativePositionBendingPoint) => ({
+        x: relativePositionBendingPoint.x + sourceX,
+        y: relativePositionBendingPoint.y + sourceY,
+      }));
+    }
     bendingPoints = data.bendingPoints;
   } else {
     const [smoothEdgePath] = getSmoothStepPath({

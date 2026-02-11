@@ -115,6 +115,7 @@ const toEllipseNode = (
     minComputedWidth: gqlNodeLayoutData?.minComputedSize.width ?? null,
     minComputedHeight: gqlNodeLayoutData?.minComputedSize.height ?? null,
     isLastNodeSelected: false,
+    moving: false,
   };
 
   data.insideLabel = convertInsideLabel(

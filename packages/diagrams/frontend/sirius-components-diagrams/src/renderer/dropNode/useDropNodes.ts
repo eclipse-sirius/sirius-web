@@ -204,6 +204,12 @@ export const useDropNodes = (): UseDropNodesValue => {
       const draggedNodeIds = new Set();
       draggedNodes.forEach((node) => draggedNodeIds.add(node.id));
 
+      const movingNodeIds: string[] = getNodes()
+        .filter((candidate) =>
+          draggedNodes.some((draggedNode) => isDescendantOf(draggedNode, candidate, storeApi.getState().nodeLookup))
+        )
+        .map((candidate) => candidate.id);
+
       setNodes((nds) =>
         nds.map((n) => {
           if (compatibleTargetNodes.includes(n.id)) {
@@ -214,6 +220,7 @@ export const useDropNodes = (): UseDropNodesValue => {
                 isDraggedNode: draggedNodeIds.has(n.id),
                 isDropNodeCandidate: true,
                 isDragNodeSource: n.id === commonParentId,
+                moving: movingNodeIds.includes(n.id),
               },
             };
           }
@@ -233,6 +240,16 @@ export const useDropNodes = (): UseDropNodesValue => {
               data: {
                 ...n.data,
                 isDraggedNode: true,
+                moving: true,
+              },
+            };
+          }
+          if (movingNodeIds.includes(n.id)) {
+            return {
+              ...n,
+              data: {
+                ...n.data,
+                moving: true,
               },
             };
           }

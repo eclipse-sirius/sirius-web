@@ -52,6 +52,7 @@ export interface GQLEdgeAnchorLayoutData {
 export interface GQLEdgeLayoutData {
   id: string;
   bendingPoints: GQLPosition[];
+  relativePositionBendingPoints: GQLPosition[];
   edgeAnchorLayoutData: GQLEdgeAnchorLayoutData[];
 }
 

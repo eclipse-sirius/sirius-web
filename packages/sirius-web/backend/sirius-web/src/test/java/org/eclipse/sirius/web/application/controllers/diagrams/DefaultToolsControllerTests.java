@@ -255,7 +255,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             var siriusWebDomainNodeLayout = new NodeLayoutDataInput(siriusWebDomainNodeId.get(), new Position(0, 0), new Size(50, 50), true, true, List.of(siriusWebDomainNodeHandleLayoutLayout), new Size(40, 40));
 
             var bendingPoints = List.of(new Position(10, 10), new Position(20, 20));
-            var webApplicationToDomainEdgeLayoutData = new EdgeLayoutDataInput(webApplicationToDomainEdgeId.get(), bendingPoints, List.of());
+            var webApplicationToDomainEdgeLayoutData = new EdgeLayoutDataInput(webApplicationToDomainEdgeId.get(), bendingPoints, List.of(), List.of());
 
             var labelLayoutData = new LabelLayoutDataInput(webApplicationToDomainEdgeOutsideLabelId.get(), new Position(5, 5), new Size(10, 10), true, false);
             var layoutData = new DiagramLayoutDataInput(List.of(siriusWebDomainNodeLayout), List.of(webApplicationToDomainEdgeLayoutData), List.of(labelLayoutData));

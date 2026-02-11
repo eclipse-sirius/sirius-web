@@ -127,7 +127,7 @@ public class UndoEdgeLayoutDiagramControllerTests extends AbstractIntegrationTes
             var handleLayoutData = new HandleLayoutData(siriusWebApplicationEdgeId.get(), new Position(10, 10), "top", HandleType.source);
             var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), false, false, List.of(handleLayoutData), new Size(10, 10));
             var bendingPoints = List.of(new Position(10, 10), new Position(20, 20), new Position(30, 30));
-            var edgeLayoutDataInput = new EdgeLayoutDataInput(siriusWebApplicationEdgeId.get(), bendingPoints, List.of());
+            var edgeLayoutDataInput = new EdgeLayoutDataInput(siriusWebApplicationEdgeId.get(), bendingPoints, List.of(), List.of());
             var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(edgeLayoutDataInput), List.of());
             var input = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
@@ -136,14 +136,14 @@ public class UndoEdgeLayoutDiagramControllerTests extends AbstractIntegrationTes
         };
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram ->
-                assertUpdatedDiagram(diagram, siriusWebApplicationNodeId.get(), siriusWebApplicationEdgeId.get()));
+                this.assertUpdatedDiagram(diagram, siriusWebApplicationNodeId.get(), siriusWebApplicationEdgeId.get()));
 
         var mutationInputId = UUID.randomUUID();
         Runnable secondLayout = () -> {
             var handleLayoutData = new HandleLayoutData(siriusWebApplicationEdgeId.get(), new Position(20, 20), "bottom", HandleType.source);
             var bendingPoints = List.of(new Position(20, 20), new Position(30, 30), new Position(40, 40));
             var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), true, true, List.of(handleLayoutData), new Size(10, 10));
-            var edgeLayoutDataInput = new EdgeLayoutDataInput(siriusWebApplicationEdgeId.get(), bendingPoints, List.of());
+            var edgeLayoutDataInput = new EdgeLayoutDataInput(siriusWebApplicationEdgeId.get(), bendingPoints, List.of(), List.of());
             var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(edgeLayoutDataInput), List.of());
             var input = new LayoutDiagramInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
@@ -222,7 +222,7 @@ public class UndoEdgeLayoutDiagramControllerTests extends AbstractIntegrationTes
             var handleLayoutData = new HandleLayoutData(siriusWebApplicationEdgeId.get(), new Position(10, 10), "top", HandleType.source);
             var nodeLayoutDataInput = new NodeLayoutDataInput(siriusWebApplicationNodeId.get(), new Position(10, 10), new Size(10, 10), false, false, List.of(handleLayoutData), new Size(10, 10));
             var bendingPoints = List.of(new Position(10, 10), new Position(20, 20), new Position(30, 30));
-            var edgeLayoutDataInput = new EdgeLayoutDataInput(siriusWebApplicationEdgeId.get(), bendingPoints, List.of());
+            var edgeLayoutDataInput = new EdgeLayoutDataInput(siriusWebApplicationEdgeId.get(), bendingPoints, List.of(), List.of());
             var diagramLayoutDataInput = new DiagramLayoutDataInput(List.of(nodeLayoutDataInput), List.of(edgeLayoutDataInput), List.of());
             var input = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), LayoutDiagramInput.CAUSE_LAYOUT, diagramLayoutDataInput);
             var result = this.layoutDiagramRunner.run(input);
@@ -231,7 +231,7 @@ public class UndoEdgeLayoutDiagramControllerTests extends AbstractIntegrationTes
         };
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram ->
-                assertUpdatedDiagram(diagram, siriusWebApplicationNodeId.get(), siriusWebApplicationEdgeId.get()));
+                this.assertUpdatedDiagram(diagram, siriusWebApplicationNodeId.get(), siriusWebApplicationEdgeId.get()));
 
         var mutationInputId = UUID.randomUUID();
         Runnable deleteNode = () -> {
@@ -282,6 +282,6 @@ public class UndoEdgeLayoutDiagramControllerTests extends AbstractIntegrationTes
         assertThat(handleLayoutData.get(0).position()).isEqualTo(new Position(10, 10));
         var edgeLayoutData = diagram.getLayoutData().edgeLayoutData().get(siriusWebApplicationEdgeId);
         assertThat(edgeLayoutData.bendingPoints()).contains(new Position(10, 10), new Position(20, 20), new Position(30, 30));
-    };
+    }
 
 }

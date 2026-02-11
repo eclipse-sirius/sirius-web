@@ -66,7 +66,7 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
                     .forEach(updatedNodeLayoutInput -> {
                         var previousNodeLayoutData = previousNodeLayout.get(updatedNodeLayoutInput.id());
                         if (previousNodeLayoutData != null) {
-                            if (!isSameNodeLayoutData(previousNodeLayoutData, updatedNodeLayoutInput)) {
+                            if (!this.isSameNodeLayoutData(previousNodeLayoutData, updatedNodeLayoutInput)) {
                                 var updatedNodeLayout = new NodeLayoutData(updatedNodeLayoutInput.id(), updatedNodeLayoutInput.position(), updatedNodeLayoutInput.size(), updatedNodeLayoutInput.resizedByUser(), updatedNodeLayoutInput.movedByUser(), updatedNodeLayoutInput.handleLayoutData(), updatedNodeLayoutInput.minComputedSize());
                                 undoNodeLayoutEvents.add(new DiagramNodeLayoutEvent(previousNodeLayoutData.id(), previousNodeLayoutData));
                                 redoNodeLayoutEvents.add(new DiagramNodeLayoutEvent(updatedNodeLayoutInput.id(), updatedNodeLayout));
@@ -79,7 +79,7 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
                     .forEach(updatedLabelLayoutInput -> {
                         var previousLabelLayoutData = previousLabelLayout.get(updatedLabelLayoutInput.id());
                         if (previousLabelLayoutData != null) {
-                            if (!isSamePosition(previousLabelLayoutData.position(), updatedLabelLayoutInput.position())) {
+                            if (!this.isSamePosition(previousLabelLayoutData.position(), updatedLabelLayoutInput.position())) {
                                 var updatedLabelLayout = new LabelLayoutData(updatedLabelLayoutInput.id(), updatedLabelLayoutInput.position(), updatedLabelLayoutInput.size(), updatedLabelLayoutInput.resizedByUser(), updatedLabelLayoutInput.movedByUser());
                                 undoLabelLayoutEvents.add(new DiagramLabelLayoutEvent(previousLabelLayoutData.id(), previousLabelLayoutData));
                                 redoLabelLayoutEvents.add(new DiagramLabelLayoutEvent(updatedLabelLayoutInput.id(), updatedLabelLayout));
@@ -92,8 +92,9 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
                     .forEach(updatedEdgeLayoutInput -> {
                         var previousEdgelLayoutData = previousEdgeLayout.get(updatedEdgeLayoutInput.id());
                         if (previousEdgelLayoutData != null) {
-                            if (!isSameEdgeLayoutData(previousEdgelLayoutData, updatedEdgeLayoutInput)) {
-                                var updatedEdgeLayout = new EdgeLayoutData(updatedEdgeLayoutInput.id(), updatedEdgeLayoutInput.bendingPoints(), updatedEdgeLayoutInput.edgeAnchorLayoutData());
+                            if (!this.isSameEdgeLayoutData(previousEdgelLayoutData, updatedEdgeLayoutInput)) {
+                                var updatedEdgeLayout = new EdgeLayoutData(updatedEdgeLayoutInput.id(), updatedEdgeLayoutInput.bendingPoints(), updatedEdgeLayoutInput.relativePositionBendingPoints(),
+                                        updatedEdgeLayoutInput.edgeAnchorLayoutData());
                                 undoEdgeLayoutEvents.add(new DiagramEdgeLayoutEvent(previousEdgelLayoutData.id(), previousEdgelLayoutData));
                                 redoEdgeLayoutEvents.add(new DiagramEdgeLayoutEvent(updatedEdgeLayoutInput.id(), updatedEdgeLayout));
                             }
@@ -116,7 +117,8 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
             }
 
             if (!representationChanges.isEmpty()) {
-                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(layoutDiagramInput.id()) || siriusEditingContext.getInputId2RepresentationChanges().get(layoutDiagramInput.id()).isEmpty()) {
+                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(layoutDiagramInput.id()) || siriusEditingContext.getInputId2RepresentationChanges()
+                        .get(layoutDiagramInput.id()).isEmpty()) {
                     siriusEditingContext.getInputId2RepresentationChanges().put(layoutDiagramInput.id(), representationChanges);
                 } else {
                     siriusEditingContext.getInputId2RepresentationChanges().get(layoutDiagramInput.id()).addAll(representationChanges);
@@ -130,7 +132,7 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
         if (isSame) {
             int count = 0;
             for (Position previousPosition : previousLayout.bendingPoints()) {
-                if (!isSamePosition(previousPosition, updatedLayout.bendingPoints().get(count))) {
+                if (!this.isSamePosition(previousPosition, updatedLayout.bendingPoints().get(count))) {
                     return false;
                 } else {
                     count++;
@@ -141,10 +143,10 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
     }
 
     private boolean isSameNodeLayoutData(NodeLayoutData previousLayout, NodeLayoutDataInput updatedLayout) {
-        return isSamePosition(previousLayout.position(), updatedLayout.position())
-                && isSameSize(previousLayout.size(), updatedLayout.size())
+        return this.isSamePosition(previousLayout.position(), updatedLayout.position())
+                && this.isSameSize(previousLayout.size(), updatedLayout.size())
                 && previousLayout.resizedByUser() == updatedLayout.resizedByUser()
-                && isSameHandleLayoutDatas(previousLayout.handleLayoutData(), updatedLayout.handleLayoutData());
+                && this.isSameHandleLayoutDatas(previousLayout.handleLayoutData(), updatedLayout.handleLayoutData());
     }
 
     private boolean isSamePosition(Position previousPosition, Position updatedPosition) {
@@ -156,7 +158,7 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
     }
 
     private boolean isSameLabelLayoutData(LabelLayoutData previousLayout, LabelLayoutDataInput updatedLayout) {
-        return isSamePosition(previousLayout.position(), updatedLayout.position());
+        return this.isSamePosition(previousLayout.position(), updatedLayout.position());
     }
 
     private boolean isSameHandleLayoutDatas(List<HandleLayoutData> previousLayouts, List<HandleLayoutData> updatedLayouts) {
@@ -164,7 +166,7 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
         if (isSame) {
             int count = 0;
             for (HandleLayoutData previousLayout : previousLayouts) {
-                if (!isSamePosition(previousLayout.position(), updatedLayouts.get(count).position()) || !previousLayout.handlePosition().equals(updatedLayouts.get(count).handlePosition())) {
+                if (!this.isSamePosition(previousLayout.position(), updatedLayouts.get(count).position()) || !previousLayout.handlePosition().equals(updatedLayouts.get(count).handlePosition())) {
                     return false;
                 } else {
                     count++;
