@@ -48,6 +48,7 @@ When the selection changes, the details view will attempt to re-open the same ta
 If the tab cannot be found the first tab of the form will be opened instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/6040[#6040] [sirius-web] Only propose to select project template or libraries when it is relevant
 - https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Standardize font sizes on the _New Project_ creation page
+- https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Rework the _New Project_ creation page to improve the UX
 
 
 
