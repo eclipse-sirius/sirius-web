@@ -105,6 +105,7 @@ const toImageNode = (
     minComputedWidth: null,
     minComputedHeight: null,
     isLastNodeSelected: false,
+    moving: false,
   };
 
   data.insideLabel = convertInsideLabel(

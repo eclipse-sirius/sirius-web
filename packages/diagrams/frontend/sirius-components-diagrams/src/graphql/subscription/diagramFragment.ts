@@ -41,6 +41,7 @@ fragment diagramFragment on Diagram {
     edgeLayoutData {
       id
       bendingPoints { x y }
+      relativePositionBendingPoints { x y }
       edgeAnchorLayoutData { 
         edgeId
         positionRatio
