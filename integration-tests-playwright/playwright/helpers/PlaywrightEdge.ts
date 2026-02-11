@@ -56,3 +56,56 @@ export class PlaywrightEdge {
     });
   }
 }
+
+const extractPoints = (path: string) => {
+  const points: { x: number; y: number }[] = [];
+  const regex = /[ML]\s*(-?\d+\.?\d*)\s*(-?\d+\.?\d*)/g;
+  let match;
+  while ((match = regex.exec(path)) !== null) {
+    points.push({ x: parseFloat(match[1]), y: parseFloat(match[2]) });
+  }
+  return points;
+};
+
+export const checkPathUniformOffsets = (expectedPath: string | null, receivedPath: string | null, errorMargin = 1) => {
+  if (!expectedPath || !receivedPath) {
+    return false;
+  }
+  const expectedPoints = extractPoints(expectedPath);
+  const receivedPoints = extractPoints(receivedPath);
+  if (expectedPoints.length !== receivedPoints.length) {
+    return false;
+  }
+
+  const firstExpectedPoint = expectedPoints[0];
+  const firstReceivedPoint = receivedPoints[0];
+  if (firstExpectedPoint && firstReceivedPoint) {
+    const normalizedExpectedPoints = expectedPoints.map((point) => ({
+      x: point.x - firstExpectedPoint.x,
+      y: point.y - firstExpectedPoint.y,
+    }));
+    const normalizedReceivedPoints = receivedPoints.map((point) => ({
+      x: point.x - firstReceivedPoint.x,
+      y: point.y - firstReceivedPoint.y,
+    }));
+    const deltasX: number[] = [];
+    const deltasY: number[] = [];
+    for (let i = 0; i < normalizedExpectedPoints.length; i++) {
+      const normalizedExpectedPoint = normalizedExpectedPoints[i];
+      const normalizedReceivedPoint = normalizedReceivedPoints[i];
+      if (normalizedExpectedPoint && normalizedReceivedPoint) {
+        const dx = normalizedReceivedPoint.x - normalizedExpectedPoint.x;
+        const dy = normalizedReceivedPoint.y - normalizedExpectedPoint.y;
+        deltasX.push(dx);
+        deltasY.push(dy);
+      } else {
+        deltasY.push(errorMargin + 1); //Force to fail the next check
+      }
+    }
+    const isDxUniform = deltasX.every((dx) => dx <= errorMargin);
+    const isDyUniform = deltasY.every((dy) => dy <= errorMargin);
+
+    return isDxUniform && isDyUniform;
+  }
+  return false;
+};

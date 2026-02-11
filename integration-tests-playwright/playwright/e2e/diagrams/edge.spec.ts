@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
-import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
+import { PlaywrightEdge, checkPathUniformOffsets } from '../../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -444,5 +444,60 @@ test.describe('edge', () => {
 
     const edge = new PlaywrightEdge(page);
     await expect(edge.edgeLocator).toBeAttached();
+  });
+});
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeOnSelfWithBendingPoints.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('edgeOnSelf');
+    await playwrightExplorer.expand('Root');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when moving source and target nodes, then edge path bending points preserve their relative position', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const playwrightEdge1 = new PlaywrightEdge(page, 0);
+    const playwrightEdge2 = new PlaywrightEdge(page, 1);
+    const playwrightEdge3 = new PlaywrightEdge(page, 2);
+    await expect(playwrightEdge1.edgeLocator).toBeAttached();
+    await expect(playwrightEdge2.edgeLocator).toBeAttached();
+    await expect(playwrightEdge3.edgeLocator).toBeAttached();
+
+    const edge1Path = await playwrightEdge1.getEdgePath();
+    const edge2Path = await playwrightEdge2.getEdgePath();
+    const edge3Path = await playwrightEdge3.getEdgePath();
+
+    const node1 = new PlaywrightNode(page, 'A');
+    await node1.move({ x: 100, y: 100 });
+
+    const edge1PathAfter = await playwrightEdge1.getEdgePath();
+    const edge2PathAfter = await playwrightEdge2.getEdgePath();
+    const edge3PathAfter = await playwrightEdge3.getEdgePath();
+
+    expect(edge1Path).not.toBe(edge1PathAfter);
+    expect(edge2Path).not.toBe(edge2PathAfter);
+    expect(edge3Path).not.toBe(edge3PathAfter);
+
+    const checkPath1 = checkPathUniformOffsets(edge1Path, edge1PathAfter);
+    const checkPath2 = checkPathUniformOffsets(edge2Path, edge2PathAfter);
+    const checkPath3 = checkPathUniformOffsets(edge3Path, edge3PathAfter);
+    expect(checkPath1).toBeTruthy();
+    expect(checkPath2).toBeTruthy();
+    expect(checkPath3).toBeTruthy();
   });
 });
