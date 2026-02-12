@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IComponent;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.components.TableComponent;
@@ -52,6 +53,9 @@ public class TableWidgetComponent implements IComponent {
 
         List<String> iconURL = tableWidgetDescription.getIconURLProvider().apply(variableManager);
         Boolean readOnly = tableWidgetDescription.getIsReadOnlyProvider().apply(variableManager);
+
+        // In the case of a form, the table ID should not be the representation ID
+        variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, id);
 
         Element tableElement = new Element(TableComponent.class,
                 new TableComponentProps(variableManager, tableWidgetDescription.getTableDescription(), Optional.empty(), List.of(), "", List.of(), List.of()));
