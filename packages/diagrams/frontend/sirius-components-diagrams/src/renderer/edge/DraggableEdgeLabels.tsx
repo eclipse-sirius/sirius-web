@@ -45,7 +45,8 @@ export const DraggableEdgeLabels = ({
   sourceY,
   targetX,
   targetY,
-  edgeCenter,
+  edgeCenterPosition,
+  edgeCenterSegmentDirection,
 }: DraggableEdgeLabelsProps) => {
   const { beginLabel, endLabel, label, faded } = data || {};
   const zoom = useStore(zoomSelector);
@@ -56,13 +57,13 @@ export const DraggableEdgeLabels = ({
   const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
 
   let labelCenterOffset = {
-    x: edgeCenter.x,
-    y: edgeCenter.y,
+    x: edgeCenterPosition.x,
+    y: edgeCenterPosition.y,
   };
-  if (data.label?.width) {
+  if (data.label?.width && edgeCenterSegmentDirection === 'x') {
     labelCenterOffset.x = labelCenterOffset.x - data.label.width / 2;
   }
-  if (data.label?.height) {
+  if (data.label?.height && edgeCenterSegmentDirection === 'y') {
     labelCenterOffset.y = labelCenterOffset.y - data.label.height / 2;
   }
   return (

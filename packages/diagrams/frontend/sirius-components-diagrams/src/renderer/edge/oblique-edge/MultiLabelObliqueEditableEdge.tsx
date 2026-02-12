@@ -19,7 +19,7 @@ import { buildCrossingDashArray } from '../crossings/buildCrossingDashArray';
 import { BendPoint } from '../BendPoint';
 import { DraggableEdgeLabels } from '../DraggableEdgeLabels';
 import { multiLabelEdgeStyle } from '../MultiLabelEdge';
-import { isMultipleOfTwo, getMiddlePoint } from '../rectilinear-edge/RectilinearEdgeCalculation';
+import { isMultipleOfTwo, getMiddlePoint, determineSegmentAxis } from '../rectilinear-edge/RectilinearEdgeCalculation';
 import { useBendingPoints } from './useBendingPoints';
 import { MultiLabelObliqueEditableEdgeProps } from './MultiLabelObliqueEditableEdge.types';
 
@@ -67,7 +67,7 @@ export const MultiLabelObliqueEditableEdge = memo(
       return edgePath;
     }, [localBendingPoints.map((point) => point.x + ':' + point.y).join(), sourceX, sourceY, targetX, targetY]);
 
-    const edgeCenter: XYPosition = useMemo(() => {
+    const edgeCenter: { position: XYPosition; segmentDirection: 'x' | 'y' | null } = useMemo(() => {
       if (isMultipleOfTwo(bendingPoints.length)) {
         //if there is an even number of bend points, this means that there is an odd number of segments
         const prevPoint: XYPosition | undefined =
@@ -76,9 +76,17 @@ export const MultiLabelObliqueEditableEdge = memo(
             : bendingPoints[Math.floor(bendingPoints.length / 2) - 1];
         const middlePoint: XYPosition | undefined =
           bendingPoints.length === 0 ? { x: targetX, y: targetY } : bendingPoints[Math.floor(bendingPoints.length / 2)];
-        return prevPoint && middlePoint ? getMiddlePoint(prevPoint, middlePoint) : { x: 0, y: 0 }; //Place in the center of the middle segment
+        return prevPoint && middlePoint
+          ? {
+              position: getMiddlePoint(prevPoint, middlePoint), //Place in the center of the middle segment
+              segmentDirection: determineSegmentAxis(prevPoint, middlePoint),
+            }
+          : { position: { x: 0, y: 0 }, segmentDirection: null }; //Place in the center of the middle segment
       } else {
-        return bendingPoints[Math.floor(bendingPoints.length / 2)] ?? { x: 0, y: 0 }; //Place on the middle point
+        return {
+          position: bendingPoints[Math.floor(bendingPoints.length / 2)] ?? { x: 0, y: 0 }, //Place on the middle point
+          segmentDirection: null,
+        };
       }
     }, [bendingPoints.map((point) => `${point.x}:${point.y}`).join(), sourceX, sourceY, targetX, targetY]);
 
@@ -158,7 +166,8 @@ export const MultiLabelObliqueEditableEdge = memo(
             sourceY={sourceY}
             targetX={targetX}
             targetY={targetY}
-            edgeCenter={edgeCenter}
+            edgeCenterPosition={edgeCenter.position}
+            edgeCenterSegmentDirection={edgeCenter.segmentDirection}
           />
         ) : null}
       </>
