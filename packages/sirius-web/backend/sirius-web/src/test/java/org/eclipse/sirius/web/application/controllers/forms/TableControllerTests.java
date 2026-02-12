@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -233,7 +233,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
                 .filter(FormRefreshedEventPayload.class::isInstance);
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
-            var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
+            var tableWidget = new FormNavigator(form).page("Page").group("Group1").findWidget("Types", TableWidget.class);
 
             assertThat(tableWidget.getTable().getColumns()).hasSize(1);
             assertThat(tableWidget.getTable().getLines()).hasSize(4);
@@ -245,6 +245,33 @@ public class TableControllerTests extends AbstractIntegrationTests {
             TableNavigator tableNavigator = new TableNavigator(tableWidget.getTable());
             assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Success");
 
+        });
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialFormContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a form with two view based table widgets, when it is displayed, then tables have different id")
+    public void givenFormWithTwoViewBasedTableWidgetsWhenItIsDisplayedThenTablesHaveDifferentId() {
+        var input = new CreateRepresentationInput(
+                UUID.randomUUID(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                this.formWithViewTableDescriptionProvider.getRepresentationDescriptionId(),
+                PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(),
+                "FormWithViewTable");
+        var flux = this.givenCreatedFormSubscription.createAndSubscribe(input)
+                .flux()
+                .filter(FormRefreshedEventPayload.class::isInstance);
+
+        Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
+            var tableWidget1 = new FormNavigator(form).page("Page").group("Group1").findWidget("Types", TableWidget.class);
+            var tableWidget2 = new FormNavigator(form).page("Page").group("Group2").findWidget("Class", TableWidget.class);
+
+            assertThat(tableWidget1.getTable().getId()).isNotEqualTo(tableWidget2.getTable().getId());
         });
 
         StepVerifier.create(flux)
@@ -273,7 +300,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
 
         Consumer<Object> initialFormContentConsumer = assertRefreshedFormThat(form -> {
             formId.set(form.getId());
-            var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
+            var tableWidget = new FormNavigator(form).page("Page").group("Group1").findWidget("Types", TableWidget.class);
 
             assertThat(tableWidget.getTable().getColumns()).hasSize(1);
             assertThat(tableWidget.getTable().getLines()).hasSize(4);
@@ -300,7 +327,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
         };
 
         Consumer<Object> editNameConsumer = assertRefreshedFormThat(form -> {
-            var tableWidget = new FormNavigator(form).page("Page").group("Group").findWidget("Types", TableWidget.class);
+            var tableWidget = new FormNavigator(form).page("Page").group("Group1").findWidget("Types", TableWidget.class);
             Line line = tableWidget.getTable().getLines().get(0);
             LineNavigator lineNavigator = new LineNavigator(line);
 
