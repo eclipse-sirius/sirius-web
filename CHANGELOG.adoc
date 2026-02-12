@@ -8,6 +8,7 @@
 
 === Architectural decision records
 
+- [ADR-222] Add support for download/upload of projects with multiple semantic data
 
 
 === Deprecation warning

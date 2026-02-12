@@ -1,0 +1,59 @@
+= ADR-222 - Add support for download/upload of projects with multiple semantic data
+
+== Context
+
+Downloading a project produces a zip file that only contains data from one `ProjectSemanticData` (_main_ by default, but it can be set to a specific one with the appropriate parameters).
+
+As a result, some information is lost when downloading a project containing multiple `ProjectSemanticData`.
+This is typically not an issue in Sirius Web, because we don't provide user-level ways to create multiple `ProjectSemanticData` for a given project, but it can happen in downstream applications.
+
+We should ensure all the `ProjectSemanticData` are downloaded for a given project, and that they are all correctly re-created when the zip file is uploaded in Sirius Web.
+
+== Decision
+
+We will change the structure of the produced zip file as follows:
+
+====
+/
+  <project_name>
+
+    <project_semantic_data_name1>
+      documents
+        (list of documents in project semantic data 1)
+      representations
+        (list of representations on objects from project semantic data 1)
+      manifest.json (manifest of project semantic data 1, i.e. metamodels, dependencies, representations)
+
+    <project_semantic_data_name2>
+      documents
+        (list of documents in project semantic data 2)
+      representations
+        (list of representations on objects from project semantic data 2)
+      manifest.json
+
+    manifest.json (manifest of the project itself, e.g. to store the nature)
+====
+
+=== Export
+
+We will update `ProjectExportService` to retrieve all the `ProjectSemanticData` associated to the provided project.
+We will update the `IProjectExportParticipant` to make them aware of the `ProjectSemanticData` being processed (so they can use its name to store their data).
+
+=== Import
+
+We will update `SemanticDataCreator` to create all the `SemanticData` of an uploaded project.
+We will update `ProjectSemanticDataCreator` to create all the `ProjectSemanticData` of an uploaded project.
+Since `ProjectSemanticDataCreator` reacts to the creation of `SemanticData`, we need to have a way to indicate the name of the `ProjectSemanticData` to create.
+We will update `IProjectContentImportParticipant` implementations to take into account the new structure of the zip file.
+
+== Consequences
+
+Project duplication will also support the duplication of all the `ProjectSemanticData` of a project, since it relies on the same service as the download/upload feature.
+
+== Cutting backs
+
+
+
+== Status
+
+Proposed.
