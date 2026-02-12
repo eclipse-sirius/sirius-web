@@ -72,7 +72,6 @@ If present, the toolbar will be enabled, disabled otherwise.
 - https://github.com/eclipse-sirius/sirius-web/issues/6196[#6197] [view] Update the view metamodel to make the selection dialog optional.
 - https://github.com/eclipse-sirius/sirius-web/issues/3459[#3459] [diagram] Add support for edges on `IconLabel` nodes
 
-
 === Improvements
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6120[#6120] [sirius-web] Split the business code used to manage projects
@@ -95,7 +94,7 @@ Implementations of `IExternalResourceLoaderService` now return an `ExternalResou
 `LoadingReport` instances are automatically handled by Sirius Web and displayed to the end user.
 Alternative implementations of `ILoadingReport` can be provided and consumed by a matching `IUploadDocumentReportProvider` implementation.
 - https://github.com/eclipse-sirius/sirius-web/issues/5899[#5899] [table] Add the possibility to retrieve table tool menu entries from backend
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6178[#6178] [diagram] Prevent edge label from sticking to the edge path
 
 
 == 2026.1.0

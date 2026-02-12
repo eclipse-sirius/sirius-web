@@ -119,7 +119,8 @@ export const MultiLabelEdge = memo(
             sourceY={sourceY}
             targetX={targetX}
             targetY={targetY}
-            edgeCenter={edgeCenterX && edgeCenterY ? { x: edgeCenterX, y: edgeCenterY } : { x: 0, y: 0 }}
+            edgeCenterPosition={edgeCenterX && edgeCenterY ? { x: edgeCenterX, y: edgeCenterY } : { x: 0, y: 0 }}
+            edgeCenterSegmentDirection={null}
           />
         ) : null}
       </>

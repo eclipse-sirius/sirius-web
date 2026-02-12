@@ -23,5 +23,6 @@ export type DraggableEdgeLabelsProps = {
   sourceY: number;
   targetX: number;
   targetY: number;
-  edgeCenter: XYPosition;
+  edgeCenterPosition: XYPosition;
+  edgeCenterSegmentDirection: 'x' | 'y' | null;
 };
