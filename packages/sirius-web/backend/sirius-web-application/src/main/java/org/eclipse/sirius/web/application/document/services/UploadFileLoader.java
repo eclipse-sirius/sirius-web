@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,9 +69,9 @@ public class UploadFileLoader implements IUploadFileLoader {
             String id = UUID.randomUUID().toString();
             SanitizedResult sanitizedContent = optionalSanitizedContent.get();
             ResourceSet targetResourceSet = emfEditingContext.getDomain().getResourceSet();
-            var optionalRessource = this.resourceLoader.toResource(targetResourceSet, id, fileName, sanitizedContent.content(), applyMigrationParticipants, readOnly);
-            if (optionalRessource.isPresent()) {
-                return new Success<>(new UploadedResource(optionalRessource.get(), sanitizedContent.idMapping()));
+            var optionalResource = this.resourceLoader.toResource(targetResourceSet, id, fileName, sanitizedContent.content(), applyMigrationParticipants, readOnly);
+            if (optionalResource.isPresent()) {
+                return new Success<>(new UploadedResource(optionalResource.get(), sanitizedContent.idMapping(), sanitizedContent.loadingReport()));
             }
         }
         return new Failure<>(this.messageService.unexpectedError());

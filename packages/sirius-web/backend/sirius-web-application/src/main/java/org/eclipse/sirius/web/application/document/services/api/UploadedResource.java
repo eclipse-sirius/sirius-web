@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.services.api;
 
-import org.eclipse.emf.ecore.resource.Resource;
-
 import java.util.Map;
+
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * The result of uploading a new file.
  *
  * @author pcdavid
  */
-public record UploadedResource(Resource resource, Map<String, String> idMapping) {
+public record UploadedResource(Resource resource, Map<String, String> idMapping, ILoadingReport loadingReport) {
 }

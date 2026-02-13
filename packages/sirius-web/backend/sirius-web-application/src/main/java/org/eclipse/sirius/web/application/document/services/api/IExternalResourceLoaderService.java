@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,10 @@ import java.io.InputStream;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
- * Use to to create and load resource when uploading a document into Sirius Web.
+ * Used to create and load resource when uploading a document into Sirius Web.
  *
  * @author arichard
  */
@@ -28,6 +27,5 @@ public interface IExternalResourceLoaderService {
 
     boolean canHandle(InputStream inputStream, URI resourceURI, ResourceSet resourceSet);
 
-    Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants);
-
+    Optional<ExternalResourceLoadingResult> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants);
 }

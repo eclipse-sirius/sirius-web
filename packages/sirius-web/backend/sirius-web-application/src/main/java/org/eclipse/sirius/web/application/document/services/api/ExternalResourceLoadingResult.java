@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.services.api;
 
+import java.util.Objects;
+
+import org.eclipse.emf.ecore.resource.Resource;
+
 /**
- * Use to provide report when uploading a document into Sirius Web.
+ * The result of loading an external resource.
  *
- * @author arichard
+ * @author gdaniel
  */
-public interface IUploadDocumentReportProvider {
+public record ExternalResourceLoadingResult(Resource resource, ILoadingReport loadingReport) {
 
-    boolean canHandle(UploadedResource uploadedResource);
-
-    String createReport(UploadedResource uploadedResource);
-
+    public ExternalResourceLoadingResult {
+        Objects.requireNonNull(resource);
+        Objects.requireNonNull(loadingReport);
+    }
 }

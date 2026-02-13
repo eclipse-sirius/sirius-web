@@ -37,6 +37,11 @@ If you directly instantiate or extend those factories in downstream code or test
 `SearchQuery` now requires a new `searchInLibraries` parameter.
 The GraphQL schema has been updated to reflect this change.
 - https://github.com/eclipse-sirius/sirius-web/issues/6157[#6157] [diagram] On the frontend, `DiagramPanelActionProps` and `diagramPanelActionExtensionPoint` have been renamed to `DiagramToolbarActionProps` and `diagramToolbarActionExtensionPoint`.
+- https://github.com/eclipse-sirius/sirius-web/issues/4163[#4163] [sirius-web] Allow external resource loaders to return reports on resource upload.
+`IExternalResourceLoaderService#getResource` now returns a `ExternalResourceLoadingResult`.
+`SanitizedResult` now requires an `ILoadingReport` argument.
+`UploadedResource` now requires an `ILoadingReport` argument.
+`IUploadDocumentReportProvider#canHandle` and `#createReport` now take an `UploadedResource` instead of a `Resource` as parameter.
 
 
 === Dependency update
@@ -78,6 +83,12 @@ If the tab cannot be found the first tab of the form will be opened instead.
 - https://github.com/eclipse-sirius/sirius-web/issues/6148[#6148] [sirius-web] Add an extension point to contribute actions to the query result button.
 The contribution should provide the `label` to display in the split button menu as well as the component to render when the action is selected in the menu.
 - https://github.com/eclipse-sirius/sirius-web/issues/5888[#5888] [sirius-web] The _Search_ now remembers the last query parameters used on a per-project basis
+- https://github.com/eclipse-sirius/sirius-web/issues/4163[#4163] [sirius-web] Allow external resource loaders to return reports on resource upload.
+Implementations of `IExternalResourceLoaderService` now return an `ExternalResourceLoadingResult` which contains an `ILoadingReport`.
+`LoadingReport` instances are automatically handled by Sirius Web and displayed to the end user.
+Alternative implementations of `ILoadingReport` can be provided and consumed by a matching `IUploadDocumentReportProvider` implementation.
+
+
 
 == 2026.1.0
 
