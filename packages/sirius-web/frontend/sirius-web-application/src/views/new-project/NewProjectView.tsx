@@ -13,18 +13,23 @@
 
 import { useComponent } from '@eclipse-sirius/sirius-components-core';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { alpha } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
@@ -46,7 +51,7 @@ const useNewProjectViewStyles = makeStyles()((theme) => ({
   },
   main: {
     paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
+    paddingBottom: theme.spacing(2),
   },
   newProjectViewContainer: {
     display: 'flex',
@@ -59,20 +64,41 @@ const useNewProjectViewStyles = makeStyles()((theme) => ({
     alignItems: 'start',
     paddingBottom: theme.spacing(2),
   },
+  projectDetailsHeader: {
+    paddingLeft: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
+  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'start',
+    gap: theme.spacing(1),
+    paddingTop: theme.spacing(1),
   },
-  form: {
+  content: {
     display: 'flex',
     flexDirection: 'column',
     paddingTop: theme.spacing(1),
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
+  },
+  projectName: {
+    marginBottom: theme.spacing(1),
+  },
+  form: {
     '& > *': {
       marginBottom: theme.spacing(2),
     },
+  },
+  fullDivider: {
+    marginTop: theme.spacing(1.5),
+    marginBottom: theme.spacing(1.5),
+    borderColor: alpha(theme.palette.divider, 0.5),
+    borderWidth: '1px',
+  },
+  divider: {
+    borderColor: alpha(theme.palette.divider, 0.5),
+    borderWidth: '1px',
   },
 }));
 
@@ -87,7 +113,7 @@ export const NewProjectView = () => {
     name: '',
     pristineName: true,
     availableTemplates: null,
-    templateSelectionOpen: false,
+    templateSelectionOpen: true,
     librariesImportOpen: false,
     selectedTemplateId: null,
     selectedLibraries: [],
@@ -131,7 +157,7 @@ export const NewProjectView = () => {
   const { createProject, loading: loadingProjectCreation, newProjectId } = useCreateProject();
   const { Component: Footer } = useComponent(footerExtensionPoint);
 
-  const onNameChange = (event) => {
+  const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setState((prevState) => ({
       ...prevState,
@@ -191,12 +217,16 @@ export const NewProjectView = () => {
   const showTemplateSelection = state.availableTemplates !== null && state.availableTemplates.length > 1;
   const showLibrariesSelection = canListLibraries;
   let description = t('description');
+  let projectDetailsDescription = t('projectDetailsDescription');
   if (!showTemplateSelection && !showLibrariesSelection) {
     description = t('descriptionNameOnly');
+    projectDetailsDescription = t('projectDetailsDescriptionNameOnly');
   } else if (showTemplateSelection && !showLibrariesSelection) {
     description = t('descriptionNameAndTemplate');
+    projectDetailsDescription = t('projectDetailsDescriptionNameAndTemplate');
   } else if (!showTemplateSelection && showLibrariesSelection) {
     description = t('descriptionNameAndLibraries');
+    projectDetailsDescription = t('projectDetailsDescriptionNameAndLibraries');
   }
 
   const isError = isNameInvalid(state.name);
@@ -211,18 +241,34 @@ export const NewProjectView = () => {
                 <Typography variant="h2" align="center" gutterBottom>
                   {t('title')}
                 </Typography>
-                <Typography variant="h4" align="center" gutterBottom>
+                <Typography variant="h5" align="center" color="text.secondary" fontWeight="100" gutterBottom>
                   {description}
                 </Typography>
               </div>
               <Paper>
-                <form onSubmit={handleFormSubmitted} className={classes.form}>
-                  <Typography variant="h6">{t('name')}</Typography>
+                <Box className={classes.projectDetailsHeader}>
+                  <Typography variant="h6" gutterBottom>
+                    {t('projectDetails')}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {projectDetailsDescription}
+                  </Typography>
+                </Box>
+                <Divider variant="fullWidth" className={classes.fullDivider} />
+                <form onSubmit={handleFormSubmitted} className={`${classes.form} ${classes.content}`}>
+                  <Typography variant="h6" className={classes.projectName}>
+                    {t('name') + ' '}
+                    <Typography variant="h6" component="span" color="error">
+                      *
+                    </Typography>
+                  </Typography>
                   <TextField
-                    variant="standard"
+                    variant="outlined"
+                    size="small"
                     error={isError}
-                    helperText={t('nameTextfieldHelperText')}
+                    helperText={t('nameTextfieldHelperText', { charCount: state.name.length })}
                     name="name"
+                    required
                     value={state.name}
                     placeholder={t('nameTextfieldPlaceholder')}
                     slotProps={{
@@ -238,7 +284,8 @@ export const NewProjectView = () => {
                       <ListItemButton
                         onClick={toggleTemplateSelection}
                         data-testid="template-selection-toggle"
-                        disableGutters>
+                        disableGutters
+                        sx={{ paddingY: 0.5 }}>
                         <ListItemText
                           sx={(theme) => ({
                             display: 'flex',
@@ -252,7 +299,8 @@ export const NewProjectView = () => {
                           slotProps={{
                             primary: { variant: 'h6' },
                           }}
-                          primary="Project Template"
+                          primary={t('projectTemplate')}
+                          secondary={'(' + t('optional') + ')'}
                         />
                         {state.templateSelectionOpen ? (
                           <ExpandLess
@@ -269,27 +317,40 @@ export const NewProjectView = () => {
                         )}
                       </ListItemButton>
                       <Collapse in={state.templateSelectionOpen} timeout="auto">
-                        <Select
-                          variant="standard"
-                          value={state.selectedTemplateId}
-                          onChange={handleTemplateSelectionChange}
-                          fullWidth
-                          data-testid="template">
-                          {(state.availableTemplates || []).map((template) => (
-                            <MenuItem value={template.id} key={template.id} data-testid={`template-${template.label}`}>
-                              <ListItemText primary={template.label}></ListItemText>
+                        <FormControl fullWidth>
+                          <Select
+                            variant="outlined"
+                            size="small"
+                            value={state.selectedTemplateId ?? ''}
+                            onChange={handleTemplateSelectionChange}
+                            displayEmpty
+                            fullWidth
+                            data-testid="template">
+                            <MenuItem value="" disabled>
+                              <Typography color="text.secondary">{t('templatePlaceholder')}</Typography>
                             </MenuItem>
-                          ))}
-                        </Select>
+                            {(state.availableTemplates || []).map((template) => (
+                              <MenuItem
+                                value={template.id}
+                                key={template.id}
+                                data-testid={`template-${template.label}`}>
+                                <ListItemText primary={template.label}></ListItemText>
+                              </MenuItem>
+                            ))}
+                          </Select>
+                          <FormHelperText>{t('templateHelperText')}</FormHelperText>
+                        </FormControl>
                       </Collapse>
                     </List>
                   ) : null}
+                  <Divider variant="fullWidth" className={classes.divider} />
                   {showLibrariesSelection ? (
                     <List dense>
                       <ListItemButton
                         onClick={toggleLibrariesImport}
                         data-testid="libraries-selection-toggle"
-                        disableGutters>
+                        disableGutters
+                        sx={{ paddingY: 0.5 }}>
                         <ListItemText
                           sx={(theme) => ({
                             display: 'flex',
@@ -321,6 +382,9 @@ export const NewProjectView = () => {
                         )}
                       </ListItemButton>
                       <Collapse in={state.librariesImportOpen} timeout="auto">
+                        <Typography variant="body2" color="text.secondary" gutterBottom>
+                          {t('librariesDescription')}
+                        </Typography>
                         <LibrariesImportTable onSelectedLibrariesChange={handleSelectedLibrariesChange} />
                       </Collapse>
                     </List>
@@ -329,6 +393,7 @@ export const NewProjectView = () => {
                     <Button
                       variant="contained"
                       type="submit"
+                      fullWidth
                       disabled={isError || loadingProjectCreation}
                       onClick={handleProjectCreation}
                       data-testid="create-project"
