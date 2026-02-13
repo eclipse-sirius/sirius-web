@@ -10,7 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useSelection, Selection } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node, NodeChange, NodeDimensionChange, NodePositionChange, useStoreApi } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useStore } from '../../representation/useStore';
@@ -197,13 +196,12 @@ const applyMoveToListChild = (
 const applyMultiSelectResize = (
   change: NodeDimensionChange,
   resizedNode: Node<NodeData>,
-  selection: Selection,
   nodes: Node<NodeData>[]
 ): NodeChange<Node<NodeData>>[] => {
   const resizeWidthOffset: number = (change.dimensions?.width ?? 0) - (resizedNode.width ?? 0);
   const resizeHeightOffset: number = (change.dimensions?.height ?? 0) - (resizedNode.height ?? 0);
   return nodes
-    .filter((node) => node.id !== change.id && selection.entries.some((entry) => entry.id === node.data.targetObjectId))
+    .filter((node) => node.id !== change.id && node.selected)
     .filter((node) => node.data.nodeDescription?.userResizable !== 'NONE' && !node.data.isListChild)
     .map((node) => {
       let newWidth: number = (node.width ?? 0) + resizeWidthOffset;
@@ -241,7 +239,6 @@ export const useResizeChange = (): UseResizeChangeValue => {
   const { getNodes } = useStore();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const zoom = store.getState().transform[2];
-  const { selection } = useSelection();
 
   const transformResizeListNodeChanges = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
@@ -268,7 +265,7 @@ export const useResizeChange = (): UseResizeChangeValue => {
         if (isResize(change)) {
           const resizedNode = getNodes().find((node) => change.id === node.id);
           if (resizedNode) {
-            newMultiSelectResizeChanges.push(...applyMultiSelectResize(change, resizedNode, selection, getNodes()));
+            newMultiSelectResizeChanges.push(...applyMultiSelectResize(change, resizedNode, getNodes()));
           }
         }
         return change;
@@ -280,7 +277,7 @@ export const useResizeChange = (): UseResizeChangeValue => {
         ...newMultiSelectResizeChanges,
       ];
     },
-    [getNodes]
+    [getNodes, zoom]
   );
 
   return { transformResizeListNodeChanges };

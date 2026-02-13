@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,12 +18,14 @@ import {
   NodeDimensionChange,
   Position,
   useStoreApi,
+  useUpdateNodeInternals,
   XYPosition,
 } from '@xyflow/react';
 import { useCallback, useState } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DEFAULT_HANDLE_SIZE } from '../edge/EdgeLayout';
 import { DiagramNodeType } from '../node/NodeTypes.types';
+import { ConnectionHandle } from './ConnectionHandles.types';
 import { UseHandleResizedChangeState, UseHandleResizedChangeValue } from './useHandleResizedChange.types';
 
 const getHandlePosition = (
@@ -65,59 +67,46 @@ const getHandlePosition = (
   return XYPosition;
 };
 
+const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange => change.type === 'dimensions';
+
 export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = storeApi.getState();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const [state, setState] = useState<UseHandleResizedChangeState>({
-    initialWidth: null,
-    initialHeight: null,
-    finalWidth: null,
-    finalHeight: null,
+    initialWidth: new Map(),
+    initialHeight: new Map(),
   });
   const applyResizeHandleChange = useCallback(
     (
       changes: NodeChange<Node<NodeData>>[],
       nodes: Node<NodeData, DiagramNodeType>[]
     ): Node<NodeData, DiagramNodeType>[] => {
-      if (changes.length === 1 && changes[0] && changes[0].type === 'dimensions') {
-        const change: NodeDimensionChange = changes[0];
-        const resizedNode = nodeLookup.get(change.id);
+      const updatedConnectionHandles: Map<string, ConnectionHandle[]> = new Map();
+      changes.forEach((change: NodeChange<Node<NodeData>>) => {
+        if (isResize(change)) {
+          const resizedNode = nodeLookup.get(change.id);
+          if (resizedNode) {
+            const resizedNodeInitialHeight: number | undefined = state.initialHeight.get(resizedNode.id);
+            const resizedNodeInitialWidth: number | undefined = state.initialWidth.get(resizedNode.id);
 
-        if (resizedNode && !state.initialHeight && !state.initialWidth && !!change.resizing) {
-          setState((prevState) => ({
-            ...prevState,
-            initialHeight: resizedNode.height ? resizedNode.height : null,
-            initialWidth: resizedNode.width ? resizedNode.width : null,
-          }));
-        } else if (state.initialHeight && state.initialWidth && !!change.resizing) {
-          setState((prevState) => ({
-            ...prevState,
-            finalHeight: change.dimensions ? change.dimensions.height : null,
-            finalWidth: change.dimensions ? change.dimensions.width : null,
-          }));
-        } else if (
-          state.initialHeight &&
-          state.initialWidth &&
-          state.finalHeight &&
-          state.finalWidth &&
-          resizedNode &&
-          !change.resizing
-        ) {
-          const coefHeight = state.finalHeight / state.initialHeight;
-          const coefWidth = state.finalWidth / state.initialWidth;
-
-          setState((prevState) => ({
-            ...prevState,
-            finalWidth: null,
-            initialHeight: null,
-            finalHeight: null,
-            initialWidth: null,
-          }));
-
-          return nodes.map((node) => {
-            if (node.id === resizedNode.id) {
-              const connectionHandles = node.data.connectionHandles.map((handle) => {
+            if (!resizedNodeInitialHeight && !resizedNodeInitialWidth && !!change.resizing) {
+              setState((prevState) => ({
+                ...prevState,
+                initialWidth: new Map(prevState.initialWidth).set(
+                  resizedNode.id,
+                  resizedNode.width ? resizedNode.width : 0
+                ),
+                initialHeight: new Map(prevState.initialHeight).set(
+                  resizedNode.id,
+                  resizedNode.height ? resizedNode.height : 0
+                ),
+              }));
+            } else if (resizedNodeInitialHeight && resizedNodeInitialWidth && !change.resizing) {
+              const coefHeight = (change.dimensions?.height ?? 0) / resizedNodeInitialHeight;
+              const coefWidth = (change.dimensions?.width ?? 0) / resizedNodeInitialWidth;
+              const connectionHandles: ConnectionHandle[] = resizedNode.data.connectionHandles.map((handle) => {
                 if (handle.XYPosition) {
                   const XYPosition = getHandlePosition(
                     resizedNode,
@@ -135,22 +124,35 @@ export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
                 }
                 return handle;
               });
-
-              return {
-                ...node,
-                data: {
-                  ...node.data,
-                  connectionHandles: connectionHandles,
-                },
-              };
+              updatedConnectionHandles.set(resizedNode.id, connectionHandles);
+              setState((prevState) => ({
+                ...prevState,
+                initialWidth: new Map(),
+                initialHeight: new Map(),
+              }));
             }
-            return node;
-          });
+          }
         }
+      });
+      if (updatedConnectionHandles.size > 0) {
+        updateNodeInternals(Array.from(updatedConnectionHandles.keys()));
+        return nodes.map((node) => {
+          const updatedConnectionHandle = updatedConnectionHandles.get(node.id);
+          if (updatedConnectionHandle) {
+            return {
+              ...node,
+              data: {
+                ...node.data,
+                connectionHandles: updatedConnectionHandle,
+              },
+            };
+          }
+          return node;
+        });
       }
       return nodes;
     },
-    [state.finalHeight, state.finalHeight, state.initialHeight, state.initialWidth]
+    [state.initialHeight, state.initialWidth]
   );
 
   return { applyResizeHandleChange };
