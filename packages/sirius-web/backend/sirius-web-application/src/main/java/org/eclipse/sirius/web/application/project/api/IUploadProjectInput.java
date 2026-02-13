@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.project.dto;
+
+package org.eclipse.sirius.web.application.project.api;
 
 import java.util.UUID;
 
+import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
-import org.eclipse.sirius.web.application.project.api.IUploadProjectInput;
-
-import jakarta.validation.constraints.NotNull;
 
 /**
- * Input used to upload a new project.
+ * Interface implemented by all the input used to upload a project.
  *
- * @author sbegaudeau
+ * @author tgiraudet
  */
-public record UploadProjectInput(@NotNull UUID id, UploadFile file) implements IUploadProjectInput {
+public interface IUploadProjectInput extends IInput {
+    UUID id();
+    UploadFile file();
 }
