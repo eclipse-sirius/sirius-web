@@ -46,6 +46,9 @@ The GraphQL schema has been updated to reflect this change.
 - https://github.com/eclipse-sirius/sirius-web/issues/6157[#6157] [diagram] Every diagram that does not declare a toolbar will not have a toolbar anymore.
 A toolbar will be added by a migration participant for existing diagram descriptions.
 - https://github.com/eclipse-sirius/sirius-web/issues/6196[#6196] [selection] The `SelectionDescription` builder now requires a `noSelectionLabelProvider` to build.
+- https://github.com/eclipse-sirius/sirius-web/issues/5941[#5941] [tree] Custom tree descriptions will not have any tooltip by default.
+The tooltip is now configurable using either the view based tree description or using an instance of `ITreeItemTooltipProvider`.
+The default tooltip used in the explorer can be reused thanks to `IExplorerTooltipService` and it can be customized for any tree item using `IExplorerTooltipServiceDelegate`.
 
 
 === Dependency update
@@ -100,6 +103,7 @@ Alternative implementations of `ILoadingReport` can be provided and consumed by 
 - https://github.com/eclipse-sirius/sirius-web/issues/5941[#5941] [tree] Add support for customizing tree item tooltips.
 It is now possible to implement `ITreeItemTooltipProvider` to provide tooltips for any tree.
 Trees defined via the view DSL can alternatively provide a tooltip expression via `TreeDescription#setTreeItemTooltipExpression`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Rework the _New Project_ creation page to improve the UX
 
 
 
