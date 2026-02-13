@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,19 +12,17 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.controllers;
 
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.components.graphql.api.UploadFile;
-import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+import org.eclipse.sirius.web.application.project.api.IUploadProjectInput;
 import org.eclipse.sirius.web.application.project.dto.UploadProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectUploadApplicationService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
@@ -41,9 +39,7 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private static final String INPUT_ARGUMENT = "input";
 
-    private static final String ID = "id";
-
-    private static final String FILE = "file";
+    private final ObjectMapper objectMapper;
 
     private final ICapabilityEvaluator capabilityEvaluator;
 
@@ -51,7 +47,8 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     private final IMessageService messageService;
 
-    public MutationUploadProjectDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectUploadApplicationService projectUploadApplicationService, IMessageService messageService) {
+    public MutationUploadProjectDataFetcher(ObjectMapper objectMapper, ICapabilityEvaluator capabilityEvaluator, IProjectUploadApplicationService projectUploadApplicationService, IMessageService messageService) {
+        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectUploadApplicationService = Objects.requireNonNull(projectUploadApplicationService);
         this.messageService = Objects.requireNonNull(messageService);
@@ -59,34 +56,15 @@ public class MutationUploadProjectDataFetcher implements IDataFetcherWithFieldCo
 
     @Override
     public IPayload get(DataFetchingEnvironment environment) throws Exception {
-        IPayload payload = new ErrorPayload(UUID.randomUUID(), this.messageService.unexpectedError());
-        Map<Object, Object> input = environment.getArgument(INPUT_ARGUMENT);
+        Object argument = environment.getArgument(INPUT_ARGUMENT);
+        var input = this.objectMapper.convertValue(argument, IUploadProjectInput.class);
 
-        var optionalId = Optional.ofNullable(input)
-                .map(map -> map.get(ID))
-                .map(Object::toString)
-                .flatMap(new UUIDParser()::parse);
-
-        var optionalFile = Optional.ofNullable(input)
-                .map(map -> map.get(FILE))
-                .filter(UploadFile.class::isInstance)
-                .map(UploadFile.class::cast);
-
-        if (optionalId.isPresent() && optionalFile.isPresent()) {
-            var inputId = optionalId.get();
-
-            var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD);
-            var uploadFile = optionalFile.get();
-
-            if (hasCapability) {
-                payload = this.projectUploadApplicationService.uploadProject(new UploadProjectInput(inputId, uploadFile));
-            } else {
-                payload = new ErrorPayload(inputId, this.messageService.unauthorized());
-            }
+        var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD);
+        if (!hasCapability) {
+            return new ErrorPayload(input.id(), this.messageService.unauthorized());
         }
 
-
-        return payload;
+        return this.projectUploadApplicationService.uploadProject(new UploadProjectInput(input.id(), input.file()));
     }
 
 }
