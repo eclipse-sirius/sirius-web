@@ -147,3 +147,98 @@ test.describe('edge-handle', () => {
     await expect(page.locator('.source_handle_top')).toHaveCount(1);
   });
 });
+
+test.describe('edge-handle', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectDomainWithCustomEdge.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Domain');
+    await playwrightExplorer.expand('merkle');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a node with a custom handle is resized, then the handle is moved to stay attached to the node', async ({
+    page,
+  }) => {
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+
+    const lastMovingLine = page.locator(`[data-testid="temporary-moving-line-2"]`).first();
+    const box = (await lastMovingLine.boundingBox())!;
+    await lastMovingLine.hover();
+    await page.mouse.down();
+    await page.mouse.move(box.x, box.y + 50, { steps: 2 });
+    await page.mouse.up();
+
+    const targetNode = new PlaywrightNode(page, 'Target', 'List');
+    await targetNode.click();
+    await targetNode.resize({ width: 0, height: -75 });
+
+    const targetNodePosition = await targetNode.getReactFlowXYPosition('Target');
+    const targetNodeSize = await targetNode.getReactFlowSize('Target');
+
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+
+    await page.waitForFunction(
+      ({ maxCyPos }) => {
+        const circle = document.querySelector('.react-flow__edgeupdater-target');
+        if (!circle) return false;
+
+        const cyValue = circle ? circle.getAttribute('cy') : null;
+        return cyValue && parseFloat(cyValue) < maxCyPos;
+      },
+      { maxCyPos: targetNodePosition.y + targetNodeSize.height },
+      { timeout: 2000 }
+    );
+  });
+
+  test('when a node with a custom handle is resized and moved, then the handle is moved to stay attached to the node', async ({
+    page,
+  }) => {
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+
+    const lastMovingLine = page.locator(`[data-testid="temporary-moving-line-2"]`).first();
+    const box = (await lastMovingLine.boundingBox())!;
+    await lastMovingLine.hover();
+    await page.mouse.down();
+    await page.mouse.move(box.x, box.y + 50, { steps: 2 });
+    await page.mouse.up();
+
+    const targetNode = new PlaywrightNode(page, 'Target', 'List');
+    await targetNode.click();
+    await targetNode.resize({ width: 0, height: 75 }, 'top.left');
+
+    const targetNodePosition = await targetNode.getReactFlowXYPosition('Target');
+    const targetNodeSize = await targetNode.getReactFlowSize('Target');
+
+    await playwrightEdge.click();
+    await playwrightEdge.isSelected();
+
+    await page.waitForFunction(
+      ({ maxCyPos }) => {
+        const circle = document.querySelector('.react-flow__edgeupdater-target');
+        if (!circle) return false;
+
+        const cyValue = circle ? circle.getAttribute('cy') : null;
+        return cyValue && parseFloat(cyValue) < maxCyPos;
+      },
+      { maxCyPos: targetNodePosition.y + targetNodeSize.height },
+      { timeout: 2000 }
+    );
+  });
+});
