@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -176,6 +176,31 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
         this.uploadDocument(StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), "test-xmi-read-only", content, true, resource -> this.isExpectedDomain(resource) && this.isReadOnly(resource));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a studio, when the upload of a new domain document produces a report, then the report is returned")
+    public void givenStudioWhenUploadOfDomainDocumentProducesAReportThenTheReportIsReturned() {
+        var content = """
+                {
+                  "json": {
+                    "version": "1.0",
+                    "encoding": "utf-8"
+                  },
+                  "ns": {
+                    "domain":"http://www.eclipse.org/sirius-web/domain"
+                  },
+                  "content": [
+                  ]
+                }
+                """;
+        var file = new UploadFile("empty", new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+        var input = new UploadDocumentInput(UUID.randomUUID(), StudioIdentifiers.EMPTY_STUDIO_EDITING_CONTEXT_ID.toString(), file, false);
+        var result = this.uploadDocumentMutationRunner.run(input);
+
+        String report = JsonPath.read(result.data(), "$.data.uploadDocument.report");
+        assertThat(report.trim()).isEqualTo(TestUploadDocumentReportProvider.TEST_REPORT.trim());
+    }
+
     private boolean isExpectedDomain(Resource resource) {
         Domain domain = (Domain) resource.getContents().get(0);
         if (domain.getTypes().size() == 2) {
@@ -268,9 +293,6 @@ public class DocumentControllerIntegrationTests extends AbstractIntegrationTests
 
         String typename = JsonPath.read(result.data(), "$.data.uploadDocument.__typename");
         assertThat(typename).isEqualTo(UploadDocumentSuccessPayload.class.getSimpleName());
-
-        String report = JsonPath.read(result.data(), "$.data.uploadDocument.report");
-        assertThat(report).isEqualTo("This is a test report");
 
         this.validateDocument(editingContextId, name, check);
     }

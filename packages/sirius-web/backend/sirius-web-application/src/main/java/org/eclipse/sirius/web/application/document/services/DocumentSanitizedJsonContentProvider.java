@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.emf.services.EObjectIDManager;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
+import org.eclipse.sirius.web.application.document.services.api.ExternalResourceLoadingResult;
 import org.eclipse.sirius.web.application.document.services.api.IDocumentSanitizedJsonContentProvider;
 import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
 import org.eclipse.sirius.web.application.document.services.api.IProxyValidator;
@@ -76,9 +77,10 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
         Optional<SanitizedResult> optionalResult = Optional.empty();
 
         URI resourceURI = new JSONResourceFactory().createResourceURI(name);
-        Optional<Resource> optionalInputResource = this.getResource(resourceSet, resourceURI, inputStream, applyMigrationParticipants);
-        if (optionalInputResource.isPresent()) {
-            Resource inputResource = optionalInputResource.get();
+        Optional<ExternalResourceLoadingResult> optionalLoadingResult = this.getResource(resourceSet, resourceURI, inputStream, applyMigrationParticipants);
+        if (optionalLoadingResult.isPresent()) {
+            ExternalResourceLoadingResult loadingResult = optionalLoadingResult.get();
+            Resource inputResource = loadingResult.resource();
             try {
                 long start = System.nanoTime();
                 var hasForbiddenProxies = !allowProxies && this.proxyValidator.hasProxies(inputResource);
@@ -112,7 +114,7 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
 
                         outputResource.save(outputStream, saveOptions);
 
-                        optionalResult = Optional.of(new SanitizedResult(outputStream.toString(), idMappings));
+                        optionalResult = Optional.of(new SanitizedResult(outputStream.toString(), idMappings, loadingResult.loadingReport()));
                     } catch (IOException exception) {
                         this.logger.warn(exception.getMessage(), exception);
                     }
@@ -168,7 +170,7 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
      *            The {@link InputStream} used to determine which {@link Resource} to create
      * @return a {@link Resource} or {@link Optional#empty()}
      */
-    private Optional<Resource> getResource(ResourceSet resourceSet, URI resourceURI, InputStream inputStream, boolean applyMigrationParticipants) {
+    private Optional<ExternalResourceLoadingResult> getResource(ResourceSet resourceSet, URI resourceURI, InputStream inputStream, boolean applyMigrationParticipants) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             inputStream.transferTo(baos);

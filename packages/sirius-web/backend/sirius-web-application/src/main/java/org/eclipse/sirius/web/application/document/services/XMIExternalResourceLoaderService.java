@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
@@ -25,13 +26,14 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 import org.eclipse.sirius.components.emf.utils.EMFResourceUtils;
+import org.eclipse.sirius.web.application.document.services.api.ExternalResourceLoadingResult;
 import org.eclipse.sirius.web.application.document.services.api.IExternalResourceLoaderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Use to to create and load XMI resource when uploading a document into Sirius Web.
+ * Used to create and load XMI resource when uploading a document into Sirius Web.
  *
  * @author arichard
  */
@@ -57,7 +59,7 @@ public class XMIExternalResourceLoaderService implements IExternalResourceLoader
     }
 
     @Override
-    public Optional<Resource> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
+    public Optional<ExternalResourceLoadingResult> getResource(InputStream inputStream, URI resourceURI, ResourceSet resourceSet, boolean applyMigrationParticipants) {
         Resource resource = null;
         try {
             var xmiResource = new XMIResourceImpl(resourceURI);
@@ -68,6 +70,10 @@ public class XMIExternalResourceLoaderService implements IExternalResourceLoader
         } catch (IOException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
-        return Optional.ofNullable(resource);
+
+        if (resource == null) {
+            return Optional.empty();
+        }
+        return Optional.of(new ExternalResourceLoadingResult(resource, new LoadingReport(List.of())));
     }
 }

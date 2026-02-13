@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,14 +13,12 @@
 package org.eclipse.sirius.web.application.document.services.api;
 
 /**
- * Use to provide report when uploading a document into Sirius Web.
+ * A loading report.
+ * <p>
+ * Loading reports can be processed by {@link IUploadDocumentReportProvider} to produce reports when uploading resources in Sirius Web.
+ * </p>
  *
- * @author arichard
+ * @author gdaniel
  */
-public interface IUploadDocumentReportProvider {
-
-    boolean canHandle(UploadedResource uploadedResource);
-
-    String createReport(UploadedResource uploadedResource);
-
+public interface ILoadingReport {
 }

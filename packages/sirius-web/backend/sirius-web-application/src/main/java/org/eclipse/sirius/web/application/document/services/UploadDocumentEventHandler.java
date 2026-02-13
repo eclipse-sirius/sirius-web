@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
@@ -123,7 +122,7 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     var id = optionalId.get();
                     var name = optionalName.get();
 
-                    String report = this.getReport(newResource);
+                    String report = this.getReport(success.data());
                     payload = new UploadDocumentSuccessPayload(input.id(), new DocumentDTO(id, name, ExplorerDescriptionProvider.DOCUMENT_KIND), report, success.data().idMapping());
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 }
@@ -145,10 +144,10 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                 .map(AdapterFactoryEditingDomain::getResourceSet);
     }
 
-    private String getReport(Resource resource) {
+    private String getReport(UploadedResource uploadedResource) {
         return this.uploadDocumentReportProviders.stream()
-                .filter(provider -> provider.canHandle(resource))
-                .map(provider -> provider.createReport(resource))
+                .filter(provider -> provider.canHandle(uploadedResource))
+                .map(provider -> provider.createReport(uploadedResource))
                 .collect(Collectors.joining(System.lineSeparator()));
     }
 }

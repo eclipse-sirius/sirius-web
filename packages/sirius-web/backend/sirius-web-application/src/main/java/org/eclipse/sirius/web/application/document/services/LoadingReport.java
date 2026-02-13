@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,17 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.application.document.services.api;
+package org.eclipse.sirius.web.application.document.services;
+
+import java.util.List;
+
+import org.eclipse.sirius.web.application.document.services.api.ILoadingReport;
 
 /**
- * Use to provide report when uploading a document into Sirius Web.
+ * A loading report.
  *
- * @author arichard
+ * @author gdaniel
  */
-public interface IUploadDocumentReportProvider {
-
-    boolean canHandle(UploadedResource uploadedResource);
-
-    String createReport(UploadedResource uploadedResource);
-
+public record LoadingReport(List<String> content) implements ILoadingReport {
 }
