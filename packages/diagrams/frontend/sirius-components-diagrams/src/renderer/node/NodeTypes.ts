@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import { EdgeAnchorNodeCreationHandlesData } from './EdgeAnchorNodeCreationHandl
 import { FreeFormNode } from './FreeFormNode';
 import { FreeFormNodeData } from './FreeFormNode.types';
 import { IconLabelNode } from './IconLabelNode';
-import { IconLabelNodeData } from './IconsLabelNode.types';
+import { IconLabelNodeData } from './IconLabelNode.types';
 import { ListNode } from './ListNode';
 import { ListNodeData } from './ListNode.types';
 
