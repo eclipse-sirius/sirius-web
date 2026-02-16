@@ -422,3 +422,28 @@ test.describe('edge', () => {
     );
   });
 });
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('edge', 'blank-project');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramEdgeOnIconLabel.xml');
+    await playwrightExplorer.expand('diagramEdgeOnIconLabel.xml');
+    await playwrightExplorer.createRepresentation('Root', 'diagramEdgeIconLabel - simple edge icon label', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when an edge linked two icon label, then the edge is correctly displayed', async ({ page }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const edge = new PlaywrightEdge(page);
+    await expect(edge.edgeLocator).toBeAttached();
+  });
+});

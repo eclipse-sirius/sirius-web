@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diagramedgeiconlabel:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagramedgeiconlabel="domain://diagramEdgeIconLabel">
+  <entity1s name="ParentA">
+    <entity1ContainEntity2 name="ChildA" entity2LinkedToEntity2="//@entity1s.1/@entity1ContainEntity2.0"/>
+  </entity1s>
+  <entity1s name="ParentB">
+    <entity1ContainEntity2 name="ChildB"/>
+  </entity1s>
+</diagramedgeiconlabel:Root>
