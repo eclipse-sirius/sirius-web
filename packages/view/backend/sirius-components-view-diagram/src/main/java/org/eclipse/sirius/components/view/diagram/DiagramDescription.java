@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * </p>
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isAutoLayout <em>Auto Layout</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getToolbar <em>Toolbar</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getPalette <em>Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getNodeDescriptions <em>Node
@@ -60,6 +61,29 @@ public interface DiagramDescription extends RepresentationDescription {
      * @generated
      */
     void setAutoLayout(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Toolbar</b></em>' containment reference. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Toolbar</em>' containment reference.
+     * @see #setToolbar(DiagramToolbar)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Toolbar()
+     * @model containment="true"
+     * @generated
+     */
+    DiagramToolbar getToolbar();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getToolbar
+     * <em>Toolbar</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Toolbar</em>' containment reference.
+     * @see #getToolbar()
+     * @generated
+     */
+    void setToolbar(DiagramToolbar value);
 
     /**
      * Returns the value of the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--

@@ -17,43 +17,32 @@ import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 test.describe('diagram - toolbar', () => {
   let projectId;
 
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('diagram-toolbar', 'blank-project');
+    projectId = project.projectId;
+    await page.goto(`/projects/${projectId}/edit`);
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.uploadDocument('diagramToolbar.xml');
+    await explorer.expand('diagramToolbar.xml');
+  });
+
   test.afterEach(async ({ request }) => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when diagramDescription.toolbar is null, then the toolbar is not visible', async ({ page, request }) => {
-    // Intercept GraphQL responses and modify getDiagramDescription to set toolbar to null
-    await page.route('**/api/graphql', async (route) => {
-      const response = await route.fetch();
-      const json = await response.json();
-
-      if (json.data?.viewer?.editingContext?.representation?.description) {
-        const description = json.data.viewer.editingContext.representation.description;
-        if ('toolbar' in description) {
-          description.toolbar = null;
-        }
-      }
-
-      await route.fulfill({ response, json });
-    });
-
-    const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
-    projectId = project.projectId;
-    await page.goto(`/projects/${projectId}/edit`);
-
+  test('when toolbar is defined, then the toolbar is visible', async ({ page }) => {
     const explorer = new PlaywrightExplorer(page);
-    await explorer.expand('Flow');
-    await explorer.expand('NewSystem');
-    const representationItem = await explorer.getTreeItemLabel('Topography');
-    await representationItem.click();
-
+    await explorer.createRepresentation('Root', 'diagramToolbar - with toolbar', 'diagram');
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await expect(page.getByTestId('fit-to-screen')).toBeAttached();
+    await expect(page.getByTestId('zoom-out')).toBeAttached();
+  });
 
-    // Verify the toolbar buttons are not present
+  test('when toolbar is not defined, then the toolbar is not visible', async ({ page }) => {
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.createRepresentation('Root', 'diagramToolbar - without toolbar', 'diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     await expect(page.getByTestId('fit-to-screen')).not.toBeAttached();
-    await expect(page.getByTestId('share')).not.toBeAttached();
     await expect(page.getByTestId('zoom-out')).not.toBeAttached();
-    await expect(page.getByTestId('hide-mini-map')).not.toBeAttached();
-    await expect(page.getByTestId('show-mini-map')).not.toBeAttached();
   });
 });

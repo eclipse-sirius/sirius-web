@@ -97,6 +97,16 @@ public class DiagramDescriptionBuilder {
         return this;
     }
     /**
+     * Setter for Toolbar.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder toolbar(org.eclipse.sirius.components.view.diagram.DiagramToolbar value) {
+        this.getDiagramDescription().setToolbar(value);
+        return this;
+    }
+
+    /**
      * Setter for Palette.
      *
      * @generated

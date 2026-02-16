@@ -81,6 +81,7 @@ public class DiagramEdgeHandlePositionViewProvider implements IE2EViewProvider {
 
         var edgeDescription1 = this.getEdgeDescription(colorProvider, nodeDescription1, nodeDescription2);
 
+        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -91,6 +92,7 @@ public class DiagramEdgeHandlePositionViewProvider implements IE2EViewProvider {
                 .arrangeLayoutDirection(arrangeLayoutDirection)
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
                 .edgeDescriptions(edgeDescription1)
+                .toolbar(toolbar)
                 .build();
     }
 

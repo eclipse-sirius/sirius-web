@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,6 +82,7 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
 
         var edgeDescription1 = this.getEdgeDescription(colorProvider, nodeDescription2, nodeDescription2);
 
+        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -92,6 +93,7 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
                 .edgeDescriptions(edgeDescription1)
+                .toolbar(toolbar)
                 .build();
     }
 

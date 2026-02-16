@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
+import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.GroupPalette;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
@@ -39,6 +40,7 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#isAutoLayout <em>Auto
  * Layout</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getToolbar <em>Toolbar</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getPalette <em>Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getGroupPalette <em>Group
  * Palette</em>}</li>
@@ -73,6 +75,16 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @ordered
      */
     protected boolean autoLayout = AUTO_LAYOUT_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getToolbar() <em>Toolbar</em>}' containment reference. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #getToolbar()
+     * @generated
+     * @ordered
+     */
+    protected DiagramToolbar toolbar;
 
     /**
      * The cached value of the '{@link #getPalette() <em>Palette</em>}' containment reference. <!-- begin-user-doc -->
@@ -174,6 +186,54 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         this.autoLayout = newAutoLayout;
         if (this.eNotificationRequired())
             this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT, oldAutoLayout, this.autoLayout));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DiagramToolbar getToolbar() {
+        return this.toolbar;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetToolbar(DiagramToolbar newToolbar, NotificationChain msgs) {
+        DiagramToolbar oldToolbar = this.toolbar;
+        this.toolbar = newToolbar;
+        if (this.eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR, oldToolbar, newToolbar);
+            if (msgs == null)
+                msgs = notification;
+            else
+                msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setToolbar(DiagramToolbar newToolbar) {
+        if (newToolbar != this.toolbar) {
+            NotificationChain msgs = null;
+            if (this.toolbar != null)
+                msgs = ((InternalEObject) this.toolbar).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR, null, msgs);
+            if (newToolbar != null)
+                msgs = ((InternalEObject) newToolbar).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR, null, msgs);
+            msgs = this.basicSetToolbar(newToolbar, msgs);
+            if (msgs != null)
+                msgs.dispatch();
+        } else if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR, newToolbar, newToolbar));
     }
 
     /**
@@ -329,6 +389,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
+            case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
+                return this.basicSetToolbar(null, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 return this.basicSetPalette(null, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
@@ -351,6 +413,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         switch (featureID) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
                 return this.isAutoLayout();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
+                return this.getToolbar();
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 return this.getPalette();
             case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
@@ -376,6 +440,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         switch (featureID) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
                 this.setAutoLayout((Boolean) newValue);
+                return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
+                this.setToolbar((DiagramToolbar) newValue);
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 this.setPalette((DiagramPalette) newValue);
@@ -409,6 +476,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
                 this.setAutoLayout(AUTO_LAYOUT_EDEFAULT);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
+                this.setToolbar((DiagramToolbar) null);
+                return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 this.setPalette((DiagramPalette) null);
                 return;
@@ -438,6 +508,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         switch (featureID) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
                 return this.autoLayout != AUTO_LAYOUT_EDEFAULT;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
+                return this.toolbar != null;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
                 return this.palette != null;
             case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:

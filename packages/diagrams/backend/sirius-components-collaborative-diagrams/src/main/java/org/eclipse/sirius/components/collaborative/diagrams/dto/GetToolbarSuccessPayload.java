@@ -10,13 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.Objects;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IPayload;
+
 /**
- * The toolbar of a diagram.
+ * The payload of the "Get Toolbar" query returned on success.
  *
  * @author tgiraudet
  */
-public record DiagramToolbar() {
+public record GetToolbarSuccessPayload(UUID id, DiagramToolbar toolbar) implements IPayload {
+
+    public GetToolbarSuccessPayload {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(toolbar);
+    }
 }

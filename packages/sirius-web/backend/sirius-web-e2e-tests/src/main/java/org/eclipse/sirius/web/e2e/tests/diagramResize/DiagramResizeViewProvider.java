@@ -78,6 +78,8 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription diagramDescription(IColorProvider colorProvider) {
+        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramResizeDomainProvider.DOMAIN_NAME + " - simple resize node")
@@ -90,6 +92,7 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
                         this.getNodeDescription(colorProvider, "Entity3 - Resize HORIZONTAL", "::Entity3", UserResizableDirection.HORIZONTAL),
                         this.getNodeDescription(colorProvider, "Entity4 - Resize VERTICAL", "::Entity4", UserResizableDirection.VERTICAL),
                         this.getNodeDescriptionWithDefaultSize(colorProvider, "Entity5 - Resize Both - default size: (200, 100)", "::Entity5", UserResizableDirection.BOTH, "200", "100"))
+                .toolbar(toolbar)
                 .build();
     }
 

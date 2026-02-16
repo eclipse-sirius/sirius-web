@@ -10,13 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-
 package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+
 /**
- * The toolbar of a diagram.
+ * The input for the "Get Toolbar" query.
  *
  * @author tgiraudet
  */
-public record DiagramToolbar() {
+public record GetToolbarInput(UUID id, String editingContextId, String representationId) implements IDiagramInput {
 }
