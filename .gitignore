@@ -96,5 +96,7 @@ blob-report/
 playwright/.cache/
 
 .gemini
+GEMINI.md
+.geminiignore
 .claude
 .codex

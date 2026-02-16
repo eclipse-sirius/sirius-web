@@ -36,6 +36,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
@@ -438,6 +439,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EClass diagramToolbarEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EEnum arrowStyleEEnum = null;
 
     /**
@@ -621,7 +629,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getDiagramDescription_Palette() {
+    public EReference getDiagramDescription_Toolbar() {
         return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
@@ -631,8 +639,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getDiagramDescription_NodeDescriptions() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(3);
+    public EReference getDiagramDescription_Palette() {
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -641,7 +649,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EReference getDiagramDescription_EdgeDescriptions() {
+    public EReference getDiagramDescription_NodeDescriptions() {
         return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(4);
     }
 
@@ -651,8 +659,18 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EReference getDiagramDescription_EdgeDescriptions() {
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EAttribute getDiagramDescription_ArrangeLayoutDirection() {
-        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(5);
+        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(6);
     }
 
     /**
@@ -662,7 +680,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EReference getDiagramDescription_GroupPalette() {
-        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(2);
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
     /**
@@ -2571,6 +2589,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getDiagramToolbar() {
+        return this.diagramToolbarEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDiagramToolbar_PreconditionExpression() {
+        return (EAttribute) this.diagramToolbarEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getArrowStyle() {
         return this.arrowStyleEEnum;
     }
@@ -2719,6 +2757,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         // Create classes and their features
         this.diagramDescriptionEClass = this.createEClass(DIAGRAM_DESCRIPTION);
         this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__AUTO_LAYOUT);
+        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__TOOLBAR);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__PALETTE);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__GROUP_PALETTE);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
@@ -2962,6 +3001,9 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.actionEClass, ACTION__PRECONDITION_EXPRESSION);
         this.createEReference(this.actionEClass, ACTION__BODY);
 
+        this.diagramToolbarEClass = this.createEClass(DIAGRAM_TOOLBAR);
+        this.createEAttribute(this.diagramToolbarEClass, DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION);
+
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.layoutDirectionEEnum = this.createEEnum(LAYOUT_DIRECTION);
@@ -3045,6 +3087,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.diagramDescriptionEClass, DiagramDescription.class, "DiagramDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getDiagramDescription_AutoLayout(), this.ecorePackage.getEBoolean(), "autoLayout", null, 1, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDiagramDescription_Toolbar(), this.getDiagramToolbar(), null, "toolbar", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_Palette(), this.getDiagramPalette(), null, "palette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_GroupPalette(), this.getGroupPalette(), null, "groupPalette", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
@@ -3458,6 +3502,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getAction_Body(), theViewPackage.getOperation(), null, "body", null, 0, -1, Action.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
                 !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.diagramToolbarEClass, DiagramToolbar.class, "DiagramToolbar", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDiagramToolbar_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, DiagramToolbar.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");

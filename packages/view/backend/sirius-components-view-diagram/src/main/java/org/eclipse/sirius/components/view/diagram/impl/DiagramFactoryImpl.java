@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -197,6 +198,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createSelectionDialogTreeDescription();
             case DiagramPackage.ACTION:
                 return this.createAction();
+            case DiagramPackage.DIAGRAM_TOOLBAR:
+                return this.createDiagramToolbar();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -685,6 +688,17 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public Action createAction() {
         ActionImpl action = new ActionImpl();
         return action;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public DiagramToolbar createDiagramToolbar() {
+        DiagramToolbarImpl diagramToolbar = new DiagramToolbarImpl();
+        return diagramToolbar;
     }
 
     /**

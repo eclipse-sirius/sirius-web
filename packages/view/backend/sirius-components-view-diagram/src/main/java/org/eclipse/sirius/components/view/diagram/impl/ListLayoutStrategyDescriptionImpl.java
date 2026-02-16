@@ -190,7 +190,8 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
     @Override
     public EList<NodeDescription> getOnWestAtCreationBorderNodes() {
         if (this.onWestAtCreationBorderNodes == null) {
-            this.onWestAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES);
+            this.onWestAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this,
+                    DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_WEST_AT_CREATION_BORDER_NODES);
         }
         return this.onWestAtCreationBorderNodes;
     }
@@ -203,7 +204,8 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
     @Override
     public EList<NodeDescription> getOnEastAtCreationBorderNodes() {
         if (this.onEastAtCreationBorderNodes == null) {
-            this.onEastAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES);
+            this.onEastAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this,
+                    DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_EAST_AT_CREATION_BORDER_NODES);
         }
         return this.onEastAtCreationBorderNodes;
     }
@@ -216,7 +218,8 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
     @Override
     public EList<NodeDescription> getOnSouthAtCreationBorderNodes() {
         if (this.onSouthAtCreationBorderNodes == null) {
-            this.onSouthAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES);
+            this.onSouthAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this,
+                    DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_SOUTH_AT_CREATION_BORDER_NODES);
         }
         return this.onSouthAtCreationBorderNodes;
     }
@@ -229,7 +232,8 @@ public class ListLayoutStrategyDescriptionImpl extends MinimalEObjectImpl.Contai
     @Override
     public EList<NodeDescription> getOnNorthAtCreationBorderNodes() {
         if (this.onNorthAtCreationBorderNodes == null) {
-            this.onNorthAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES);
+            this.onNorthAtCreationBorderNodes = new EObjectResolvingEList<>(NodeDescription.class, this,
+                    DiagramPackage.LIST_LAYOUT_STRATEGY_DESCRIPTION__ON_NORTH_AT_CREATION_BORDER_NODES);
         }
         return this.onNorthAtCreationBorderNodes;
     }

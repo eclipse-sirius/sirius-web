@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.DropNodeTool;
 import org.eclipse.sirius.components.view.diagram.DropTool;
@@ -553,6 +554,13 @@ public class DiagramSwitch<T> extends Switch<T> {
             case DiagramPackage.ACTION: {
                 Action action = (Action) theEObject;
                 T result = this.caseAction(action);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.DIAGRAM_TOOLBAR: {
+                DiagramToolbar diagramToolbar = (DiagramToolbar) theEObject;
+                T result = this.caseDiagramToolbar(diagramToolbar);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1261,6 +1269,20 @@ public class DiagramSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseAction(Action object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Toolbar</em>'. <!-- begin-user-doc --> This
+     * implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Toolbar</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDiagramToolbar(DiagramToolbar object) {
         return null;
     }
 

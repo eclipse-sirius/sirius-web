@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.diagram.ArrowStyle;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -113,22 +114,7 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
                 .style(nodeStyle)
                 .build();
 
-        this.edgeTool = new DiagramBuilders().newEdgeTool()
-                .name("New dependencies")
-                .preconditionExpression("aql:semanticEdgeSource.dependencies->excludes(semanticEdgeTarget)")
-                .targetElementDescriptions(nodeDescription)
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:semanticEdgeSource")
-                                .children(
-                                        new ViewBuilders().newSetValue()
-                                                .featureName("dependencies")
-                                                .valueExpression("aql:self.dependencies->including(semanticEdgeTarget)")
-                                                .build()
-                                )
-                                .build()
-                )
-                .build();
+        this.edgeTool = this.edgeTool(nodeDescription);
 
         var deleteEdgeTool = new DeleteToolBuilder()
                 .name("Delete")
@@ -184,6 +170,8 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
                 .conditionalStyles(conditionalEdgeStyle)
                 .build();
 
+        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
                 .name("Diagram")
                 .titleExpression("aql:'EdgeDiagram'")
@@ -191,9 +179,29 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions(edgeDescription)
                 .autoLayout(false)
+                .toolbar(toolbar)
                 .build();
 
         return this.diagramDescription;
+    }
+
+    private EdgeTool edgeTool(DiagramElementDescription... targetElementDescriptions) {
+        return new DiagramBuilders().newEdgeTool()
+                .name("New dependencies")
+                .preconditionExpression("aql:semanticEdgeSource.dependencies->excludes(semanticEdgeTarget)")
+                .targetElementDescriptions(targetElementDescriptions)
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:semanticEdgeSource")
+                                .children(
+                                        new ViewBuilders().newSetValue()
+                                                .featureName("dependencies")
+                                                .valueExpression("aql:self.dependencies->including(semanticEdgeTarget)")
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
     }
 
     private EdgeReconnectionTool sourceEdgeReconnectionTool() {

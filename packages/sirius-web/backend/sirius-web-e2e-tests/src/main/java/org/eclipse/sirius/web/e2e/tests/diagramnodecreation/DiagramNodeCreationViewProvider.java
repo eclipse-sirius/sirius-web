@@ -115,6 +115,8 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                         .build())
                 .build());
 
+        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramNodeCreationDomainProvider.DOMAIN_NAME + " - node creation")
@@ -124,6 +126,7 @@ public class DiagramNodeCreationViewProvider implements IE2EViewProvider {
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(nodeDescription1, nodeDescription2, this.getNode3Description(colorProvider))
                 .edgeDescriptions(edgeDescription)
+                .toolbar(toolbar)
                 .palette(new DiagramBuilders().newDiagramPalette()
                         .nodeTools(new DiagramBuilders().newNodeTool()
                                 .name("create nodes")

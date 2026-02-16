@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -173,12 +173,16 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .dropNodeTool(dropAttributesTool)
                 .build();
 
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .build();
+
         var diagramDescription = new DiagramBuilders()
                 .newDiagramDescription()
                 .name("Domain")
                 .domainType("domain::Domain")
                 .titleExpression("aql:'Domain'")
                 .palette(palette)
+                .toolbar(toolbar)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
                 .build();
 

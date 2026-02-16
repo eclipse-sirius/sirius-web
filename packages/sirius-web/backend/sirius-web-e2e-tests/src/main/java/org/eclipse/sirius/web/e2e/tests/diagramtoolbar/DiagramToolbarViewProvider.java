@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.sirius.web.e2e.tests.diagrampalette;
+package org.eclipse.sirius.web.e2e.tests.diagramtoolbar;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,26 +38,28 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
- * The view provider for the diagram palette test suite.
+ * The view provider for the diagram toolbar test suite.
  *
- * @author frouene
+ * @author tgiraudet
  */
 @Profile("test")
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
-public class DiagramPaletteViewProvider implements IE2EViewProvider {
+public class DiagramToolbarViewProvider implements IE2EViewProvider {
 
     @Override
     public List<View> createViews() {
         var colorPalette = new SiriusWebE2EColorPaletteBuilderProvider().getColorPaletteBuilder().build();
         IColorProvider colorProvider = new SiriusWebE2EColorProvider(List.of(colorPalette));
 
-        var diagramDescription = this.getDiagramDescription(colorProvider);
+        var withToolbarDescription = this.getDiagramDescriptionWithToolbar(colorProvider);
+        var withoutToolbarDescription = this.getDiagramDescriptionWithoutToolbar(colorProvider);
 
         var view = new ViewBuilders().newView()
                 .colorPalettes(colorPalette)
                 .descriptions(
-                        diagramDescription
+                        withToolbarDescription,
+                        withoutToolbarDescription
                 )
                 .build();
 
@@ -65,48 +67,46 @@ public class DiagramPaletteViewProvider implements IE2EViewProvider {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
         });
 
-        String resourcePath = UUID.nameUUIDFromBytes("diagramPaletteView".getBytes()).toString();
+        String resourcePath = UUID.nameUUIDFromBytes("diagramToolbarView".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
-        resource.eAdapters().add(new ResourceMetadataAdapter("diagramPaletteView"));
+        resource.eAdapters().add(new ResourceMetadataAdapter("diagramToolbarView"));
         resource.getContents().add(view);
 
         return List.of(view);
     }
 
-    private DiagramDescription getDiagramDescription(IColorProvider colorProvider) {
+    private DiagramDescription getDiagramDescriptionWithToolbar(IColorProvider colorProvider) {
         var toolbar = new DiagramBuilders().newDiagramToolbar().build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
-                .name(DiagramPaletteDomainProvider.DOMAIN_NAME + " - palette")
-                .domainType(DiagramPaletteDomainProvider.DOMAIN_NAME + "::Root")
-                .titleExpression(DiagramPaletteDomainProvider.DOMAIN_NAME + " diagram")
+                .name(DiagramToolbarDomainProvider.DOMAIN_NAME + " - with toolbar")
+                .domainType(DiagramToolbarDomainProvider.DOMAIN_NAME + "::Root")
+                .titleExpression(DiagramToolbarDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
                 .toolbar(toolbar)
-                .palette(new DiagramBuilders().newDiagramPalette()
-                        .toolSections(new DiagramBuilders().newDiagramToolSection()
-                                        .name("DiagramToolSection")
-                                        .nodeTools(new DiagramBuilders().newNodeTool()
-                                                .name("NodeTool")
-                                                .build())
-                                        .build(),
-                                new DiagramBuilders().newDiagramToolSection()
-                                        .name("EmptyToolSection")
-                                        .build()
-                        )
-                        .build())
                 .build();
     }
 
+    private DiagramDescription getDiagramDescriptionWithoutToolbar(IColorProvider colorProvider) {
+        return new DiagramBuilders()
+                .newDiagramDescription()
+                .name(DiagramToolbarDomainProvider.DOMAIN_NAME + " - without toolbar")
+                .domainType(DiagramToolbarDomainProvider.DOMAIN_NAME + "::Root")
+                .titleExpression(DiagramToolbarDomainProvider.DOMAIN_NAME + " diagram")
+                .autoLayout(false)
+                .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
+                .nodeDescriptions(this.getNodeDescription(colorProvider))
+                .build();
+    }
 
     private NodeDescription getNodeDescription(IColorProvider colorProvider) {
-
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Entity Node 1")
-                .domainType(DiagramPaletteDomainProvider.DOMAIN_NAME + "::Entity1")
+                .domainType(DiagramToolbarDomainProvider.DOMAIN_NAME + "::Entity1")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
                 .collapsible(true)
@@ -123,16 +123,6 @@ public class DiagramPaletteViewProvider implements IE2EViewProvider {
                                 .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
                                 .build()
                 )
-                .palette(new DiagramBuilders().newNodePalette()
-                        .toolSections(new DiagramBuilders().newNodeToolSection()
-                                .name("NodeToolSection")
-                                .nodeTools(new DiagramBuilders().newNodeTool()
-                                        .name("NodeTool")
-                                        .preconditionExpression("aql:self.name!='Empty'")
-                                        .build())
-                                .build())
-                        .build())
                 .build();
     }
-
 }

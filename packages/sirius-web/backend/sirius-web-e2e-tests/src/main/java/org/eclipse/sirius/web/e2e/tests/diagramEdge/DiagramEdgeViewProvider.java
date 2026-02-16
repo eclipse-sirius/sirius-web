@@ -110,6 +110,8 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 this.createEgeCreationTool("E2ToEdge1B", edgeDescription1, edgeDescription5.getDomainType(), "toEdge5")
         ).build());
 
+        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramEdgeDomainProvider.DOMAIN_NAME + " - simple edges")
@@ -119,6 +121,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
                 .edgeDescriptions(edgeDescription1, edgeDescription2, edgeDescription3, edgeDescription4, edgeDescription5)
+                .toolbar(toolbar)
                 .build();
     }
 

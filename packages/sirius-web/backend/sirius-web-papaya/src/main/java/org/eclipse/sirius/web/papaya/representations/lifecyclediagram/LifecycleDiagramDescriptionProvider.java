@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.DefaultViewDiagramElementFinder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
@@ -57,6 +58,7 @@ public class LifecycleDiagramDescriptionProvider implements IRepresentationDescr
         lifecycleDiagramDescription.setAutoLayout(false);
         lifecycleDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         lifecycleDiagramDescription.setIconExpression("aql:'/papaya-representations/lifecycle-diagram.svg'");
+        lifecycleDiagramDescription.setToolbar(new DiagramBuilders().newDiagramToolbar().build());
 
         var cache = new DefaultViewDiagramElementFinder();
 

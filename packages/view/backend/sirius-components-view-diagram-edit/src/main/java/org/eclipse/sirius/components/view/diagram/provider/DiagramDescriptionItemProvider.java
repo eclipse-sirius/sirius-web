@@ -101,6 +101,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__TOOLBAR);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS);
@@ -169,6 +170,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
             case DiagramPackage.DIAGRAM_DESCRIPTION__GROUP_PALETTE:
             case DiagramPackage.DIAGRAM_DESCRIPTION__NODE_DESCRIPTIONS:
@@ -190,6 +192,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         super.collectNewChildDescriptors(newChildDescriptors, object);
         DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
 
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__TOOLBAR, DiagramFactory.eINSTANCE.createDiagramToolbar()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultDiagramPalette()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE, DiagramFactory.eINSTANCE.createGroupPalette()));
 

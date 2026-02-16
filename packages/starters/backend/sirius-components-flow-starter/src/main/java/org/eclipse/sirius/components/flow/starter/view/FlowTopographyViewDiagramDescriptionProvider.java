@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,11 +47,14 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         var diagramDescriptionBuilder = this.diagramBuilderHelper.newDiagramDescription();
+        var toolbar = this.diagramBuilderHelper.newDiagramToolbar().build();
         var diagramDescription = diagramDescriptionBuilder
                 .autoLayout(false)
                 .domainType("flow::System")
                 .name("Topography")
-                .titleExpression("Topography").build();
+                .titleExpression("Topography")
+                .toolbar(toolbar)
+                .build();
 
 
         var cache = new ViewDiagramElementFinder();
