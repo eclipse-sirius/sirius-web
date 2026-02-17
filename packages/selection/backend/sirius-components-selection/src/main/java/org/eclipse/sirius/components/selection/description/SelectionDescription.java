@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,9 +43,13 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> messageProvider;
 
+    private Function<VariableManager, String> noSelectionLabelProvider;
+
     private Predicate<VariableManager> canCreatePredicate;
 
     private boolean multiple;
+
+    private boolean optional;
 
     private TreeDescription treeDescription;
 
@@ -81,9 +85,12 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.targetObjectIdProvider;
     }
 
-
     public Function<VariableManager, String> getMessageProvider() {
         return this.messageProvider;
+    }
+
+    public Function<VariableManager, String> getNoSelectionLabelProvider() {
+        return this.noSelectionLabelProvider;
     }
 
     @Override
@@ -97,6 +104,10 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     public boolean isMultiple() {
         return this.multiple;
+    }
+
+    public boolean isOptional() {
+        return this.optional;
     }
 
     public Function<VariableManager, List<String>> getIconURLsProvider() {
@@ -129,11 +140,15 @@ public final class SelectionDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> messageProvider;
 
+        private Function<VariableManager, String> noSelectionLabelProvider;
+
         private Predicate<VariableManager> canCreatePredicate;
 
         private TreeDescription treeDescription;
 
         private boolean multiple;
+
+        private boolean optional;
 
         private Function<VariableManager, List<String>> iconURLsProvider;
 
@@ -166,6 +181,11 @@ public final class SelectionDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder noSelectionLabelProvider(Function<VariableManager, String> noSelectionLabelProvider) {
+            this.noSelectionLabelProvider = Objects.requireNonNull(noSelectionLabelProvider);
+            return this;
+        }
+
         public Builder canCreatePredicate(Predicate<VariableManager> canCreatePredicate) {
             this.canCreatePredicate = Objects.requireNonNull(canCreatePredicate);
             return this;
@@ -178,6 +198,11 @@ public final class SelectionDescription implements IRepresentationDescription {
 
         public Builder multiple(boolean multiple) {
             this.multiple = multiple;
+            return this;
+        }
+
+        public Builder optional(boolean optional) {
+            this.optional = optional;
             return this;
         }
 
@@ -194,9 +219,11 @@ public final class SelectionDescription implements IRepresentationDescription {
             selectionDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             selectionDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
             selectionDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            selectionDescription.noSelectionLabelProvider = Objects.requireNonNull(this.noSelectionLabelProvider);
             selectionDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             selectionDescription.treeDescription = Objects.requireNonNull(this.treeDescription);
             selectionDescription.multiple = this.multiple;
+            selectionDescription.optional = this.optional;
             selectionDescription.iconURLsProvider =  Objects.requireNonNull(this.iconURLsProvider);
             return selectionDescription;
         }

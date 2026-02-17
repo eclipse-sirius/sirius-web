@@ -305,6 +305,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionMessage"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//SelectionDialogDescription/selectionDialogTreeDescription"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/multiple"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/optional"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/noSelectionLabel"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//ToolSection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ToolSection/name"/>

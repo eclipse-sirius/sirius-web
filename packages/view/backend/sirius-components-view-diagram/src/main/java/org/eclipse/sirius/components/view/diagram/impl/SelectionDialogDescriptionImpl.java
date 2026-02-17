@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,10 @@ import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription
  * <em>Selection Dialog Tree Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#isMultiple
  * <em>Multiple</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#isOptional
+ * <em>Optional</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SelectionDialogDescriptionImpl#getNoSelectionLabel <em>No
+ * Selection Label</em>}</li>
  * </ul>
  *
  * @generated
@@ -88,6 +92,46 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
      * @ordered
      */
     protected boolean multiple = MULTIPLE_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isOptional() <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isOptional()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean OPTIONAL_EDEFAULT = false;
+
+    /**
+     * The cached value of the '{@link #isOptional() <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isOptional()
+     * @generated
+     * @ordered
+     */
+    protected boolean optional = OPTIONAL_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getNoSelectionLabel() <em>No Selection Label</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getNoSelectionLabel()
+     * @generated
+     * @ordered
+     */
+    protected static final String NO_SELECTION_LABEL_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getNoSelectionLabel() <em>No Selection Label</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getNoSelectionLabel()
+     * @generated
+     * @ordered
+     */
+    protected String noSelectionLabel = NO_SELECTION_LABEL_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -212,6 +256,52 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
      * @generated
      */
     @Override
+    public boolean isOptional() {
+        return this.optional;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setOptional(boolean newOptional) {
+        boolean oldOptional = this.optional;
+        this.optional = newOptional;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SELECTION_DIALOG_DESCRIPTION__OPTIONAL, oldOptional, this.optional));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public String getNoSelectionLabel() {
+        return this.noSelectionLabel;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setNoSelectionLabel(String newNoSelectionLabel) {
+        String oldNoSelectionLabel = this.noSelectionLabel;
+        this.noSelectionLabel = newNoSelectionLabel;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL, oldNoSelectionLabel, this.noSelectionLabel));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:
@@ -234,6 +324,10 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
                 return this.getSelectionDialogTreeDescription();
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
                 return this.isMultiple();
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__OPTIONAL:
+                return this.isOptional();
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL:
+                return this.getNoSelectionLabel();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -254,6 +348,12 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
                 return;
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
                 this.setMultiple((Boolean) newValue);
+                return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__OPTIONAL:
+                this.setOptional((Boolean) newValue);
+                return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL:
+                this.setNoSelectionLabel((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -276,6 +376,12 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
                 this.setMultiple(MULTIPLE_EDEFAULT);
                 return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__OPTIONAL:
+                this.setOptional(OPTIONAL_EDEFAULT);
+                return;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL:
+                this.setNoSelectionLabel(NO_SELECTION_LABEL_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -294,6 +400,10 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
                 return this.selectionDialogTreeDescription != null;
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
                 return this.multiple != MULTIPLE_EDEFAULT;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__OPTIONAL:
+                return this.optional != OPTIONAL_EDEFAULT;
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL:
+                return NO_SELECTION_LABEL_EDEFAULT == null ? this.noSelectionLabel != null : !NO_SELECTION_LABEL_EDEFAULT.equals(this.noSelectionLabel);
         }
         return super.eIsSet(featureID);
     }
@@ -313,6 +423,10 @@ public class SelectionDialogDescriptionImpl extends DialogDescriptionImpl implem
         result.append(this.selectionMessage);
         result.append(", multiple: ");
         result.append(this.multiple);
+        result.append(", optional: ");
+        result.append(this.optional);
+        result.append(", noSelectionLabel: ");
+        result.append(this.noSelectionLabel);
         result.append(')');
         return result.toString();
     }

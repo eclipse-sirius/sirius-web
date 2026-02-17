@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,9 @@ package org.eclipse.sirius.components.view.diagram;
  * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription
  * <em>Selection Dialog Tree Description</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple <em>Multiple</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isOptional <em>Optional</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionLabel <em>No Selection
+ * Label</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription()
@@ -101,5 +104,51 @@ public interface SelectionDialogDescription extends DialogDescription {
      * @generated
      */
     void setMultiple(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>Optional</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Optional</em>' attribute.
+     * @see #setOptional(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_Optional()
+     * @model
+     * @generated
+     */
+    boolean isOptional();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isOptional
+     * <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Optional</em>' attribute.
+     * @see #isOptional()
+     * @generated
+     */
+    void setOptional(boolean value);
+
+    /**
+     * Returns the value of the '<em><b>No Selection Label</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>No Selection Label</em>' attribute.
+     * @see #setNoSelectionLabel(String)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_NoSelectionLabel()
+     * @model
+     * @generated
+     */
+    String getNoSelectionLabel();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionLabel <em>No
+     * Selection Label</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>No Selection Label</em>' attribute.
+     * @see #getNoSelectionLabel()
+     * @generated
+     */
+    void setNoSelectionLabel(String value);
 
 } // SelectionDialogDescription
