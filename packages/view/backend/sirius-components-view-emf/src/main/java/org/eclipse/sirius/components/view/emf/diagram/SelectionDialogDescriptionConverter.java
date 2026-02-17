@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -116,13 +116,8 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         String selectionDescriptionId = this.diagramIdProvider.getId(selectionDescription);
         TreeDescription treeDescription = this.createTreeDescription(selectionDescription, interpreter);
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)
-                .messageProvider(variableManager -> {
-                    String message = selectionDescription.getSelectionMessage();
-                    if (message == null) {
-                        message = "";
-                    }
-                    return message;
-                })
+                .messageProvider(variableManager -> Optional.ofNullable(selectionDescription.getSelectionMessage()).orElse(""))
+                .noSelectionLabelProvider(variableManager -> Optional.ofNullable(selectionDescription.getNoSelectionLabel()).orElse(""))
                 .idProvider(variableManager -> SELECTION_PREFIX)
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                         .map(this.labelService::getStyledLabel)
@@ -135,6 +130,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .canCreatePredicate(variableManager -> false)
                 .treeDescription(treeDescription)
                 .multiple(selectionDescription.isMultiple())
+                .optional(selectionDescription.isOptional())
                 .iconURLsProvider(variableManager -> List.of())
                 .build();
     }

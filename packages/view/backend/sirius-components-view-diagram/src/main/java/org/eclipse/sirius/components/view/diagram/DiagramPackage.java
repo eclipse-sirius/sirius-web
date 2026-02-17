@@ -3686,13 +3686,30 @@ public interface DiagramPackage extends EPackage {
     int SELECTION_DIALOG_DESCRIPTION__MULTIPLE = DIALOG_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>Optional</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__OPTIONAL = DIALOG_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>No Selection Label</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL = DIALOG_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SELECTION_DIALOG_DESCRIPTION_FEATURE_COUNT = DIALOG_DESCRIPTION_FEATURE_COUNT + 3;
+    int SELECTION_DIALOG_DESCRIPTION_FEATURE_COUNT = DIALOG_DESCRIPTION_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc --> <!--
@@ -6327,6 +6344,30 @@ public interface DiagramPackage extends EPackage {
     EAttribute getSelectionDialogDescription_Multiple();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isOptional <em>Optional</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Optional</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isOptional()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_Optional();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionLabel <em>No
+     * Selection Label</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>No Selection Label</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionLabel()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_NoSelectionLabel();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ToolSection <em>Tool
      * Section</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -8256,6 +8297,22 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute SELECTION_DIALOG_DESCRIPTION__MULTIPLE = eINSTANCE.getSelectionDialogDescription_Multiple();
+
+        /**
+         * The meta object literal for the '<em><b>Optional</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__OPTIONAL = eINSTANCE.getSelectionDialogDescription_Optional();
+
+        /**
+         * The meta object literal for the '<em><b>No Selection Label</b></em>' attribute feature. <!-- begin-user-doc
+         * --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL = eINSTANCE.getSelectionDialogDescription_NoSelectionLabel();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl

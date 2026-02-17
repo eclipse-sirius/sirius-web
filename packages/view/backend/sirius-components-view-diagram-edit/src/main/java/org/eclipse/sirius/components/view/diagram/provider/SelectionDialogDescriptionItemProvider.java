@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,6 +54,8 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
 
             this.addSelectionMessagePropertyDescriptor(object);
             this.addMultiplePropertyDescriptor(object);
+            this.addOptionalPropertyDescriptor(object);
+            this.addNoSelectionLabelPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -80,6 +82,30 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
                 this.getString("_UI_SelectionDialogDescription_multiple_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_multiple_feature", "_UI_SelectionDialogDescription_type"),
                 DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__MULTIPLE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Optional feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addOptionalPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_optional_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_optional_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__OPTIONAL, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the No Selection Label feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNoSelectionLabelPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_noSelectionLabel_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_noSelectionLabel_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -157,6 +183,8 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
         switch (notification.getFeatureID(SelectionDialogDescription.class)) {
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__OPTIONAL:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:
