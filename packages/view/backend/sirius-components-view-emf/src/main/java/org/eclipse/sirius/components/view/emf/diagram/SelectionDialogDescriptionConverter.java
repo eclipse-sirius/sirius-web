@@ -116,8 +116,20 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         String selectionDescriptionId = this.diagramIdProvider.getId(selectionDescription);
         TreeDescription treeDescription = this.createTreeDescription(selectionDescription, interpreter);
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)
-                .messageProvider(variableManager -> Optional.ofNullable(selectionDescription.getSelectionMessage()).orElse(""))
-                .noSelectionLabelProvider(variableManager -> Optional.ofNullable(selectionDescription.getNoSelectionLabel()).orElse(""))
+                .messageProvider(variableManager -> {
+                    String message = Optional.ofNullable(selectionDescription.getSelectionMessage()).orElse("");
+                    if (message.isBlank()) {
+                        message = "Use an existing element";
+                    }
+                    return message;
+                })
+                .noSelectionLabelProvider(variableManager -> {
+                    String noSelectionLabel = Optional.ofNullable(selectionDescription.getNoSelectionLabel()).orElse("");
+                    if (noSelectionLabel.isBlank()) {
+                        noSelectionLabel = "Confirm without selection";
+                    }
+                    return noSelectionLabel;
+                })
                 .idProvider(variableManager -> SELECTION_PREFIX)
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                         .map(this.labelService::getStyledLabel)
