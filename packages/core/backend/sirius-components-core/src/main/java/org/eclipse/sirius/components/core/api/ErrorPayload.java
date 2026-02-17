@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.representations.MessageLevel;
  *
  * @author sbegaudeau
  */
-public record ErrorPayload(UUID id, String message, List<Message> messages) implements IPayload {
+public record ErrorPayload(UUID id, @Deprecated(forRemoval = true) String message, List<Message> messages) implements IPayload {
 
     public ErrorPayload {
         Objects.requireNonNull(id);
