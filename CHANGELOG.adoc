@@ -15,6 +15,7 @@
 
 === Deprecation warning
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6194[#6194] [core] GraphQL requests should stop using `ErrorPayload#message` and rely instead only on `ErrorPayload#messages`
 
 
 === Breaking changes
