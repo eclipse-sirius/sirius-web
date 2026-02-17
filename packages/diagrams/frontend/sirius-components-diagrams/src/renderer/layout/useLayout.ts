@@ -35,7 +35,8 @@ const initialState: UseLayoutState = {
   onLaidoutDiagram: () => {},
 };
 
-const isHandleReferencePosition = (causedBy: string) => causedBy === 'InvokeSingleClickOnTwoDiagramElementsToolInput';
+const isHandleReferencePosition = (causedBy: string) =>
+  causedBy === 'InvokeSingleClickOnTwoDiagramElementsToolInput' || causedBy === 'ReconnectEdgeInput';
 
 export const useLayout = (): UseLayoutValue => {
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);

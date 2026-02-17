@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,6 +86,24 @@ public class ProcessorToProcessorEdgeDescriptionProvider implements IEdgeDescrip
                 .toolSections(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .centerLabelEditTool(this.createLabelEditTool())
+                .edgeReconnectionTools(this.diagramBuilderHelper.newTargetEdgeEndReconnectionTool()
+                                .body(this.viewBuilderHelper.newChangeContext()
+                                        .expression("aql:edgeSemanticElement")
+                                        .children(this.viewBuilderHelper.newSetValue()
+                                                .featureName("target")
+                                                .valueExpression("aql:semanticReconnectionTarget")
+                                                .build())
+                                        .build())
+                                .build(),
+                        this.diagramBuilderHelper.newSourceEdgeEndReconnectionTool()
+                                .body(this.viewBuilderHelper.newChangeContext()
+                                        .expression("aql:edgeSemanticElement")
+                                        .children(this.viewBuilderHelper.newSetValue()
+                                                .featureName("source")
+                                                .valueExpression("aql:semanticReconnectionTarget")
+                                                .build())
+                                        .build())
+                                .build())
                 .build();
     }
 

@@ -22,8 +22,11 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagra
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
 import org.eclipse.sirius.components.collaborative.diagrams.handlers.TestDiagramBuilder;
+import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.junit.jupiter.api.Test;
 
@@ -47,6 +50,11 @@ public class GenericDiagramToolReferencePositionProviderTests {
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDropNode)).isTrue();
         DropOnDiagramInput inputDropOnDiagram = new DropOnDiagramInput(UUID.randomUUID(), "", "", "", List.of(), 0, 0);
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDropOnDiagram)).isTrue();
+        InvokeSingleClickOnTwoDiagramElementsToolInput inputInvokeSingleClickOnTwoElements = new InvokeSingleClickOnTwoDiagramElementsToolInput(UUID.randomUUID(), "", "",
+                "", "", 0, 0, 0, 0, "", List.of());
+        assertThat(diagramToolReferencePositionProvider.canHandle(inputInvokeSingleClickOnTwoElements)).isTrue();
+        ReconnectEdgeInput inputReconnectEdge = new ReconnectEdgeInput(UUID.randomUUID(), "", "", "", "", ReconnectEdgeKind.SOURCE, 0, 0);
+        assertThat(diagramToolReferencePositionProvider.canHandle(inputReconnectEdge)).isTrue();
 
         DeleteFromDiagramInput inputDelete = new DeleteFromDiagramInput(UUID.randomUUID(), "", "", List.of(), List.of());
         assertThat(diagramToolReferencePositionProvider.canHandle(inputDelete)).isFalse();
@@ -94,6 +102,28 @@ public class GenericDiagramToolReferencePositionProviderTests {
         DropNodesInput dropNodeInput = new DropNodesInput(UUID.randomUUID(), "", "",
                 List.of(""), CONTAINER_ID, List.of(new Position(3, 2)));
         var result = diagramToolReferencePositionProvider.getReferencePosition(dropNodeInput, diagramContext);
+        this.assertResult(result, CONTAINER_ID, new Position(3, 2));
+    }
+
+    @Test
+    public void getReferencePositionInvokeSingleClickOnTwoDiagramElementsTool() {
+        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
+        var diagramId = UUID.randomUUID().toString();
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
+        InvokeSingleClickOnTwoDiagramElementsToolInput invokeSingleClickOnTwoDiagramElementsToolInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(UUID.randomUUID(), "", "",
+                diagramId, "diagramTargetElementId", 0, 0, 3, 2, "", List.of());
+        var result = diagramToolReferencePositionProvider.getReferencePosition(invokeSingleClickOnTwoDiagramElementsToolInput, diagramContext);
+        this.assertResult(result, "diagramTargetElementId", new Position(3, 2));
+    }
+
+
+    @Test
+    public void getReferencePositionReconnectEdgeTool() {
+        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
+        var diagramId = UUID.randomUUID().toString();
+        DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
+        ReconnectEdgeInput reconnectEdgeInput = new ReconnectEdgeInput(UUID.randomUUID(), "", "", "", CONTAINER_ID, ReconnectEdgeKind.SOURCE, 3, 2);
+        var result = diagramToolReferencePositionProvider.getReferencePosition(reconnectEdgeInput, diagramContext);
         this.assertResult(result, CONTAINER_ID, new Position(3, 2));
     }
 

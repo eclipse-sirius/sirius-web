@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import {
   useUpdateNodeInternals,
   XYPosition,
 } from '@xyflow/react';
-import { useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -45,6 +45,7 @@ import {
   GQLReconnectKind,
   GQLSuccessPayload,
   UseReconnectEdge,
+  ReconnectEdgeState,
 } from './useReconnectEdge.types';
 
 export const reconnectEdgeMutation = gql`
@@ -81,6 +82,11 @@ export const useReconnectEdge = (): UseReconnectEdge => {
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { removeNodeHandleLayoutData } = useHandlesLayout();
   const updateNodeInternals = useUpdateNodeInternals();
+  const stateRef = useRef<ReconnectEdgeState>({
+    edgeId: null,
+    newEdgeEndId: null,
+    reconnectEdgeKind: null,
+  });
 
   const [updateEdgeEnd, { data: reconnectEdgeData, error: reconnectEdgeError }] = useMutation<
     GQLReconnectEdgeData,
@@ -105,7 +111,12 @@ export const useReconnectEdge = (): UseReconnectEdge => {
   );
 
   const handleReconnectEdge = useCallback(
-    (edgeId: string, newEdgeEndId: string, reconnectEdgeKind: GQLReconnectKind): void => {
+    (
+      edgeId: string,
+      newEdgeEndId: string,
+      reconnectEdgeKind: GQLReconnectKind,
+      targetHandlePosition: XYPosition
+    ): void => {
       const input: GQLReconnectEdgeInput = {
         id: crypto.randomUUID(),
         editingContextId: editingContextId,
@@ -113,6 +124,8 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         edgeId,
         newEdgeEndId,
         reconnectEdgeKind,
+        targetPositionX: targetHandlePosition.x,
+        targetPositionY: targetHandlePosition.y,
       };
       if (!readOnly) {
         updateEdgeEnd({ variables: { input } });
@@ -146,7 +159,11 @@ export const useReconnectEdge = (): UseReconnectEdge => {
           newEdgeTargetId = newConnection.source;
         }
         if (newEdgeTargetId) {
-          handleReconnectEdge(edgeId, newEdgeTargetId, reconnectEdgeKind);
+          stateRef.current = {
+            edgeId,
+            newEdgeEndId: newEdgeTargetId,
+            reconnectEdgeKind,
+          };
         }
       }
     },
@@ -155,9 +172,28 @@ export const useReconnectEdge = (): UseReconnectEdge => {
 
   const onReconnectEdgeEnd = useCallback(
     (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: HandleType) => {
-      reconnectEdgeOnSameNode(event, edge, handleType);
-      reconnectEdgeOnSameEdge(event, edge, handleType);
-      reconnectEdgeOnAnotherEdge(event, edge, handleType);
+      const { edgeId, newEdgeEndId, reconnectEdgeKind } = stateRef.current;
+      if (edgeId && newEdgeEndId && reconnectEdgeKind) {
+        let targetHandlePosition: XYPosition = { x: 0, y: 0 };
+        const target = store.getState().nodeLookup.get(newEdgeEndId);
+        if (target && 'clientX' in event && 'clientY' in event) {
+          targetHandlePosition = screenToFlowPosition({ x: event.clientX, y: event.clientY });
+          const isNearCenter = isCursorNearCenterOfTheNode(target, targetHandlePosition);
+          if (isNearCenter) {
+            targetHandlePosition = { x: 0, y: 0 };
+          }
+        }
+        handleReconnectEdge(edgeId, newEdgeEndId, reconnectEdgeKind, targetHandlePosition);
+      } else {
+        reconnectEdgeOnSameNode(event, edge, handleType);
+        reconnectEdgeOnSameEdge(event, edge, handleType);
+        reconnectEdgeOnAnotherEdge(event, edge, handleType);
+      }
+      stateRef.current = {
+        edgeId: null,
+        newEdgeEndId: null,
+        reconnectEdgeKind: null,
+      };
     },
     [getNodes, getEdges]
   );
@@ -197,7 +233,7 @@ export const useReconnectEdge = (): UseReconnectEdge => {
         ((reconnectEdgeKind === GQLReconnectKind.TARGET && targetEdgeHovered.id !== edge.target) ||
           (reconnectEdgeKind === GQLReconnectKind.SOURCE && targetEdgeHovered.id !== edge.source))
       ) {
-        handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind);
+        handleReconnectEdge(edge.id, targetEdgeHovered.id, reconnectEdgeKind, { x: 0, y: 0 });
       }
     }
 

@@ -16,7 +16,8 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getNearestPointInPerimeter, getUpdatedHandleForNode } from '../edge/EdgeLayout';
 import { RawDiagram } from './layout.types';
 
-const isHandleReferencePosition = (causedBy: string) => causedBy === 'InvokeSingleClickOnTwoDiagramElementsToolInput';
+const isHandleReferencePosition = (causedBy: string) =>
+  causedBy === 'InvokeSingleClickOnTwoDiagramElementsToolInput' || causedBy === 'ReconnectEdgeInput';
 
 export const updateHandleFromReferencePosition = (
   rawDiagram: RawDiagram,
