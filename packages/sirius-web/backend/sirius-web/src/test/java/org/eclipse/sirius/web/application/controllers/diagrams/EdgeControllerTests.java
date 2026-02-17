@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
@@ -225,7 +226,9 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     edgeId.get(),
                     siriusWebInfrastructureNodeId.get(),
-                    ReconnectEdgeKind.SOURCE
+                    ReconnectEdgeKind.SOURCE,
+                    0,
+                    0
             );
             var result = this.reconnectEdgeMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.reconnectEdge.__typename");
@@ -278,7 +281,9 @@ public class EdgeControllerTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     edgeId.get(),
                     siriusWebInfrastructureNodeId.get(),
-                    ReconnectEdgeKind.TARGET
+                    ReconnectEdgeKind.TARGET,
+                    0,
+                    0
             );
             var result = this.reconnectEdgeMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.reconnectEdge.__typename");

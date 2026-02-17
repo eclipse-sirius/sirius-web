@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,12 @@ export interface UseReconnectEdge {
   onReconnectEdgeEnd: (event: MouseEvent | TouchEvent, edge: Edge<EdgeData>, handleType: 'source' | 'target') => void;
 }
 
+export interface ReconnectEdgeState {
+  edgeId: string | null;
+  newEdgeEndId: string | null;
+  reconnectEdgeKind: GQLReconnectKind | null;
+}
+
 export interface GQLReconnectEdgeVariables {
   input: GQLReconnectEdgeInput;
 }
@@ -35,6 +41,8 @@ export interface GQLReconnectEdgeInput {
   edgeId: string;
   newEdgeEndId: string;
   reconnectEdgeKind: GQLReconnectKind;
+  targetPositionX: number;
+  targetPositionY: number;
 }
 
 export interface Position {
