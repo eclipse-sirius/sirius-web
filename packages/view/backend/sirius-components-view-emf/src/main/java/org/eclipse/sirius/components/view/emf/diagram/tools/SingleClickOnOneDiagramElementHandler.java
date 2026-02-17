@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -119,12 +119,8 @@ public class SingleClickOnOneDiagramElementHandler implements ISingleClickOnOneD
             if (optionalVariableManager.isPresent()) {
                 VariableManager variableManager = optionalVariableManager.get();
 
-                // We do not apply the tool if a dialog is defined but no variables have been provided
-                var optionalDialogDescriptionId = Optional.ofNullable(nodeTool.getDialogDescription()).map(this.diagramIdProvider::getId);
-                if (optionalDialogDescriptionId.isEmpty() || !variables.isEmpty()) {
-                    VariableManager childVariableManager = variableManager.createChild();
-                    result = this.toolExecutor.executeTool(nodeTool, interpreter, childVariableManager);
-                }
+                VariableManager childVariableManager = variableManager.createChild();
+                result = this.toolExecutor.executeTool(nodeTool, interpreter, childVariableManager);
             } else {
                 this.logger.warn("The tool {0} cannot be applied on the current diagram {1} and editing context {2}", toolId, diagramContext.diagram().getId(), editingContext.getId());
             }

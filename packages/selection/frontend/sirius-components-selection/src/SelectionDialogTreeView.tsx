@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,10 +27,11 @@ import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubs
 
 export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
 
-const useTreeStyle = makeStyles()((theme) => ({
+const useTreeStyle = makeStyles<{ hasSelection: boolean }>()((theme, { hasSelection }) => ({
   borderStyle: {
     border: '1px solid',
-    borderColor: theme.palette.divider,
+    borderRadius: theme.spacing(0.5),
+    borderColor: hasSelection ? theme.palette.primary.main : theme.palette.divider,
     height: 600,
     overflow: 'auto',
   },
@@ -48,7 +49,7 @@ export const SelectionDialogTreeView = ({
   onTreeItemClick,
   selectedTreeItemIds,
 }: SelectionDialogTreeViewProps) => {
-  const { classes } = useTreeStyle();
+  const { classes } = useTreeStyle({ hasSelection: selectedTreeItemIds.length !== 0 });
   const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
 
   const treeId = `selection://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}${encodeVariables(variables)}`;

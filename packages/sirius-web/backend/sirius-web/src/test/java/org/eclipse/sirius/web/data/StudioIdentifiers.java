@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,6 +56,8 @@ public final class StudioIdentifiers {
     public static final UUID HUMAN_NODE_DESCRIPTION_OBJECT = UUID.fromString("e91e6e23-1440-4fbf-b31c-3a21bf25d85b");
 
     public static final String DIAGRAM_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=fc1d7b23-2818-4874-bb30-8831ea287a44&sourceElementId=7384dc2c-1b43-45c7-9c74-f972b28774c8";
+
+    public static final String SELECTION_DIALOG_DESCRIPTION_ID = "cec61a82-5b78-46bc-bb1c-7df7e8f81fc8";
 
     public static final UUID PLACEHOLDER_IMAGE_OBJECT = UUID.fromString("7f8ce6ef-a23f-4c62-a6f8-381d5c237742");
 
