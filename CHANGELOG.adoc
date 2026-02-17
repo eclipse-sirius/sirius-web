@@ -106,6 +106,7 @@ Alternative implementations of `ILoadingReport` can be provided and consumed by 
 It is now possible to implement `ITreeItemTooltipProvider` to provide tooltips for any tree.
 Trees defined via the view DSL can alternatively provide a tooltip expression via `TreeDescription#setTreeItemTooltipExpression`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Rework the _New Project_ creation page to improve the UX
+- https://github.com/eclipse-sirius/sirius-web/issues/6110[#6110] [diagram] Preserve custom position for the handle during edge reconnection
 
 
 

@@ -40,4 +40,16 @@ export class PlaywrightDetails {
   async isTabSelected(label: string): Promise<boolean> {
     return (await this.page.getByTestId(`page-tab-${label}`).getAttribute('aria-selected')) === 'true';
   }
+
+  async isReferenceValueSet(refWidget: string, refValue: string): Promise<boolean> {
+    await this.page.waitForFunction(
+      ({ refWidget }) => {
+        return !!document.querySelector(`[data-testid="${refWidget}"]`);
+      },
+      { refWidget },
+      { timeout: 2000 }
+    );
+    const element = this.detailsLocator.getByTestId(refWidget).getByTestId(`reference-value-${refValue}`);
+    return (await element.count()) > 0 && (await element.isVisible());
+  }
 }

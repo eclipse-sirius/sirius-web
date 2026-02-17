@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -145,7 +145,9 @@ public class EdgeStyleControllerTests extends AbstractIntegrationTests {
                     diagramId.get(),
                     edgeId.get(),
                     siriusWebInfrastructureNodeId.get(),
-                    ReconnectEdgeKind.TARGET
+                    ReconnectEdgeKind.TARGET,
+                    0,
+                    0
             );
             var result = this.reconnectEdgeMutationRunner.run(input);
             String typename = JsonPath.read(result.data(), "$.data.reconnectEdge.__typename");

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -130,7 +130,7 @@ public class ReconnectEdgeEventHandlerTests {
 
         var handler = new ReconnectEdgeEventHandler(new DiagramEventHandlerConfiguration(objectSearchService, diagramQueryService, diagramDescriptionService, representationDescriptionSearchService,
                 messageService, new IFeedbackMessageService.NoOp()), List.of(reconnectionToolExecutor), new SimpleMeterRegistry());
-        var input = new ReconnectEdgeInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET);
+        var input = new ReconnectEdgeInput(UUID.randomUUID(), "editingContextId", "representationId", edgeId, newEdgeEndId, ReconnectEdgeKind.TARGET, 0, 0);
 
         assertThat(handler.canHandle(null, input)).isTrue();
 
