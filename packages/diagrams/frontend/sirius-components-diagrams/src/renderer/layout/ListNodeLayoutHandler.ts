@@ -34,6 +34,13 @@ import {
   setBorderNodesPosition,
 } from './layoutNode';
 
+const getChildNodeHeightMinFootPrint = (node: Node<NodeData>): number => {
+  if (node.type === 'iconLabelNode') {
+    return node.data.minComputedHeight ?? 0;
+  }
+  return node.data.resizedByUser ? node.height ?? 0 : getDefaultOrMinHeight(node.data.minComputedHeight ?? 0, node);
+};
+
 export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   public canHandle(node: Node<NodeData, DiagramNodeType>) {
     return node.type === 'listNode';
@@ -260,7 +267,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
       .reduce((max, width) => Math.max(max, width), 0);
     node.data.minComputedWidth = Math.max(minComputeChildrenWidth, labelOnlyWidth) + borderWidth * 2;
     const minComputeChildrenHeight = directNodesChildren
-      .map((node) => (node.data.resizedByUser ? node.height ?? 0 : node.data.minComputedHeight ?? 0))
+      .map((node) => getChildNodeHeightMinFootPrint(node))
       .reduce((sum, height) => sum + height, 0);
     node.data.minComputedHeight = Math.max(
       childrenContentBox.y + minComputeChildrenHeight + borderWidth + node.data.bottomGap,
