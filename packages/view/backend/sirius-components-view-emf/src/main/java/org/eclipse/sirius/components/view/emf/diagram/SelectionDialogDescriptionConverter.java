@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.emf.api.IDialogDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -82,12 +83,16 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
     private final IURLParser urlParser;
 
-    public SelectionDialogDescriptionConverter(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, IDiagramIdProvider diagramIdProvider, IURLParser urlParser) {
+    private final IViewEMFMessageService messageService;
+
+    public SelectionDialogDescriptionConverter(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, IDiagramIdProvider diagramIdProvider, IURLParser urlParser,
+            IViewEMFMessageService messageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.labelService = Objects.requireNonNull(labelService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -119,14 +124,14 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .messageProvider(variableManager -> {
                     String message = Optional.ofNullable(selectionDescription.getSelectionMessage()).orElse("");
                     if (message.isBlank()) {
-                        message = "Use an existing element";
+                        message = this.messageService.defaultSelectionMessage();
                     }
                     return message;
                 })
                 .noSelectionLabelProvider(variableManager -> {
                     String noSelectionLabel = Optional.ofNullable(selectionDescription.getNoSelectionLabel()).orElse("");
                     if (noSelectionLabel.isBlank()) {
-                        noSelectionLabel = "Confirm without selection";
+                        noSelectionLabel = this.messageService.defaultNoSelectionLabel();
                     }
                     return noSelectionLabel;
                 })
