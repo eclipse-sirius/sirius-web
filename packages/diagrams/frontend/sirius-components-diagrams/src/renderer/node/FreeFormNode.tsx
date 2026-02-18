@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -123,7 +123,12 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
     }
 
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-    const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+    const { style: dropFeedbackStyle } = useDropNodeStyle(
+      data.isDropNodeTarget,
+      data.isDragNodeSource,
+      data.isDropNodeCandidate,
+      dragging
+    );
     const { style: connectionLineActiveNodeStyle } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
     const nodeStyle = useMemo(
       () => freeFormNodeStyle(theme, data.style, !!selected, data.isHovered, data.faded),

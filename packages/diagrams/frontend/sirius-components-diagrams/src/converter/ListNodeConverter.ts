@@ -108,6 +108,7 @@ const toListNode = (
       : [],
     isDraggedNode: false,
     isDropNodeTarget: false,
+    isDragNodeSource: false,
     isDropNodeCandidate: false,
     connectionLinePositionOnNode: 'none',
     isHovered: false,

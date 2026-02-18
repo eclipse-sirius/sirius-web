@@ -54,7 +54,9 @@ An example of this impact could be found in `EllipseNodeConverter.ts`.
 In the node layout, we no longer need to retrieve the label element, as the size is now present in the label data.
 This means that the following methods `getHeaderHeightFootprint` and `getInsideLabelWidthConstraint` have changed their signature by removing the label element.
 An example of this impact could be found in `EllipseNodeLayoutHandler.ts`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6202[#6202] [diagram] Custom node layout handlers must now set `isDragNodeSource`.
+An example can be found with `EllipseNodeConverter.ts`.
+`useDropNodeStyle` now has a new parameter `isDragNodeSource`.
 
 === Dependency update
 
@@ -68,6 +70,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6105[#6105] [sirius-web] Fix representation opening in library browser.
 - https://github.com/eclipse-sirius/sirius-web/issues/6141|#6141] [table] Prevent tables in a form to share the same id
 - https://github.com/eclipse-sirius/sirius-web/issues/6200|#6200] [diagram] Prevent list node to be resized to a size smaller than that produced by the layout
+- https://github.com/eclipse-sirius/sirius-web/issues/6202[#6202] [diagram] Prevent compatible nodes from being highlighted when dragging a border node
 
 
 === New Features

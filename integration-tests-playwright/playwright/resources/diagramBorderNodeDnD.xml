@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diagramdnd:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagramdnd="domain://diagramDnD">
+  <entity1s name="Parent">
+    <entity4sOnEntity1 name="Border"/>
+  </entity1s>
+  <entity1s name="Target"/>
+</diagramdnd:Root>
