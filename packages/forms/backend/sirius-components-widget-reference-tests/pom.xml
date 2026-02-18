@@ -18,13 +18,13 @@
 	<parent>
 		<groupId>org.eclipse.sirius</groupId>
 		<artifactId>sirius-web-parent</artifactId>
-		<version>2026.1.2</version>
+		<version>2026.1.3</version>
 		<relativePath>../../../releng/backend/sirius-web-parent</relativePath>
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
 	<artifactId>sirius-components-widget-reference-tests</artifactId>
-	<version>2026.1.2</version>
+	<version>2026.1.3</version>
 	<name>sirius-components-widget-reference-tests</name>
 	<description>Sirius Components Widget Reference Tests</description>
 
@@ -32,7 +32,7 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference</artifactId>
-			<version>2026.1.2</version>
+			<version>2026.1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
@@ -41,12 +41,12 @@
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-graphql-tests</artifactId>
-			<version>2026.1.2</version>
+			<version>2026.1.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-collaborative-widget-reference</artifactId>
-			<version>2026.1.2</version>
+			<version>2026.1.3</version>
 		</dependency>
 	</dependencies>
 
