@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,14 +38,15 @@ import org.springframework.stereotype.Service;
  * @author pcdavid
  */
 @Service
-public class DropNodeCompatibiliyProvider implements IDropNodeCompatibilityProvider {
+public class DropNodeCompatibilityProvider implements IDropNodeCompatibilityProvider {
+
     private final IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate;
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
     private final IDiagramIdProvider idProvider;
 
-    public DropNodeCompatibiliyProvider(IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate,
+    public DropNodeCompatibilityProvider(IViewRepresentationDescriptionPredicate viewRepresentationDescriptionPredicate,
             IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService, IDiagramIdProvider idProvider) {
         this.viewRepresentationDescriptionPredicate = Objects.requireNonNull(viewRepresentationDescriptionPredicate);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
@@ -63,11 +64,7 @@ public class DropNodeCompatibiliyProvider implements IDropNodeCompatibilityProvi
                 .filter(DiagramDescription.class::isInstance)
                 .map(DiagramDescription.class::cast);
 
-        if (optionalDiagramDescription.isPresent()) {
-            return this.computeDropNodeCompatibility(optionalDiagramDescription.get());
-        } else {
-            return List.of();
-        }
+        return optionalDiagramDescription.map(this::computeDropNodeCompatibility).orElseGet(List::of);
     }
 
     private List<DropNodeCompatibilityEntry> computeDropNodeCompatibility(DiagramDescription diagramDescription) {

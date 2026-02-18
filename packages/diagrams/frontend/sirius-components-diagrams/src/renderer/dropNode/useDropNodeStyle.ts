@@ -23,6 +23,7 @@ import { useDropNodeStyleValue } from './useDropNodeStyle.types';
  * @param isDropNodeTarget whether the node to style is currently targeted by the drop
  *                         (i.e. the mouse is on top of it, and releasing the mousing
  *                         button would trigger the drop on this node)
+ * @param isDragNodeSource whether the node it's currently the parent of the dragged element(s)
  * @param isDropNodeCandidate whether the node to style is a compatible drop candidate
  *                            for the dragged element(s)
  * @param isDragging whether the node is (one of) the node(s) being moved/dragged.
@@ -30,6 +31,7 @@ import { useDropNodeStyleValue } from './useDropNodeStyle.types';
  */
 export const useDropNodeStyle = (
   isDropNodeTarget: boolean,
+  isDragNodeSource: boolean,
   isDropNodeCandidate: boolean,
   isDragging: boolean
 ): useDropNodeStyleValue => {
@@ -40,7 +42,7 @@ export const useDropNodeStyle = (
   const dropInvalid = `rgb(from ${theme.palette.error.main} r g b / 0.5)`;
 
   const style: React.CSSProperties = {};
-  if (!readOnly && !isDragging) {
+  if (!readOnly && !isDragging && !isDragNodeSource) {
     let highlightColor: string | null = null;
     if (isDropNodeCandidate) {
       highlightColor = isDropNodeTarget ? dropValid : dropPossible;
@@ -53,7 +55,7 @@ export const useDropNodeStyle = (
     }
   }
 
-  const memoizedStyle = useMemo(() => style, [isDropNodeTarget, isDropNodeCandidate, isDragging]);
+  const memoizedStyle = useMemo(() => style, [isDropNodeTarget, isDragNodeSource, isDropNodeCandidate, isDragging]);
 
   return { style: memoizedStyle };
 };
