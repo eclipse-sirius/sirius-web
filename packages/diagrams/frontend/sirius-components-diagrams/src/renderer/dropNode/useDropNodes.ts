@@ -154,7 +154,7 @@ export const useDropNodes = (): UseDropNodesValue => {
       if (nodes.length === 0) {
         return;
       }
-      const draggedNodes = nodes.map((node) => getDraggableNode(node));
+      const draggedNodes = nodes.filter((node) => !node.data.isBorderNode).map((node) => getDraggableNode(node));
 
       // Store the initial positions to be able to reset them correctly on cancel.
       const initialPositions: Map<string, XYPosition> = new Map();
