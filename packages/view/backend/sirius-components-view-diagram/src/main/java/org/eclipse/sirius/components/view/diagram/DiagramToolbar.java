@@ -23,6 +23,8 @@ import org.eclipse.emf.ecore.EObject;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramToolbar#getPreconditionExpression <em>Precondition
  * Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramToolbar#isExpandedByDefault <em>Expanded By
+ * Default</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramToolbar()
@@ -52,5 +54,28 @@ public interface DiagramToolbar extends EObject {
      * @generated
      */
     void setPreconditionExpression(String value);
+
+    /**
+     * Returns the value of the '<em><b>Expanded By Default</b></em>' attribute. The default value is
+     * <code>"true"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Expanded By Default</em>' attribute.
+     * @see #setExpandedByDefault(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramToolbar_ExpandedByDefault()
+     * @model default="true"
+     * @generated
+     */
+    boolean isExpandedByDefault();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramToolbar#isExpandedByDefault
+     * <em>Expanded By Default</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Expanded By Default</em>' attribute.
+     * @see #isExpandedByDefault()
+     * @generated
+     */
+    void setExpandedByDefault(boolean value);
 
 } // DiagramToolbar

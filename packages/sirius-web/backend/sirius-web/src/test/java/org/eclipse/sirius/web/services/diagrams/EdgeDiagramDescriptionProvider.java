@@ -170,7 +170,9 @@ public class EdgeDiagramDescriptionProvider implements IEditingContextProcessor 
                 .conditionalStyles(conditionalEdgeStyle)
                 .build();
 
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
 
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
                 .name("Diagram")

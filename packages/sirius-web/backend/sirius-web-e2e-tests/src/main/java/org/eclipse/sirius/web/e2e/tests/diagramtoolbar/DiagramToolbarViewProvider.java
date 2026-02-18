@@ -53,12 +53,14 @@ public class DiagramToolbarViewProvider implements IE2EViewProvider {
         IColorProvider colorProvider = new SiriusWebE2EColorProvider(List.of(colorPalette));
 
         var withToolbarDescription = this.getDiagramDescriptionWithToolbar(colorProvider);
+        var withCollapsedToolbarDescription = this.getDiagramDescriptionWithCollapsedToolbar(colorProvider);
         var withoutToolbarDescription = this.getDiagramDescriptionWithoutToolbar(colorProvider);
 
         var view = new ViewBuilders().newView()
                 .colorPalettes(colorPalette)
                 .descriptions(
                         withToolbarDescription,
+                        withCollapsedToolbarDescription,
                         withoutToolbarDescription
                 )
                 .build();
@@ -76,7 +78,9 @@ public class DiagramToolbarViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription getDiagramDescriptionWithToolbar(IColorProvider colorProvider) {
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -88,6 +92,23 @@ public class DiagramToolbarViewProvider implements IE2EViewProvider {
                 .nodeDescriptions(this.getNodeDescription(colorProvider))
                 .toolbar(toolbar)
                 .build();
+    }
+
+    private DiagramDescription getDiagramDescriptionWithCollapsedToolbar(IColorProvider colorProvider) {
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(false)
+            .build();
+
+        return new DiagramBuilders()
+            .newDiagramDescription()
+            .name(DiagramToolbarDomainProvider.DOMAIN_NAME + " - with collapsed toolbar")
+            .domainType(DiagramToolbarDomainProvider.DOMAIN_NAME + "::Root")
+            .titleExpression(DiagramToolbarDomainProvider.DOMAIN_NAME + " diagram")
+            .autoLayout(false)
+            .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
+            .nodeDescriptions(this.getNodeDescription(colorProvider))
+            .toolbar(toolbar)
+            .build();
     }
 
     private DiagramDescription getDiagramDescriptionWithoutToolbar(IColorProvider colorProvider) {

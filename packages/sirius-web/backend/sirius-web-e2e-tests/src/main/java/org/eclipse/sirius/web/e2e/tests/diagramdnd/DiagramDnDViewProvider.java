@@ -108,7 +108,9 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
                                 .build())
                 .build();
 
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()

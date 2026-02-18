@@ -52,10 +52,10 @@ public class ToolbarProvider implements IToolbarProvider {
         Optional<DiagramToolbar> optionalToolbar = Optional.empty();
 
         var targetObjectId = diagramContext.diagram().getTargetObjectId();
-        var optionalTargetelement = this.objectSearchService.getObject(editingContext, targetObjectId);
+        var optionalTargetElement = this.objectSearchService.getObject(editingContext, targetObjectId);
 
-        if (optionalTargetelement.isPresent()) {
-            var targetElement = optionalTargetelement.get();
+        if (optionalTargetElement.isPresent()) {
+            var targetElement = optionalTargetElement.get();
 
             VariableManager variableManager = new VariableManager();
             variableManager.put(VariableManager.SELF, targetElement);
@@ -73,7 +73,7 @@ public class ToolbarProvider implements IToolbarProvider {
                                 .asBoolean()
                                 .orElse(true);
                     })
-                    .map(viewDiagramToolbar -> new DiagramToolbar());
+                    .map(viewDiagramToolbar -> new DiagramToolbar(viewDiagramToolbar.isExpandedByDefault()));
             }
         }
         return optionalToolbar;

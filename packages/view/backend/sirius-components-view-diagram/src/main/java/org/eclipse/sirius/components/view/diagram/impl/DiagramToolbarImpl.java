@@ -27,6 +27,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramToolbarImpl#getPreconditionExpression
  * <em>Precondition Expression</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramToolbarImpl#isExpandedByDefault <em>Expanded By
+ * Default</em>}</li>
  * </ul>
  *
  * @generated
@@ -51,6 +53,26 @@ public class DiagramToolbarImpl extends MinimalEObjectImpl.Container implements 
      * @ordered
      */
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isExpandedByDefault() <em>Expanded By Default</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isExpandedByDefault()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean EXPANDED_BY_DEFAULT_EDEFAULT = true;
+
+    /**
+     * The cached value of the '{@link #isExpandedByDefault() <em>Expanded By Default</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #isExpandedByDefault()
+     * @generated
+     * @ordered
+     */
+    protected boolean expandedByDefault = EXPANDED_BY_DEFAULT_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -100,10 +122,35 @@ public class DiagramToolbarImpl extends MinimalEObjectImpl.Container implements 
      * @generated
      */
     @Override
+    public boolean isExpandedByDefault() {
+        return this.expandedByDefault;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setExpandedByDefault(boolean newExpandedByDefault) {
+        boolean oldExpandedByDefault = this.expandedByDefault;
+        this.expandedByDefault = newExpandedByDefault;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT, oldExpandedByDefault, this.expandedByDefault));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
                 return this.getPreconditionExpression();
+            case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
+                return this.isExpandedByDefault();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -118,6 +165,9 @@ public class DiagramToolbarImpl extends MinimalEObjectImpl.Container implements 
         switch (featureID) {
             case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression((String) newValue);
+                return;
+            case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
+                this.setExpandedByDefault((Boolean) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -134,6 +184,9 @@ public class DiagramToolbarImpl extends MinimalEObjectImpl.Container implements 
             case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
                 this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
                 return;
+            case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
+                this.setExpandedByDefault(EXPANDED_BY_DEFAULT_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -148,6 +201,8 @@ public class DiagramToolbarImpl extends MinimalEObjectImpl.Container implements 
         switch (featureID) {
             case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
                 return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
+            case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
+                return this.expandedByDefault != EXPANDED_BY_DEFAULT_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -165,6 +220,8 @@ public class DiagramToolbarImpl extends MinimalEObjectImpl.Container implements 
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (preconditionExpression: ");
         result.append(this.preconditionExpression);
+        result.append(", expandedByDefault: ");
+        result.append(this.expandedByDefault);
         result.append(')');
         return result.toString();
     }

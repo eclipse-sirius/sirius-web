@@ -48,7 +48,11 @@ public class ComponentDiagramDescriptionProvider implements IRepresentationDescr
         componentDiagramDescription.setAutoLayout(false);
         componentDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.DOWN);
         componentDiagramDescription.setIconExpression("aql:'/papaya-representations/component-diagram.svg'");
-        componentDiagramDescription.setToolbar(new DiagramBuilders().newDiagramToolbar().build());
+
+        var toolbar = DiagramFactory.eINSTANCE.createDiagramToolbar();
+        toolbar.setExpandedByDefault(true);
+
+        componentDiagramDescription.setToolbar(toolbar);
 
         var cache = new DefaultViewDiagramElementFinder();
 
