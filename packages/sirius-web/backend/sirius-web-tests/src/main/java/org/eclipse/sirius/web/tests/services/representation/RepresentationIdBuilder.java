@@ -60,6 +60,14 @@ public class RepresentationIdBuilder {
         return "relatedviews://?objectIds=[" + String.join(",", objectIds) + "]";
     }
 
+    public String buildViewsExplorerViewRepresentationId(String treeDescriptionId, List<String> expandedObjectIds) {
+        List<String> encodedExpandedObjectIds = expandedObjectIds.stream()
+                .map(id -> URLEncoder.encode(id, StandardCharsets.UTF_8))
+                .toList();
+
+        return "viewsexplorer://?treeDescriptionId=" + URLEncoder.encode(treeDescriptionId, StandardCharsets.UTF_8) + EXPANDED_IDS + String.join(",", encodedExpandedObjectIds) + "]";
+    }
+
     public String buildRelatedElementsRepresentationId(List<String> objectIds) {
         return "relatedElements://?objectIds=[" + String.join(",", objectIds) + "]";
     }
