@@ -58,6 +58,9 @@ This means that the following methods `getHeaderHeightFootprint` and `getInsideL
 An example of this impact could be found in `EllipseNodeLayoutHandler.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/1626[#1626] [diagram] Add the ability to trigger tools using key bindings.
 The `SingleClickOnDiagramElementTool` builder now requires a list of key bindings.
+- https://github.com/eclipse-sirius/sirius-web/issues/6202[#6202] [diagram] Custom node layout handlers must now set `isDragNodeSource`.
+An example can be found with `EllipseNodeConverter.ts`.
+`useDropNodeStyle` now has a new parameter `isDragNodeSource`.
 
 
 === Dependency update
@@ -81,6 +84,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6285[#6285] [diagram] Prevent hidden edges to interfere with border node position
 - https://github.com/eclipse-sirius/sirius-web/issues/6259[#6259] [view] Fix icon of the diagram toolbar that was not displayed in the View DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/6260[#6260] [diagram] Prevent unselected nodes from being resized
+- https://github.com/eclipse-sirius/sirius-web/issues/6202[#6202] [diagram] Prevent compatible nodes from being highlighted when dragging a border node
 
 
 === New Features
