@@ -50,7 +50,12 @@ export const IconLabelNode: NodeComponentsMap['iconLabelNode'] = memo(
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
-    const { style: dropFeedbackStyle } = useDropNodeStyle(data.isDropNodeTarget, data.isDropNodeCandidate, dragging);
+    const { style: dropFeedbackStyle } = useDropNodeStyle(
+      data.isDropNodeTarget,
+      data.isDragNodeSource,
+      data.isDropNodeCandidate,
+      dragging
+    );
     const { style: connectionLineActiveNodeStyle } = useConnectionLineNodeStyle(data.connectionLinePositionOnNode);
     const nodeStyle = useMemo(
       () => iconLabelStyle(data.style, theme, !!selected, data.isHovered, data.faded),

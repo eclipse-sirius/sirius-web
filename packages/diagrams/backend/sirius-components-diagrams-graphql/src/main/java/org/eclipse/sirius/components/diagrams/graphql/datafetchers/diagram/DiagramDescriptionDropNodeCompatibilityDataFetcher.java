@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,8 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeCompatibilityEntry;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.GetDropNodeCompatibilityInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetDropNodeCompatibilitySuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.GetDropNodeCompatibiliyInput;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
@@ -36,7 +36,8 @@ import reactor.core.publisher.Mono;
  * @author pcdavid
  */
 @QueryDataFetcher(type = "DiagramDescription", field = "dropNodeCompatibility")
-public class DiagramDescriptionDropNodeCompatibilityDataFetcher  implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<DropNodeCompatibilityEntry>>> {
+public class DiagramDescriptionDropNodeCompatibilityDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<List<DropNodeCompatibilityEntry>>> {
+
     private final IEditingContextDispatcher editingContextDispatcher;
 
     public DiagramDescriptionDropNodeCompatibilityDataFetcher(IEditingContextDispatcher editingContextDispatcher) {
@@ -49,7 +50,7 @@ public class DiagramDescriptionDropNodeCompatibilityDataFetcher  implements IDat
         String editingContextId = Optional.ofNullable(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString).orElse(null);
         String representationId = Optional.ofNullable(localContext.get(LocalContextConstants.REPRESENTATION_ID)).map(Object::toString).orElse(null);
         if (editingContextId != null && representationId != null) {
-            GetDropNodeCompatibiliyInput input = new GetDropNodeCompatibiliyInput(UUID.randomUUID(), editingContextId, representationId);
+            GetDropNodeCompatibilityInput input = new GetDropNodeCompatibilityInput(UUID.randomUUID(), editingContextId, representationId);
 
             return this.editingContextDispatcher.dispatchQuery(input.editingContextId(), input)
                     .filter(GetDropNodeCompatibilitySuccessPayload.class::isInstance)
@@ -57,7 +58,7 @@ public class DiagramDescriptionDropNodeCompatibilityDataFetcher  implements IDat
                     .map(GetDropNodeCompatibilitySuccessPayload::entries)
                     .toFuture();
         }
-        return Mono.<List<DropNodeCompatibilityEntry>> empty().toFuture();
+        return Mono.<List<DropNodeCompatibilityEntry>>empty().toFuture();
     }
 
 }

@@ -15,7 +15,7 @@ import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
-test.describe('diagram - borderNode', () => {
+test.describe('diagram - border-node', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
     const project = await new PlaywrightProject(request).createProject('border-node', 'blank-project');
@@ -98,7 +98,8 @@ test.describe('diagram - borderNode', () => {
     expect(reactFlowXYPositionEastAfterTopLeft.x).toBe(parentSizeAfterTopLeft.width - borderNodeGap);
   });
 });
-test.describe('diagram - borderNode', () => {
+
+test.describe('diagram - border-node', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
     await new PlaywrightProject(request).uploadProject(page, 'projectBorderNodeHandlePosition.zip');
@@ -119,5 +120,42 @@ test.describe('diagram - borderNode', () => {
   test('When an edge is on a border node, then its handle is on the opposite', async ({ page }) => {
     await expect(page.locator('.target_handle_right')).toHaveCount(1);
     await expect(page.locator('.source_handle_top')).toHaveCount(1);
+  });
+});
+
+test.describe('diagram - border-node', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('border-node', 'blank-project');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramBorderNodeDnD.xml');
+    await playwrightExplorer.expand('diagramBorderNodeDnD.xml');
+    await playwrightExplorer.createRepresentation('Root', 'diagramDnD - simple dnd view', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('When dragging a border node, then other compatible nodes are not highlighted', async ({ page }) => {
+    const borderNode = new PlaywrightNode(page, 'Border');
+    await borderNode.click();
+
+    const xyPosition = await borderNode.getDOMXYPosition();
+    await borderNode.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(xyPosition.x + 20, xyPosition.y + 20, { steps: 2 });
+
+    // Entity one is a compatible drop target (but it's a border node that is dragged), its border/shadow should not change
+    await page.waitForFunction(
+      () => {
+        const node = document.querySelector(`[data-testid="FreeForm - Target"]`);
+        return node && window.getComputedStyle(node).getPropertyValue('box-shadow') === 'none';
+      },
+      { timeout: 2000 }
+    );
   });
 });
