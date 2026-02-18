@@ -2629,6 +2629,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getDiagramToolbar_ExpandedByDefault() {
+        return (EAttribute) this.diagramToolbarEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getArrowStyle() {
         return this.arrowStyleEEnum;
     }
@@ -3025,6 +3035,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
 
         this.diagramToolbarEClass = this.createEClass(DIAGRAM_TOOLBAR);
         this.createEAttribute(this.diagramToolbarEClass, DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION);
+        this.createEAttribute(this.diagramToolbarEClass, DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT);
 
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
@@ -3532,6 +3543,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.diagramToolbarEClass, DiagramToolbar.class, "DiagramToolbar", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getDiagramToolbar_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, DiagramToolbar.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDiagramToolbar_ExpandedByDefault(), this.ecorePackage.getEBoolean(), "expandedByDefault", "true", 0, 1, DiagramToolbar.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");

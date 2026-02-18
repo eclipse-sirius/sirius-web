@@ -56,7 +56,7 @@ export const getDiagramDescription = gql`
                 borderNodeDescriptionIds
               }
               toolbar {
-                __typename
+                expandedByDefault
               }
               childNodeDescriptionIds
               dropNodeCompatibility {

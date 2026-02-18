@@ -83,7 +83,9 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -99,7 +101,9 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription wrapLabelWithoutChangingNodeWidthDiagramDescription(IColorProvider colorProvider) {
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
@@ -115,7 +119,9 @@ public class DiagramLabelViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription labelIsTruncatedWithoutChangingNodeWidthDiagramDescription(IColorProvider colorProvider) {
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()

@@ -57,6 +57,7 @@ public class DiagramToolbarMigrationParticipantTests extends AbstractIntegration
 
             var diagramDescription = optionalDiagramDescription.get();
             assertThat(diagramDescription.getToolbar()).isNotNull();
+            assertThat(diagramDescription.getToolbar().isExpandedByDefault()).isTrue();
         }
     }
 }

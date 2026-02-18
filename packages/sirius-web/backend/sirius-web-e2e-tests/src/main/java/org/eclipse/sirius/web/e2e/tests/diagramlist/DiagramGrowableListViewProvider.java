@@ -80,7 +80,9 @@ public class DiagramGrowableListViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription fullyDisplayInsideLabelDiagramDescription(IColorProvider colorProvider) {
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()
