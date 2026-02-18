@@ -46,6 +46,7 @@ export const workbenchConfigurationWithExpandedPanels: WorkbenchConfiguration = 
       views: [
         { id: 'explorer', isActive: true },
         { id: 'validation', isActive: true },
+        { id: 'views-explorer', isActive: true },
       ],
     },
     {
