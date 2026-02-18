@@ -22,6 +22,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Radio from '@mui/material/Radio';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { SelectionDialogState } from './SelectionDialog.types';
 import { SelectionDialogTreeView } from './SelectionDialogTreeView';
@@ -46,6 +47,8 @@ export const SelectionDialog = ({
   onFinish,
 }: DiagramDialogComponentProps) => {
   const { classes } = useSelectionDialogStyles();
+  const { t } = useTranslation('sirius-components-selection', { keyPrefix: 'selectionDialog' });
+
   const [state, setState] = useState<SelectionDialogState>({
     selectedObjectIds: [],
     noSelectionOptionSelected: false,
@@ -129,7 +132,7 @@ export const SelectionDialog = ({
                   {noSelectionLabel}
                 </Typography>
                 <Typography className={classes.noSelectionSecondaryText}>
-                  Proceed without selecting an existing element
+                  {t('noSelectionOptionDescription')}
                 </Typography>
               </Box>
             </ButtonBase>
@@ -159,7 +162,7 @@ export const SelectionDialog = ({
       maxWidth="md"
       fullWidth
       data-testid="selection-dialog">
-      <DialogTitle id="selection-dialog-title">Element Selection</DialogTitle>
+      <DialogTitle id="selection-dialog-title">{t('dialogTitle')}</DialogTitle>
       <DialogContent
         dividers={true}
         sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
@@ -172,7 +175,7 @@ export const SelectionDialog = ({
           data-testid="finish-action"
           color="primary"
           onClick={handleClick}>
-          Confirm
+          {t('dialogConfirm')}
         </Button>
       </DialogActions>
     </Dialog>

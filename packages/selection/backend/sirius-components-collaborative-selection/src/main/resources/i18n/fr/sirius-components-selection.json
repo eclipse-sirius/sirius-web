@@ -1,0 +1,7 @@
+{
+  "selectionDialog": {
+    "noSelectionOptionDescription": "Poursuivre sans sélectionner d'élément(s) existant",
+    "dialogTitle": "Sélection d'élement(s)",
+    "dialogConfirm": "Confirmer"
+  }
+}

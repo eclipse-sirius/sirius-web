@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,6 +55,10 @@ public interface IViewEMFMessageService {
     String defaultQuickToolUnPin();
 
     String defaultQuickToolEdit();
+
+    String defaultSelectionMessage();
+
+    String defaultNoSelectionLabel();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -149,6 +153,16 @@ public interface IViewEMFMessageService {
 
         @Override
         public String defaultQuickToolEdit() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionMessage() {
+            return "";
+        }
+
+        @Override
+        public String defaultNoSelectionLabel() {
             return "";
         }
     }

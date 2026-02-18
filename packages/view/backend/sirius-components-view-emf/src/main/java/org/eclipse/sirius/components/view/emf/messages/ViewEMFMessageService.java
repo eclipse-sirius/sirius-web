@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,5 +120,15 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
     @Override
     public String defaultQuickToolEdit() {
         return this.messageSourceAccessor.getMessage("EDIT");
+    }
+
+    @Override
+    public String defaultSelectionMessage() {
+        return this.messageSourceAccessor.getMessage("SELECTION_DIALOG__DEFAULT_MESSAGE");
+    }
+
+    @Override
+    public String defaultNoSelectionLabel() {
+        return this.messageSourceAccessor.getMessage("SELECTION_DIALOG__DEFAULT_NO_SELECTION_LABEL");
     }
 }

@@ -1,0 +1,7 @@
+{
+  "selectionDialog": {
+    "noSelectionOptionDescription": "Proceed without selecting an existing element",
+    "dialogTitle": "Element Selection",
+    "dialogConfirm": "Confirm"
+  }
+}
