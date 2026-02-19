@@ -53,7 +53,7 @@ The default tooltip used in the explorer can be reused thanks to `IExplorerToolt
 
 === Dependency update
 
-- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.10[Spring Boot 3.5.10]
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.11[Spring Boot 3.5.11]
 
 
 === Bug fixes
