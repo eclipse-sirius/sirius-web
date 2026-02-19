@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.view.emf.diagram;
+package org.eclipse.sirius.components.view.emf.selection;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +46,7 @@ import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.emf.api.IDialogDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.springframework.stereotype.Service;
 
 /**
