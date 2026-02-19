@@ -29,7 +29,6 @@ import {
   defaultNodeMargin,
   defaultWidth,
   gap,
-  rectangularNodePadding,
   maxOverflowIteration,
 } from './layoutParams';
 import { DiagramNodeType } from '../node/NodeTypes.types';
@@ -82,27 +81,28 @@ export const getDefaultOrMinHeight = (minHeight: number | undefined, node: Node<
   return Math.max(minHeight ?? -Infinity, node.data.defaultHeight ?? defaultHeight);
 };
 
+export const getMaxWestBorderNodeWidth = (child: Node<NodeData>, allVisibleNodes: Node<NodeData>[]): number => {
+  return getChildren(child, allVisibleNodes)
+    .filter(isWestBorderNode)
+    .map((borderNode) => getNodeFootprint(allVisibleNodes, borderNode).width - borderNodeOffset || 0)
+    .reduce((a, b) => Math.max(a, b), 0);
+};
+
+export const getMaxNorthBorderNodeHeight = (child: Node<NodeData>, allVisibleNodes: Node<NodeData>[]): number => {
+  return getChildren(child, allVisibleNodes)
+    .filter(isNorthBorderNode)
+    .map((borderNode) => getNodeFootprint(allVisibleNodes, borderNode).height - borderNodeOffset || 0)
+    .reduce((a, b) => Math.max(a, b), 0);
+};
+
 export const getChildNodePosition = (
   allVisibleNodes: Node<NodeData>[],
-  child: Node<NodeData>,
-  headerHeightFootprint: number,
-  borderWidth: number,
   previousSibling?: Node<NodeData>
 ): XYPosition => {
-  const maxWestBorderNodeWidth = getChildren(child, allVisibleNodes)
-    .filter(isWestBorderNode)
-    .map((borderNode) => getNodeFootprint(allVisibleNodes, borderNode).width || 0)
-    .reduce((a, b) => Math.max(a, b), 0);
-
-  const maxNorthBorderNodeHeight = getChildren(child, allVisibleNodes)
-    .filter(isNorthBorderNode)
-    .map((borderNode) => getNodeFootprint(allVisibleNodes, borderNode).height || 0)
-    .reduce((a, b) => Math.max(a, b), 0);
-
   if (!previousSibling) {
     return {
-      x: rectangularNodePadding + borderWidth + maxWestBorderNodeWidth,
-      y: borderWidth + headerHeightFootprint + maxNorthBorderNodeHeight,
+      x: 0,
+      y: 0,
     };
   } else {
     const previousSiblingsMaxEastBorderNodeWidth = getChildren(previousSibling, allVisibleNodes)
@@ -111,13 +111,8 @@ export const getChildNodePosition = (
       .reduce((a, b) => Math.max(a, b), 0);
 
     return {
-      ...child.position,
-      x:
-        previousSibling.position.x +
-        previousSiblingsMaxEastBorderNodeWidth +
-        maxWestBorderNodeWidth +
-        (previousSibling.width ?? 0) +
-        gap,
+      x: previousSibling.position.x + (previousSibling.width ?? 0) + previousSiblingsMaxEastBorderNodeWidth + gap,
+      y: 0,
     };
   }
 };
@@ -140,8 +135,6 @@ export const getHeaderHeightFootprint = (
     if (displayHeaderSeparator) {
       headerHeightFootprint += borderWith;
     }
-  } else {
-    headerHeightFootprint = borderWith;
   }
 
   return headerHeightFootprint;
