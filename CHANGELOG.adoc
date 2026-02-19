@@ -46,7 +46,9 @@ The GraphQL schema has been updated to reflect this change.
 - https://github.com/eclipse-sirius/sirius-web/issues/6157[#6157] [diagram] Every diagram that does not declare a toolbar will not have a toolbar anymore.
 A toolbar will be added by a migration participant for existing diagram descriptions.
 - https://github.com/eclipse-sirius/sirius-web/issues/6196[#6196] [selection] The `SelectionDescription` builder now requires a `noSelectionLabelProvider` to build.
-
+- [cleanup] The signature of the `getChildNodePosition` method has been changed.
+The `child`, `headerHeightFootprint`, and `borderWidth` parameters have been removed, as the footprint of border nodes is now taken into account directly in the layout of nodes.
+You can find an example of usage in `FreeFormNodeLayoutHandler.ts`.
 
 === Dependency update
 
