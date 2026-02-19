@@ -64,10 +64,11 @@ test.describe('diagram - node creation', () => {
     const reactFlowSizeEntity4First = await entity4FirstNode.getReactFlowSize();
 
     const nodePadding = 8;
-    const headerHeight = 24;
+    const headerHeight = 34;
+    const borderWidth = 1;
     expect(reactFlowXYPositionEntity4First.y).toBeGreaterThanOrEqual(nodePadding + headerHeight);
-    expect(reactFlowXYPositionEntity4First.y).toBeLessThanOrEqual(nodePadding + headerHeight + 1);
-    expect(reactFlowXYPositionEntity4First.x).toBe(nodePadding);
+    expect(reactFlowXYPositionEntity4First.y).toBeLessThanOrEqual(nodePadding + headerHeight + 2);
+    expect(reactFlowXYPositionEntity4First.x).toBe(nodePadding + borderWidth * 2);
 
     // When creating a second one, it should place next to the first one
     await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent

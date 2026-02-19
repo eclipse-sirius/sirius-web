@@ -65,7 +65,6 @@ test.describe('edge - reconnection', () => {
     const isReconnectPerformed = await playwrightDetails.isReferenceValueSet('Source', 'DataSource2');
     expect(isReconnectPerformed).toBe(true);
 
-    await playwrightEdge.click();
     await expect(page.locator('.source_handle_left')).toHaveCount(0);
     await expect(page.locator('.source_handle_right')).toHaveCount(0);
     await expect(page.locator('.source_handle_bottom')).toHaveCount(0);

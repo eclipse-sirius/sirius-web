@@ -49,7 +49,9 @@ A toolbar will be added by a migration participant for existing diagram descript
 - https://github.com/eclipse-sirius/sirius-web/issues/5941[#5941] [tree] Custom tree descriptions will not have any tooltip by default.
 The tooltip is now configurable using either the view based tree description or using an instance of `ITreeItemTooltipProvider`.
 The default tooltip used in the explorer can be reused thanks to `IExplorerTooltipService` and it can be customized for any tree item using `IExplorerTooltipServiceDelegate`.
-
+- [cleanup] The signature of the `getChildNodePosition` method has been changed.
+The `child`, `headerHeightFootprint`, and `borderWidth` parameters have been removed, as the footprint of border nodes is now taken into account directly in the layout of nodes.
+You can find an example of usage in `FreeFormNodeLayoutHandler.ts`.
 
 === Dependency update
 
