@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,10 @@ public class ToolVariableHandler implements IToolVariableHandler {
                 }
                 case OBJECT_ID_ARRAY -> {
                     String value = toolVariable.value();
-                    List<String> objectsIds = List.of(value.split(","));
+                    List<String> objectsIds = List.of();
+                    if (!value.isBlank()) {
+                        objectsIds = List.of(value.split(","));
+                    }
                     List<Object> objects = objectsIds.stream()
                             .map(objectId -> this.objectSearchService.getObject(editingContext, objectId))
                             .map(optionalObject -> optionalObject.orElse(null))
