@@ -659,6 +659,8 @@ input ReconnectEdgeInput {
   edgeId: String!
   newEdgeEndId: String!
   reconnectEdgeKind: ReconnectEdgeKind!
+  targetPositionX: Float!
+  targetPositionY: Float!
 }
 
 union ReconnectEdgePayload = ErrorPayload | SuccessPayload
