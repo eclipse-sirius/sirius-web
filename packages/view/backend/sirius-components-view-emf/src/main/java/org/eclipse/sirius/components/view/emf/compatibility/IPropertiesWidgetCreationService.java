@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,8 @@ public interface IPropertiesWidgetCreationService {
     TextareaDescription createExpressionField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature);
 
     TextfieldDescription createTextField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature);
+
+    TextfieldDescription createTextFieldWithHelperText(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature, Optional<Function<VariableManager, String>> helpTextProvider);
 
     ReferenceWidgetDescription createReferenceWidget(String id, String label, Object feature, Function<VariableManager, List<?>> optionsProvider);
 
