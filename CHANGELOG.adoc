@@ -50,7 +50,7 @@ A toolbar will be added by a migration participant for existing diagram descript
 
 === Dependency update
 
-- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.10[Spring Boot 3.5.10]
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.11[Spring Boot 3.5.11]
 
 
 === Bug fixes
