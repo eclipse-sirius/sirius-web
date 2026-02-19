@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ import {
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
-  setBorderNodesPosition
+  setBorderNodesPosition,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Dimensions, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeHandle } from '@xyflow/system';
@@ -72,7 +72,6 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const nodeIndex = findNodeIndex(visibleNodes, node.id);
     const nodeElement = document.getElementById(`${node.id}-ellipseNode-${nodeIndex}`)?.children[0];
     const borderWidth = nodeElement ? parseFloat(window.getComputedStyle(nodeElement).borderWidth) : 0;
-    const labelElement = document.getElementById(`${node.id}-label-${nodeIndex}`);
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
@@ -82,7 +81,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNodes.find((n) => n.id === child.id);
-      const headerHeightFootprint = labelElement ? getHeaderHeightFootprint(labelElement, null, null) : 0;
+      const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
 
       if (!!createdNode) {
         child.position = createdNode.position;
@@ -118,7 +117,7 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
     const directChildrenAwareNodeWidth = childrenContentBox.x + childrenContentBox.width;
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
-    const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel, labelElement);
+    const labelOnlyWidth = getInsideLabelWidthConstraint(node.data.insideLabel);
 
     const nodeMinComputeWidth =
       Math.max(

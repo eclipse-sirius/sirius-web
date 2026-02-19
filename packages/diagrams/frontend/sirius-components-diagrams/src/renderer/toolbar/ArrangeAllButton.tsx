@@ -28,14 +28,14 @@ import { useLayoutConfigurations } from '../layout/arrange-all/useLayoutConfigur
 import { LayoutConfiguration } from '../layout/arrange-all/useLayoutConfigurations.types';
 import { ArrangeAllButtonProps, ArrangeAllButtonState } from './ArrangeAllButton.types';
 
-export const ArrangeAllButton = ({ reactFlowWrapper, disabled }: ArrangeAllButtonProps) => {
+export const ArrangeAllButton = ({ disabled }: ArrangeAllButtonProps) => {
   const [state, setState] = useState<ArrangeAllButtonState>({
     arrangeAllInProgress: false,
     arrangeAllMenuOpen: false,
   });
   const anchorArrangeMenuRef = useRef<HTMLButtonElement | null>(null);
 
-  const { arrangeAll } = useArrangeAll(reactFlowWrapper);
+  const { arrangeAll } = useArrangeAll();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'arrangeAllButton' });
   const { layoutConfigurations } = useLayoutConfigurations();
 

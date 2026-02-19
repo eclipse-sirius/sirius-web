@@ -47,7 +47,7 @@ const emptyNodeProps = {
 };
 
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
-const isRectangularNode = (node: Node<NodeData>): node is Node<FreeFormNodeData> => node.type === 'rectangularNode';
+const isFreeFormNode = (node: Node<NodeData>): node is Node<FreeFormNodeData> => node.type === 'freeFormNode';
 
 const getNodeBorderWidth = (node: Node<NodeData>, visibleNodes: Node<NodeData>[]) => {
   if (node.parentId) {
@@ -78,7 +78,7 @@ export const prepareLayoutArea = (
 
   // Render all label first
   const labelElements: JSX.Element[] = [];
-  visibleNodes.forEach((node, index) => {
+  visibleNodes.forEach((node) => {
     const borderWidth: number = getNodeBorderWidth(node, visibleNodes) ?? 0;
     let insideLabelConstraintWidth = (node.width ?? 0) - borderWidth * 2;
     if (node.parentId) {
@@ -97,8 +97,8 @@ export const prepareLayoutArea = (
         }),
       ];
       const element: JSX.Element = createElement('div', {
-        id: `${node.id}-label-${index}`,
-        key: `${node.id}-label-${index}`,
+        id: `${node.data.insideLabel.id}-label`,
+        key: `${node.data.insideLabel.id}-label`,
         role: 'button', // role applied by react flow
         style: {
           maxWidth: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : insideLabelConstraintWidth,
@@ -199,7 +199,7 @@ export const prepareLayoutArea = (
   visibleNodes.forEach((node, index) => {
     if (hiddenContainer && node) {
       const children: JSX.Element[] = [];
-      if (isRectangularNode(node)) {
+      if (isFreeFormNode(node)) {
         const freeFormNodeProps: NodeProps<Node<FreeFormNodeData, 'freeFormNode'>> = {
           ...emptyNodeProps,
           type: 'freeFormNode',
@@ -315,8 +315,6 @@ const layoutDiagram = (
   layoutDirection: GQLArrangeLayoutDirection,
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[]
 ) => {
-  layoutEdges(previousDiagram, diagram.edges);
-
   const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
   const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
 
@@ -374,7 +372,37 @@ const layoutDiagram = (
   });
 };
 
-const layoutEdges = (previousDiagram: RawDiagram | null, edges: Edge<MultiLabelEdgeData>[]) => {
+export const prepareLayoutLabels = (previousDiagram: RawDiagram | null, diagram: RawDiagram): void => {
+  layoutNodeLabels(previousDiagram, diagram.nodes);
+  layoutEdgeLabels(previousDiagram, diagram.edges);
+};
+
+const layoutNodeLabels = (previousDiagram: RawDiagram | null, nodes: Node<NodeData>[]) => {
+  nodes.forEach((node) => {
+    const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
+    if (node.data.outsideLabels.BOTTOM_MIDDLE) {
+      const outsideLabel = node.data.outsideLabels.BOTTOM_MIDDLE;
+      const labelElement = document.getElementById(`${outsideLabel.id}-label`);
+      const labelHeight = labelElement?.getBoundingClientRect().height ?? 0;
+      const labelWidth = labelElement?.getBoundingClientRect().width ?? 0;
+      if (!outsideLabel.resizedByUser) {
+        outsideLabel.width = labelWidth;
+        outsideLabel.height = labelHeight;
+      } else if (previousNode) {
+        outsideLabel.width = previousNode.data.outsideLabels.BOTTOM_MIDDLE?.width ?? labelWidth;
+        outsideLabel.height = previousNode.data.outsideLabels.BOTTOM_MIDDLE?.height ?? labelHeight;
+      }
+    }
+    if (node.data.insideLabel) {
+      const insideLabel = node.data.insideLabel;
+      const labelElement = document.getElementById(`${insideLabel.id}-label`);
+      insideLabel.width = labelElement?.getBoundingClientRect().width ?? 0;
+      insideLabel.height = labelElement?.getBoundingClientRect().height ?? 0;
+    }
+  });
+};
+
+const layoutEdgeLabels = (previousDiagram: RawDiagram | null, edges: Edge<MultiLabelEdgeData>[]) => {
   edges.forEach((edge) => {
     const previousEdge: Edge<MultiLabelEdgeData> | undefined = (previousDiagram?.edges ?? []).find(
       (prevEdge) => prevEdge.id === edge.id

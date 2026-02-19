@@ -11,10 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface DiagramToolbarProps {
-  reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
-}
-
 export interface DiagramToolbarState {
   dialogOpen: DiagramToolbarDialog | null;
   arrangeAllDone: boolean;
