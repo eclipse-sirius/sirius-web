@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import {
   NodeDimensionChange,
   Position,
   useStoreApi,
+  useUpdateNodeInternals,
   XYPosition,
 } from '@xyflow/react';
 import { useCallback, useState } from 'react';
@@ -68,6 +69,7 @@ const getHandlePosition = (
 export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = storeApi.getState();
+  const updateNodeInternals = useUpdateNodeInternals();
 
   const [state, setState] = useState<UseHandleResizedChangeState>({
     initialWidth: null,
@@ -115,6 +117,7 @@ export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
             initialWidth: null,
           }));
 
+          updateNodeInternals(resizedNode.id);
           return nodes.map((node) => {
             if (node.id === resizedNode.id) {
               const connectionHandles = node.data.connectionHandles.map((handle) => {
