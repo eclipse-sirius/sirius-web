@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,7 @@ import {
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
-  setBorderNodesPosition
+  setBorderNodesPosition,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { Dimensions, Node, Position, XYPosition } from '@xyflow/react';
 import { NodeHandle } from '@xyflow/system';
@@ -86,29 +86,20 @@ export class EllipseNodeLayoutHandler implements INodeLayoutHandler<NodeData> {
 
       if (!!createdNode) {
         child.position = createdNode.position;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
-        }
       } else if (previousPosition) {
         child.position = previousPosition;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
-        }
-        if (child.position.x < borderWidth) {
-          child.position = { ...child.position, x: borderWidth };
-        }
       } else {
-        child.position = child.position = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
         const previousSibling = directNodesChildren[index - 1];
-        if (previousSibling) {
-          child.position = getChildNodePosition(
-            visibleNodes,
-            child,
-            headerHeightFootprint,
-            borderWidth,
-            previousSibling
-          );
-        }
+        child.position = getChildNodePosition(visibleNodes, previousSibling);
+      }
+      if (child.position.y < borderWidth + headerHeightFootprint) {
+        child.position = {
+          ...child.position,
+          y: borderWidth + headerHeightFootprint,
+        };
+      }
+      if (child.position.x < borderWidth) {
+        child.position = { ...child.position, x: borderWidth };
       }
     });
 

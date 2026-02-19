@@ -29,6 +29,8 @@ import {
   getEastBorderNodeFootprintHeight,
   getHeaderHeightFootprint,
   getInsideLabelWidthConstraint,
+  getMaxWestBorderNodeWidth,
+  getMaxNorthBorderNodeHeight,
   getNorthBorderNodeFootprintWidth,
   getSouthBorderNodeFootprintWidth,
   getWestBorderNodeFootprintHeight,
@@ -90,36 +92,33 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
 
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
-      const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
+      const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNodes.find((n) => n.id === child.id);
       const headerHeightFootprint = getHeaderHeightFootprint(labelElement, node.data.insideLabel, 'TOP', borderWidth);
 
+      const childMaxWestBorderNodeWidth: number = getMaxWestBorderNodeWidth(child, visibleNodes);
+      const childMaxNorthBorderNodeHeight: number = getMaxNorthBorderNodeHeight(child, visibleNodes);
+
       if (!!createdNode) {
         child.position = createdNode.position;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
-        }
       } else if (previousPosition) {
         child.position = previousPosition;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
-        }
-        if (child.position.x < borderWidth + rectangularNodePadding) {
-          child.position = { ...child.position, x: borderWidth + rectangularNodePadding };
-        }
       } else {
-        child.position = getChildNodePosition(visibleNodes, child, headerHeightFootprint, borderWidth);
         const previousSibling = directNodesChildren[index - 1];
-        if (previousSibling) {
-          child.position = getChildNodePosition(
-            visibleNodes,
-            child,
-            headerHeightFootprint,
-            borderWidth,
-            previousSibling
-          );
-        }
+        child.position = getChildNodePosition(visibleNodes, previousSibling);
+      }
+      if (
+        child.position.y <
+        borderWidth + headerHeightFootprint + rectangularNodePadding + childMaxNorthBorderNodeHeight
+      ) {
+        child.position = {
+          ...child.position,
+          y: borderWidth + headerHeightFootprint + rectangularNodePadding + childMaxNorthBorderNodeHeight,
+        };
+      }
+      if (child.position.x < borderWidth + rectangularNodePadding + childMaxWestBorderNodeWidth) {
+        child.position = { ...child.position, x: borderWidth + rectangularNodePadding + childMaxWestBorderNodeWidth };
       }
     });
 
@@ -157,7 +156,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
-    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
     if (node.data.resizedByUser && !forceDimensions?.width) {
       if (nodeMinComputeWidth > previousDimensions.width) {
@@ -214,7 +213,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
-    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
     if (node.data.resizedByUser && !forceDimensions?.width) {
