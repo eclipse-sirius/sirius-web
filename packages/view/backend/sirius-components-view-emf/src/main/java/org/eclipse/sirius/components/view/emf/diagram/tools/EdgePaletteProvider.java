@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,8 +40,8 @@ import org.eclipse.sirius.components.view.emf.diagram.ToolFinder;
 import org.eclipse.sirius.components.view.emf.diagram.api.IPaletteToolsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IEdgePaletteProvider;
-import org.eclipse.sirius.components.view.emf.diagram.tools.api.IEdgeToolFactory;
-import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodeToolFactory;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.IEdgeToolConverter;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodeToolConverter;
 import org.springframework.stereotype.Service;
 
 /**
@@ -58,16 +58,16 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
 
     private final List<IPaletteToolsProvider> paletteToolsProviders;
 
-    private final INodeToolFactory nodeToolFactory;
+    private final INodeToolConverter nodeToolConverter;
 
-    private final IEdgeToolFactory edgeToolFactory;
+    private final IEdgeToolConverter edgeToolConverter;
 
-    public EdgePaletteProvider(IURLParser urlParser, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, List<IPaletteToolsProvider> paletteToolsProviders, INodeToolFactory nodeToolFactory, IEdgeToolFactory edgeToolFactory) {
+    public EdgePaletteProvider(IURLParser urlParser, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, List<IPaletteToolsProvider> paletteToolsProviders, INodeToolConverter nodeToolConverter, IEdgeToolConverter edgeToolConverter) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.paletteToolsProviders = Objects.requireNonNull(paletteToolsProviders);
-        this.nodeToolFactory = Objects.requireNonNull(nodeToolFactory);
-        this.edgeToolFactory = Objects.requireNonNull(edgeToolFactory);
+        this.nodeToolConverter = Objects.requireNonNull(nodeToolConverter);
+        this.edgeToolConverter = Objects.requireNonNull(edgeToolConverter);
     }
 
     @Override
@@ -91,17 +91,17 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
 
                 toolFinder.findQuickAccessNodeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolFactory.createNodeTool(interpreter, tool, false, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
                         .forEach(quickAccessTools::add);
 
                 List<IPaletteEntry> paletteEntries = new ArrayList<>();
                 toolFinder.findNodeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolFactory.createNodeTool(interpreter, tool, false, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
                         .forEach(paletteEntries::add);
                 toolFinder.findEdgeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(viewEdgeTools -> this.edgeToolFactory.createEdgeTool(interpreter, viewEdgeTools, diagramDescription, edgeDescription, variableManager))
+                        .map(viewEdgeTools -> this.edgeToolConverter.createEdgeTool(interpreter, viewEdgeTools, diagramDescription, edgeDescription, variableManager))
                         .forEach(paletteEntries::add);
                 toolFinder.findToolSections(viewEdgeDescription).stream()
                         .map(edgeToolSection -> this.createToolSection(edgeToolSection, variableManager, interpreter))
@@ -143,7 +143,7 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
                 .iconURL(List.of())
                 .tools(toolSection.getNodeTools().stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolFactory.createNodeTool(interpreter, tool, false, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
                         .toList())
                 .build();
     }

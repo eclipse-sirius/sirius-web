@@ -288,6 +288,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeTool/iconURLsExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeTool/elementsToSelectExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//NodeTool/withImpactAnalysis"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeTool/keyBindings"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//SourceEdgeEndReconnectionTool"/>
     <genClasses ecoreClass="diagram.ecore#//TargetEdgeEndReconnectionTool"/>

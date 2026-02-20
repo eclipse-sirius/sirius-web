@@ -93,5 +93,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextStyleDescription/isItalicExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//TextStyleDescription/isUnderlineExpression"/>
     </genClasses>
+    <genClasses ecoreClass="view.ecore#//KeyBinding">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//KeyBinding/ctrl"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//KeyBinding/alt"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//KeyBinding/meta"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute view.ecore#//KeyBinding/key"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
