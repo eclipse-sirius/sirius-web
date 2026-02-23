@@ -18,6 +18,7 @@ import {
   TreeItemActionProps,
   TreeView,
   useExpandAllTreePath,
+  useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import Box from '@mui/material/Box';
@@ -29,12 +30,6 @@ import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubs
 
 export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
 
-const initialState: SelectionDialogTreeViewState = {
-  filterBarText: '',
-  expanded: [],
-  maxDepth: 1,
-};
-
 export const SelectionDialogTreeView = ({
   editingContextId,
   treeDescriptionId,
@@ -43,7 +38,13 @@ export const SelectionDialogTreeView = ({
   selectedTreeItemIds,
   disabled,
 }: SelectionDialogTreeViewProps) => {
-  const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
+  const [state, setState] = useState<SelectionDialogTreeViewState>({
+    filterBarText: '',
+    expanded: [],
+    maxDepth: 1,
+    pristine: true,
+  });
+  const { getTreePath, data: treePathData } = useTreePath();
 
   const treeId = `selection://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}${encodeVariables(variables)}`;
   const { tree } = useSelectionDialogTreeSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
@@ -53,8 +54,29 @@ export const SelectionDialogTreeView = ({
       ...prevState,
       expanded: newExpandedIds,
       maxDepth: Math.max(newMaxDepth, prevState.maxDepth),
+      pristine: false,
     }));
   };
+
+  useEffect(() => {
+    if (tree && state.pristine) {
+      var targetObjectId = variables.find((variable) => variable.name === 'targetObjectId')?.value as string;
+      getTreePath({
+        variables: {
+          editingContextId,
+          treeId: tree.id,
+          selectionEntryIds: [targetObjectId],
+        },
+      });
+    }
+  }, [tree, state.pristine, variables]);
+
+  useEffect(() => {
+    if (treePathData && treePathData.viewer?.editingContext?.treePath) {
+      const { treeItemIdsToExpand, maxDepth } = treePathData.viewer.editingContext.treePath;
+      onExpandedElementChange(treeItemIdsToExpand ?? [], maxDepth ?? 1);
+    }
+  }, [treePathData]);
 
   return (
     <Box

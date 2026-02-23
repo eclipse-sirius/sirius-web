@@ -55,6 +55,7 @@ The font weights used in the default MUI theme can be found here[https://mui.com
 - https://github.com/eclipse-sirius/sirius-web/issues/6055[#6055] [test] Update an `ArchUnit` test to consider an empty list of fields.
 In Java 17, the Java compiler was always generating a private synthetic field for inner classes.
 In Java 18+ this synthetic field is not automatically generated anymore if it is not necessary, as a result some `ArchUnit` tests on fields could encounter an empty list of fields now which would trigger a test failure.
+- https://github.com/eclipse-sirius/sirius-web/issues/6215[#6215] [diagram] When a tool opens a selection dialog to ask for input, the tree displayed in the dialog is now expanded to reveal the element on which the tool was invoked to provide better context.
 
 
 
@@ -212,6 +213,7 @@ For example entering either `att def` or `NAD` will now find a tool named `New A
 - https://github.com/eclipse-sirius/sirius-web/issues/6416[#6416] [sirius-web] Perform the validation of the dependencies when a project is uploaded
 - https://github.com/eclipse-sirius/sirius-web/issues/6475[#6475] [diagram] Hide handles when moving an edge segment
 - https://github.com/eclipse-sirius/sirius-web/issues/6497[#6497] [diagram] Display an ellipsis decorator if multiple decorators should be displayed at the same position.
+
 
 
 == 2026.3.0
