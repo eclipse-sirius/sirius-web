@@ -1360,6 +1360,11 @@ The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via th
 
 == v2025.4.0
 
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2025-4[Some of the main changes]
+
+
 === Shapes
 
 - Add support for edges connected to edges
@@ -1593,6 +1598,11 @@ See the ADR 190 for additional details on the goal of this refactoring.
 
 == v2025.2.0
 
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2025-2[Some of the main changes]
+
+
 === Shapes
 
 - Add support for a query view
@@ -1796,6 +1806,11 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 
 == v2025.1.0
 
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2025-1[Some of the main changes]
+
+
 === Shapes
 
 
@@ -1925,6 +1940,11 @@ Downstream applications with a custom explorer that relies on `ExplorerDropTreeI
 - https://github.com/eclipse-sirius/sirius-web/issues/4455[#4455] [forms] Even when in read-only mode, the values displayed in a _Reference_ widgets are now clickable so that the user can navigate to the reference's values.
 
 == v2024.11.0
+
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2024-11[Some of the main changes]
+
 
 === Shapes
 
@@ -2116,6 +2136,11 @@ This will allow specifier to create images that fir perfectly in the project tem
 
 == v2024.9.0
 
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2024-9[Some of the main changes]
+
+
 === Shapes
 
 - Add tree representation in the view DSL
@@ -2255,6 +2280,11 @@ A migration participant has been added to automatically keep compatible all diag
 
 
 == v2024.7.0
+
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2024-7-0[Some of the main changes]
+
 
 === Shapes
 
@@ -2402,6 +2432,11 @@ We cannot rely on the error message recaived from the backend since Cross Origin
 - https://github.com/eclipse-sirius/sirius-web/issues/3859[#3859] [view] Allow name duplication in ecore by grouping builders in dedicated packages
 
 == v2024.5.0
+
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2024-5-0[Some of the main changes]
+
 
 === Shapes
 
@@ -2567,6 +2602,11 @@ They still support returning an `java.time.Instant` object directly.
 - https://github.com/eclipse-sirius/sirius-web/issues/3366[#3366] [gantt] Trigger the zoom on Ctrl+MouseWheel
 
 == v2024.3.0
+
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2024-3-0[Some of the main changes]
+
 
 === Shapes
 
@@ -2777,6 +2817,11 @@ In other scenarios, the default creation position border remains the eastern one
 - https://github.com/eclipse-sirius/sirius-web/issues/2890[#2890] [portal] Display the contents of a Portal in the Representations view
 
 == v2024.1.0
+
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2024-1[Some of the main changes]
+
 
 === Shapes
 
@@ -3333,6 +3378,11 @@ These color palettes are accessible in studio projects but are not visible in th
 
 == v2023.8.0
 
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2023-8[Some of the main changes]
+
+
 === Shapes
 
 - Add disable / enable concept for widgets
@@ -3484,6 +3534,11 @@ Labels and node list are rendered with css.
 
 == v2023.6.0
 
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2023-6[Some of the main changes]
+
+
 === Shapes
 
 - Filter tree based representations
@@ -3590,6 +3645,11 @@ See `org.eclipse.sirius.web.sample.configuration.DomainPropertiesConfigurer` and
 - https://github.com/eclipse-sirius/sirius-components/issues/2003[#2003] [view] Make reconnection tool more robust for applications which use a custom IViewRepresentationDescriptionSearchService.
 
 == v2023.4.0
+
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2023-4[Some of the main changes]
+
 
 === Architectural decision records
 
@@ -3698,6 +3758,11 @@ The progress on a task could thus be shared with a draft pull request with the r
 
 
 == v2023.3.0
+
+=== Overview
+
+- https://blog.obeosoft.com/sirius-web-2023-3[Some of the main changes]
+
 
 === Architectural decision records
 
