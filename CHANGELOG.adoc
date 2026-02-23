@@ -95,8 +95,7 @@ Implementations of `IExternalResourceLoaderService` now return an `ExternalResou
 `LoadingReport` instances are automatically handled by Sirius Web and displayed to the end user.
 Alternative implementations of `ILoadingReport` can be provided and consumed by a matching `IUploadDocumentReportProvider` implementation.
 - https://github.com/eclipse-sirius/sirius-web/issues/5899[#5899] [table] Add the possibility to retrieve table tool menu entries from backend
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6215[#6215] [diagram] When a tool opens a selection dialog to ask for input, the tree displayed in the dialog is expanded to reveal the element on which the tool was invoked to provide better context.
 
 == 2026.1.0
 
