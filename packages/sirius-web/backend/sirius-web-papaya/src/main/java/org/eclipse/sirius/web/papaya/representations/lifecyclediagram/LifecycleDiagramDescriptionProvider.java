@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.DefaultViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
@@ -58,7 +57,11 @@ public class LifecycleDiagramDescriptionProvider implements IRepresentationDescr
         lifecycleDiagramDescription.setAutoLayout(false);
         lifecycleDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         lifecycleDiagramDescription.setIconExpression("aql:'/papaya-representations/lifecycle-diagram.svg'");
-        lifecycleDiagramDescription.setToolbar(new DiagramBuilders().newDiagramToolbar().build());
+
+        var toolbar = DiagramFactory.eINSTANCE.createDiagramToolbar();
+        toolbar.setExpandedByDefault(true);
+
+        lifecycleDiagramDescription.setToolbar(toolbar);
 
         var cache = new DefaultViewDiagramElementFinder();
 

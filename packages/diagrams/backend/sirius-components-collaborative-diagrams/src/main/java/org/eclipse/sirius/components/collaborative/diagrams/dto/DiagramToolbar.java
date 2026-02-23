@@ -18,5 +18,5 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
  *
  * @author tgiraudet
  */
-public record DiagramToolbar() {
+public record DiagramToolbar(boolean expandedByDefault) {
 }

@@ -78,7 +78,9 @@ public class DiagramResizeViewProvider implements IE2EViewProvider {
     }
 
     private DiagramDescription diagramDescription(IColorProvider colorProvider) {
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
 
         return new DiagramBuilders()
                 .newDiagramDescription()

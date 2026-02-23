@@ -34,8 +34,18 @@ test.describe('diagram - toolbar', () => {
     const explorer = new PlaywrightExplorer(page);
     await explorer.createRepresentation('Root', 'diagramToolbar - with toolbar', 'diagram');
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await expect(page.getByTestId('toolbar-collapse')).toBeAttached();
     await expect(page.getByTestId('fit-to-screen')).toBeAttached();
     await expect(page.getByTestId('zoom-out')).toBeAttached();
+  });
+
+  test('when toolbar is defined as collapsed, then the toolbar is visible and only the expand button is visible', async ({ page }) => {
+    const explorer = new PlaywrightExplorer(page);
+    await explorer.createRepresentation('Root', 'diagramToolbar - with collapsed toolbar', 'diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await expect(page.getByTestId('toolbar-expand')).toBeAttached();
+    await expect(page.getByTestId('fit-to-screen')).not.toBeVisible();
+    await expect(page.getByTestId('zoom-out')).not.toBeVisible();
   });
 
   test('when toolbar is not defined, then the toolbar is not visible', async ({ page }) => {

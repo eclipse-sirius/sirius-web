@@ -92,6 +92,9 @@ public class ToolbarControllerTests extends AbstractIntegrationTests {
 
             Object toolbar = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.toolbar");
             assertThat(toolbar).isNotNull();
+
+            boolean expandedByDefault = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.toolbar.expandedByDefault");
+            assertThat(expandedByDefault).isTrue();
         };
 
         StepVerifier.create(flux)

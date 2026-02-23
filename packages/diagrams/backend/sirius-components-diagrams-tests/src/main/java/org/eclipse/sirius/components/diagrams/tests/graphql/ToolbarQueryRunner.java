@@ -36,7 +36,7 @@ public class ToolbarQueryRunner implements IQueryRunner {
                     description {
                       ... on DiagramDescription {
                         toolbar {
-                          _
+                          expandedByDefault
                         }
                       }
                     }

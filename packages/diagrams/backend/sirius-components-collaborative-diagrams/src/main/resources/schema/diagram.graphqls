@@ -433,7 +433,7 @@ type DiagramDescription implements RepresentationDescription {
 }
 
 type DiagramToolbar {
-  _: Boolean
+  expandedByDefault: Boolean!
 }
 
 enum ArrangeLayoutDirection {

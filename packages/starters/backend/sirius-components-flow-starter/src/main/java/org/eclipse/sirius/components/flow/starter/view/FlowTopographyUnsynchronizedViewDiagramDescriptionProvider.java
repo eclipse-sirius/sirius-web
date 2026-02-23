@@ -48,7 +48,11 @@ public class FlowTopographyUnsynchronizedViewDiagramDescriptionProvider implemen
     @Override
     public RepresentationDescription create(IColorProvider colorProvider) {
         var diagramDescriptionBuilder = this.diagramBuilderHelper.newDiagramDescription();
-        var toolbar = this.diagramBuilderHelper.newDiagramToolbar().build();
+
+        var toolbar = this.diagramBuilderHelper.newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
+
         var diagramDescription = diagramDescriptionBuilder
                 .autoLayout(false)
                 .domainType("flow::System")
