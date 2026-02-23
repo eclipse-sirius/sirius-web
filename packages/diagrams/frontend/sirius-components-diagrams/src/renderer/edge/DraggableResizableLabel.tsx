@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import React, { useRef, useState, useEffect } from 'react';
-import Draggable from 'react-draggable';
+import Draggable, { DraggableData } from 'react-draggable';
 import { Resizable } from 'react-resizable';
 import { Label } from '../Label';
 import { DraggableResizableLabelProps, LabelSize } from './DraggableResizableLabel.types';
@@ -66,11 +66,18 @@ export const DraggableResizableLabel = ({
 
   const resizable: boolean = selected && !readOnly && label.text.length > 0;
 
+  const handleDragStop = (e: any, eventData: DraggableData) => {
+    // Prevent a simple click on the label to trigger the dragStop event
+    if (eventData.x !== 0 && eventData.y !== 0) {
+      onDragStop(e, eventData);
+    }
+  };
+
   return (
     <Draggable
       position={position}
       positionOffset={positionOffset}
-      onStop={onDragStop}
+      onStop={handleDragStop}
       scale={zoom}
       nodeRef={nodeRef}
       disabled={readOnly}

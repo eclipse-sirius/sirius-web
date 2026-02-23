@@ -44,7 +44,12 @@ export const useLabelMove = (): UseLabelMoveValue => {
   );
 
   const onEdgeLabelMoveStop = useCallback(
-    (eventData: DraggableData, edgeId: string, labelPosition: 'begin' | 'center' | 'end') => {
+    (
+      eventData: DraggableData,
+      edgeId: string,
+      labelPosition: 'begin' | 'center' | 'end',
+      offset: { x: number; y: number }
+    ) => {
       const edges: Edge<MultiLabelEdgeData>[] = getEdges();
       const edge: Edge<MultiLabelEdgeData> | undefined = edges.find((e) => e.id === edgeId);
       switch (labelPosition) {
@@ -56,7 +61,7 @@ export const useLabelMove = (): UseLabelMoveValue => {
           break;
         case 'center':
           if (edge && edge.data?.label) {
-            edge.data.label.position = { x: eventData.x, y: eventData.y };
+            edge.data.label.position = { x: eventData.x - offset.x, y: eventData.y - offset.y };
             edge.data.label.movedByUser = true;
           }
           break;
