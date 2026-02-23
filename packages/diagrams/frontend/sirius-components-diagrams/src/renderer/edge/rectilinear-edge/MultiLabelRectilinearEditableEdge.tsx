@@ -99,7 +99,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
     const edgeStyle = useMemo(() => multiLabelEdgeStyle(theme, style, selected, faded), [style, selected, faded]);
     const { style: connectionFeedbackStyle } = useConnectorEdgeStyle(data ? data.descriptionId : '', !!data?.isHovered);
 
-    const edgeCenter: XYPosition = useMemo(() => {
+    const edgeCenter: { position: XYPosition; segmentDirection: 'x' | 'y' | null } = useMemo(() => {
       let pointsSource = bendingPoints.map((bendingPoint) => ({ x: bendingPoint.x, y: bendingPoint.y }));
       if (isMultipleOfTwo(pointsSource.length)) {
         //if there is an even number of bend points, this means that there is an odd number of segments
@@ -107,9 +107,17 @@ export const MultiLabelRectilinearEditableEdge = memo(
           pointsSource.length === 0 ? source : pointsSource[Math.floor(pointsSource.length / 2) - 1];
         const middlePoint: XYPosition | undefined =
           pointsSource.length === 0 ? target : pointsSource[Math.floor(pointsSource.length / 2)];
-        return prevPoint && middlePoint ? getMiddlePoint(prevPoint, middlePoint) : { x: 0, y: 0 }; //Place in the center of the middle segment
+        return prevPoint && middlePoint
+          ? {
+              position: getMiddlePoint(prevPoint, middlePoint), //Place in the center of the middle segment
+              segmentDirection: determineSegmentAxis(prevPoint, middlePoint),
+            }
+          : { position: { x: 0, y: 0 }, segmentDirection: null };
       } else {
-        return pointsSource[Math.floor(pointsSource.length / 2)] ?? { x: 0, y: 0 }; //Place on the middle point
+        return {
+          position: pointsSource[Math.floor(pointsSource.length / 2)] ?? { x: 0, y: 0 }, //Place on the middle point
+          segmentDirection: null,
+        };
       }
     }, [source, target, bendingPoints.map((point) => `${point.x}:${point.y}`).join()]);
 
@@ -227,7 +235,8 @@ export const MultiLabelRectilinearEditableEdge = memo(
             sourceY={sourceY}
             targetX={targetX}
             targetY={targetY}
-            edgeCenter={edgeCenter}
+            edgeCenterPosition={edgeCenter.position}
+            edgeCenterSegmentDirection={edgeCenter.segmentDirection}
           />
         ) : null}
       </>
