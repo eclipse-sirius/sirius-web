@@ -56,15 +56,16 @@ export const DraggableEdgeLabels = ({
   const sourceLabelTranslation = useMemo(() => getTranslateFromHandlePositon(sourcePosition), [sourcePosition]);
   const targetLabelTranslation = useMemo(() => getTranslateFromHandlePositon(targetPosition), [targetPosition]);
 
-  let labelCenterOffset = {
+  let edgeCenterOffset = {
     x: edgeCenterPosition.x,
     y: edgeCenterPosition.y,
   };
-  if (data.label?.width && edgeCenterSegmentDirection === 'x') {
-    labelCenterOffset.x = labelCenterOffset.x - data.label.width / 2;
+  let labelCenterOffset = { x: 0, y: 0 };
+  if (data.label?.width && edgeCenterSegmentDirection === 'x' && !data.label?.movedByUser) {
+    labelCenterOffset.x = data.label.width / 2;
   }
-  if (data.label?.height && edgeCenterSegmentDirection === 'y') {
-    labelCenterOffset.y = labelCenterOffset.y - data.label.height / 2;
+  if (data.label?.height && edgeCenterSegmentDirection === 'y' && !data.label?.movedByUser) {
+    labelCenterOffset.y = data.label.height / 2;
   }
   return (
     <EdgeLabelRenderer>
@@ -74,7 +75,7 @@ export const DraggableEdgeLabels = ({
           label={beginLabel}
           position={{ x: beginLabel.position.x, y: beginLabel.position.y }}
           positionOffset={{ x: sourceX, y: sourceY }}
-          onDragStop={(_e, eventData) => onEdgeLabelMoveStop(eventData, id, 'begin')}
+          onDragStop={(_e, eventData) => onEdgeLabelMoveStop(eventData, id, 'begin', { x: 0, y: 0 })}
           onResizeStop={(_e, { size }) => onEdgeLabelResizeStop(id, size, 'begin')}
           zoom={zoom}
           readOnly={readOnly}
@@ -89,8 +90,11 @@ export const DraggableEdgeLabels = ({
           id={id}
           label={label}
           position={{ x: label.position.x, y: label.position.y }}
-          positionOffset={labelCenterOffset}
-          onDragStop={(_e, eventData) => onEdgeLabelMoveStop(eventData, id, 'center')}
+          positionOffset={{
+            x: edgeCenterOffset.x - labelCenterOffset.x,
+            y: edgeCenterOffset.y - labelCenterOffset.y,
+          }}
+          onDragStop={(_e, eventData) => onEdgeLabelMoveStop(eventData, id, 'center', labelCenterOffset)}
           onResizeStop={(_e, { size }) => onEdgeLabelResizeStop(id, size, 'center')}
           zoom={zoom}
           readOnly={readOnly}
@@ -105,7 +109,7 @@ export const DraggableEdgeLabels = ({
           label={endLabel}
           position={{ x: endLabel.position.x, y: endLabel.position.y }}
           positionOffset={{ x: targetX, y: targetY }}
-          onDragStop={(_e, eventData) => onEdgeLabelMoveStop(eventData, id, 'end')}
+          onDragStop={(_e, eventData) => onEdgeLabelMoveStop(eventData, id, 'end', { x: 0, y: 0 })}
           onResizeStop={(_e, { size }) => onEdgeLabelResizeStop(id, size, 'end')}
           zoom={zoom}
           readOnly={readOnly}
