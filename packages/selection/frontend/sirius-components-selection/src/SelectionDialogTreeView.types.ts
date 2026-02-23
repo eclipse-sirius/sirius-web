@@ -26,4 +26,5 @@ export interface SelectionDialogTreeViewState {
   filterBarText: string;
   expanded: string[];
   maxDepth: number;
+  pristine: boolean;
 }
