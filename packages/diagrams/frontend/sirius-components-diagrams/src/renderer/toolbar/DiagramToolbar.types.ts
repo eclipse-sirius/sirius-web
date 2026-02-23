@@ -10,15 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLDiagramToolbar } from '../../representation/DiagramRepresentation.types';
 
 export interface DiagramToolbarProps {
   reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>;
+  diagramToolbar: GQLDiagramToolbar;
 }
 
 export interface DiagramToolbarState {
   dialogOpen: DiagramToolbarDialog | null;
   arrangeAllDone: boolean;
   arrangeAllInProgress: boolean;
+  expanded: boolean;
+  contentWidth: number | null;
 }
 
 export type DiagramToolbarDialog = 'Share';

@@ -94,6 +94,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         this.addEdgeDescription(entity1Node, entity2Node, defaultToolsFactory, viewDiagramDescription, view);
 
         DiagramToolbar toolbar = DiagramFactory.eINSTANCE.createDiagramToolbar();
+        toolbar.setExpandedByDefault(true);
         viewDiagramDescription.setToolbar(toolbar);
 
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(UUID.randomUUID().toString());

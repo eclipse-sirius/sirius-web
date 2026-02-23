@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.builder.DefaultViewDiagramElementFinder;
-import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
@@ -52,7 +51,11 @@ public class ClassDiagramDescriptionProvider implements IRepresentationDescripti
         classDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         classDiagramDescription.setIconExpression("aql:'/papaya-representations/class-diagram.svg'");
         classDiagramDescription.setDescription("Represents a simplified Class Diagram. It can display classes, records, interfaces or enums. It can also represent the relationships between them.");
-        classDiagramDescription.setToolbar(new DiagramBuilders().newDiagramToolbar().build());
+
+        var toolbar = DiagramFactory.eINSTANCE.createDiagramToolbar();
+        toolbar.setExpandedByDefault(true);
+
+        classDiagramDescription.setToolbar(toolbar);
 
         var cache = new DefaultViewDiagramElementFinder();
 

@@ -174,6 +174,7 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .build();
 
         var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
             .build();
 
         var diagramDescription = new DiagramBuilders()

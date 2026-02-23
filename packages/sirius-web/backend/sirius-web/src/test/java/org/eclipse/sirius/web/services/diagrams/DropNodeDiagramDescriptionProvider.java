@@ -144,7 +144,10 @@ public class DropNodeDiagramDescriptionProvider implements IEditingContextProces
                 )
                 .build();
 
-        var toolbar = new DiagramBuilders().newDiagramToolbar().build();
+        var toolbar = new DiagramBuilders().newDiagramToolbar()
+            .expandedByDefault(true)
+            .build();
+
         this.diagramDescription = new DiagramBuilders().newDiagramDescription()
                 .name("Diagram")
                 .titleExpression("aql:'DropNodeDiagram'")
