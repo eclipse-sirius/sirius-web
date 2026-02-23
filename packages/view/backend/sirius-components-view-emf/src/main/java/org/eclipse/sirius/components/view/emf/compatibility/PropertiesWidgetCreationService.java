@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -157,6 +157,11 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
 
     @Override
     public TextfieldDescription createTextField(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature) {
+        return this.createTextFieldWithHelperText(id, title, reader, writer, feature, Optional.empty());
+    }
+
+    @Override
+    public TextfieldDescription createTextFieldWithHelperText(String id, String title, Function<Object, String> reader, BiConsumer<Object, String> writer, Object feature, Optional<Function<VariableManager, String>> helpTextProvider) {
         Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                 .map(reader)
                 .orElse("");
@@ -170,7 +175,7 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
             }
         };
 
-        return TextfieldDescription.newTextfieldDescription(id)
+        var builder = TextfieldDescription.newTextfieldDescription(id)
                 .idProvider(variableManager -> id)
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> title)
@@ -178,8 +183,11 @@ public class PropertiesWidgetCreationService implements IPropertiesWidgetCreatio
                 .newValueHandler(newValueHandler)
                 .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(feature))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
-                .messageProvider(this.propertiesConfigurerService.getMessageProvider())
-                .build();
+                .messageProvider(this.propertiesConfigurerService.getMessageProvider());
+
+        helpTextProvider.ifPresent(builder::helpTextProvider);
+
+        return builder.build();
     }
 
     @Override
