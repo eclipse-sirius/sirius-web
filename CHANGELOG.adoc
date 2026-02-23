@@ -73,6 +73,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6220[#6220] [diagram] Prevent keyboard shortcuts from being ignored when the diagram has the focus.
 - https://github.com/eclipse-sirius/sirius-web/issues/5988[#5988] [sirius-web] Improve resize for panels: the resize cursor is now displayed on the whole hit area rather than only over the separator.
 - https://github.com/eclipse-sirius/sirius-web/issues/6192[#6192] [sirius-web] Fix deadlock when importing a project with a representation having an unknown representation description ID.
+- https://github.com/eclipse-sirius/sirius-web/issues/6184[#6184] [diagram] Prevent manually moved edge labels to change position after resize
 
 
 === New Features
@@ -127,7 +128,7 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] Retrieve the label size from data rather than dom element for elk layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6178[#6178] [diagram] Prevent edge label from sticking to the edge path
 - https://github.com/eclipse-sirius/sirius-web/issues/6020[#6020] [diagram] Allow the execution of the hardcoded semantic delete tool on a multi selection
-- https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types. 
+- https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types.
 - https://github.com/eclipse-sirius/sirius-web/issues/6226[#6226] [diagram] Remove overlap resolution in node layout tools
 
 

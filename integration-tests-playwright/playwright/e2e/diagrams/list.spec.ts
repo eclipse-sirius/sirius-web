@@ -165,6 +165,7 @@ test.describe('diagram - list', () => {
     await playwrightExplorer.expand('Component');
 
     await playwrightExplorer.createRepresentation('Component', 'Class Diagram', 'diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
   });
 
   test.afterEach(async ({ request }) => {
@@ -176,7 +177,6 @@ test.describe('diagram - list', () => {
   }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('Package');
-    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     await (await playwrightExplorer.getTreeItemLabel('NewClass')).dragTo(page.getByTestId('rf__wrapper'));
 
     const node = new PlaywrightNode(page, 'NewClass', 'List');
