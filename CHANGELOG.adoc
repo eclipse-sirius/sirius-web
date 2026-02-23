@@ -45,8 +45,7 @@ The new template for functional specification is located in `doc/iterations/YYYY
 The technical specifications will now rely on a new architectural decision record template located in `doc/adrs/adr.adoc`.
 This new template for ADRs will have several additional requirements compared to the previous one.
 It will require contributors to specify the persons involved in the decision process, to details the qualities expected of the solution, to list the various options considered, to clarify why a specific option has been selected, its advantages and drawbacks, which steps will be taken for the implementation among other things.
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6215[#6215] [diagram] When a tool opens a selection dialog to ask for input, the tree displayed in the dialog is now expanded to reveal the element on which the tool was invoked to provide better context.
 
 == 2026.3.0
 
@@ -202,8 +201,6 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6287[#6287] [sirius-web] Add a cancel button to the _New Project_ creation page.
 - https://github.com/eclipse-sirius/sirius-web/issues/6267[#6267] [sirius-web] Allow customizing the content of the Views Explorer via delegates.
 - https://github.com/eclipse-sirius/sirius-web/issues/6268[#6268] [sirius-web] Allow customizing the labels of the Views Explorer via delegates.
-
-
 
 == 2026.1.0
 

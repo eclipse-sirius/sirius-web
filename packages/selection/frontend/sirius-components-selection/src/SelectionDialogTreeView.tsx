@@ -17,6 +17,7 @@ import {
   TreeItemActionProps,
   TreeView,
   useExpandAllTreePath,
+  useTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import IconButton from '@mui/material/IconButton';
@@ -40,6 +41,7 @@ const useTreeStyle = makeStyles<{ hasSelection: boolean }>()((theme, { hasSelect
 const initialState: SelectionDialogTreeViewState = {
   expanded: [],
   maxDepth: 1,
+  initialized: false,
 };
 
 export const SelectionDialogTreeView = ({
@@ -51,6 +53,7 @@ export const SelectionDialogTreeView = ({
 }: SelectionDialogTreeViewProps) => {
   const { classes } = useTreeStyle({ hasSelection: selectedTreeItemIds.length !== 0 });
   const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
+  const { getTreePath, data: treePathData } = useTreePath();
 
   const treeId = `selection://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}${encodeVariables(variables)}`;
   const { tree } = useSelectionDialogTreeSubscription(editingContextId, treeId, state.expanded, state.maxDepth);
@@ -60,8 +63,29 @@ export const SelectionDialogTreeView = ({
       ...prevState,
       expanded: newExpandedIds,
       maxDepth: Math.max(newMaxDepth, prevState.maxDepth),
+      initialized: true,
     }));
   };
+
+  useEffect(() => {
+    if (tree && !state.initialized) {
+      var targetObjectId = variables.find((variable) => variable.name === 'targetObjectId')?.value as string;
+      getTreePath({
+        variables: {
+          editingContextId,
+          treeId: tree.id,
+          selectionEntryIds: [targetObjectId],
+        },
+      });
+    }
+  }, [tree, state.initialized, variables]);
+
+  useEffect(() => {
+    if (treePathData && treePathData.viewer?.editingContext?.treePath) {
+      const { treeItemIdsToExpand, maxDepth } = treePathData.viewer.editingContext.treePath;
+      onExpandedElementChange(treeItemIdsToExpand ?? [], maxDepth ?? 1);
+    }
+  }, [treePathData]);
 
   return (
     <div className={classes.borderStyle}>
