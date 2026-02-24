@@ -14,7 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        if: env.GITHUB_EVENT_NAME == 'pull_request'
         with:
           ref: ${{ env.GITHUB_EVENT_PR_HEAD_SHA }}
           persist-credentials: false
