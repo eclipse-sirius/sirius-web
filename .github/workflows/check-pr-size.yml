@@ -24,14 +24,11 @@ jobs:
           node-version: 22.16
           registry-url: https://npm.pkg.github.com/
 
-      - name: Build the frontend packages
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
-
-      - name: Install Dependencies
-        run: npm install @actions/core @actions/github
-
       - name: Run Audit Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/check-pr-size.js
+        run: |
+          cd scripts
+          npm init -y
+          npm install @actions/core @actions/github
+          node ./check-pr-size.js
