@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorInitializationHook;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorFactory;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorInitializationHook;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
-import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
@@ -60,22 +58,15 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     private final Duration disposeDelay;
 
-    private final ICollaborativeMessageService messageService;
-
     private final Map<String, EditingContextEventProcessorEntry> editingContextEventProcessors = new ConcurrentHashMap<>();
 
-    public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory,
-                                                IRepresentationEventProcessorRegistry representationEventProcessorRegistry,
-                                                IEditingContextSearchService editingContextSearchService,
-                                                List<IEditingContextEventProcessorInitializationHook> editingContextEventProcessorInitializationHooks,
-                                                @Value("${sirius.components.editingContext.disposeDelay:1s}") Duration disposeDelay,
-                                                ICollaborativeMessageService messageService) {
-        this.editingContextEventProcessorFactory = editingContextEventProcessorFactory;
-        this.representationEventProcessorRegistry = representationEventProcessorRegistry;
+    public EditingContextEventProcessorRegistry(IEditingContextEventProcessorFactory editingContextEventProcessorFactory, IRepresentationEventProcessorRegistry representationEventProcessorRegistry, IEditingContextSearchService editingContextSearchService,
+                                                List<IEditingContextEventProcessorInitializationHook> editingContextEventProcessorInitializationHooks, @Value("${sirius.components.editingContext.disposeDelay:1s}") Duration disposeDelay) {
+        this.editingContextEventProcessorFactory = Objects.requireNonNull(editingContextEventProcessorFactory);
+        this.representationEventProcessorRegistry = Objects.requireNonNull(representationEventProcessorRegistry);
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
         this.editingContextEventProcessorInitializationHooks = Objects.requireNonNull(editingContextEventProcessorInitializationHooks);
         this.disposeDelay = disposeDelay;
-        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -87,11 +78,8 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     @Override
     public Mono<IPayload> dispatchEvent(String editingContextId, IInput input) {
-        var timeoutFallback = Mono.just(new ErrorPayload(input.id(), this.messageService.timeout()))
-                .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the input {}", input));
-
         return this.getOrCreateEditingContextEventProcessor(editingContextId)
-                .map(processor -> processor.handle(input).timeout(Duration.ofSeconds(5), timeoutFallback))
+                .map(processor -> processor.handle(input))
                 .orElse(Mono.empty());
     }
 
