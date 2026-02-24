@@ -24,6 +24,10 @@ jobs:
           node-version: 22.16
           registry-url: https://npm.pkg.github.com/
 
+      - name: Build the frontend packages
+        run: |
+          echo "//npm.pkg.github.com/:_authToken=${{ github.token }}" >> .npmrc
+
       - name: Install Dependencies
         run: npm install @actions/core @actions/github
 
