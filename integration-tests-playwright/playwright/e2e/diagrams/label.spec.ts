@@ -325,6 +325,25 @@ test.describe('diagram - label', () => {
     await edge.closePalette();
     await expect(page.locator('.react-resizable-handle')).toHaveCount(2);
   });
+
+  test('when a label moved is resize, then it position is unchanged', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('diagramWithLabelResized');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.getByTestId('Label - Moved').click();
+    const labelBoxBefore = await page.getByTestId('Label - Moved').boundingBox();
+    const labelResizer = page.locator('.react-resizable-handle');
+    await labelResizer.first().hover();
+    await page.mouse.down();
+    await page.mouse.move(20, 20);
+    await page.mouse.up();
+    const labelBoxAfter = await page.getByTestId('Label - Moved').boundingBox();
+    expect(labelBoxAfter?.x).toEqual(labelBoxBefore?.x);
+    expect(labelBoxAfter?.y).toEqual(labelBoxBefore?.y);
+  });
 });
 
 test.describe('diagram - label', () => {
@@ -377,6 +396,51 @@ test.describe('diagram - label', () => {
           Math.trunc(labelBoundingBox.x) >= Math.trunc(borderNodeBoundingBox.x + borderNodeBoundingBox.width)
         );
       },
+      { timeout: 2000 }
+    );
+  });
+});
+
+test.describe('diagram - label', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('Studio', 'studio-template');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when dragging a center edge label, then no offset apply on the drop position', async ({ page }) => {
+    await page.getByTestId('arrange-all-menu').click();
+    await page.getByTestId('arrange-all-elk-layered').click();
+    const rootNode = new PlaywrightNode(page, 'Root', 'List');
+    await rootNode.waitForAnimationToFinish();
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const labelBoundingBox = await page.getByTestId('Label - entity1s [0..*]').boundingBox();
+    await page.getByTestId('Label - entity1s [0..*]').hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move((labelBoundingBox?.x ?? 0) + 100, (labelBoundingBox?.y ?? 0) + 100);
+    await page.mouse.up();
+
+    await page.waitForFunction(
+      ({ expectedX, expectedY }) => {
+        const label = document.querySelector(`[data-testid="Label - entity1s [0..*]"]`);
+        if (!label) {
+          return false;
+        }
+        const labelBoundingBox = label.getBoundingClientRect();
+        return (
+          labelBoundingBox.x >= expectedX - 2 &&
+          labelBoundingBox.x <= expectedX + 2 &&
+          labelBoundingBox.y >= expectedY - 2 &&
+          labelBoundingBox.y <= expectedY + 2
+        );
+      },
+      { expectedX: (labelBoundingBox?.x ?? 0) + 100 - 10, expectedY: (labelBoundingBox?.y ?? 0) + 100 - 10 },
       { timeout: 2000 }
     );
   });
