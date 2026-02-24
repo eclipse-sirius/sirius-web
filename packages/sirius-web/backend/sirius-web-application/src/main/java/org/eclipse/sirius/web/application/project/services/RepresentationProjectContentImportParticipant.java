@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,13 +30,17 @@ import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProce
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationSuccessPayload;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.web.application.project.services.api.IProjectContentImportParticipant;
 import org.eclipse.sirius.web.application.project.services.api.IRepresentationImporterUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.domain.events.IDomainEvent;
+import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import reactor.core.publisher.Mono;
 
 /**
  * {@link IProjectContentImportParticipant} in charge of importing representations in a project.
@@ -57,10 +62,14 @@ public class RepresentationProjectContentImportParticipant implements IProjectCo
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
 
-    public RepresentationProjectContentImportParticipant(ObjectMapper objectMapper, List<IRepresentationImporterUpdateService> diagramImporterUpdateServices, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry) {
+    private final IMessageService messageService;
+
+    public RepresentationProjectContentImportParticipant(ObjectMapper objectMapper, List<IRepresentationImporterUpdateService> diagramImporterUpdateServices, IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry,
+        IMessageService messageService) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.diagramImporterUpdateServices = Objects.requireNonNull(diagramImporterUpdateServices);
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
+        this.messageService = messageService;
     }
 
     @Override
@@ -172,7 +181,11 @@ public class RepresentationProjectContentImportParticipant implements IProjectCo
             String objectId = this.getNewObjectId(targetObjectURI, documentIdMapping, semanticIdMapping);
 
             CreateRepresentationInput createRepresentationInput = new CreateRepresentationInput(inputId, editingContextEventProcessor.getEditingContextId(), descriptionURI, objectId, representationImportData.label());
+            var timeoutFallback = Mono.just(new ErrorPayload(inputId, this.messageService.timeout()))
+                .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the representation upload"));
+
             var representationPayloadCreated = editingContextEventProcessor.handle(createRepresentationInput)
+                    .timeout(Duration.ofSeconds(5), timeoutFallback)
                     .filter(CreateRepresentationSuccessPayload.class::isInstance)
                     .map(CreateRepresentationSuccessPayload.class::cast)
                     .blockOptional();

@@ -109,6 +109,8 @@ public interface IMessageService {
 
     String operationExecutionFailed(String failureMessage);
 
+    String timeout();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -338,6 +340,11 @@ public interface IMessageService {
 
         @Override
         public String operationExecutionFailed(String failureMessage) {
+            return "";
+        }
+
+        @Override
+        public String timeout() {
             return "";
         }
     }

@@ -257,4 +257,9 @@ public class MessageService implements IMessageService {
     public String operationExecutionFailed(String failureMessage) {
         return this.messageSourceAccessor.getMessage("OPERATION_EXECUTION_FAILED", new Object[] {failureMessage});
     }
+
+    @Override
+    public String timeout() {
+        return this.messageSourceAccessor.getMessage("TIMEOUT");
+    }
 }
