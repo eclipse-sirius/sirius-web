@@ -31,4 +31,4 @@ jobs:
       - name: Run Audit Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/audit_commits.js
+        run: node scripts/check-pr-size.js
