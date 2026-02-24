@@ -31,4 +31,4 @@ jobs:
           cd scripts
           npm init -y
           npm install @actions/core @actions/github
-          node ./check-pr-size.cjs
+          node ./check-pr-size.mjs
