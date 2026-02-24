@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,11 +87,8 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
 
     @Override
     public Mono<IPayload> dispatchEvent(String editingContextId, IInput input) {
-        var timeoutFallback = Mono.just(new ErrorPayload(input.id(), this.messageService.timeout()))
-                .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the input {}", input));
-
         return this.getOrCreateEditingContextEventProcessor(editingContextId)
-                .map(processor -> processor.handle(input).timeout(Duration.ofSeconds(5), timeoutFallback))
+                .map(processor -> processor.handle(input))
                 .orElse(Mono.empty());
     }
 

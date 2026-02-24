@@ -50,6 +50,7 @@ The GraphQL schema has been updated to reflect this change.
 The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6105[#6105] [sirius-web] Fix representation opening in library browser.
 - https://github.com/eclipse-sirius/sirius-web/issues/6141|#6141] [table] Prevent tables in a form to share the same id
+- https://github.com/eclipse-sirius/sirius-web/issues/6192[#6192] [sirius-web] Fix deadlock when importing a project with a representation having an unknown representation description ID.
 
 
 === New Features

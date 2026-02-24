@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
@@ -32,6 +34,7 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IChangeDescriptionListener;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IEditingContextEventProcessorExecutorServiceProvider;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -120,18 +123,22 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         One<IPayload> payloadSink = Sinks.one();
         Future<?> future = this.executorService.submit(() -> this.inputDispatcher.dispatch(this.executorService, payloadSink, this.canBeDisposedSink, this.changeDescriptionSink, this.editingContext, input));
+        Mono<IPayload> result = payloadSink.asMono()
+                .log(this.getClass().getName(), Level.FINEST, SignalType.ON_NEXT, SignalType.ON_ERROR)
+                .doOnError(throwable -> this.logger.warn(throwable.getMessage(), throwable));
         try {
             // Block until the event has been processed
-            future.get();
+            future.get(5, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException exception) {
             this.logger.warn(exception.getMessage(), exception);
+        } catch (TimeoutException e) {
+            future.cancel(true);
+            result = Mono.just(new ErrorPayload(input.id(), "The request has been interrupted due to a timeout"));
         }
         handleTimer.stop(this.meterRegistry.timer(Monitoring.TIMER_PROCESSING_INPUT, "input", input.getClass().getSimpleName(),
                 "inputId", input.id().toString()));
 
-        return payloadSink.asMono()
-                .log(this.getClass().getName(), Level.FINEST, SignalType.ON_NEXT, SignalType.ON_ERROR)
-                .doOnError(throwable -> this.logger.warn(throwable.getMessage(), throwable));
+        return result;
     }
 
 
