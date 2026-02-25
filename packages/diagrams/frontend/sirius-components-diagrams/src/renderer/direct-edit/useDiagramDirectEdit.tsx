@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,7 +42,6 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       if (key !== 'F2' && isTextField) {
         return;
       }
-      event.preventDefault();
 
       const validFirstInputChar =
         !event.metaKey && !event.ctrlKey && key.length === 1 && directEditActivationValidCharacters.test(key);
@@ -66,8 +65,10 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
       }
       if (currentlyEditedLabelId && isLabelEditable) {
         if (validFirstInputChar) {
+          event.preventDefault();
           setCurrentlyEditedLabelId('keyDown', currentlyEditedLabelId, key);
         } else if (key === 'F2') {
+          event.preventDefault();
           setCurrentlyEditedLabelId('F2', currentlyEditedLabelId, null);
         }
       }

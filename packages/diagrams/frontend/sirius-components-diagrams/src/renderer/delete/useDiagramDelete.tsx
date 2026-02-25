@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,9 +34,9 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
       if ((event.altKey && key === 'Alt') || (event.shiftKey && key === 'Shift') || isTextField) {
         return;
       }
-      event.preventDefault();
 
       if (key === 'Delete' && editingContextId && diagramId && !readOnly) {
+        event.preventDefault();
         const nodeToDeleteIds: string[] = getNodes()
           .filter((node) => node.selected && node.data.deletable)
           .map((node) => node.id);
