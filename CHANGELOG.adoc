@@ -112,7 +112,8 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6065[#6065] [sirius-web] Rework the _New Project_ creation page to improve the UX
 - https://github.com/eclipse-sirius/sirius-web/issues/6110[#6110] [diagram] Preserve custom position for the handle during edge reconnection
 - https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] Retrieve the label size from data rather than dom element for elk layout
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6229[#6229] [selection] Rework the selection dialog.
++ It comes with small improvements in the filter bar for better reuse
 
 
 == 2026.1.0
