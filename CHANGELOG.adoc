@@ -61,6 +61,8 @@ It will require contributors to specify the persons involved in the decision pro
 To perform the refresh of the representation event processor, an instance of `IRepresentationRefresher` will be required.
 A new provisional method `IHierarchyEventProcessor#update` is available to update the state of the hierarchy event processor and publish a new hierarchy to the subscribers.
 - https://github.com/eclipse-sirius/sirius-web/issues/6334[#6334] [diagram] Use a dedicated hook to improve temporary edge rendering
+- https://github.com/eclipse-sirius/sirius-web/issues/6229[#6229] [selection] Improve the user experience of the selection dialog.
+It now comes with small improvements in the filter bar for better reuse
 
 
 
