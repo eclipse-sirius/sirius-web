@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -358,7 +358,12 @@ export const CreateModal = ({ editingContextId, widget, onClose, formId }: Creat
       data-testid="create-modal">
       <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
       <DialogContent>
-        <Box sx={(theme) => ({ display: 'flex', flexDirection: 'column', gap: theme.spacing(1) })}>
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            flexDirection: 'column',
+            gap: theme.spacing(1),
+          })}>
           {widget.reference.containment ? null : (
             <ModelBrowserTreeView
               editingContextId={editingContextId}

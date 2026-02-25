@@ -11,15 +11,57 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface SelectionDialogProps {
-  editingContextId: string;
-  selectionRepresentationId: string;
-  targetObjectId: string;
-  onClose: () => void;
-  onFinish: (selectedObjectId: string) => void;
-}
+import { DiagramDialogComponentProps } from '@eclipse-sirius/sirius-components-diagrams';
+import { GQLTreeDescription } from './useSelectionDescription.types';
+
+export interface SelectionDialogProps extends DiagramDialogComponentProps {}
 
 export interface SelectionDialogState {
-  selectedObjectIds: string[];
-  noSelectionOptionSelected: boolean;
+  selectedTreeItemIds: string[];
+  selectionDialogOption: SelectionDialogOptions;
+}
+
+export type SelectionDialogOptions = 'INITIAL' | 'NO_SELECTION' | 'WITH_SELECTION';
+
+export interface GQLSelectionDescription {
+  dialog: GQLSelectionDialogDescription;
+  treeDescription: GQLTreeDescription;
+  multiple: boolean;
+  optional: boolean;
+}
+
+export interface GQLSelectionDialogDescription {
+  titles: GQLSelectionDialogTitlesDescription;
+  description: string;
+  noSelectionAction: GQLSelectionDialogNoSelectionActionDescription;
+  withSelectionAction: GQLSelectionDialogSelectionActionDescription;
+  statusMessages: GQLSelectionDialogStatusMessages;
+  confirmButtonLabels: GQLSelectionDialogConfirmButtonLabels;
+}
+
+export interface GQLSelectionDialogTitlesDescription {
+  defaultTitle: string;
+  noSelectionTitle: string;
+  selectionTitle: string;
+}
+
+export interface GQLSelectionDialogStatusMessages {
+  noSelectionActionStatusMessage: string;
+  selectionRequiredWithoutSelectionStatusMessage: string;
+}
+
+export interface GQLSelectionDialogConfirmButtonLabels {
+  noSelectionConfirmButtonLabel: string;
+  selectionRequiredWithoutSelectionConfirmButtonLabel: string;
+  selectionRequiredWithSelectionConfirmButtonLabel: string;
+}
+
+export interface GQLSelectionDialogNoSelectionActionDescription {
+  label: string;
+  description: string;
+}
+
+export interface GQLSelectionDialogSelectionActionDescription {
+  label: string;
+  description: string;
 }

@@ -24,18 +24,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
-import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectModalProps, DuplicateObjectModalState } from './DuplicateObjectModal.types';
 import { useContainmentFeatureNames } from './useContainmentFeatureNames';
 import { useDuplicateObject } from './useDuplicateObject';
-
-const useDuplicateObjectModalStyles = makeStyles()((theme) => ({
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: theme.spacing(1),
-  },
-}));
 
 export const DuplicateObjectModal = ({
   editingContextId,
@@ -44,8 +35,6 @@ export const DuplicateObjectModal = ({
   onObjectDuplicated,
   onClose,
 }: DuplicateObjectModalProps) => {
-  const { classes } = useDuplicateObjectModalStyles();
-
   const [state, setState] = useState<DuplicateObjectModalState>({
     containerSelectedId: null,
     containmentFeatureName: '',
@@ -129,7 +118,12 @@ export const DuplicateObjectModal = ({
       data-testid="duplicate-object-dialog">
       <DialogTitle id="dialog-title">Duplicate object</DialogTitle>
       <DialogContent>
-        <div className={classes.form}>
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            flexDirection: 'column',
+            gap: theme.spacing(1),
+          })}>
           <ModelBrowserTreeView
             editingContextId={editingContextId}
             referenceKind={objectToDuplicateKind}
@@ -217,7 +211,7 @@ export const DuplicateObjectModal = ({
               }}
             />
           </Box>
-        </div>
+        </Box>
       </DialogContent>
       <DialogActions>
         <Button
