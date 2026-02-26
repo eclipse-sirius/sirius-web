@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { makeStyles } from 'tss-react/mui';
 import { CSSProperties, useEffect, useRef } from 'react';
+import { makeStyles } from 'tss-react/mui';
 import { DeckInput } from '../common/DeckInput';
 import { DeckLaneHeaderProps } from './DeckLaneHeader.types';
 
@@ -80,7 +80,7 @@ export const DeckLaneHeader = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (titleInputRef.current) {
-      if (e.key === 'F2') {
+      if (e.code === 'F2') {
         titleInputRef.current.select();
       }
     }

@@ -100,9 +100,9 @@ export const Omnibox = forwardRef<OmniboxHandle, OmniboxProps>(
     };
 
     const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement> = (event) => {
-      if (event.key === 'Enter' && state.queryHasChanged) {
+      if (event.code === 'Enter' && state.queryHasChanged) {
         sendQuery(event.currentTarget.value);
-      } else if (event.key === 'ArrowDown' && listRef.current) {
+      } else if (event.code === 'ArrowDown' && listRef.current) {
         const firstListItem = listRef.current.childNodes[0];
         if (firstListItem instanceof HTMLElement) {
           firstListItem.focus();

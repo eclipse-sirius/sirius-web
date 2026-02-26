@@ -327,7 +327,7 @@ export const ToolbarActionWidget = ({ toolbarActions, containerId, toolbarAction
 
   const handleDelete: React.KeyboardEventHandler<HTMLDivElement> = (event: React.KeyboardEvent<HTMLDivElement>) => {
     event.preventDefault();
-    if (event.key === 'Delete') {
+    if (event.code === 'Delete') {
       const deleteToolbarActionInput: GQLDeleteToolbarActionInput = {
         id: crypto.randomUUID(),
         editingContextId,
