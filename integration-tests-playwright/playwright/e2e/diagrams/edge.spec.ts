@@ -200,7 +200,7 @@ test.describe('edge', () => {
     const box = (await firstLine.boundingBox())!;
     await firstLine.hover();
     await page.mouse.down();
-    await page.mouse.move(box.x, box.y + 30, { steps: 2 });
+    await page.mouse.move(box.x, box.y + 40, { steps: 2 });
     await page.mouse.up();
 
     await expect(page.getByTestId(`bend-point-0`)).not.toBeAttached();

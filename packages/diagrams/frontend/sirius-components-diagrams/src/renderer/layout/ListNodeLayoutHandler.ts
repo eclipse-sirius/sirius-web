@@ -92,7 +92,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
 
-    const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === node.id);
+    const previousNode = (previousDiagram?.nodes ?? []).find((prevNode) => prevNode.id === node.id);
     const previousDimensions = computePreviousSize(previousNode, node);
 
     const heightLostSincePrevDiagram: number =
@@ -145,7 +145,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
 
     const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
-      (previouseNode) => previouseNode.id === node.id
+      (prevNode) => prevNode.id === node.id
     );
 
     const heightLostSincePrevDiagram: number =

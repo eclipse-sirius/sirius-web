@@ -47,7 +47,7 @@ const emptyNodeProps = {
 };
 
 const isListNode = (node: Node<NodeData>): node is Node<ListNodeData> => node.type === 'listNode';
-const isRectangularNode = (node: Node<NodeData>): node is Node<FreeFormNodeData> => node.type === 'rectangularNode';
+const isFreeFormNode = (node: Node<NodeData>): node is Node<FreeFormNodeData> => node.type === 'freeFormNode';
 
 const getNodeBorderWidth = (node: Node<NodeData>, visibleNodes: Node<NodeData>[]) => {
   if (node.parentId) {
@@ -199,7 +199,7 @@ export const prepareLayoutArea = (
   visibleNodes.forEach((node, index) => {
     if (hiddenContainer && node) {
       const children: JSX.Element[] = [];
-      if (isRectangularNode(node)) {
+      if (isFreeFormNode(node)) {
         const freeFormNodeProps: NodeProps<Node<FreeFormNodeData, 'freeFormNode'>> = {
           ...emptyNodeProps,
           type: 'freeFormNode',

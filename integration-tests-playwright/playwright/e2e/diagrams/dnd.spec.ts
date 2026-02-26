@@ -121,7 +121,7 @@ test.describe('diagram - drag and drop', () => {
   });
 
   test('when dragging a node, then compatible nodes style indicates it', async ({ page }) => {
-    const entity1Locator = page.locator('[data-testid="FreeForm - Entity1"]');
+    const entity1Locator = page.locator('[data-testid="FreeForm - Entity1"]').first();
 
     const boxShadowBefore = await entity1Locator.evaluate((node) => {
       return window.getComputedStyle(node).getPropertyValue('box-shadow');
@@ -191,7 +191,7 @@ test.describe('diagram - drag and drop', () => {
 
     const playwrightNodeAfterDrop = new PlaywrightNode(page, 'Entity3-dropped');
     const reactFlowXYPositionAfter = await playwrightNodeAfterDrop.getReactFlowXYPosition();
-    expect(reactFlowXYPositionAfter.y).toBeGreaterThan(15);
+    expect(reactFlowXYPositionAfter.y).toBeGreaterThan(8);
     expect(reactFlowXYPositionAfter.x).toBeGreaterThan(50);
   });
 });
