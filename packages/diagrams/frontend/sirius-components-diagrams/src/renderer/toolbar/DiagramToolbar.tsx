@@ -180,7 +180,7 @@ export const DiagramToolbar = memo(({ reactFlowWrapper, diagramToolbar }: Diagra
               </Tooltip>
             )}
             <Tooltip title={t('zoomIn')}>
-              <IconButton size="small" aria-label={t('zoomIn')} onClick={handleZoomIn}>
+              <IconButton size="small" aria-label={t('zoomIn')} onClick={handleZoomIn} data-testid="zoom-in">
                 <ZoomInIcon />
               </IconButton>
             </Tooltip>

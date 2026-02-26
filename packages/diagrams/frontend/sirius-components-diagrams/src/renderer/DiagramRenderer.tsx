@@ -84,6 +84,7 @@ import { useLastElementSelectedChange } from './selection/useLastElementSelected
 import { useOnRightClickElement } from './selection/useOnRightClickElement';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
 import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
+import { useDynamicEdgeSelectionArea } from './edge/useDynamicEdgeSelectionArea';
 
 const GRID_STEP: number = 10;
 
@@ -94,6 +95,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const nodes = getNodes();
   const edges = getEdges();
   useEdgeCrossingFades();
+  useDynamicEdgeSelectionArea();
 
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();
