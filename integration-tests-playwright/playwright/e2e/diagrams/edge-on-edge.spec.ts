@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
-test.describe('edgeOnEdge', () => {
+test.describe('edge on edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
     const project = await new PlaywrightProject(request).createProject('edge-on-edge', 'blank-project');
@@ -85,5 +85,41 @@ test.describe('edgeOnEdge', () => {
     await page.mouse.up();
     await page.getByTestId('connectorContextualMenu-E2ToEdge1A').click();
     await expect(edges).toHaveCount(3);
+  });
+});
+
+test.describe('edge on edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeToEdge.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('edgesOnEdges');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when an edge is between a node and an edge, then the handle on the node is correctly placed', async ({
+    page,
+  }) => {
+    const edges = page.locator('[data-testid^="rf__edge-"]');
+    await expect(edges).toHaveCount(2);
+
+    await expect(page.locator('.source_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.source_handle_left')).toHaveCount(0);
+    await expect(page.locator('.source_handle_top')).toHaveCount(0);
+
+    await expect(page.locator('.target_handle_right')).toHaveCount(0);
+    await expect(page.locator('.target_handle_bottom')).toHaveCount(0);
+    await expect(page.locator('.target_handle_left')).toHaveCount(1);
+    await expect(page.locator('.target_handle_top')).toHaveCount(1);
   });
 });
