@@ -149,12 +149,24 @@ export const useDropNodes = (): UseDropNodesValue => {
     return node;
   };
 
+  const getCommonParentId = (nodes: Node<NodeData>[]): string | null => {
+    const nodesWithParentId = nodes.filter((node) => node.parentId !== undefined);
+    if (nodesWithParentId.length === 0) {
+      return null;
+    }
+    const firstParentId = nodesWithParentId[0]?.parentId;
+    const allSameParentId = nodesWithParentId.every((node) => node.parentId === firstParentId);
+    return allSameParentId ? firstParentId! : null;
+  };
+
   const onNodesDragStart: OnNodeDrag<Node<NodeData>> = useCallback(
     (_event, _node, nodes) => {
       if (nodes.length === 0) {
         return;
       }
       const draggedNodes = nodes.map((node) => getDraggableNode(node));
+
+      const commonParentId: string | null = getCommonParentId(draggedNodes);
 
       // Store the initial positions to be able to reset them correctly on cancel.
       const initialPositions: Map<string, XYPosition> = new Map();
@@ -201,6 +213,7 @@ export const useDropNodes = (): UseDropNodesValue => {
                 ...n.data,
                 isDraggedNode: draggedNodeIds.has(n.id),
                 isDropNodeCandidate: true,
+                isDragNodeSource: n.id === commonParentId,
               },
             };
           }
@@ -210,6 +223,7 @@ export const useDropNodes = (): UseDropNodesValue => {
               data: {
                 ...n.data,
                 isDropNodeTarget: true,
+                isDragNodeSource: n.id === commonParentId,
               },
             };
           }
@@ -259,9 +273,12 @@ export const useDropNodes = (): UseDropNodesValue => {
             )
             .sort((n1, n2) => getNodeDepth(n2, intersections) - getNodeDepth(n1, intersections))[0]?.id || null;
 
-        const previousTargetNode = getNodes().find((node) => node.data.isDropNodeTarget) || null;
+        const previousTargetNodes: Node<NodeData>[] = getNodes().filter((node) => node.data.isDropNodeTarget);
 
-        if (previousTargetNode?.id != newParentId) {
+        if (
+          previousTargetNodes.length === 0 ||
+          previousTargetNodes.some((previousTargetNode) => previousTargetNode.id !== newParentId)
+        ) {
           setNodes((nds) =>
             nds.map((n) => {
               if (n.id === newParentId) {

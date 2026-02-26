@@ -49,7 +49,9 @@ A toolbar will be added by a migration participant for existing diagram descript
 - https://github.com/eclipse-sirius/sirius-web/issues/5941[#5941] [tree] Custom tree descriptions will not have any tooltip by default.
 The tooltip is now configurable using either the view based tree description or using an instance of `ITreeItemTooltipProvider`.
 The default tooltip used in the explorer can be reused thanks to `IExplorerTooltipService` and it can be customized for any tree item using `IExplorerTooltipServiceDelegate`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6202[#6202] [diagram] Custom node layout handlers must now set `isDragNodeSource`.
+An example can be found with `EllipseNodeConverter.ts`.
+`useDropNodeStyle` now has a new parameter `isDragNodeSource`.
 
 === Dependency update
 
@@ -63,6 +65,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6105[#6105] [sirius-web] Fix representation opening in library browser.
 - https://github.com/eclipse-sirius/sirius-web/issues/6141|#6141] [table] Prevent tables in a form to share the same id
 - https://github.com/eclipse-sirius/sirius-web/issues/6200|#6200] [diagram] Prevent list node to be resized to a size smaller than that produced by the layout
+- https://github.com/eclipse-sirius/sirius-web/issues/6202[#6202] [diagram] Prevent compatible nodes from being highlighted when dragging a border node
 
 
 === New Features

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
  *
  * @author pcdavid
  */
-public record GetDropNodeCompatibiliyInput(UUID id, String editingContextId, String representationId) implements IDiagramInput {
+public record GetDropNodeCompatibilityInput(UUID id, String editingContextId, String representationId) implements IDiagramInput {
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,8 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDropNodeCompatibilityProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodeCompatibilityEntry;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.GetDropNodeCompatibilityInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetDropNodeCompatibilitySuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.GetDropNodeCompatibiliyInput;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -69,7 +69,7 @@ public class GetDropNodeCompatibilityEventHandler implements IDiagramEventHandle
 
     @Override
     public boolean canHandle(IEditingContext editingContext, IDiagramInput diagramInput) {
-        return diagramInput instanceof GetDropNodeCompatibiliyInput;
+        return diagramInput instanceof GetDropNodeCompatibilityInput;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class GetDropNodeCompatibilityEventHandler implements IDiagramEventHandle
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), diagramInput);
         IPayload payload = null;
 
-        if (diagramInput instanceof GetDropNodeCompatibiliyInput) {
+        if (diagramInput instanceof GetDropNodeCompatibilityInput) {
             Diagram diagram = diagramContext.diagram();
             var diagramDescription = this.representationDescriptionSearchService.findById(editingContext, diagram.getDescriptionId())
                     .filter(DiagramDescription.class::isInstance)
@@ -95,7 +95,7 @@ public class GetDropNodeCompatibilityEventHandler implements IDiagramEventHandle
                 payload = new GetDropNodeCompatibilitySuccessPayload(diagramInput.id(), result);
             }
         } else {
-            String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), GetDropNodeCompatibiliyInput.class.getSimpleName());
+            String message = this.messageService.invalidInput(diagramInput.getClass().getSimpleName(), GetDropNodeCompatibilityInput.class.getSimpleName());
             payload = new ErrorPayload(diagramInput.id(), message);
         }
 
