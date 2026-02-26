@@ -54,7 +54,7 @@ The default tooltip used in the explorer can be reused thanks to `IExplorerToolt
 === Dependency update
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.11[Spring Boot 3.5.11]
-
+- [releng] Switch to @ObeoNetwork/gantt-task-react 0.6.3
 
 === Bug fixes
 
