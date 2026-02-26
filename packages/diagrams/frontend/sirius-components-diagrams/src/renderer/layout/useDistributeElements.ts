@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ import { Edge, Node, XYPosition, useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
-import { useOverlap } from '../overlap/useOverlap';
 import { RawDiagram } from './layout.types';
 import { UseDistributeElementsValue } from './useDistributeElements.types';
 import { useLayout } from './useLayout';
@@ -38,14 +37,12 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
   const { addMessages } = useMultiToast();
-  const { resolveNodeOverlap } = useOverlap();
 
   const processLayoutTool = (
     selectedNodeIds: string[],
     layoutFn: (selectedNodes: Node<NodeData>[], refNode: Node<NodeData>) => Node<NodeData>[],
     sortFn: ((node1: Node, node2: Node) => number) | null = null,
-    refElementId: string | null = null,
-    direction: 'horizontal' | 'vertical' = 'horizontal'
+    refElementId: string | null = null
   ): void => {
     const selectedNodes: Node<NodeData>[] = getNodes().filter((node) => selectedNodeIds.includes(node.id));
     const firstParent = selectedNodes[0]?.parentId;
@@ -70,16 +67,14 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
     }
     if (refNode) {
       const updatedNodes: Node<NodeData>[] = layoutFn(selectedNodes, refNode);
-      const overlapFreeNodes: Node<NodeData>[] = resolveNodeOverlap(updatedNodes, direction);
       const diagramToLayout: RawDiagram = {
-        nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
+        nodes: [...updatedNodes] as Node<NodeData, DiagramNodeType>[],
         edges: getEdges(),
       };
       layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-        const overlapFreeNodesAfterLayout: Node<NodeData>[] = resolveNodeOverlap(laidOutDiagram.nodes, 'horizontal');
-        setNodes(overlapFreeNodesAfterLayout);
+        setNodes(laidOutDiagram.nodes);
         const finalDiagram: RawDiagram = {
-          nodes: overlapFreeNodesAfterLayout as Node<NodeData, DiagramNodeType>[],
+          nodes: laidOutDiagram.nodes as Node<NodeData, DiagramNodeType>[],
           edges: laidOutDiagram.edges,
         };
         synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
@@ -88,136 +83,128 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   };
 
   const distributeNodesOnGap = (direction: 'horizontal' | 'vertical') => {
-    return useCallback(
-      (selectedNodeIds: string[]) => {
-        const selectedNodes: Node<NodeData>[] = getNodes().filter((node) => selectedNodeIds.includes(node.id));
-        const firstParent = selectedNodes[0]?.parentId;
-        const sameParent: boolean = selectedNodes.reduce(
-          (isSameParent, node) => isSameParent && node.parentId === firstParent,
-          true
-        );
-        if (selectedNodes.length < 3 || !sameParent) {
-          return;
-        }
+    return useCallback((selectedNodeIds: string[]) => {
+      const selectedNodes: Node<NodeData>[] = getNodes().filter((node) => selectedNodeIds.includes(node.id));
+      const firstParent = selectedNodes[0]?.parentId;
+      const sameParent: boolean = selectedNodes.reduce(
+        (isSameParent, node) => isSameParent && node.parentId === firstParent,
+        true
+      );
+      if (selectedNodes.length < 3 || !sameParent) {
+        return;
+      }
 
-        selectedNodes.sort(getComparePositionFn(direction));
+      selectedNodes.sort(getComparePositionFn(direction));
 
-        const firstNode = selectedNodes[0];
-        const lastNode = selectedNodes[selectedNodes.length - 1];
+      const firstNode = selectedNodes[0];
+      const lastNode = selectedNodes[selectedNodes.length - 1];
 
-        if (firstNode && lastNode) {
-          const totalSize: number = selectedNodes
-            .filter((node) => node.id !== firstNode.id && node.id !== lastNode.id)
-            .reduce((total, node) => total + (direction === 'horizontal' ? node.width ?? 0 : node.height ?? 0), 0);
-          const numberOfGap: number = selectedNodes.length - 1;
-          const gap: number =
-            ((direction === 'horizontal'
-              ? lastNode.position.x - firstNode.position.x - (firstNode.width ?? 0)
-              : lastNode.position.y - firstNode.position.y - (firstNode.height ?? 0)) -
-              totalSize) /
-            numberOfGap;
-          const updatedNodes = getNodes().map((node) => {
+      if (firstNode && lastNode) {
+        const totalSize: number = selectedNodes
+          .filter((node) => node.id !== firstNode.id && node.id !== lastNode.id)
+          .reduce((total, node) => total + (direction === 'horizontal' ? node.width ?? 0 : node.height ?? 0), 0);
+        const numberOfGap: number = selectedNodes.length - 1;
+        const gap: number =
+          ((direction === 'horizontal'
+            ? lastNode.position.x - firstNode.position.x - (firstNode.width ?? 0)
+            : lastNode.position.y - firstNode.position.y - (firstNode.height ?? 0)) -
+            totalSize) /
+          numberOfGap;
+        const updatedNodes = getNodes().map((node) => {
+          if (!selectedNodeIds.includes(node.id) || node.data.pinned) {
+            return node;
+          }
+
+          const index: number = selectedNodes.findIndex((selectedNode) => selectedNode.id === node.id);
+          const currentSelectedNode = selectedNodes[index];
+          const previousNode = selectedNodes[index - 1];
+
+          let newPosition: number = direction === 'horizontal' ? node.position.x : node.position.y;
+
+          if (index > 0 && index < selectedNodes.length - 1 && previousNode && currentSelectedNode) {
+            newPosition =
+              direction === 'horizontal'
+                ? previousNode.position.x + (previousNode.width ?? 0) + gap
+                : previousNode.position.y + (previousNode.height ?? 0) + gap;
+            currentSelectedNode.position[direction === 'horizontal' ? 'x' : 'y'] = newPosition;
+          }
+
+          return {
+            ...node,
+            position: {
+              ...node.position,
+              [direction === 'horizontal' ? 'x' : 'y']: newPosition,
+            },
+          };
+        });
+        const diagramToLayout: RawDiagram = {
+          nodes: [...updatedNodes] as Node<NodeData, DiagramNodeType>[],
+          edges: getEdges(),
+        };
+        layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
+          setNodes(laidOutDiagram.nodes);
+          const finalDiagram: RawDiagram = {
+            nodes: laidOutDiagram.nodes,
+            edges: laidOutDiagram.edges,
+          };
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+        });
+      }
+    }, []);
+  };
+
+  const distributeAlign = (orientation: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'middle') => {
+    return useCallback((selectedNodeIds: string[], refElementId: string | null) => {
+      processLayoutTool(
+        selectedNodeIds,
+        (_selectedNodes, refNode) => {
+          return getNodes().map((node) => {
             if (!selectedNodeIds.includes(node.id) || node.data.pinned) {
               return node;
             }
+            const referencePositionValue: number = (() => {
+              switch (orientation) {
+                case 'left':
+                  return refNode.position.x;
+                case 'right':
+                  return refNode.position.x + (refNode.width ?? 0) - (node.width ?? 0);
+                case 'center':
+                  return refNode.position.x + (refNode.width ?? 0) / 2 - (node.width ?? 0) / 2;
+                case 'top':
+                  return refNode.position.y;
+                case 'bottom':
+                  return refNode.position.y + (refNode.height ?? 0) - (node.height ?? 0);
+                case 'middle':
+                  return refNode.position.y + (refNode.height ?? 0) / 2 - (node.height ?? 0) / 2;
+              }
+            })();
 
-            const index: number = selectedNodes.findIndex((selectedNode) => selectedNode.id === node.id);
-            const currentSelectedNode = selectedNodes[index];
-            const previousNode = selectedNodes[index - 1];
-
-            let newPosition: number = direction === 'horizontal' ? node.position.x : node.position.y;
-
-            if (index > 0 && index < selectedNodes.length - 1 && previousNode && currentSelectedNode) {
-              newPosition =
-                direction === 'horizontal'
-                  ? previousNode.position.x + (previousNode.width ?? 0) + gap
-                  : previousNode.position.y + (previousNode.height ?? 0) + gap;
-              currentSelectedNode.position[direction === 'horizontal' ? 'x' : 'y'] = newPosition;
-            }
+            const referencePositionVariable: string = (() => {
+              switch (orientation) {
+                case 'left':
+                case 'right':
+                case 'center':
+                  return 'x';
+                case 'top':
+                case 'bottom':
+                case 'middle':
+                  return 'y';
+              }
+            })();
 
             return {
               ...node,
               position: {
                 ...node.position,
-                [direction === 'horizontal' ? 'x' : 'y']: newPosition,
+                [referencePositionVariable]: referencePositionValue,
               },
             };
           });
-          const overlapFreeNodes: Node[] = resolveNodeOverlap(updatedNodes, direction);
-          const diagramToLayout: RawDiagram = {
-            nodes: [...overlapFreeNodes] as Node<NodeData, DiagramNodeType>[],
-            edges: getEdges(),
-          };
-          layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-            setNodes(laidOutDiagram.nodes);
-            const finalDiagram: RawDiagram = {
-              nodes: laidOutDiagram.nodes,
-              edges: laidOutDiagram.edges,
-            };
-            synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
-          });
-        }
-      },
-      [resolveNodeOverlap]
-    );
-  };
-
-  const distributeAlign = (orientation: 'left' | 'right' | 'top' | 'bottom' | 'center' | 'middle') => {
-    return useCallback(
-      (selectedNodeIds: string[], refElementId: string | null) => {
-        processLayoutTool(
-          selectedNodeIds,
-          (_selectedNodes, refNode) => {
-            return getNodes().map((node) => {
-              if (!selectedNodeIds.includes(node.id) || node.data.pinned) {
-                return node;
-              }
-              const referencePositionValue: number = (() => {
-                switch (orientation) {
-                  case 'left':
-                    return refNode.position.x;
-                  case 'right':
-                    return refNode.position.x + (refNode.width ?? 0) - (node.width ?? 0);
-                  case 'center':
-                    return refNode.position.x + (refNode.width ?? 0) / 2 - (node.width ?? 0) / 2;
-                  case 'top':
-                    return refNode.position.y;
-                  case 'bottom':
-                    return refNode.position.y + (refNode.height ?? 0) - (node.height ?? 0);
-                  case 'middle':
-                    return refNode.position.y + (refNode.height ?? 0) / 2 - (node.height ?? 0) / 2;
-                }
-              })();
-
-              const referencePositionVariable: string = (() => {
-                switch (orientation) {
-                  case 'left':
-                  case 'right':
-                  case 'center':
-                    return 'x';
-                  case 'top':
-                  case 'bottom':
-                  case 'middle':
-                    return 'y';
-                }
-              })();
-
-              return {
-                ...node,
-                position: {
-                  ...node.position,
-                  [referencePositionVariable]: referencePositionValue,
-                },
-              };
-            });
-          },
-          null,
-          refElementId,
-          ['left', 'right', 'center'].includes(orientation) ? 'vertical' : 'horizontal'
-        );
-      },
-      [resolveNodeOverlap]
-    );
+        },
+        null,
+        refElementId
+      );
+    }, []);
   };
 
   const justifyElements = (
@@ -227,20 +214,17 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
       refNode: Node<NodeData>
     ) => Node<NodeData>[]
   ) => {
-    return useCallback(
-      (selectedNodeIds: string[], refElementId: string | null) => {
-        processLayoutTool(
-          selectedNodeIds,
-          (selectedNodes, refNode) => {
-            selectedNodes.sort(getComparePositionFn('horizontal'));
-            return justifyElementsFn(selectedNodes, selectedNodeIds, refNode);
-          },
-          null,
-          refElementId
-        );
-      },
-      [resolveNodeOverlap]
-    );
+    return useCallback((selectedNodeIds: string[], refElementId: string | null) => {
+      processLayoutTool(
+        selectedNodeIds,
+        (selectedNodes, refNode) => {
+          selectedNodes.sort(getComparePositionFn('horizontal'));
+          return justifyElementsFn(selectedNodes, selectedNodeIds, refNode);
+        },
+        null,
+        refElementId
+      );
+    }, []);
   };
 
   const justifyHorizontally = justifyElements(
@@ -358,8 +342,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
         });
       },
       getComparePositionFn('vertical'),
-      null,
-      'vertical'
+      null
     );
   };
 
@@ -416,33 +399,30 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
   const distributeAlignBottom = distributeAlign('bottom');
   const distributeAlignMiddle = distributeAlign('middle');
 
-  const makeNodesSameSize = useCallback(
-    (selectedNodeIds: string[], refElementId: string | null) => {
-      processLayoutTool(
-        selectedNodeIds,
-        (_selectedNodes, refNode) => {
-          return getNodes().map((node) => {
-            if (!selectedNodeIds.includes(node.id) || node.data.nodeDescription?.userResizable === 'NONE') {
-              return node;
-            }
+  const makeNodesSameSize = useCallback((selectedNodeIds: string[], refElementId: string | null) => {
+    processLayoutTool(
+      selectedNodeIds,
+      (_selectedNodes, refNode) => {
+        return getNodes().map((node) => {
+          if (!selectedNodeIds.includes(node.id) || node.data.nodeDescription?.userResizable === 'NONE') {
+            return node;
+          }
 
-            return {
-              ...node,
-              width: refNode.width,
-              height: refNode.height,
-              data: {
-                ...node.data,
-                resizedByUser: true,
-              },
-            };
-          });
-        },
-        null,
-        refElementId
-      );
-    },
-    [resolveNodeOverlap]
-  );
+          return {
+            ...node,
+            width: refNode.width,
+            height: refNode.height,
+            data: {
+              ...node.data,
+              resizedByUser: true,
+            },
+          };
+        });
+      },
+      null,
+      refElementId
+    );
+  }, []);
 
   return {
     distributeGapVertically,
