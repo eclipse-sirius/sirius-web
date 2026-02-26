@@ -55,6 +55,7 @@ import { useDropNodes } from './dropNode/useDropNodes';
 import { ConnectionLine } from './edge/ConnectionLine';
 import { edgeTypes } from './edge/EdgeTypes';
 import { useEdgeCrossingFades } from './edge/crossings/useEdgeCrossingFades';
+import { useDynamicEdgeSelectionArea } from './edge/useDynamicEdgeSelectionArea';
 import { useSelectEdgeChange } from './edgeChange/useSelectEdgeChange';
 import { useInitialFitToScreen } from './fit-to-screen/useInitialFitToScreen';
 import { useHandleChange } from './handles/useHandleChange';
@@ -95,6 +96,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const nodes = getNodes();
   const edges = getEdges();
   useEdgeCrossingFades();
+  useDynamicEdgeSelectionArea();
 
   const { onDirectEdit } = useDiagramDirectEdit();
   const { onDelete } = useDiagramDelete();

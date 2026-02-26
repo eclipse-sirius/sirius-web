@@ -7,11 +7,13 @@
 - Keep details tab open on selection change
 - Add support the for selection dialog that can be confirmed without making a selection
 
+
 === Architectural decision records
 
 - [ADR-222] Add auto layout until manual change on diagram
 - [ADR-223] Add the ability to hide the diagram toolbar
 - [ADR-224] Add support for Selection Dialog that can be confirmed without making selection
+
 
 === Deprecation warning
 
@@ -63,6 +65,7 @@ The `SingleClickOnDiagramElementTool` builder now requires a list of key binding
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.11[Spring Boot 3.5.11]
 - [releng] Switch to @ObeoNetwork/gantt-task-react 0.6.3
 
+
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6145[#6145] [diagram] Fix "leaf" node resize lower than its default size.
@@ -74,6 +77,8 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/5988[#5988] [sirius-web] Improve resize for panels: the resize cursor is now displayed on the whole hit area rather than only over the separator.
 - https://github.com/eclipse-sirius/sirius-web/issues/6192[#6192] [sirius-web] Fix deadlock when importing a project with a representation having an unknown representation description ID.
 - https://github.com/eclipse-sirius/sirius-web/issues/6184[#6184] [diagram] Prevent manually moved edge labels to change position after resize
+- https://github.com/eclipse-sirius/sirius-web/issues/6223[#6223] [diagram] Add dynamic edge selection area with zoom responsiveness
+
 
 === New Features
 
@@ -129,6 +134,7 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6020[#6020] [diagram] Allow the execution of the hardcoded semantic delete tool on a multi selection
 - https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types.
 - https://github.com/eclipse-sirius/sirius-web/issues/6226[#6226] [diagram] Remove overlap resolution in node layout tools
+
 
 
 == 2026.1.0
