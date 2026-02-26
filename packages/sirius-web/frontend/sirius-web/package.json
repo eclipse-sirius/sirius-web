@@ -39,7 +39,7 @@
     "@mui/icons-material": "7.0.2",
     "@mui/material": "7.0.2",
     "@mui/x-tree-view": "7.29.1",
-    "@ObeoNetwork/gantt-task-react": "0.6.2",
+    "@ObeoNetwork/gantt-task-react": "0.6.3",
     "@ObeoNetwork/react-trello": "2.4.11",
     "d3": "7.0.0",
     "elkjs": "0.11.0",
