@@ -60,7 +60,7 @@
     "react-resizable": "3.0.5",
     "react-router-dom": "6.26.0",
     "react-window": "2.2.2",
-    "@xyflow/react": "12.6.0",
+    "@xyflow/react": "12.10.1",
     "subscriptions-transport-ws": "0.11.0",
     "svg-path-parser": "1.1.0",
     "tss-react": "4.9.16",

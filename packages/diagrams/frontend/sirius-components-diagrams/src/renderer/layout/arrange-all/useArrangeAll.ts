@@ -32,7 +32,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
 
   const arrangeAll = async (layoutOptions: LayoutOptions): Promise<void> => {
     await elkLayout(getNodes(), getEdges(), layoutOptions).then(
-      async (laidOutNodesWithElk: Node<NodeData, string>[]) => {
+      async (laidOutNodesWithElk: Node<NodeData, string | undefined>[]) => {
         const laidOutMovedNodeIds = laidOutNodesWithElk
           .filter((node) => !node.data.isBorderNode && !node.data.pinned)
           .map((node) => node.id);
@@ -51,7 +51,7 @@ export const useArrangeAll = (reactFlowWrapper: React.MutableRefObject<HTMLDivEl
         };
         const layoutPromise = new Promise<void>((resolve) => {
           layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-            const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
+            const overlapFreeLaidOutNodes: Node<NodeData, string | undefined>[] = resolveNodeOverlap(
               laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
               'horizontal'
             ) as Node<NodeData, DiagramNodeType>[];

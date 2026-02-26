@@ -21,13 +21,18 @@ import { UseElkLayoutValue } from './useElkLayout.types';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
-const reverseOrdreMap = <K, V>(map: Map<K, V>): Map<K, V> => {
+const reverseOrderMap = <K, V>(map: Map<K, V>): Map<K, V> => {
   const reversedNodes = Array.from(map.entries()).reverse();
   return new Map<K, V>(reversedNodes);
 };
 
-const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
-  const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
+const getSubNodes = (
+  nodes: Node<NodeData, string | undefined>[]
+): Map<string, Node<NodeData, string | undefined>[]> => {
+  const subNodes: Map<string, Node<NodeData, string | undefined>[]> = new Map<
+    string,
+    Node<NodeData, string | undefined>[]
+  >();
   for (const node of nodes.filter((n) => !n.hidden)) {
     const parentNodeId: string = node.parentId ?? 'root';
     if (!subNodes.has(parentNodeId)) {
@@ -39,7 +44,7 @@ const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData
 };
 
 const computeHeaderVerticalFootprint = (
-  node: Node<NodeData, string> | undefined,
+  node: Node<NodeData, string | undefined> | undefined,
   viewportZoom: number,
   reactFlowWrapper: React.MutableRefObject<HTMLDivElement | null>
 ): number => {
@@ -143,15 +148,17 @@ export const useElkLayout = (reactFlowWrapper: React.MutableRefObject<HTMLDivEle
   };
 
   const applyElkOnSubNodes = async (
-    subNodes: Map<string, Node<NodeData, string>[]>,
-    allNodes: Node<NodeData, string>[],
+    subNodes: Map<string, Node<NodeData, string | undefined>[]>,
+    allNodes: Node<NodeData, string | undefined>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
-    let layoutAllNodes: Node<NodeData, string>[] = [];
+  ): Promise<Node<NodeData, string | undefined>[]> => {
+    let layoutAllNodes: Node<NodeData, string | undefined>[] = [];
     const parentNodeWithNewSize: Node<NodeData>[] = [];
     for (const [parentNodeId, nodes] of subNodes) {
-      const parentNode: Node<NodeData, string> | undefined = allNodes.find((node) => node.id === parentNodeId);
+      const parentNode: Node<NodeData, string | undefined> | undefined = allNodes.find(
+        (node) => node.id === parentNodeId
+      );
       const subGroupEdges: Edge<EdgeData>[] = [];
       edges.forEach((edge) => {
         const isTargetInside = nodes.some((node) => node.id === edge.target);
@@ -199,11 +206,11 @@ export const useElkLayout = (reactFlowWrapper: React.MutableRefObject<HTMLDivEle
   };
 
   const elkLayout = async (
-    nodes: Node<NodeData, string>[],
+    nodes: Node<NodeData, string | undefined>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
-    const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrdreMap(getSubNodes(nodes));
+  ): Promise<Node<NodeData, string | undefined>[]> => {
+    const subNodes: Map<string, Node<NodeData, string | undefined>[]> = reverseOrderMap(getSubNodes(nodes));
     const layoutNodes = await applyElkOnSubNodes(subNodes, nodes, edges, layoutOptions);
     return layoutNodes.reverse();
   };

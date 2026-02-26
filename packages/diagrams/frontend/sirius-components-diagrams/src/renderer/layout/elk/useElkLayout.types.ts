@@ -16,8 +16,8 @@ import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 
 export interface UseElkLayoutValue {
   elkLayout: (
-    nodes: Node<NodeData, string>[],
+    nodes: Node<NodeData, string | undefined>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ) => Promise<Node<NodeData, string>[]>;
+  ) => Promise<Node<NodeData, string | undefined>[]>;
 }

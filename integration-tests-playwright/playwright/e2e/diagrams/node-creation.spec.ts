@@ -70,7 +70,7 @@ test.describe('diagram - node creation', () => {
     expect(reactFlowXYPositionEntity4First.x).toBe(nodePadding);
 
     // When creating a second one, it should place next to the first one
-    await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
+    await listParentNode.nodeLocator.click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').first().click();
     const entity4SecondNode = new PlaywrightNode(page, 'Entity4', 'FreeForm', 1);

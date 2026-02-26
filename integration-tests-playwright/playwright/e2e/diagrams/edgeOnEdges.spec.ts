@@ -60,7 +60,8 @@ test.describe('edgeOnEdge', () => {
     await page.getByTestId('creationhandle-right').hover();
     await page.mouse.down();
     const playwrightNode2a = new PlaywrightNode(page, 'Entity2a');
-    await playwrightNode2a.nodeLocator.hover();
+    await playwrightNode2a.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await playwrightNode2a.nodeLocator.hover({ position: { x: 50, y: 50 } });
     await page.mouse.up();
     await page.getByTestId('connectorContextualMenu-E1toE2A').click();
     await expect(edges).toHaveCount(1);
@@ -70,7 +71,8 @@ test.describe('edgeOnEdge', () => {
     await page.getByTestId('creationhandle-bottom').hover();
     await page.mouse.down();
     const playwrightNode2b = new PlaywrightNode(page, 'Entity2b');
-    await playwrightNode2b.nodeLocator.hover();
+    await playwrightNode2b.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await playwrightNode2b.nodeLocator.hover({ position: { x: 50, y: 50 } });
     await page.mouse.up();
     await expect(edges).toHaveCount(2);
     //Create node to edge
