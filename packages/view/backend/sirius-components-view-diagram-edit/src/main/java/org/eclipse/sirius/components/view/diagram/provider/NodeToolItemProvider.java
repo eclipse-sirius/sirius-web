@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
+import org.eclipse.sirius.components.view.ViewFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -112,6 +113,7 @@ public class NodeToolItemProvider extends ToolItemProvider {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures.add(DiagramPackage.Literals.NODE_TOOL__DIALOG_DESCRIPTION);
+            this.childrenFeatures.add(DiagramPackage.Literals.NODE_TOOL__KEY_BINDINGS);
         }
         return this.childrenFeatures;
     }
@@ -178,6 +180,7 @@ public class NodeToolItemProvider extends ToolItemProvider {
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.NODE_TOOL__DIALOG_DESCRIPTION:
+            case DiagramPackage.NODE_TOOL__KEY_BINDINGS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -197,6 +200,7 @@ public class NodeToolItemProvider extends ToolItemProvider {
         SelectionDialogTreeDescription selectionDialogTreeDescription = DiagramFactory.eINSTANCE.createSelectionDialogTreeDescription();
         selectionDialogDescription.setSelectionDialogTreeDescription(selectionDialogTreeDescription);
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_TOOL__DIALOG_DESCRIPTION, selectionDialogDescription));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_TOOL__KEY_BINDINGS, ViewFactory.eINSTANCE.createKeyBinding()));
     }
 
 }

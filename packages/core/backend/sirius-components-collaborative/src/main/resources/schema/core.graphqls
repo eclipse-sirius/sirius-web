@@ -254,3 +254,10 @@ input InvokeEditingContextActionInput {
 }
 
 union InvokeEditingContextActionPayload = ErrorPayload | SuccessPayload
+
+type KeyBinding {
+    isCtrl: Boolean!
+    isMeta: Boolean!
+    isAlt: Boolean!
+    key: String!
+}

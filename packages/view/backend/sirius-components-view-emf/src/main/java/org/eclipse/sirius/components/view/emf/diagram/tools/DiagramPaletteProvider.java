@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.diagram.ToolFinder;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IDiagramPaletteProvider;
-import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodeToolFactory;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.INodeToolConverter;
 import org.springframework.stereotype.Service;
 
 /**
@@ -47,11 +47,11 @@ public class DiagramPaletteProvider implements IDiagramPaletteProvider {
 
     private final IURLParser urlParser;
 
-    private final INodeToolFactory nodeToolFactory;
+    private final INodeToolConverter nodeToolConverter;
 
-    public DiagramPaletteProvider(IURLParser urlParser, INodeToolFactory nodeToolFactory) {
+    public DiagramPaletteProvider(IURLParser urlParser, INodeToolConverter nodeToolConverter) {
         this.urlParser = Objects.requireNonNull(urlParser);
-        this.nodeToolFactory = Objects.requireNonNull(nodeToolFactory);
+        this.nodeToolConverter = Objects.requireNonNull(nodeToolConverter);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class DiagramPaletteProvider implements IDiagramPaletteProvider {
             List<IPaletteEntry> paletteEntries = new ArrayList<>();
             toolFinder.findNodeTools(viewDiagramDescription).stream()
                     .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                    .map(tool -> this.nodeToolFactory.createNodeTool(interpreter, tool, true, variableManager))
+                    .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, true, variableManager))
                     .forEach(paletteEntries::add);
 
             toolFinder.findToolSections(viewDiagramDescription).stream()
@@ -75,7 +75,7 @@ public class DiagramPaletteProvider implements IDiagramPaletteProvider {
             List<ITool> quickAccessTools = new ArrayList<>();
             toolFinder.findQuickAccessDiagramTools(viewDiagramDescription).stream()
                     .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                    .map(tool -> this.nodeToolFactory.createNodeTool(interpreter, tool, true, variableManager))
+                    .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, true, variableManager))
                     .forEach(quickAccessTools::add);
 
             diagramPalette = Palette.newPalette(diagramPaletteId)
@@ -108,7 +108,7 @@ public class DiagramPaletteProvider implements IDiagramPaletteProvider {
                 .iconURL(List.of())
                 .tools(toolSection.getNodeTools().stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolFactory.createNodeTool(interpreter, tool, true, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, true, variableManager))
                         .toList())
                 .build();
     }
