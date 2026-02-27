@@ -36,6 +36,7 @@ public class DefaultWorkbenchConfigurationProvider implements IDefaultWorkbenchC
                 List.of(
                         new WorkbenchSidePanelConfiguration("left", true, List.of(
                                 new DefaultViewConfiguration("explorer", true),
+                                new DefaultViewConfiguration("views-explorer", false),
                                 new DefaultViewConfiguration("validation", false),
                                 new DefaultViewConfiguration("search", false)
                         )),

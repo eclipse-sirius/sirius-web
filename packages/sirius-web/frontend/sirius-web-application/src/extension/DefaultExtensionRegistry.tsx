@@ -134,6 +134,7 @@ import { ellipseNodeStyleDocumentTransform } from './ellipsenode/EllipseNodeDocu
 import { EllipseNodeAppearanceSection } from './ellipsenode/EllipseNodePaletteAppearanceSection';
 import { referenceWidgetDocumentTransform } from './ReferenceWidgetDocumentTransform';
 import { tableWidgetDocumentTransform } from './TableWidgetDocumentTransform';
+import { ViewsExplorerView } from '../views/edit-project/workbench-views/views-explorer/ViewsExplorerView';
 
 const getType = (representation: RepresentationMetadata): string | null => {
   const query = representation.kind.substring(representation.kind.indexOf('?') + 1, representation.kind.length);
@@ -169,6 +170,12 @@ const workbenchViewContributions: WorkbenchViewContribution[] = [
     title: 'Explorer',
     icon: <AccountTreeIcon />,
     component: ExplorerView,
+  },
+  {
+    id: 'views-explorer',
+    title: 'Views',
+    icon: <Filter />,
+    component: ViewsExplorerView,
   },
   {
     id: 'validation',
