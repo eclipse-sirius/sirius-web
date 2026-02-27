@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -169,15 +169,15 @@ test.describe('appearance', () => {
   });
 
   test('change label visibility', async ({ page }) => {
-    const label = page.locator(`[data-testid="Label - DataSource1"]`);
-    await expect(label).toBeVisible();
+    const label = new PlaywrightLabel(page, 'DataSource1');
+    await expect(label.labelLocator).toBeVisible();
 
     const playwrightNode = new PlaywrightNode(page, 'DataSource1');
     await playwrightNode.openPalette();
     await page.getByTestId('toolSection-Appearance').click();
     await page.locator('[data-testid="toolSection-Appearance-Hide"]').click();
     await playwrightNode.closePalette();
-    await expect(label).not.toBeVisible();
+    await expect(label.labelLocator).not.toBeVisible();
   });
 
   test('change rectangular node appearance', async ({ page }) => {
