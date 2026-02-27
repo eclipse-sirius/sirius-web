@@ -1,0 +1,7 @@
+{
+  "selectionDialogActions": {
+    "defaultStatusMessage": "Select an option above",
+    "defaultConfirmLabel": "Select an option",
+    "cancel": "Cancel"
+  }
+}
