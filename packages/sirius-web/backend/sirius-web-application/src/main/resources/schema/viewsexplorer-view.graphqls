@@ -1,0 +1,9 @@
+extend type Subscription {
+  viewsExplorerEvent(input: ViewsExplorerEventInput!): TreeEventPayload!
+}
+
+input ViewsExplorerEventInput {
+  id: ID!
+  editingContextId: ID!
+  representationId: String!
+}

@@ -395,5 +395,8 @@
     "personalBadge": "Personal",
     "sectionDescription": "Your personal preferences - these settings are stored in your browser",
     "title": "General Settings"
+  },
+  "viewsExplorerView": {
+    "noRepresentation": "No representation available"
   }
 }

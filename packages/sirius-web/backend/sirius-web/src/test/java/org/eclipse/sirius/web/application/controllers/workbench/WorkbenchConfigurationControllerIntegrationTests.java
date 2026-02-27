@@ -70,7 +70,7 @@ public class WorkbenchConfigurationControllerIntegrationTests extends AbstractIn
         List<Object> leftPanelViews = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='left')].views[*]");
         List<String> leftPanelViewsIDs = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='left')].views[*].id");
         assertThat(leftPanelViews.size()).isPositive();
-        assertThat(leftPanelViewsIDs).containsExactlyInAnyOrder("explorer", "validation", "search");
+        assertThat(leftPanelViewsIDs).containsExactlyInAnyOrder("explorer", "views-explorer", "validation", "search");
 
         List<Object> rightPanelViews = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='right')].views[*]");
         List<String> rightPanelViewsIDs = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='right')].views[*].id");
@@ -91,7 +91,7 @@ public class WorkbenchConfigurationControllerIntegrationTests extends AbstractIn
         List<Object> leftPanelViews = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='left')].views[*]");
         List<String> leftPanelViewsIDs = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='left')].views[*].id");
         assertThat(leftPanelViews.size()).isPositive();
-        assertThat(leftPanelViewsIDs).containsExactlyInAnyOrder("explorer", "validation", "search");
+        assertThat(leftPanelViewsIDs).containsExactlyInAnyOrder("explorer", "views-explorer", "validation", "search");
 
         List<Object> rightPanelViews = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='right')].views[*]");
         List<String> rightPanelViewsIDs = JsonPath.read(result.data(), "$.data.viewer.editingContext.workbenchConfiguration.workbenchPanels[?(@['id']=='right')].views[*].id");
