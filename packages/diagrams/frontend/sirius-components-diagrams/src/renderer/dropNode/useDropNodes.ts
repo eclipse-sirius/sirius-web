@@ -226,7 +226,7 @@ export const useDropNodes = (): UseDropNodesValue => {
         })
       );
     },
-    [getNodes]
+    [getNodes, diagramDescription, initializeDrop, setNodes, storeApi]
   );
 
   const onNodesDrag: OnNodeDrag<Node<NodeData>> = useCallback(
@@ -287,14 +287,16 @@ export const useDropNodes = (): UseDropNodesValue => {
         }
       }
     },
-    [droppableOnDiagram, getNodes]
+    [droppableOnDiagram, getNodes, screenToFlowPosition, getIntersectingNodes, storeApi, setNodes]
   );
 
   const onNodesDragStop: OnNodeDrag<Node<NodeData>> = useCallback(
     (_event, node, _nodes) => {
       const draggedNodes: Node<NodeData>[] = getNodes().filter((node) => node.data.isDraggedNode);
       const draggedNode: Node<NodeData> | undefined =
-        draggedNodes.find((draggedNode) => draggedNode.id === node.id) || undefined;
+        draggedNodes.find(
+          (draggedNode) => draggedNode.id === node.id || draggedNode.id === getDraggableNode(node).id
+        ) || undefined;
       if (draggedNode) {
         const dropPositions = draggedNodes.map((draggedNode) =>
           evaluateAbsolutePosition(draggedNode, storeApi.getState().nodeLookup)
@@ -318,7 +320,7 @@ export const useDropNodes = (): UseDropNodesValue => {
               if (nodes.some((node) => node.id === n.id)) {
                 return {
                   ...n,
-                  position: initialPositions[n.id] || n.position,
+                  position: initialPositions.get(n.id) || n.position,
                   dragging: false,
                 };
               }
@@ -370,7 +372,7 @@ export const useDropNodes = (): UseDropNodesValue => {
       }
       resetDrop();
     },
-    [droppableOnDiagram, initialPositions, getNodes]
+    [droppableOnDiagram, initialPositions, getNodes, storeApi, setNodes, resetDrop]
   );
 
   return {

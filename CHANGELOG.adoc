@@ -321,6 +321,7 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/6079[#6079] [diagram] Fix reference position not correctly applied with InvokeSingleClickOnTwoDiagramElementsToolInput
 - https://github.com/eclipse-sirius/sirius-web/issues/6029[#6029] [diagram] Fix a potential infitine loop when exporting some diagrams as SVG
 - https://github.com/eclipse-sirius/sirius-web/issues/5810[#5810] [sirius-web] Fix an issue where the out-to-date representations were not migrated to the latest version.
+- https://github.com/eclipse-sirius/sirius-web/issues/6228[#6228] [diagram] Prevent list nodes from being dropped at invalid positions
 
 
 === New Features
