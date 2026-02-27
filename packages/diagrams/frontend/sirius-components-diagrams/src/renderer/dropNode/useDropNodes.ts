@@ -294,7 +294,9 @@ export const useDropNodes = (): UseDropNodesValue => {
     (_event, node, _nodes) => {
       const draggedNodes: Node<NodeData>[] = getNodes().filter((node) => node.data.isDraggedNode);
       const draggedNode: Node<NodeData> | undefined =
-        draggedNodes.find((draggedNode) => draggedNode.id === node.id) || undefined;
+        draggedNodes.find(
+          (draggedNode) => draggedNode.id === node.id || draggedNode.id === getDraggableNode(node).id
+        ) || undefined;
       if (draggedNode) {
         const dropPositions = draggedNodes.map((draggedNode) =>
           evaluateAbsolutePosition(draggedNode, storeApi.getState().nodeLookup)
