@@ -63,6 +63,7 @@ export interface GQLDiagramDescription {
   dropNodeCompatibility: GQLDropNodeCompatibility[];
   debug: boolean;
   arrangeLayoutDirection: GQLArrangeLayoutDirection;
+  autoLayout: boolean;
 }
 
 export interface GQLDiagramToolbar {

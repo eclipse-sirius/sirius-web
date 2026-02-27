@@ -250,14 +250,15 @@ test.describe('diagram - label', () => {
     await playwrightExplorer.select('diagram');
 
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    const outsideLabelContentBoxBefore = await page.getByTestId('Label content - OutsideLabel').boundingBox();
+    const outsideLabel = new PlaywrightLabel(page, 'OutsideLabel');
+    const outsideLabelContentBoxBefore = await outsideLabel.labelContentLocator.boundingBox();
 
     const entity1Node = new PlaywrightNode(page, 'Entity1');
     await entity1Node.openPalette();
     await expect(page.getByTestId('Reset labels sizes - Tool')).toBeAttached();
     await page.getByTestId('Reset labels sizes - Tool').click();
 
-    const outsideLabelContentBoxAfter = await page.getByTestId('Label content - OutsideLabel').boundingBox();
+    const outsideLabelContentBoxAfter = await outsideLabel.labelContentLocator.boundingBox();
 
     expect(outsideLabelContentBoxAfter?.height).not.toBe(outsideLabelContentBoxBefore?.height);
     expect(outsideLabelContentBoxAfter?.width).not.toBe(outsideLabelContentBoxBefore?.width);

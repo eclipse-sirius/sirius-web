@@ -82,6 +82,7 @@ If present, the toolbar will be enabled, disabled otherwise.
 - https://github.com/eclipse-sirius/sirius-web/issues/3459[#3459] [diagram] Add support for edges on `IconLabel` nodes
 - https://github.com/eclipse-sirius/sirius-web/issues/6157[#6157] [diagram] Add ability to collapse/expand the diagram toolbar.
 - https://github.com/eclipse-sirius/sirius-web/issues/6203[#6203] [selection] Update the selection dialog according to the changes made in the selection dialog description.
+- https://github.com/eclipse-sirius/sirius-web/issues/3488[#3488] [diagram] Restore auto-layout support for diagrams
 
 
 === Improvements
