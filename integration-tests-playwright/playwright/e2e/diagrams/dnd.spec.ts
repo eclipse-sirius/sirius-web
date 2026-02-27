@@ -280,3 +280,39 @@ test.describe('diagram - drag and drop', () => {
     expect(entity33PositionAfter.y - entity31PositionAfter.y).toBe(entity33RelativePositionY);
   });
 });
+
+test.describe('diagram - drag and drop', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
+    projectId = project.projectId;
+    await page.goto(`/projects/${projectId}/edit`);
+
+    const explorer = await new PlaywrightExplorer(page);
+    await explorer.expand('Flow');
+    await explorer.createRepresentation('NewSystem', 'Topography with auto layout', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a list node is dragged from its child, then wrong drop location reset the node position', async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await page.getByTestId('arrange-all-menu').click();
+    await page.getByTestId('arrange-all-elk-layered').click();
+
+    const parentNode = new PlaywrightNode(page, 'Description', 'List');
+    const parentNodePositionInitial = await parentNode.getReactFlowXYPosition('Description');
+
+    const childNode = new PlaywrightNode(page, 'Weight: 0', 'IconLabel');
+    await childNode.move({ x: -300, y: 0 });
+    await childNode.waitForAnimationToFinish();
+
+    const parentNodePosition = await parentNode.getReactFlowXYPosition('Description', true);
+    expect(parentNodePosition.x).toBe(parentNodePositionInitial.x);
+    expect(parentNodePosition.y).toBe(parentNodePositionInitial.y);
+  });
+});
