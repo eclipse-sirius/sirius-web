@@ -46,6 +46,7 @@ export const SelectionDialog = ({
     <SelectionDialogDescriptionContextProvider selectionDescription={selectionDescription}>
       <InternalSelectionDialog
         editingContextId={editingContextId}
+        selectionDescriptionId={dialogDescriptionId}
         variables={variables}
         onClose={onClose}
         onFinish={onFinish}
@@ -54,7 +55,13 @@ export const SelectionDialog = ({
   );
 };
 
-const InternalSelectionDialog = ({ editingContextId, variables, onClose, onFinish }: InternalSelectionDialogProps) => {
+const InternalSelectionDialog = ({
+  editingContextId,
+  selectionDescriptionId,
+  variables,
+  onClose,
+  onFinish,
+}: InternalSelectionDialogProps) => {
   const { selection, setSelection } = useSelection();
   const { treeDescriptionId, multiple, optional, noSelectionOptionSelected, selectionOptionSelected } =
     useSelectionDialog();
@@ -136,7 +143,12 @@ const InternalSelectionDialog = ({ editingContextId, variables, onClose, onFinis
           />
         ) : null}
       </SelectionDialogContent>
-      <SelectionDialogActions onClose={onClose} handleConfirmDialog={handleConfirmDialog} />
+      <SelectionDialogActions
+        editingContextId={editingContextId}
+        selectionDescriptionId={selectionDescriptionId}
+        onClose={onClose}
+        handleConfirmDialog={handleConfirmDialog}
+      />
     </Dialog>
   );
 };

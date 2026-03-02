@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentat
 import org.eclipse.sirius.components.collaborative.dto.GetEditingContextActionsInput;
 import org.eclipse.sirius.components.collaborative.dto.GetRepresentationDescriptionFromDescriptionIdInput;
 import org.eclipse.sirius.components.collaborative.dto.GetRepresentationDescriptionInput;
-import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessageInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemContextMenuInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemTooltipInput;
@@ -62,7 +61,7 @@ public class UndoRedoIgnoreInputPredicate implements IUndoRedoIgnoreInputPredica
             GetEditingContextActionsInput.class,
             GetRepresentationDescriptionInput.class,
             GetPaletteInput.class,
-            GetSelectionDescriptionMessageInput.class,
+//            GetSelectionDescriptionMessageInput.class,
             GetActionsInput.class,
             InitialDirectEditElementLabelInput.class,
             org.eclipse.sirius.components.collaborative.trees.dto.InitialDirectEditElementLabelInput.class,

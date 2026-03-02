@@ -16,58 +16,101 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SelectionDialogActionsProps } from './SelectionDialogActions.types';
+import { SelectionDialogActionsProps, SelectionDialogActionsState } from './SelectionDialogActions.types';
+import { useGetSelectionDialogStatusMessageWithSelection } from './useGetSelectionDialogStatusMessageWithSelection';
 import { useSelectionDialog } from './useSelectionDialog';
 
-export const SelectionDialogActions = ({ onClose, handleConfirmDialog }: SelectionDialogActionsProps) => {
+export const SelectionDialogActions = ({
+  editingContextId,
+  selectionDescriptionId,
+  onClose,
+  handleConfirmDialog,
+}: SelectionDialogActionsProps) => {
   const { t } = useTranslation('sirius-components-selection', { keyPrefix: 'selectionDialogActions' });
   const { selection } = useSelection();
   const {
-    selectionDialogDescription: { statusMessages, confirmButtonLabels },
+    dialog: { statusMessages, confirmButtonLabels },
     noSelectionOptionSelected,
     selectionOptionSelected,
     optional,
   } = useSelectionDialog();
 
-  let statusMessage = '';
-  let confirmButtonLabel = '';
-  if (optional) {
-    if (selectionOptionSelected) {
-      if (selection.entries.length === 1 && selection.entries[0]) {
-        statusMessage = `The tool execution will continue with ${selection.entries[0].id}`;
-        confirmButtonLabel = confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel;
-      } else if (selection.entries.length > 1) {
-        statusMessage = `The tool execution will continue with ${selection.entries.length} elements`;
-        confirmButtonLabel = confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel;
+  const [state, setState] = useState<SelectionDialogActionsState>({
+    statusMessage: '',
+    confirmButtonLabel: '',
+  });
+
+  const { loading, dialogSelectionStatusMessageWithSelection, updateStatusMessage } =
+    useGetSelectionDialogStatusMessageWithSelection({
+      editingContextId,
+      selectionDescriptionId,
+    });
+
+  useEffect(() => {
+    if (selection.entries.length > 0 && (!optional || selectionOptionSelected)) {
+      updateStatusMessage(selection.entries.map((entry) => entry.id));
+    }
+  }, [optional, selectionOptionSelected, selection]);
+
+  useEffect(() => {
+    if (!loading) {
+      let statusMessage = '';
+      let confirmButtonLabel = '';
+      if (optional) {
+        if (selectionOptionSelected) {
+          if (
+            selection.entries.length === 1 &&
+            selection.entries[0] &&
+            !loading &&
+            dialogSelectionStatusMessageWithSelection
+          ) {
+            statusMessage = dialogSelectionStatusMessageWithSelection;
+            confirmButtonLabel = confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel;
+          } else if (selection.entries.length > 1 && !loading && dialogSelectionStatusMessageWithSelection) {
+            statusMessage = dialogSelectionStatusMessageWithSelection;
+            confirmButtonLabel = confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel;
+          } else {
+            statusMessage = statusMessages.selectionRequiredWithoutSelectionStatusMessage;
+            confirmButtonLabel = confirmButtonLabels.selectionRequiredWithoutSelectionConfirmButtonLabel;
+          }
+        } else if (noSelectionOptionSelected) {
+          statusMessage = statusMessages.noSelectionActionStatusMessage;
+          confirmButtonLabel = confirmButtonLabels.noSelectionConfirmButtonLabel;
+        } else {
+          statusMessage = t('defaultStatusMessage');
+          confirmButtonLabel = t('defaultConfirmLabel');
+        }
       } else {
-        statusMessage = statusMessages.selectionRequiredWithoutSelectionStatusMessage;
-        confirmButtonLabel = confirmButtonLabels.selectionRequiredWithoutSelectionConfirmButtonLabel;
+        if (
+          selection.entries.length === 1 &&
+          selection.entries[0] &&
+          !loading &&
+          dialogSelectionStatusMessageWithSelection
+        ) {
+          statusMessage = dialogSelectionStatusMessageWithSelection;
+          confirmButtonLabel = confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel;
+        } else if (selection.entries.length > 1 && !loading && dialogSelectionStatusMessageWithSelection) {
+          statusMessage = dialogSelectionStatusMessageWithSelection;
+          confirmButtonLabel = confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel;
+        } else {
+          statusMessage = statusMessages.selectionRequiredWithoutSelectionStatusMessage;
+          confirmButtonLabel = confirmButtonLabels.selectionRequiredWithoutSelectionConfirmButtonLabel;
+        }
       }
-    } else if (noSelectionOptionSelected) {
-      statusMessage = statusMessages.noSelectionActionStatusMessage;
-      confirmButtonLabel = confirmButtonLabels.noSelectionConfirmButtonLabel;
-    } else {
-      statusMessage = t('defaultStatusMessage');
-      confirmButtonLabel = t('defaultConfirmLabel');
+      setState((prevState) => ({
+        ...prevState,
+        statusMessage,
+        confirmButtonLabel,
+      }));
     }
-  } else {
-    if (selection.entries.length === 1 && selection.entries[0]) {
-      statusMessage = `The tool execution will continue with ${selection.entries[0].id}`;
-      confirmButtonLabel = confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel;
-    } else if (selection.entries.length > 1) {
-      statusMessage = `The tool execution will continue with ${selection.entries.length} elements`;
-      confirmButtonLabel = confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel;
-    } else {
-      statusMessage = statusMessages.selectionRequiredWithoutSelectionStatusMessage;
-      confirmButtonLabel = confirmButtonLabels.selectionRequiredWithoutSelectionConfirmButtonLabel;
-    }
-  }
+  }, [loading, selectionOptionSelected, noSelectionOptionSelected]);
 
   return (
     <DialogActions sx={() => ({ display: 'flex', alignItems: 'center', justifyContent: 'space-between' })}>
       <Typography variant="body1" color="textSecondary" data-testid="status-message">
-        {statusMessage}
+        {state.statusMessage}
       </Typography>
       <Box sx={(theme) => ({ display: 'flex', gap: theme.spacing(1) })}>
         <Button variant="outlined" onClick={onClose} data-testid="cancel-action">
@@ -79,7 +122,7 @@ export const SelectionDialogActions = ({ onClose, handleConfirmDialog }: Selecti
           data-testid="confirm-action"
           color="primary"
           onClick={handleConfirmDialog}>
-          {confirmButtonLabel}
+          {state.confirmButtonLabel}
         </Button>
       </Box>
     </DialogActions>

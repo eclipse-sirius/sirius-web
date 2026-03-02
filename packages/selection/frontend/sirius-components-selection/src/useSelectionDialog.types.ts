@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLSelectionDialogDescription } from './SelectionDialogDescriptionContext.types';
+import { GQLSelectionDescriptionDialog } from './SelectionDialogDescriptionContext.types';
 
 export interface UseSelectionDialogValue {
-  selectionDialogDescription: GQLSelectionDialogDescription;
+  dialog: GQLSelectionDescriptionDialog;
   selectionOptionSelected: boolean;
   noSelectionOptionSelected: boolean;
   treeDescriptionId: string | null;
