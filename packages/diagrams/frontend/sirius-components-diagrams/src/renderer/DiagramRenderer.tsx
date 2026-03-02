@@ -266,7 +266,20 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     if (selectionFromTool) {
       setSelection(selectionFromTool);
     }
-  }, [diagramRefreshedEventPayload, diagramDescription, setSelection]);
+  }, [
+    diagramRefreshedEventPayload,
+    diagramDescription,
+    setSelection,
+    consumePostToolSelection,
+    nodeConverters,
+    store,
+    getNode,
+    nodes,
+    edges,
+    layout,
+    synchronizeLayoutData,
+    readOnly,
+  ]);
 
   useEffect(() => {
     if (toolSelections.has(diagramRefreshedEventPayload.id)) {
@@ -325,7 +338,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         setSelection(selectionFromTool);
       }
     }
-  }, [toolSelections]);
+  }, [toolSelections, getNodes, getEdges, setSelection, diagramRefreshedEventPayload, store, getNode]);
 
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
@@ -375,7 +388,24 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         setNodes(newNodes);
       }
     },
-    [layoutOnBoundsChange, getNodes, getEdges, selectedElementsIds]
+    [
+      layoutOnBoundsChange,
+      getNodes,
+      getEdges,
+      selectedElementsIds,
+      nodes,
+      filterReadOnlyChanges,
+      setNodes,
+      applyLastElementSelected,
+      transformBorderNodeChanges,
+      transformUndraggableListNodeChanges,
+      applyHelperLines,
+      transformResizeListNodeChanges,
+      applyMoveChange,
+      applyHandleChange,
+      applyResizeHandleChange,
+      resetHelperLines,
+    ]
   );
 
   const { onEdgeSelectedChange } = useSelectEdgeChange();
@@ -389,10 +419,13 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     [onEdgesChange]
   );
 
-  const onKeyDown = useCallback((event: React.KeyboardEvent<Element>) => {
-    onDirectEdit(event);
-    onDelete(event);
-  }, []);
+  const onKeyDown = useCallback(
+    (event: React.KeyboardEvent<Element>) => {
+      onDirectEdit(event);
+      onDelete(event);
+    },
+    [onDirectEdit, onDelete]
+  );
 
   const { onNodeMouseEnter, onNodeMouseLeave } = useNodeHover();
   const { onEdgeMouseEnter, onEdgeMouseLeave } = useEdgeHover();

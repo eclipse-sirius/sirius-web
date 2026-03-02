@@ -73,7 +73,7 @@ export const useDiagramDirectEdit = (): UseDiagramDirectEditValue => {
         }
       }
     },
-    [setCurrentlyEditedLabelId]
+    [setCurrentlyEditedLabelId, getNodes, getEdges, readOnly]
   );
 
   return {
