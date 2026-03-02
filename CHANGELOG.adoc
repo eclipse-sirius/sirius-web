@@ -92,6 +92,7 @@ For example, the tools contained in a given `NodeDescription` can only be trigge
 The key bindings are visible in the palette next to the tool name.
 A key binding needs to contain at least one of `Control`, `Alt`, or `Meta` to be executed by the frontend.
 - https://github.com/eclipse-sirius/sirius-web/issues/3488[#3488] [diagram] Restore auto-layout support for diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/5062[#5062] [sirius-web] Add new "views explorer" view
 
 
 === Improvements

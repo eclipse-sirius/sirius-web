@@ -395,5 +395,8 @@
     "personalBadge": "Personnel",
     "sectionDescription": "Vos préférences personnelles - ces paramètres sont stockés dans votre navigateur",
     "title": "Paramètres généraux"
+  },
+  "viewsExplorerView": {
+    "noRepresentation": "Aucune représentation disponible"
   }
 }

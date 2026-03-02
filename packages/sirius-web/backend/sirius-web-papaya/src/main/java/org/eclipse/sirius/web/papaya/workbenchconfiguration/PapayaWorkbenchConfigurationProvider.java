@@ -49,6 +49,7 @@ public class PapayaWorkbenchConfigurationProvider implements IWorkbenchConfigura
                 List.of(
                         new WorkbenchSidePanelConfiguration("left", true, List.of(
                                 new DefaultViewConfiguration("explorer", true),
+                                new DefaultViewConfiguration("views-explorer", true),
                                 new DefaultViewConfiguration("validation", false),
                                 new DefaultViewConfiguration("search", false)
                         )),

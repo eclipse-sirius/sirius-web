@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ public final class TestIdentifiers {
     public static final UUID ECLASS_OBJECT = UUID.fromString("f0eecd16-d9da-4c98-a422-c73897bc48f5");
     public static final UUID EPACKAGE_PORTAL_REPRESENTATION = UUID.fromString("e81eec5c-42d6-491c-8bcc-9beb951356f8");
     public static final UUID EPACKAGE_EMPTY_PORTAL_REPRESENTATION = UUID.fromString("05e44ccc-9363-443f-a816-25fc73e3e7f7");
+    public static final UUID PORTAL_DESCRIPTION_ID = UUID.fromString("69030a1b-0b5f-3c1d-8399-8ca260e4a672");
 
     private TestIdentifiers() {
         // Prevent instantiation
