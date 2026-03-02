@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
+import { useCallback } from 'react';
 import {
   GQLDeleteFromDiagramData,
   GQLDeleteFromDiagramInput,
@@ -45,16 +46,19 @@ export const useDelete = (): UseDeleteValue => {
     GQLDeleteFromDiagramVariables
   >(deleteFromDiagramMutation);
 
-  const deleteDiagramElements = (editingContextId: string, diagramId: string, nodeIds: string[], edgeIds: string[]) => {
-    const input: GQLDeleteFromDiagramInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: diagramId,
-      nodeIds,
-      edgeIds,
-    };
-    rawDeleteFromDiagram({ variables: { input } });
-  };
+  const deleteDiagramElements = useCallback(
+    (editingContextId: string, diagramId: string, nodeIds: string[], edgeIds: string[]) => {
+      const input: GQLDeleteFromDiagramInput = {
+        id: crypto.randomUUID(),
+        editingContextId,
+        representationId: diagramId,
+        nodeIds,
+        edgeIds,
+      };
+      rawDeleteFromDiagram({ variables: { input } });
+    },
+    [rawDeleteFromDiagram]
+  );
 
   useReporting(rawDeleteFromDiagramResult, (data: GQLDeleteFromDiagramData) => data.deleteFromDiagram);
 

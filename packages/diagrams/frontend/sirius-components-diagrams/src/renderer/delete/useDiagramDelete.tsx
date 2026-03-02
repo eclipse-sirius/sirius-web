@@ -50,7 +50,7 @@ export const useDiagramDelete = (): UseDiagramDeleteValue => {
         }
       }
     },
-    [deleteDiagramElements]
+    [deleteDiagramElements, getNodes, getEdges, showDeletionConfirmation, editingContextId, diagramId, readOnly]
   );
 
   return {
