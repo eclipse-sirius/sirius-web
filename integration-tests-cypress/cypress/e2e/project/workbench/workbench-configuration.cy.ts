@@ -114,10 +114,11 @@ describe('Workbench Configuration Resolution', () => {
         workbench = new Workbench();
       });
 
-      it('Then, the left panel is collapsed and all views ("Explorer", "Validation") are not highlighted and not active', () => {
+      it('Then, the left panel is collapsed and all views ("Explorer", "Validation", Views) are not highlighted and not active', () => {
         workbench.checkPanelState('left', 'collapsed');
         workbench.isIconHighlighted('left', 'Explorer', false);
         workbench.isIconHighlighted('left', 'Validation', false);
+        workbench.isIconHighlighted('left', 'Views', false);
         cy.getByTestId('site-left').should('not.exist');
       });
 
@@ -150,11 +151,12 @@ describe('Workbench Configuration Resolution', () => {
         workbench = new Workbench();
       });
 
-      it('Then, the left panel is expanded and all views ("Explorer", "Validation") are highlighted and active', () => {
+      it('Then, the left panel is expanded and all views ("Explorer", "Validation", "Views") are highlighted and active', () => {
         workbench.checkPanelState('left', 'expanded');
         workbench.isIconHighlighted('left', 'Explorer');
         workbench.isIconHighlighted('left', 'Validation');
-        workbench.checkPanelContent('left', ['Explorer', 'Validation']);
+        workbench.isIconHighlighted('left', 'Views');
+        workbench.checkPanelContent('left', ['Explorer', 'Validation', "Views"]);
       });
 
       it('Then, the right panel is expanded and all views ("Details", "Query", "Related Views", "Related Elements") are highlighted and active', () => {
