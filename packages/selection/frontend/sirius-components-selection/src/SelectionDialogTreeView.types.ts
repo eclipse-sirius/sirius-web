@@ -19,6 +19,7 @@ export interface SelectionDialogTreeViewProps {
   variables: DiagramDialogVariable[];
   onTreeItemClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tree: GQLTree, item: GQLTreeItem) => void;
   selectedTreeItemIds: string[];
+  disabled: boolean;
 }
 
 export interface SelectionDialogTreeViewState {

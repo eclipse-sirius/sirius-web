@@ -14,12 +14,7 @@ import { GQLToolVariable } from '@eclipse-sirius/sirius-components-diagrams';
 import { GQLTree, GQLTreeItem, useTreeSelection } from '@eclipse-sirius/sirius-components-trees';
 import Dialog from '@mui/material/Dialog';
 import { useState } from 'react';
-import {
-  GQLSelectionDescription,
-  SelectionDialogOptions,
-  SelectionDialogProps,
-  SelectionDialogState,
-} from './SelectionDialog.types';
+import { SelectionDialogOptions, SelectionDialogProps, SelectionDialogState } from './SelectionDialog.types';
 import { SelectionDialogActions } from './SelectionDialogActions';
 import { SelectionDialogContent } from './SelectionDialogContent';
 import { SelectionDialogTitle } from './SelectionDialogTitle';
@@ -38,7 +33,7 @@ export const SelectionDialog = ({
     selectionDialogOption: 'INITIAL',
   });
 
-  const { selectionDescription: rawSelectionDescription } = useSelectionDescription({
+  const { selectionDescription } = useSelectionDescription({
     editingContextId,
     selectionDescriptionId: dialogDescriptionId,
     variables,
@@ -53,40 +48,9 @@ export const SelectionDialog = ({
     }));
   };
 
-  if (!rawSelectionDescription) {
+  if (!selectionDescription) {
     return null;
   }
-
-  const selectionDescription: GQLSelectionDescription = {
-    dialog: {
-      titles: {
-        defaultTitle: 'Element Selection',
-        noSelectionTitle: 'Element Selection',
-        selectionTitle: 'Element Selection',
-      },
-      description: rawSelectionDescription.message,
-      noSelectionAction: {
-        label: rawSelectionDescription.noSelectionLabel,
-        description: 'Proceed without selecting an existing element',
-      },
-      withSelectionAction: {
-        label: 'Use an existing element',
-        description: 'Select one or more elements',
-      },
-      statusMessages: {
-        noSelectionActionStatusMessage: 'The tool execution will continue without any element selected',
-        selectionRequiredWithoutSelectionStatusMessage: 'Select at least one element to continue the tool execution',
-      },
-      confirmButtonLabels: {
-        noSelectionConfirmButtonLabel: 'Confirm',
-        selectionRequiredWithoutSelectionConfirmButtonLabel: 'Select an element',
-        selectionRequiredWithSelectionConfirmButtonLabel: 'Confirm',
-      },
-    },
-    treeDescription: rawSelectionDescription.treeDescription,
-    multiple: rawSelectionDescription.multiple,
-    optional: rawSelectionDescription.optional,
-  };
 
   const { multiple, optional } = selectionDescription;
 
@@ -153,10 +117,13 @@ export const SelectionDialog = ({
             treeDescriptionId={selectionDescription.treeDescription.id}
             onTreeItemClick={onTreeItemClick}
             selectedTreeItemIds={state.selectedTreeItemIds}
+            disabled={optional && state.selectionDialogOption !== 'WITH_SELECTION'}
           />
         ) : null}
       </SelectionDialogContent>
       <SelectionDialogActions
+        editingContextId={editingContextId}
+        selectionDescriptionId={dialogDescriptionId}
         onClose={onClose}
         onConfirm={onConfirm}
         selectionDialogOption={state.selectionDialogOption}

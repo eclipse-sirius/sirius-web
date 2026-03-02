@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.data;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -28,6 +29,8 @@ public final class PapayaIdentifiers {
     public static final UUID PAPAYA_SIRIUS_WEB_ARCHITECTURE_DOCUMENT = UUID.fromString("a4495c9c-d00c-4f0e-a591-1176d102a4a1");
 
     public static final UUID PROJECT_OBJECT = UUID.fromString("aa0b7b22-ade2-4148-9ee2-c5972bd72ab7");
+
+    public static final List<String> ALL_PROJECT_OBJECT_CHILDREN_ID = List.of("a4495c9c-d00c-4f0e-a591-1176d102a4a1", "aa0b7b22-ade2-4148-9ee2-c5972bd72ab7", "fad0f4c9-e668-44f3-8deb-aef0edb6ddff", "569d3f9b-2a43-4254-b609-511258251d96", "c715807f-73f6-44fb-b17b-df6d12558458", "b0f27d20-4705-40a7-9d28-67d605b5e9d1", "6f531172-8314-4145-8b36-d8fa45bf3b20", "69ead9da-9302-45a7-86d8-c4ad54056e39", "0e18f8e9-c5e3-4ccc-afe6-c937478f78ad", "632a0820-0187-4c0f-aa04-4b7385f65aca", "13e0b82e-3d24-403a-bfc1-4bda81846e55", "5c313fbf-d254-4a37-962b-7817cfa18526", "e462e8ac-39d3-4ab2-b20f-ea7f0a0283d6", "92221ad3-a0b5-4774-b941-87cda3edb772");
 
     public static final UUID SIRIUS_WEB_PLANNING_PROJECT_OBJECT = UUID.fromString("1135f77e-0d16-4b10-8a4b-c492ac80221f");
 

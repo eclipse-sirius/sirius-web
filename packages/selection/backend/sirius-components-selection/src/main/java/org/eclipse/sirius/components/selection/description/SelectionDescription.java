@@ -41,10 +41,6 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> targetObjectIdProvider;
 
-    private Function<VariableManager, String> messageProvider;
-
-    private Function<VariableManager, String> noSelectionLabelProvider;
-
     private Predicate<VariableManager> canCreatePredicate;
 
     private boolean multiple;
@@ -83,14 +79,6 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     public Function<VariableManager, String> getTargetObjectIdProvider() {
         return this.targetObjectIdProvider;
-    }
-
-    public Function<VariableManager, String> getMessageProvider() {
-        return this.messageProvider;
-    }
-
-    public Function<VariableManager, String> getNoSelectionLabelProvider() {
-        return this.noSelectionLabelProvider;
     }
 
     @Override
@@ -138,10 +126,6 @@ public final class SelectionDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> targetObjectIdProvider;
 
-        private Function<VariableManager, String> messageProvider;
-
-        private Function<VariableManager, String> noSelectionLabelProvider;
-
         private Predicate<VariableManager> canCreatePredicate;
 
         private TreeDescription treeDescription;
@@ -173,16 +157,6 @@ public final class SelectionDescription implements IRepresentationDescription {
 
         public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
             this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
-            return this;
-        }
-
-        public Builder messageProvider(Function<VariableManager, String> messageProvider) {
-            this.messageProvider = Objects.requireNonNull(messageProvider);
-            return this;
-        }
-
-        public Builder noSelectionLabelProvider(Function<VariableManager, String> noSelectionLabelProvider) {
-            this.noSelectionLabelProvider = Objects.requireNonNull(noSelectionLabelProvider);
             return this;
         }
 
@@ -218,8 +192,6 @@ public final class SelectionDescription implements IRepresentationDescription {
             selectionDescription.idProvider = Objects.requireNonNull(this.idProvider);
             selectionDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
             selectionDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            selectionDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
-            selectionDescription.noSelectionLabelProvider = Objects.requireNonNull(this.noSelectionLabelProvider);
             selectionDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             selectionDescription.treeDescription = Objects.requireNonNull(this.treeDescription);
             selectionDescription.multiple = this.multiple;

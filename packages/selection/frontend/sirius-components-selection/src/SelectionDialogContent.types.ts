@@ -11,7 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLSelectionDescription, SelectionDialogOptions } from './SelectionDialog.types';
+import { SelectionDialogOptions } from './SelectionDialog.types';
+import { GQLSelectionDescription } from './useSelectionDescription.types';
 
 export interface SelectionDialogOptionButtonProps {
   label: string;

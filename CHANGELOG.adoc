@@ -28,6 +28,7 @@
 The service `HierarchyCreationService` is now implementing an interface `IHierarchyCreationService` and its two methods `HierarchyCreationService#create` and `HierarchyCreationService#render` have been merged into a single method with a new signature `IHierarchyCreationService#create`.
 This will be used as an inspiration for the evolution of other similar services like `DiagramCreationService`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6331[#6331] [sirius-web] Clarify our logging policy in a document available in `doc/how-to/logging-policy.adoc`
+- https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Update the GraphQL API of `SelectionDescription` type.
 
 
 
@@ -66,6 +67,7 @@ A new provisional method `IHierarchyEventProcessor#update` is available to updat
 It now comes with small improvements in the filter bar for better reuse
 - https://github.com/eclipse-sirius/sirius-web/issues/6331[#6331] [sirius-web] Improve the log level of existing log messages to align them with our logging policy.
 Switch all usage of the logger to the fluent API to prepare for the addition of more data.
+- https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Move the selection dialog default settings to the backend
 
 
 

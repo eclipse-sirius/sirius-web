@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 
 /**
  * Used to find information from view based diagram descriptions.
@@ -31,4 +32,6 @@ public interface IViewDiagramDescriptionSearchService {
     Optional<NodeDescription> findViewNodeDescriptionById(IEditingContext editingContext, String edgeDescriptionId);
 
     Optional<EdgeDescription> findViewEdgeDescriptionById(IEditingContext editingContext, String edgeDescriptionId);
+
+    Optional<SelectionDialogDescription> findViewSelectionDialogDescription(IEditingContext editingContext, String selectionDialogDescriptionId);
 }

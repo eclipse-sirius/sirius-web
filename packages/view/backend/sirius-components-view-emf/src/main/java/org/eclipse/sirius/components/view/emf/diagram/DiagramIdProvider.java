@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -61,7 +61,7 @@ public class DiagramIdProvider implements IDiagramIdProvider {
         if (dialogDescription != null) {
             String sourceId = this.getSourceIdFromElementDescription(dialogDescription);
             String sourceElementId = this.identityService.getId(dialogDescription);
-            return this.getDialogDescriptionTypeName(dialogDescription) + "&" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
+            return this.getDialogDescriptionTypeName(dialogDescription) + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
                     + sourceElementId;
         }
         return null;

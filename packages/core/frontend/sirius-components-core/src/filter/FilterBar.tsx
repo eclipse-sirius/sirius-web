@@ -19,7 +19,7 @@ import TextField from '@mui/material/TextField';
 import { useTranslation } from 'react-i18next';
 import { FilterBarProps } from './FilterBar.types';
 
-export const FilterBar = ({ onTextChange, onTextClear, text }: FilterBarProps) => {
+export const FilterBar = ({ onTextChange, onTextClear, text, disabled = false }: FilterBarProps) => {
   const { t } = useTranslation('sirius-components-core', { keyPrefix: 'filterBar' });
 
   return (
@@ -36,6 +36,7 @@ export const FilterBar = ({ onTextChange, onTextClear, text }: FilterBarProps) =
       fullWidth
       value={text}
       onChange={onTextChange}
+      disabled={disabled}
       slotProps={{
         input: {
           startAdornment: (
