@@ -23,7 +23,7 @@ import { useSelectionDialog } from './useSelectionDialog';
 
 export const SelectionDialogContent = ({ children }: SelectionDialogContentProps) => {
   const {
-    selectionDialogDescription: { noSelectionAction, withSelectionAction, description },
+    dialog: { noSelectionAction, withSelectionAction, description },
     noSelectionOptionSelected,
     selectionOptionSelected,
     optional,

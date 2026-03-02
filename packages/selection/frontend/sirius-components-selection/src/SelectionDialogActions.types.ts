@@ -12,6 +12,13 @@
  *******************************************************************************/
 
 export interface SelectionDialogActionsProps {
+  editingContextId: string;
+  selectionDescriptionId: string;
   onClose: () => void;
   handleConfirmDialog: () => void;
+}
+
+export interface SelectionDialogActionsState {
+  statusMessage: string;
+  confirmButtonLabel: string;
 }

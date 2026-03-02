@@ -56,6 +56,7 @@ This means that the following methods `getHeaderHeightFootprint` and `getInsideL
 An example of this impact could be found in `EllipseNodeLayoutHandler.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/1626[#1626] [diagram] Add the ability to trigger tools using key bindings.
 The `SingleClickOnDiagramElementTool` builder now requires a list of key bindings.
+- https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Update the GraphQL API of `SelectionDescription` type.
 
 
 === Dependency update
@@ -132,6 +133,7 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types.
 - https://github.com/eclipse-sirius/sirius-web/issues/6229[#6229] [selection] Rework the selection dialog.
 + It comes with small improvements in the filter bar for better reuse
+- https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Default selection dialog customizations have been moved in the backend
 
 
 == 2026.1.0

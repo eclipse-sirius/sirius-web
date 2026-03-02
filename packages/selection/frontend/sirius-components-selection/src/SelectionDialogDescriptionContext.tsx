@@ -20,29 +20,29 @@ import {
 } from './SelectionDialogDescriptionContext.types';
 
 const defaultValue: SelectionDialogContextValue = {
-  selectionDialogDescription: {
+  dialog: {
     titles: {
-      defaultTitle: 'Element Selection',
-      noSelectionTitle: 'Element Selection',
-      selectionTitle: 'Element Selection',
+      defaultTitle: '',
+      noSelectionTitle: '',
+      withSelectionTitle: '',
     },
     description: '',
     noSelectionAction: {
-      label: 'Proceed without selection',
-      description: 'Proceed without selecting an existing element',
+      label: '',
+      description: '',
     },
     withSelectionAction: {
-      label: 'Use an existing element',
-      description: 'Select one or more elements',
+      label: '',
+      description: '',
     },
     statusMessages: {
-      noSelectionActionStatusMessage: 'The tool execution will continue without any element selected',
-      selectionRequiredWithoutSelectionStatusMessage: 'Select at least one element to continue the tool execution',
+      noSelectionActionStatusMessage: '',
+      selectionRequiredWithoutSelectionStatusMessage: '',
     },
     confirmButtonLabels: {
-      noSelectionConfirmButtonLabel: 'Confirm',
-      selectionRequiredWithoutSelectionConfirmButtonLabel: 'Select an element',
-      selectionRequiredWithSelectionConfirmButtonLabel: 'Confirm',
+      noSelectionConfirmButtonLabel: '',
+      selectionRequiredWithoutSelectionConfirmButtonLabel: '',
+      selectionRequiredWithSelectionConfirmButtonLabel: '',
     },
   },
   selectionOptionSelected: false,
@@ -76,14 +76,7 @@ export const SelectionDialogDescriptionContextProvider = ({
     <SelectionContextProvider initialSelection={{ entries: [] }}>
       <SelectionDialogDescriptionContext.Provider
         value={{
-          selectionDialogDescription: {
-            ...defaultValue.selectionDialogDescription,
-            description: selectionDescription.message,
-            noSelectionAction: {
-              label: selectionDescription.noSelectionLabel,
-              description: defaultValue.selectionDialogDescription.noSelectionAction.description,
-            },
-          },
+          dialog: selectionDescription.dialog,
           ...state,
           optional: selectionDescription.optional,
           multiple: selectionDescription.multiple,

@@ -26,12 +26,21 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogTreeEventInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeRefreshedEventPayload;
+import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionInput;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionRunner;
+import org.eclipse.sirius.components.graphql.tests.ExecuteEditingContextFunctionSuccessPayload;
 import org.eclipse.sirius.components.graphql.tests.api.IGraphQLRequestor;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.tests.graphql.ExpandAllTreePathQueryRunner;
@@ -41,6 +50,7 @@ import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.selection.SelectionDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.graphql.SelectionDialogDescriptionQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.eclipse.sirius.web.tests.services.representation.RepresentationIdBuilder;
 import org.eclipse.sirius.web.tests.services.selection.SelectionDialogTreeEventSubscriptionRunner;
@@ -63,28 +73,6 @@ import reactor.test.StepVerifier;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,  properties = { "sirius.web.test.enabled=studio" })
 public class SelectionControllerIntegrationTests extends AbstractIntegrationTests {
 
-    private static final String GET_SELECTION_DESCRIPTION = """
-            query getSelectionDescription($editingContextId: ID!, $representationId: ID!, $variables: [SelectionDialogVariable!]!) {
-              viewer {
-                editingContext(editingContextId: $editingContextId) {
-                  representation(representationId: $representationId) {
-                    description {
-                      ... on SelectionDescription {
-                          message(variables: $variables)
-                          noSelectionLabel(variables: $variables)
-                          treeDescription {
-                            id
-                          }
-                          multiple
-                          optional
-                        }
-                    }
-                  }
-                }
-              }
-            }
-            """;
-
     private static final String GET_TREE_EVENT_SUBSCRIPTION = """
             subscription selectionDialogTreeEvent($input: SelectionDialogTreeEventInput!) {
               selectionDialogTreeEvent(input: $input) {
@@ -102,12 +90,34 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
             }
             """;
 
+    private static final String GET_DIALOG_STATUS_MESSAGE = """
+            query getDialogStatusMessageWithSelection(
+                $editingContextId: ID!
+                $representationId: ID!
+                $treeSelection: [String!]!
+              ) {
+                viewer {
+                  editingContext(editingContextId: $editingContextId) {
+                    representation(representationId: $representationId) {
+                      description {
+                        ... on SelectionDescription {
+                          dialogSelectionRequiredWithSelectionStatusMessage(treeSelection: $treeSelection)
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            """;
 
     @Autowired
     private IGraphQLRequestor graphQLRequestor;
 
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
+    private SelectionDialogDescriptionQueryRunner selectionDialogDescriptionQueryRunner;
 
     @Autowired
     private SelectionDialogTreeEventSubscriptionRunner selectionDialogTreeEventSubscriptionRunner;
@@ -122,7 +132,13 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     private RepresentationIdBuilder representationIdBuilder;
 
     @Autowired
+    private IObjectSearchService objectSearchService;
+
+    @Autowired
     private ILabelService labelService;
+
+    @Autowired
+    private ExecuteEditingContextFunctionRunner executeEditingContextFunctionRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -150,14 +166,36 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 "representationId", representationId,
                 "variables", variablesParameter);
-        var result = this.graphQLRequestor.execute(GET_SELECTION_DESCRIPTION, variables);
+        var result = this.selectionDialogDescriptionQueryRunner.run(variables);
 
-        String message = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.message");
-        String noSelectionLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.noSelectionLabel");
+        String dialogDefaultTitle = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.titles.defaultTitle");
+        String dialogNoSelectionTitle = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.titles.noSelectionTitle");
+        String dialogWithSelectionTitle = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.titles.withSelectionTitle");
+        String dialogDescription = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.description");
+        String noSelectionActionLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.noSelectionAction.label");
+        String noSelectionActionDescription = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.noSelectionAction.description");
+        String withSelectionActionLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.withSelectionAction.label");
+        String withSelectionActionDescription = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.withSelectionAction.description");
+        String noSelectionActionStatusMessage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.statusMessages.noSelectionActionStatusMessage");
+        String selectionRequiredWithoutSelectionStatusMessage = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.statusMessages.selectionRequiredWithoutSelectionStatusMessage");
+        String noSelectionConfirmButtonLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.confirmButtonLabels.noSelectionConfirmButtonLabel");
+        String selectionRequiredWithoutSelectionConfirmButtonLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.confirmButtonLabels.selectionRequiredWithoutSelectionConfirmButtonLabel");
+        String selectionRequiredWithSelectionConfirmButtonLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel");
         String treeDescriptionId = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeDescription.id");
 
-        assertThat(message).isEqualTo("Select the objects to consider");
-        assertThat(noSelectionLabel).isEqualTo("Execute the tool without making selection");
+        assertThat(dialogDefaultTitle).isEqualTo("Element Selection");
+        assertThat(dialogNoSelectionTitle).isEqualTo("Element Selection");
+        assertThat(dialogWithSelectionTitle).isEqualTo("Element Selection");
+        assertThat(dialogDescription).isEqualTo("Select the objects to consider");
+        assertThat(noSelectionActionLabel).isEqualTo("Execute the tool without making a selection");
+        assertThat(noSelectionActionDescription).isEqualTo("Proceed without selecting an existing element");
+        assertThat(withSelectionActionLabel).isEqualTo("Use an existing element");
+        assertThat(withSelectionActionDescription).isEqualTo("Select one or more elements");
+        assertThat(noSelectionActionStatusMessage).isEqualTo("The tool execution will continue without any element selected");
+        assertThat(selectionRequiredWithoutSelectionStatusMessage).isEqualTo("Select at least one element to continue the tool execution");
+        assertThat(noSelectionConfirmButtonLabel).isEqualTo("Confirm");
+        assertThat(selectionRequiredWithoutSelectionConfirmButtonLabel).isEqualTo("Select an element");
+        assertThat(selectionRequiredWithSelectionConfirmButtonLabel).isEqualTo("Confirm");
         assertThat(treeDescriptionId).isEqualTo(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId());
     }
 
@@ -264,7 +302,6 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
             assertThat(tree).isNotNull();
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren()).anySatisfy(treeItem -> assertThat(treeItem.getChildren()).isNotEmpty());
-
         });
 
         var representationIdExpanded = this.representationIdBuilder.buildSelectionRepresentationId(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId(), PapayaIdentifiers.PROJECT_OBJECT.toString(), treeItemIds.get());
@@ -275,6 +312,50 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
                 .consumeNextWith(initialExpandedTreeContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a selection dialog, then the status message is requested while an element has been selected, then the status message is returned")
+    public void givenSelectionDialogWhenStatusMessageIsRequestedWhileAnElementHasBeenSelectedThenTheStatusMessageIsReturned() {
+        String representationId = "selectionDialog://?representationDescription=" + URLEncoder.encode(this.selectionDescriptionProvider.getSelectionDialogDescriptionId(), StandardCharsets.UTF_8);
+        Map<String, Object> variables = Map.of(
+                "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                "representationId", representationId,
+                "treeSelection", List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString()));
+        var result = this.graphQLRequestor.execute(GET_DIALOG_STATUS_MESSAGE, variables).data();
+        String statusMessage = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.dialogSelectionRequiredWithSelectionStatusMessage");
+
+        BiFunction<IEditingContext, IInput, IPayload> function = (editingContext, executeEditingContextFunctionInput) -> {
+            String objectLabel = this.objectSearchService.getObject(editingContext, PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString())
+                    .map(object -> this.labelService.getStyledLabel(object))
+                    .map(StyledString::toString)
+                    .orElse("");
+
+            assertThat(statusMessage).isEqualTo("The tool execution will continue with " + objectLabel);
+            return new ExecuteEditingContextFunctionSuccessPayload(executeEditingContextFunctionInput.id(), new Object());
+        };
+
+        var mono = this.executeEditingContextFunctionRunner.execute(new ExecuteEditingContextFunctionInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), function));
+        StepVerifier.create(mono)
+                .expectNextMatches(ExecuteEditingContextFunctionSuccessPayload.class::isInstance)
+                .thenCancel()
+                .verify();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a selection dialog, then the status message is requested while many elements have been selected, then the status message is returned")
+    public void givenSelectionDialogWhenStatusMessageIsRequestedWhileManyElementsHaveBeenSelectedThenTheStatusMessageIsReturned() {
+        String representationId = "selectionDialog://?representationDescription=" + URLEncoder.encode(this.selectionDescriptionProvider.getSelectionDialogDescriptionId(), StandardCharsets.UTF_8);
+        Map<String, Object> variables = Map.of(
+                "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                "representationId", representationId,
+                "treeSelection", List.of(PapayaIdentifiers.SIRIUS_WEB_DOMAIN_PACKAGE.toString(), PapayaIdentifiers.PAPAYA_SUCCESS_CLASS_OBJECT.toString()));
+        var result = this.graphQLRequestor.execute(GET_DIALOG_STATUS_MESSAGE, variables).data();
+        String statusMessage = JsonPath.read(result, "$.data.viewer.editingContext.representation.description.dialogSelectionRequiredWithSelectionStatusMessage");
+
+        assertThat(statusMessage).isEqualTo("The tool execution will continue with 2 elements");
     }
 
     @Test

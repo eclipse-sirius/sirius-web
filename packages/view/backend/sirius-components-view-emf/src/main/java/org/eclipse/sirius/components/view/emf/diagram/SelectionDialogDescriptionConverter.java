@@ -40,12 +40,18 @@ import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
+import org.eclipse.sirius.components.selection.description.SelectionDescriptionDialog;
+import org.eclipse.sirius.components.selection.description.SelectionDescriptionDialogAction;
+import org.eclipse.sirius.components.selection.description.SelectionDescriptionDialogConfirmButtonLabels;
+import org.eclipse.sirius.components.selection.description.SelectionDescriptionDialogStatusMessages;
+import org.eclipse.sirius.components.selection.description.SelectionDescriptionDialogTitles;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.eclipse.sirius.components.view.emf.api.IDialogDescriptionConverter;
+import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -72,6 +78,8 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
     private static final String SELECTION_PREFIX = "selection://";
 
+    private static final String TREE_SELECTION = "treeSelection";
+
     private final IIdentityService identityService;
 
     private final IObjectSearchService objectSearchService;
@@ -82,12 +90,16 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
     private final IURLParser urlParser;
 
-    public SelectionDialogDescriptionConverter(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, IDiagramIdProvider diagramIdProvider, IURLParser urlParser) {
+    private final IViewEMFMessageService messageService;
+
+    public SelectionDialogDescriptionConverter(IIdentityService identityService, IObjectSearchService objectSearchService, ILabelService labelService, IDiagramIdProvider diagramIdProvider, IURLParser urlParser,
+            IViewEMFMessageService messageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.labelService = Objects.requireNonNull(labelService);
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
         this.urlParser = Objects.requireNonNull(urlParser);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -116,24 +128,33 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         String selectionDescriptionId = this.diagramIdProvider.getId(selectionDescription);
         TreeDescription treeDescription = this.createTreeDescription(selectionDescription, interpreter);
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)
-                .messageProvider(variableManager -> {
-                    String message = Optional.ofNullable(selectionDescription.getSelectionMessage()).orElse("");
-                    if (message.isBlank()) {
-                        message = "A tool will be executed,";
-                        if (selectionDescription.isOptional()) {
-                            message +=  " choose how to proceed:";
-                        } else {
-                            message += " select an element to proceed.";
+                .dialogProvider(variableManager -> {
+                    return new SelectionDescriptionDialog(
+                            new SelectionDescriptionDialogTitles(this.messageService.defaultSelectionDialogTitle(), this.messageService.defaultSelectionDialogTitle(), this.messageService.defaultSelectionDialogTitle()),
+                            this.getSelectionDialogDescription(selectionDescription),
+                            new SelectionDescriptionDialogAction(this.getNoSelectionLabel(selectionDescription), this.messageService.defaultSelectionDialogNoSelectionActionDescription()),
+                            new SelectionDescriptionDialogAction(this.messageService.defaultSelectionDialogWithSelectionActionLabel(), this.messageService.defaultSelectionDialogWithSelectionActionDescription()),
+                            new SelectionDescriptionDialogStatusMessages(this.messageService.defaultSelectionDialogNoSelectionActionStatusMessage(), this.messageService.defaultSelectionDialogSelectionRequiredWithoutSelectionStatusMessage()),
+                            new SelectionDescriptionDialogConfirmButtonLabels(this.messageService.defaultSelectionDialogConfirmButtonLabel(), this.messageService.defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel(), this.messageService.defaultSelectionDialogConfirmButtonLabel())
+                    );
+                })
+                .dialogSelectionRequiredWithSelectionStatusMessageProvider(variableManager -> {
+                    String statusMessage = "";
+                    Object objects = variableManager.getVariables().get(TREE_SELECTION);
+                    if (objects instanceof List<?> list) {
+                        var selectionCount = list.stream().filter(String.class::isInstance).count();
+                        if (selectionCount == 1) {
+                            var elementLabel = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                                    .flatMap(editingContext -> this.objectSearchService.getObject(editingContext, list.get(0).toString()))
+                                    .map(this.labelService::getStyledLabel)
+                                    .map(StyledString::toString)
+                                    .orElse("");
+                            statusMessage = this.messageService.defaultSelectionDialogSelectionRequiredWithOneSelectedElementStatusMessage(elementLabel);
+                        } else if (selectionCount > 1) {
+                            statusMessage = this.messageService.defaultSelectionDialogSelectionRequiredWithManySelectedElementsStatusMessage(selectionCount);
                         }
                     }
-                    return message;
-                })
-                .noSelectionLabelProvider(variableManager -> {
-                    String noSelectionLabel = Optional.ofNullable(selectionDescription.getNoSelectionLabel()).orElse("");
-                    if (noSelectionLabel.isBlank()) {
-                        noSelectionLabel = "Execute the tool without making selection";
-                    }
-                    return noSelectionLabel;
+                    return statusMessage;
                 })
                 .idProvider(variableManager -> SELECTION_PREFIX)
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
@@ -150,6 +171,26 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .optional(selectionDescription.isOptional())
                 .iconURLsProvider(variableManager -> List.of())
                 .build();
+    }
+
+    private String getSelectionDialogDescription(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription selectionDescription) {
+        String message = Optional.ofNullable(selectionDescription.getSelectionMessage()).orElse("");
+        if (message.isBlank()) {
+            if (selectionDescription.isOptional()) {
+                message = this.messageService.defaultSelectionDialogWithOptionalSelectionDescription();
+            } else {
+                message = this.messageService.defaultSelectionDialogWithMandatorySelectionDescription();
+            }
+        }
+        return message;
+    }
+
+    private String getNoSelectionLabel(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription selectionDescription) {
+        String noSelectionLabel = Optional.ofNullable(selectionDescription.getNoSelectionLabel()).orElse("");
+        if (noSelectionLabel.isBlank()) {
+            noSelectionLabel = this.messageService.defaultSelectionDialogNoSelectionActionLabel();
+        }
+        return noSelectionLabel;
     }
 
     /**

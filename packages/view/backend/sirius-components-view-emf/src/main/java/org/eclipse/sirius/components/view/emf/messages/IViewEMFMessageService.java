@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,6 +55,32 @@ public interface IViewEMFMessageService {
     String defaultQuickToolUnPin();
 
     String defaultQuickToolEdit();
+
+    String defaultSelectionDialogTitle();
+
+    String defaultSelectionDialogWithOptionalSelectionDescription();
+
+    String defaultSelectionDialogWithMandatorySelectionDescription();
+
+    String defaultSelectionDialogNoSelectionActionLabel();
+
+    String defaultSelectionDialogNoSelectionActionDescription();
+
+    String defaultSelectionDialogWithSelectionActionLabel();
+
+    String defaultSelectionDialogWithSelectionActionDescription();
+
+    String defaultSelectionDialogNoSelectionActionStatusMessage();
+
+    String defaultSelectionDialogSelectionRequiredWithoutSelectionStatusMessage();
+
+    String defaultSelectionDialogSelectionRequiredWithOneSelectedElementStatusMessage(String element);
+
+    String defaultSelectionDialogSelectionRequiredWithManySelectedElementsStatusMessage(long count);
+
+    String defaultSelectionDialogConfirmButtonLabel();
+
+    String defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -149,6 +175,71 @@ public interface IViewEMFMessageService {
 
         @Override
         public String defaultQuickToolEdit() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogTitle() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogWithOptionalSelectionDescription() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogWithMandatorySelectionDescription() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogNoSelectionActionLabel() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogNoSelectionActionDescription() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogWithSelectionActionLabel() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogWithSelectionActionDescription() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogNoSelectionActionStatusMessage() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogSelectionRequiredWithoutSelectionStatusMessage() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogSelectionRequiredWithOneSelectedElementStatusMessage(String element) {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogSelectionRequiredWithManySelectedElementsStatusMessage(long count) {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogConfirmButtonLabel() {
+            return "";
+        }
+
+        @Override
+        public String defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel() {
             return "";
         }
     }

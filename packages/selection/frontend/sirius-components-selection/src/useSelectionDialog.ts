@@ -18,7 +18,7 @@ import { UseSelectionDialogValue } from './useSelectionDialog.types';
 
 export const useSelectionDialog = (): UseSelectionDialogValue => {
   const {
-    selectionDialogDescription,
+    dialog,
     noSelectionOptionSelected,
     selectionOptionSelected,
     treeDescriptionId,
@@ -28,7 +28,7 @@ export const useSelectionDialog = (): UseSelectionDialogValue => {
   } = useContext<SelectionDialogContextValue>(SelectionDialogDescriptionContext);
 
   return {
-    selectionDialogDescription,
+    dialog,
     noSelectionOptionSelected,
     selectionOptionSelected,
     treeDescriptionId,
