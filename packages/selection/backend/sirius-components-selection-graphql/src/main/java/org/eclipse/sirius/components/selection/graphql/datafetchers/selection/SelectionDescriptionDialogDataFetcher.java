@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,22 +22,24 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessageInput;
-import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessagePayload;
+import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDialogInput;
+import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDialogPayload;
 import org.eclipse.sirius.components.collaborative.selection.dto.SelectionDialogVariable;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
+import org.eclipse.sirius.components.selection.description.SelectionDialog;
 
 import graphql.schema.DataFetchingEnvironment;
 
 /**
- * The data fetcher use to compute the message defined in the Selection Dialog Description.
- * @author fbarbin
+ * Data fetcher for the field SelectionDescription#dialog.
+ *
+ * @author gcoutable
  */
-@QueryDataFetcher(type = "SelectionDescription", field = "message")
-public class SelectionDescriptionMessageDataFetcher  implements IDataFetcherWithFieldCoordinates<CompletableFuture<String>> {
+@QueryDataFetcher(type = "SelectionDescription", field = "dialog")
+public class SelectionDescriptionDialogDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<SelectionDialog>> {
 
     private static final String VARIABLES = "variables";
 
@@ -45,28 +47,27 @@ public class SelectionDescriptionMessageDataFetcher  implements IDataFetcherWith
 
     private final ObjectMapper objectMapper;
 
-    public SelectionDescriptionMessageDataFetcher(ObjectMapper objectMapper, IEditingContextDispatcher editingContextDispatcher) {
-        this.objectMapper = Objects.requireNonNull(objectMapper);
+    public SelectionDescriptionDialogDataFetcher(IEditingContextDispatcher editingContextDispatcher, ObjectMapper objectMapper) {
         this.editingContextDispatcher = Objects.requireNonNull(editingContextDispatcher);
+        this.objectMapper = Objects.requireNonNull(objectMapper);
     }
 
     @Override
-    public CompletableFuture<String> get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<SelectionDialog> get(DataFetchingEnvironment environment) throws Exception {
         SelectionDescription selectionDescription = environment.getSource();
-
         Map<String, Object> localContext = environment.getLocalContext();
         var editingContextId = Optional.of(localContext.get(LocalContextConstants.EDITING_CONTEXT_ID)).map(Object::toString);
+
         List<Object> variablesObject = environment.getArgument(VARIABLES);
         List<SelectionDialogVariable> variables = variablesObject.stream()
                 .map(object -> this.objectMapper.convertValue(object, SelectionDialogVariable.class))
                 .toList();
 
-        var input = new GetSelectionDescriptionMessageInput(UUID.randomUUID(), variables, selectionDescription);
+        var input = new GetSelectionDialogInput(UUID.randomUUID(), variables, selectionDescription);
         return this.editingContextDispatcher.dispatchQuery(editingContextId.get(), input)
-               .filter(GetSelectionDescriptionMessagePayload.class::isInstance)
-               .map(GetSelectionDescriptionMessagePayload.class::cast)
-               .map(GetSelectionDescriptionMessagePayload::message)
-               .toFuture();
+                .filter(GetSelectionDialogPayload.class::isInstance)
+                .map(GetSelectionDialogPayload.class::cast)
+                .map(GetSelectionDialogPayload::dialog)
+                .toFuture();
     }
-
 }

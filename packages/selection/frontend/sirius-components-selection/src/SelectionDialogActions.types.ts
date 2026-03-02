@@ -11,12 +11,20 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLSelectionDescription, SelectionDialogOptions } from './SelectionDialog.types';
+import { SelectionDialogOptions } from './SelectionDialog.types';
+import { GQLSelectionDescription } from './useSelectionDescription.types';
 
 export interface SelectionDialogActionsProps {
+  editingContextId: string;
+  selectionDescriptionId: string;
   selectedTreeItemIds: string[];
   selectionDescription: GQLSelectionDescription;
   selectionDialogOption: SelectionDialogOptions;
   onClose: () => void;
   onConfirm: () => void;
+}
+
+export interface SelectionDialogActionsState {
+  statusMessage: string;
+  confirmButtonLabel: string;
 }

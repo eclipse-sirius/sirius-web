@@ -41,6 +41,7 @@ export const SelectionDialogTreeView = ({
   variables,
   onTreeItemClick,
   selectedTreeItemIds,
+  disabled,
 }: SelectionDialogTreeViewProps) => {
   const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
 
@@ -63,7 +64,7 @@ export const SelectionDialogTreeView = ({
         gridTemplateRows: 'auto auto 1fr',
         border: '1px solid',
         borderRadius: theme.spacing(0.5),
-        borderColor: selectedTreeItemIds.length !== 0 ? theme.palette.primary.main : theme.palette.divider,
+        borderColor: disabled ? theme.palette.divider : theme.palette.primary.main,
         overflowY: 'auto',
       })}>
       <Box sx={(theme) => ({ padding: theme.spacing(1) })}>
@@ -71,6 +72,7 @@ export const SelectionDialogTreeView = ({
           onTextChange={(event) => setState((prevState) => ({ ...prevState, filterBarText: event.target.value }))}
           onTextClear={() => setState((prevState) => ({ ...prevState, filterBarText: '' }))}
           text={state.filterBarText}
+          disabled={disabled}
         />
       </Box>
       <Divider />

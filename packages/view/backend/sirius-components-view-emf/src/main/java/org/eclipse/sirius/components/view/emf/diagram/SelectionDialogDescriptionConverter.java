@@ -116,25 +116,6 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         String selectionDescriptionId = this.diagramIdProvider.getId(selectionDescription);
         TreeDescription treeDescription = this.createTreeDescription(selectionDescription, interpreter);
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)
-                .messageProvider(variableManager -> {
-                    String message = Optional.ofNullable(selectionDescription.getSelectionMessage()).orElse("");
-                    if (message.isBlank()) {
-                        message = "A tool will be executed,";
-                        if (selectionDescription.isOptional()) {
-                            message +=  " choose how to proceed:";
-                        } else {
-                            message += " select an element to proceed.";
-                        }
-                    }
-                    return message;
-                })
-                .noSelectionLabelProvider(variableManager -> {
-                    String noSelectionLabel = Optional.ofNullable(selectionDescription.getNoSelectionLabel()).orElse("");
-                    if (noSelectionLabel.isBlank()) {
-                        noSelectionLabel = "Execute the tool without making selection";
-                    }
-                    return noSelectionLabel;
-                })
                 .idProvider(variableManager -> SELECTION_PREFIX)
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                         .map(this.labelService::getStyledLabel)

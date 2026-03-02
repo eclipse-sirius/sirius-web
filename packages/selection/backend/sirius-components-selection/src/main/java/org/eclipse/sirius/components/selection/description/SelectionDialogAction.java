@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.selection.description;
 
-export interface FilterBarProps {
-  onTextChange: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
-  onTextClear: () => void;
-  text: string | null;
-  disabled?: boolean;
+import java.util.Objects;
+
+/**
+ * A selection dialog description action.
+ *
+ * @author gcoutable
+ */
+public record SelectionDialogAction(String label, String description) {
+    public SelectionDialogAction {
+        Objects.requireNonNull(label);
+        Objects.requireNonNull(description);
+    }
 }

@@ -11,8 +11,8 @@ input SelectionDialogTreeEventInput {
 type SelectionDescription implements RepresentationDescription {
   id: ID!
   label: String!
-  message(variables: [SelectionDialogVariable!]!): String!
-  noSelectionLabel(variables: [SelectionDialogVariable!]!): String!
+  dialog(variables: [SelectionDialogVariable!]!): SelectionDialog!
+  dialogSelectionRequiredWithSelectionStatusMessage(selectedObjectIds: [String!]!): String!
   treeDescription: TreeDescription!
   multiple: Boolean!
   optional: Boolean!
@@ -21,4 +21,35 @@ type SelectionDescription implements RepresentationDescription {
 input SelectionDialogVariable {
   name: String!
   value: String!
+}
+
+type SelectionDialog {
+  titles: SelectionDialogTitles!
+  description: String!
+  noSelectionAction: SelectionDialogAction!
+  withSelectionAction: SelectionDialogAction!
+  statusMessages: SelectionDialogStatusMessages!
+  confirmButtonLabels: SelectionDialogConfirmButtonLabels!
+}
+
+type SelectionDialogTitles {
+  defaultTitle: String!
+  noSelectionTitle: String!
+  withSelectionTitle: String!
+}
+
+type SelectionDialogAction {
+  label: String!
+  description: String!
+}
+
+type SelectionDialogStatusMessages {
+  noSelectionActionStatusMessage: String!
+  selectionRequiredWithoutSelectionStatusMessage: String!
+}
+
+type SelectionDialogConfirmButtonLabels {
+  noSelectionConfirmButtonLabel: String!
+  selectionRequiredWithoutSelectionConfirmButtonLabel: String!
+  selectionRequiredWithSelectionConfirmButtonLabel: String!
 }

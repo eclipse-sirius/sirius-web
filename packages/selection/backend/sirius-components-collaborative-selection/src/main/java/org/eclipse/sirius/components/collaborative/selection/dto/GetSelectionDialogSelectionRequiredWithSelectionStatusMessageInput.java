@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,14 +20,14 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
 
 /**
- * The input for the Selection Description no selection label query.
+ * The input used to compute the status message of the selection dialog when the user has made a selection in the tree representation associated with the selection dialog.
  *
  * @author gcoutable
  */
-public record GetSelectionDescriptionNoSelectionLabelInput(UUID id, List<SelectionDialogVariable> variables, SelectionDescription selectionDescription) implements IInput {
-    public GetSelectionDescriptionNoSelectionLabelInput {
+public record GetSelectionDialogSelectionRequiredWithSelectionStatusMessageInput(UUID id, List<String> selectedObjectIds, SelectionDescription selectionDescription) implements IInput {
+    public GetSelectionDialogSelectionRequiredWithSelectionStatusMessageInput {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(variables);
+        Objects.requireNonNull(selectedObjectIds);
         Objects.requireNonNull(selectionDescription);
     }
 }

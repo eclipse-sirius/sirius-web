@@ -29,7 +29,7 @@ export const SelectionDialogTitle = ({
   if (selectionDialogOption === 'NO_SELECTION') {
     title = titles.noSelectionTitle;
   } else if (selectionDialogOption === 'WITH_SELECTION') {
-    title = titles.selectionTitle;
+    title = titles.withSelectionTitle;
   }
 
   return (

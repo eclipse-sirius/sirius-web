@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,14 +18,13 @@ import java.util.UUID;
 import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
- * The input for the Selection Description no selection label query.
+ * The payload containing the status message for the selection dialog when the user has made a selection in the tree representation associated with the selection dialog.
  *
  * @author gcoutable
  */
-public record GetSelectionDescriptionNoSelectionLabelPayload(UUID id, String noSelectionLabel) implements IPayload {
-
-    public GetSelectionDescriptionNoSelectionLabelPayload {
+public record GetSelectionDialogSelectionRequiredWithSelectionStatusMessagePayload(UUID id, String statusMessage) implements IPayload {
+    public GetSelectionDialogSelectionRequiredWithSelectionStatusMessagePayload {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(noSelectionLabel);
+        Objects.requireNonNull(statusMessage);
     }
 }

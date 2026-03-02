@@ -24,7 +24,8 @@ import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentat
 import org.eclipse.sirius.components.collaborative.dto.GetEditingContextActionsInput;
 import org.eclipse.sirius.components.collaborative.dto.GetRepresentationDescriptionFromDescriptionIdInput;
 import org.eclipse.sirius.components.collaborative.dto.GetRepresentationDescriptionInput;
-import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDescriptionMessageInput;
+import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDialogInput;
+import org.eclipse.sirius.components.collaborative.selection.dto.GetSelectionDialogSelectionRequiredWithSelectionStatusMessageInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemContextMenuInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemTooltipInput;
@@ -53,27 +54,28 @@ public class UndoRedoIgnoreInputPredicate implements IUndoRedoIgnoreInputPredica
      * benefits (as they do not actually change the backend state).
      */
     private static final List<Class<?>> IGNORED_INPUT_TYPES = List.of(
-            UndoInput.class,
-            RedoInput.class,
-            LayoutDiagramInput.class,
-            TreePathInput.class,
-            TreeItemContextMenuInput.class,
-            EditingContextRepresentationDescriptionsInput.class,
-            GetEditingContextActionsInput.class,
-            GetRepresentationDescriptionInput.class,
-            GetPaletteInput.class,
-            GetSelectionDescriptionMessageInput.class,
-            GetActionsInput.class,
-            InitialDirectEditElementLabelInput.class,
-            org.eclipse.sirius.components.collaborative.trees.dto.InitialDirectEditElementLabelInput.class,
-            ExpandAllTreePathInput.class,
+            EditingContextChildObjectCreationDescriptionsInput.class,
             EditingContextExplorerDescriptionsInput.class,
             EditingContextObjectsInput.class,
-            EditingContextChildObjectCreationDescriptionsInput.class,
+            EditingContextRepresentationDescriptionsInput.class,
+            ExpandAllTreePathInput.class,
+            GetActionsInput.class,
+            GetEditingContextActionsInput.class,
+            GetPaletteInput.class,
             GetRepresentationDescriptionFromDescriptionIdInput.class,
-            SearchInput.class,
+            GetRepresentationDescriptionInput.class,
+            GetSelectionDialogInput.class,
+            GetSelectionDialogSelectionRequiredWithSelectionStatusMessageInput.class,
+            InitialDirectEditElementLabelInput.class,
+            LayoutDiagramInput.class,
+            org.eclipse.sirius.components.collaborative.trees.dto.InitialDirectEditElementLabelInput.class,
+            RedoInput.class,
             ReferenceValueOptionsQueryInput.class,
-            TreeItemTooltipInput.class
+            SearchInput.class,
+            TreeItemContextMenuInput.class,
+            TreeItemTooltipInput.class,
+            TreePathInput.class,
+            UndoInput.class
     );
 
     @Override

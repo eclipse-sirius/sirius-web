@@ -31,8 +31,31 @@ const getSelectionDescription = gql`
         representation(representationId: $representationId) {
           description {
             ... on SelectionDescription {
-              message(variables: $variables)
-              noSelectionLabel(variables: $variables)
+              dialog(variables: $variables) {
+                titles {
+                  defaultTitle
+                  noSelectionTitle
+                  withSelectionTitle
+                }
+                description
+                noSelectionAction {
+                  label
+                  description
+                }
+                withSelectionAction {
+                  label
+                  description
+                }
+                statusMessages {
+                  noSelectionActionStatusMessage
+                  selectionRequiredWithoutSelectionStatusMessage
+                }
+                confirmButtonLabels {
+                  noSelectionConfirmButtonLabel
+                  selectionRequiredWithoutSelectionConfirmButtonLabel
+                  selectionRequiredWithSelectionConfirmButtonLabel
+                }
+              }
               treeDescription {
                 id
               }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,10 +21,12 @@ import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
+import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.diagram.api.IViewDiagramDescriptionSearchService;
@@ -40,12 +42,15 @@ public class ViewDiagramDescriptionSearchService implements IViewDiagramDescript
 
     private final IIdentityService identityService;
 
+    private final IObjectSearchService objectSearchService;
+
     private final IURLParser urlParser;
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
-    public ViewDiagramDescriptionSearchService(IIdentityService identityService, IURLParser urlParser, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
+    public ViewDiagramDescriptionSearchService(IIdentityService identityService, IObjectSearchService objectSearchService, IURLParser urlParser, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
         this.identityService = Objects.requireNonNull(identityService);
+        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
     }
@@ -122,6 +127,34 @@ public class ViewDiagramDescriptionSearchService implements IViewDiagramDescript
         return diagramDescription.getEdgeDescriptions().stream()
                 .filter(edgeDescription -> this.identityService.getId(edgeDescription).equals(edgeDescriptionId))
                 .findFirst();
+    }
+
+    @Override
+    public Optional<SelectionDialogDescription> findViewSelectionDialogDescription(IEditingContext editingContext, String selectionDialogDescriptionId) {
+        Optional<String> optionalSourceElementId = this.getSourceElementId(selectionDialogDescriptionId);
+        Optional<String> optionalSourceId = this.getSourceId(selectionDialogDescriptionId);
+        if (optionalSourceElementId.isPresent() && optionalSourceId.isPresent()) {
+            var sourceElementId = optionalSourceElementId.get();
+            var sourceId = optionalSourceId.get();
+
+            var views = this.viewRepresentationDescriptionSearchService.findViewsBySourceId(editingContext, sourceId);
+
+            return views.stream()
+                    .flatMap(view -> view.getDescriptions().stream())
+                    .filter(DiagramDescription.class::isInstance)
+                    .map(DiagramDescription.class::cast)
+                    .map(viewDiagramDescription -> this.findSelectionDialogDescriptionById(viewDiagramDescription, sourceElementId))
+                    .flatMap(Optional::stream)
+                    .findFirst();
+        }
+        return Optional.empty();
+    }
+
+    private Optional<SelectionDialogDescription> findSelectionDialogDescriptionById(DiagramDescription viewDiagramDescription, String sourceElementId) {
+        return Optional.ofNullable(viewDiagramDescription.eResource())
+                .map(resource -> resource.getEObject(sourceElementId))
+                .filter(SelectionDialogDescription.class::isInstance)
+                .map(SelectionDialogDescription.class::cast);
     }
 
     private Optional<String> getSourceElementId(String descriptionId) {
