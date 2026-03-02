@@ -280,3 +280,91 @@ test.describe('diagram - drag and drop', () => {
     expect(entity33PositionAfter.y - entity31PositionAfter.y).toBe(entity33RelativePositionY);
   });
 });
+
+test.describe('diagram - drag and drop', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectDropNodeCandidate.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('dropCandidate');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when dragging a valid node, then only candidate node is highlighted not its current parent', async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const draggedNode = new PlaywrightNode(page, 'Valid');
+
+    const draggedNodeXYPosition = await draggedNode.getDOMXYPosition();
+    await draggedNode.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(draggedNodeXYPosition.x + 25, draggedNodeXYPosition.y + 25, { steps: 2 });
+
+    await page.waitForFunction(
+      () => {
+        const targetNode = document.querySelector(`[data-testid="FreeForm - Target"]`);
+        const sourceNode = document.querySelector(`[data-testid="FreeForm - Source"]`);
+        return (
+          targetNode &&
+          window.getComputedStyle(targetNode).getPropertyValue('box-shadow')?.length > 0 &&
+          sourceNode &&
+          window.getComputedStyle(sourceNode).getPropertyValue('box-shadow') === 'none'
+        );
+      },
+      { timeout: 2000 }
+    );
+  });
+
+  test('when dragging a invalid node, then only target node is highlighted not its current parent', async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const draggedNode = new PlaywrightNode(page, 'Invalid');
+
+    const draggedNodeXYPosition = await draggedNode.getDOMXYPosition();
+    await draggedNode.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(draggedNodeXYPosition.x + 50, draggedNodeXYPosition.y + 50, { steps: 2 });
+
+    await page.waitForFunction(
+      () => {
+        const targetNode = document.querySelector(`[data-testid="FreeForm - Target"]`);
+        const sourceNode = document.querySelector(`[data-testid="FreeForm - Source"]`);
+        return (
+          targetNode &&
+          window.getComputedStyle(targetNode).getPropertyValue('box-shadow') === 'none' &&
+          sourceNode &&
+          window.getComputedStyle(sourceNode).getPropertyValue('box-shadow') === 'none'
+        );
+      },
+      { timeout: 2000 }
+    );
+
+    const targetNode = new PlaywrightNode(page, 'Target');
+    const targetNodeXYPosition = await targetNode.getDOMXYPosition();
+    await page.mouse.move(targetNodeXYPosition.x + 100, targetNodeXYPosition.y + 100, { steps: 2 });
+    await page.waitForFunction(
+      () => {
+        const targetNode = document.querySelector(`[data-testid="FreeForm - Target"]`);
+        const sourceNode = document.querySelector(`[data-testid="FreeForm - Source"]`);
+        return (
+          targetNode &&
+          window.getComputedStyle(targetNode).getPropertyValue('box-shadow')?.length > 0 &&
+          sourceNode &&
+          window.getComputedStyle(sourceNode).getPropertyValue('box-shadow') === 'none'
+        );
+      },
+      { timeout: 2000 }
+    );
+  });
+});

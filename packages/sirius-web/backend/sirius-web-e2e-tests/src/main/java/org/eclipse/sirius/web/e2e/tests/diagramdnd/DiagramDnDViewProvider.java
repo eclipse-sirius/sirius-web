@@ -74,7 +74,8 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
     private DiagramDescription getDiagramDescription(IColorProvider colorProvider) {
         var entity2NodeDescription = this.getEntitySimpleNodeDescription(colorProvider, "Entity2");
         var entity3NodeDescription = this.getEntitySimpleNodeDescription(colorProvider, "Entity3");
-        var entity1NodeDescription = this.getEntity1NodeDescription(colorProvider, entity2NodeDescription, entity3NodeDescription);
+        var entity4NodeDescription = this.getEntitySimpleNodeDescription(colorProvider, "Entity4");
+        var entity1NodeDescription = this.getEntity1NodeDescription(colorProvider, entity2NodeDescription, entity3NodeDescription, entity4NodeDescription);
 
         var dropEntity2Tool = new DiagramBuilders()
                 .newDropNodeTool()
@@ -119,7 +120,7 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
                 .titleExpression(DiagramDnDDomainProvider.DOMAIN_NAME + " diagram")
                 .autoLayout(false)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
-                .nodeDescriptions(entity1NodeDescription, entity2NodeDescription, entity3NodeDescription)
+                .nodeDescriptions(entity1NodeDescription, entity2NodeDescription, entity3NodeDescription, entity4NodeDescription)
                 .palette(new DiagramBuilders()
                         .newDiagramPalette()
                         .dropNodeTool(dropEntity2Tool)
@@ -129,11 +130,11 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
     }
 
 
-    private NodeDescription getEntity1NodeDescription(IColorProvider colorProvider, NodeDescription entity2NodeDescription, NodeDescription entity3NodeDescription) {
+    private NodeDescription getEntity1NodeDescription(IColorProvider colorProvider, NodeDescription entity2NodeDescription, NodeDescription entity3NodeDescription, NodeDescription entity4NodeDescription) {
         var dropEntity3Tool = new DiagramBuilders()
                 .newDropNodeTool()
                 .name("dropEntity3Tool")
-                .acceptedNodeTypes(entity3NodeDescription)
+                .acceptedNodeTypes(entity3NodeDescription, entity4NodeDescription)
                 .body(new ViewBuilders()
                                 .newChangeContext()
                                 .expression("aql:targetElement")
@@ -169,6 +170,7 @@ public class DiagramDnDViewProvider implements IE2EViewProvider {
                 .userResizable(UserResizableDirection.BOTH)
                 .keepAspectRatio(false)
                 .reusedChildNodeDescriptions(entity2NodeDescription, entity3NodeDescription)
+                .reusedBorderNodeDescriptions(entity4NodeDescription)
                 .palette(new DiagramBuilders()
                         .newNodePalette()
                         .dropNodeTool(dropEntity3Tool)

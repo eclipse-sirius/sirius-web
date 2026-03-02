@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -229,5 +229,51 @@ test.describe('diagram - drag and drop of multiple elements', () => {
 
     expect(attr1BoundsAfter).toEqual(attr1BoundsBefore);
     expect(attr2BoundsAfter).toEqual(attr2BoundsBefore);
+  });
+});
+
+test.describe('diagram - drag and drop of multiple elements', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectDropNodeCandidate.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('dropCandidate');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when dragging two nodes from different parent, then only target node is highlighted', async ({ page }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const draggedNode = new PlaywrightNode(page, 'Invalid');
+    const draggedNode2 = new PlaywrightNode(page, 'Invalid2');
+    await draggedNode.click();
+    await draggedNode2.controlClick();
+
+    const draggedNodeXYPosition = await draggedNode2.getDOMXYPosition();
+    await draggedNode2.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(draggedNodeXYPosition.x - 50, draggedNodeXYPosition.y - 50, { steps: 2 });
+
+    await page.waitForFunction(
+      () => {
+        const targetNode = document.querySelector(`[data-testid="FreeForm - Target"]`);
+        const sourceNode = document.querySelector(`[data-testid="FreeForm - Source"]`);
+        return (
+          targetNode &&
+          window.getComputedStyle(targetNode).getPropertyValue('box-shadow')?.length > 0 &&
+          sourceNode &&
+          window.getComputedStyle(sourceNode).getPropertyValue('box-shadow') === 'none'
+        );
+      },
+      { timeout: 2000 }
+    );
   });
 });
