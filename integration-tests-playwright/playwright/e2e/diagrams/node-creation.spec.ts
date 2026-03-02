@@ -14,6 +14,7 @@ import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
+import { PlaywrightLabel } from '../../helpers/PlaywrightLabel';
 
 test.describe('diagram - node creation', () => {
   let projectId;
@@ -55,7 +56,8 @@ test.describe('diagram - node creation', () => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.createNewObject('Root', 'entity3s-Entity3');
-    await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
+    const parentLabel = new PlaywrightLabel(page, 'Parent');
+    await parentLabel.labelContentLocator.click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').click();
     const entity4FirstNode = new PlaywrightNode(page, 'Entity4');
@@ -71,7 +73,7 @@ test.describe('diagram - node creation', () => {
     expect(reactFlowXYPositionEntity4First.x).toBe(nodePadding + borderWidth * 2);
 
     // When creating a second one, it should place next to the first one
-    await page.getByTestId('Label content - Parent').click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
+    await parentLabel.labelContentLocator.click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').first().click();
     const entity4SecondNode = new PlaywrightNode(page, 'Entity4', 'FreeForm', 1);
