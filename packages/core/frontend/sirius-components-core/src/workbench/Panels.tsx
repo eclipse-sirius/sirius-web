@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import {
-  disableGlobalCursorStyles,
-  ImperativePanelHandle,
-  Panel,
-  PanelGroup,
-  PanelResizeHandle,
-} from 'react-resizable-panels';
+import { ImperativePanelHandle, Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { makeStyles } from 'tss-react/mui';
 import { PanelsProps, PanelState, WorkbenchPanelHandle } from './Panels.types';
 import { Sidebar } from './Sidebar';
@@ -46,7 +40,6 @@ const usePanelStyles = makeStyles()((theme) => ({
   verticalResizer: {
     display: 'grid',
     width: `1px`,
-    cursor: 'col-resize',
     backgroundColor: theme.palette.divider,
     borderColor: theme.palette.divider,
     borderRightStyle: 'solid',
@@ -55,7 +48,6 @@ const usePanelStyles = makeStyles()((theme) => ({
   horizontalResizer: {
     display: 'grid',
     height: `1px`,
-    cursor: 'row-resize',
     backgroundColor: theme.palette.divider,
     borderColor: theme.palette.divider,
     borderBottomStyle: 'solid',
@@ -78,8 +70,6 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     }: PanelsProps,
     refPanelsHandle: ForwardedRef<WorkbenchPanelsHandle | null>
   ) => {
-    disableGlobalCursorStyles();
-
     let leftInitialActiveConfigurationIds: string[] = [];
     if (leftPanelConfiguration) {
       leftInitialActiveConfigurationIds = leftPanelConfiguration.views
