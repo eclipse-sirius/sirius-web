@@ -39,6 +39,9 @@ The switch to Spring Boot 4.0 also come with a switch to Jackson 3, see the offi
 Custom deserializers and migration services will probably be impacted.
 - https://github.com/eclipse-sirius/sirius-web/issues/6369[#6369] [diagram] In order to click behind the rectangle selection on a diagram, you'll need to update `ReactFlow.css` as per the `selection rectangle` section.
 -https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] `moving` should be set when converting custom nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/6243[#6243] [sirius-web] Add documentation in the new representation modal.
+`RepresentationDescriptionMetadata` has been renamed to `RepresentationMetadataDTO` and moved to `org.eclipse.sirius.components.collaborative.dto`.
+It now requires a `documentation` parameter.
 
 
 === Dependency update
@@ -112,6 +115,7 @@ The backend now sends a `canEdit=false` capability when subscribing to such form
 - https://github.com/eclipse-sirius/sirius-web/issues/6403[#6403] [releng] Use pepper-mm instead of the old internal task metamodel used in the tests and task-starter
 - https://github.com/eclipse-sirius/sirius-web/issues/6428[#6428] [forms] The existing `widgetContributionExtensionPoint` frontend extension point can now be used to override the frontend implementation of a widget with a custom React component (which only needs to implement `PropertySectionComponent<GQLWidget>`).
 See ADR-230 for the details.
+- https://github.com/eclipse-sirius/sirius-web/issues/6243[#6243] [sirius-web] Add documentation in the new representation modal.
 
 
 
@@ -183,7 +187,6 @@ The `TreeItemContextMenuEntryBuilder` subclasses now require a list of key bindi
 `IRepresentationDeserializer` `handle` method have been modified to `Optional<IRepresentation> handle(JsonParser jsonParser, DeserializationContext context, ObjectNode root);`
 The switch to Spring Boot 4.0 also come with a switch to Jackson 3, see the official https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md[documentation] for more details.
 Your custom deserializers and migration services will probably be impacted.
-
 
 
 === Dependency update

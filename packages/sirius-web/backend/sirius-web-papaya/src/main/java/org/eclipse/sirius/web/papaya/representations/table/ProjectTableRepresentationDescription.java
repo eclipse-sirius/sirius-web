@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.papaya.representations.table;
 import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDescriptionsProvider;
-import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
+import org.eclipse.sirius.components.collaborative.dto.RepresentationDescriptionMetadataDTO;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.springframework.stereotype.Service;
@@ -34,8 +34,8 @@ public class ProjectTableRepresentationDescription implements IRepresentationDes
     }
 
     @Override
-    public List<RepresentationDescriptionMetadata> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
-        return List.of(new RepresentationDescriptionMetadata(representationDescription.getId(), representationDescription.getLabel(), representationDescription.getLabel()));
+    public List<RepresentationDescriptionMetadataDTO> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
+        return List.of(new RepresentationDescriptionMetadataDTO(representationDescription.getId(), representationDescription.getLabel(), representationDescription.getLabel(), ""));
     }
 
 }

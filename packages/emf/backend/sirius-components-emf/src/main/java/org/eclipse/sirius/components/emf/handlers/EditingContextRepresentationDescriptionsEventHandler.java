@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,9 +26,9 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDescriptionsProvider;
-import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsInput;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
+import org.eclipse.sirius.components.collaborative.dto.RepresentationDescriptionMetadataDTO;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
@@ -94,7 +94,7 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
             optionalObject = this.objectSearchService.getObject(editingContext, objectId);
         }
         if (optionalObject.isPresent()) {
-            List<RepresentationDescriptionMetadata> result = this.findAllCompatibleRepresentationDescriptions(editingContext, optionalObject.get());
+            List<RepresentationDescriptionMetadataDTO> result = this.findAllCompatibleRepresentationDescriptions(editingContext, optionalObject.get());
             payloadSink.tryEmitValue(new EditingContextRepresentationDescriptionsPayload(input.id(), result));
         } else {
             String message = this.emfMessageService.invalidInput(input.getClass().getSimpleName(), EditingContextRepresentationDescriptionsInput.class.getSimpleName());
@@ -103,8 +103,8 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
         changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input));
     }
 
-    private List<RepresentationDescriptionMetadata> findAllCompatibleRepresentationDescriptions(IEditingContext editingContext, Object object) {
-        List<RepresentationDescriptionMetadata> result = new ArrayList<>();
+    private List<RepresentationDescriptionMetadataDTO> findAllCompatibleRepresentationDescriptions(IEditingContext editingContext, Object object) {
+        List<RepresentationDescriptionMetadataDTO> result = new ArrayList<>();
         var kind = this.identityService.getKind(object);
         var clazz = this.resolveKind(editingContext, kind);
 
@@ -128,7 +128,7 @@ public class EditingContextRepresentationDescriptionsEventHandler implements IEd
             }
         }
 
-        result.sort(Comparator.comparing(RepresentationDescriptionMetadata::getLabel));
+        result.sort(Comparator.comparing(RepresentationDescriptionMetadataDTO::label));
         for (var representationDescriptionMetadataSorter: this.representationDescriptionMetadataSorters) {
             result = representationDescriptionMetadataSorter.sort(result);
         }

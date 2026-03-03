@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,15 +13,18 @@
 
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import FormHelperText from '@mui/material/FormHelperText';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
@@ -63,6 +66,7 @@ const getRepresentationDescriptionsQuery = gql`
               id
               label
               defaultName
+              documentation
             }
           }
           pageInfo {
@@ -81,6 +85,7 @@ const useNewRepresentationModalStyles = makeStyles()((theme) => ({
   form: {
     display: 'flex',
     flexDirection: 'column',
+    gap: theme.spacing(1),
     '& > *': {
       marginBottom: theme.spacing(1),
     },
@@ -231,37 +236,47 @@ export const NewRepresentationModal = ({
         <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
-            <TextField
-              variant="standard"
-              error={nameIsInvalid}
-              helperText={t('name.helperText')}
-              label={t('name.label')}
-              name="name"
-              value={state.name}
-              placeholder={t('name.placeholder')}
-              inputProps={{ 'data-testid': 'name' }}
-              autoFocus={true}
-              onChange={onNameChange}
-              disabled={!state.selectedRepresentationDescriptionId}
-            />
-            <InputLabel id="newRepresentationModalRepresentationDescriptionLabel">{t('type.label')}</InputLabel>
-            <Select
-              variant="standard"
-              value={state.selectedRepresentationDescriptionId}
-              onChange={onRepresentationDescriptionChange}
-              labelId="newRepresentationModalRepresentationDescriptionLabel"
-              inputProps={{ 'data-testid': 'representationDescription-input' }}
-              fullWidth
-              data-testid="representationDescription">
-              {state.representationDescriptions.map((representationDescription) => (
-                <MenuItem
-                  value={representationDescription.id}
-                  key={representationDescription.id}
-                  data-testid={representationDescription.label}>
-                  {representationDescription.label}
-                </MenuItem>
-              ))}
-            </Select>
+            <Box>
+              <Typography variant="subtitle1">{t('name.label')}</Typography>
+              <TextField
+                variant="standard"
+                error={nameIsInvalid}
+                helperText={t('name.helperText')}
+                name="name"
+                value={state.name}
+                placeholder={t('name.placeholder')}
+                inputProps={{ 'data-testid': 'name' }}
+                onChange={onNameChange}
+                disabled={!state.selectedRepresentationDescriptionId}
+                fullWidth
+                autoFocus
+              />
+            </Box>
+            <FormControl>
+              <Typography variant="subtitle1">{t('name.label')}</Typography>
+              <Select
+                variant="standard"
+                value={state.selectedRepresentationDescriptionId}
+                onChange={onRepresentationDescriptionChange}
+                inputProps={{ 'data-testid': 'representationDescription-input' }}
+                fullWidth
+                data-testid="representationDescription">
+                {state.representationDescriptions.map((representationDescription) => (
+                  <MenuItem
+                    value={representationDescription.id}
+                    key={representationDescription.id}
+                    data-testid={representationDescription.label}>
+                    {representationDescription.label}
+                  </MenuItem>
+                ))}
+              </Select>
+              <FormHelperText sx={{ marginLeft: 0, maringRight: 0 }}>
+                {state.representationDescriptions.find(
+                  (representationDescription) =>
+                    representationDescription.id === state.selectedRepresentationDescriptionId
+                )?.documentation ?? ''}
+              </FormHelperText>
+            </FormControl>
           </div>
         </DialogContent>
         <DialogActions>

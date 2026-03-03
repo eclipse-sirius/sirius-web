@@ -72,6 +72,7 @@ type RepresentationDescriptionMetadata {
   id: ID!
   label: String!
   defaultName: String!
+  documentation: String!
 }
 
 type EditingContextActionsConnection {

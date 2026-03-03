@@ -195,6 +195,7 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .name("Domain")
                 .domainType("domain::Domain")
                 .titleExpression("aql:'Domain'")
+                .endUserDocumentation("A diagram showing the entities of a domain and their relations.")
                 .palette(palette)
                 .toolbar(toolbar)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
