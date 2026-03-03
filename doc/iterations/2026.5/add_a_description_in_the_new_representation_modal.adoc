@@ -1,0 +1,33 @@
+= Add a description in the new representation modal
+
+== Problem
+
+The name of a representation description may not be expressive enough to inform the user on what the description actually does.
+
+
+== Key Result
+
+Sirius Web should display a description of the selected representation in the new representation modal.
+
+
+=== Acceptance Criteria
+
+- A Cypress test should leverage the new functionality and validate the whole user experience.
+
+
+== Solution
+
+Sirius Web's backend will send the description as part of the representation description metadata already sent to display the content of the modal.
+A default implementation returning `RepresentationDescription#description` will be provided for representations defined with the view DSL.
+The description will be displayed under the representation drop down menu.
+image::images/new_representation_modal_with_description[The updated modal with the description of the representation, width=500, align=center]
+
+
+=== Cutting backs 
+
+
+== Rabbit holes
+
+
+
+== No-gos

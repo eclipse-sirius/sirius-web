@@ -6,6 +6,7 @@
 
 - Measure the performance of Sirius Web based applications
 - Add support for the auto-alignment edge feature
+- Add a description in the new representation modal
 
 
 === Architectural decision records
