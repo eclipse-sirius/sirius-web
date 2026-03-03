@@ -25,7 +25,8 @@ import {
 
 export const useViewsExplorerViewSubscription = (
   editingContextId: string,
-  expanded: string[]
+  expanded: string[],
+  maxDepth: number
 ): UseViewsExplorerViewSubscriptionValue => {
   const { addErrorMessage } = useMultiToast();
 
@@ -54,7 +55,7 @@ export const useViewsExplorerViewSubscription = (
   };
 
   const { loading } = useSubscription<GQLViewsExplorerEventData, GQLViewsExplorerEventVariables>(
-    gql(getTreeEventSubscription(2, 'viewsExplorerEvent', 'ViewsExplorerEventInput')),
+    gql(getTreeEventSubscription(maxDepth, 'viewsExplorerEvent', 'ViewsExplorerEventInput')),
     {
       variables: { input },
       fetchPolicy: 'no-cache',
