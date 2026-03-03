@@ -142,6 +142,8 @@ See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6414[#6414] [diagram] Add e2e test for node decorators.
 - https://github.com/eclipse-sirius/sirius-web/issues/6421[#6421] [diagram] Add support for handling edge bend points during the `arrange all` action
 - https://github.com/eclipse-sirius/sirius-web/issues/6422[#6422] [diagram] Add support for handling edge handles during the `arrange all` action
+- https://github.com/eclipse-sirius/sirius-web/issues/6236[#6236] [sirius-web] Add "select" and "filter" tools to the "views explorer" view.
+
 
 
 == 2026.3.0
