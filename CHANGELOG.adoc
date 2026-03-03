@@ -6,6 +6,7 @@
 
 - Keep details tab open on selection change
 - Add support the for selection dialog that can be confirmed without making a selection
+- Add a description in the new representation modal
 
 === Architectural decision records
 
