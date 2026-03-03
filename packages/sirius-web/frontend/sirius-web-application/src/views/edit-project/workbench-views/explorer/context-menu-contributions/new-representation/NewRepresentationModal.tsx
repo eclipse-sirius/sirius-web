@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
@@ -63,6 +62,7 @@ const getRepresentationDescriptionsQuery = gql`
               id
               label
               defaultName
+              endUserDocumentation
             }
           }
           pageInfo {
@@ -231,11 +231,11 @@ export const NewRepresentationModal = ({
         <DialogTitle id="dialog-title">{t('title')}</DialogTitle>
         <DialogContent>
           <div className={classes.form}>
+            <Typography variant="subtitle1">{t('name.label')}</Typography>
             <TextField
               variant="standard"
               error={nameIsInvalid}
               helperText={t('name.helperText')}
-              label={t('name.label')}
               name="name"
               value={state.name}
               placeholder={t('name.placeholder')}
@@ -244,15 +244,21 @@ export const NewRepresentationModal = ({
               onChange={onNameChange}
               disabled={!state.selectedRepresentationDescriptionId}
             />
-            <InputLabel id="newRepresentationModalRepresentationDescriptionLabel">{t('type.label')}</InputLabel>
-            <Select
+            <Typography variant="subtitle1">{t('type.label')}</Typography>
+            <TextField
               variant="standard"
               value={state.selectedRepresentationDescriptionId}
               onChange={onRepresentationDescriptionChange}
-              labelId="newRepresentationModalRepresentationDescriptionLabel"
+              helperText={
+                state.representationDescriptions.find(
+                  (representationDescription) =>
+                    representationDescription.id === state.selectedRepresentationDescriptionId
+                )?.endUserDocumentation ?? ''
+              }
               inputProps={{ 'data-testid': 'representationDescription-input' }}
               fullWidth
-              data-testid="representationDescription">
+              data-testid="representationDescription"
+              select>
               {state.representationDescriptions.map((representationDescription) => (
                 <MenuItem
                   value={representationDescription.id}
@@ -261,7 +267,7 @@ export const NewRepresentationModal = ({
                   {representationDescription.label}
                 </MenuItem>
               ))}
-            </Select>
+            </TextField>
           </div>
         </DialogContent>
         <DialogActions>

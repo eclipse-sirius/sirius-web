@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsInput;
 import org.eclipse.sirius.components.collaborative.dto.EditingContextRepresentationDescriptionsPayload;
+import org.eclipse.sirius.components.collaborative.dto.RepresentationDescriptionMetadataDTO;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
@@ -43,7 +43,7 @@ import reactor.core.publisher.Mono;
  * @author sbegaudeau
  */
 @QueryDataFetcher(type = "EditingContext", field = "representationDescriptions")
-public class EditingContextRepresentationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Connection<RepresentationDescriptionMetadata>>> {
+public class EditingContextRepresentationDescriptionsDataFetcher implements IDataFetcherWithFieldCoordinates<CompletableFuture<Connection<RepresentationDescriptionMetadataDTO>>> {
 
     private static final String OBJECT_ID_ARGUMENT = "objectId";
 
@@ -54,7 +54,7 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
     }
 
     @Override
-    public CompletableFuture<Connection<RepresentationDescriptionMetadata>> get(DataFetchingEnvironment environment) throws Exception {
+    public CompletableFuture<Connection<RepresentationDescriptionMetadataDTO>> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getSource();
         String objectId = environment.getArgument(OBJECT_ID_ARGUMENT);
 
@@ -68,12 +68,12 @@ public class EditingContextRepresentationDescriptionsDataFetcher implements IDat
                 .toFuture();
     }
 
-    private Connection<RepresentationDescriptionMetadata> toConnection(EditingContextRepresentationDescriptionsPayload payload) {
-        List<Edge<RepresentationDescriptionMetadata>> representationDescriptionEdges = payload.representationDescriptions().stream()
+    private Connection<RepresentationDescriptionMetadataDTO> toConnection(EditingContextRepresentationDescriptionsPayload payload) {
+        List<Edge<RepresentationDescriptionMetadataDTO>> representationDescriptionEdges = payload.representationDescriptions().stream()
                 .map(representationDescription -> {
-                    var globalId = new Relay().toGlobalId("RepresentationDescription", representationDescription.getId());
+                    var globalId = new Relay().toGlobalId("RepresentationDescription", representationDescription.id());
                     ConnectionCursor cursor = new DefaultConnectionCursor(globalId);
-                    Edge<RepresentationDescriptionMetadata> edge = new DefaultEdge<>(representationDescription, cursor);
+                    Edge<RepresentationDescriptionMetadataDTO> edge = new DefaultEdge<>(representationDescription, cursor);
                     return edge;
                 })
                 .toList();

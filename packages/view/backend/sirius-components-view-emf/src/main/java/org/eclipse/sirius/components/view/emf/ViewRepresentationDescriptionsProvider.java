@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,17 +19,18 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDescriptionsProvider;
-import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
+import org.eclipse.sirius.components.collaborative.dto.RepresentationDescriptionMetadataDTO;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.view.RepresentationDescription;
 import org.eclipse.sirius.components.view.View;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to provide the {@link RepresentationDescriptionMetadata}s of a given object from for all views.
+ * Used to provide the {@link RepresentationDescriptionMetadataDTO}s of a given object from for all views.
  *
  * @author arichard
  */
@@ -54,12 +55,13 @@ public class ViewRepresentationDescriptionsProvider implements IRepresentationDe
     }
 
     @Override
-    public List<RepresentationDescriptionMetadata> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
-        List<RepresentationDescriptionMetadata> result = new ArrayList<>();
+    public List<RepresentationDescriptionMetadataDTO> handle(IEditingContext editingContext, Object object, IRepresentationDescription representationDescription) {
+        List<RepresentationDescriptionMetadataDTO> result = new ArrayList<>();
         var viewRepresentationDescription = this.viewRepresentationDescriptionSearchService.findById(editingContext, representationDescription.getId());
         if (viewRepresentationDescription.isPresent()) {
             String defaultName = viewRepresentationDescription.map(view -> this.getDefaultName(view, editingContext, object)).orElse(representationDescription.getLabel());
-            result.add(new RepresentationDescriptionMetadata(representationDescription.getId(), representationDescription.getLabel(), defaultName));
+            String documentation = viewRepresentationDescription.map(RepresentationDescription::getEndUserDocumentation).orElse("");
+            result.add(new RepresentationDescriptionMetadataDTO(representationDescription.getId(), representationDescription.getLabel(), defaultName, documentation));
         }
         return result;
     }

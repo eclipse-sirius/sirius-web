@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.emf.services.api;
 
 import java.util.List;
 
-import org.eclipse.sirius.components.collaborative.api.RepresentationDescriptionMetadata;
+import org.eclipse.sirius.components.collaborative.dto.RepresentationDescriptionMetadataDTO;
 
 /**
  * Used to sort the compatible representation description (most common/highest priority first) before presenting them to
@@ -23,5 +23,5 @@ import org.eclipse.sirius.components.collaborative.api.RepresentationDescription
  * @author pcdavid
  */
 public interface IRepresentationDescriptionMetadataSorter {
-    List<RepresentationDescriptionMetadata> sort(List<RepresentationDescriptionMetadata> representationDescriptions);
+    List<RepresentationDescriptionMetadataDTO> sort(List<RepresentationDescriptionMetadataDTO> representationDescriptions);
 }
