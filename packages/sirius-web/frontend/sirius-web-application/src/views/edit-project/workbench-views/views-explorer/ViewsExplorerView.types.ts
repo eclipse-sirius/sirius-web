@@ -17,4 +17,8 @@ export interface ViewsExplorerViewState {
   expanded: string[];
   tree: GQLTree | null;
   selectedTreeItemIds: string[];
+  filterBar: boolean;
+  filterBarText: string;
+  filterBarTreeFiltering: boolean;
+  maxDepth: number;
 }
