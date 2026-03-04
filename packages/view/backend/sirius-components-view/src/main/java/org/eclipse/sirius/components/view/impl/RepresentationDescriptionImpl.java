@@ -37,6 +37,8 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getDescription
  * <em>Description</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl#getEndUserDocumentation <em>End User
+ * Documentation</em>}</li>
  * </ul>
  *
  * @generated
@@ -161,6 +163,26 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @ordered
      */
     protected String description = DESCRIPTION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getEndUserDocumentation() <em>End User Documentation</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEndUserDocumentation()
+     * @generated
+     * @ordered
+     */
+    protected static final String END_USER_DOCUMENTATION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getEndUserDocumentation() <em>End User Documentation</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getEndUserDocumentation()
+     * @generated
+     * @ordered
+     */
+    protected String endUserDocumentation = END_USER_DOCUMENTATION_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -325,6 +347,29 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
      * @generated
      */
     @Override
+    public String getEndUserDocumentation() {
+        return this.endUserDocumentation;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setEndUserDocumentation(String newEndUserDocumentation) {
+        String oldEndUserDocumentation = this.endUserDocumentation;
+        this.endUserDocumentation = newEndUserDocumentation;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, ViewPackage.REPRESENTATION_DESCRIPTION__END_USER_DOCUMENTATION, oldEndUserDocumentation, this.endUserDocumentation));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
             case ViewPackage.REPRESENTATION_DESCRIPTION__NAME:
@@ -339,6 +384,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
                 return this.getIconExpression();
             case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
                 return this.getDescription();
+            case ViewPackage.REPRESENTATION_DESCRIPTION__END_USER_DOCUMENTATION:
+                return this.getEndUserDocumentation();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -368,6 +415,9 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
                 return;
             case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
                 this.setDescription((String) newValue);
+                return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__END_USER_DOCUMENTATION:
+                this.setEndUserDocumentation((String) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -399,6 +449,9 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
             case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
                 this.setDescription(DESCRIPTION_EDEFAULT);
                 return;
+            case ViewPackage.REPRESENTATION_DESCRIPTION__END_USER_DOCUMENTATION:
+                this.setEndUserDocumentation(END_USER_DOCUMENTATION_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -423,6 +476,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
                 return ICON_EXPRESSION_EDEFAULT == null ? this.iconExpression != null : !ICON_EXPRESSION_EDEFAULT.equals(this.iconExpression);
             case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
                 return DESCRIPTION_EDEFAULT == null ? this.description != null : !DESCRIPTION_EDEFAULT.equals(this.description);
+            case ViewPackage.REPRESENTATION_DESCRIPTION__END_USER_DOCUMENTATION:
+                return END_USER_DOCUMENTATION_EDEFAULT == null ? this.endUserDocumentation != null : !END_USER_DOCUMENTATION_EDEFAULT.equals(this.endUserDocumentation);
         }
         return super.eIsSet(featureID);
     }
@@ -450,6 +505,8 @@ public abstract class RepresentationDescriptionImpl extends MinimalEObjectImpl.C
         result.append(this.iconExpression);
         result.append(", description: ");
         result.append(this.description);
+        result.append(", endUserDocumentation: ");
+        result.append(this.endUserDocumentation);
         result.append(')');
         return result.toString();
     }

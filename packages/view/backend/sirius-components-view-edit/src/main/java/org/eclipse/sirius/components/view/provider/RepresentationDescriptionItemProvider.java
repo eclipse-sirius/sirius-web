@@ -65,6 +65,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
             this.addTitleExpressionPropertyDescriptor(object);
             this.addIconExpressionPropertyDescriptor(object);
             this.addDescriptionPropertyDescriptor(object);
+            this.addEndUserDocumentationPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -143,6 +144,19 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
     }
 
     /**
+     * This adds a property descriptor for the End User Documentation feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addEndUserDocumentationPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_RepresentationDescription_endUserDocumentation_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_RepresentationDescription_endUserDocumentation_feature", "_UI_RepresentationDescription_type"),
+                ViewPackage.Literals.REPRESENTATION_DESCRIPTION__END_USER_DOCUMENTATION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
      * This returns RepresentationDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
@@ -191,6 +205,7 @@ public class RepresentationDescriptionItemProvider extends ItemProviderAdapter
             case ViewPackage.REPRESENTATION_DESCRIPTION__TITLE_EXPRESSION:
             case ViewPackage.REPRESENTATION_DESCRIPTION__ICON_EXPRESSION:
             case ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION:
+            case ViewPackage.REPRESENTATION_DESCRIPTION__END_USER_DOCUMENTATION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
         }

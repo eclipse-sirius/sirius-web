@@ -98,6 +98,16 @@ public class TableDescriptionBuilder {
     }
 
     /**
+     * Setter for EndUserDocumentation.
+     *
+     * @generated
+     */
+    public TableDescriptionBuilder endUserDocumentation(java.lang.String value) {
+        this.getTableDescription().setEndUserDocumentation(value);
+        return this;
+    }
+
+    /**
      * Setter for UseStripedRowsExpression.
      *
      * @generated
