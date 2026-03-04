@@ -98,6 +98,16 @@ public class FormDescriptionBuilder {
     }
 
     /**
+     * Setter for EndUserDocumentation.
+     *
+     * @generated
+     */
+    public FormDescriptionBuilder endUserDocumentation(java.lang.String value) {
+        this.getFormDescription().setEndUserDocumentation(value);
+        return this;
+    }
+
+    /**
      * Setter for Pages.
      *
      * @generated

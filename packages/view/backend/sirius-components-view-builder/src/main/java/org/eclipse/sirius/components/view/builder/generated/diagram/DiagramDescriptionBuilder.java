@@ -168,6 +168,16 @@ public class DiagramDescriptionBuilder {
     }
 
     /**
+     * Setter for EndUserDocumentation.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder endUserDocumentation(java.lang.String value) {
+        this.getDiagramDescription().setEndUserDocumentation(value);
+        return this;
+    }
+
+    /**
      * Setter for GroupPalette.
      *
      * @generated
