@@ -31,6 +31,8 @@ import org.eclipse.emf.ecore.EObject;
  * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getIconExpression <em>Icon
  * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getDescription <em>Description</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.RepresentationDescription#getEndUserDocumentation <em>End User
+ * Documentation</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription()
@@ -175,5 +177,29 @@ public interface RepresentationDescription extends EObject {
      * @generated
      */
     void setDescription(String value);
+
+    /**
+     * Returns the value of the '<em><b>End User Documentation</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>End User Documentation</em>' attribute.
+     * @see #setEndUserDocumentation(String)
+     * @see org.eclipse.sirius.components.view.ViewPackage#getRepresentationDescription_EndUserDocumentation()
+     * @model
+     * @generated
+     */
+    String getEndUserDocumentation();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.RepresentationDescription#getEndUserDocumentation <em>End User
+     * Documentation</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>End User Documentation</em>' attribute.
+     * @see #getEndUserDocumentation()
+     * @generated
+     */
+    void setEndUserDocumentation(String value);
 
 } // RepresentationDescription
