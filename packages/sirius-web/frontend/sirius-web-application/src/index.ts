@@ -89,6 +89,9 @@ export type { UseViewerValue } from './viewer/useViewer.types';
 export { ViewerContext, ViewerContextProvider } from './viewer/ViewerContext';
 export type { ViewerContextProviderProps, ViewerContextValue } from './viewer/ViewerContext.types';
 export { DisplayLibraryView } from './views/display-library/DisplayLibraryView';
+export { useCurrentLibrary } from './views/display-library/useCurrentLibrary';
+export type { UseCurrentLibraryValue } from './views/display-library/useCurrentLibrary.types';
+export type { GQLLibrary } from './views/display-library/useLibrary.types';
 export { EditProjectView } from './views/edit-project/EditProjectView';
 export type {
   EditProjectNavbarMenuContainerProps,

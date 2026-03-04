@@ -127,6 +127,7 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] Retrieve the label size from data rather than dom element for elk layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6178[#6178] [diagram] Prevent edge label from sticking to the edge path
 - https://github.com/eclipse-sirius/sirius-web/issues/6020[#6020] [diagram] Allow the execution of the hardcoded semantic delete tool on a multi selection
+- https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types. 
 
 
 == 2026.1.0
