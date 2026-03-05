@@ -73,6 +73,8 @@ Add log messages for the access to the main parts of the application (project te
 Add log messages for the manipulation of projects
 - https://github.com/eclipse-sirius/sirius-web/issues/6366[#6366] [diagram] Extract layout tools in several hooks.
 - https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Move the selection dialog default settings to the backend
+- https://github.com/eclipse-sirius/sirius-web/issues/6269[#6269] [view] Add more selection dialog labels customization in the View DSL.
++ Come with a migration participant to rename the name of `selectionMessage` and `noSelectionLabel` feature name into `descriptionExpression` and `noSelectionActionLabelExpression`.
 
 
 

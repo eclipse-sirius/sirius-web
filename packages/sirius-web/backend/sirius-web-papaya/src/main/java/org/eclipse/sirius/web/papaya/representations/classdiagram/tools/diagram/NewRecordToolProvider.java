@@ -32,7 +32,7 @@ public class NewRecordToolProvider {
         return new DiagramBuilders().newNodeTool()
                 .name("New record")
                 .iconURLsExpression("/icons/papaya/full/obj16/Record.svg")
-                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog())
+                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog("record"))
                 .body(
                         new ViewBuilders().newIf()
                                 .conditionExpression("aql:selectedObject <> null")

@@ -239,7 +239,7 @@ public class ModelOperationDiagramDescriptionProvider implements IEditingContext
                 .elementsExpression("aql:self.eResource().eAllContents()")
                 .build();
         var selectionDialog = new SelectionDialogDescriptionBuilder()
-                .selectionMessage("Select a new element")
+                .descriptionExpression("Select a new element")
                 .selectionDialogTreeDescription(selectionDialogTreeDescription)
                 .build();
 

@@ -2425,18 +2425,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getSelectionDialogDescription_SelectionMessage() {
-        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
     public EReference getSelectionDialogDescription_SelectionDialogTreeDescription() {
-        return (EReference) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(1);
+        return (EReference) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(0);
     }
 
     /**
@@ -2446,7 +2436,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getSelectionDialogDescription_Multiple() {
-        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(2);
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(1);
     }
 
     /**
@@ -2456,6 +2446,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      */
     @Override
     public EAttribute getSelectionDialogDescription_Optional() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_DefaultTitleExpression() {
         return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(3);
     }
 
@@ -2465,8 +2465,128 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
-    public EAttribute getSelectionDialogDescription_NoSelectionLabel() {
+    public EAttribute getSelectionDialogDescription_NoSelectionTitleExpression() {
         return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_WithSelectionTitleExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(5);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_DescriptionExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(6);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_NoSelectionActionLabelExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_NoSelectionActionDescriptionExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_WithSelectionActionLabelExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(9);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_WithSelectionActionDescriptionExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(10);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_NoSelectionActionStatusMessageExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(11);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_SelectionRequiredWithoutSelectionStatusMessageExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(12);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_SelectionRequiredWithSelectionStatusMessageExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(13);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_NoSelectionConfirmButtonLabelExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(14);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_SelectionRequiredWithoutSelectionConfirmButtonLabelExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(15);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSelectionDialogDescription_SelectionRequiredWithSelectionConfirmButtonLabelExpression() {
+        return (EAttribute) this.selectionDialogDescriptionEClass.getEStructuralFeatures().get(16);
     }
 
     /**
@@ -3092,11 +3212,23 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.deleteViewEClass, DELETE_VIEW__VIEW_EXPRESSION);
 
         this.selectionDialogDescriptionEClass = this.createEClass(SELECTION_DIALOG_DESCRIPTION);
-        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE);
         this.createEReference(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION);
         this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__MULTIPLE);
         this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__OPTIONAL);
-        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__DEFAULT_TITLE_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_TITLE_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_TITLE_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__DESCRIPTION_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_LABEL_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_DESCRIPTION_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_LABEL_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_DESCRIPTION_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_STATUS_MESSAGE_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_STATUS_MESSAGE_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_STATUS_MESSAGE_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION);
+        this.createEAttribute(this.selectionDialogDescriptionEClass, SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION);
 
         this.toolSectionEClass = this.createEClass(TOOL_SECTION);
         this.createEAttribute(this.toolSectionEClass, TOOL_SECTION__NAME);
@@ -3591,16 +3723,44 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.selectionDialogDescriptionEClass, SelectionDialogDescription.class, "SelectionDialogDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEAttribute(this.getSelectionDialogDescription_SelectionMessage(), this.ecorePackage.getEString(), "selectionMessage", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getSelectionDialogDescription_SelectionDialogTreeDescription(), this.getSelectionDialogTreeDescription(), null, "selectionDialogTreeDescription", null, 0, 1,
                 SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getSelectionDialogDescription_Multiple(), this.ecorePackage.getEBoolean(), "multiple", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getSelectionDialogDescription_Optional(), this.ecorePackage.getEBoolean(), "optional", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEAttribute(this.getSelectionDialogDescription_NoSelectionLabel(), this.ecorePackage.getEString(), "noSelectionLabel", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_DefaultTitleExpression(), this.ecorePackage.getEString(), "defaultTitleExpression", null, 0, 1, SelectionDialogDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_NoSelectionTitleExpression(), this.ecorePackage.getEString(), "noSelectionTitleExpression", null, 0, 1, SelectionDialogDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_WithSelectionTitleExpression(), this.ecorePackage.getEString(), "withSelectionTitleExpression", null, 0, 1,
+                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_DescriptionExpression(), this.ecorePackage.getEString(), "descriptionExpression", null, 0, 1, SelectionDialogDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_NoSelectionActionLabelExpression(), this.ecorePackage.getEString(), "noSelectionActionLabelExpression", null, 0, 1,
+                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_NoSelectionActionDescriptionExpression(), this.ecorePackage.getEString(), "noSelectionActionDescriptionExpression", null, 0, 1,
+                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_WithSelectionActionLabelExpression(), this.ecorePackage.getEString(), "withSelectionActionLabelExpression", null, 0, 1,
+                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_WithSelectionActionDescriptionExpression(), this.ecorePackage.getEString(), "withSelectionActionDescriptionExpression", null, 0, 1,
+                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_NoSelectionActionStatusMessageExpression(), this.ecorePackage.getEString(), "noSelectionActionStatusMessageExpression", null, 0, 1,
+                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_SelectionRequiredWithoutSelectionStatusMessageExpression(), this.ecorePackage.getEString(),
+                "selectionRequiredWithoutSelectionStatusMessageExpression", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_SelectionRequiredWithSelectionStatusMessageExpression(), this.ecorePackage.getEString(),
+                "selectionRequiredWithSelectionStatusMessageExpression", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_NoSelectionConfirmButtonLabelExpression(), this.ecorePackage.getEString(), "noSelectionConfirmButtonLabelExpression", null, 0, 1,
+                SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_SelectionRequiredWithoutSelectionConfirmButtonLabelExpression(), this.ecorePackage.getEString(),
+                "selectionRequiredWithoutSelectionConfirmButtonLabelExpression", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getSelectionDialogDescription_SelectionRequiredWithSelectionConfirmButtonLabelExpression(), this.ecorePackage.getEString(),
+                "selectionRequiredWithSelectionConfirmButtonLabelExpression", null, 0, 1, SelectionDialogDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.toolSectionEClass, ToolSection.class, "ToolSection", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getToolSection_Name(), theViewPackage.getIdentifier(), "name", "Tool Section", 1, 1, ToolSection.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,

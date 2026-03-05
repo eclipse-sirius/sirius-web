@@ -22,7 +22,7 @@ import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
  */
 public class TypeContainerSelectionDialogDescriptionProvider {
 
-    public SelectionDialogDescription getDialog() {
+    public SelectionDialogDescription getDialog(String typeName) {
         var treeDescription = new DiagramBuilders().newSelectionDialogTreeDescription()
                 .elementsExpression("aql:self.eResource().getResourceSet().getResources()")
                 .childrenExpression("aql:self.getChildren()")
@@ -30,7 +30,8 @@ public class TypeContainerSelectionDialogDescriptionProvider {
                 .build();
 
         return new DiagramBuilders().newSelectionDialogDescription()
-                .selectionMessage("Select the container of the new type")
+                .defaultTitleExpression("New " + typeName)
+                .descriptionExpression("Select how to create the new " + typeName)
                 .selectionDialogTreeDescription(treeDescription)
                 .optional(true)
                 .build();
