@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,42 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import Typography from '@mui/material/Typography';
-import React, { ForwardedRef, forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { WorkbenchViewHandle } from './Workbench.types';
 import { WorkbenchPartProps } from './WorkbenchPart.types';
 
-const useSiteStyles = makeStyles()((theme) => ({
+const useSiteStyles = makeStyles()((_) => ({
   view: {
     display: 'flex',
     flexDirection: 'column',
     minWidth: 0,
-    overflow: 'auto',
-  },
-  viewHeader: {
-    display: 'flex',
-    flexDirection: 'row',
-    borderBottomColor: theme.palette.divider,
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-  },
-  viewHeaderIcon: {
-    margin: theme.spacing(1),
-  },
-  viewHeaderTitle: {
-    marginTop: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-  },
-  viewContent: {
-    flexGrow: 1,
-    overflow: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    '& > *': {
-      flexGrow: 1,
-    },
+    overflow: 'hidden',
+    height: '100%',
   },
 }));
 
@@ -57,22 +33,16 @@ export const WorkbenchPart = forwardRef<WorkbenchViewHandle, WorkbenchPartProps>
   ) => {
     const { classes } = useSiteStyles();
 
-    const { id, title, icon, component: Component } = contribution;
+    const { id, component: Component } = contribution;
     return (
       <div className={classes.view} data-testid={`site-${side}`}>
-        <div className={classes.viewHeader}>
-          {React.cloneElement(icon, { className: classes.viewHeaderIcon })}
-          <Typography className={classes.viewHeaderTitle}>{title}</Typography>
-        </div>
-        <div className={classes.viewContent} data-testid={`view-${title}`}>
-          <Component
-            id={id}
-            editingContextId={editingContextId}
-            readOnly={readOnly}
-            initialConfiguration={initialConfiguration}
-            ref={ref}
-          />
-        </div>
+        <Component
+          id={id}
+          editingContextId={editingContextId}
+          readOnly={readOnly}
+          initialConfiguration={initialConfiguration}
+          ref={ref}
+        />
       </div>
     );
   }

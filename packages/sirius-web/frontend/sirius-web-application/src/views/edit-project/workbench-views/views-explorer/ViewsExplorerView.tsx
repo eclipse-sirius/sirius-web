@@ -14,6 +14,8 @@ import {
   RepresentationLoadingIndicator,
   SelectionEntry,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -52,7 +54,7 @@ const isTreeRefreshedEventPayload = (payload: GQLTreeEventPayload): payload is G
   payload && payload.__typename === 'TreeRefreshedEventPayload';
 
 export const ViewsExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>(
-  ({ editingContextId, readOnly }: WorkbenchViewComponentProps) => {
+  ({ editingContextId, id, readOnly }: WorkbenchViewComponentProps) => {
     const { classes } = useStyles();
     const { t } = useTranslation('sirius-web-application', { keyPrefix: 'viewsExplorerView' });
 
@@ -98,51 +100,59 @@ export const ViewsExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCo
 
     if (!state.tree) {
       return (
-        <div className={classes.treeView}>
-          <RepresentationLoadingIndicator />
-        </div>
+        <ViewAccordion id={id} title={t('viewExplorerTitle')}>
+          <ViewAccordionContent>
+            <div className={classes.treeView}>
+              <RepresentationLoadingIndicator />
+            </div>
+          </ViewAccordionContent>
+        </ViewAccordion>
       );
     }
 
     return (
-      <div className={classes.treeView}>
-        {state.tree.children.length === 0 ? (
-          <div className={classes.idle}>
-            <Typography variant="subtitle2">{t('noRepresentation')}</Typography>
+      <ViewAccordion id={id} title={t('viewExplorerTitle')}>
+        <ViewAccordionContent>
+          <div className={classes.treeView}>
+            {state.tree.children.length === 0 ? (
+              <div className={classes.idle}>
+                <Typography variant="subtitle2">{t('noView')}</Typography>
+              </div>
+            ) : (
+              <div className={classes.treeContent}>
+                <TreeView
+                  editingContextId={editingContextId}
+                  readOnly={readOnly}
+                  tree={state.tree}
+                  textToHighlight=""
+                  textToFilter={null}
+                  onExpandedElementChange={onExpandedElementChange}
+                  expanded={state.expanded}
+                  maxDepth={1}
+                  treeItemActionRender={(props) => {
+                    if (
+                      props.item.kind == 'siriusWeb://representationKind' ||
+                      props.item.kind == 'siriusWeb://representationDescriptionType'
+                    ) {
+                      return null;
+                    } else {
+                      return <TreeItemAction {...props} />;
+                    }
+                  }}
+                  onTreeItemClick={onTreeItemClick}
+                  selectTreeItems={(selectedTreeItemIds: string[]) =>
+                    setState((prevState) => {
+                      return { ...prevState, selectedTreeItemIds };
+                    })
+                  }
+                  selectedTreeItemIds={state.selectedTreeItemIds}
+                  data-testid="viewsexplorer://"
+                />
+              </div>
+            )}
           </div>
-        ) : (
-          <div className={classes.treeContent}>
-            <TreeView
-              editingContextId={editingContextId}
-              readOnly={readOnly}
-              tree={state.tree}
-              textToHighlight=""
-              textToFilter={null}
-              onExpandedElementChange={onExpandedElementChange}
-              expanded={state.expanded}
-              maxDepth={1}
-              treeItemActionRender={(props) => {
-                if (
-                  props.item.kind == 'siriusWeb://representationKind' ||
-                  props.item.kind == 'siriusWeb://representationDescriptionType'
-                ) {
-                  return null;
-                } else {
-                  return <TreeItemAction {...props} />;
-                }
-              }}
-              onTreeItemClick={onTreeItemClick}
-              selectTreeItems={(selectedTreeItemIds: string[]) =>
-                setState((prevState) => {
-                  return { ...prevState, selectedTreeItemIds };
-                })
-              }
-              selectedTreeItemIds={state.selectedTreeItemIds}
-              data-testid="viewsexplorer://"
-            />
-          </div>
-        )}
-      </div>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );
