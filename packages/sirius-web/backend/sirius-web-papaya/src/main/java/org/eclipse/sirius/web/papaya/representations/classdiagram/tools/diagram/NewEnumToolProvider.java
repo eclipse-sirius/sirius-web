@@ -31,7 +31,7 @@ public class NewEnumToolProvider {
         return new DiagramBuilders().newNodeTool()
                 .name("New enum")
                 .iconURLsExpression("/icons/papaya/full/obj16/Enum.svg")
-                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog())
+                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog("enum"))
                 .body(
                         new ViewBuilders().newIf()
                                 .conditionExpression("aql:selectedObject <> null")

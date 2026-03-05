@@ -32,7 +32,7 @@ public class NewClassToolProvider {
         return new DiagramBuilders().newNodeTool()
                 .name("New class")
                 .iconURLsExpression("/icons/papaya/full/obj16/Class.svg")
-                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog())
+                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog("class"))
                 .body(
                         new ViewBuilders().newIf()
                                 .conditionExpression("aql:selectedObject <> null")

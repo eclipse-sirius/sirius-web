@@ -183,17 +183,17 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         String selectionRequiredWithSelectionConfirmButtonLabel = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.dialog.confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel");
         String treeDescriptionId = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeDescription.id");
 
-        assertThat(dialogDefaultTitle).isEqualTo("Element Selection");
-        assertThat(dialogNoSelectionTitle).isEqualTo("Element Selection");
-        assertThat(dialogWithSelectionTitle).isEqualTo("Element Selection");
+        assertThat(dialogDefaultTitle).isEqualTo("Just the default title");
+        assertThat(dialogNoSelectionTitle).isEqualTo("The title when the option 'no selection' is selected");
+        assertThat(dialogWithSelectionTitle).isEqualTo("The title when the dialog requires a selection");
         assertThat(dialogDescription).isEqualTo("Select the objects to consider");
-        assertThat(noSelectionActionLabel).isEqualTo("Execute the tool without making a selection");
-        assertThat(noSelectionActionDescription).isEqualTo("Proceed without selecting an existing element");
-        assertThat(withSelectionActionLabel).isEqualTo("Use an existing element");
-        assertThat(withSelectionActionDescription).isEqualTo("Select one or more elements");
-        assertThat(noSelectionActionStatusMessage).isEqualTo("The tool execution will continue without any element selected");
-        assertThat(selectionRequiredWithoutSelectionStatusMessage).isEqualTo("Select at least one element to continue the tool execution");
-        assertThat(noSelectionConfirmButtonLabel).isEqualTo("Confirm");
+        assertThat(noSelectionActionLabel).isEqualTo("The selection is not required");
+        assertThat(noSelectionActionDescription).isEqualTo("Can confirm the dialog without making a selection");
+        assertThat(withSelectionActionLabel).isEqualTo("The selection is required");
+        assertThat(withSelectionActionDescription).isEqualTo("Need a selection to confirm the dialog");
+        assertThat(noSelectionActionStatusMessage).isEqualTo("Can continue without a selection");
+        assertThat(selectionRequiredWithoutSelectionStatusMessage).isEqualTo("Select an element");
+        assertThat(noSelectionConfirmButtonLabel).isEqualTo("Confirm without selection");
         assertThat(selectionRequiredWithoutSelectionConfirmButtonLabel).isEqualTo("Select an element");
         assertThat(selectionRequiredWithSelectionConfirmButtonLabel).isEqualTo("Confirm");
         assertThat(treeDescriptionId).isEqualTo(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId());
@@ -475,13 +475,13 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
     @GivenSiriusWebServer
     @DisplayName("given a selectionDescription then the image and the label are the expected ones")
     public void givenASelectionDescriptionThenTheImageAndLabelAreTheExpectedOnes() {
-        SelectionDialogDescription selectionDRialogDescription = this.selectionDescriptionProvider.getSelectionDialog();
-        String selectionDialogLabel = this.labelService.getStyledLabel(selectionDRialogDescription).toString();
-        assertThat(selectionDialogLabel).isEqualTo(selectionDRialogDescription.getSelectionMessage());
-        List<String> imagePath = this.labelService.getImagePaths(selectionDRialogDescription);
+        SelectionDialogDescription selectionDialogDescription = this.selectionDescriptionProvider.getSelectionDialog();
+        String selectionDialogLabel = this.labelService.getStyledLabel(selectionDialogDescription).toString();
+        assertThat(selectionDialogLabel).isEqualTo(selectionDialogDescription.getDefaultTitleExpression());
+        List<String> imagePath = this.labelService.getImagePaths(selectionDialogDescription);
         assertThat(imagePath).hasSize(1).first().isEqualTo("/icons/full/obj16/SelectionDialogDescription.svg");
 
-        SelectionDialogTreeDescription selectionDialogTreeDescription = selectionDRialogDescription.getSelectionDialogTreeDescription();
+        SelectionDialogTreeDescription selectionDialogTreeDescription = selectionDialogDescription.getSelectionDialogTreeDescription();
         String selectionDialogTreeDescriptionLabel = this.labelService.getStyledLabel(selectionDialogTreeDescription).toString();
         assertThat(selectionDialogTreeDescriptionLabel).isEqualTo(selectionDialogTreeDescription.getElementsExpression());
         List<String> selectionDialogTreeDescriptionImagePath = this.labelService.getImagePaths(selectionDialogTreeDescription);

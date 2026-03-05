@@ -1233,6 +1233,78 @@ INSERT INTO document (
   '2024-07-18 15:00:0.000'
 );
 
+INSERT INTO document (
+  id,
+  semantic_data_id,
+  name,
+  content,
+  is_read_only,
+  created_on,
+  last_modified_on
+) VALUES (
+  '0f84ac24-fe64-43f6-87a2-7f359c7d6f9a',
+  '06d828d9-c2c6-46d0-a9c4-7fabd588755b',
+  'SelectionDialogDescriptionMigrateLabelsToExpressionMigrationParticipant migration',
+  '{
+    "json": { "version": "1.0", "encoding": "utf-8" },
+    "ns": { "diagram": "http://www.eclipse.org/sirius-web/diagram", "view": "http://www.eclipse.org/sirius-web/view" },
+    "content": [
+      {
+        "id": "93caaf4e-8593-4ee7-8d5e-50b05996d7d8",
+        "eClass": "view:View",
+        "data": {
+          "descriptions": [
+            {
+              "id": "782e9016-4c4d-48ba-bb59-21313ba905ec",
+              "eClass": "diagram:DiagramDescription",
+              "data": {
+                "name": "SelectionDialogDescriptionMigrateLabelsToExpressionMigrationParticipant migration",
+                "domainType": "wilson::Root",
+                "titleExpression": "wilson diagram",
+                "palette": {
+                  "id": "286d4d54-366d-442c-8359-b7860650116b",
+                  "eClass": "diagram:DiagramPalette",
+                  "data": {
+                    "nodeTools": [
+                      {
+                        "id": "7812650b-fe54-48a9-aca3-1239ee93b135",
+                        "eClass": "diagram:NodeTool",
+                        "data": {
+                          "name": "Selection Tool",
+                          "dialogDescription": {
+                            "id": "6b93da0c-1a1f-41ca-9f20-d5dc9542d679",
+                            "eClass": "diagram:SelectionDialogDescription",
+                            "data": {
+                              "selectionMessage": "Selection message to migrate",
+                              "noSelectionLabel": "no selection label to migrate",
+                              "selectionDialogTreeDescription": {
+                                "id": "7a4e835c-754b-4a34-908b-eaa555efa128",
+                                "eClass": "diagram:SelectionDialogTreeDescription",
+                                "data": {
+                                  "elementsExpression": "aql:self.eContents()",
+                                  "childrenExpression": "aql:self.eContents()",
+                                  "isSelectableExpression": "aql:true"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }',
+  false,
+  '2025-12-18 15:00:0.000',
+  '2025-12-18 15:00:0.000'
+);
+
 INSERT INTO project (
   id,
   name,

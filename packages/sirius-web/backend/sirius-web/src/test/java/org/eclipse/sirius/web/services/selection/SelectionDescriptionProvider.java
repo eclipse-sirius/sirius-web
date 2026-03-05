@@ -58,7 +58,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
 
     public static final String LABEL = "Selection";
 
-    private static final String DIALOG_MESSAGE = "Select the objects to consider";
+    private static final String DIALOG_DESCRIPTION = "Select the objects to consider";
 
     private final View view;
     private final IDiagramIdProvider diagramIdProvider;
@@ -194,7 +194,19 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .isSelectableExpression("aql:self.oclIsKindOf(papaya::Component)")
                 .build();
         return new SelectionDialogDescriptionBuilder()
-                .selectionMessage(DIALOG_MESSAGE)
+                .descriptionExpression(DIALOG_DESCRIPTION)
+                .defaultTitleExpression("Just the default title")
+                .noSelectionTitleExpression("The title when the option 'no selection' is selected")
+                .withSelectionTitleExpression("The title when the dialog requires a selection")
+                .noSelectionActionLabelExpression("The selection is not required")
+                .noSelectionActionDescriptionExpression("Can confirm the dialog without making a selection")
+                .withSelectionActionLabelExpression("The selection is required")
+                .withSelectionActionDescriptionExpression("Need a selection to confirm the dialog")
+                .noSelectionActionStatusMessageExpression("Can continue without a selection")
+                .selectionRequiredWithoutSelectionStatusMessageExpression("Select an element")
+                .noSelectionConfirmButtonLabelExpression("Confirm without selection")
+                .selectionRequiredWithoutSelectionConfirmButtonLabelExpression("Select an element")
+                .selectionRequiredWithSelectionConfirmButtonLabelExpression("Confirm")
                 .selectionDialogTreeDescription(this.selectionDialogTreeDescription)
                 .optional(true)
                 .build();
@@ -208,7 +220,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .isSelectableExpression("aql:self.oclIsKindOf(papaya::Component)")
                 .build();
         return new SelectionDialogDescriptionBuilder()
-                .selectionMessage(DIALOG_MESSAGE)
+                .descriptionExpression(DIALOG_DESCRIPTION)
                 .selectionDialogTreeDescription(edgeSelectionDialogTreeDescription)
                 .build();
 
