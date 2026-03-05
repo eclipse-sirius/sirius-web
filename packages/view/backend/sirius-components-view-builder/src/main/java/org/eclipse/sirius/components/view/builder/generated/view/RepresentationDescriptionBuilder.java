@@ -82,5 +82,15 @@ public abstract class RepresentationDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for EndUserDocumentation.
+     *
+     * @generated
+     */
+    public RepresentationDescriptionBuilder endUserDocumentation(java.lang.String value) {
+        this.getRepresentationDescription().setEndUserDocumentation(value);
+        return this;
+    }
+
 }
 

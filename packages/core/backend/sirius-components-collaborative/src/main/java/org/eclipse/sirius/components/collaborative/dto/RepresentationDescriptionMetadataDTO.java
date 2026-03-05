@@ -12,20 +12,19 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.dto;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
-
-import org.eclipse.sirius.components.core.api.IPayload;
 
 /**
- * The payload object for this query.
+ * An object containing representation description data.
  *
- * @author pcdavid
+ * @author arichard
  */
-public record EditingContextRepresentationDescriptionsPayload(UUID id, List<RepresentationDescriptionMetadataDTO> representationDescriptions) implements IPayload {
-    public EditingContextRepresentationDescriptionsPayload {
+public record RepresentationDescriptionMetadataDTO(String id, String label, String defaultName, String endUserDocumentation) {
+
+    public RepresentationDescriptionMetadataDTO {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(representationDescriptions);
+        Objects.requireNonNull(label);
+        Objects.requireNonNull(defaultName);
+        Objects.requireNonNull(endUserDocumentation);
     }
 }

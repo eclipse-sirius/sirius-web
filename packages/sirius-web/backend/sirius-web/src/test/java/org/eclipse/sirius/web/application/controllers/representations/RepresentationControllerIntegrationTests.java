@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -271,6 +271,10 @@ public class RepresentationControllerIntegrationTests extends AbstractIntegratio
 
         List<String> representationIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.edges[*].node.id");
         assertThat(representationIds).hasSize(3);
+
+        List<String> representationDescriptions = JsonPath.read(result.data(), "$.data.viewer.editingContext.representationDescriptions.edges[*].node.endUserDocumentation");
+        assertThat(representationDescriptions).isNotEmpty()
+                .anySatisfy(description -> assertThat(description).isEqualTo("Test documentation"));
     }
 
     @Test

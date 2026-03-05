@@ -98,6 +98,16 @@ public class GanttDescriptionBuilder {
     }
 
     /**
+     * Setter for EndUserDocumentation.
+     *
+     * @generated
+     */
+    public GanttDescriptionBuilder endUserDocumentation(java.lang.String value) {
+        this.getGanttDescription().setEndUserDocumentation(value);
+        return this;
+    }
+
+    /**
      * Setter for TaskElementDescriptions.
      *
      * @generated

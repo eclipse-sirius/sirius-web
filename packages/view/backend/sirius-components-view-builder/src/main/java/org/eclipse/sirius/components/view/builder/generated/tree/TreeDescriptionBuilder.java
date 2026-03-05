@@ -98,6 +98,16 @@ public class TreeDescriptionBuilder {
     }
 
     /**
+     * Setter for EndUserDocumentation.
+     *
+     * @generated
+     */
+    public TreeDescriptionBuilder endUserDocumentation(java.lang.String value) {
+        this.getTreeDescription().setEndUserDocumentation(value);
+        return this;
+    }
+
+    /**
      * Setter for KindExpression.
      *
      * @generated

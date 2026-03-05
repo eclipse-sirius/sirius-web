@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,7 @@ public class CreateRepresentationCommandProvider implements IWorkbenchOmniboxCom
 
     private List<OmniboxCommand> toCommands(EditingContextRepresentationDescriptionsPayload payload) {
         return payload.representationDescriptions().stream()
-                .map(representationDescriptionMetadata -> new OmniboxCommand(ACTION_PREFIX + representationDescriptionMetadata.getId(), "Create a new " + representationDescriptionMetadata.getLabel(), List.of("/omnibox/create.svg"), ""))
+                .map(representationDescriptionMetadata -> new OmniboxCommand(ACTION_PREFIX + representationDescriptionMetadata.id(), "Create a new " + representationDescriptionMetadata.label(), List.of("/omnibox/create.svg"), ""))
                 .toList();
     }
 }

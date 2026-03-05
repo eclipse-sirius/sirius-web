@@ -98,6 +98,16 @@ public class DeckDescriptionBuilder {
     }
 
     /**
+     * Setter for EndUserDocumentation.
+     *
+     * @generated
+     */
+    public DeckDescriptionBuilder endUserDocumentation(java.lang.String value) {
+        this.getDeckDescription().setEndUserDocumentation(value);
+        return this;
+    }
+
+    /**
      * Setter for LaneDescriptions.
      *
      * @generated
