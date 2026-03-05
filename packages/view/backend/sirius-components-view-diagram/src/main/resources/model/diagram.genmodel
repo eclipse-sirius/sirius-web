@@ -303,11 +303,23 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DeleteView/viewExpression"/>
     </genClasses>
     <genClasses ecoreClass="diagram.ecore#//SelectionDialogDescription">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionMessage"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//SelectionDialogDescription/selectionDialogTreeDescription"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/multiple"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/optional"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/noSelectionLabel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/defaultTitleExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/noSelectionTitleExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/withSelectionTitleExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/descriptionExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/noSelectionActionLabelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/noSelectionActionDescriptionExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/withSelectionActionLabelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/withSelectionActionDescriptionExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/noSelectionActionStatusMessageExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionRequiredWithoutSelectionStatusMessageExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionRequiredWithSelectionStatusMessageExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/noSelectionConfirmButtonLabelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionRequiredWithoutSelectionConfirmButtonLabelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SelectionDialogDescription/selectionRequiredWithSelectionConfirmButtonLabelExpression"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//ToolSection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//ToolSection/name"/>

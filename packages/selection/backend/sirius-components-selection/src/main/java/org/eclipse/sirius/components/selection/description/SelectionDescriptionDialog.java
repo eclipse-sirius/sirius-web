@@ -23,7 +23,14 @@ import java.util.Objects;
  * </p>
  * @author gcoutable
  */
-public record SelectionDescriptionDialog(SelectionDescriptionDialogTitles titles, String description, SelectionDescriptionDialogAction noSelectionAction, SelectionDescriptionDialogAction withSelectionAction, SelectionDescriptionDialogStatusMessages statusMessages, SelectionDescriptionDialogConfirmButtonLabels confirmButtonLabels) {
+public record SelectionDescriptionDialog(
+        SelectionDescriptionDialogTitles titles,
+        String description,
+        SelectionDescriptionDialogAction noSelectionAction,
+        SelectionDescriptionDialogAction withSelectionAction,
+        SelectionDescriptionDialogStatusMessages statusMessages,
+        SelectionDescriptionDialogConfirmButtonLabels confirmButtonLabels
+) {
     public SelectionDescriptionDialog {
         Objects.requireNonNull(titles);
         Objects.requireNonNull(description);

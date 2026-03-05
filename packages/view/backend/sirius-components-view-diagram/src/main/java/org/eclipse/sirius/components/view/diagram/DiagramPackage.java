@@ -3669,22 +3669,13 @@ public interface DiagramPackage extends EPackage {
     int SELECTION_DIALOG_DESCRIPTION = 39;
 
     /**
-     * The feature id for the '<em><b>Selection Message</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
-     *
-     * @generated
-     * @ordered
-     */
-    int SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE = DIALOG_DESCRIPTION_FEATURE_COUNT + 0;
-
-    /**
      * The feature id for the '<em><b>Selection Dialog Tree Description</b></em>' containment reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION = DIALOG_DESCRIPTION_FEATURE_COUNT + 1;
+    int SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION = DIALOG_DESCRIPTION_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Multiple</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3692,7 +3683,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SELECTION_DIALOG_DESCRIPTION__MULTIPLE = DIALOG_DESCRIPTION_FEATURE_COUNT + 2;
+    int SELECTION_DIALOG_DESCRIPTION__MULTIPLE = DIALOG_DESCRIPTION_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Optional</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -3700,16 +3691,133 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SELECTION_DIALOG_DESCRIPTION__OPTIONAL = DIALOG_DESCRIPTION_FEATURE_COUNT + 3;
+    int SELECTION_DIALOG_DESCRIPTION__OPTIONAL = DIALOG_DESCRIPTION_FEATURE_COUNT + 2;
 
     /**
-     * The feature id for the '<em><b>No Selection Label</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * The feature id for the '<em><b>Default Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL = DIALOG_DESCRIPTION_FEATURE_COUNT + 4;
+    int SELECTION_DIALOG_DESCRIPTION__DEFAULT_TITLE_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>No Selection Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_TITLE_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 4;
+
+    /**
+     * The feature id for the '<em><b>With Selection Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_TITLE_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 5;
+
+    /**
+     * The feature id for the '<em><b>Description Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__DESCRIPTION_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 6;
+
+    /**
+     * The feature id for the '<em><b>No Selection Action Label Expression</b></em>' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_LABEL_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
+     * The feature id for the '<em><b>No Selection Action Description Expression</b></em>' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_DESCRIPTION_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 8;
+
+    /**
+     * The feature id for the '<em><b>With Selection Action Label Expression</b></em>' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_LABEL_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 9;
+
+    /**
+     * The feature id for the '<em><b>With Selection Action Description Expression</b></em>' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_DESCRIPTION_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 10;
+
+    /**
+     * The feature id for the '<em><b>No Selection Action Status Message Expression</b></em>' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_STATUS_MESSAGE_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 11;
+
+    /**
+     * The feature id for the '<em><b>Selection Required Without Selection Status Message Expression</b></em>'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_STATUS_MESSAGE_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 12;
+
+    /**
+     * The feature id for the '<em><b>Selection Required With Selection Status Message Expression</b></em>' attribute.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_STATUS_MESSAGE_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 13;
+
+    /**
+     * The feature id for the '<em><b>No Selection Confirm Button Label Expression</b></em>' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 14;
+
+    /**
+     * The feature id for the '<em><b>Selection Required Without Selection Confirm Button Label Expression</b></em>'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 15;
+
+    /**
+     * The feature id for the '<em><b>Selection Required With Selection Confirm Button Label Expression</b></em>'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION = DIALOG_DESCRIPTION_FEATURE_COUNT + 16;
 
     /**
      * The number of structural features of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc -->
@@ -3718,7 +3826,7 @@ public interface DiagramPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int SELECTION_DIALOG_DESCRIPTION_FEATURE_COUNT = DIALOG_DESCRIPTION_FEATURE_COUNT + 5;
+    int SELECTION_DIALOG_DESCRIPTION_FEATURE_COUNT = DIALOG_DESCRIPTION_FEATURE_COUNT + 17;
 
     /**
      * The number of operations of the '<em>Selection Dialog Description</em>' class. <!-- begin-user-doc --> <!--
@@ -6338,18 +6446,6 @@ public interface DiagramPackage extends EPackage {
     EClass getSelectionDialogDescription();
 
     /**
-     * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage <em>Selection
-     * Message</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the meta object for the attribute '<em>Selection Message</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionMessage()
-     * @see #getSelectionDialogDescription()
-     * @generated
-     */
-    EAttribute getSelectionDialogDescription_SelectionMessage();
-
-    /**
      * Returns the meta object for the containment reference
      * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription
      * <em>Selection Dialog Tree Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6387,15 +6483,178 @@ public interface DiagramPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionLabel <em>No
-     * Selection Label</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDefaultTitleExpression
+     * <em>Default Title Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the attribute '<em>No Selection Label</em>'.
-     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionLabel()
+     * @return the meta object for the attribute '<em>Default Title Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDefaultTitleExpression()
      * @see #getSelectionDialogDescription()
      * @generated
      */
-    EAttribute getSelectionDialogDescription_NoSelectionLabel();
+    EAttribute getSelectionDialogDescription_DefaultTitleExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionTitleExpression
+     * <em>No Selection Title Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>No Selection Title Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionTitleExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_NoSelectionTitleExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionTitleExpression
+     * <em>With Selection Title Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>With Selection Title Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionTitleExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_WithSelectionTitleExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDescriptionExpression
+     * <em>Description Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Description Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDescriptionExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_DescriptionExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionLabelExpression
+     * <em>No Selection Action Label Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>No Selection Action Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionLabelExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_NoSelectionActionLabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionDescriptionExpression
+     * <em>No Selection Action Description Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>No Selection Action Description Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionDescriptionExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_NoSelectionActionDescriptionExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionLabelExpression
+     * <em>With Selection Action Label Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>With Selection Action Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionLabelExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_WithSelectionActionLabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionDescriptionExpression
+     * <em>With Selection Action Description Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>With Selection Action Description Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionDescriptionExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_WithSelectionActionDescriptionExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionStatusMessageExpression
+     * <em>No Selection Action Status Message Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>No Selection Action Status Message Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionStatusMessageExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_NoSelectionActionStatusMessageExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionStatusMessageExpression
+     * <em>Selection Required Without Selection Status Message Expression</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Selection Required Without Selection Status Message
+     *         Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionStatusMessageExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_SelectionRequiredWithoutSelectionStatusMessageExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionStatusMessageExpression
+     * <em>Selection Required With Selection Status Message Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the meta object for the attribute '<em>Selection Required With Selection Status Message Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionStatusMessageExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_SelectionRequiredWithSelectionStatusMessageExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionConfirmButtonLabelExpression
+     * <em>No Selection Confirm Button Label Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>No Selection Confirm Button Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionConfirmButtonLabelExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_NoSelectionConfirmButtonLabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression
+     * <em>Selection Required Without Selection Confirm Button Label Expression</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Selection Required Without Selection Confirm Button Label
+     *         Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_SelectionRequiredWithoutSelectionConfirmButtonLabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionConfirmButtonLabelExpression
+     * <em>Selection Required With Selection Confirm Button Label Expression</em>}'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Selection Required With Selection Confirm Button Label
+     *         Expression</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionConfirmButtonLabelExpression()
+     * @see #getSelectionDialogDescription()
+     * @generated
+     */
+    EAttribute getSelectionDialogDescription_SelectionRequiredWithSelectionConfirmButtonLabelExpression();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.ToolSection <em>Tool
@@ -8325,14 +8584,6 @@ public interface DiagramPackage extends EPackage {
         EClass SELECTION_DIALOG_DESCRIPTION = eINSTANCE.getSelectionDialogDescription();
 
         /**
-         * The meta object literal for the '<em><b>Selection Message</b></em>' attribute feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
-        EAttribute SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE = eINSTANCE.getSelectionDialogDescription_SelectionMessage();
-
-        /**
          * The meta object literal for the '<em><b>Selection Dialog Tree Description</b></em>' containment reference
          * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -8357,12 +8608,120 @@ public interface DiagramPackage extends EPackage {
         EAttribute SELECTION_DIALOG_DESCRIPTION__OPTIONAL = eINSTANCE.getSelectionDialogDescription_Optional();
 
         /**
-         * The meta object literal for the '<em><b>No Selection Label</b></em>' attribute feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Default Title Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EAttribute SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL = eINSTANCE.getSelectionDialogDescription_NoSelectionLabel();
+        EAttribute SELECTION_DIALOG_DESCRIPTION__DEFAULT_TITLE_EXPRESSION = eINSTANCE.getSelectionDialogDescription_DefaultTitleExpression();
+
+        /**
+         * The meta object literal for the '<em><b>No Selection Title Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_TITLE_EXPRESSION = eINSTANCE.getSelectionDialogDescription_NoSelectionTitleExpression();
+
+        /**
+         * The meta object literal for the '<em><b>With Selection Title Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_TITLE_EXPRESSION = eINSTANCE.getSelectionDialogDescription_WithSelectionTitleExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Description Expression</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__DESCRIPTION_EXPRESSION = eINSTANCE.getSelectionDialogDescription_DescriptionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>No Selection Action Label Expression</b></em>' attribute feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_LABEL_EXPRESSION = eINSTANCE.getSelectionDialogDescription_NoSelectionActionLabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>No Selection Action Description Expression</b></em>' attribute
+         * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_DESCRIPTION_EXPRESSION = eINSTANCE.getSelectionDialogDescription_NoSelectionActionDescriptionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>With Selection Action Label Expression</b></em>' attribute feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_LABEL_EXPRESSION = eINSTANCE.getSelectionDialogDescription_WithSelectionActionLabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>With Selection Action Description Expression</b></em>' attribute
+         * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_DESCRIPTION_EXPRESSION = eINSTANCE.getSelectionDialogDescription_WithSelectionActionDescriptionExpression();
+
+        /**
+         * The meta object literal for the '<em><b>No Selection Action Status Message Expression</b></em>' attribute
+         * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_STATUS_MESSAGE_EXPRESSION = eINSTANCE.getSelectionDialogDescription_NoSelectionActionStatusMessageExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Selection Required Without Selection Status Message
+         * Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_STATUS_MESSAGE_EXPRESSION = eINSTANCE
+                .getSelectionDialogDescription_SelectionRequiredWithoutSelectionStatusMessageExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Selection Required With Selection Status Message Expression</b></em>'
+         * attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_STATUS_MESSAGE_EXPRESSION = eINSTANCE
+                .getSelectionDialogDescription_SelectionRequiredWithSelectionStatusMessageExpression();
+
+        /**
+         * The meta object literal for the '<em><b>No Selection Confirm Button Label Expression</b></em>' attribute
+         * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION = eINSTANCE.getSelectionDialogDescription_NoSelectionConfirmButtonLabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Selection Required Without Selection Confirm Button Label
+         * Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION = eINSTANCE
+                .getSelectionDialogDescription_SelectionRequiredWithoutSelectionConfirmButtonLabelExpression();
+
+        /**
+         * The meta object literal for the '<em><b>Selection Required With Selection Confirm Button Label
+         * Expression</b></em>' attribute feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION = eINSTANCE
+                .getSelectionDialogDescription_SelectionRequiredWithSelectionConfirmButtonLabelExpression();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.view.diagram.impl.ToolSectionImpl
