@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -138,7 +138,6 @@ describe('Project creation', () => {
 
       context('Then when we select a different template', () => {
         beforeEach(() => {
-          cy.getByTestId('template-selection-toggle').click();
           cy.getByTestId('template').click();
           cy.getByTestId('template-Papaya - Blank').click();
         });
