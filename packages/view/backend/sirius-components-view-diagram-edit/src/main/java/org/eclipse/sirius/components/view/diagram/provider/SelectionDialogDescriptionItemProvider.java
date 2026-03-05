@@ -52,24 +52,24 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
-            this.addSelectionMessagePropertyDescriptor(object);
             this.addMultiplePropertyDescriptor(object);
             this.addOptionalPropertyDescriptor(object);
-            this.addNoSelectionLabelPropertyDescriptor(object);
+            this.addDefaultTitleExpressionPropertyDescriptor(object);
+            this.addNoSelectionTitleExpressionPropertyDescriptor(object);
+            this.addWithSelectionTitleExpressionPropertyDescriptor(object);
+            this.addDescriptionExpressionPropertyDescriptor(object);
+            this.addNoSelectionActionLabelExpressionPropertyDescriptor(object);
+            this.addNoSelectionActionDescriptionExpressionPropertyDescriptor(object);
+            this.addWithSelectionActionLabelExpressionPropertyDescriptor(object);
+            this.addWithSelectionActionDescriptionExpressionPropertyDescriptor(object);
+            this.addNoSelectionActionStatusMessageExpressionPropertyDescriptor(object);
+            this.addSelectionRequiredWithoutSelectionStatusMessageExpressionPropertyDescriptor(object);
+            this.addSelectionRequiredWithSelectionStatusMessageExpressionPropertyDescriptor(object);
+            this.addNoSelectionConfirmButtonLabelExpressionPropertyDescriptor(object);
+            this.addSelectionRequiredWithoutSelectionConfirmButtonLabelExpressionPropertyDescriptor(object);
+            this.addSelectionRequiredWithSelectionConfirmButtonLabelExpressionPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
-    }
-
-    /**
-     * This adds a property descriptor for the Selection Message feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected void addSelectionMessagePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_SelectionDialogDescription_selectionMessage_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_selectionMessage_feature", "_UI_SelectionDialogDescription_type"),
-                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -97,15 +97,193 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
     }
 
     /**
-     * This adds a property descriptor for the No Selection Label feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds a property descriptor for the Default Title Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
      *
      * @generated
      */
-    protected void addNoSelectionLabelPropertyDescriptor(Object object) {
+    protected void addDefaultTitleExpressionPropertyDescriptor(Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_SelectionDialogDescription_noSelectionLabel_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_noSelectionLabel_feature", "_UI_SelectionDialogDescription_type"),
-                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                this.getString("_UI_SelectionDialogDescription_defaultTitleExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_defaultTitleExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__DEFAULT_TITLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the No Selection Title Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNoSelectionTitleExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_noSelectionTitleExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_noSelectionTitleExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_TITLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the With Selection Title Expression feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addWithSelectionTitleExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_withSelectionTitleExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_withSelectionTitleExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_TITLE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Description Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     */
+    protected void addDescriptionExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_descriptionExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_descriptionExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__DESCRIPTION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the No Selection Action Label Expression feature. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNoSelectionActionLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_noSelectionActionLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_noSelectionActionLabelExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the No Selection Action Description Expression feature. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNoSelectionActionDescriptionExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_noSelectionActionDescriptionExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_noSelectionActionDescriptionExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_DESCRIPTION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the With Selection Action Label Expression feature. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addWithSelectionActionLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_withSelectionActionLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_withSelectionActionLabelExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the With Selection Action Description Expression feature. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addWithSelectionActionDescriptionExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_withSelectionActionDescriptionExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_withSelectionActionDescriptionExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_DESCRIPTION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the No Selection Action Status Message Expression feature. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNoSelectionActionStatusMessageExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_noSelectionActionStatusMessageExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_noSelectionActionStatusMessageExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_STATUS_MESSAGE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Selection Required Without Selection Status Message Expression feature.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addSelectionRequiredWithoutSelectionStatusMessageExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_selectionRequiredWithoutSelectionStatusMessageExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_selectionRequiredWithoutSelectionStatusMessageExpression_feature",
+                        "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_STATUS_MESSAGE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Selection Required With Selection Status Message Expression feature. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addSelectionRequiredWithSelectionStatusMessageExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_selectionRequiredWithSelectionStatusMessageExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_selectionRequiredWithSelectionStatusMessageExpression_feature",
+                        "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_STATUS_MESSAGE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null,
+                null));
+    }
+
+    /**
+     * This adds a property descriptor for the No Selection Confirm Button Label Expression feature. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNoSelectionConfirmButtonLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_noSelectionConfirmButtonLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_noSelectionConfirmButtonLabelExpression_feature", "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Selection Required Without Selection Confirm Button Label Expression
+     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addSelectionRequiredWithoutSelectionConfirmButtonLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_selectionRequiredWithoutSelectionConfirmButtonLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_selectionRequiredWithoutSelectionConfirmButtonLabelExpression_feature",
+                        "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Selection Required With Selection Confirm Button Label Expression
+     * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addSelectionRequiredWithSelectionConfirmButtonLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_SelectionDialogDescription_selectionRequiredWithSelectionConfirmButtonLabelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_SelectionDialogDescription_selectionRequiredWithSelectionConfirmButtonLabelExpression_feature",
+                        "_UI_SelectionDialogDescription_type"),
+                DiagramPackage.Literals.SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+                null, null));
     }
 
     /**
@@ -165,8 +343,8 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
      */
     @Override
     public String getText(Object object) {
-        String label = ((SelectionDialogDescription) object).getSelectionMessage();
-        return label == null || label.length() == 0 ? this.getString("_UI_SelectionDialogDescription_type") : this.getString("_UI_SelectionDialogDescription_type") + " " + label;
+        SelectionDialogDescription selectionDialogDescription = (SelectionDialogDescription) object;
+        return this.getString("_UI_SelectionDialogDescription_type") + " " + selectionDialogDescription.isMultiple();
     }
 
     /**
@@ -181,10 +359,22 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(SelectionDialogDescription.class)) {
-            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_MESSAGE:
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__MULTIPLE:
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__OPTIONAL:
-            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_LABEL:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__DEFAULT_TITLE_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_TITLE_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_TITLE_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__DESCRIPTION_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_LABEL_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_DESCRIPTION_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_LABEL_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__WITH_SELECTION_ACTION_DESCRIPTION_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_ACTION_STATUS_MESSAGE_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_STATUS_MESSAGE_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_STATUS_MESSAGE_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__NO_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITHOUT_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION:
+            case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_REQUIRED_WITH_SELECTION_CONFIRM_BUTTON_LABEL_EXPRESSION:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.SELECTION_DIALOG_DESCRIPTION__SELECTION_DIALOG_TREE_DESCRIPTION:

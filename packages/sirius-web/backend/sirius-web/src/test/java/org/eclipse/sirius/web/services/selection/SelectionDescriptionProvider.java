@@ -57,7 +57,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
 
     public static final String LABEL = "Selection";
 
-    private static final String DIALOG_MESSAGE = "Select the objects to consider";
+    private static final String DIALOG_DESCRIPTION = "Select the objects to consider";
 
     private final View view;
 
@@ -194,7 +194,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .isSelectableExpression("aql:self.oclIsKindOf(papaya::Component)")
                 .build();
         return new SelectionDialogDescriptionBuilder()
-                .selectionMessage(DIALOG_MESSAGE)
+                .descriptionExpression(DIALOG_DESCRIPTION)
                 .selectionDialogTreeDescription(this.selectionDialogTreeDescription)
                 .optional(true)
                 .build();
@@ -208,7 +208,7 @@ public class SelectionDescriptionProvider implements IEditingContextProcessor {
                 .isSelectableExpression("aql:self.oclIsKindOf(papaya::Component)")
                 .build();
         return new SelectionDialogDescriptionBuilder()
-                .selectionMessage(DIALOG_MESSAGE)
+                .descriptionExpression(DIALOG_DESCRIPTION)
                 .selectionDialogTreeDescription(edgeSelectionDialogTreeDescription)
                 .build();
 

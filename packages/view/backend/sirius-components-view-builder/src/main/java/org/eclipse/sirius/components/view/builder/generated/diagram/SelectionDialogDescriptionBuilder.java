@@ -43,15 +43,6 @@ public class SelectionDialogDescriptionBuilder {
     }
 
     /**
-     * Setter for SelectionMessage.
-     *
-     * @generated
-     */
-    public SelectionDialogDescriptionBuilder selectionMessage(java.lang.String value) {
-        this.getSelectionDialogDescription().setSelectionMessage(value);
-        return this;
-    }
-    /**
      * Setter for SelectionDialogTreeDescription.
      *
      * @generated
@@ -81,12 +72,142 @@ public class SelectionDialogDescriptionBuilder {
     }
 
     /**
-     * Setter for NoSelectionLabel.
+     * Setter for DefaultTitleExpression.
      *
      * @generated
      */
-    public SelectionDialogDescriptionBuilder noSelectionLabel(java.lang.String value) {
-        this.getSelectionDialogDescription().setNoSelectionLabel(value);
+    public SelectionDialogDescriptionBuilder defaultTitleExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setDefaultTitleExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for NoSelectionTitleExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder noSelectionTitleExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setNoSelectionTitleExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for WithSelectionTitleExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder withSelectionTitleExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setWithSelectionTitleExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for DescriptionExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder descriptionExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setDescriptionExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for NoSelectionActionLabelExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder noSelectionActionLabelExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setNoSelectionActionLabelExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for NoSelectionActionDescriptionExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder noSelectionActionDescriptionExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setNoSelectionActionDescriptionExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for WithSelectionActionLabelExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder withSelectionActionLabelExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setWithSelectionActionLabelExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for WithSelectionActionDescriptionExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder withSelectionActionDescriptionExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setWithSelectionActionDescriptionExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for NoSelectionActionStatusMessageExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder noSelectionActionStatusMessageExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setNoSelectionActionStatusMessageExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for SelectionRequiredWithoutSelectionStatusMessageExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder selectionRequiredWithoutSelectionStatusMessageExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setSelectionRequiredWithoutSelectionStatusMessageExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for SelectionRequiredWithSelectionStatusMessageExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder selectionRequiredWithSelectionStatusMessageExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setSelectionRequiredWithSelectionStatusMessageExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for NoSelectionConfirmButtonLabelExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder noSelectionConfirmButtonLabelExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setNoSelectionConfirmButtonLabelExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for SelectionRequiredWithoutSelectionConfirmButtonLabelExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder selectionRequiredWithoutSelectionConfirmButtonLabelExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setSelectionRequiredWithoutSelectionConfirmButtonLabelExpression(value);
+        return this;
+    }
+
+    /**
+     * Setter for SelectionRequiredWithSelectionConfirmButtonLabelExpression.
+     *
+     * @generated
+     */
+    public SelectionDialogDescriptionBuilder selectionRequiredWithSelectionConfirmButtonLabelExpression(java.lang.String value) {
+        this.getSelectionDialogDescription().setSelectionRequiredWithSelectionConfirmButtonLabelExpression(value);
         return this;
     }
 

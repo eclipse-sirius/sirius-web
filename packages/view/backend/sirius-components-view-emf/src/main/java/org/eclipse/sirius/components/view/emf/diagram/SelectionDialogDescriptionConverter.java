@@ -128,34 +128,15 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         String selectionDescriptionId = this.diagramIdProvider.getId(selectionDescription);
         TreeDescription treeDescription = this.createTreeDescription(selectionDescription, interpreter);
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)
-                .dialogProvider(variableManager -> {
-                    return new SelectionDescriptionDialog(
-                            new SelectionDescriptionDialogTitles(this.messageService.defaultSelectionDialogTitle(), this.messageService.defaultSelectionDialogTitle(), this.messageService.defaultSelectionDialogTitle()),
-                            this.getSelectionDialogDescription(selectionDescription),
-                            new SelectionDescriptionDialogAction(this.getNoSelectionLabel(selectionDescription), this.messageService.defaultSelectionDialogNoSelectionActionDescription()),
-                            new SelectionDescriptionDialogAction(this.messageService.defaultSelectionDialogWithSelectionActionLabel(), this.messageService.defaultSelectionDialogWithSelectionActionDescription()),
-                            new SelectionDescriptionDialogStatusMessages(this.messageService.defaultSelectionDialogNoSelectionActionStatusMessage(), this.messageService.defaultSelectionDialogSelectionRequiredWithoutSelectionStatusMessage()),
-                            new SelectionDescriptionDialogConfirmButtonLabels(this.messageService.defaultSelectionDialogConfirmButtonLabel(), this.messageService.defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel(), this.messageService.defaultSelectionDialogConfirmButtonLabel())
-                    );
-                })
-                .dialogSelectionRequiredWithSelectionStatusMessageProvider(variableManager -> {
-                    String statusMessage = "";
-                    Object objects = variableManager.getVariables().get(TREE_SELECTION);
-                    if (objects instanceof List<?> list) {
-                        var selectionCount = list.stream().filter(String.class::isInstance).count();
-                        if (selectionCount == 1) {
-                            var elementLabel = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                                    .flatMap(editingContext -> this.objectSearchService.getObject(editingContext, list.get(0).toString()))
-                                    .map(this.labelService::getStyledLabel)
-                                    .map(StyledString::toString)
-                                    .orElse("");
-                            statusMessage = this.messageService.defaultSelectionDialogSelectionRequiredWithOneSelectedElementStatusMessage(elementLabel);
-                        } else if (selectionCount > 1) {
-                            statusMessage = this.messageService.defaultSelectionDialogSelectionRequiredWithManySelectedElementsStatusMessage(selectionCount);
-                        }
-                    }
-                    return statusMessage;
-                })
+                .dialogProvider(variableManager -> new SelectionDescriptionDialog(
+                        this.getTitles(selectionDescription, variableManager, interpreter),
+                        this.getDescription(selectionDescription, variableManager, interpreter),
+                        this.getNoSelectionAction(selectionDescription, variableManager, interpreter),
+                        this.getWithSelectionAction(selectionDescription, variableManager, interpreter),
+                        this.getStatusMessages(selectionDescription, variableManager, interpreter),
+                        this.getConfirmButtonLabels(selectionDescription, variableManager, interpreter)
+                ))
+                .dialogSelectionRequiredWithSelectionStatusMessageProvider(variableManager -> this.getSelectionRequiredWithSelectionStatusMessage(selectionDescription, variableManager, interpreter))
                 .idProvider(variableManager -> SELECTION_PREFIX)
                 .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
                         .map(this.labelService::getStyledLabel)
@@ -173,24 +154,156 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .build();
     }
 
-    private String getSelectionDialogDescription(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription selectionDescription) {
-        String message = Optional.ofNullable(selectionDescription.getSelectionMessage()).orElse("");
-        if (message.isBlank()) {
-            if (selectionDescription.isOptional()) {
-                message = this.messageService.defaultSelectionDialogWithOptionalSelectionDescription();
-            } else {
-                message = this.messageService.defaultSelectionDialogWithMandatorySelectionDescription();
-            }
+    private SelectionDescriptionDialogTitles getTitles(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription selectionDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        String defaultTitle = this.messageService.defaultSelectionDialogTitle();
+        var defaultTitleExpression = selectionDescription.getDefaultTitleExpression();
+        var safeDefaultTitleExpression = Optional.ofNullable(defaultTitleExpression).orElse("");
+        if (!safeDefaultTitleExpression.isBlank()) {
+            defaultTitle = interpreter.evaluateExpression(variableManager.getVariables(), safeDefaultTitleExpression).asString().orElse(defaultTitle);
         }
-        return message;
+
+        String noSelectionTitle = this.messageService.defaultSelectionDialogTitle();
+        var noSelectionTitleExpression = selectionDescription.getNoSelectionTitleExpression();
+        var safeNoSelectionTitleExpression = Optional.ofNullable(noSelectionTitleExpression).orElse("");
+        if (!safeNoSelectionTitleExpression.isBlank()) {
+            noSelectionTitle = interpreter.evaluateExpression(variableManager.getVariables(), safeNoSelectionTitleExpression).asString().orElse(noSelectionTitle);
+        }
+
+        String withSelectionTitle = this.messageService.defaultSelectionDialogTitle();
+        var withSelectionTitleExpression = selectionDescription.getWithSelectionTitleExpression();
+        var safeWithSelectionTitleExpression = Optional.ofNullable(withSelectionTitleExpression).orElse("");
+        if (!safeNoSelectionTitleExpression.isBlank()) {
+            withSelectionTitle = interpreter.evaluateExpression(variableManager.getVariables(), safeWithSelectionTitleExpression).asString().orElse(withSelectionTitle);
+        }
+
+        return new SelectionDescriptionDialogTitles(defaultTitle, noSelectionTitle, withSelectionTitle);
     }
 
-    private String getNoSelectionLabel(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription selectionDescription) {
-        String noSelectionLabel = Optional.ofNullable(selectionDescription.getNoSelectionLabel()).orElse("");
-        if (noSelectionLabel.isBlank()) {
-            noSelectionLabel = this.messageService.defaultSelectionDialogNoSelectionActionLabel();
+    private String getDescription(org.eclipse.sirius.components.view.diagram.SelectionDialogDescription selectionDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        String dialogDescription = "";
+        if (selectionDescription.isOptional()) {
+            dialogDescription = this.messageService.defaultSelectionDialogWithOptionalSelectionDescription();
+        } else {
+            dialogDescription = this.messageService.defaultSelectionDialogWithMandatorySelectionDescription();
         }
-        return noSelectionLabel;
+
+        var descriptionExpression = selectionDescription.getDescriptionExpression();
+        var safeDescriptionExpression = Optional.ofNullable(descriptionExpression).orElse("");
+        if (!safeDescriptionExpression.isBlank()) {
+            dialogDescription = interpreter.evaluateExpression(variableManager.getVariables(), safeDescriptionExpression).asString().orElse(dialogDescription);
+        }
+        return dialogDescription;
+    }
+
+    private SelectionDescriptionDialogAction getNoSelectionAction(SelectionDialogDescription selectionDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        String noSelectionActionLabel = this.messageService.defaultSelectionDialogNoSelectionActionLabel();
+        String noSelectionActionLabelExpression = selectionDescription.getNoSelectionActionLabelExpression();
+        String safeNoSelectionActionLabelExpression = Optional.ofNullable(noSelectionActionLabelExpression).orElse("");
+        if (!safeNoSelectionActionLabelExpression.isBlank()) {
+            noSelectionActionLabel = interpreter.evaluateExpression(variableManager.getVariables(), safeNoSelectionActionLabelExpression).asString().orElse(noSelectionActionLabel);
+        }
+
+        String noSelectionActionDescription = this.messageService.defaultSelectionDialogNoSelectionActionDescription();
+        String noSelectionActionDescriptionExpression = selectionDescription.getNoSelectionActionDescriptionExpression();
+        String safeNoSelectionActionDescriptionExpression = Optional.ofNullable(noSelectionActionDescriptionExpression).orElse("");
+        if (!safeNoSelectionActionLabelExpression.isBlank()) {
+            noSelectionActionDescription = interpreter.evaluateExpression(variableManager.getVariables(), safeNoSelectionActionDescriptionExpression).asString().orElse(noSelectionActionLabel);
+        }
+
+        return new SelectionDescriptionDialogAction(noSelectionActionLabel, noSelectionActionDescription);
+    }
+
+    private SelectionDescriptionDialogAction getWithSelectionAction(SelectionDialogDescription selectionDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        String withSelectionActionLabel = this.messageService.defaultSelectionDialogWithSelectionActionLabel();
+        String withSelectionActionLabelExpression = selectionDescription.getWithSelectionActionLabelExpression();
+        String safeWithSelectionActionLabelExpression = Optional.ofNullable(withSelectionActionLabelExpression).orElse("");
+        if (!safeWithSelectionActionLabelExpression.isBlank()) {
+            withSelectionActionLabel = interpreter.evaluateExpression(variableManager.getVariables(), safeWithSelectionActionLabelExpression).asString().orElse(withSelectionActionLabel);
+        }
+
+        String withSelectionActionDescription = this.messageService.defaultSelectionDialogWithSelectionActionDescription();
+        String withSelectionActionDescriptionExpression = selectionDescription.getWithSelectionActionDescriptionExpression();
+        String safeWithSelectionActionDescriptionExpression = Optional.ofNullable(withSelectionActionDescriptionExpression).orElse("");
+        if (!safeWithSelectionActionLabelExpression.isBlank()) {
+            withSelectionActionDescription = interpreter.evaluateExpression(variableManager.getVariables(), safeWithSelectionActionDescriptionExpression).asString().orElse(withSelectionActionLabel);
+        }
+
+        return new SelectionDescriptionDialogAction(withSelectionActionLabel, withSelectionActionDescription);
+    }
+
+    private SelectionDescriptionDialogStatusMessages getStatusMessages(SelectionDialogDescription selectionDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        String noSelectionActionStatusMessage = this.messageService.defaultSelectionDialogNoSelectionActionStatusMessage();
+        String noSelectionActionStatusMessageExpression = selectionDescription.getNoSelectionActionStatusMessageExpression();
+        String safeNoSelectionActionStatusMessageExpression = Optional.ofNullable(noSelectionActionStatusMessageExpression).orElse("");
+        if (!safeNoSelectionActionStatusMessageExpression.isBlank()) {
+            noSelectionActionStatusMessage = interpreter.evaluateExpression(variableManager.getVariables(), safeNoSelectionActionStatusMessageExpression).asString().orElse(noSelectionActionStatusMessage);
+        }
+
+        String selectionRequiredWithoutSelectionStatusMessage = this.messageService.defaultSelectionDialogSelectionRequiredWithoutSelectionStatusMessage();
+        String withSelectionActionStatusMessageExpression = selectionDescription.getSelectionRequiredWithoutSelectionStatusMessageExpression();
+        String safeWithSelectionActionStatusMessageExpression = Optional.ofNullable(withSelectionActionStatusMessageExpression).orElse("");
+        if (!safeWithSelectionActionStatusMessageExpression.isBlank()) {
+            selectionRequiredWithoutSelectionStatusMessage = interpreter.evaluateExpression(variableManager.getVariables(), safeWithSelectionActionStatusMessageExpression).asString().orElse(noSelectionActionStatusMessage);
+        }
+        return new SelectionDescriptionDialogStatusMessages(noSelectionActionStatusMessage, selectionRequiredWithoutSelectionStatusMessage);
+    }
+
+    private SelectionDescriptionDialogConfirmButtonLabels getConfirmButtonLabels(SelectionDialogDescription selectionDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        new SelectionDescriptionDialogConfirmButtonLabels(this.messageService.defaultSelectionDialogConfirmButtonLabel(), this.messageService.defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel(), this.messageService.defaultSelectionDialogConfirmButtonLabel());
+
+        String noSelectionConfirmButtonLabel = this.messageService.defaultSelectionDialogConfirmButtonLabel();
+        var noSelectionConfirmButtonLabelExpression = selectionDescription.getNoSelectionConfirmButtonLabelExpression();
+        var safeNoSelectionConfirmButtonLabelExpression = Optional.ofNullable(noSelectionConfirmButtonLabelExpression).orElse("");
+        if (!safeNoSelectionConfirmButtonLabelExpression.isBlank()) {
+            noSelectionConfirmButtonLabel = interpreter.evaluateExpression(variableManager.getVariables(), safeNoSelectionConfirmButtonLabelExpression).asString().orElse(noSelectionConfirmButtonLabel);
+        }
+
+        String selectionRequiredWithoutSelectionConfirmButtonLabel = this.messageService.defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel();
+        var selectionRequiredWithoutSelectionConfirmButtonLabelExpression = selectionDescription.getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression();
+        var safeSelectionRequiredWithoutSelectionConfirmButtonLabelExpression = Optional.ofNullable(selectionRequiredWithoutSelectionConfirmButtonLabelExpression).orElse("");
+        if (!safeSelectionRequiredWithoutSelectionConfirmButtonLabelExpression.isBlank()) {
+            selectionRequiredWithoutSelectionConfirmButtonLabel = interpreter.evaluateExpression(variableManager.getVariables(), safeSelectionRequiredWithoutSelectionConfirmButtonLabelExpression).asString().orElse(selectionRequiredWithoutSelectionConfirmButtonLabel);
+        }
+
+        String selectionRequiredWithSelectionConfirmButtonLabel = this.messageService.defaultSelectionDialogConfirmButtonLabel();
+        var selectionRequiredWithSelectionConfirmButtonLabelExpression = selectionDescription.getSelectionRequiredWithSelectionConfirmButtonLabelExpression();
+        var safeSelectionRequiredWithSelectionConfirmButtonLabel = Optional.ofNullable(selectionRequiredWithSelectionConfirmButtonLabelExpression).orElse("");
+        if (!safeSelectionRequiredWithoutSelectionConfirmButtonLabelExpression.isBlank()) {
+            selectionRequiredWithSelectionConfirmButtonLabel = interpreter.evaluateExpression(variableManager.getVariables(), safeSelectionRequiredWithSelectionConfirmButtonLabel).asString().orElse(selectionRequiredWithSelectionConfirmButtonLabel);
+        }
+
+        return new SelectionDescriptionDialogConfirmButtonLabels(noSelectionConfirmButtonLabel, selectionRequiredWithoutSelectionConfirmButtonLabel, selectionRequiredWithSelectionConfirmButtonLabel);
+    }
+
+    private String getSelectionRequiredWithSelectionStatusMessage(SelectionDialogDescription selectionDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+        String statusMessage = "";
+        var selectionRequiredWithSelectionStatusMessageExpression = selectionDescription.getSelectionRequiredWithSelectionStatusMessageExpression();
+        var safeSelectionRequiredWithSelectionStatusMessageExpression = Optional.ofNullable(selectionRequiredWithSelectionStatusMessageExpression).orElse("");
+        if (safeSelectionRequiredWithSelectionStatusMessageExpression.isBlank()) {
+            statusMessage = this.getDefaultSelectionRequiredWithSelectionStatusMessage(variableManager);
+        } else {
+            statusMessage = interpreter.evaluateExpression(variableManager.getVariables(), safeSelectionRequiredWithSelectionStatusMessageExpression).asString().orElseGet(() -> this.getDefaultSelectionRequiredWithSelectionStatusMessage(variableManager));
+        }
+        return statusMessage;
+    }
+
+    private String getDefaultSelectionRequiredWithSelectionStatusMessage(VariableManager variableManager) {
+        String statusMessage = "";
+        Object objects = variableManager.getVariables().get(TREE_SELECTION);
+        if (objects instanceof List<?> list) {
+            var selectionCount = list.stream().filter(String.class::isInstance).count();
+            if (selectionCount == 1) {
+                var elementLabel = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                        .flatMap(editingContext -> this.objectSearchService.getObject(editingContext, list.get(0).toString()))
+                        .map(this.labelService::getStyledLabel)
+                        .map(StyledString::toString)
+                        .orElse("");
+                statusMessage = this.messageService.defaultSelectionDialogSelectionRequiredWithOneSelectedElementStatusMessage(elementLabel);
+            } else if (selectionCount > 1) {
+                statusMessage = this.messageService.defaultSelectionDialogSelectionRequiredWithManySelectedElementsStatusMessage(selectionCount);
+            }
+        }
+        return statusMessage;
     }
 
     /**

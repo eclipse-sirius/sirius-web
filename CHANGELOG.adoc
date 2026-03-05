@@ -134,6 +134,8 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6229[#6229] [selection] Rework the selection dialog.
 + It comes with small improvements in the filter bar for better reuse
 - https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Default selection dialog customizations have been moved in the backend
+- https://github.com/eclipse-sirius/sirius-web/issues/6269[#6269] [view] Add more selection dialog labels customization in the View DSL.
++ Come with a migration participant to rename the name of `selectionMessage` and `noSelectionLabel` feature name into `descriptionExpression` and `noSelectionActionLabelExpression`.
 
 
 == 2026.1.0
