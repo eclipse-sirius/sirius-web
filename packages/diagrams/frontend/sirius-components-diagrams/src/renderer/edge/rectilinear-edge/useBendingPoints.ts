@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,8 @@ export const useBendingPoints = (
   targetNode: InternalNode<Node<NodeData>>,
   targetHandleId: string,
   targetPosition: Position,
-  customEdge: boolean
+  customEdge: boolean,
+  useRelativePosition: boolean
 ): UseBendingPointsValue => {
   const { handleDragStop } = useEdgeDragStopHandler();
 
@@ -208,7 +209,7 @@ export const useBendingPoints = (
   };
 
   useEffect(() => {
-    if (customEdge && !state.dragInProgress) {
+    if (customEdge && !state.dragInProgress && !useRelativePosition) {
       const newPoints = [...originalBendingPoints];
       const firstPoint = newPoints[0];
       const secondPoint = newPoints[1];
@@ -229,10 +230,16 @@ export const useBendingPoints = (
       }
       setLocalBendingPoints(newPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index })));
     }
-  }, [source.x, source.y, originalBendingPoints.map((point) => point.x + point.y).join(), customEdge]);
+  }, [
+    source.x,
+    source.y,
+    originalBendingPoints.map((point) => point.x + point.y).join(),
+    customEdge,
+    useRelativePosition,
+  ]);
 
   useEffect(() => {
-    if (customEdge && !state.dragInProgress) {
+    if (customEdge && !state.dragInProgress && !useRelativePosition) {
       const newPoints = [...originalBendingPoints];
       const lastPoint = newPoints[newPoints.length - 1];
       const penultimatePoint = newPoints[newPoints.length - 2];
@@ -253,7 +260,13 @@ export const useBendingPoints = (
       }
       setLocalBendingPoints(newPoints.map((bendingPoint, index) => ({ ...bendingPoint, pathOrder: index })));
     }
-  }, [target.x, target.y, originalBendingPoints.map((point) => point.x + point.y).join(), customEdge]);
+  }, [
+    target.x,
+    target.y,
+    originalBendingPoints.map((point) => point.x + point.y).join(),
+    customEdge,
+    useRelativePosition,
+  ]);
 
   return {
     localBendingPoints,

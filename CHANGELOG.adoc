@@ -57,6 +57,8 @@ An example of this impact could be found in `EllipseNodeLayoutHandler.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/1626[#1626] [diagram] Add the ability to trigger tools using key bindings.
 The `SingleClickOnDiagramElementTool` builder now requires a list of key bindings.
 
+-https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] `moving` should be set when converting custom nodes.
+
 
 === Dependency update
 
@@ -127,8 +129,9 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] Retrieve the label size from data rather than dom element for elk layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6178[#6178] [diagram] Prevent edge label from sticking to the edge path
 - https://github.com/eclipse-sirius/sirius-web/issues/6020[#6020] [diagram] Allow the execution of the hardcoded semantic delete tool on a multi selection
-- https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types. 
+- https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types.
 - https://github.com/eclipse-sirius/sirius-web/issues/6226[#6226] [diagram] Remove overlap resolution in node layout tools
+- https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] Preserve edge path when moving both source and target
 
 
 == 2026.1.0
