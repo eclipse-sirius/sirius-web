@@ -27,6 +27,9 @@ export const BendPoint = ({ x, y, index, direction, onDrag, onDragStop, temporar
   if (readOnly) {
     return null;
   }
+  const minCircleRadius: number = 3;
+  const baseCircleRadius: number = 20;
+  const bendPointSelectionCircleRadius: number = Math.max(minCircleRadius, baseCircleRadius / zoom);
 
   return (
     <Draggable
@@ -36,10 +39,10 @@ export const BendPoint = ({ x, y, index, direction, onDrag, onDragStop, temporar
       onStop={(_e, eventData: DraggableData) => onDragStop(eventData, index)}
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>
       <g ref={nodeRef} data-testid={`bend-point-${index}`}>
-        <circle style={{ pointerEvents: 'all' }} r={20} fill={'transparent'} />
+        <circle style={{ pointerEvents: 'all' }} r={bendPointSelectionCircleRadius} fill={'transparent'} />
         <circle
           style={{ pointerEvents: 'none' }}
-          r={3}
+          r={minCircleRadius}
           fill={temporary ? 'white' : 'black'}
           stroke={temporary ? 'black' : 'none'}
         />
@@ -67,15 +70,19 @@ export const TemporaryMovingLine = ({
 
   const segmentLengthWithoutBoundaries = segmentLength - 2;
 
-  const width = direction === 'x' ? segmentLengthWithoutBoundaries : 4;
-  const height = direction === 'y' ? segmentLengthWithoutBoundaries : 4;
+  const minSegmentSize: number = 1;
+  const baseSegmentSize: number = 8;
+  const segmentSize: number = Math.max(minSegmentSize, baseSegmentSize / zoom);
+
+  const width = direction === 'x' ? segmentLengthWithoutBoundaries : segmentSize;
+  const height = direction === 'y' ? segmentLengthWithoutBoundaries : segmentSize;
 
   if (width < 0 || height < 0) {
     return null;
   }
 
-  const offsetX = direction === 'x' ? -width / 2 : -2;
-  const offsetY = direction === 'y' ? -height / 2 : -2;
+  const offsetX = direction === 'x' ? -width / 2 : -segmentSize / 2;
+  const offsetY = direction === 'y' ? -height / 2 : -segmentSize / 2;
   return (
     <Draggable
       position={{ x: x, y: y }}

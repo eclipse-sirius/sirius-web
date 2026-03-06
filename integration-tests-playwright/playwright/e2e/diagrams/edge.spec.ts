@@ -31,8 +31,7 @@ test.describe('edge', () => {
     const explorer = await new PlaywrightExplorer(page);
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
-    const representationItem = await explorer.getTreeItemLabel('Topography');
-    representationItem.click();
+    await explorer.select('Topography');
   });
 
   test.afterEach(async ({ request }) => {
