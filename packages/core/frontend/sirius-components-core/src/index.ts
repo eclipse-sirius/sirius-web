@@ -34,6 +34,8 @@ export { useData } from './extension/useData';
 export * from './filter/FilterBar';
 export type * from './graphql/GQLTypes.types';
 export * from './icon/IconOverlay';
+export { KeyBinding } from './key-binding/KeyBinding';
+export type { GQLKeyBinding, KeyBindingProps } from './key-binding/KeyBinding.types';
 export * from './label/StyledLabel';
 export * from './label/StyledLabel.type';
 export * from './materialui';
