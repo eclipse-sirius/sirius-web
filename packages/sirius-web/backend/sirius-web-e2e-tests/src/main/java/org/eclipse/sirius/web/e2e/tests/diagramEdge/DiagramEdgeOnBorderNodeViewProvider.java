@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelTextAlign;
@@ -91,7 +92,7 @@ public class DiagramEdgeOnBorderNodeViewProvider implements IE2EViewProvider {
                 .name(DiagramEdgeOnBorderNodeDomainProvider.DOMAIN_NAME + " - simple edge on border node")
                 .domainType(DiagramEdgeOnBorderNodeDomainProvider.DOMAIN_NAME + "::Root")
                 .titleExpression(DiagramEdgeOnBorderNodeDomainProvider.DOMAIN_NAME + " diagram")
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
                 .nodeDescriptions(nodeDescription1, nodeDescription2)
                 .edgeDescriptions(edgeDescription1)

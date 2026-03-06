@@ -28,6 +28,7 @@ export interface GQLDiagramLayoutData {
   nodeLayoutData: GQLNodeLayoutData[];
   edgeLayoutData: GQLEdgeLayoutData[];
   labelLayoutData: GQLLabelLayoutData[];
+  autoLaidOut: boolean;
 }
 
 export interface GQLNodeLayoutData {

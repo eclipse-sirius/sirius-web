@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -108,7 +108,7 @@ public class DiagramPostProcessorControllerTests extends AbstractIntegrationTest
 
         Runnable initialDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(nodeId.get(), new Position(0., 0.), new Size(50, 50), false, false, List.of(), new Size(0, 0));
-            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of());
+            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of(), false, false);
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };

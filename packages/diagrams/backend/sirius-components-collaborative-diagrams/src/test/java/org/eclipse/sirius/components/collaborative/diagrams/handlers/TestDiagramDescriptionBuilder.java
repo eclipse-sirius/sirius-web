@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
@@ -56,6 +57,7 @@ public class TestDiagramDescriptionBuilder {
                 .edgeDescriptions(edgeDescriptions)
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
     }
 
@@ -64,14 +66,14 @@ public class TestDiagramDescriptionBuilder {
         Function<VariableManager, List<Element>> targetProvider = variableManager -> List.of();
 
         Function<VariableManager, EdgeStyle> edgeStyleProvider = variableManager ->
-            EdgeStyle.newEdgeStyle()
-                .size(2)
-                .lineStyle(LineStyle.Dash_Dot)
-                .sourceArrow(ArrowStyle.InputArrowWithDiamond)
-                .targetArrow(ArrowStyle.None)
-                .color("rgb(1, 2, 3)")
-                .edgeType(EdgeType.Manhattan)
-                .build();
+                EdgeStyle.newEdgeStyle()
+                        .size(2)
+                        .lineStyle(LineStyle.Dash_Dot)
+                        .sourceArrow(ArrowStyle.InputArrowWithDiamond)
+                        .targetArrow(ArrowStyle.None)
+                        .color("rgb(1, 2, 3)")
+                        .edgeType(EdgeType.Manhattan)
+                        .build();
 
         Function<VariableManager, String> idProvider = variableManager -> variableManager.get(VariableManager.SELF, String.class).orElse(null);
 

@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
@@ -38,8 +39,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#isAutoLayout <em>Auto
- * Layout</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getLayoutOption <em>Layout
+ * Option</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getToolbar <em>Toolbar</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getPalette <em>Palette</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getGroupPalette <em>Group
@@ -57,24 +58,24 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
 public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implements DiagramDescription {
 
     /**
-     * The default value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The default value of the '{@link #getLayoutOption() <em>Layout Option</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
-     * @see #isAutoLayout()
+     * @see #getLayoutOption()
      * @generated
      * @ordered
      */
-    protected static final boolean AUTO_LAYOUT_EDEFAULT = false;
+    protected static final DiagramLayoutOption LAYOUT_OPTION_EDEFAULT = DiagramLayoutOption.NONE;
 
     /**
-     * The cached value of the '{@link #isAutoLayout() <em>Auto Layout</em>}' attribute. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * The cached value of the '{@link #getLayoutOption() <em>Layout Option</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
-     * @see #isAutoLayout()
+     * @see #getLayoutOption()
      * @generated
      * @ordered
      */
-    protected boolean autoLayout = AUTO_LAYOUT_EDEFAULT;
+    protected DiagramLayoutOption layoutOption = LAYOUT_OPTION_EDEFAULT;
 
     /**
      * The cached value of the '{@link #getToolbar() <em>Toolbar</em>}' containment reference. <!-- begin-user-doc -->
@@ -171,8 +172,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
-    public boolean isAutoLayout() {
-        return this.autoLayout;
+    public DiagramLayoutOption getLayoutOption() {
+        return this.layoutOption;
     }
 
     /**
@@ -181,11 +182,11 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
-    public void setAutoLayout(boolean newAutoLayout) {
-        boolean oldAutoLayout = this.autoLayout;
-        this.autoLayout = newAutoLayout;
+    public void setLayoutOption(DiagramLayoutOption newLayoutOption) {
+        DiagramLayoutOption oldLayoutOption = this.layoutOption;
+        this.layoutOption = newLayoutOption == null ? LAYOUT_OPTION_EDEFAULT : newLayoutOption;
         if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT, oldAutoLayout, this.autoLayout));
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__LAYOUT_OPTION, oldLayoutOption, this.layoutOption));
     }
 
     /**
@@ -411,8 +412,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
-                return this.isAutoLayout();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__LAYOUT_OPTION:
+                return this.getLayoutOption();
             case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
                 return this.getToolbar();
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
@@ -438,8 +439,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
-                this.setAutoLayout((Boolean) newValue);
+            case DiagramPackage.DIAGRAM_DESCRIPTION__LAYOUT_OPTION:
+                this.setLayoutOption((DiagramLayoutOption) newValue);
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
                 this.setToolbar((DiagramToolbar) newValue);
@@ -473,8 +474,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
-                this.setAutoLayout(AUTO_LAYOUT_EDEFAULT);
+            case DiagramPackage.DIAGRAM_DESCRIPTION__LAYOUT_OPTION:
+                this.setLayoutOption(LAYOUT_OPTION_EDEFAULT);
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
                 this.setToolbar((DiagramToolbar) null);
@@ -506,8 +507,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
-                return this.autoLayout != AUTO_LAYOUT_EDEFAULT;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__LAYOUT_OPTION:
+                return this.layoutOption != LAYOUT_OPTION_EDEFAULT;
             case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:
                 return this.toolbar != null;
             case DiagramPackage.DIAGRAM_DESCRIPTION__PALETTE:
@@ -535,8 +536,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             return super.toString();
 
         StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (autoLayout: ");
-        result.append(this.autoLayout);
+        result.append(" (layoutOption: ");
+        result.append(this.layoutOption);
         result.append(", arrangeLayoutDirection: ");
         result.append(this.arrangeLayoutDirection);
         result.append(')');

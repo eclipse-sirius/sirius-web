@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.junit.jupiter.api.Test;
@@ -64,6 +65,7 @@ public class CreateDiagramEventHandlerTests {
                         .targetObjectIdProvider(variableManager -> "targetObjectId")
                         .dropHandler(variableManager -> new Failure(""))
                         .iconURLsProvider(variableManager -> List.of())
+                        .layoutOption(DiagramLayoutOption.NONE)
                         .build();
 
                 return Optional.of(diagramDescription);

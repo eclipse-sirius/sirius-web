@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.diagrams.description.DiagramLayoutOption;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
@@ -56,7 +57,7 @@ public class PapayaDashboardDiagramDescriptionProvider implements IEditingContex
 
     public static final String NAME = "PapayaDashboardDiagram";
 
-    public static final String DASHBOARD_REPRESENTATION_ID = UUID.nameUUIDFromBytes("papaya-dashboard-diagram".getBytes()).toString();;
+    public static final String DASHBOARD_REPRESENTATION_ID = UUID.nameUUIDFromBytes("papaya-dashboard-diagram".getBytes()).toString();
 
     public static final String DASHBOARD_DESCRIPTION_ID = IDiagramIdProvider.DIAGRAM_DESCRIPTION_KIND + "papaya-dashboard-diagram-description";
 
@@ -71,15 +72,16 @@ public class PapayaDashboardDiagramDescriptionProvider implements IEditingContex
     @Override
     public List<IRepresentationDescription> getRepresentationDescriptions(IEditingContext editingContext) {
         var dashboardDescription = DiagramDescription.newDiagramDescription(DASHBOARD_DESCRIPTION_ID)
-            .label("Papaya Dashboard Diagram")
-            .iconURLsProvider(variableManager -> List.of())
-            .nodeDescriptions(List.of(createProjectNodeDescription()))
-            .edgeDescriptions(List.of())
-            .dropHandler(variableManager -> new Failure(""))
-            .canCreatePredicate(variableManager -> false)
-            .labelProvider(variableManager -> "Papaya Dashboard Diagram")
-            .targetObjectIdProvider(this::getDiagramTargetObjectId)
-            .build();
+                .label("Papaya Dashboard Diagram")
+                .iconURLsProvider(variableManager -> List.of())
+                .nodeDescriptions(List.of(this.createProjectNodeDescription()))
+                .edgeDescriptions(List.of())
+                .dropHandler(variableManager -> new Failure(""))
+                .canCreatePredicate(variableManager -> false)
+                .labelProvider(variableManager -> "Papaya Dashboard Diagram")
+                .targetObjectIdProvider(this::getDiagramTargetObjectId)
+                .layoutOption(DiagramLayoutOption.NONE)
+                .build();
         return List.of(dashboardDescription);
     }
 

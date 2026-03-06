@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescr
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.ControllerCallsEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.EventCausedByEdgeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions.PublicationChannelEdgeDescriptionProvider;
@@ -54,7 +55,7 @@ public class LifecycleDiagramDescriptionProvider implements IRepresentationDescr
         lifecycleDiagramDescription.setName(NAME);
         lifecycleDiagramDescription.setDomainType("papaya:ApplicationConcern");
         lifecycleDiagramDescription.setTitleExpression("aql:self.name + ' Lifecycle Diagram'");
-        lifecycleDiagramDescription.setAutoLayout(false);
+        lifecycleDiagramDescription.setLayoutOption(DiagramLayoutOption.NONE);
         lifecycleDiagramDescription.setArrangeLayoutDirection(ArrangeLayoutDirection.UP);
         lifecycleDiagramDescription.setIconExpression("aql:'/papaya-representations/lifecycle-diagram.svg'");
 

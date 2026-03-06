@@ -258,7 +258,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             var webApplicationToDomainEdgeLayoutData = new EdgeLayoutDataInput(webApplicationToDomainEdgeId.get(), bendingPoints, List.of());
 
             var labelLayoutData = new LabelLayoutDataInput(webApplicationToDomainEdgeOutsideLabelId.get(), new Position(5, 5), new Size(10, 10), true, false);
-            var layoutData = new DiagramLayoutDataInput(List.of(siriusWebDomainNodeLayout), List.of(webApplicationToDomainEdgeLayoutData), List.of(labelLayoutData));
+            var layoutData = new DiagramLayoutDataInput(List.of(siriusWebDomainNodeLayout), List.of(webApplicationToDomainEdgeLayoutData), List.of(labelLayoutData), false, false);
             var layoutInput = new LayoutDiagramInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), "layout", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };

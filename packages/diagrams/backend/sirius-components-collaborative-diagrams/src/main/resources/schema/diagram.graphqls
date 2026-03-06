@@ -41,6 +41,7 @@ type DiagramLayoutData {
   nodeLayoutData: [NodeLayoutData!]!
   edgeLayoutData: [EdgeLayoutData!]!
   labelLayoutData: [LabelLayoutData!]!
+  autoLaidOut: Boolean!
 }
 
 type NodeLayoutData {
@@ -417,7 +418,7 @@ type SingleClickOnTwoDiagramElementsCandidate {
 type DiagramDescription implements RepresentationDescription {
   id: ID!
   label: String!
-  autoLayout: Boolean!
+  layoutOption: DiagramLayoutOption!
   arrangeLayoutDirection: ArrangeLayoutDirection!
   nodeDescriptions: [NodeDescription!]!
   childNodeDescriptionIds: [ID!]!
@@ -443,6 +444,12 @@ enum ArrangeLayoutDirection {
   DOWN
   LEFT
   UP
+}
+
+enum DiagramLayoutOption {
+  NONE,
+  AUTO_LAYOUT,
+  AUTO_UNTIL_MANUAL
 }
 
 type DropNodeCompatibilityEntry {
@@ -723,6 +730,8 @@ input DiagramLayoutDataInput {
   nodeLayoutData: [NodeLayoutDataInput!]!
   edgeLayoutData: [EdgeLayoutDataInput!]!
   labelLayoutData: [LabelLayoutDataInput!]!
+  cancelAutoLayout: Boolean!
+  startAutoLayout: Boolean!
 }
 
 input NodeLayoutDataInput {
