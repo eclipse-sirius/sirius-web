@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,5 +14,10 @@ import { DraggableData } from 'react-draggable';
 
 export interface UseLabelMoveValue {
   onNodeLabelMoveStop: (eventData: DraggableData, nodeId: string) => void;
-  onEdgeLabelMoveStop: (eventData: DraggableData, edgeId: string, labelPosition: 'begin' | 'center' | 'end') => void;
+  onEdgeLabelMoveStop: (
+    eventData: DraggableData,
+    edgeId: string,
+    labelPosition: 'begin' | 'center' | 'end',
+    offset: { x: number; y: number }
+  ) => void;
 }
