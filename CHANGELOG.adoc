@@ -62,6 +62,10 @@ The `SingleClickOnDiagramElementTool` builder now requires a list of key binding
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.11[Spring Boot 3.5.11]
 - [releng] Switch to @ObeoNetwork/gantt-task-react 0.6.3
+- [releng] Switch to https://github.com/bvaughn/react-resizable-panels/releases/tag/4.6.2[React Resizable Panels 4.6.2].
+This switch enables us to use other units such as `px` or `rem` instead of `%` to specify panels' size.
+It also enables us to disable panel resize for a better control when needed.
+
 
 === Bug fixes
 
@@ -127,8 +131,9 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6057[#6057] [diagram] Retrieve the label size from data rather than dom element for elk layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6178[#6178] [diagram] Prevent edge label from sticking to the edge path
 - https://github.com/eclipse-sirius/sirius-web/issues/6020[#6020] [diagram] Allow the execution of the hardcoded semantic delete tool on a multi selection
-- https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types. 
+- https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types.
 - https://github.com/eclipse-sirius/sirius-web/issues/6226[#6226] [diagram] Remove overlap resolution in node layout tools
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [sirius-web] Add collapsible view in workbench panels, merge view header and toolbar inside the same bar.
 
 
 == 2026.1.0
