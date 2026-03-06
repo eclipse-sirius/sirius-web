@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,12 +20,12 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
 
 /**
- * The input for the Selection Description message query.
+ * The input used to retrieve the selection dialog customization from the selection description.
  *
- * @author fbarbin
+ * @author gcoutable
  */
-public record GetSelectionDescriptionMessageInput(UUID id, List<SelectionDialogVariable> variables, SelectionDescription selectionDescription) implements IInput {
-    public GetSelectionDescriptionMessageInput {
+public record GetSelectionDescriptionDialogInput(UUID id, List<SelectionDialogVariable> variables, SelectionDescription selectionDescription) implements IInput {
+    public GetSelectionDescriptionDialogInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(variables);
         Objects.requireNonNull(selectionDescription);

@@ -18,7 +18,7 @@ export interface SelectionDialogContextProviderProps {
   selectionDescription: GQLSelectionDescription;
 }
 export interface SelectionDialogContextValue {
-  selectionDialogDescription: GQLSelectionDialogDescription;
+  dialog: GQLSelectionDescriptionDialog;
   selectionOptionSelected: boolean;
   noSelectionOptionSelected: boolean;
   treeDescriptionId: string | null;
@@ -32,7 +32,7 @@ export interface SelectionDialogContextProviderState {
   selectionOptionSelected: boolean;
 }
 
-export interface GQLSelectionDialogDescription {
+export interface GQLSelectionDescriptionDialog {
   titles: GQLSelectionDialogTitlesDescription;
   description: string;
   noSelectionAction: GQLSelectionDialogNoSelectionActionDescription;
@@ -44,7 +44,7 @@ export interface GQLSelectionDialogDescription {
 export interface GQLSelectionDialogTitlesDescription {
   defaultTitle: string;
   noSelectionTitle: string;
-  selectionTitle: string;
+  withSelectionTitle: string;
 }
 
 export interface GQLSelectionDialogStatusMessages {

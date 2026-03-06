@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.selection.dto;
 
-import {
-  DiagramDialogComponentProps,
-  DiagramDialogVariable,
-  GQLToolVariable,
-} from '@eclipse-sirius/sirius-components-diagrams';
+import java.util.UUID;
 
-export interface SelectionDialogProps extends DiagramDialogComponentProps {}
+import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.selection.description.SelectionDescriptionDialog;
 
-export interface InternalSelectionDialogProps {
-  editingContextId: string;
-  selectionDescriptionId: string;
-  variables: DiagramDialogVariable[];
-  onClose: () => void;
-  onFinish: (variables: GQLToolVariable[]) => void;
+/**
+ * The payload containing the {@link SelectionDescriptionDialog}.
+ *
+ * @author gcoutable
+ */
+public record GetSelectionDescriptionDialogPayload(UUID id, SelectionDescriptionDialog dialog) implements IPayload {
 }

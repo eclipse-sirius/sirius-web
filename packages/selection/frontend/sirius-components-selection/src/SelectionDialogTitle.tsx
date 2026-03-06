@@ -19,7 +19,7 @@ import { useSelectionDialog } from './useSelectionDialog';
 
 export const SelectionDialogTitle = ({ onClose }: SelectionDialogTitleProps) => {
   const {
-    selectionDialogDescription: { titles },
+    dialog: { titles },
     selectionOptionSelected,
     noSelectionOptionSelected,
   } = useSelectionDialog();
@@ -28,7 +28,7 @@ export const SelectionDialogTitle = ({ onClose }: SelectionDialogTitleProps) => 
   if (noSelectionOptionSelected) {
     title = titles.noSelectionTitle;
   } else if (selectionOptionSelected) {
-    title = titles.selectionTitle;
+    title = titles.withSelectionTitle;
   }
 
   return (

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,5 +120,70 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
     @Override
     public String defaultQuickToolEdit() {
         return this.messageSourceAccessor.getMessage("EDIT");
+    }
+
+    @Override
+    public String defaultSelectionDialogTitle() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_TITLE");
+    }
+
+    @Override
+    public String defaultSelectionDialogWithOptionalSelectionDescription() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_WITH_OPTIONAL_SELECTION_DESCRIPTION");
+    }
+
+    @Override
+    public String defaultSelectionDialogWithMandatorySelectionDescription() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_WITH_MANDATORY_SELECTION_DESCRIPTION");
+    }
+
+    @Override
+    public String defaultSelectionDialogNoSelectionActionLabel() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_NO_SELECTION_ACTION_LABEL");
+    }
+
+    @Override
+    public String defaultSelectionDialogNoSelectionActionDescription() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_NO_SELECTION_ACTION_DESCRIPTION");
+    }
+
+    @Override
+    public String defaultSelectionDialogWithSelectionActionLabel() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_WITH_SELECTION_ACTION_LABEL");
+    }
+
+    @Override
+    public String defaultSelectionDialogWithSelectionActionDescription() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_WITH_SELECTION_ACTION_DESCRIPTION");
+    }
+
+    @Override
+    public String defaultSelectionDialogNoSelectionActionStatusMessage() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_NO_SELECTION_ACTION_STATUS_MESSAGE");
+    }
+
+    @Override
+    public String defaultSelectionDialogSelectionRequiredWithoutSelectionStatusMessage() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_SELECTION_REQUIRED_WITHOUT_SELECTION_STATUS_MESSAGE");
+    }
+
+    @Override
+    public String defaultSelectionDialogSelectionRequiredWithOneSelectedElementStatusMessage(String element) {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_SELECTION_REQUIRED_WITH_ONE_SELECTED_ELEMENT_STATUS_MESSAGE", new Object[] { element });
+    }
+
+    @Override
+    public String defaultSelectionDialogSelectionRequiredWithManySelectedElementsStatusMessage(long count) {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_SELECTION_REQUIRED_WITH_MANY_SELECTED_ELEMENTS_STATUS_MESSAGE", new Object[] { count });
+    }
+
+    @Override
+    public String defaultSelectionDialogConfirmButtonLabel() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_CONFIRM_BUTTON_LABEL");
+    }
+
+    @Override
+    public String defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel() {
+        return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_SELECTION_REQUIRED_WITHOUT_SELECTION_CONFIRM_BUTTON_LABEL");
     }
 }

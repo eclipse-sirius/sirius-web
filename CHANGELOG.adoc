@@ -132,6 +132,7 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types.
 - https://github.com/eclipse-sirius/sirius-web/issues/6229[#6229] [selection] Rework the selection dialog.
 + It comes with small improvements in the filter bar for better reuse
+- https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Default selection dialog customizations have been moved in the backend
 
 
 == 2026.1.0
