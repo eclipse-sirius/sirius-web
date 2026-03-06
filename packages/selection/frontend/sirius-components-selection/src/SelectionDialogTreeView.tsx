@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { FilterBar } from '@eclipse-sirius/sirius-components-core';
 import { DiagramDialogVariable } from '@eclipse-sirius/sirius-components-diagrams';
 import {
   GQLGetExpandAllTreePathVariables,
@@ -19,25 +20,17 @@ import {
   useExpandAllTreePath,
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import { useEffect, useState } from 'react';
-import { makeStyles } from 'tss-react/mui';
 import { SelectionDialogTreeViewProps, SelectionDialogTreeViewState } from './SelectionDialogTreeView.types';
 import { useSelectionDialogTreeSubscription } from './useSelectionDialogTreeSubscription';
 
 export const SELECTION_DIALOG_TYPE: string = 'selectionDialogDescription';
 
-const useTreeStyle = makeStyles<{ hasSelection: boolean }>()((theme, { hasSelection }) => ({
-  borderStyle: {
-    border: '1px solid',
-    borderRadius: theme.spacing(0.5),
-    borderColor: hasSelection ? theme.palette.primary.main : theme.palette.divider,
-    height: 600,
-    overflow: 'auto',
-  },
-}));
-
 const initialState: SelectionDialogTreeViewState = {
+  filterBarText: '',
   expanded: [],
   maxDepth: 1,
 };
@@ -49,7 +42,6 @@ export const SelectionDialogTreeView = ({
   onTreeItemClick,
   selectedTreeItemIds,
 }: SelectionDialogTreeViewProps) => {
-  const { classes } = useTreeStyle({ hasSelection: selectedTreeItemIds.length !== 0 });
   const [state, setState] = useState<SelectionDialogTreeViewState>(initialState);
 
   const treeId = `selection://?treeDescriptionId=${encodeURIComponent(treeDescriptionId)}${encodeVariables(variables)}`;
@@ -64,14 +56,31 @@ export const SelectionDialogTreeView = ({
   };
 
   return (
-    <div className={classes.borderStyle}>
+    <Box
+      sx={(theme) => ({
+        display: 'flex',
+        flexDirection: 'column',
+        border: '1px solid',
+        borderRadius: theme.spacing(0.5),
+        borderColor: selectedTreeItemIds.length !== 0 ? theme.palette.primary.main : theme.palette.divider,
+        height: '100%',
+        overflowY: 'auto',
+      })}>
+      <Box sx={(theme) => ({ padding: theme.spacing(1) })}>
+        <FilterBar
+          onTextChange={(event) => setState((prevState) => ({ ...prevState, filterBarText: event.target.value }))}
+          onTextClear={() => setState((prevState) => ({ ...prevState, filterBarText: '' }))}
+          text={state.filterBarText}
+        />
+      </Box>
+      <Divider />
       {tree ? (
         <TreeView
           editingContextId={editingContextId}
           readOnly={true}
           tree={tree}
-          textToFilter={''}
-          textToHighlight={''}
+          textToFilter={state.filterBarText}
+          textToHighlight={state.filterBarText}
           treeItemActionRender={(props) => <SelectionDialogTreeItemAction {...props} />}
           onExpandedElementChange={onExpandedElementChange}
           expanded={state.expanded}
@@ -82,7 +91,7 @@ export const SelectionDialogTreeView = ({
           data-testid={treeId}
         />
       ) : null}
-    </div>
+    </Box>
   );
 };
 
