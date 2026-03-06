@@ -73,6 +73,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6220[#6220] [diagram] Prevent keyboard shortcuts from being ignored when the diagram has the focus.
 - https://github.com/eclipse-sirius/sirius-web/issues/5988[#5988] [sirius-web] Improve resize for panels: the resize cursor is now displayed on the whole hit area rather than only over the separator.
 - https://github.com/eclipse-sirius/sirius-web/issues/6192[#6192] [sirius-web] Fix deadlock when importing a project with a representation having an unknown representation description ID.
+- https://github.com/eclipse-sirius/sirius-web/issues/5479[#5479] [explorer] Don't clear references to tree items drag-and-dropped in the model explorer
 
 
 === New Features
