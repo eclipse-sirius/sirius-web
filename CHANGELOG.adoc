@@ -80,6 +80,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6223[#6223] [diagram] Add dynamic edge selection area with zoom responsiveness
 - https://github.com/eclipse-sirius/sirius-web/issues/6285[#6285] [diagram] Prevent hidden edges to interfere with border node position
 - https://github.com/eclipse-sirius/sirius-web/issues/6259[#6259] [view] Fix icon of the diagram toolbar that was not displayed in the View DSL.
+- https://github.com/eclipse-sirius/sirius-web/issues/6260[#6260] [diagram] Prevent unselected nodes from being resized
 
 
 === New Features
