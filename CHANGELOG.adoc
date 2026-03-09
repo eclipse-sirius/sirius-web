@@ -95,6 +95,7 @@ The key bindings are visible in the palette next to the tool name.
 A key binding needs to contain at least one of `Control`, `Alt`, or `Meta` to be executed by the frontend.
 - https://github.com/eclipse-sirius/sirius-web/issues/3488[#3488] [diagram] Restore auto-layout support for diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/5062[#5062] [sirius-web] Add new "views explorer" view
+- https://github.com/eclipse-sirius/sirius-web/issues/6241[#6241] [storybook] Add storybook for diagram layout testing 
 
 
 === Improvements
@@ -128,6 +129,7 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6178[#6178] [diagram] Prevent edge label from sticking to the edge path
 - https://github.com/eclipse-sirius/sirius-web/issues/6020[#6020] [diagram] Allow the execution of the hardcoded semantic delete tool on a multi selection
 - https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types. 
+- https://github.com/eclipse-sirius/sirius-web/issues/6226[#6226] [diagram] Remove overlap resolution in node layout tools
 
 
 == 2026.1.0
@@ -321,6 +323,7 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 - https://github.com/eclipse-sirius/sirius-web/issues/6079[#6079] [diagram] Fix reference position not correctly applied with InvokeSingleClickOnTwoDiagramElementsToolInput
 - https://github.com/eclipse-sirius/sirius-web/issues/6029[#6029] [diagram] Fix a potential infitine loop when exporting some diagrams as SVG
 - https://github.com/eclipse-sirius/sirius-web/issues/5810[#5810] [sirius-web] Fix an issue where the out-to-date representations were not migrated to the latest version.
+- https://github.com/eclipse-sirius/sirius-web/issues/6228[#6228] [diagram] Prevent list nodes from being dropped at invalid positions
 
 
 === New Features
