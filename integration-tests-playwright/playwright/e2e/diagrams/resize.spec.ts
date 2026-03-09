@@ -179,3 +179,42 @@ test.describe('diagram - multi-resize', () => {
     expect(ds1After.width).toBeCloseTo(ds1Before.width, 1);
   });
 });
+
+test.describe('diagram - resize', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('diagram-resizable', 'blank-project');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramResizeWithSameSemanticElement.xml');
+    await playwrightExplorer.expand('diagramResizeWithSameSemanticElement.xml');
+    await playwrightExplorer.createRepresentation(
+      'Root',
+      'diagramResize - resize node with same semantic element',
+      'diagram'
+    );
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a multiple node represent the same element, then resizing one of these node do not resize the others', async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const child = new PlaywrightNode(page, 'Parent', 'FreeForm', 1);
+    const childSizeBefore = await child.getReactFlowSize('child');
+    const parent = new PlaywrightNode(page, 'Parent');
+
+    await parent.click();
+
+    await parent.resize({ width: 50, height: 50 });
+
+    const resizableNodeSizeAfter = await child.getReactFlowSize('child');
+    expect(resizableNodeSizeAfter.width).toBe(childSizeBefore.width);
+    expect(resizableNodeSizeAfter.height).toBe(childSizeBefore.height);
+  });
+});
