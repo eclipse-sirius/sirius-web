@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,9 @@ public class ViewGanttDescriptionBuilderTests {
     public void testRepresentationDescriptions() {
         View view = ViewFactory.eINSTANCE.createView();
         new ViewGanttDescriptionBuilder().addRepresentationDescription(view);
-        assertThat(view.getDescriptions()).hasSize(1);
-        assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Gantt Representation"));
+        assertThat(view.getDescriptions()).hasSize(2);
+        assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Gantt of Workpackage Task Details"));
+        assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Gantt of Project Workpackages"));
     }
 
 }

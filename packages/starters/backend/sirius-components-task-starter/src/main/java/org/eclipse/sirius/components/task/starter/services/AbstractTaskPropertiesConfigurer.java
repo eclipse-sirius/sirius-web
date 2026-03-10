@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,12 +42,14 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
-import org.eclipse.sirius.components.task.AbstractTask;
-import org.eclipse.sirius.components.task.Person;
-import org.eclipse.sirius.components.task.Project;
-import org.eclipse.sirius.components.task.Task;
-import org.eclipse.sirius.components.task.TaskPackage;
-import org.eclipse.sirius.components.task.Team;
+
+import pepper.peppermm.AbstractTask;
+import pepper.peppermm.Person;
+import pepper.peppermm.Project;
+import pepper.peppermm.Task;
+import pepper.peppermm.PepperPackage;
+import pepper.peppermm.Team;
+
 import org.eclipse.sirius.components.view.emf.compatibility.IPropertiesWidgetCreationService;
 import org.eclipse.sirius.components.view.emf.compatibility.PropertiesConfigurerService;
 import org.springframework.stereotype.Service;
@@ -96,7 +98,7 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
                 (task, newValue) -> {
                     ((AbstractTask) task).setName(newValue);
                 },
-                TaskPackage.Literals.ABSTRACT_TASK__NAME);
+                PepperPackage.Literals.ABSTRACT_TASK__NAME);
         controls.add(name);
 
         var description = this.propertiesWidgetCreationService.createExpressionField("abstractTask.description", "Description",
@@ -104,7 +106,7 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
                 (task, newValue) -> {
                     ((AbstractTask) task).setDescription(newValue);
                 },
-                TaskPackage.Literals.ABSTRACT_TASK__DESCRIPTION);
+                PepperPackage.Literals.ABSTRACT_TASK__DESCRIPTION);
         controls.add(description);
 
         var startTime = this.getStartTimeWidget();
@@ -123,7 +125,7 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
                         // Ignore
                     }
                 },
-                TaskPackage.Literals.ABSTRACT_TASK__PROGRESS);
+                PepperPackage.Literals.ABSTRACT_TASK__PROGRESS);
         controls.add(progress);
 
 
@@ -131,19 +133,19 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         controls.add(ifComputeDynamically);
 
         var dependencies = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.dependencies", "Dependencies",
-                TaskPackage.Literals.ABSTRACT_TASK__DEPENDENCIES, this.getDependenciesProvider());
+                PepperPackage.Literals.TASK__DEPENDENCIES, this.getDependenciesProvider());
         controls.add(dependencies);
 
         var tags = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.tags", "Tags",
-                TaskPackage.Literals.ABSTRACT_TASK__TAGS, this.getTagsProvider());
+                PepperPackage.Literals.ABSTRACT_TASK__TAGS, this.getTagsProvider());
         controls.add(tags);
 
         var persons = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.persons", "Assigned People",
-                TaskPackage.Literals.ABSTRACT_TASK__ASSIGNED_PERSONS, this.getPersonsProvider());
+                PepperPackage.Literals.ABSTRACT_TASK__ASSIGNED_PERSONS, this.getPersonsProvider());
         controls.add(persons);
 
         var teams = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.teams", "Assigned Teams",
-                TaskPackage.Literals.ABSTRACT_TASK__ASSIGNED_TEAMS, this.getTeamsProvider());
+                PepperPackage.Literals.ABSTRACT_TASK__ASSIGNED_TEAMS, this.getTeamsProvider());
         controls.add(teams);
 
         return controls;
@@ -186,7 +188,7 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
                 .labelProvider(variableManager -> "Start Time")
                 .stringValueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
-                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(TaskPackage.Literals.ABSTRACT_TASK__START_TIME))
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(PepperPackage.Literals.ABSTRACT_TASK__START_TIME))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .type(DateTimeType.DATE_TIME)
@@ -230,7 +232,7 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
                 .labelProvider(variableManager -> "End Time")
                 .stringValueProvider(valueProvider)
                 .newValueHandler(newValueHandler)
-                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(TaskPackage.Literals.ABSTRACT_TASK__END_TIME))
+                .diagnosticsProvider(this.propertiesConfigurerService.getDiagnosticsProvider(PepperPackage.Literals.ABSTRACT_TASK__END_TIME))
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
                 .messageProvider(this.propertiesConfigurerService.getMessageProvider())
                 .type(DateTimeType.DATE_TIME)
@@ -262,7 +264,7 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         CheckboxDescription computeDynamically = this.propertiesWidgetCreationService.createCheckbox("abstractTask.computeDynamically", "Compute Start/End Dynamically",
                 task -> ((AbstractTask) task).isComputeStartEndDynamically(),
                 (task, newValue) -> ((AbstractTask) task).setComputeStartEndDynamically(newValue),
-                TaskPackage.Literals.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY,
+                PepperPackage.Literals.ABSTRACT_TASK__COMPUTE_START_END_DYNAMICALLY,
                 Optional.empty());
 
         return IfDescription.newIfDescription("if.abstractTask.computeDynamically")
@@ -278,7 +280,8 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         return variableManager -> variableManager.get(VariableManager.SELF, EObject.class)
             .map(this::getProject)
             .stream()
-            .flatMap(project -> project.getOwnedTags().stream())
+            .flatMap(project -> project.getOwnedTagFolders().stream())
+            .flatMap(tagFolder -> tagFolder.getOwnedTags().stream())
             .toList();
     }
 

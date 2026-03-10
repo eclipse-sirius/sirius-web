@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
         "/sirius-web-scripts/initialize.sql",
         "/sirius-web-scripts/papaya-library.sql",
         "/sirius-web-scripts/papaya.sql",
+        "/sirius-web-scripts/pepper.sql",
         "/sirius-web-scripts/studio.sql",
         "/sirius-web-scripts/flow.sql",
         "/sirius-web-scripts/multi-editing-context-project.sql",
