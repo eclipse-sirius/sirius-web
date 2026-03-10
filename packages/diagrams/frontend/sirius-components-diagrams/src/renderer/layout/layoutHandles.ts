@@ -164,116 +164,118 @@ const layoutHandlePosition = (
   diagramDescription: GQLDiagramDescription,
   nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
 ) => {
-  diagram.edges.forEach((edge) => {
-    const { source: sourceEdgeNode, target: targetEdgeNode, sourceHandle, targetHandle } = edge;
-    const sourceNode = nodeLookup.get(sourceEdgeNode);
-    const targetNode = nodeLookup.get(targetEdgeNode);
-    if (sourceNode && targetNode && sourceHandle && targetHandle) {
-      const sourceReferenceNode = getBorderNodeParentIfExist(sourceNode, nodeLookup);
-      const targetReferenceNode = getBorderNodeParentIfExist(targetNode, nodeLookup);
-      const { sourcePosition, targetPosition } = getEdgeParameters(
-        sourceReferenceNode,
-        targetReferenceNode,
-        nodeLookup,
-        diagramDescription.arrangeLayoutDirection,
-        edge.data?.bendingPoints ?? []
-      );
-
-      const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
-        (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle
-      );
-      const nodeTargetConnectionHandle: ConnectionHandle | undefined = targetNode.data.connectionHandles.find(
-        (connectionHandle: ConnectionHandle) => connectionHandle.id === targetHandle
-      );
-
-      if (
-        nodeSourceConnectionHandle?.position !== sourcePosition ||
-        nodeTargetConnectionHandle?.position !== targetPosition
-      ) {
-        const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
-          sourceNode,
-          targetNode,
-          sourcePosition,
-          targetPosition,
-          sourceHandle,
-          targetHandle
+  diagram.edges
+    .filter((edge) => !edge.hidden)
+    .forEach((edge) => {
+      const { source: sourceEdgeNode, target: targetEdgeNode, sourceHandle, targetHandle } = edge;
+      const sourceNode = nodeLookup.get(sourceEdgeNode);
+      const targetNode = nodeLookup.get(targetEdgeNode);
+      if (sourceNode && targetNode && sourceHandle && targetHandle) {
+        const sourceReferenceNode = getBorderNodeParentIfExist(sourceNode, nodeLookup);
+        const targetReferenceNode = getBorderNodeParentIfExist(targetNode, nodeLookup);
+        const { sourcePosition, targetPosition } = getEdgeParameters(
+          sourceReferenceNode,
+          targetReferenceNode,
+          nodeLookup,
+          diagramDescription.arrangeLayoutDirection,
+          edge.data?.bendingPoints ?? []
         );
 
-        diagram.nodes = diagram.nodes.reduce(
-          (updatedNodes: Node<NodeData>[], node: Node<NodeData>, _index, nodeArray) => {
-            if (edge.source && edge.target) {
-              if (edge.source === node.id) {
-                if (node.data.isBorderNode) {
-                  if (!node.data.movedByUser) {
-                    const newBorderNodePosition = convertPositionToBorderNodePosition(sourcePosition);
-                    const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
-                      node,
-                      nodeArray,
-                      updatedNodes,
-                      newBorderNodePosition,
-                      nodeLookup
-                    );
-                    if (newXYPosition) {
-                      node.position = newXYPosition;
-                    }
-                    node.data = {
-                      ...node.data,
-                      borderNodePosition: newBorderNodePosition,
-                      connectionHandles: sourceConnectionHandles,
-                    };
-                  } else {
-                    const borderNodeConnectionHandles = getUpdatedConnectionHandle(
-                      sourceNode,
-                      convertBorderNodePositionToPosition(node.data.borderNodePosition),
-                      sourceHandle,
-                      'source'
-                    );
-                    node.data = { ...node.data, connectionHandles: borderNodeConnectionHandles };
-                  }
-                } else {
-                  node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
-                }
-              }
-              if (edge.target === node.id) {
-                if (node.data.isBorderNode) {
-                  if (!node.data.movedByUser) {
-                    const newBorderNodePosition = convertPositionToBorderNodePosition(targetPosition);
-                    const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
-                      node,
-                      nodeArray,
-                      updatedNodes,
-                      newBorderNodePosition,
-                      nodeLookup
-                    );
-                    if (newXYPosition) {
-                      node.position = newXYPosition;
-                    }
-                    node.data = {
-                      ...node.data,
-                      borderNodePosition: newBorderNodePosition,
-                      connectionHandles: targetConnectionHandles,
-                    };
-                  } else {
-                    const borderNodeConnectionHandles = getUpdatedConnectionHandle(
-                      targetNode,
-                      convertBorderNodePositionToPosition(node.data.borderNodePosition),
-                      targetHandle,
-                      'target'
-                    );
-                    node.data = { ...node.data, connectionHandles: borderNodeConnectionHandles };
-                  }
-                } else {
-                  node.data = { ...node.data, connectionHandles: targetConnectionHandles };
-                }
-              }
-            }
-            return [...updatedNodes, node];
-          },
-          []
+        const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
+          (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle
         );
+        const nodeTargetConnectionHandle: ConnectionHandle | undefined = targetNode.data.connectionHandles.find(
+          (connectionHandle: ConnectionHandle) => connectionHandle.id === targetHandle
+        );
+
+        if (
+          nodeSourceConnectionHandle?.position !== sourcePosition ||
+          nodeTargetConnectionHandle?.position !== targetPosition
+        ) {
+          const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
+            sourceNode,
+            targetNode,
+            sourcePosition,
+            targetPosition,
+            sourceHandle,
+            targetHandle
+          );
+
+          diagram.nodes = diagram.nodes.reduce(
+            (updatedNodes: Node<NodeData>[], node: Node<NodeData>, _index, nodeArray) => {
+              if (edge.source && edge.target) {
+                if (edge.source === node.id) {
+                  if (node.data.isBorderNode) {
+                    if (!node.data.movedByUser) {
+                      const newBorderNodePosition = convertPositionToBorderNodePosition(sourcePosition);
+                      const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
+                        node,
+                        nodeArray,
+                        updatedNodes,
+                        newBorderNodePosition,
+                        nodeLookup
+                      );
+                      if (newXYPosition) {
+                        node.position = newXYPosition;
+                      }
+                      node.data = {
+                        ...node.data,
+                        borderNodePosition: newBorderNodePosition,
+                        connectionHandles: sourceConnectionHandles,
+                      };
+                    } else {
+                      const borderNodeConnectionHandles = getUpdatedConnectionHandle(
+                        sourceNode,
+                        convertBorderNodePositionToPosition(node.data.borderNodePosition),
+                        sourceHandle,
+                        'source'
+                      );
+                      node.data = { ...node.data, connectionHandles: borderNodeConnectionHandles };
+                    }
+                  } else {
+                    node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
+                  }
+                }
+                if (edge.target === node.id) {
+                  if (node.data.isBorderNode) {
+                    if (!node.data.movedByUser) {
+                      const newBorderNodePosition = convertPositionToBorderNodePosition(targetPosition);
+                      const newXYPosition = computeBorderNodeXYPositionFromBorderNodePosition(
+                        node,
+                        nodeArray,
+                        updatedNodes,
+                        newBorderNodePosition,
+                        nodeLookup
+                      );
+                      if (newXYPosition) {
+                        node.position = newXYPosition;
+                      }
+                      node.data = {
+                        ...node.data,
+                        borderNodePosition: newBorderNodePosition,
+                        connectionHandles: targetConnectionHandles,
+                      };
+                    } else {
+                      const borderNodeConnectionHandles = getUpdatedConnectionHandle(
+                        targetNode,
+                        convertBorderNodePositionToPosition(node.data.borderNodePosition),
+                        targetHandle,
+                        'target'
+                      );
+                      node.data = { ...node.data, connectionHandles: borderNodeConnectionHandles };
+                    }
+                  } else {
+                    node.data = { ...node.data, connectionHandles: targetConnectionHandles };
+                  }
+                }
+              }
+              return [...updatedNodes, node];
+            },
+            []
+          );
+        }
       }
-    }
-  });
+    });
 };
 
 const resetEdgePathWhenOverlapping = (diagram: RawDiagram, nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>) => {

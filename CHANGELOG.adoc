@@ -71,13 +71,14 @@ The `SingleClickOnDiagramElementTool` builder now requires a list of key binding
 - https://github.com/eclipse-sirius/sirius-web/issues/6145[#6145] [diagram] Fix "leaf" node resize lower than its default size.
 The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6105[#6105] [sirius-web] Fix representation opening in library browser.
-- https://github.com/eclipse-sirius/sirius-web/issues/6141|#6141] [table] Prevent tables in a form to share the same id
-- https://github.com/eclipse-sirius/sirius-web/issues/6200|#6200] [diagram] Prevent list node to be resized to a size smaller than that produced by the layout
+- https://github.com/eclipse-sirius/sirius-web/issues/6141[#6141] [table] Prevent tables in a form to share the same id
+- https://github.com/eclipse-sirius/sirius-web/issues/6200[#6200] [diagram] Prevent list node to be resized to a size smaller than that produced by the layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6220[#6220] [diagram] Prevent keyboard shortcuts from being ignored when the diagram has the focus.
 - https://github.com/eclipse-sirius/sirius-web/issues/5988[#5988] [sirius-web] Improve resize for panels: the resize cursor is now displayed on the whole hit area rather than only over the separator.
 - https://github.com/eclipse-sirius/sirius-web/issues/6192[#6192] [sirius-web] Fix deadlock when importing a project with a representation having an unknown representation description ID.
 - https://github.com/eclipse-sirius/sirius-web/issues/6184[#6184] [diagram] Prevent manually moved edge labels to change position after resize
 - https://github.com/eclipse-sirius/sirius-web/issues/6223[#6223] [diagram] Add dynamic edge selection area with zoom responsiveness
+- https://github.com/eclipse-sirius/sirius-web/issues/6285[#6285] [diagram] Prevent hidden edges to interfere with border node position
 
 
 === New Features
@@ -337,8 +338,8 @@ Note that the impact analysis dialog may contain error messages _and_ partial im
 The command relies on Elasticsearch's _query string_, which provides syntactical constructs to query fields, use wildcards, regular expressions, and fuzziness.
 You can check the https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-query-string-query#query-string-syntax[documentation] for more information, including a list of reserved characters and how to escape them.
 The command is only visible if Elasticsearch is up and running.
--https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
--https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple
+- https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [diagram] Add the ability to execute tools on a selection of multiple elements
+- https://github.com/eclipse-sirius/sirius-web/issues/5782[#5782] [view] Add the concept of GroupPalette in the diagram view dsl to provide tools to execute while multiple
 elements are selected
 - https://github.com/eclipse-sirius/sirius-web/issues/5714[#5714] [sirius-web] Unify the project creation to use the same UI and GraphQL APIs when creating with or without a project template
 - https://github.com/eclipse-sirius/sirius-web/issues/5955[#5955][view] When using a _Let_ operation inside a tool definition, the corresponding binding is now made available in the tool's _Elements to Select Expression_.

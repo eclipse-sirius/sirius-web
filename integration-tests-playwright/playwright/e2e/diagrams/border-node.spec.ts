@@ -121,3 +121,43 @@ test.describe('diagram - borderNode', () => {
     await expect(page.locator('.source_handle_top')).toHaveCount(1);
   });
 });
+
+test.describe('diagram - borderNode', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeBorderNodeAsHandlePosition.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Others...');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('When an edge is hidden, then it is not considered for positioning the border node', async ({ page }) => {
+    const nodeC = new PlaywrightNode(page, 'C');
+    const borderNodeD = new PlaywrightNode(page, 'D');
+    await nodeC.nodeLocator.click({ position: { x: 25, y: 25 } });
+    const nodeCSize = await nodeC.getReactFlowSize('C', false);
+    const borderNodeDPosition = await borderNodeD.getReactFlowXYPosition('D');
+    const borderNodeDSize = await borderNodeD.getReactFlowSize('D', false);
+    const borderNodeGap = 5;
+    //Check that the border node D is placed on the right of the node C
+    expect(borderNodeDPosition.x).toBe(nodeCSize.width - borderNodeGap);
+
+    const nodeE = new PlaywrightNode(page, 'E');
+    await nodeE.openPalette();
+    await page.getByTestId('Hide - Tool').click();
+
+    await expect(nodeE.nodeLocator).not.toBeVisible();
+    const borderNodeDPositionAfter = await borderNodeD.getReactFlowXYPosition('D');
+    //Check that the border node D is placed on the left of the node C
+    expect(borderNodeDPositionAfter.x).toBe(-borderNodeDSize.width + borderNodeGap);
+  });
+});
