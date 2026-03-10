@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,7 +91,7 @@ public class InvokeEditingContextActionEventHandler implements IEditingContextEv
             // @formatter:on
 
             if (status instanceof Success success) {
-                payload = new SuccessPayload(invokeEditingContextActionInput.id());
+                payload = new SuccessPayload(invokeEditingContextActionInput.id(), success.getMessages());
                 changeDescription = new ChangeDescription(success.getChangeKind(), editingContext.getId(), input);
             } else if (status instanceof Failure failure) {
                 this.logger.warn("The action with id {} could not be executed", invokeEditingContextActionInput.actionId());
