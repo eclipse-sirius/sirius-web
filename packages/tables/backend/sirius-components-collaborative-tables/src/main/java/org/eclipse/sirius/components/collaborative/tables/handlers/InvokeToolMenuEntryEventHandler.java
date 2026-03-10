@@ -82,7 +82,7 @@ public class InvokeToolMenuEntryEventHandler implements ITableEventHandler {
 
             if (status instanceof Success success) {
                 changeDescription = new ChangeDescription(success.getChangeKind(), tableInput.representationId(), tableInput, success.getParameters());
-                payload = new SuccessPayload(tableInput.id());
+                payload = new SuccessPayload(tableInput.id(), success.getMessages());
             } else if (status instanceof Failure failure) {
                 payload = new ErrorPayload(tableInput.id(), failure.getMessages());
             }
