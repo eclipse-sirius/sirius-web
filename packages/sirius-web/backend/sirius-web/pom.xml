@@ -40,6 +40,13 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<repositories>
+		<repository>
+			<id>github-pepper-mm</id>
+			<url>https://maven.pkg.github.com/ObeoNetwork/pepper-mm</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
@@ -179,6 +186,11 @@
 			<artifactId>jmolecules-archunit</artifactId>
 			<version>0.23.0</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>pepper-mm</groupId>
+			<artifactId>pepper-mm</artifactId>
+			<version>2026.3.0</version>
 		</dependency>
 	</dependencies>
 

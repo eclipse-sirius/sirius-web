@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2022, 2024 Obeo.
- This program and the accompanying materials
- are made available under the terms of the Eclipse Public License v2.0
- which accompanies this distribution, and is available at
- https://www.eclipse.org/legal/epl-2.0/
+  Copyright (c) 2022, 2026 Obeo.
+  This program and the accompanying materials
+  are made available under the terms of the Eclipse Public License v2.0
+  which accompanies this distribution, and is available at
+  https://www.eclipse.org/legal/epl-2.0/
 
  SPDX-License-Identifier: EPL-2.0
 
@@ -39,6 +39,13 @@
 			<url>https://maven.pkg.github.com/eclipse-sirius/sirius-web</url>
 		</repository>
 	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>github-pepper-mm</id>
+			<url>https://maven.pkg.github.com/ObeoNetwork/pepper-mm</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -368,16 +375,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-task</artifactId>
-			<version>2026.3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-task-edit</artifactId>
-			<version>2026.3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-widget-reference</artifactId>
 			<version>2026.3.2</version>
 		</dependency>
@@ -455,6 +452,17 @@
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-web</artifactId>
 			<version>2026.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>pepper-mm</groupId>
+			<artifactId>pepper-mm</artifactId>
+			<version>2026.3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>pepper-mm</groupId>
+			<artifactId>pepper-edit</artifactId>
+			<version>2026.3.0</version>
 		</dependency>
 	</dependencies>
 

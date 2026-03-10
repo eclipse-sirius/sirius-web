@@ -36,11 +36,11 @@ import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskMutationRunne
 import org.eclipse.sirius.components.gantt.tests.navigation.GanttNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.UUIDParser;
-import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.data.PepperIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationContent;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationContentRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.RepresentationCompositeIdProvider;
-import org.eclipse.sirius.web.services.gantt.PapayaGanttDescriptionProvider;
+import org.eclipse.sirius.web.services.gantt.PepperGanttDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -71,7 +71,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
     private IGivenCreatedGanttSubscription givenCreatedGanttSubscription;
 
     @Autowired
-    private PapayaGanttDescriptionProvider papayaGanttDescriptionProvider;
+    private PepperGanttDescriptionProvider pepperGanttDescriptionProvider;
 
     @Autowired
     private DeleteTaskMutationRunner deleteTaskMutationRunner;
@@ -90,9 +90,9 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
     private Flux<Object> givenSubscriptionToGantt() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                this.papayaGanttDescriptionProvider.getRepresentationDescriptionId(),
-                PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
+                PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
+                this.pepperGanttDescriptionProvider.getRepresentationDescriptionId(),
+                PepperIdentifiers.WORKPACKAGE_OBJECT.toString(),
                 "Gantt"
         );
         return this.givenCreatedGanttSubscription.createAndSubscribe(input).flux();
@@ -104,7 +104,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
     public void givenGanttRepresentationWhenWeReloadItThenTheNewVersionIsSent() {
         var flux = this.givenSubscriptionToGantt();
 
-        var taskName = "Improve some features of the deck";
+        var taskName = "Idea";
 
         var ganttId = new AtomicReference<String>();
         var taskId = new AtomicReference<String>();
@@ -122,7 +122,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
                     taskId.set(task.id());
 
                     var representationId = new UUIDParser().parse(gantt.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid identifier"));
-                    var id = new RepresentationCompositeIdProvider().getId(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID, representationId);
+                    var id = new RepresentationCompositeIdProvider().getId(PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID, representationId);
                     this.representationContentRepository.findById(id)
                             .ifPresentOrElse(representationContent::set, () -> fail("Missing representation data"));
                 }, () -> fail("Missing gantt"));
@@ -131,7 +131,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
         Runnable deleteGanttTask = () -> {
             var deleteGanttTaskInput = new DeleteGanttTaskInput(
                     UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     taskId.get()
             );
@@ -165,7 +165,7 @@ public class GanttLifecycleControllerTests extends AbstractIntegrationTests {
                         }, () -> fail("Missing representation event processor"));
             };
             this.editingContextEventProcessorRegistry.getEditingContextEventProcessors().stream()
-                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString()))
+                    .filter(editingContextEventProcessor -> editingContextEventProcessor.getEditingContextId().equals(PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString()))
                     .findFirst()
                     .ifPresentOrElse(editingContextEventProcessorConsumer, () -> fail("Missing editing context event processor"));
         };

@@ -47,7 +47,7 @@ Custom deserializers and migration services will probably be impacted.
 - [releng] Switch to `com.tngtech.archunit:archunit-junit5` 1.4.1
 - [releng] Switch to CheckStyle 13.3.0.
 Note this version requires at least Java 21 for the build environment (Sirius Web itself still only requires Java 17 to run).
-
+- [releng] Use pepper-mm instead of the old internal task metamodel
 
 === Bug fixes
 
