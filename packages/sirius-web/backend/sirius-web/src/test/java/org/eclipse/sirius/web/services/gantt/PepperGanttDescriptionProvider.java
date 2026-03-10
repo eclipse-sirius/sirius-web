@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,21 +26,21 @@ import org.eclipse.sirius.components.view.SetValue;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.gantt.GanttBuilders;
 import org.eclipse.sirius.components.view.builder.generated.gantt.GanttDescriptionBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.CreateInstanceBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.DeleteElementBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.UnsetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
+import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
+import org.eclipse.sirius.components.view.builder.generated.view.UnsetValueBuilder;
 import org.eclipse.sirius.components.view.emf.gantt.IGanttIdProvider;
-import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
-import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
-import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.TaskDescription;
+import org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool;
+import org.eclipse.sirius.components.view.gantt.DeleteTaskTool;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
@@ -50,11 +50,11 @@ import org.springframework.stereotype.Service;
 /**
  * Used to provide a view based gantt description for tests.
  *
- * @author sbegaudeau
+ * @author ncouvert
  */
 @Service
 @Conditional(OnStudioTests.class)
-public class PapayaGanttDescriptionProvider implements IEditingContextProcessor {
+public class PepperGanttDescriptionProvider implements IEditingContextProcessor {
 
     private final IGanttIdProvider ganttIdProvider;
 
@@ -62,7 +62,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
 
     private GanttDescription ganttDescription;
 
-    public PapayaGanttDescriptionProvider(IGanttIdProvider ganttIdProvider) {
+    public PepperGanttDescriptionProvider(IGanttIdProvider ganttIdProvider) {
         this.ganttIdProvider = Objects.requireNonNull(ganttIdProvider);
         this.view = this.createView();
     }
@@ -81,7 +81,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
     private View createView() {
         ViewBuilder viewBuilder = new ViewBuilder();
         View ganttView = viewBuilder.build();
-        ganttView.getDescriptions().add(this.createGanttDescription());
+        ganttView.getDescriptions().add(this.createWorkpackageGanttDescription());
 
         ganttView.eAllContents().forEachRemaining(eObject -> {
             eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes())));
@@ -95,7 +95,9 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         return ganttView;
     }
 
-    private GanttDescription createGanttDescription() {
+    private GanttDescription createWorkpackageGanttDescription() {
+        TaskDescription tasksDescription = this.createTaskDescriptionInWorkpackage();
+
         CreateTaskTool createTaskTool = this.createCreateTaskTool();
         EditTaskTool editTaskTool = this.createEditTaskTool();
         DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool();
@@ -105,8 +107,8 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         this.ganttDescription = new GanttDescriptionBuilder()
                 .name("Gantt")
                 .titleExpression("aql:'Gantt'")
-                .domainType("papaya:Project")
-                .taskElementDescriptions(this.createTaskDescriptionInProject())
+                .domainType("peppermm::Project")
+                .taskElementDescriptions(tasksDescription)
                 .createTool(createTaskTool)
                 .editTool(editTaskTool)
                 .deleteTool(deleteTaskTool)
@@ -117,16 +119,19 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         return this.ganttDescription;
     }
 
-    private TaskDescription createTaskDescriptionInProject() {
+    private TaskDescription createTaskDescriptionInWorkpackage() {
         TaskDescription taskDescriptionInTask = this.createTaskDescriptionInTask();
 
         return new GanttBuilders().newTaskDescription()
-                .name("Iterations In Project")
-                .domainType("papaya::Iteration")
-                .semanticCandidatesExpression("aql:self.elements")
+                .name("Tasks In Project")
+                .semanticCandidatesExpression("aql:self.ownedTasks")
                 .nameExpression("aql:self.name")
-                .startTimeExpression("aql:self.startDate")
-                .endTimeExpression("aql:self.endDate")
+                .descriptionExpression("aql:self.description")
+                .startTimeExpression("aql:self.startTime")
+                .endTimeExpression("aql:self.endTime")
+                .progressExpression("aql:self.progress")
+                .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
+                .taskDependenciesExpression("aql:self.dependencies")
                 .subTaskElementDescriptions(taskDescriptionInTask)
                 .build();
     }
@@ -134,15 +139,14 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
     private TaskDescription createTaskDescriptionInTask() {
         TaskDescription taskDescription = new GanttBuilders().newTaskDescription()
                 .name("Sub Tasks")
-                .domainType("papaya::Task")
-                .semanticCandidatesExpression("aql:self.tasks")
+                .semanticCandidatesExpression("aql:self.subTasks")
                 .nameExpression("aql:self.name")
                 .descriptionExpression("aql:self.description")
-                .startTimeExpression("aql:self.startDate")
-                .endTimeExpression("aql:self.endDate")
+                .startTimeExpression("aql:self.startTime")
+                .endTimeExpression("aql:self.endTime")
                 .progressExpression("aql:self.progress")
+                .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
                 .taskDependenciesExpression("aql:self.dependencies")
-                .computeStartEndDynamicallyExpression("aql:true")
                 .build();
 
         taskDescription.getReusedTaskElementDescriptions().add(taskDescription);
@@ -174,8 +178,8 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         return new GanttBuilders().newCreateTaskTool()
                 .name("Create Task")
                 .body(new CreateInstanceBuilder()
-                        .typeName("papaya::Task")
-                        .referenceName("tasks")
+                        .typeName("peppermm::Task")
+                        .referenceName("subTasks")
                         .variableName("newInstance")
                         .children(newInstanceChangeContext)
                         .build())
@@ -193,18 +197,18 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                 .featureName("description")
                 .valueExpression("aql:newDescription")
                 .build();
-        SetValue setStartDateValue = viewBuilders.newSetValue()
-                .featureName("startDate")
+        SetValue setStartTimeValue = viewBuilders.newSetValue()
+                .featureName("startTime")
                 .valueExpression("aql:newStartTime")
                 .build();
-        SetValue setEndDateValue = viewBuilders.newSetValue()
-                .featureName("endDate")
+        SetValue setEndTimeValue = viewBuilders.newSetValue()
+                .featureName("endTime")
                 .valueExpression("aql:newEndTime")
                 .build();
 
         return new GanttBuilders().newEditTaskTool()
                 .name("Edit Task")
-                .body(setNameValue, setDescriptionValue, setStartDateValue, setEndDateValue)
+                .body(setNameValue, setDescriptionValue, setStartTimeValue, setEndTimeValue)
                 .build();
     }
 

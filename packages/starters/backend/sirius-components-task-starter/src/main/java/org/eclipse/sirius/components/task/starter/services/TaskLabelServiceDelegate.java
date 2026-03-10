@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,10 +18,10 @@ import java.util.Objects;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
-import org.eclipse.sirius.components.task.TaskTag;
+import pepper.peppermm.TaskTag;
 import org.eclipse.sirius.components.emf.services.api.IDefaultEMFLabelService;
 import org.eclipse.sirius.components.emf.services.api.IEMFLabelServiceDelegate;
-import org.eclipse.sirius.components.task.provider.TaskItemProviderAdapterFactory;
+import pepper.peppermm.provider.PepperItemProviderAdapterFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,7 +45,7 @@ public class TaskLabelServiceDelegate implements IEMFLabelServiceDelegate {
 
     @Override
     public StyledString getStyledLabel(EObject self) {
-        var adapter = new TaskItemProviderAdapterFactory().adapt(self, IItemLabelProvider.class);
+        var adapter = new PepperItemProviderAdapterFactory().adapt(self, IItemLabelProvider.class);
         if (adapter instanceof IItemLabelProvider itemLabelProvider) {
             return StyledString.of(itemLabelProvider.getText(self));
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditingContextProcessor;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
-import org.eclipse.sirius.components.task.TaskPackage;
+import pepper.peppermm.PepperPackage;
 import org.eclipse.sirius.components.task.starter.services.view.ViewDeckDescriptionBuilder;
 import org.eclipse.sirius.components.task.starter.services.view.ViewGanttDescriptionBuilder;
 import org.eclipse.sirius.components.view.View;
@@ -67,7 +67,7 @@ public class TaskEditingContextInitializer implements IEditingContextProcessor {
 
         if (isTaskProject && editingContext instanceof EditingContext emfEditingContext) {
             var packageRegistry = emfEditingContext.getDomain().getResourceSet().getPackageRegistry();
-            packageRegistry.put(TaskPackage.eNS_URI, TaskPackage.eINSTANCE);
+            packageRegistry.put(PepperPackage.eNS_URI, PepperPackage.eINSTANCE);
 
             emfEditingContext.getViews().add(this.getTaskView());
         }
