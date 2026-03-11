@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,13 +20,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventHandler;
-import org.eclipse.sirius.components.collaborative.editingcontext.api.IInputDispatcher;
 import org.eclipse.sirius.components.collaborative.api.IInputPostProcessor;
 import org.eclipse.sirius.components.collaborative.api.IInputPreProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
-import org.eclipse.sirius.components.collaborative.editingcontext.api.IRepresentationEventProcessorProvider;
 import org.eclipse.sirius.components.collaborative.dto.DeleteRepresentationInput;
+import org.eclipse.sirius.components.collaborative.editingcontext.api.IInputDispatcher;
+import org.eclipse.sirius.components.collaborative.editingcontext.api.IRepresentationEventProcessorProvider;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
@@ -34,6 +35,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
 import reactor.core.publisher.Sinks;
 
 /**
@@ -105,6 +107,7 @@ public class InputDispatcher implements IInputDispatcher {
             IEditingContextEventHandler editingContextEventHandler = optionalEditingContextEventHandler.get();
             editingContextEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
         } else {
+            payloadSink.tryEmitValue(new ErrorPayload(input.id(), "No handler found for event: " + input));
             this.logger.warn("No handler found for event: {}", input);
         }
     }
@@ -116,6 +119,7 @@ public class InputDispatcher implements IInputDispatcher {
             IRepresentationEventProcessor representationEventProcessor = optionalRepresentationEventProcessor.get();
             representationEventProcessor.handle(payloadSink, changeDescriptionSink, representationInput);
         } else {
+            payloadSink.tryEmitValue(new ErrorPayload(representationInput.id(), "No representation event processor found for event: " + representationInput));
             this.logger.warn("No representation event processor found for event: {}", representationInput);
         }
     }
