@@ -137,6 +137,7 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6020[#6020] [diagram] Allow the execution of the hardcoded semantic delete tool on a multi selection
 - https://github.com/eclipse-sirius/sirius-web/issues/6246[#6246] [sirius-web] Add missing export of `useCurrentLibrary` and related types.
 - https://github.com/eclipse-sirius/sirius-web/issues/6226[#6226] [diagram] Remove overlap resolution in node layout tools
+- https://github.com/eclipse-sirius/sirius-web/issues/6287[#6287] [sirius-web] Add a cancel button to the _New Project_ creation page.
 
 
 
