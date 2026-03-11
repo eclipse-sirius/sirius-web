@@ -85,6 +85,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6259[#6259] [view] Fix icon of the diagram toolbar that was not displayed in the View DSL.
 - https://github.com/eclipse-sirius/sirius-web/issues/6260[#6260] [diagram] Prevent unselected nodes from being resized
 - https://github.com/eclipse-sirius/sirius-web/issues/6202[#6202] [diagram] Prevent compatible nodes from being highlighted when dragging a border node
+- https://github.com/eclipse-sirius/sirius-web/issues/6258[#6258] [diagram] Prevent child nodes from detaching during parent node resize
 
 
 === New Features

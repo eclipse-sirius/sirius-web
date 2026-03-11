@@ -104,12 +104,12 @@ const applyMoveToListContain = (
   change: NodePositionChange
 ): NodeChange<Node<NodeData>> => {
   const parentNode = nodes.find((node) => node.id === movedNode.parentId);
-  if (parentNode && isListData(parentNode)) {
+  if (parentNode) {
     const borderWidth: number = getBorderWidth(parentNode);
     if (movedNode.id === change.id && change.position) {
       change = {
         ...change,
-        position: { x: borderWidth, y: movedNode.position.y },
+        position: { x: isListData(parentNode) ? borderWidth : movedNode.position.x, y: movedNode.position.y },
       };
     }
   }

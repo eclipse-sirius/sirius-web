@@ -218,3 +218,57 @@ test.describe('diagram - resize', () => {
     expect(resizableNodeSizeAfter.height).toBe(childSizeBefore.height);
   });
 });
+
+test.describe('diagram - resize', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectResizeParentWithFreeFormChild.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('System');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+  [
+    { resizeHandle: 'top.left', resizeOffset: { height: 50, width: 50 }, resizeDirection: 'smaller' },
+    { resizeHandle: 'top.right', resizeOffset: { height: 50, width: -50 }, resizeDirection: 'smaller' },
+    { resizeHandle: 'bottom.left', resizeOffset: { height: -50, width: 50 }, resizeDirection: 'smaller' },
+    { resizeHandle: 'bottom.right', resizeOffset: { height: -50, width: -50 }, resizeDirection: 'smaller' },
+    { resizeHandle: 'top.left', resizeOffset: { height: -50, width: -50 }, resizeDirection: 'larger' },
+    { resizeHandle: 'top.right', resizeOffset: { height: -50, width: 50 }, resizeDirection: 'larger' },
+    { resizeHandle: 'bottom.left', resizeOffset: { height: 50, width: -50 }, resizeDirection: 'larger' },
+    { resizeHandle: 'bottom.right', resizeOffset: { height: 50, width: 50 }, resizeDirection: 'larger' },
+  ].forEach(({ resizeHandle, resizeOffset, resizeDirection }) => {
+    test(`when resize ${resizeDirection} a parent node from its ${resizeHandle} handle, then child preserved its relative coordinates`, async ({
+      page,
+    }) => {
+      const playwrightExplorer = new PlaywrightExplorer(page);
+      await playwrightExplorer.select('Topography');
+      await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+      await page.getByTestId('hide-mini-map').click();
+
+      const parentNode = new PlaywrightNode(page, 'CompositeProcessor1');
+      const childNode = new PlaywrightNode(page, 'Processor1');
+      const childNodePositionBefore = await childNode.getReactFlowXYPosition('Processor1');
+      // Hide Node Panel Info to avoid overlap in diagram
+      const panel = await page.locator('.react-flow__panel.bottom.left');
+      await panel.evaluate((node) => {
+        node.style.visibility = 'hidden';
+      });
+
+      await parentNode.click();
+      await parentNode.resize(resizeOffset!, `${resizeHandle}`);
+
+      const childNodePositionAfter = await childNode.getReactFlowXYPosition('Processor1');
+      expect(childNodePositionAfter.x).toBeCloseTo(childNodePositionBefore.x, 1);
+      expect(childNodePositionAfter.y).toBeCloseTo(childNodePositionBefore.y, 1);
+    });
+  });
+});
