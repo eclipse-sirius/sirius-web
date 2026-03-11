@@ -91,7 +91,8 @@
     "templateHelperText": "Choose a template to get a predefined project structure and initial content",
     "libraries": "Libraries",
     "librariesDescription": "Search for and select libraries that will be available in your project as references",
-    "optional": "Optional"
+    "optional": "Optional",
+    "cancel": "Cancel"
   },
   "newRepresentationArea": {
     "createRepresentation": "Create a new Representation",

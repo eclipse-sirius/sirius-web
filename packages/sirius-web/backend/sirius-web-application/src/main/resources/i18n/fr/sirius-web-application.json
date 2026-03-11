@@ -91,7 +91,8 @@
     "templateHelperText": "Choisissez un modèle pour obtenir une structure et un contenu initial prédéfinis",
     "libraries": "Bibliothèques",
     "librariesDescription": "Recherchez et sélectionnez les bibliothèques qui seront disponibles dans votre projet en tant que références",
-    "optional": "Optionnel"
+    "optional": "Optionnel",
+    "cancel": "Annuler"
   },
   "newRepresentationArea": {
     "createRepresentation": "Créer une nouvelle représentation",

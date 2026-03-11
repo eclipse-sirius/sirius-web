@@ -31,7 +31,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React, { MouseEventHandler, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link as RouterLink, useNavigate, useSearchParams } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { LibrariesImportTable } from '../../libraryImport/LibrariesImportTable';
@@ -400,6 +400,9 @@ export const NewProjectView = () => {
                       loading={loadingProjectCreation}
                       color="primary">
                       {t('submit')}
+                    </Button>
+                    <Button variant="outlined" component={RouterLink} to="/" data-testid="cancel">
+                      {t('cancel')}
                     </Button>
                   </div>
                 </form>
