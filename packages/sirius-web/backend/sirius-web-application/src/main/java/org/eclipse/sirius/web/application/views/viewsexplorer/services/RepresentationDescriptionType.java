@@ -20,14 +20,17 @@ import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.Represen
 
 /**
  * Object to represent a representation description type for the Views Explorer view.
+ * @param id the ID of the represented representation description.
+ * @param description the represented representation description.
+ * @param representationsMetadata the list of all the representation metadata of the context described by the representation description.
  *
- * @author theogiraudet
+ * @author tgiraudet
  */
-public record RepresentationDescriptionType(String id, IRepresentationDescription descriptions, List<RepresentationMetadata> representationsMetadata) {
+public record RepresentationDescriptionType(String id, IRepresentationDescription description, List<RepresentationMetadata> representationsMetadata) {
 
     public RepresentationDescriptionType {
         Objects.requireNonNull(id);
-        Objects.requireNonNull(descriptions);
+        Objects.requireNonNull(description);
         Objects.requireNonNull(representationsMetadata);
     }
 }

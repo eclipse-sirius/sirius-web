@@ -16,9 +16,12 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Object to representation a representation kind for the Views Explorer view.
+ * Object to represent a representation kind for the Views Explorer view.
+ * @param id the URI of the representation kind, for instance, "siriusComponents://representation?type=Diagram".
+ * @param name the name of the representation kind, for instance, "diagram".
+ * @param representationDescriptionTypes the representation descriptions having for kind the current kind.
  *
- * @author theogiraudet
+ * @author tgiraudet
  */
 public record RepresentationKind(String id, String name, List<RepresentationDescriptionType> representationDescriptionTypes) {
 

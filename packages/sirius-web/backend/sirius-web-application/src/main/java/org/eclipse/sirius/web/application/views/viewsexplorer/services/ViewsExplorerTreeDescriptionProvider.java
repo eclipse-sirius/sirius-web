@@ -20,15 +20,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationImageProvider;
-import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
-import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
-import org.eclipse.sirius.components.core.api.labels.StyledStringFragment;
-import org.eclipse.sirius.components.core.api.labels.StyledStringFragmentStyle;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -37,6 +33,9 @@ import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
+import org.eclipse.sirius.web.application.views.viewsexplorer.services.api.IViewsExplorerContentService;
+import org.eclipse.sirius.web.application.views.viewsexplorer.services.api.IViewsExplorerDeletionService;
+import org.eclipse.sirius.web.application.views.viewsexplorer.services.api.IViewsExplorerLabelService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
@@ -59,25 +58,25 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
 
     private final ILabelService labelService;
 
-    private final List<IRenameTreeItemHandler> renameTreeItemHandlers;
-
-    private final List<IDeleteTreeItemHandler> deleteTreeItemHandlers;
-
     private final List<IRepresentationImageProvider> representationImageProviders;
 
-    private final ViewsExplorerElementsProvider viewsElementsProvider;
+    private final IViewsExplorerContentService viewsElementsProvider;
+
+    private final IViewsExplorerDeletionService viewsExplorerDeletionService;
+
+    private final IViewsExplorerLabelService viewsExplorerLabelService;
 
     private final IMessageService messageService;
 
-    public ViewsExplorerTreeDescriptionProvider(IIdentityService identityService, ILabelService labelService, List<IRenameTreeItemHandler> renameTreeItemHandlers,
-            List<IDeleteTreeItemHandler> deleteTreeItemHandlers, List<IRepresentationImageProvider> representationImageProviders, ViewsExplorerElementsProvider viewsElementsProvider,
-        IMessageService messageService) {
+    public ViewsExplorerTreeDescriptionProvider(IIdentityService identityService, ILabelService labelService,
+        List<IRepresentationImageProvider> representationImageProviders, IViewsExplorerContentService viewsElementsProvider, IViewsExplorerDeletionService viewsExplorerDeletionService,
+        IViewsExplorerLabelService viewsExplorerLabelService, IMessageService messageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
-        this.renameTreeItemHandlers = Objects.requireNonNull(renameTreeItemHandlers);
-        this.deleteTreeItemHandlers = Objects.requireNonNull(deleteTreeItemHandlers);
         this.representationImageProviders = Objects.requireNonNull(representationImageProviders);
         this.viewsElementsProvider = Objects.requireNonNull(viewsElementsProvider);
+        this.viewsExplorerDeletionService = Objects.requireNonNull(viewsExplorerDeletionService);
+        this.viewsExplorerLabelService = Objects.requireNonNull(viewsExplorerLabelService);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
@@ -124,7 +123,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
         Object self = variableManager.getVariables().get(VariableManager.SELF);
         String result;
         if (self instanceof RepresentationKind kind) {
-            result = kind.name();
+            result = kind.id();
         } else if (self instanceof RepresentationDescriptionType type) {
             result = type.id();
         } else {
@@ -148,27 +147,10 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
 
     private StyledString getLabel(VariableManager variableManager) {
         Object self = variableManager.getVariables().get(VariableManager.SELF);
-        var result = StyledString.of("");
-        if (self instanceof RepresentationKind kind) {
-            String name = kind.name();
-            String size = String.valueOf(kind.representationDescriptionTypes().stream().mapToLong(descType -> descType.representationsMetadata().size()).sum());
-            result = this.getColoredLabel(name, size);
-        } else if (self instanceof RepresentationDescriptionType descriptionType) {
-            String name = descriptionType.descriptions().getLabel();
-            String size = String.valueOf(descriptionType.representationsMetadata().size());
-            result = this.getColoredLabel(name, size);
-        } else {
-            result = this.labelService.getStyledLabel(self);
-        }
-        return result;
-    }
-
-    private StyledString getColoredLabel(String label, String size) {
-        return new StyledString(List.of(
-            new StyledStringFragment("%s (%s)".formatted(label.toUpperCase(), size), StyledStringFragmentStyle.newDefaultStyledStringFragmentStyle()
-                .foregroundColor("#261E588A")
-                .build())
-        ));
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        return optionalEditingContext
+            .map(editingContext -> this.viewsExplorerLabelService.getLabel(editingContext, self))
+            .orElse(StyledString.of(""));
     }
 
     private String getTargetObjectId(VariableManager variableManager) {
@@ -209,17 +191,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
 
         if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent() && optionalTree.isPresent()) {
-            IEditingContext editingContext = optionalEditingContext.get();
-            TreeItem treeItem = optionalTreeItem.get();
-
-            var optionalHandler = this.deleteTreeItemHandlers.stream()
-                    .filter(handler -> handler.canHandle(editingContext, treeItem))
-                    .findFirst();
-
-            if (optionalHandler.isPresent()) {
-                IDeleteTreeItemHandler deleteTreeItemHandler = optionalHandler.get();
-                return deleteTreeItemHandler.handle(editingContext, treeItem, optionalTree.get());
-            }
+            return this.viewsExplorerDeletionService.delete(optionalEditingContext.get(), optionalTree.get(), optionalTreeItem.get());
         }
         return new Failure(this.messageService.failedToDelete());
     }
@@ -230,17 +202,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
 
         if (optionalEditingContext.isPresent() && optionalTreeItem.isPresent() && optionalTree.isPresent()) {
-            IEditingContext editingContext = optionalEditingContext.get();
-            TreeItem treeItem = optionalTreeItem.get();
-
-            var optionalHandler = this.renameTreeItemHandlers.stream()
-                    .filter(handler -> handler.canHandle(editingContext, treeItem, newLabel))
-                    .findFirst();
-
-            if (optionalHandler.isPresent()) {
-                IRenameTreeItemHandler renameTreeItemHandler = optionalHandler.get();
-                return renameTreeItemHandler.handle(editingContext, treeItem, newLabel, optionalTree.get());
-            }
+            return this.viewsExplorerLabelService.editLabel(optionalEditingContext.get(), optionalTree.get(), optionalTreeItem.get(), newLabel);
         }
         return new Failure(this.messageService.failedToRename());
     }
@@ -254,14 +216,14 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
 
         String treeItemId = optionalTreeItemId.get();
         List<RepresentationKind> representationKinds = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                .map(this.viewsElementsProvider::getElements)
+                .map(this.viewsElementsProvider::getContents)
                 .orElse(List.of());
 
         Object result = null;
         var kindIterator = representationKinds.iterator();
         while (result == null && kindIterator.hasNext()) {
             var representationKind = kindIterator.next();
-            if (representationKind.name().equals(treeItemId)) {
+            if (representationKind.id().equals(treeItemId)) {
                 result = representationKind;
             } else {
                 var descTypeIterator = representationKind.representationDescriptionTypes().iterator();
@@ -294,7 +256,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
 
         String selfId = this.identityService.getId(self);
         List<RepresentationKind> representationKinds = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
-                .map(this.viewsElementsProvider::getElements)
+                .map(this.viewsElementsProvider::getContents)
                 .orElse(List.of());
 
         Object result = null;
@@ -327,12 +289,13 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
 
     private boolean isEditable(VariableManager variableManager) {
         Object self = this.getSelf(variableManager);
-        return self instanceof RepresentationMetadata;
+        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        return optionalEditingContext.isEmpty() || this.viewsExplorerLabelService.isEditable(optionalEditingContext.get(), self);
     }
 
     private boolean isDeletable(VariableManager variableManager) {
         Object self = this.getSelf(variableManager);
-        return self instanceof RepresentationMetadata;
+        return !this.viewsExplorerDeletionService.isDeletable(self);
     }
 
     private boolean hasChildren(VariableManager variableManager) {
@@ -369,6 +332,6 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
 
     private List<?> getElements(VariableManager variableManager) {
         var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        return optionalEditingContext.map(viewsElementsProvider::getElements).orElse(List.of());
+        return optionalEditingContext.map(this.viewsElementsProvider::getContents).orElse(List.of());
     }
 }
