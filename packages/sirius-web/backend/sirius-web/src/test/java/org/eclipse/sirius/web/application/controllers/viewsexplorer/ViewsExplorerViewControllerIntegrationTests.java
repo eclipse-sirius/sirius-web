@@ -288,7 +288,7 @@ public class ViewsExplorerViewControllerIntegrationTests extends AbstractIntegra
 
     private ViewsExplorerEventInput buildViewInput() {
         var representationId = new RepresentationIdBuilder().buildViewsExplorerViewRepresentationId(
-            List.of(Portal.KIND.split("=")[1], TestIdentifiers.PORTAL_DESCRIPTION_ID.toString()));
+            List.of(Portal.KIND, TestIdentifiers.PORTAL_DESCRIPTION_ID.toString()));
         return new ViewsExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, representationId);
     }
 }

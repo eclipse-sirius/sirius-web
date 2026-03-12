@@ -20,45 +20,30 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
-import org.eclipse.sirius.web.application.UUIDParser;
+import org.eclipse.sirius.web.application.views.viewsexplorer.services.api.IDefaultViewsExplorerContentService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
- * Service in charge of providing the list of representations available in the "views explorer" view, directly organized into a synthetic semantic tree.
+ * The default implementation used to compute the content of the views explorer.
  *
- * @author theogiraudet
+ * @author tgiraudet
  */
 @Service
-public class ViewsExplorerElementsProvider {
-
-    private final IRepresentationMetadataSearchService representationMetadataSearchService;
-
-    private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
+public class DefaultViewsExplorerContentService implements IDefaultViewsExplorerContentService {
 
     private final IURLParser urlParser;
 
-    public ViewsExplorerElementsProvider(IRepresentationMetadataSearchService representationMetadataSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService,
-            IURLParser urlParser) {
-        this.representationMetadataSearchService = Objects.requireNonNull(representationMetadataSearchService);
-        this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
+    public DefaultViewsExplorerContentService(IURLParser urlParser) {
         this.urlParser = Objects.requireNonNull(urlParser);
     }
 
-    public List<RepresentationKind> getElements(IEditingContext editingContext) {
-        return new UUIDParser().parse(editingContext.getId())
-                .map(semanticDataId -> {
-                    var allMetadata = this.representationMetadataSearchService.findAllRepresentationMetadataBySemanticData(AggregateReference.to(semanticDataId));
-                    var allDescriptions = this.representationDescriptionSearchService.findAll(editingContext);
-                    var descriptionTypes = this.groupByDescriptionType(allMetadata, allDescriptions);
-                    return this.groupByKind(descriptionTypes);
-                })
-                .orElse(List.of());
+    @Override
+    public List<RepresentationKind> getContents(IEditingContext editingContext, List<RepresentationMetadata> representationMetadata, Map<String, IRepresentationDescription> representationDescriptions) {
+        var descriptionTypes = this.groupByDescriptionType(representationMetadata, representationDescriptions);
+        return this.groupByKind(descriptionTypes);
     }
 
     private List<RepresentationDescriptionType> groupByDescriptionType(List<RepresentationMetadata> allMetadata, Map<String, IRepresentationDescription> allDescriptions) {
@@ -66,7 +51,7 @@ public class ViewsExplorerElementsProvider {
                 .collect(Collectors.groupingBy(RepresentationMetadata::getDescriptionId))
                 .entrySet().stream()
                 .map(entry -> Optional.ofNullable(allDescriptions.get(entry.getKey()))
-                        .map(desc -> new RepresentationDescriptionType(entry.getKey(), desc, entry.getValue())))
+                        .map(representationDescription -> new RepresentationDescriptionType(entry.getKey(), representationDescription, entry.getValue())))
                 .flatMap(Optional::stream)
                 .toList();
     }
