@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.Line;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
 import org.eclipse.sirius.components.view.View;
-import org.eclipse.sirius.components.view.emf.form.ViewFormDescriptionPredicate;
+import org.eclipse.sirius.components.view.emf.form.api.IViewFormDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.form.api.IViewFormDescriptionSearchService;
 import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.eclipse.sirius.components.view.emf.table.api.IViewEditCellExecutor;
@@ -40,7 +40,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ViewFormEditCellHandler implements IEditCellHandler {
 
-    private final ViewFormDescriptionPredicate viewFormDescriptionPredicate;
+    private final IViewFormDescriptionPredicate viewFormDescriptionPredicate;
 
     private final IViewFormDescriptionSearchService viewFormDescriptionSearchService;
 
@@ -48,7 +48,7 @@ public class ViewFormEditCellHandler implements IEditCellHandler {
 
     private final IViewEMFMessageService viewEMFMessageService;
 
-    public ViewFormEditCellHandler(ViewFormDescriptionPredicate viewFormDescriptionPredicate, IViewFormDescriptionSearchService viewFormDescriptionSearchService,
+    public ViewFormEditCellHandler(IViewFormDescriptionPredicate viewFormDescriptionPredicate, IViewFormDescriptionSearchService viewFormDescriptionSearchService,
             IViewEditCellExecutor viewEditCellExecutor, IViewEMFMessageService viewEMFMessageService) {
         this.viewFormDescriptionPredicate = Objects.requireNonNull(viewFormDescriptionPredicate);
         this.viewFormDescriptionSearchService = Objects.requireNonNull(viewFormDescriptionSearchService);
