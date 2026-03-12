@@ -99,4 +99,7 @@ playwright/.cache/
 GEMINI.md
 .geminiignore
 .claude
+CLAUDE.md
+.agents
 .codex
+AGENTS.md
