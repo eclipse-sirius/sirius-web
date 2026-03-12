@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,8 @@ import java.util.Optional;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvider;
-import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
 import org.eclipse.sirius.components.view.emf.form.api.IFormIdProvider;
+import org.eclipse.sirius.components.view.emf.form.api.IViewFormDescriptionPredicate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
  * @author frouene
  */
 @Service
-public class ViewFormDescriptionPredicate implements IViewRepresentationDescriptionPredicate {
+public class ViewFormDescriptionPredicate implements IViewFormDescriptionPredicate {
 
     private final IURLParser urlParser;
 
