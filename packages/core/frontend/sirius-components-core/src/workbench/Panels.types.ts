@@ -25,12 +25,6 @@ export interface PanelsProps {
   rightPanelInitialSize: number;
 }
 
-export type PanelState = {
-  selectedContributionIds: string[];
-  collapsedContributionIds: string[];
-  isOpen: boolean;
-};
-
 export interface WorkbenchPanelHandle {
   side: 'left' | 'right';
   getWorkbenchViewHandles: () => WorkbenchViewHandle[];
