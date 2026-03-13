@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.flow.starter.view.descriptions;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.flow.starter.view.FlowViewBuilder;
@@ -78,9 +80,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
                         .condition("aql:self.oclAsType(flow::System).temperature>30")
                         .style(this.getRectangularNodeStyleDescription("Flow_Orange", "Flow_Orange"))
                         .build())
-                .synchronizationPolicy(this.synchronizationPolicy)
-                .borderNodesDescriptions(new PowerOutputDescriptionProvider(this.colorProvider).create(),
-                        new PowerInputDescriptionProvider(this.colorProvider).create());
+                .synchronizationPolicy(this.synchronizationPolicy);
 
         if (this.autoLayout) {
             nodeDescription.childrenDescriptions(this.createDescriptionNode());
@@ -112,10 +112,34 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
     }
 
     private NodePalette createNodePalette(IViewDiagramElementFinder cache) {
+        List<NodeDescription> acceptedNodeTypes = new ArrayList<>();
+        cache.getNodeDescription(ProcessorDescriptionProvider.NAME).ifPresent(acceptedNodeTypes::add);
+        cache.getNodeDescription(DataSourceDescriptionProvider.NAME).ifPresent(acceptedNodeTypes::add);
+
+        var dropNodeTool = this.diagramBuilderHelper.newDropNodeTool()
+                .name("Drop Nodes")
+                .acceptedNodeTypes(acceptedNodeTypes.toArray(new NodeDescription[acceptedNodeTypes.size()]))
+                .body(
+                        new ViewBuilders().newChangeContext()
+                                .expression("aql:targetElement")
+                                .children(
+                                        new ViewBuilders().newSetValue()
+                                                .featureName("elements")
+                                                .valueExpression("aql:self.elements->union(droppedElements)")
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+
         var nodePaletteBuilder = this.diagramBuilderHelper.newNodePalette()
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .labelEditTool(this.flowViewBuilder.createLabelEditTool())
-                .toolSections(this.createNodeToolSection(cache), new DefaultToolsFactory().createDefaultHideRevealNodeToolSection());
+                .dropNodeTool(dropNodeTool)
+                .toolSections(
+                        this.createNodeToolSection(cache),
+                        new DefaultToolsFactory().createDefaultHideRevealNodeToolSection()
+                );
 
         if (this.synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED) {
             nodePaletteBuilder.quickAccessTools(this.flowViewBuilder.getDeleteFromDiagramTool());
@@ -127,9 +151,13 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
     private NodeToolSection createNodeToolSection(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newNodeToolSection()
                 .name("Creation Tools")
-                .nodeTools(this.createNodeToolCreateFan(cache),
+                .nodeTools(
+                        this.createNodeToolCreateFan(cache),
                         this.createNodeToolProcessor(cache),
-                        this.createNodeToolCreateDataSource(cache))
+                        this.createNodeToolCreateDataSource(cache),
+                        this.createNodeToolPowerInput(),
+                        this.createNodeToolPowerOutput()
+                )
                 .build();
     }
 
@@ -274,6 +302,42 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
                         .build())
                 .synchronizationPolicy(this.synchronizationPolicy)
                 .childrenDescriptions(weightNodeDescription, temperatureNodeDescription)
+                .build();
+    }
+
+    private NodeTool createNodeToolPowerInput() {
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Power Input")
+                .iconURLsExpression("/icons/full/obj16/PowerInput.gif")
+                .body(
+                        this.viewBuilderHelper.newChangeContext()
+                                .expression("aql:self")
+                                .children(
+                                        this.viewBuilderHelper.newCreateInstance()
+                                                .typeName("flow::PowerInput")
+                                                .referenceName("powerInputs")
+                                                .build()
+                                )
+                                .build()
+                )
+                .build();
+    }
+
+    private NodeTool createNodeToolPowerOutput() {
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Power Ouput")
+                .iconURLsExpression("/icons/full/obj16/PowerOutput.gif")
+                .body(
+                        this.viewBuilderHelper.newChangeContext()
+                                .expression("aql:self")
+                                .children(
+                                        this.viewBuilderHelper.newCreateInstance()
+                                                .typeName("flow::PowerOutput")
+                                                .referenceName("powerOutputs")
+                                                .build()
+                                )
+                                .build()
+                )
                 .build();
     }
 }

@@ -17,6 +17,9 @@ import java.util.List;
 import org.eclipse.sirius.components.flow.starter.view.descriptions.DataSourceDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.descriptions.DataSourceToProcessorEdgeDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.descriptions.FanDescriptionProvider;
+import org.eclipse.sirius.components.flow.starter.view.descriptions.PowerInputDescriptionProvider;
+import org.eclipse.sirius.components.flow.starter.view.descriptions.PowerLinkEdgeDescriptionProvider;
+import org.eclipse.sirius.components.flow.starter.view.descriptions.PowerOutputDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.descriptions.ProcessorDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.descriptions.ProcessorToProcessorEdgeDescriptionProvider;
 import org.eclipse.sirius.components.flow.starter.view.descriptions.SystemDescriptionProvider;
@@ -68,7 +71,10 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
                 new FanDescriptionProvider(colorProvider, SynchronizationPolicy.SYNCHRONIZED),
                 new SystemDescriptionProvider(colorProvider, SynchronizationPolicy.SYNCHRONIZED, false),
                 new DataSourceToProcessorEdgeDescriptionProvider(colorProvider),
-                new ProcessorToProcessorEdgeDescriptionProvider(colorProvider)
+                new ProcessorToProcessorEdgeDescriptionProvider(colorProvider),
+                new PowerInputDescriptionProvider(colorProvider),
+                new PowerOutputDescriptionProvider(colorProvider),
+                new PowerLinkEdgeDescriptionProvider(colorProvider)
         );
 
         diagramElementDescriptionProviders.stream().map(IDiagramElementDescriptionProvider::create).forEach(cache::put);
