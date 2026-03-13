@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,11 @@ public class PowerInputDescriptionProvider implements INodeDescriptionProvider {
 
     @Override
     public void link(DiagramDescription diagramDescription, IViewDiagramElementFinder cache) {
-        cache.getNodeDescription(NAME).ifPresent(nodeDescription -> diagramDescription.getNodeDescriptions().add(nodeDescription));
+        cache.getNodeDescription(NAME).ifPresent(nodeDescription -> {
+            cache.getNodeDescription(SystemDescriptionProvider.NAME).ifPresent(systemNodeDescription -> {
+                systemNodeDescription.getBorderNodesDescriptions().add(nodeDescription);
+            });
+        });
     }
 
     private NodePalette createNodePalette() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -59,6 +59,7 @@ public class FlowViewBuilder {
     public static final String CPU_UNUSED_SVG_ID = "/flow-images/cpu_unused.svg";
 
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
+
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
     public ImageNodeStyleDescription createImageNodeStyleDescription(String shapeId, IColorProvider colorProvider) {
@@ -91,7 +92,6 @@ public class FlowViewBuilder {
     }
 
     public EdgeTool createEdgeToProcessorTool(NodeDescription processorNodeDescription) {
-
         var setValueCapacity = this.viewBuilderHelper.newSetValue()
                 .featureName("capacity")
                 .valueExpression("6");
