@@ -91,6 +91,7 @@ The resize is still constrained by its inside label
 - https://github.com/eclipse-sirius/sirius-web/issues/6258[#6258] [diagram] Prevent child nodes from detaching during parent node resize
 - https://github.com/eclipse-sirius/sirius-web/issues/6138[#6138] [diagram] Prevent handle position to move between two refreshes
 - https://github.com/eclipse-sirius/sirius-web/issues/6306[#6306] [diagram] Apply move when resizing a child node from its left side
+- https://github.com/eclipse-sirius/sirius-web/issues/6294[#6294] [table] Prevent redundant `getAllToolMenuEntries` calls for each action
 
 
 === New Features

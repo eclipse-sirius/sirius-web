@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,5 +39,13 @@ test.describe('table', () => {
     await expect(table.tableLocator).toBeAttached();
     const rowCount = await table.getRowCount();
     expect(rowCount).toBe(8);
+  });
+
+  test('when the representation id of a table change, then the table is not dispose', async ({ page }) => {
+    const table = new PlaywrightTable(page);
+    await expect(table.tableLocator).toBeAttached();
+    await table.changeRowPerPage(5);
+    await page.waitForTimeout(6000); // we explicitly wait for the dispose timeout
+    await expect(table.tableLocator).toBeAttached();
   });
 });
