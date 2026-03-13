@@ -22,6 +22,20 @@ import { useLayout } from '../useLayout';
 import { useSynchronizeLayoutData } from '../useSynchronizeLayoutData';
 import { UseArrangeAllValue } from './useArrangeAll.types';
 
+const computeSelectionOrigin = (nodes: Node<NodeData, string>[]): [number, number] => {
+  let minX = Infinity;
+  let minY = Infinity;
+
+  nodes.forEach((node) => {
+    if (node && node.width && node.height) {
+      if (node.position.x < minX) minX = node.position.x;
+      if (node.position.y < minY) minY = node.position.y;
+    }
+  });
+
+  return [minX, minY];
+};
+
 export const useArrangeAll = (): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { layout } = useLayout();
@@ -44,41 +58,87 @@ export const useArrangeAll = (): UseArrangeAllValue => {
               edge.data.bendingPoints = null;
             }
           });
-
         const diagramToLayout: RawDiagram = {
           nodes: laidOutNodesWithElk,
           edges: edges,
         };
         const layoutPromise = new Promise<void>((resolve) => {
           layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-            const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
+            resolveNodeOverlap(
               laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
               'horizontal'
             ) as Node<NodeData, DiagramNodeType>[];
-            laidOutNodesWithElk.map((node) => {
-              const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
-              if (existingNode) {
-                return {
-                  ...node,
-                  position: existingNode.position,
-                  width: existingNode.width,
-                  height: existingNode.height,
-                  style: {
-                    ...node.style,
-                    width: `${existingNode.width}px`,
-                    height: `${existingNode.height}px`,
-                  },
-                };
-              }
-              return node;
-            });
-            setNodes(laidOutNodesWithElk);
+            setNodes(laidOutDiagram.nodes);
             setEdges(laidOutDiagram.edges);
             const finalDiagram: RawDiagram = {
-              nodes: laidOutNodesWithElk,
+              nodes: laidOutDiagram.nodes,
               edges: laidOutDiagram.edges,
             };
-            fitView({ duration: 200, nodes: laidOutNodesWithElk });
+            fitView({ duration: 200, nodes: laidOutDiagram.nodes });
+            synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+            resolve();
+          });
+        });
+        await layoutPromise;
+      }
+    );
+  };
+
+  return {
+    arrangeAll,
+  };
+};
+
+export const useArrangeSelection = (): UseArrangeAllValue => {
+  const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { layout } = useLayout();
+  const { synchronizeLayoutData } = useSynchronizeLayoutData();
+  const { resolveNodeOverlap } = useOverlap();
+  const { fitView } = useFitView();
+  const { elkLayout } = useElkLayout();
+
+  const arrangeAll = async (layoutOptions: LayoutOptions): Promise<void> => {
+    const selectedNodes: Node<NodeData>[] = getNodes().filter((n) => n.selected);
+    const [minX, minY] = computeSelectionOrigin(selectedNodes);
+    await elkLayout(selectedNodes, getEdges(), layoutOptions).then(
+      async (laidOutNodesWithElk: Node<NodeData, string>[]) => {
+        const [newMinX, newMinY] = computeSelectionOrigin(laidOutNodesWithElk);
+        laidOutNodesWithElk.forEach((node) => {
+          node.position.x += minX - newMinX;
+          node.position.y += minY - newMinY;
+        });
+        const laidOutMovedNodeIds = laidOutNodesWithElk
+          .filter((node) => !node.data.isBorderNode && !node.data.pinned)
+          .map((node) => node.id);
+        const edges = getEdges();
+        edges
+          .filter((edge) => laidOutMovedNodeIds.includes(edge.source) || laidOutMovedNodeIds.includes(edge.target))
+          .forEach((edge: Edge<EdgeData, string>) => {
+            if (edge.data?.bendingPoints) {
+              edge.data.bendingPoints = null;
+            }
+          });
+        const allNodes: Node<NodeData, string>[] = getNodes().map((node) => {
+          const modifiedNode = laidOutNodesWithElk.find((laidOutNode) => laidOutNode.id === node.id);
+          return modifiedNode ? modifiedNode : node;
+        });
+        const diagramToLayout: RawDiagram = {
+          nodes: allNodes,
+          edges: edges,
+        };
+        const layoutPromise = new Promise<void>((resolve) => {
+          layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
+            resolveNodeOverlap(
+              laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
+              'horizontal'
+            ) as Node<NodeData, DiagramNodeType>[];
+            setNodes(laidOutDiagram.nodes);
+            setEdges(laidOutDiagram.edges);
+            const finalDiagram: RawDiagram = {
+              nodes: laidOutDiagram.nodes,
+              edges: laidOutDiagram.edges,
+            };
+            fitView({ duration: 200, nodes: laidOutDiagram.nodes });
             synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
             resolve();
           });
