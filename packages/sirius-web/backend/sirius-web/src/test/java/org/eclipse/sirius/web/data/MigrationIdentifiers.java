@@ -55,6 +55,8 @@ public final class MigrationIdentifiers {
 
     public static final String MIGRATION_SELECTION_DIALOG_DESCRIPTION_SELECTION_CANDIDATES_EXPRESSION_STUDIO_DIAGRAM = "SelectionDialogDescription#selectionCandidatesExpression migration";
 
+    public static final String SELECTION_DIALOG_DESCRIPTION_MIGRATE_LABELS_TO_EXPRESSION_MIGRATION_PARTICIPANT_DOCUMENT_NAME = "SelectionDialogDescriptionMigrateLabelsToExpressionMigrationParticipant migration";
+
     public static final UUID MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO = UUID.fromString("dc9643f8-b1ce-4c93-a176-379063d42b32");
 
     public static final String MIGRATION_INSIDE_LABEL_STYLE_HEADER_SEPARATOR_DISPLAY_STUDIO_DIAGRAM = "InsideLabelStyle#displayHeaderSeparator migration";

@@ -39,11 +39,11 @@ public final class SelectionDescription implements IRepresentationDescription {
 
     private Function<VariableManager, String> labelProvider;
 
+    private Function<VariableManager, SelectionDescriptionDialog> dialogProvider;
+
+    private Function<VariableManager, String> dialogSelectionRequiredWithSelectionStatusMessageProvider;
+
     private Function<VariableManager, String> targetObjectIdProvider;
-
-    private Function<VariableManager, String> messageProvider;
-
-    private Function<VariableManager, String> noSelectionLabelProvider;
 
     private Predicate<VariableManager> canCreatePredicate;
 
@@ -81,16 +81,16 @@ public final class SelectionDescription implements IRepresentationDescription {
         return this.labelProvider;
     }
 
+    public Function<VariableManager, SelectionDescriptionDialog> getDialogProvider() {
+        return this.dialogProvider;
+    }
+
+    public Function<VariableManager, String> getDialogSelectionRequiredWithSelectionStatusMessageProvider() {
+        return this.dialogSelectionRequiredWithSelectionStatusMessageProvider;
+    }
+
     public Function<VariableManager, String> getTargetObjectIdProvider() {
         return this.targetObjectIdProvider;
-    }
-
-    public Function<VariableManager, String> getMessageProvider() {
-        return this.messageProvider;
-    }
-
-    public Function<VariableManager, String> getNoSelectionLabelProvider() {
-        return this.noSelectionLabelProvider;
     }
 
     @Override
@@ -136,11 +136,11 @@ public final class SelectionDescription implements IRepresentationDescription {
 
         private Function<VariableManager, String> labelProvider;
 
+        private Function<VariableManager, SelectionDescriptionDialog> dialogProvider;
+
+        private Function<VariableManager, String> dialogSelectionRequiredWithSelectionStatusMessageProvider;
+
         private Function<VariableManager, String> targetObjectIdProvider;
-
-        private Function<VariableManager, String> messageProvider;
-
-        private Function<VariableManager, String> noSelectionLabelProvider;
 
         private Predicate<VariableManager> canCreatePredicate;
 
@@ -171,18 +171,18 @@ public final class SelectionDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder dialogProvider(Function<VariableManager, SelectionDescriptionDialog> dialogProvider) {
+            this.dialogProvider = Objects.requireNonNull(dialogProvider);
+            return this;
+        }
+
+        public Builder dialogSelectionRequiredWithSelectionStatusMessageProvider(Function<VariableManager, String> dialogSelectionRequiredWithSelectionStatusMessageProvider) {
+            this.dialogSelectionRequiredWithSelectionStatusMessageProvider = Objects.requireNonNull(dialogSelectionRequiredWithSelectionStatusMessageProvider);
+            return this;
+        }
+
         public Builder targetObjectIdProvider(Function<VariableManager, String> targetObjectIdProvider) {
             this.targetObjectIdProvider = Objects.requireNonNull(targetObjectIdProvider);
-            return this;
-        }
-
-        public Builder messageProvider(Function<VariableManager, String> messageProvider) {
-            this.messageProvider = Objects.requireNonNull(messageProvider);
-            return this;
-        }
-
-        public Builder noSelectionLabelProvider(Function<VariableManager, String> noSelectionLabelProvider) {
-            this.noSelectionLabelProvider = Objects.requireNonNull(noSelectionLabelProvider);
             return this;
         }
 
@@ -217,9 +217,9 @@ public final class SelectionDescription implements IRepresentationDescription {
             selectionDescription.label = Objects.requireNonNull(this.label);
             selectionDescription.idProvider = Objects.requireNonNull(this.idProvider);
             selectionDescription.labelProvider = Objects.requireNonNull(this.labelProvider);
+            selectionDescription.dialogProvider = Objects.requireNonNull(this.dialogProvider);
+            selectionDescription.dialogSelectionRequiredWithSelectionStatusMessageProvider = Objects.requireNonNull(this.dialogSelectionRequiredWithSelectionStatusMessageProvider);
             selectionDescription.targetObjectIdProvider = Objects.requireNonNull(this.targetObjectIdProvider);
-            selectionDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
-            selectionDescription.noSelectionLabelProvider = Objects.requireNonNull(this.noSelectionLabelProvider);
             selectionDescription.canCreatePredicate = Objects.requireNonNull(this.canCreatePredicate);
             selectionDescription.treeDescription = Objects.requireNonNull(this.treeDescription);
             selectionDescription.multiple = this.multiple;

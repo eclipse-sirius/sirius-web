@@ -31,11 +31,41 @@ export interface GetSelectionDescriptionVariables {
 }
 
 export interface GQLSelectionDescription {
-  message: string;
-  noSelectionLabel: string;
+  dialog: GQLSelectionDescriptionDialog;
   treeDescription: GQLTreeDescription;
   multiple: boolean;
   optional: boolean;
+}
+
+export interface GQLSelectionDescriptionDialog {
+  titles: GQLSelectionDescriptionDialogTitles;
+  description: string;
+  noSelectionAction: GQLSelectionDescriptionDialogAction;
+  withSelectionAction: GQLSelectionDescriptionDialogAction;
+  statusMessages: GQLSelectionDescriptionDialogStatusMessages;
+  confirmButtonLabels: GQLSelectionDescriptionDialogConfirmButtonLabels;
+}
+
+export interface GQLSelectionDescriptionDialogTitles {
+  defaultTitle: string;
+  noSelectionTitle: string;
+  withSelectionTitle: string;
+}
+
+export interface GQLSelectionDescriptionDialogAction {
+  label: string;
+  description: string;
+}
+
+export interface GQLSelectionDescriptionDialogStatusMessages {
+  noSelectionActionStatusMessage: string;
+  selectionRequiredWithoutSelectionStatusMessage: string;
+}
+
+export interface GQLSelectionDescriptionDialogConfirmButtonLabels {
+  noSelectionConfirmButtonLabel: string;
+  selectionRequiredWithoutSelectionConfirmButtonLabel: string;
+  selectionRequiredWithSelectionConfirmButtonLabel: string;
 }
 
 export interface GQLTreeDescription {
