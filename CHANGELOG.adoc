@@ -144,6 +144,8 @@ See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6422[#6422] [diagram] Add support for handling edge handles during the `arrange all` action
 - https://github.com/eclipse-sirius/sirius-web/issues/6236[#6236] [sirius-web] Add "select" and "filter" tools to the "views explorer" view.
 - https://github.com/eclipse-sirius/sirius-web/issues/6449[#6449] [tree] The backend tree rendering now filters out empty fragments in item's labels to reduce the amount of data transfered to the frontend.
+- https://github.com/eclipse-sirius/sirius-web/issues/6396[#6396] [diagram] The diagram palette now supports fuzzy matching when searching for tools.
+For example entering either `att def` or `NAD` will now find a tool named `New Attribute Definition`.
 
 
 
