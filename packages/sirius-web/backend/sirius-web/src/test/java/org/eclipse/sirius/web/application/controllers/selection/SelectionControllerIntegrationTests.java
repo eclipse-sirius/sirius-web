@@ -157,7 +157,7 @@ public class SelectionControllerIntegrationTests extends AbstractIntegrationTest
         String treeDescriptionId = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeDescription.id");
 
         assertThat(message).isEqualTo("Select the objects to consider");
-        assertThat(noSelectionLabel).isEqualTo("Confirm without selection");
+        assertThat(noSelectionLabel).isEqualTo("Execute the tool without making selection");
         assertThat(treeDescriptionId).isEqualTo(this.selectionDescriptionProvider.getSelectionDialogTreeDescriptionId());
     }
 

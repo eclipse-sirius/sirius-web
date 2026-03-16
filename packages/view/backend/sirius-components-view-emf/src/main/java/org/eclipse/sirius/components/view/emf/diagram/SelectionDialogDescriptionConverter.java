@@ -119,14 +119,19 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
                 .messageProvider(variableManager -> {
                     String message = Optional.ofNullable(selectionDescription.getSelectionMessage()).orElse("");
                     if (message.isBlank()) {
-                        message = "Use an existing element";
+                        message = "A tool will be executed,";
+                        if (selectionDescription.isOptional()) {
+                            message +=  " choose how to proceed:";
+                        } else {
+                            message += " select an element to proceed.";
+                        }
                     }
                     return message;
                 })
                 .noSelectionLabelProvider(variableManager -> {
                     String noSelectionLabel = Optional.ofNullable(selectionDescription.getNoSelectionLabel()).orElse("");
                     if (noSelectionLabel.isBlank()) {
-                        noSelectionLabel = "Confirm without selection";
+                        noSelectionLabel = "Execute the tool without making selection";
                     }
                     return noSelectionLabel;
                 })

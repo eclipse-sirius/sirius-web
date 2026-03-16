@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,17 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  DiagramDialogComponentProps,
-  DiagramDialogVariable,
-  GQLToolVariable,
-} from '@eclipse-sirius/sirius-components-diagrams';
-
-export interface SelectionDialogProps extends DiagramDialogComponentProps {}
-
-export interface InternalSelectionDialogProps {
-  editingContextId: string;
-  variables: DiagramDialogVariable[];
+export interface SelectionDialogActionsProps {
   onClose: () => void;
-  onFinish: (variables: GQLToolVariable[]) => void;
+  handleConfirmDialog: () => void;
 }
