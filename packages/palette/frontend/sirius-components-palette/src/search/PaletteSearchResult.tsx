@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -84,9 +84,32 @@ const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => 
   }
   return <Typography className={classes.itemText}>{itemLabel}</Typography>;
 };
+
+function fuzzyMatch(candidate: string, searchTerm: string): boolean {
+  if (!searchTerm) {
+    return false;
+  }
+
+  const isCaseSensitive = /^[A-Z]/.test(searchTerm);
+  const searchChars = isCaseSensitive ? searchTerm.split('') : searchTerm.toLowerCase().split('');
+
+  const candidateChars = isCaseSensitive ? candidate.split('') : candidate.toLowerCase().split('');
+
+  let searchIdx = 0;
+
+  for (let i = 0; i < candidateChars.length && searchIdx < searchChars.length; i++) {
+    if (candidateChars[i] === searchChars[searchIdx]) {
+      searchIdx++;
+    }
+  }
+
+  return searchIdx === searchChars.length;
+}
+
 const filterFromSearchValue = (tool: GQLTool, searchToolValue: string): boolean => {
-  return tool.label.toLocaleLowerCase().includes(searchToolValue.toLocaleLowerCase());
+  return fuzzyMatch(tool.label, searchToolValue);
 };
+
 const useStyle = makeStyles()((theme) => ({
   toolListContainer: {
     display: 'grid',
