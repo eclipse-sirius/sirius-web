@@ -1,6 +1,6 @@
 :author: Florian Rouëné
 :date: 2026-03-27
-:status: proposed
+:status: accepted
 :consulted: Stéphane Bégaudeau
 :informed: Michaël Charfadi
 :deciders: Stéphane Bégaudeau
