@@ -1,0 +1,48 @@
+= Shape: Diagram-Specific Minimap Persistence
+
+== Problem
+Currently, the minimap visibility is controlled by a global `localStorage` setting. If a user hides the minimap on one diagram, it remains hidden on all diagrams. Furthermore, diagram specifiers have no way to define a default state for their diagram via the View DSL.
+
+== Key Result
+
+Users will experience a minimap state that is contextually aware of the diagram they are viewing. We will measure success by the successful transition from a single global key in `localStorage` to a per-diagram key-value store.
+
+=== Acceptance Criteria
+* **Initial Load:** A diagram loads with the minimap state (visible/hidden) defined in the View DSL.
+* **User Override:** If a user toggles the minimap, this preference is saved for *that specific diagram ID* only.
+* **Persistence:** Refreshing the page or returning to the diagram later respects the user's last manual toggle.
+* **No Global Interference:** Toggling the minimap on Diagram A does not change the visibility on Diagram B.
+
+== Solution
+
+We will move the minimap visibility logic away from a global boolean and into a hierarchy of concerns: **View DSL Default** => **User Interaction (Local Storage)**.
+
+1.  **View DSL integration:** Add a property to the View DSL, on the `DiagramDescription` to set the initial `showMinimap` state.
+2.  **State Lookup:** On diagram component mount, the app checks for a user preference in `localStorage` keyed by the diagram ID. If null, it falls back to the default View DSL value.
+3.  **Removal of Global Key:** Deprecate the existing global `sirius-diagram-mini-map-visibility` key to prevent state pollution.
+
+=== Scenario
+
+* **Scenario steps:**
+    1. User opens a diagram "Complex Architecture" with UUID `dbce8f60-177b-46b9-975f-0f8e4e8b7297` (View DSL says `minimap: true`). Minimap is shown.
+    2. User hides minimap. Local storage saves `{ "dbce8f60-177b-46b9-975f-0f8e4e8b7297": false }`.
+    3. User opens "Simple Flow" (View DSL says `minimap: false`). Minimap is hidden.
+    4. User returns to "Complex Architecture". Minimap remains hidden based on previous interaction.
+
+=== Breadboarding
+
+`[Minimap Toggle Button] -> Update Component State -> Persist to LocalStorage[DiagramID]`
+
+`[Diagram rendering] -> Check LocalStorage[DiagramID] ?? View DSL Default -> Set Component State`
+
+=== Cutting backs
+* **Nice-to-have:** A "Reset to Default" button in the UI to clear the `localStorage` override.
+
+== Rabbit holes
+* **Diagram Identification:** If IDs are non-persistent (transient diagrams), the user preference will be lost.
+* **Storage Bloat:** If a user views thousands of diagrams, `localStorage` will accumulate thousands of small keys. We should consider to delete the oldest keys when deleting a diagram.
+* **View DSL Updates:** If a specifier changes the View DSL default *after* a user has already toggled it, the user will not see the "new" default. This is intended, but worth noting.
+
+== No-gos
+* **Forcing State:** We will not implement a "Hard Lock" that prevents users from opening the minimap if the specifier hid it.
+* **Global Settings:** We will not maintain a "Global Toggle".
