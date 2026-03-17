@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.task.starter.services.view;
+
+package org.eclipse.sirius.web.services.gantt;
 
 import java.util.List;
 
@@ -27,23 +28,19 @@ import org.springframework.stereotype.Service;
  * @author lfasani
  */
 @Service
-public class TaskJavaServiceProvider implements IJavaServiceProvider {
+public class PepperJavaServiceProvider implements IJavaServiceProvider {
 
     @Override
     public List<Class<?>> getServiceClasses(View view) {
-        boolean isTaskRelatedView = view.getDescriptions().stream()
-                .filter(repDescription -> {
-                    return repDescription instanceof GanttDescription || repDescription instanceof DeckDescription;
-                })
-                .map(RepresentationDescription.class::cast)
-                .anyMatch(representationDescription -> {
-                    return representationDescription.getDomainType().contains("peppermm::");
-                });
+        boolean isTaskRelatedView = view.getDescriptions().stream().filter(repDescription -> {
+            return repDescription instanceof GanttDescription || repDescription instanceof DeckDescription;
+        }).map(RepresentationDescription.class::cast).anyMatch(representationDescription -> {
+            return representationDescription.getDomainType().contains("peppermm::");
+        });
 
         if (isTaskRelatedView) {
-            return List.of(TaskJavaService.class);
+            return List.of(PepperJavaService.class);
         }
         return List.of();
     }
-
 }

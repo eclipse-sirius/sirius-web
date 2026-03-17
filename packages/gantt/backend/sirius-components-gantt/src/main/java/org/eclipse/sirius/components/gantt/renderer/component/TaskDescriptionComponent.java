@@ -23,6 +23,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import org.eclipse.sirius.components.gantt.DependencyLink;
+import org.eclipse.sirius.components.gantt.StartOrEnd;
 import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.TaskDetail;
 import org.eclipse.sirius.components.gantt.TemporalType;
@@ -71,6 +73,31 @@ public class TaskDescriptionComponent implements IComponent {
         return new Fragment(fragmentProps);
     }
 
+    private List<DependencyLink> newDependencyLinks(int i, List<Object> dependencyObjects, VariableManager vm, TaskDescription taskDescription) {
+        List<String> dependenciesId = new ArrayList<>();
+        List<DependencyLink> dependencyLinks = new ArrayList<>();
+        for (int j = 0; j < dependencyObjects.size(); j++) {
+            VariableManager dependencyVariableManager = vm.createChild();
+            dependencyVariableManager.put(VariableManager.SELF, dependencyObjects.get(j));
+            String targetTaskId = taskDescription.targetObjectIdProvider().apply(dependencyVariableManager);
+            String taskId = UUID.nameUUIDFromBytes(targetTaskId.getBytes()).toString();
+            dependenciesId.add(taskId);
+        }
+        for (int y = 0; y < dependenciesId.size(); y++) {
+            if (i == 0) {
+                dependencyLinks.add(new DependencyLink(StartOrEnd.END, StartOrEnd.START, dependenciesId.get(y)));
+            } else if (i == 1) {
+                dependencyLinks.add(new DependencyLink(StartOrEnd.END, StartOrEnd.END, dependenciesId.get(y)));
+            } else if (i == 2) {
+                dependencyLinks.add(new DependencyLink(StartOrEnd.START, StartOrEnd.START, dependenciesId.get(y)));
+            } else if (i == 3) {
+                dependencyLinks.add(new DependencyLink(StartOrEnd.START, StartOrEnd.END, dependenciesId.get(y)));
+            }
+        }
+        return dependencyLinks;
+    }
+
+
     private Element doRender(VariableManager childVariableManager, String targetObjectId) {
         TaskDescription taskDescription = this.props.taskDescription();
         String name = taskDescription.nameProvider().apply(childVariableManager);
@@ -79,15 +106,24 @@ public class TaskDescriptionComponent implements IComponent {
         Temporal endTime = taskDescription.endTimeProvider().apply(childVariableManager);
         Integer progress = taskDescription.progressProvider().apply(childVariableManager);
         Boolean computeDatesDynamicallyProvider = taskDescription.computeDatesDynamicallyProvider().apply(childVariableManager);
-        List<Object> dependencyObjects = taskDescription.taskDependenciesProvider().apply(childVariableManager);
-        List<String> dependencyObjectIds = dependencyObjects.stream()
-            .map(semanticElement -> {
-                VariableManager dependencyVariableManager = childVariableManager.createChild();
-                dependencyVariableManager.put(VariableManager.SELF, semanticElement);
-                String objectId = taskDescription.targetObjectIdProvider().apply(dependencyVariableManager);
-                return UUID.nameUUIDFromBytes(objectId.getBytes()).toString();
-            })
-            .toList();
+
+
+        List<DependencyLink> dependencyLinks = new ArrayList<>();
+        for (StartOrEnd sourceStartOrEnd : StartOrEnd.values()) {
+            for (StartOrEnd targetStartOrEnd : StartOrEnd.values()) {
+                childVariableManager.put("sourceStartOrEnd", sourceStartOrEnd);
+                childVariableManager.put("targetStartOrEnd", targetStartOrEnd);
+                List<Object> dependencyObjects = taskDescription.taskDependenciesProvider().apply(childVariableManager);
+
+                List<DependencyLink> dependencies = dependencyObjects.stream().map(object -> {
+                    VariableManager dependencyVariableManager = childVariableManager.createChild();
+                    dependencyVariableManager.put(VariableManager.SELF, object);
+                    String targetTaskId = taskDescription.targetObjectIdProvider().apply(dependencyVariableManager);
+                    return new DependencyLink(sourceStartOrEnd, targetStartOrEnd, UUID.nameUUIDFromBytes(targetTaskId.getBytes()).toString());
+                }).toList();
+                dependencyLinks.addAll(dependencies);
+            }
+        }
 
         Optional<Task> previousTaskOptional = this.props.previousTasks().stream()
                 .filter(task -> task.descriptionId().equals(taskDescription.id()) && task.targetObjectId().equals(targetObjectId))
@@ -101,7 +137,7 @@ public class TaskDescriptionComponent implements IComponent {
         boolean collapsed = this.computeCollapsed(previousTaskOptional);
 
         TaskDetail detail = new TaskDetail(name, description, getTemporalString(startTime), getTemporalString(endTime), getTemporalType(startTime, endTime), progress, computeDatesDynamicallyProvider, collapsed);
-        TaskElementProps taskElementProps = new TaskElementProps(UUID.nameUUIDFromBytes(targetObjectId.getBytes()).toString(), taskDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, detail, dependencyObjectIds, childrenElements);
+        TaskElementProps taskElementProps = new TaskElementProps(UUID.nameUUIDFromBytes(targetObjectId.getBytes()).toString(), taskDescription.id(), targetObjectId, targetObjectKind, targetObjectLabel, detail, dependencyLinks, childrenElements);
         return new Element(TaskElementProps.TYPE, taskElementProps);
     }
 

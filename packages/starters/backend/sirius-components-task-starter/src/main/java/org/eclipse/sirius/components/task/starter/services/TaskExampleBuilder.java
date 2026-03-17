@@ -19,18 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import pepper.peppermm.DependencyLink;
 import pepper.peppermm.ExternalStakeholder;
 import pepper.peppermm.InternalStakeholder;
 import pepper.peppermm.KeyResult;
 import pepper.peppermm.Objective;
 import pepper.peppermm.Organization;
+import pepper.peppermm.PepperFactory;
 import pepper.peppermm.Person;
 import pepper.peppermm.Project;
-import pepper.peppermm.PepperFactory;
 import pepper.peppermm.ResourceFolder;
 import pepper.peppermm.TagFolder;
 import pepper.peppermm.Task;
 import pepper.peppermm.TaskTag;
+import pepper.peppermm.TaskTimeBoundariesConstraint;
 import pepper.peppermm.Team;
 import pepper.peppermm.Workpackage;
 import pepper.peppermm.WorkpackageArtefact;
@@ -98,11 +100,23 @@ public class TaskExampleBuilder {
     }
 
 
+    private Task createCodeDev(Person peter) {
+        Task codeDev = PepperFactory.eINSTANCE.createTask();
+        codeDev.setName(CODE_DEVELOPMENT);
+        codeDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
+        codeDev.setEndTime(Instant.parse(DATE_2023_12_15T17_30_00Z));
+        codeDev.getAssignedPersons().add(peter);
+        codeDev.setComputeStartEndDynamically(false);
+        codeDev.setProgress(40);
+        return codeDev;
+    }
+
     private Project createDevProject(Person paul, Person peter) {
         Project devProject = PepperFactory.eINSTANCE.createProject();
         devProject.setName("Project Dev");
         Workpackage workpackage = PepperFactory.eINSTANCE.createWorkpackage();
         workpackage.setName(MAIN_WORKPACKAGE);
+        workpackage.setCalculationOption(TaskTimeBoundariesConstraint.START_END);
         devProject.getOwnedWorkpackages().add(workpackage);
 
         Task idea = PepperFactory.eINSTANCE.createTask();
@@ -117,22 +131,22 @@ public class TaskExampleBuilder {
         spec.setStartTime(Instant.parse("2023-12-11T08:30:00Z"));
         spec.setEndTime(Instant.parse("2023-12-12T17:30:00Z"));
         spec.setProgress(50);
-        spec.getDependencies().add(idea);
+
+        DependencyLink depSpecToIdea = PepperFactory.eINSTANCE.createDependencyLink();
+        depSpecToIdea.setDependency(idea);
+        spec.getDependencies().add(depSpecToIdea);
 
         Task development = PepperFactory.eINSTANCE.createTask();
         development.setName(DEVELOPMENT);
         development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
-        development.getDependencies().add(spec);
         development.setComputeStartEndDynamically(true);
 
-        Task codeDev = PepperFactory.eINSTANCE.createTask();
-        codeDev.setName(CODE_DEVELOPMENT);
-        codeDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
-        codeDev.setEndTime(Instant.parse(DATE_2023_12_15T17_30_00Z));
-        codeDev.getAssignedPersons().add(peter);
-        codeDev.setComputeStartEndDynamically(false);
-        codeDev.setProgress(40);
+        DependencyLink depDevelopmentToSpec = PepperFactory.eINSTANCE.createDependencyLink();
+        depDevelopmentToSpec.setDependency(spec);
+        development.getDependencies().add(depDevelopmentToSpec);
+
+        Task codeDev = createCodeDev(peter);
         Task frontDev = PepperFactory.eINSTANCE.createTask();
         frontDev.setName("Front");
         frontDev.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
@@ -187,14 +201,19 @@ public class TaskExampleBuilder {
         spec.setStartTime(Instant.parse(DATE_2023_12_11T08_30_00Z));
         spec.setEndTime(Instant.parse(DATE_2023_12_12T17_30_00Z));
         spec.setProgress(50);
-        spec.getDependencies().add(idea);
         spec.getTags().add(dailyTags.get(0));
+
+        DependencyLink depSpecToIdea = PepperFactory.eINSTANCE.createDependencyLink();
+        depSpecToIdea.setDependency(idea);
+        spec.getDependencies().add(depSpecToIdea);
 
         Task development = PepperFactory.eINSTANCE.createTask();
         development.setName(DEVELOPMENT);
         development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
-        development.getDependencies().add(spec);
+        DependencyLink depDevelopmentToSpec = PepperFactory.eINSTANCE.createDependencyLink();
+        depDevelopmentToSpec.setDependency(spec);
+        development.getDependencies().add(depDevelopmentToSpec);
         development.getTags().add(dailyTags.get(1));
 
         Task codeDev = PepperFactory.eINSTANCE.createTask();
@@ -248,15 +267,18 @@ public class TaskExampleBuilder {
         spec.setStartTime(Instant.parse(DATE_2023_12_11T08_30_00Z));
         spec.setEndTime(Instant.parse(DATE_2023_12_12T17_30_00Z));
         spec.setProgress(50);
-        spec.getDependencies().add(idea);
-        //We add it in Done tag
+        DependencyLink depSpecToIdea = PepperFactory.eINSTANCE.createDependencyLink();
+        depSpecToIdea.setDependency(idea);
+        spec.getDependencies().add(depSpecToIdea);        //We add it in Done tag
         spec.getTags().add(kanbanTags.get(2));
 
         Task development = PepperFactory.eINSTANCE.createTask();
         development.setName(DEVELOPMENT);
         development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
-        development.getDependencies().add(spec);
+        DependencyLink depDevelopmentToSpec = PepperFactory.eINSTANCE.createDependencyLink();
+        depDevelopmentToSpec.setDependency(spec);
+        development.getDependencies().add(depDevelopmentToSpec);
         //We add it in Doing tag
         development.getTags().add(kanbanTags.get(1));
 
@@ -313,13 +335,18 @@ public class TaskExampleBuilder {
         spec.setStartTime(Instant.parse(DATE_2023_12_11T08_30_00Z));
         spec.setEndTime(Instant.parse(DATE_2023_12_12T17_30_00Z));
         spec.setProgress(50);
-        spec.getDependencies().add(idea);
+        DependencyLink depSpecToIdea = PepperFactory.eINSTANCE.createDependencyLink();
+        depSpecToIdea.setDependency(idea);
+        spec.getDependencies().add(depSpecToIdea);
 
         Task development = PepperFactory.eINSTANCE.createTask();
         development.setName(DEVELOPMENT);
         development.setStartTime(Instant.parse(DATE_2023_12_13T08_30_00Z));
         development.setEndTime(Instant.parse(DATE_2023_12_16T17_30_00Z));
-        development.getDependencies().add(spec);
+
+        DependencyLink depDevelopmentToSpec = PepperFactory.eINSTANCE.createDependencyLink();
+        depDevelopmentToSpec.setDependency(spec);
+        development.getDependencies().add(depDevelopmentToSpec);
 
         Task codeDev = PepperFactory.eINSTANCE.createTask();
         codeDev.setName(CODE_DEVELOPMENT);

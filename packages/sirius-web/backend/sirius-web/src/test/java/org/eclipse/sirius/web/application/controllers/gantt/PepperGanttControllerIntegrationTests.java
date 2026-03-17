@@ -34,7 +34,9 @@ import org.eclipse.sirius.components.collaborative.gantt.dto.input.ChangeTaskCol
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.CreateGanttTaskDependencyInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskDependencyInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.gantt.DependencyLink;
 import org.eclipse.sirius.components.gantt.Gantt;
+import org.eclipse.sirius.components.gantt.StartOrEnd;
 import org.eclipse.sirius.components.gantt.TemporalType;
 import org.eclipse.sirius.components.gantt.tests.graphql.ChangeTaskCollapseStateMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.CreateTaskMutationRunner;
@@ -397,7 +399,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                     var task = new GanttNavigator(gantt).findTaskByName(taskName1);
                     sourceTaskId.set(task.id());
                     task = new GanttNavigator(gantt).findTaskByName(taskName2);
-                    assertThat(task.taskDependencyIds()).isEmpty();
+                    assertThat(task.dependencyLinks()).isEmpty();
                     targetTaskId.set(task.id());
                 }, () -> fail(MISSING_GANTT));
 
@@ -406,7 +408,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
             var createGanttTaskDependencyInput = new CreateGanttTaskDependencyInput(
                     UUID.randomUUID(),
                     PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
-                    ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
+                    ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get(), 0, StartOrEnd.START, StartOrEnd.END);
             var result = this.createTaskDependencyMutationRunner.run(createGanttTaskDependencyInput);
 
             String typename = JsonPath.read(result.data(), "$.data.createGanttTaskDependency.__typename");
@@ -419,7 +421,13 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     var task = new GanttNavigator(gantt).findTaskByName(taskName2);
-                    assertThat(task.taskDependencyIds()).contains(sourceTaskId.get());
+                    var isPresent = false;
+                    for (DependencyLink dependencyLink : task.dependencyLinks()) {
+                        if (dependencyLink.sourceDependencyId().equals(sourceTaskId.get())) {
+                            isPresent = true;
+                        }
+                    }
+                    assertThat(isPresent).isEqualTo(true);
                 }, () -> fail(MISSING_GANTT));
         
         Runnable deleteDependencyRunnable = () -> {
@@ -439,7 +447,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     var task = new GanttNavigator(gantt).findTaskByName(taskName2);
-                    assertThat(task.taskDependencyIds()).isEmpty();
+                    assertThat(task.dependencyLinks()).isEmpty();
                 }, () -> fail(MISSING_GANTT));
 
         StepVerifier.create(flux)

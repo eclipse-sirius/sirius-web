@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,11 +43,12 @@ export function getTaskFromGQLTask(gQLTasks: GQLTask[], parentId: string): TaskO
     } else if (gQLTask.detail.startTime === gQLTask.detail.endTime) {
       type = 'milestone';
     }
-    const dependencies: Dependency[] = gQLTask.taskDependencyIds.map((dependencyTaskId) => {
+    const dependencies: Dependency[] = gQLTask.dependencyLinks.map((dependencyLink) => {
       return {
-        sourceId: dependencyTaskId,
-        sourceTarget: 'endOfTask',
-        ownTarget: 'startOfTask',
+        sourceId: dependencyLink.sourceDependencyId,
+        //sourceId: dependencyLink.sourceDependency.id,
+        sourceTarget: dependencyLink.source === 'START' ? 'startOfTask' : 'endOfTask',
+        ownTarget: dependencyLink.target === 'START' ? 'startOfTask' : 'endOfTask',
       };
     });
     let task: SelectableTask | SelectableEmptyTask;

@@ -235,6 +235,9 @@ public class GanttTaskService implements IGanttTaskService {
                     .flatMap(taskId -> this.getTaskSemanticObject(taskId, gantt, editingContext));
 
             if (sourceObjectOpt.isPresent() && targetObjectOpt.isPresent()) {
+                variableManager.put(GanttDescription.SOURCE_START_OR_END, createTaskDependencyInput.sourceStartOrEnd());
+                variableManager.put(GanttDescription.TARGET_START_OR_END, createTaskDependencyInput.targetStartOrEnd());
+
                 variableManager.put(GanttDescription.SOURCE_OBJECT, sourceObjectOpt.get());
                 variableManager.put(GanttDescription.TARGET_OBJECT, targetObjectOpt.get());
                 ganttDescriptionOpt.get().createTaskDependencyProvider().accept(variableManager);

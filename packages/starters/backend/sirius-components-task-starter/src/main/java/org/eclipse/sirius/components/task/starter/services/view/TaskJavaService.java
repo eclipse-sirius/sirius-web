@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.task.starter.services.view;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,15 +23,20 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.interpreter.SimpleCrossReferenceProvider;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 
 import pepper.peppermm.AbstractTask;
+import pepper.peppermm.DependencyLink;
 import pepper.peppermm.KeyResult;
 import pepper.peppermm.Objective;
 import pepper.peppermm.PepperFactory;
 import pepper.peppermm.Project;
+import pepper.peppermm.StartOrEnd;
 import pepper.peppermm.TagFolder;
 import pepper.peppermm.Task;
 import pepper.peppermm.TaskTag;
@@ -44,6 +50,8 @@ import pepper.peppermm.Workpackage;
 public class TaskJavaService {
 
     private static final String NEW_TASK = "New Task";
+
+    private final SimpleCrossReferenceProvider simpleCrossReferenceProvider = new SimpleCrossReferenceProvider();
 
     private final IFeedbackMessageService feedbackMessageService;
 
@@ -98,29 +106,89 @@ public class TaskJavaService {
         }
     }
 
-    public void createWorkpackage(EObject context) {
-        Workpackage newWorkpackage = PepperFactory.eINSTANCE.createWorkpackage();
-        newWorkpackage.setName("New Workpackage");
-        if (context instanceof Workpackage workpackage) {
-            // The new task follows the context task and has the same duration than the context task.
-            if (workpackage.getEndDate() != null && workpackage.getStartDate() != null) {
-                newWorkpackage.setStartDate(workpackage.getEndDate().plusDays(1));
-                newWorkpackage.setEndDate(workpackage.getEndDate().plusDays(workpackage.getEndDate().toEpochDay() - workpackage.getStartDate().toEpochDay()));
-            }
-
-            EObject parent = context.eContainer();
-            if (parent instanceof Project project) {
-                int index = project.getOwnedWorkpackages().indexOf(context);
-                project.getOwnedWorkpackages().add(index + 1, newWorkpackage);
-            }
-        } else if (context instanceof Project project) {
-            LocalDate now = LocalDate.now();
-            newWorkpackage.setStartDate(now);
-            newWorkpackage.setEndDate(now.plusDays(28));
-
-            project.getOwnedWorkpackages().add(newWorkpackage);
+    public void deleteTask(EObject context) {
+        if (context instanceof Task sourceTask) {
+            deleteTasksRecursive(sourceTask);
+            EcoreUtil.delete(sourceTask, true);
         }
     }
+
+    private void deleteTasksRecursive(Task task) {
+        var inverseReferences = simpleCrossReferenceProvider.getInverseReferences(task);
+        for (EStructuralFeature.Setting inverseReference : inverseReferences) {
+            if (inverseReference.getEObject() instanceof DependencyLink dep) {
+                EcoreUtil.delete(dep, true);
+            }
+        }
+        for (Task subTask : task.getSubTasks()) {
+            this.deleteTasksRecursive(subTask);
+        }
+    }
+
+    public void deleteDependencyLink(EObject target, EObject source) {
+        if (target instanceof Task targetTask) {
+            if (source instanceof Task sourceTask) {
+                targetTask.getDependencies().removeIf(dep -> (dep.getDependency() instanceof Task dependency) && dependency.equals(sourceTask));
+            }
+        }
+    }
+
+
+    public void createDependencyLink(EObject target, EObject source, org.eclipse.sirius.components.gantt.StartOrEnd sourceStartOrEnd, org.eclipse.sirius.components.gantt.StartOrEnd targetStartOrEnd) {
+        DependencyLink dependencyLink = PepperFactory.eINSTANCE.createDependencyLink();
+        if (sourceStartOrEnd.equals(org.eclipse.sirius.components.gantt.StartOrEnd.END)) {
+            dependencyLink.setSource(StartOrEnd.END);
+        } else {
+            dependencyLink.setSource(StartOrEnd.START);
+        }
+        if (targetStartOrEnd.equals(org.eclipse.sirius.components.gantt.StartOrEnd.START)) {
+            dependencyLink.setTarget(StartOrEnd.START);
+        } else {
+            dependencyLink.setTarget(StartOrEnd.END);
+        }
+        if (source instanceof Task sourceTask) {
+            dependencyLink.setDependency(sourceTask);
+            if (target instanceof Task targetTask) {
+                //Ensure no dependency already exists between source and target to prevent duplicates or cycles
+                if (!isDuplicateOrCycle(sourceTask, targetTask)) {
+                    targetTask.getDependencies().add(dependencyLink);
+                } else {
+                    this.feedbackMessageService.addFeedbackMessage(new Message("Creating a dependency that is duplicate or cyclic is not possible.", MessageLevel.ERROR));
+                }
+            }
+        }
+    }
+
+    private static boolean isCycle(Task sourceTask, Task targetTask, List<Task> parsedTasks) {
+        boolean isCycle = false;
+        for (DependencyLink dep : sourceTask.getDependencies()) {
+            Task sourceDependency = (Task) dep.getDependency();
+            if (!parsedTasks.contains(sourceDependency)) {
+                if (sourceDependency.equals(targetTask)) {
+                    isCycle = true;
+                } else if (!isCycle) {
+                    parsedTasks.add(sourceDependency);
+                    isCycle = isCycle(sourceDependency, targetTask, parsedTasks);
+                }
+            }
+        }
+        return isCycle;
+    }
+
+    private static boolean isDuplicateOrCycle(Task sourceTask, Task targetTask) {
+        //to prevent cycles
+        boolean isCycle = isCycle(sourceTask, targetTask, new ArrayList<>());
+        //to prevent duplicates
+        boolean isDuplicate = false;
+        for (DependencyLink dep : targetTask.getDependencies()) {
+            if (dep.getDependency().equals(sourceTask)) {
+                isDuplicate = true;
+                break;
+            }
+        }
+        return isDuplicate || isCycle;
+    }
+
 
     public List<Task> getTasksWithTag(TaskTag tag, Workpackage workpackage) {
         return Optional.of(workpackage).stream()

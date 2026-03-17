@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import {
   OnMoveTaskBeforeAfter,
   OnMoveTaskInside,
   OnRelationChange,
-  RelationKind,
   Task,
   TaskOrEmpty,
   ViewMode,
@@ -36,7 +35,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Theme, useTheme } from '@mui/material/styles';
 import { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { GQLGanttDateRoundingTimeUnit, SelectableTask } from '../graphql/subscription/GanttSubscription.types';
+import {
+  GQLGanttDateRoundingTimeUnit,
+  SelectableTask,
+  StartOrEnd,
+} from '../graphql/subscription/GanttSubscription.types';
 import { checkIsHoliday, getDisplayedColumns, getSelectedColumns, roundDate } from '../helper/helper';
 import { getTaskContextualPalette, getTaskDependencyContextualPalette } from '../palette/ContextualPalette';
 import { Toolbar } from '../toolbar/Toolbar';
@@ -151,7 +154,9 @@ export const Gantt = ({
     to: [Task, DateExtremity, number]
   ) => {
     if (from[0].id !== to[0].id) {
-      onCreateTaskDependency(from[0].id, to[0].id);
+      const sourceStartOrEnd: StartOrEnd = from[1] === 'endOfTask' ? 'END' : 'START';
+      const targetStartOrEnd: StartOrEnd = to[1] === 'endOfTask' ? 'END' : 'START';
+      onCreateTaskDependency(from[0].id, to[0].id, sourceStartOrEnd, targetStartOrEnd);
     }
   };
 
@@ -219,7 +224,7 @@ export const Gantt = ({
     selectedTaskBackgroundColor: theme.palette.action.selected,
   };
 
-  const authorizedRelations: RelationKind[] = ['endToStart'];
+  //  const authorizedRelations: RelationKind[] = ['endToStart'];
 
   const distances: Partial<Distances> = {
     expandIconWidth: 25,
@@ -292,7 +297,7 @@ export const Gantt = ({
         onMoveTaskAfter={handleMoveTaskAfter}
         onMoveTaskInside={handleMoveTaskInside}
         onRelationChange={handleRelationChange}
-        authorizedRelations={authorizedRelations}
+        //authorizedRelations={authorizedRelations}
         onChangeExpandState={(changedTask) => onChangeTaskCollapseState(changedTask.id, !!changedTask.hideChildren)}
         icons={icons}
         onResizeColumn={handleResizeColumn}

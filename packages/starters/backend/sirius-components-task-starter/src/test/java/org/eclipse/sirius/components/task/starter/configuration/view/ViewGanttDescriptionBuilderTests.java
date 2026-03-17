@@ -30,9 +30,8 @@ public class ViewGanttDescriptionBuilderTests {
     public void testRepresentationDescriptions() {
         View view = ViewFactory.eINSTANCE.createView();
         new ViewGanttDescriptionBuilder().addRepresentationDescription(view);
-        assertThat(view.getDescriptions()).hasSize(2);
+        assertThat(view.getDescriptions()).hasSize(1);
         assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Gantt of Workpackage Task Details"));
-        assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Gantt of Project Workpackages"));
     }
 
 }

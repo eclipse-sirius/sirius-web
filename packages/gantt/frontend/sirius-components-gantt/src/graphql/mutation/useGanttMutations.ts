@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@
 import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
 import { useMutation } from '@apollo/client';
 import { useReporting } from '@eclipse-sirius/sirius-components-core';
-import { GQLTaskDetail } from '../subscription/GanttSubscription.types';
+import { GQLTaskDetail, StartOrEnd } from '../subscription/GanttSubscription.types';
 import {
   GQLChangeColumnData,
   GQLChangeColumnInput,
@@ -133,15 +133,21 @@ export const useGanttMutations = (editingContextId: string, representationId: st
     (data: GQLCreateTaskDependencyData) => data.createGanttTaskDependency
   );
 
-  const createTaskDependency = (sourceTaskId: string, targetTaskId: string) => {
+  const createTaskDependency = (
+    sourceTaskId: string,
+    targetTaskId: string,
+    sourceStartOrEnd: StartOrEnd,
+    targetStartOrEnd: StartOrEnd
+  ) => {
     const input: GQLCreateGanttTaskDependencyInput = {
       id: crypto.randomUUID(),
       editingContextId,
       representationId,
       sourceTaskId,
       targetTaskId,
+      sourceStartOrEnd,
+      targetStartOrEnd,
     };
-
     mutationCreateTaskDependency({ variables: { input } });
   };
 

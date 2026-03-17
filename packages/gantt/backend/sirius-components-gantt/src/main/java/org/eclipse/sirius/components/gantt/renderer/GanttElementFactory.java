@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,7 +107,7 @@ public class GanttElementFactory implements IElementFactory {
             detail = new TaskDetail(detail.name(), detail.description(), startTime, endTime, getTemporalType(subTasks), newProgress, detail.computeStartEndDynamically(), detail.collapsed());
         }
 
-        return new Task(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), detail, props.dependencyObjectIds(), subTasks);
+        return new Task(props.id(), props.descriptionId(), props.targetObjectId(), props.targetObjectKind(), props.targetObjectLabel(), detail, props.dependencyLinks(), subTasks);
     }
 
     private Temporal getTemporal(String temporalString, TemporalType temporalType) {

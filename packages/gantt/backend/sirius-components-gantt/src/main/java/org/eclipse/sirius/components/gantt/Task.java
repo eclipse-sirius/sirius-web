@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import java.util.Objects;
  *
  * @author lfasani
  */
-public record Task(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, TaskDetail detail, List<String> taskDependencyIds, List<Task> subTasks) {
+public record Task(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, TaskDetail detail, List<DependencyLink> dependencyLinks, List<Task> subTasks) {
 
     public Task {
         Objects.requireNonNull(id);
@@ -29,7 +29,7 @@ public record Task(String id, String descriptionId, String targetObjectId, Strin
         Objects.requireNonNull(targetObjectLabel);
         Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(detail);
-        Objects.requireNonNull(taskDependencyIds);
+        Objects.requireNonNull(dependencyLinks);
         Objects.requireNonNull(subTasks);
     }
 }
