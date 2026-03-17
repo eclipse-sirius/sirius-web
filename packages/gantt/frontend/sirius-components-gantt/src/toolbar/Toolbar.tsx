@@ -27,11 +27,11 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { TaskListColumnEnum } from '../representation/Gantt.types';
 import { ToolbarProps, ToolbarState } from './Toolbar.types';
 import { useFullscreen } from './useFullScreen';
-import { useTranslation } from 'react-i18next';
 
 const useToolbarStyles = makeStyles()((theme) => ({
   toolbar: {

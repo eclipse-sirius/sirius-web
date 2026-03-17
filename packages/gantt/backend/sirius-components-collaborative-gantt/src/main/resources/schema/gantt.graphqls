@@ -55,7 +55,27 @@ type Task {
   detail: TaskDetail!
   style: TaskStyle
   subTasks: [Task!]
-  taskDependencyIds: [String!]
+  dependencyLinks: [DependencyLink!]
+  #duration: Int!
+  #calculationOption: TaskTimeBoundariesConstraint!
+}
+
+enum TaskTimeBoundariesConstraint {
+  START_END
+  END_DURATION
+  START_DURATION
+}
+
+type DependencyLink {
+  id: ID!
+  target: StartOrEnd!
+  source: StartOrEnd!
+  sourceDependencyId: String!
+}
+
+enum StartOrEnd {
+  START
+  END
 }
 
 enum TemporalType {
@@ -142,6 +162,8 @@ input CreateGanttTaskDependencyInput {
   representationId: ID!
   sourceTaskId: ID!
   targetTaskId: ID!
+  sourceStartOrEnd: StartOrEnd!
+  targetStartOrEnd: StartOrEnd!
 }
 union CreateGanttTaskDependencyPayload = SuccessPayload | ErrorPayload
 

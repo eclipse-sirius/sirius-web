@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ package org.eclipse.sirius.components.gantt.renderer.elements;
 import java.util.List;
 import java.util.Objects;
 
+import org.eclipse.sirius.components.gantt.DependencyLink;
 import org.eclipse.sirius.components.gantt.TaskDetail;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.IProps;
@@ -25,7 +26,7 @@ import org.eclipse.sirius.components.representations.IProps;
  * @author lfasani
  */
 
-public record TaskElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, TaskDetail detail, List<String> dependencyObjectIds, List<Element> children) implements IProps {
+public record TaskElementProps(String id, String descriptionId, String targetObjectId, String targetObjectKind, String targetObjectLabel, TaskDetail detail, List<DependencyLink> dependencyLinks, List<Element> children) implements IProps {
 
     public static final String TYPE = "Task";
 
@@ -37,7 +38,7 @@ public record TaskElementProps(String id, String descriptionId, String targetObj
         Objects.requireNonNull(descriptionId);
         Objects.requireNonNull(detail);
         Objects.requireNonNull(children);
-        Objects.requireNonNull(dependencyObjectIds);
+        Objects.requireNonNull(dependencyLinks);
     }
 
     @Override

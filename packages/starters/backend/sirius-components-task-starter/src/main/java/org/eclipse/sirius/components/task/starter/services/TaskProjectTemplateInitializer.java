@@ -59,6 +59,7 @@ public class TaskProjectTemplateInitializer implements ISemanticDataInitializer 
             emfEditingContext.getDomain().getResourceSet().getResources().add(resource);
 
             resource.getContents().add(new TaskExampleBuilder().getSampleContent());
+            //resource.getContents().add(new TaskExampleBuilder().getEmptySampleContent());
 
             this.editingContextPersistenceService.persist(cause, editingContext);
         }

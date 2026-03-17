@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,14 +13,19 @@
 
 import { Task, TaskOrEmpty } from '@ObeoNetwork/gantt-task-react';
 import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
-import { GQLTaskDetail, TemporalType } from '../subscription/GanttSubscription.types';
+import { GQLTaskDetail, StartOrEnd, TemporalType } from '../subscription/GanttSubscription.types';
 
 export interface UseGanttMutations {
   editTask: (taskId: string, taskDetail: GQLTaskDetail) => void;
   createTask: (task: Task) => void;
   deleteTask: (tasks: readonly TaskOrEmpty[]) => void;
   dropTask: (droppedTask: TaskOrEmpty, targetTask: TaskOrEmpty | undefined, dropIndex: number) => void;
-  createTaskDependency: (sourceTaskId: string, targetTaskId: string) => void;
+  createTaskDependency: (
+    sourceTaskId: string,
+    targetTaskId: string,
+    sourceStartOrEnd: StartOrEnd,
+    targetStartOrEnd: StartOrEnd
+  ) => void;
   deleteTaskDependency: (sourceTaskId: string, targetTaskId: string) => void;
   changeTaskCollapseState: (taskId: string, collapsed: boolean) => void;
   changeColumn: (columnId: string, displayed: boolean, width: number) => void;
@@ -101,13 +106,17 @@ export type GQLDropGanttTaskPayload = GQLErrorPayload | GQLSuccessPayload;
 export interface GQLCreateTaskDependencyVariables {
   input: GQLCreateGanttTaskDependencyInput;
 }
+
 export interface GQLCreateGanttTaskDependencyInput {
   id: string;
   editingContextId: string;
   representationId: string;
   sourceTaskId: string;
   targetTaskId: string;
+  sourceStartOrEnd: StartOrEnd;
+  targetStartOrEnd: StartOrEnd;
 }
+
 export interface GQLCreateTaskDependencyData {
   createGanttTaskDependency: GQLCreateGanttTaskDependencyPayload;
 }

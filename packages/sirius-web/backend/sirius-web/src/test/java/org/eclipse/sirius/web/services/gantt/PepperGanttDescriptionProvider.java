@@ -31,8 +31,6 @@ import org.eclipse.sirius.components.view.builder.generated.view.DeleteElementBu
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.UnsetValueBuilder;
 import org.eclipse.sirius.components.view.emf.gantt.IGanttIdProvider;
 import org.eclipse.sirius.components.view.gantt.CreateTaskTool;
 import org.eclipse.sirius.components.view.gantt.EditTaskTool;
@@ -216,11 +214,7 @@ public class PepperGanttDescriptionProvider implements IEditingContextProcessor 
         return new GanttBuilders().newCreateTaskDependencyTool()
                 .name("Create Task Dependency")
                 .body(new ChangeContextBuilder()
-                        .expression("aql:targetObject")
-                        .children(new SetValueBuilder()
-                                .featureName("dependencies")
-                                .valueExpression("aql:sourceObject")
-                                .build())
+                        .expression("aql:targetObject.createDependencyLink(sourceObject, sourceStartOrEnd, targetStartOrEnd)")
                         .build())
                 .build();
     }
@@ -229,11 +223,7 @@ public class PepperGanttDescriptionProvider implements IEditingContextProcessor 
         return new GanttBuilders().newDeleteTaskDependencyTool()
                 .name("Delete Task Dependency")
                 .body(new ChangeContextBuilder()
-                        .expression("aql:targetObject")
-                        .children(new UnsetValueBuilder()
-                                .featureName("dependencies")
-                                .elementExpression("aql:sourceObject")
-                                .build())
+                        .expression("aql:targetObject.deleteDependencyLink(sourceObject)")
                         .build())
                 .build();
     }

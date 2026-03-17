@@ -57,6 +57,11 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
     public static final String TARGET_DROP_INDEX = "indexInTarget";
 
+    public static final String SOURCE_START_OR_END = "sourceStartOrEnd";
+
+    public static final String TARGET_START_OR_END = "targetStartOrEnd";
+
+
     public GanttDescription {
         Objects.requireNonNull(id);
         Objects.requireNonNull(label);

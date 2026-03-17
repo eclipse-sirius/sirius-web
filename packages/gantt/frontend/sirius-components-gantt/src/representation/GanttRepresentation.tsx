@@ -15,9 +15,9 @@ import { ApolloError, OnDataOptions, useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
   RepresentationLoadingIndicator,
+  WorkbenchMainRepresentationHandle,
   useMultiToast,
   useSelection,
-  WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';
