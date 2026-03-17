@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,9 +15,9 @@ import { ApolloError, OnDataOptions, useSubscription } from '@apollo/client';
 import {
   RepresentationComponentProps,
   RepresentationLoadingIndicator,
+  WorkbenchMainRepresentationHandle,
   useMultiToast,
   useSelection,
-  WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, useImperativeHandle, useState } from 'react';

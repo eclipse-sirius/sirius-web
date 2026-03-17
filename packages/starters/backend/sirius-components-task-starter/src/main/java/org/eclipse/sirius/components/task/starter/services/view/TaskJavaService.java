@@ -15,6 +15,9 @@ package org.eclipse.sirius.components.task.starter.services.view;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,15 +25,20 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.interpreter.SimpleCrossReferenceProvider;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 
 import pepper.peppermm.AbstractTask;
+import pepper.peppermm.DependencyLink;
 import pepper.peppermm.KeyResult;
 import pepper.peppermm.Objective;
 import pepper.peppermm.PepperFactory;
 import pepper.peppermm.Project;
+import pepper.peppermm.StartOrEnd;
 import pepper.peppermm.TagFolder;
 import pepper.peppermm.Task;
 import pepper.peppermm.TaskTag;
@@ -45,6 +53,8 @@ public class TaskJavaService {
 
     private static final String NEW_TASK = "New Task";
 
+    private final SimpleCrossReferenceProvider simpleCrossReferenceProvider = new SimpleCrossReferenceProvider();
+
     private final IFeedbackMessageService feedbackMessageService;
 
     public TaskJavaService(IFeedbackMessageService feedbackMessageService) {
@@ -52,18 +62,39 @@ public class TaskJavaService {
     }
 
     public void editTask(EObject eObject, String name, String description, Instant startTime, Instant endTime, Integer progress) {
-        if (eObject instanceof AbstractTask task) {
+        if (eObject instanceof Task task) {
             if (name != null) {
                 task.setName(name);
             }
             if (description != null) {
                 task.setDescription(description);
             }
-            if (startTime != null) {
-                task.setStartTime(startTime);
-            }
-            if (endTime != null) {
-                task.setEndTime(endTime);
+            if (endTime != null && startTime != null) {
+                long differenceEnd = task.getEndTime().getEpochSecond() - endTime.getEpochSecond();
+                long differenceStart = task.getStartTime().getEpochSecond() - startTime.getEpochSecond();
+                boolean endPointed = false;
+                boolean startPointed = false;
+                List<DependencyLink> dependencies = task.getDependencies();
+                for (DependencyLink dep : dependencies) {
+                    if (dep.getTargetKind() == StartOrEnd.END) {
+                        endPointed = true;
+                    } else {
+                        startPointed = true;
+                    }
+                }
+                if (dependencies.isEmpty() || differenceEnd != differenceStart) {
+                    if (startPointed && !endPointed) {
+                        task.setEndTime(endTime.plus(differenceStart, ChronoUnit.SECONDS));
+                    } else if (endPointed && !startPointed) {
+                        task.setStartTime(startTime.plus(differenceEnd, ChronoUnit.SECONDS));
+                    } else if (!startPointed && !endPointed) {
+                        task.setStartTime(startTime);
+                        task.setEndTime(endTime);
+                    }
+                    if (!startPointed || !endPointed) {
+                        followTaskMoveDependency(task);
+                    }
+                }
             }
             if (progress != null) {
                 task.setProgress(progress);
@@ -75,7 +106,7 @@ public class TaskJavaService {
         Task task = PepperFactory.eINSTANCE.createTask();
         task.setName(NEW_TASK);
         if (context instanceof AbstractTask abstractTask) {
-            // The new task follows the context task and has the same duration than the context task.
+            // The new task follows the context task and has the same duration as the context task.
             if (abstractTask.getEndTime() != null && abstractTask.getStartTime() != null) {
                 task.setStartTime(abstractTask.getEndTime());
                 task.setEndTime(Instant.ofEpochSecond(2 * abstractTask.getEndTime().getEpochSecond() - abstractTask.getStartTime().getEpochSecond()));
@@ -98,28 +129,168 @@ public class TaskJavaService {
         }
     }
 
-    public void createWorkpackage(EObject context) {
-        Workpackage newWorkpackage = PepperFactory.eINSTANCE.createWorkpackage();
-        newWorkpackage.setName("New Workpackage");
-        if (context instanceof Workpackage workpackage) {
-            // The new task follows the context task and has the same duration than the context task.
-            if (workpackage.getEndDate() != null && workpackage.getStartDate() != null) {
-                newWorkpackage.setStartDate(workpackage.getEndDate().plusDays(1));
-                newWorkpackage.setEndDate(workpackage.getEndDate().plusDays(workpackage.getEndDate().toEpochDay() - workpackage.getStartDate().toEpochDay()));
-            }
-
-            EObject parent = context.eContainer();
-            if (parent instanceof Project project) {
-                int index = project.getOwnedWorkpackages().indexOf(context);
-                project.getOwnedWorkpackages().add(index + 1, newWorkpackage);
-            }
-        } else if (context instanceof Project project) {
-            LocalDate now = LocalDate.now();
-            newWorkpackage.setStartDate(now);
-            newWorkpackage.setEndDate(now.plusDays(28));
-
-            project.getOwnedWorkpackages().add(newWorkpackage);
+    public void deleteTask(EObject context) {
+        if (context instanceof Task sourceTask) {
+            deleteTasksRecursive(sourceTask);
+            EcoreUtil.delete(sourceTask, true);
         }
+    }
+
+    private void deleteTasksRecursive(Task task) {
+
+        Collection<EStructuralFeature.Setting> inverseReferences = simpleCrossReferenceProvider.getInverseReferences(task);
+        for (EStructuralFeature.Setting inverseReference : inverseReferences) {
+            if (inverseReference.getEObject() instanceof DependencyLink dep) {
+                EcoreUtil.delete(dep, true);
+            }
+        }
+        for (Task subTask : task.getSubTasks()) {
+            this.deleteTasksRecursive(subTask);
+        }
+    }
+
+    public void deleteDependencyLink(EObject target, EObject source) {
+        if (target instanceof Task targetTask) {
+            if (source instanceof Task sourceTask) {
+                targetTask.getDependencies().removeIf(dep -> (dep.getSource() instanceof Task dependency) && dependency.equals(sourceTask));
+            }
+        }
+    }
+
+
+    public void createDependencyLink(EObject target, EObject source, org.eclipse.sirius.components.gantt.StartOrEnd sourceStartOrEnd, org.eclipse.sirius.components.gantt.StartOrEnd targetStartOrEnd) {
+        DependencyLink dependencyLink = PepperFactory.eINSTANCE.createDependencyLink();
+        if (sourceStartOrEnd.equals(org.eclipse.sirius.components.gantt.StartOrEnd.END)) {
+            dependencyLink.setSourceKind(StartOrEnd.END);
+        } else {
+            dependencyLink.setSourceKind(StartOrEnd.START);
+        }
+        if (targetStartOrEnd.equals(org.eclipse.sirius.components.gantt.StartOrEnd.START)) {
+            dependencyLink.setTargetKind(StartOrEnd.START);
+        } else {
+            dependencyLink.setTargetKind(StartOrEnd.END);
+        }
+        if (source instanceof Task sourceTask) {
+            dependencyLink.setSource(sourceTask);
+            if (target instanceof Task targetTask) {
+                //Ensure no dependency already exists between source and target to prevent duplicates or cycles
+                if (!isDuplicateOrCycle(sourceTask, targetTask)) {
+                    targetTask.getDependencies().add(dependencyLink);
+                    this.followTaskMoveDependency(sourceTask);
+                } else {
+                    this.feedbackMessageService.addFeedbackMessage(new Message("Creating a dependency that is duplicate or cyclic is not possible.", MessageLevel.ERROR));
+                }
+            }
+        }
+    }
+
+    private static boolean isCycle(Task sourceTask, Task targetTask) {
+        boolean isCycle = false;
+        for (DependencyLink dep : sourceTask.getDependencies()) {
+            Task sourceDependency = (Task) dep.getSource();
+            if (sourceDependency.equals(targetTask)) {
+                isCycle = true;
+            } else if (!isCycle) {
+                isCycle = isCycle(sourceDependency, targetTask);
+            }
+        }
+        return isCycle;
+    }
+
+    private static boolean isDuplicateOrCycle(Task sourceTask, Task targetTask) {
+        //to prevent cycles
+        boolean isCycle = isCycle(sourceTask, targetTask);
+        //to prevent duplicates
+        boolean isDuplicate = false;
+        for (DependencyLink dep : targetTask.getDependencies()) {
+            if (dep.getSource().equals(sourceTask)) {
+                isDuplicate = true;
+                break;
+            }
+        }
+        return isDuplicate || isCycle;
+    }
+
+    private void followTaskMoveDependency(Task sourceTask) {
+        List<Task> dependencies = new ArrayList<>();
+        List<Task> targetTasks = new ArrayList<>();
+        //get all tasks pointed by sourceTask
+        for (var inverseReference : simpleCrossReferenceProvider.getInverseReferences(sourceTask)) {
+            if (inverseReference.getEObject() instanceof DependencyLink dep) {
+                for (var inverseReferenceDependencyLink : simpleCrossReferenceProvider.getInverseReferences(dep)) {
+                    if (inverseReferenceDependencyLink.getEObject() instanceof Task targetTask) {
+                        targetTasks.add(targetTask);
+                    }
+                }
+            }
+        }
+        for (Task task : targetTasks) {
+            //Get the strongest dependency link
+            DependencyLink winner = null;
+            Instant latterInstant = null;
+            for (DependencyLink dep : task.getDependencies()) {
+                Instant newInstant = getLatterInstant(dep);
+                if (latterInstant == null || latterInstant.compareTo(newInstant) < 0) {
+                    latterInstant = newInstant;
+                    winner = dep;
+                }
+            }
+            for (DependencyLink dep : task.getDependencies()) {
+                if (dep.equals(winner)) {
+                    Task bestSourceTask = (Task) dep.getSource();
+                    setTaskNewDates(task, dep);
+                    if (bestSourceTask == sourceTask) {
+                        dependencies.add(task);
+                    }
+                }
+            }
+        }
+        for (Task task : dependencies) {
+            followTaskMoveDependency(task);
+        }
+    }
+
+    private void setTaskNewDates(Task task, DependencyLink dep) {
+        Task bestSourceTask = (Task) dep.getSource();
+        Instant sourceStart = bestSourceTask.getStartTime();
+        Instant sourceEnd = bestSourceTask.getEndTime();
+        Instant oldTaskStart = task.getStartTime();
+        Instant oldTaskEnd = task.getEndTime();
+        int delay = dep.getDuration();
+        StartOrEnd sourceStartOrEnd = dep.getSourceKind();
+        StartOrEnd targetStartOrEnd = dep.getTargetKind();
+        if (sourceStartOrEnd == StartOrEnd.END && targetStartOrEnd == StartOrEnd.START) {
+            Instant newTaskStart = sourceEnd.plus(delay, ChronoUnit.HOURS);
+            Instant newTaskEnd = Instant.ofEpochSecond(newTaskStart.getEpochSecond() + oldTaskEnd.getEpochSecond() - oldTaskStart.getEpochSecond());
+            task.setEndTime(newTaskEnd);
+            task.setStartTime(newTaskStart);
+        } else if (sourceStartOrEnd == StartOrEnd.START && targetStartOrEnd == StartOrEnd.START) {
+            Instant newTaskStart = sourceStart.plus(delay, ChronoUnit.HOURS);
+            Instant newTaskEnd = Instant.ofEpochSecond(newTaskStart.getEpochSecond() + oldTaskEnd.getEpochSecond() - oldTaskStart.getEpochSecond());
+            task.setEndTime(newTaskEnd);
+            task.setStartTime(newTaskStart);
+        } else if (sourceStartOrEnd == StartOrEnd.END && targetStartOrEnd == StartOrEnd.END) {
+            Instant newTaskEnd = sourceEnd.plus(delay, ChronoUnit.HOURS);
+            Instant newTaskStart = Instant.ofEpochSecond(newTaskEnd.getEpochSecond() - (oldTaskEnd.getEpochSecond() - oldTaskStart.getEpochSecond()));
+            task.setEndTime(newTaskEnd);
+            task.setStartTime(newTaskStart);
+        } else if (sourceStartOrEnd == StartOrEnd.START && targetStartOrEnd == StartOrEnd.END) {
+            Instant newTaskEnd = sourceStart.plus(delay, ChronoUnit.HOURS);
+            Instant newTaskStart = Instant.ofEpochSecond(newTaskEnd.getEpochSecond() - (oldTaskEnd.getEpochSecond() - oldTaskStart.getEpochSecond()));
+            task.setEndTime(newTaskEnd);
+            task.setStartTime(newTaskStart);
+        }
+    }
+
+    private static Instant getLatterInstant(DependencyLink dep) {
+        Instant laterInstant = null;
+        Task source = (Task) dep.getSource();
+        if (dep.getSourceKind() == StartOrEnd.END) {
+            laterInstant = source.getEndTime().plus(dep.getDuration(), ChronoUnit.HOURS);
+        } else if (dep.getSourceKind() == StartOrEnd.START) {
+            laterInstant = source.getStartTime().plus(dep.getDuration(), ChronoUnit.HOURS);
+        }
+        return laterInstant;
     }
 
     public List<Task> getTasksWithTag(TaskTag tag, Workpackage workpackage) {
@@ -208,6 +379,51 @@ public class TaskJavaService {
                 }
             } else {
                 workpackage.getOwnedTasks().add(indexInTarget, sourceTask);
+            }
+        }
+    }
+
+
+    public void createWorkpackage(EObject context) {
+        Workpackage newWorkpackage = PepperFactory.eINSTANCE.createWorkpackage();
+        newWorkpackage.setName("New Workpackage");
+        if (context instanceof Workpackage workpackage) {
+            // The new task follows the context task and has the same duration than the context task.
+            if (workpackage.getEndDate() != null && workpackage.getStartDate() != null) {
+                newWorkpackage.setStartDate(workpackage.getEndDate().plusDays(1));
+                newWorkpackage.setEndDate(workpackage.getEndDate().plusDays(workpackage.getEndDate().toEpochDay() - workpackage.getStartDate().toEpochDay()));
+            }
+
+            EObject parent = context.eContainer();
+            if (parent instanceof Project project) {
+                int index = project.getOwnedWorkpackages().indexOf(context);
+                project.getOwnedWorkpackages().add(index + 1, newWorkpackage);
+            }
+        } else if (context instanceof Project project) {
+            LocalDate now = LocalDate.now();
+            newWorkpackage.setStartDate(now);
+            newWorkpackage.setEndDate(now.plusDays(28));
+
+            project.getOwnedWorkpackages().add(newWorkpackage);
+        }
+    }
+
+    public void editWorkpackage(EObject eObject, String name, String description, LocalDate startDate, LocalDate endDate, Integer progress) {
+        if (eObject instanceof Workpackage workpackage) {
+            if (name != null) {
+                workpackage.setName(name);
+            }
+            if (description != null) {
+                workpackage.setDescription(description);
+            }
+            if (startDate != null) {
+                workpackage.setStartDate(startDate);
+            }
+            if (endDate != null) {
+                workpackage.setEndDate(endDate);
+            }
+            if (progress != null) {
+                workpackage.setProgress(progress);
             }
         }
     }
@@ -368,25 +584,5 @@ public class TaskJavaService {
             newIndex = tagFolder.getOwnedTags().indexOf(lastTag) + 1;
         }
         return newIndex;
-    }
-
-    public void editWorkpackage(EObject eObject, String name, String description, LocalDate startDate, LocalDate endDate, Integer progress) {
-        if (eObject instanceof Workpackage workpackage) {
-            if (name != null) {
-                workpackage.setName(name);
-            }
-            if (description != null) {
-                workpackage.setDescription(description);
-            }
-            if (startDate != null) {
-                workpackage.setStartDate(startDate);
-            }
-            if (endDate != null) {
-                workpackage.setEndDate(endDate);
-            }
-            if (progress != null) {
-                workpackage.setProgress(progress);
-            }
-        }
     }
 }

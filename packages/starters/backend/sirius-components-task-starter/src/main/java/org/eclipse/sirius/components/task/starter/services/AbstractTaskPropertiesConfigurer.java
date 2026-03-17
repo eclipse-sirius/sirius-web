@@ -132,7 +132,7 @@ public class AbstractTaskPropertiesConfigurer implements IPropertiesDescriptionR
         controls.add(ifComputeDynamically);
 
         var dependencies = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.dependencies", "Dependencies",
-                PepperPackage.Literals.TASK__DEPENDENCIES, this.getDependenciesProvider());
+                PepperPackage.Literals.DEPENDENCY_RELATED_OBJECT__DEPENDENCIES, this.getDependenciesProvider());
         controls.add(dependencies);
 
         var tags = this.propertiesWidgetCreationService.createReferenceWidget("abstractTask.tags", "Tags",

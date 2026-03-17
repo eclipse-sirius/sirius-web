@@ -57,12 +57,12 @@
 		<dependency>
 			<groupId>pepper-mm</groupId>
 			<artifactId>pepper-mm</artifactId>
-			<version>2026.3.0</version>
+			<version>2026.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>pepper-mm</groupId>
 			<artifactId>pepper-edit</artifactId>
-			<version>2026.3.0</version>
+			<version>2026.4.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>

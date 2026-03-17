@@ -21,15 +21,15 @@ import java.util.UUID;
  */
 public final class PepperIdentifiers {
 
-    public static final UUID PEPPER_EDITING_CONTEXT_ID = UUID.fromString("c67f0c59-6e51-4aac-b771-e267c74a98ea");
+    public static final UUID PEPPER_EDITING_CONTEXT_ID = UUID.fromString("d98557ca-e6fa-4943-ac47-99135429ec34");
 
-    public static final UUID PEPPER_TASK_DOCUMENT = UUID.fromString("53857397-b950-4a4a-8830-cabb7e97d7c2");
+    public static final UUID PEPPER_TASK_DOCUMENT = UUID.fromString("d11614ec-04f7-40bf-9d4f-16162c7b55d7");
 
-    public static final UUID ORGANIZATION_OBJECT = UUID.fromString("c9632f2b-06f7-4f93-8a7a-184cff05029d");
+    public static final UUID ORGANIZATION_OBJECT = UUID.fromString("3eb378ca-6303-4db4-b758-55bddb328438");
 
-    public static final UUID PROJECT_OBJECT = UUID.fromString("20fcd054-8c2c-45dd-95fe-ee66e20d1d1e");
+    public static final UUID PROJECT_OBJECT = UUID.fromString("9bd5554c-b46b-48c5-a16b-9badbedfd088");
 
-    public static final UUID WORKPACKAGE_OBJECT = UUID.fromString("b0a16b2a-e08e-4d1a-b839-654820d47cc3");
+    public static final UUID WORKPACKAGE_OBJECT = UUID.fromString("ad4fed5b-f8ec-4a69-9ada-a369f17c557b");
 
     private PepperIdentifiers() {
         // Prevent instantiation

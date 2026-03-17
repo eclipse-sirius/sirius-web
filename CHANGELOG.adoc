@@ -42,6 +42,7 @@ Custom deserializers and migration services will probably be impacted.
 - https://github.com/eclipse-sirius/sirius-web/issues/6243[#6243] [sirius-web] Add documentation in the new representation modal.
 `RepresentationDescriptionMetadata` has been renamed to `RepresentationMetadataDTO` and moved to `org.eclipse.sirius.components.collaborative.dto`.
 It now requires a `documentation` parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/6400[#6400] [gantt] Add a new `dependencyLink` concept to improve dependency management in Gantt. The Gantt descriptions have been changed.
 
 
 === Dependency update
@@ -57,7 +58,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - [releng] Switch `@mui/icons-material` to `7.3.10`
 - [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.4`
 - [releng] Switch AQL 8.1.2
-- [releng] Add a dependency to https://github.com/ObeoNetwork/pepper-mm[pepper-mm 2026.3.0]
+- [releng] Add a dependency to https://github.com/ObeoNetwork/pepper-mm[pepper-mm 2026.4.0]
 
 === Bug fixes
 
@@ -117,6 +118,7 @@ The backend now sends a `canEdit=false` capability when subscribing to such form
 See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6243[#6243] [sirius-web] Add documentation in the new representation modal.
 - https://github.com/eclipse-sirius/sirius-web/issues/6349[#6349] [diagram] Prevent minor misalignment on edges by align edge source and target positions.
+- https://github.com/eclipse-sirius/sirius-web/issues/6400[#6400] [gantt] Use pepper-mm 2026.4.0 to introduce the concept of dependencyLink, which will be used to extends dependency management for the Gantt tasks
 
 
 

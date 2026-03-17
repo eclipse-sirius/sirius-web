@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 public record TaskDescription(String id, Function<VariableManager, String> targetObjectIdProvider, Function<VariableManager, String> targetObjectKindProvider,
         Function<VariableManager, String> targetObjectLabelProvider, Function<VariableManager, List<?>> semanticElementsProvider, Function<VariableManager, String> nameProvider,
         Function<VariableManager, String> descriptionProvider, Function<VariableManager, Temporal> startTimeProvider, Function<VariableManager, Temporal> endTimeProvider,
-        Function<VariableManager, Integer> progressProvider, Function<VariableManager, Boolean> computeDatesDynamicallyProvider, Function<VariableManager, List<Object>> taskDependenciesProvider,
-        List<String> reusedTaskDescriptionIds, List<TaskDescription> subTaskDescriptions) {
+        Function<VariableManager, Integer> progressProvider, Function<VariableManager, Boolean> computeDatesDynamicallyProvider, Function<VariableManager,
+        List<Object>> taskDependenciesProvider, List<String> reusedTaskDescriptionIds, List<TaskDescription> subTaskDescriptions) {
 
     public TaskDescription {
         Objects.requireNonNull(id);
@@ -91,6 +91,7 @@ public record TaskDescription(String id, Function<VariableManager, String> targe
         private Function<VariableManager, Boolean> computeDatesDynamicallyProvider;
 
         private Function<VariableManager, List<Object>> taskDependenciesProvider;
+
 
         private List<TaskDescription> subTaskDescriptions = List.of();
 
