@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { LayoutConfiguration } from '../layout/arrange-all/useLayoutConfigurations.types';
 
 export interface ArrangeAllButtonProps {
   disabled: boolean;
@@ -18,4 +19,5 @@ export interface ArrangeAllButtonProps {
 export interface ArrangeAllButtonState {
   arrangeAllInProgress: boolean;
   arrangeAllMenuOpen: boolean;
+  lastUsedLayout: LayoutConfiguration | null;
 }

@@ -36,7 +36,7 @@ test.describe('edge-label', () => {
   test('when an edge has a center label, then the label does not stick the edge path', async ({ page }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
-    await page.getByTestId('arrange-all-menu').click();
+    await page.getByTestId('arrange-all-menu-toggle').click();
     await page.getByTestId('arrange-all-elk-rect-packing').click();
 
     const playwrightEdge = new PlaywrightEdge(page);
