@@ -180,13 +180,21 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Show Minimap</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_DESCRIPTION__SHOW_MINIMAP = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 7;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 7;
+    int DIAGRAM_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4367,6 +4375,18 @@ public interface DiagramPackage extends EPackage {
     EAttribute getDiagramDescription_ArrangeLayoutDirection();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isShowMinimap <em>Show Minimap</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Show Minimap</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramDescription#isShowMinimap()
+     * @see #getDiagramDescription()
+     * @generated
+     */
+    EAttribute getDiagramDescription_ShowMinimap();
+
+    /**
      * Returns the meta object for the containment reference
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -6893,6 +6913,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EAttribute DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION = eINSTANCE.getDiagramDescription_ArrangeLayoutDirection();
+
+        /**
+         * The meta object literal for the '<em><b>Show Minimap</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DIAGRAM_DESCRIPTION__SHOW_MINIMAP = eINSTANCE.getDiagramDescription_ShowMinimap();
 
         /**
          * The meta object literal for the '<em><b>Group Palette</b></em>' containment reference feature. <!--

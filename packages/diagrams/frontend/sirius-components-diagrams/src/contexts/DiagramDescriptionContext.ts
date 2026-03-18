@@ -22,6 +22,7 @@ const defaultValue: DiagramDescriptionContextValue = {
     debug: false,
     arrangeLayoutDirection: 'RIGHT',
     autoLayout: false,
+    showMinimap: true,
   },
 };
 

@@ -52,7 +52,7 @@ test.describe('diagram', () => {
   });
 
   test('when the mini map is shown or hidden, then mini map is available or not', async ({ page }) => {
-    // by default, the mini map is shown
+    //1. by default, the mini map is shown
     await expect(page.getByTestId('hide-mini-map')).toBeAttached();
     await expect(page.getByTestId('show-mini-map')).not.toBeAttached();
     await expect(page.locator('.react-flow__minimap')).toBeAttached();
@@ -62,6 +62,23 @@ test.describe('diagram', () => {
     await expect(page.getByTestId('show-mini-map')).toBeAttached();
     await expect(page.getByTestId('hide-mini-map')).not.toBeAttached();
 
+    //2. We Create a new diagram
+    await page.goto(`/projects/${projectId}/edit`);
+    const explorer = await new PlaywrightExplorer(page);
+    await explorer.expand('Flow');
+    await explorer.expand('NewSystem');
+    await explorer.createRepresentation('NewSystem', 'Topography unsynchronized', 'Topography2');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    //3. by default, the mini map is shown, even if it has been hidden in the previous diagram.
+    await expect(page.getByTestId('hide-mini-map')).toBeAttached();
+    await expect(page.getByTestId('show-mini-map')).not.toBeAttached();
+    await expect(page.locator('.react-flow__minimap')).toBeAttached();
+
+    //4. We switch to the initial Topography diagram
+    await explorer.select('Topography');
+
+    //5. We show the mini map
     await page.getByTestId('show-mini-map').click();
     await expect(page.locator('.react-flow__minimap')).toBeAttached();
   });

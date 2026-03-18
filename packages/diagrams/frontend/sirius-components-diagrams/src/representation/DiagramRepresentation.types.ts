@@ -64,6 +64,7 @@ export interface GQLDiagramDescription {
   debug: boolean;
   arrangeLayoutDirection: GQLArrangeLayoutDirection;
   autoLayout: boolean;
+  showMinimap: boolean;
 }
 
 export interface GQLDiagramToolbar {
