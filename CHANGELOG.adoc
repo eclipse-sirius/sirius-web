@@ -106,6 +106,7 @@ The backend now sends a `canEdit=false` capability when subscribing to such form
 - https://github.com/eclipse-sirius/sirius-web/issues/6336[#6336] [diagram] Move the retrieval of the connector tools in a dedicated hook.
 - https://github.com/eclipse-sirius/sirius-web/issues/6370[#6370] [diagram] Set the xyflow multi selection behavior to `Partial mode`
 - https://github.com/eclipse-sirius/sirius-web/issues/6369[#6369] [diagram] Enable clicking behind the multiple-selection rectangle
+- https://github.com/eclipse-sirius/sirius-web/issues/6300[#6300] [diagram] Make the arrange-all button remember the last layout configuration used.
 
 
 
