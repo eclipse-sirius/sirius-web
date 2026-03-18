@@ -50,6 +50,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getArrangeLayoutDirection
  * <em>Arrange Layout Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#isShowMinimap <em>Show
+ * Minimap</em>}</li>
  * </ul>
  *
  * @generated
@@ -145,6 +147,26 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @see #getArrangeLayoutDirection()
      */
     protected ArrangeLayoutDirection arrangeLayoutDirection = ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #isShowMinimap() <em>Show Minimap</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowMinimap()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean SHOW_MINIMAP_EDEFAULT = true;
+
+    /**
+     * The cached value of the '{@link #isShowMinimap() <em>Show Minimap</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #isShowMinimap()
+     * @generated
+     * @ordered
+     */
+    protected boolean showMinimap = SHOW_MINIMAP_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -339,6 +361,29 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
+    public boolean isShowMinimap() {
+        return this.showMinimap;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setShowMinimap(boolean newShowMinimap) {
+        boolean oldShowMinimap = this.showMinimap;
+        this.showMinimap = newShowMinimap;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__SHOW_MINIMAP, oldShowMinimap, this.showMinimap));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public GroupPalette getGroupPalette() {
         return this.groupPalette;
     }
@@ -425,6 +470,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.getEdgeDescriptions();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.getArrangeLayoutDirection();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__SHOW_MINIMAP:
+                return this.isShowMinimap();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -461,6 +508,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection((ArrangeLayoutDirection) newValue);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__SHOW_MINIMAP:
+                this.setShowMinimap((Boolean) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -494,6 +544,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 this.setArrangeLayoutDirection(ARRANGE_LAYOUT_DIRECTION_EDEFAULT);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__SHOW_MINIMAP:
+                this.setShowMinimap(SHOW_MINIMAP_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -520,6 +573,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.edgeDescriptions != null && !this.edgeDescriptions.isEmpty();
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
                 return this.arrangeLayoutDirection != ARRANGE_LAYOUT_DIRECTION_EDEFAULT;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__SHOW_MINIMAP:
+                return this.showMinimap != SHOW_MINIMAP_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -539,6 +594,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         result.append(this.autoLayout);
         result.append(", arrangeLayoutDirection: ");
         result.append(this.arrangeLayoutDirection);
+        result.append(", showMinimap: ");
+        result.append(this.showMinimap);
         result.append(')');
         return result.toString();
     }
