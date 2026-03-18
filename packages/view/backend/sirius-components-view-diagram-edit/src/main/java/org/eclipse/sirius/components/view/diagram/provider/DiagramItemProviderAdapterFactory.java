@@ -389,6 +389,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected ConditionalDiagramStyleItemProvider conditionalDiagramStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription} instances. <!-- begin-user-doc -->
@@ -397,6 +398,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected SelectionDialogDescriptionItemProvider selectionDialogDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription} instances. <!-- begin-user-doc

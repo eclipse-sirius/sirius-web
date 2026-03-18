@@ -108,6 +108,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/arrangeLayoutDirection"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/conditionalStyles"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/minimapVisible"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//DiagramElementDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramElementDescription/name"/>

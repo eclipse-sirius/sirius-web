@@ -198,13 +198,21 @@ public interface DiagramPackage extends EPackage {
     int DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 8;
 
     /**
+     * The feature id for the '<em><b>Minimap Visible</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DIAGRAM_DESCRIPTION__MINIMAP_VISIBLE = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 9;
+
+    /**
      * The number of structural features of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
      * @generated
      * @ordered
      */
-    int DIAGRAM_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 9;
+    int DIAGRAM_DESCRIPTION_FEATURE_COUNT = ViewPackage.REPRESENTATION_DESCRIPTION_FEATURE_COUNT + 10;
 
     /**
      * The number of operations of the '<em>Description</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4489,6 +4497,18 @@ public interface DiagramPackage extends EPackage {
     EReference getDiagramDescription_ConditionalStyles();
 
     /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isMinimapVisible <em>Minimap
+     * Visible</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Minimap Visible</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramDescription#isMinimapVisible()
+     * @see #getDiagramDescription()
+     * @generated
+     */
+    EAttribute getDiagramDescription_MinimapVisible();
+
+    /**
      * Returns the meta object for the containment reference
      * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -7075,6 +7095,14 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES = eINSTANCE.getDiagramDescription_ConditionalStyles();
+
+        /**
+         * The meta object literal for the '<em><b>Minimap Visible</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DIAGRAM_DESCRIPTION__MINIMAP_VISIBLE = eINSTANCE.getDiagramDescription_MinimapVisible();
 
         /**
          * The meta object literal for the '<em><b>Group Palette</b></em>' containment reference feature. <!--
