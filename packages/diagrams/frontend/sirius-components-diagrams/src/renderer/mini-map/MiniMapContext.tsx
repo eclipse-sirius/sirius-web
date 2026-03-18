@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import React, { useState } from 'react';
-import { MiniMapContextValue, MiniMapContextProviderProps } from './MiniMapContext.types';
+import React, { useContext, useState } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
+import { MiniMapContextProviderProps, MiniMapContextValue, MiniMapVisibilityPreferences } from './MiniMapContext.types';
 
 const defaultContextValue: MiniMapContextValue = {
   isMiniMapVisible: false,
@@ -31,22 +34,40 @@ const isLocalStorageAvailable = (): boolean => {
   }
 };
 
+const getTimestamp = (): string => new Date().toISOString();
+
 export const MiniMapContextProvider = ({ children }: MiniMapContextProviderProps) => {
-  const localStorageKey: string = 'sirius-diagram-mini-map-visibility';
+  const localStorageKey: string = 'sirius-single-diagram-mini-map-visibility';
+  const legacyLocalStorageKey: string = 'sirius-diagram-mini-map-visibility';
+  const { diagramId } = useContext<DiagramContextValue>(DiagramContext);
+  const { diagramDescription } = useDiagramDescription();
 
   const getInitialMiniMapVisibility = (): boolean => {
-    if (!isLocalStorageAvailable()) {
-      return true;
+    let minimapVisible: boolean = diagramDescription.minimapVisible;
+    if (isLocalStorageAvailable()) {
+      localStorage.removeItem(legacyLocalStorageKey);
+      const storedPreference = localStorage.getItem(localStorageKey);
+      if (storedPreference) {
+        const preferences: MiniMapVisibilityPreferences = JSON.parse(storedPreference);
+        const preference = preferences[diagramId];
+        if (preference) {
+          minimapVisible = preference.visible;
+          preferences[diagramId] = { ...preference, lastAccessedAt: getTimestamp() };
+          localStorage.setItem(localStorageKey, JSON.stringify(preferences));
+        }
+      }
     }
-    const storedPreference = localStorage.getItem(localStorageKey);
-    return storedPreference ? JSON.parse(storedPreference) : true;
+    return minimapVisible;
   };
 
   const [miniMap, setMiniMap] = useState<boolean>(getInitialMiniMapVisibility);
 
   const handleMiniMapVisibilityChange = (visible: boolean) => {
     if (isLocalStorageAvailable()) {
-      localStorage.setItem(localStorageKey, JSON.stringify(visible));
+      const storedPreference = localStorage.getItem(localStorageKey);
+      const preferences: MiniMapVisibilityPreferences = storedPreference ? JSON.parse(storedPreference) : {};
+      preferences[diagramId] = { visible, lastAccessedAt: getTimestamp() };
+      localStorage.setItem(localStorageKey, JSON.stringify(preferences));
     }
     setMiniMap(visible);
   };

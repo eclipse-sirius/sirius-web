@@ -67,6 +67,7 @@ export const getDiagramDescription = gql`
               debug
               arrangeLayoutDirection
               autoLayout
+              minimapVisible
             }
           }
         }

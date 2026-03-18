@@ -423,6 +423,7 @@ type DiagramDescription implements RepresentationDescription {
   id: ID!
   label: String!
   autoLayout: Boolean!
+  minimapVisible: Boolean!
   arrangeLayoutDirection: ArrangeLayoutDirection!
   nodeDescriptions: [NodeDescription!]!
   childNodeDescriptionIds: [ID!]!

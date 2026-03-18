@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-export type MiniMapContextValue = {
-  isMiniMapVisible: boolean;
-  setMiniMapVisibility: (visible: boolean) => void;
-};
+import java.util.UUID;
 
-export interface MiniMapContextProviderProps {
-  children: React.ReactNode;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+
+/**
+ * The input for the "Minimap Visible" query.
+ *
+ * @author fbarbin
+ */
+public record MinimapVisibleInput(UUID id, String editingContextId, String representationId) implements IDiagramInput {
 }
-
-export type MiniMapVisibilityPreference = {
-  visible: boolean;
-  lastAccessedAt: string;
-};
-
-export type MiniMapVisibilityPreferences = Record<string, MiniMapVisibilityPreference>;

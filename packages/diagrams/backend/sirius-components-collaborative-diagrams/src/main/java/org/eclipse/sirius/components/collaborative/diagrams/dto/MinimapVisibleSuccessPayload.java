@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,21 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-export type MiniMapContextValue = {
-  isMiniMapVisible: boolean;
-  setMiniMapVisibility: (visible: boolean) => void;
-};
+import java.util.Objects;
+import java.util.UUID;
 
-export interface MiniMapContextProviderProps {
-  children: React.ReactNode;
+import org.eclipse.sirius.components.core.api.IPayload;
+
+/**
+ * The payload of the "Minimap Visible" query returned on success.
+ *
+ * @author fbarbin
+ */
+public record MinimapVisibleSuccessPayload(UUID id, boolean minimapVisible) implements IPayload {
+
+    public MinimapVisibleSuccessPayload {
+        Objects.requireNonNull(id);
+    }
 }
-
-export type MiniMapVisibilityPreference = {
-  visible: boolean;
-  lastAccessedAt: string;
-};
-
-export type MiniMapVisibilityPreferences = Record<string, MiniMapVisibilityPreference>;
