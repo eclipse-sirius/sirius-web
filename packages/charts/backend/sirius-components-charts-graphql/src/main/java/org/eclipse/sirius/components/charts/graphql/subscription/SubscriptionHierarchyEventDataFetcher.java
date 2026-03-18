@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.charts.graphql.subscription;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.SubscriptionDataFetcher;
@@ -25,6 +23,7 @@ import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 import org.reactivestreams.Publisher;
 
 import graphql.schema.DataFetchingEnvironment;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * The data fetcher used to send the refreshed hierarchy to a subscription.

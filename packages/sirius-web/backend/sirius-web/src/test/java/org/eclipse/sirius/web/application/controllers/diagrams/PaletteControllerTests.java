@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.application.controllers.diagrams;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.TypeRef;
