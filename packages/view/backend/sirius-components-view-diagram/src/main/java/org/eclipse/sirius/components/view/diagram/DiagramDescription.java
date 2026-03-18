@@ -37,6 +37,8 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Styles</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getDecoratorDescriptions <em>Decorator
  * Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isMinimapVisible <em>Minimap
+ * Visible</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
@@ -211,6 +213,29 @@ public interface DiagramDescription extends RepresentationDescription {
      * @generated
      */
     EList<DecoratorDescription> getDecoratorDescriptions();
+
+    /**
+     * Returns the value of the '<em><b>Minimap Visible</b></em>' attribute. The default value is <code>"true"</code>.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Minimap Visible</em>' attribute.
+     * @see #setMinimapVisible(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_MinimapVisible()
+     * @model default="true"
+     * @generated
+     */
+    boolean isMinimapVisible();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isMinimapVisible
+     * <em>Minimap Visible</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Minimap Visible</em>' attribute.
+     * @see #isMinimapVisible()
+     * @generated
+     */
+    void setMinimapVisible(boolean value);
 
     /**
      * Returns the value of the '<em><b>Group Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--

@@ -117,6 +117,8 @@
         eType="#//ConditionalDiagramStyle" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="decoratorDescriptions"
         upperBound="-1" eType="#//DecoratorDescription" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="minimapVisible" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramElementDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"

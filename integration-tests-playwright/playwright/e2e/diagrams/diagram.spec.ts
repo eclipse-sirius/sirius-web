@@ -65,6 +65,32 @@ test.describe('diagram', () => {
     await page.getByTestId('show-mini-map').click();
     await expect(page.locator('.react-flow__minimap')).toBeAttached();
   });
+
+  test('when a mini map is hidden on a diagram, then another diagram still uses its default mini map visibility', async ({
+    page,
+  }) => {
+    await page.getByTestId('hide-mini-map').click();
+    await expect(page.locator('.react-flow__minimap')).not.toBeAttached();
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const explorer = await new PlaywrightExplorer(page);
+    await explorer.expand('Flow');
+    await explorer.expand('NewSystem');
+    await explorer.createRepresentation('NewSystem', 'Topography unsynchronized', 'Topography2');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await expect(page.getByTestId('hide-mini-map')).toBeAttached();
+    await expect(page.getByTestId('show-mini-map')).not.toBeAttached();
+    await expect(page.locator('.react-flow__minimap')).toBeAttached();
+
+    await explorer.select('Topography');
+    await expect(page.getByTestId('show-mini-map')).toBeAttached();
+    await expect(page.getByTestId('hide-mini-map')).not.toBeAttached();
+    await expect(page.locator('.react-flow__minimap')).not.toBeAttached();
+
+    await page.getByTestId('show-mini-map').click();
+    await expect(page.locator('.react-flow__minimap')).toBeAttached();
+  });
 });
 
 test.describe('diagram', () => {

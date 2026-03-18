@@ -58,6 +58,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <em>Conditional Styles</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getDecoratorDescriptions
  * <em>Decorator Descriptions</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#isMinimapVisible <em>Minimap
+ * Visible</em>}</li>
  * </ul>
  *
  * @generated
@@ -183,6 +185,26 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @ordered
      */
     protected EList<DecoratorDescription> decoratorDescriptions;
+
+    /**
+     * The default value of the '{@link #isMinimapVisible() <em>Minimap Visible</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #isMinimapVisible()
+     * @generated
+     * @ordered
+     */
+    protected static final boolean MINIMAP_VISIBLE_EDEFAULT = true;
+
+    /**
+     * The cached value of the '{@link #isMinimapVisible() <em>Minimap Visible</em>}' attribute. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @see #isMinimapVisible()
+     * @generated
+     * @ordered
+     */
+    protected boolean minimapVisible = MINIMAP_VISIBLE_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -451,6 +473,29 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
+    public boolean isMinimapVisible() {
+        return this.minimapVisible;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMinimapVisible(boolean newMinimapVisible) {
+        boolean oldMinimapVisible = this.minimapVisible;
+        this.minimapVisible = newMinimapVisible;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_DESCRIPTION__MINIMAP_VISIBLE, oldMinimapVisible, this.minimapVisible));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public GroupPalette getGroupPalette() {
         return this.groupPalette;
     }
@@ -549,6 +594,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.getConditionalStyles();
             case DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS:
                 return this.getDecoratorDescriptions();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__MINIMAP_VISIBLE:
+                return this.isMinimapVisible();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -596,6 +643,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 this.getDecoratorDescriptions().clear();
                 this.getDecoratorDescriptions().addAll((Collection<? extends DecoratorDescription>) newValue);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__MINIMAP_VISIBLE:
+                this.setMinimapVisible((Boolean) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -638,6 +688,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS:
                 this.getDecoratorDescriptions().clear();
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__MINIMAP_VISIBLE:
+                this.setMinimapVisible(MINIMAP_VISIBLE_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -670,6 +723,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
             case DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS:
                 return this.decoratorDescriptions != null && !this.decoratorDescriptions.isEmpty();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__MINIMAP_VISIBLE:
+                return this.minimapVisible != MINIMAP_VISIBLE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -689,6 +744,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
         result.append(this.autoLayout);
         result.append(", arrangeLayoutDirection: ");
         result.append(this.arrangeLayoutDirection);
+        result.append(", minimapVisible: ");
+        result.append(this.minimapVisible);
         result.append(')');
         return result.toString();
     }

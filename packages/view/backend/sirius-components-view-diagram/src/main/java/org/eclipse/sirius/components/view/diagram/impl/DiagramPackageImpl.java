@@ -757,6 +757,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EAttribute getDiagramDescription_MinimapVisible() {
+        return (EAttribute) this.diagramDescriptionEClass.getEStructuralFeatures().get(10);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EReference getDiagramDescription_GroupPalette() {
         return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(3);
     }
@@ -3154,6 +3164,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__STYLE);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS);
+        this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__MINIMAP_VISIBLE);
 
         this.diagramElementDescriptionEClass = this.createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__NAME);
@@ -3537,6 +3548,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_DecoratorDescriptions(), this.getDecoratorDescription(), null, "decoratorDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDiagramDescription_MinimapVisible(), this.ecorePackage.getEBoolean(), "minimapVisible", "true", 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE,
+                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getDiagramElementDescription_Name(), theViewPackage.getIdentifier(), "name", "NewRepresentationDescription", 0, 1, DiagramElementDescription.class, !IS_TRANSIENT,
