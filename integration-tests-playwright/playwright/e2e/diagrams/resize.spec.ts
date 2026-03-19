@@ -179,6 +179,44 @@ test.describe('diagram - multi-resize', () => {
     expect(ds1After.height).toBeCloseTo(ds1Before.height, 1);
     expect(ds1After.width).toBeCloseTo(ds1Before.width, 1);
   });
+
+  test('when resizing a node during a multi selection from its left side, then dimension and position changes for both node', async ({
+    page,
+  }) => {
+    const compositeProcessor1 = new PlaywrightNode(page, 'CompositeProcessor1');
+    const compositeProcessor2 = new PlaywrightNode(page, 'CompositeProcessor2');
+
+    await compositeProcessor1.click();
+    await compositeProcessor2.controlClick();
+
+    const cp1Before = await compositeProcessor1.getReactFlowSize('CompositeProcessor1', false);
+    const cp1PositionBefore = await compositeProcessor1.getReactFlowXYPosition('CompositeProcessor1', false);
+    const cp2PositionBefore = await compositeProcessor2.getReactFlowXYPosition('CompositeProcessor2', false);
+
+    // Hide Node Panel Info to avoid overlap in diagram
+    const panel = page.locator('.react-flow__panel.bottom.left');
+    await panel.evaluate((node) => {
+      node.style.visibility = 'hidden';
+    });
+
+    await compositeProcessor1.resize({ height: -50, width: -50 }, 'top.left');
+
+    const cp1After = await compositeProcessor1.getReactFlowSize('CompositeProcessor1', false);
+    const cp1PositionAfter = await compositeProcessor1.getReactFlowXYPosition('CompositeProcessor1', false);
+    const cp2After = await compositeProcessor2.getReactFlowSize('CompositeProcessor2', false);
+    const cp2PositionAfter = await compositeProcessor2.getReactFlowXYPosition('CompositeProcessor2', false);
+
+    expect(cp1After.height).toBeGreaterThan(cp1Before.height);
+    expect(cp1After.width).toBeGreaterThan(cp1Before.width);
+    expect(cp2After.height).toBeCloseTo(cp1After.height, 1);
+    expect(cp2After.width).toBeCloseTo(cp1After.width, 1);
+    expect(cp1PositionAfter.x).not.toBe(cp1PositionBefore.x);
+    expect(cp1PositionAfter.y).not.toBe(cp1PositionBefore.y);
+    expect(cp2PositionAfter.x).not.toBe(cp2PositionBefore.x);
+    expect(cp2PositionAfter.y).not.toBe(cp2PositionBefore.y);
+    expect(cp1PositionAfter.x - cp1PositionBefore.x).toBeCloseTo(cp2PositionAfter.x - cp2PositionBefore.x, 1);
+    expect(cp1PositionAfter.y - cp1PositionBefore.y).toBeCloseTo(cp2PositionAfter.y - cp2PositionBefore.y, 1);
+  });
 });
 
 test.describe('diagram - resize', () => {
