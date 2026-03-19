@@ -86,6 +86,7 @@ import { useOnRightClickElement } from './selection/useOnRightClickElement';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
 import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 import { DiagramToolbar } from './toolbar/DiagramToolbar';
+import { useMultiSelectResizeChange } from './resize/useMultiSelectResizeChange';
 
 const GRID_STEP: number = 10;
 
@@ -335,6 +336,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { applyLastElementSelected } = useLastElementSelectedChange();
   const { transformResizeListNodeChanges } = useResizeChange();
+  const { transformMultiSelectResizeNodeChanges } = useMultiSelectResizeChange();
   const { applyHandleChange } = useHandleChange();
   const { applyResizeHandleChange } = useHandleResizedChange();
   const { layoutOnBoundsChange } = useLayoutOnBoundsChange();
@@ -367,6 +369,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
         transformedNodeChanges = applyHelperLines(transformedNodeChanges);
         transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
+        transformedNodeChanges = transformMultiSelectResizeNodeChanges(transformedNodeChanges);
 
         let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
 

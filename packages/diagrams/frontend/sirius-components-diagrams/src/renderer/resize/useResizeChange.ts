@@ -17,6 +17,7 @@ import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types
 import { getBorderNodeExtent } from '../layout/layoutBorderNodes';
 import { borderNodeOffset } from '../layout/layoutParams';
 import { ListNodeData } from '../node/ListNode.types';
+import { isResizing, isMove, isResize } from '../node/nodeChangePredicates';
 import { UseResizeChangeValue } from './useResizeChange.types';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
@@ -194,48 +195,6 @@ const applyMoveToListChild = (
   return [];
 };
 
-const applyMultiSelectResize = (
-  change: NodeDimensionChange,
-  resizedNode: Node<NodeData>,
-  nodes: Node<NodeData>[]
-): NodeChange<Node<NodeData>>[] => {
-  const resizeWidthOffset: number = (change.dimensions?.width ?? 0) - (resizedNode.width ?? 0);
-  const resizeHeightOffset: number = (change.dimensions?.height ?? 0) - (resizedNode.height ?? 0);
-  return nodes
-    .filter((node) => node.id !== change.id && node.selected)
-    .filter((node) => node.data.nodeDescription?.userResizable !== 'NONE' && !node.data.isListChild)
-    .map((node) => {
-      let newWidth: number = (node.width ?? 0) + resizeWidthOffset;
-      let newHeight: number = (node.height ?? 0) + resizeHeightOffset;
-      if (node.data.nodeDescription?.userResizable === 'HORIZONTAL') {
-        newHeight = node.height ?? 0;
-      }
-      if (node.data.nodeDescription?.userResizable === 'VERTICAL') {
-        newWidth = node.width ?? 0;
-      }
-      if (node.data.minComputedHeight && newHeight < node.data.minComputedHeight) {
-        newHeight = node.data.minComputedHeight;
-      }
-      if (node.data.minComputedWidth && newWidth < node.data.minComputedWidth) {
-        newWidth = node.data.minComputedWidth;
-      }
-      return {
-        ...change,
-        id: node.id,
-        dimensions: {
-          height: newHeight,
-          width: newWidth,
-        },
-      };
-    });
-};
-
-const isResizing = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
-  change.type === 'dimensions' && (change.resizing ?? false);
-const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange => change.type === 'dimensions';
-const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
-  change.type === 'position' && !change.dragging;
-
 export const useResizeChange = (): UseResizeChangeValue => {
   const { getNodes } = useStore();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
@@ -245,7 +204,6 @@ export const useResizeChange = (): UseResizeChangeValue => {
       const zoom = store.getState().transform[2];
       const newResizeListContainChanges: NodeChange<Node<NodeData>>[] = [];
       const newBorderNodeMoveChanges: NodeChange<Node<NodeData>>[] = [];
-      const newMultiSelectResizeChanges: NodeChange<Node<NodeData>>[] = [];
       const updatedChanges: NodeChange<Node<NodeData>>[] = changes.map((currentChange) => {
         if (isResizing(currentChange)) {
           const resizedNode = getNodes().find((node) => currentChange.id === node.id);
@@ -279,20 +237,9 @@ export const useResizeChange = (): UseResizeChangeValue => {
             currentChange.position = undefined;
           }
         }
-        if (isResize(currentChange)) {
-          const resizedNode = getNodes().find((node) => currentChange.id === node.id);
-          if (resizedNode) {
-            newMultiSelectResizeChanges.push(...applyMultiSelectResize(currentChange, resizedNode, getNodes()));
-          }
-        }
         return currentChange;
       });
-      return [
-        ...newBorderNodeMoveChanges,
-        ...updatedChanges,
-        ...newResizeListContainChanges,
-        ...newMultiSelectResizeChanges,
-      ];
+      return [...newBorderNodeMoveChanges, ...updatedChanges, ...newResizeListContainChanges];
     },
     [getNodes]
   );
