@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.services;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -28,7 +24,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.migration.MigrationService;
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
-import org.eclipse.sirius.components.emf.migration.api.MigrationData;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceLoader;
@@ -77,11 +72,5 @@ public class ResourceLoader implements IResourceLoader {
         }
 
         return optionalResource;
-    }
-
-    public Optional<MigrationData> getMigrationDataFromDocumentContent(String content) {
-        JsonObject jsonObject = JsonParser.parseString(content).getAsJsonObject();
-        return Optional.ofNullable(jsonObject.getAsJsonObject(MigrationData.JSON_OBJECT_ROOT))
-                .map(migrationRootElement -> new Gson().fromJson(migrationRootElement, MigrationData.class)).stream().findFirst();
     }
 }
