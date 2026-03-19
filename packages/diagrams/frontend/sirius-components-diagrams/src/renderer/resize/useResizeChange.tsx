@@ -246,25 +246,29 @@ export const useResizeChange = (): UseResizeChangeValue => {
       const newResizeListContainChanges: NodeChange<Node<NodeData>>[] = [];
       const newBorderNodeMoveChanges: NodeChange<Node<NodeData>>[] = [];
       const newMultiSelectResizeChanges: NodeChange<Node<NodeData>>[] = [];
-      const updatedChanges: NodeChange<Node<NodeData>>[] = changes.map((change) => {
-        if (isResizing(change)) {
-          const resizedNode = getNodes().find((node) => change.id === node.id);
+      const updatedChanges: NodeChange<Node<NodeData>>[] = changes.map((currentChange) => {
+        if (isResizing(currentChange)) {
+          const resizedNode = getNodes().find((node) => currentChange.id === node.id);
           if (resizedNode) {
-            newResizeListContainChanges.push(...applyResizeToListContain(resizedNode, getNodes(), change));
-            newBorderNodeMoveChanges.push(...applyMoveToBorderNodes(resizedNode, getNodes(), change));
-            newResizeListContainChanges.push(...applyMoveToListChild(resizedNode, getNodes(), change, zoom));
+            newResizeListContainChanges.push(...applyResizeToListContain(resizedNode, getNodes(), currentChange));
+            newBorderNodeMoveChanges.push(...applyMoveToBorderNodes(resizedNode, getNodes(), currentChange));
+            newResizeListContainChanges.push(...applyMoveToListChild(resizedNode, getNodes(), currentChange, zoom));
           }
         }
-        if (isMove(change)) {
+        if (isMove(currentChange)) {
+          const isCurrentMovedNodeNotResized = (node: Node<NodeData>) =>
+            changes.filter((change) => isResize(change) && change.id === node.id).length === 0;
+
           const movedNode = getNodes()
             .filter((node) => !node.data.isBorderNode)
-            .find((node) => change.id === node.id);
+            .filter(isCurrentMovedNodeNotResized)
+            .find((node) => currentChange.id === node.id);
           if (movedNode) {
-            return applyMoveToListContain(movedNode, getNodes(), change);
+            return applyMoveToListContain(movedNode, getNodes(), currentChange);
           }
           const borderNodeMoved = getNodes()
             .filter((node) => node.data.isBorderNode)
-            .find((node) => change.id === node.id);
+            .find((node) => currentChange.id === node.id);
           if (
             borderNodeMoved &&
             newBorderNodeMoveChanges.some(
@@ -272,16 +276,16 @@ export const useResizeChange = (): UseResizeChangeValue => {
             )
           ) {
             // We have already computed a new position for this border node
-            change.position = undefined;
+            currentChange.position = undefined;
           }
         }
-        if (isResize(change)) {
-          const resizedNode = getNodes().find((node) => change.id === node.id);
+        if (isResize(currentChange)) {
+          const resizedNode = getNodes().find((node) => currentChange.id === node.id);
           if (resizedNode) {
-            newMultiSelectResizeChanges.push(...applyMultiSelectResize(change, resizedNode, getNodes()));
+            newMultiSelectResizeChanges.push(...applyMultiSelectResize(currentChange, resizedNode, getNodes()));
           }
         }
-        return change;
+        return currentChange;
       });
       return [
         ...newBorderNodeMoveChanges,

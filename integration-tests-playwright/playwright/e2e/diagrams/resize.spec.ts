@@ -14,6 +14,7 @@ import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 
 test.describe('diagram - resize', () => {
   let projectId;
@@ -270,5 +271,45 @@ test.describe('diagram - resize', () => {
       expect(childNodePositionAfter.x).toBeCloseTo(childNodePositionBefore.x, 1);
       expect(childNodePositionAfter.y).toBeCloseTo(childNodePositionBefore.y, 1);
     });
+  });
+});
+
+test.describe('diagram - resize', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectResizeChild.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('resizeChild');
+    await playwrightExplorer.expand('Root');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test(`when resizing a child node from its left side, then it moves within its parent node`, async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const childNode = new PlaywrightNode(page, 'Child');
+    await childNode.click();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+    const childNodePositionBefore = await childNode.getReactFlowXYPosition('Child', false);
+    await childNode.resize({ width: 50, height: 50 }, 'top.left');
+
+    const childNodePositionAfterTopLeft = await childNode.getReactFlowXYPosition('Child', false);
+    expect(childNodePositionAfterTopLeft.x).not.toBe(childNodePositionBefore.x);
+    expect(childNodePositionAfterTopLeft.y).not.toBe(childNodePositionBefore.y);
+
+    await childNode.resize({ width: 50, height: 50 }, 'bottom.left');
+
+    const childNodePositionAfterBottomLeft = await childNode.getReactFlowXYPosition('Child', false);
+    expect(childNodePositionAfterBottomLeft.x).not.toBe(childNodePositionAfterTopLeft.x);
+    expect(childNodePositionAfterBottomLeft.y).toBe(childNodePositionAfterTopLeft.y);
   });
 });
