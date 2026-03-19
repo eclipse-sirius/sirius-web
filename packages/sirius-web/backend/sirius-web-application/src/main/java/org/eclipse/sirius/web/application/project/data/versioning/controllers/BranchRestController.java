@@ -88,7 +88,7 @@ public class BranchRestController {
                 return new ResponseEntity<>(successPayload.branches(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = "Create branch by project.")
@@ -133,7 +133,7 @@ public class BranchRestController {
                 return new ResponseEntity<>(successPayload.branch(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = "Delete branch by project and ID.")
@@ -146,7 +146,7 @@ public class BranchRestController {
     })
     @DeleteMapping(path = "/{branchId}")
     public ResponseEntity<RestBranch> deleteBranch(@PathVariable String projectId, @PathVariable UUID branchId) {
-        ResponseEntity<RestBranch> responseEntity = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        ResponseEntity<RestBranch> responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         var optionalEditingContextId = this.projectEditingContextService.getEditingContextId(projectId);
         if (optionalEditingContextId.isPresent()) {
@@ -157,7 +157,7 @@ public class BranchRestController {
                 if (payload instanceof DeleteBranchRestSuccessPayload successPayload) {
                     responseEntity = new ResponseEntity<>(successPayload.branch(), HttpStatus.OK);
                 } else if (payload instanceof ErrorPayload) {
-                    responseEntity = new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+                    responseEntity = new ResponseEntity<>(HttpStatus.NO_CONTENT);
                 }
             }
         }

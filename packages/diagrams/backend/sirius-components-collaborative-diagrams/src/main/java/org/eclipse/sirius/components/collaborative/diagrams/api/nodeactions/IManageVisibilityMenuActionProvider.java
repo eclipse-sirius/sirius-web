@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.api.nodeactions;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.collaborative.diagrams.dto.managevisibility.ManageVisibilityAction;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-
-import java.util.List;
 
 /**
  * Provide the menu actions for the manage visibility node action.

@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -28,6 +24,7 @@ import org.eclipse.sirius.components.graphql.api.GraphQLConstants;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +40,9 @@ import graphql.GraphQL;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import jakarta.servlet.http.HttpServletRequest;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * The entry point of the GraphQL HTTP API.
@@ -114,7 +114,7 @@ public class GraphQLController {
 
     private final Logger logger = LoggerFactory.getLogger(GraphQLController.class);
 
-    private final ObjectMapper objectMapper;
+    private final JsonMapper objectMapper;
 
     private final GraphQL graphQL;
 
@@ -122,7 +122,7 @@ public class GraphQLController {
 
     private final Timer graphQLUploadTimer;
 
-    public GraphQLController(ObjectMapper objectMapper, GraphQL graphQL, MeterRegistry meterRegistry) {
+    public GraphQLController(JsonMapper objectMapper, GraphQL graphQL, MeterRegistry meterRegistry) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.graphQL = Objects.requireNonNull(graphQL);
 
@@ -168,7 +168,7 @@ public class GraphQLController {
                 this.logger.atWarn()
                         .setMessage(stringSpecification)
                         .log();
-            } catch (JsonProcessingException exception) {
+            } catch (JsonParseException exception) {
                 this.logger.atWarn()
                         .setMessage("Computation of the GraphQL error(s) to log failed")
                         .setCause(exception)
@@ -194,7 +194,7 @@ public class GraphQLController {
         Optional<GraphQLPayload> optionalGraphQLPayload = this.getGraphQLPayload(operations);
         Optional<JsonNode> optionalJsonNode = this.getJsonNode(map);
 
-        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         if (optionalGraphQLPayload.isPresent() && optionalJsonNode.isPresent()) {
             GraphQLPayload graphQLPayload = optionalGraphQLPayload.get();
             JsonNode jsonNode = optionalJsonNode.get();
@@ -228,7 +228,7 @@ public class GraphQLController {
         if (payload != null) {
             try {
                 optionalGraphQLPayload = Optional.of(this.objectMapper.readValue(payload, GraphQLPayload.class));
-            } catch (IOException exception) {
+            } catch (JacksonException exception) {
                 this.logger.atWarn()
                         .setMessage("Deserialization of the GraphQL payload failed. Payload: {}")
                         .addArgument(payload)
@@ -248,7 +248,7 @@ public class GraphQLController {
         if (map != null) {
             try {
                 optionalJsonNode = Optional.of(this.objectMapper.readTree(map));
-            } catch (IOException exception) {
+            } catch (JacksonException exception) {
                 this.logger.atWarn()
                         .setMessage("Deserialization of the variable map failed. Map: {}")
                         .addArgument(map)

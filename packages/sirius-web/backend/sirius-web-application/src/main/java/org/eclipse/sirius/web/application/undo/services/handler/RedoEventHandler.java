@@ -28,6 +28,7 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.services.api.IRepresentationChangeHandler;
 import org.springframework.stereotype.Service;
+
 import reactor.core.publisher.Sinks.Many;
 import reactor.core.publisher.Sinks.One;
 

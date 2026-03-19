@@ -21,12 +21,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
-import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorInitializationHook;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorFactory;
+import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorInitializationHook;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
-import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
+import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.core.api.IInput;

@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.changes;
 
-import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
-
 import java.util.List;
 import java.util.UUID;
+
+import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 
 /**
  * Used to record changes made to the appearance of a diagram node.

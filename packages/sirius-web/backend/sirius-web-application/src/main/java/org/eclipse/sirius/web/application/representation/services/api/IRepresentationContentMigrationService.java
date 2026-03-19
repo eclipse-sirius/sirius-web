@@ -12,11 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.services.api;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Used to retrieve the migrated content of the representation content.

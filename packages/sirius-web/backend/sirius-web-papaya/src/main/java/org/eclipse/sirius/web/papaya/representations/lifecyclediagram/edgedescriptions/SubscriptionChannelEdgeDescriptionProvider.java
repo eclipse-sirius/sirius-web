@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.lifecyclediagram.edgedescriptions;
 
+import java.util.Objects;
+
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
@@ -23,8 +25,6 @@ import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.nodedescriptions.ChannelNodeDescriptionProvider;
 import org.eclipse.sirius.web.papaya.representations.lifecyclediagram.tools.SubscriptionChannelEdgePaletteProvider;
 import org.eclipse.sirius.web.papaya.services.PapayaColorPaletteProvider;
-
-import java.util.Objects;
 
 /**
  * Used to create the subscriptions channel edge description.

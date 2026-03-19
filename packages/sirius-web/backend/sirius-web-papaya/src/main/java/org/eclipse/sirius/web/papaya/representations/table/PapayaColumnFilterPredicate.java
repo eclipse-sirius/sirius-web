@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.table;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -24,6 +20,10 @@ import org.eclipse.sirius.components.papaya.Type;
 import org.eclipse.sirius.components.tables.ColumnFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Used to indicate if a column should be filtered or not.
@@ -57,9 +57,10 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
     private boolean isValidNameColumnFilterCandidate(ColumnFilter columnFilter) {
         var isValid = true;
         try {
-            String filterValue = this.objectMapper.readValue(columnFilter.value(), new TypeReference<>() { });
+            JavaType javaType = objectMapper.getTypeFactory().constructType(String.class);
+            String filterValue = this.objectMapper.readValue(columnFilter.value(), javaType);
             isValid = this.type.getName() != null && this.type.getName().contains(filterValue);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             this.logger.atWarn()
                     .setMessage("Deserialization of the column filter failed")
                     .setCause(exception)
@@ -71,7 +72,8 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
     private boolean isValidAnnotationCountFilterCandidate(ColumnFilter columnFilter) {
         var isValid = true;
         try {
-            List<String> filterValues = objectMapper.readValue(columnFilter.value(), new TypeReference<>() { });
+            JavaType javaType = objectMapper.getTypeFactory().constructCollectionType(List.class, String.class);
+            List<String> filterValues = objectMapper.readValue(columnFilter.value(), javaType);
             int nbAnnotation = this.type.getAnnotations().size();
             if (filterValues.size() == 2) {
                 if (filterValues.get(0) != null && !filterValues.get(0).isBlank()) {
@@ -100,7 +102,7 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
                     }
                 }
             }
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             this.logger.atWarn()
                     .setMessage("Deserialization of the column filter failed")
                     .setCause(exception)

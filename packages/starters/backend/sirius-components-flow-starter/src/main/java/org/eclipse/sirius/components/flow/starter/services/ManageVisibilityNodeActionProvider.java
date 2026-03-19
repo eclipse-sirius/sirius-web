@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.flow.starter.services;
+
+import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.IActionsProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Action;
@@ -26,9 +29,6 @@ import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.service
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Used to provide the show label node action.

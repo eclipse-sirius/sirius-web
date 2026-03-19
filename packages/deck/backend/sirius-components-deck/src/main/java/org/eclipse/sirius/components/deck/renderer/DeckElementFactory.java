@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.deck.renderer;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.deck.Card;
 import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.Lane;
@@ -20,8 +22,6 @@ import org.eclipse.sirius.components.deck.renderer.elements.DeckElementProps;
 import org.eclipse.sirius.components.deck.renderer.elements.LaneElementProps;
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
-
-import java.util.List;
 
 /**
  * Used to instantiate the elements of the Deck representation.

@@ -14,10 +14,11 @@
 package org.eclipse.sirius.components.collaborative.diagrams.api;
 
 import java.util.Optional;
+
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramToolbar;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramToolbar;
 
 /**
  * Interface for services providing the diagram toolbar.

@@ -12,11 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.formdescriptioneditors.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDeserializer;
@@ -25,6 +20,11 @@ import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Used to deserialize a form description editor.
@@ -45,10 +45,10 @@ public class FormDescriptionEditorDeserializer implements IRepresentationDeseria
     }
 
     @Override
-    public Optional<IRepresentation> handle(ObjectMapper mapper, ObjectNode root) {
+    public Optional<IRepresentation> handle(JsonParser jsonParser, DeserializationContext context, ObjectNode root) {
         try {
-            return Optional.of(mapper.readValue(root.toString(), FormDescriptionEditor.class));
-        } catch (JsonProcessingException exception) {
+            return Optional.of(context.readTreeAsValue(root, FormDescriptionEditor.class));
+        } catch (JacksonException exception) {
             this.logger.atWarn()
                     .setMessage("Form Description Editor deserialization failed")
                     .setCause(exception)

@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.views.viewsexplorer.services.api;
 
 import java.util.List;
 import java.util.Map;
+
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.web.application.views.viewsexplorer.services.RepresentationKind;

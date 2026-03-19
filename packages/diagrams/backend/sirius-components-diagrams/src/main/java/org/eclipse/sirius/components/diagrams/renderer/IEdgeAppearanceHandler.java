@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.renderer;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.diagrams.EdgeStyle;
 import org.eclipse.sirius.components.diagrams.components.EdgeAppearance;
 import org.eclipse.sirius.components.diagrams.events.appearance.edgestyle.IEdgeAppearanceChange;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Service used to handle the customization of a node's appearance.

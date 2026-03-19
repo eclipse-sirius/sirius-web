@@ -13,8 +13,6 @@
 
 package org.eclipse.sirius.components.tables.graphql.datafetchers.mutation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -26,6 +24,7 @@ import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 
 import graphql.schema.DataFetchingEnvironment;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Data fetcher used to resize a table row.

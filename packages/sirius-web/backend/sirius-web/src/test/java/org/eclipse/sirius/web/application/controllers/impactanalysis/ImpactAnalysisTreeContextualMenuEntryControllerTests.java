@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,10 +14,7 @@ package org.eclipse.sirius.web.application.controllers.impactanalysis;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.time.Duration;
 import java.util.List;
@@ -47,6 +44,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Integration tests of the impact analysis for tree contextual menu entries.
@@ -120,8 +118,10 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
             List<String> additionalReports = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.additionalReports[*]");
             assertThat(additionalReports).isEmpty();
 
-            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
+            DataTree dataTree = this.objectMapper.convertValue(
+                    JsonPath.parse(result.data()).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree"),
+                    DataTree.class
+            );
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
 
@@ -185,8 +185,10 @@ public class ImpactAnalysisTreeContextualMenuEntryControllerTests extends Abstra
             assertThat(additionalReports).hasSize(1);
             assertThat(additionalReports.get(0)).startsWith(this.messageService.operationExecutionFailed(""));
 
-            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
+            DataTree dataTree = this.objectMapper.convertValue(
+                    JsonPath.parse(result.data()).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree"),
+                    DataTree.class
+            );
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
             assertThat(dataTree.nodes()).isEmpty();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.ws.handlers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.graphql.ws.dto.output.ConnectionAcknowledgeMessage;
@@ -21,6 +19,8 @@ import org.eclipse.sirius.components.graphql.ws.dto.output.ConnectionKeepAliveMe
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.WebSocketSession;
+
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * This class will handle the connection init messages sent by the consumers of the Web Socket API.

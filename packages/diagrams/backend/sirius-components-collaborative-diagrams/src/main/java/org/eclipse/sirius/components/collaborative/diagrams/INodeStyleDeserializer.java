@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.diagrams.api.ICustomNodeStyleDeserializer;
@@ -30,18 +23,23 @@ import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
 
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.node.ObjectNode;
+
 /**
  * Custom deserializer for node style since Jackson need to know how to find the concrete class matching the JSON data.
  *
  * @author sbegaudeau
  */
-public class INodeStyleDeserializer extends StdDeserializer<INodeStyle> {
+public class INodeStyleDeserializer extends StdDeserializer<INodeStyle> implements Serializable {
 
-    private static final long serialVersionUID = 5722074461929397488L;
     private final List<ICustomNodeStyleDeserializer> customNodeStyleDeserializers;
 
     public INodeStyleDeserializer(List<ICustomNodeStyleDeserializer> customNodeStyleDeserializers) {
-        this(null, customNodeStyleDeserializers);
+        this(INodeStyle.class, customNodeStyleDeserializers);
     }
 
     public INodeStyleDeserializer(Class<?> valueClass, List<ICustomNodeStyleDeserializer> customNodeStyleDeserializers) {
@@ -50,29 +48,30 @@ public class INodeStyleDeserializer extends StdDeserializer<INodeStyle> {
     }
 
     @Override
-    public INodeStyle deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
+    public INodeStyle deserialize(JsonParser jsonParser, DeserializationContext context) {
         INodeStyle nodeStyle = null;
-        ObjectCodec objectCodec = jsonParser.getCodec();
-        if (objectCodec instanceof ObjectMapper mapper) {
-            ObjectNode root = mapper.readTree(jsonParser);
-            Object parent = jsonParser.getParsingContext().getCurrentValue();
-            if (parent instanceof Node parentNode) {
-                nodeStyle = switch (parentNode.getType()) {
-                    case NodeType.NODE_RECTANGLE -> mapper.readValue(root.toString(), RectangularNodeStyle.class);
-                    case NodeType.NODE_IMAGE -> mapper.readValue(root.toString(), ImageNodeStyle.class);
-                    case NodeType.NODE_ICON_LABEL -> mapper.readValue(root.toString(), IconLabelNodeStyle.class);
-                    default -> {
-                        var customDeserialize = this.customNodeStyleDeserializers.stream()
-                                .filter(iCustomNodeStyleDeserializer -> iCustomNodeStyleDeserializer.canHandle(parentNode.getType())).findFirst();
-                        if (customDeserialize.isPresent()) {
-                            yield customDeserialize.get().handle(mapper, root.toString());
-                        } else {
-                            yield mapper.readValue(root.toString(), RectangularNodeStyle.class);
-                        }
+        var parentNodeStyle = jsonParser.streamReadContext().getParent();
+        var parent = parentNodeStyle.currentValue();
+        JsonNode rootNode = context.readTree(jsonParser);
+        ObjectNode root = (ObjectNode) rootNode;
+
+        if (parent instanceof Node parentNode) {
+            nodeStyle = switch (parentNode.getType()) {
+                case NodeType.NODE_RECTANGLE -> context.readTreeAsValue(root, RectangularNodeStyle.class);
+                case NodeType.NODE_IMAGE -> context.readTreeAsValue(root, ImageNodeStyle.class);
+                case NodeType.NODE_ICON_LABEL -> context.readTreeAsValue(root, IconLabelNodeStyle.class);
+                default -> {
+                    var customDeserialize = this.customNodeStyleDeserializers.stream()
+                            .filter(iCustomNodeStyleDeserializer -> iCustomNodeStyleDeserializer.canHandle(parentNode.getType())).findFirst();
+                    if (customDeserialize.isPresent()) {
+                        yield customDeserialize.get().handle(root, jsonParser,  context);
+                    } else {
+                        yield context.readTreeAsValue(root, RectangularNodeStyle.class);
                     }
-                };
-            }
+                }
+            };
         }
+
         return nodeStyle;
     }
 }

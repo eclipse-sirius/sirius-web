@@ -41,7 +41,6 @@ import org.springframework.data.domain.ScrollPosition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -134,7 +133,7 @@ public class ProjectRestController {
                 .map(project -> new RestProject(project.id(), DEFAULT_CREATED, new Identified(project.id()), null, project.name()));
 
         return restProject.map(project -> new ResponseEntity<>(project, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
     }
 
@@ -180,7 +179,7 @@ public class ProjectRestController {
             }
         }
 
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = "Delete the project with the given id (projectId).")
@@ -200,14 +199,14 @@ public class ProjectRestController {
         var deleteProjectPayload = this.projectDeletionApplicationService.deleteProject(deleteProjectInput);
 
         if (deleteProjectPayload instanceof ErrorPayload) {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
         return new ResponseEntity<>(restProject, HttpStatus.OK);
     }
 
-    private MultiValueMap<String, String> handleLinkResponseHeader(List<RestProject> projects, KeysetScrollPosition position, boolean hasNext, int limit) {
-        MultiValueMap<String, String> headers = new HttpHeaders();
+    private HttpHeaders handleLinkResponseHeader(List<RestProject> projects, KeysetScrollPosition position, boolean hasNext, int limit) {
+        HttpHeaders headers = new HttpHeaders();
         int projectsSize = projects.size();
         if (projectsSize > 0 && position.scrollsForward() && hasNext) {
             var headerLink = this.createHeaderLink(projects, limit, "after", "next");

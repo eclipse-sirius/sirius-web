@@ -19,9 +19,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramToolbar;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolbarInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetToolbarSuccessPayload;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramToolbar;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;

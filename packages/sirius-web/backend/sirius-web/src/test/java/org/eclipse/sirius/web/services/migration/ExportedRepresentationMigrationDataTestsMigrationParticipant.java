@@ -12,11 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.services.migration;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * A migration participant editing the x property of representations, specific to the {@link ExportedRepresentationMigrationDataTests}.

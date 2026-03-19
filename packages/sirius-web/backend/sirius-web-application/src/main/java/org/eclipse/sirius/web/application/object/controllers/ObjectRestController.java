@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -82,7 +82,7 @@ public class ObjectRestController {
                 return new ResponseEntity<>(successPayload.elements(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = "Get element with the given id (elementId) in the given project at the given commit.")
@@ -105,7 +105,7 @@ public class ObjectRestController {
                 return new ResponseEntity<>(successPayload.element(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = "Get relationships that are incoming, outgoing, or both relative to the given related element.")
@@ -130,7 +130,7 @@ public class ObjectRestController {
             }
         }
 
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = "Get all the root elements in the given project at the given commit.")
@@ -153,6 +153,6 @@ public class ObjectRestController {
                 return new ResponseEntity<>(successPayload.rootElements(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

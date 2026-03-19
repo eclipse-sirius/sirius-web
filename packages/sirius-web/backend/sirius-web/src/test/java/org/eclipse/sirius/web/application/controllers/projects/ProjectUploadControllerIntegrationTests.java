@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 
 import java.io.ByteArrayOutputStream;
@@ -42,7 +40,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
@@ -53,6 +50,10 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Integration tests of the project upload controllers.
@@ -123,7 +124,7 @@ public class ProjectUploadControllerIntegrationTests extends AbstractIntegration
         String operations = "";
         try {
             operations = new ObjectMapper().writeValueAsString(payload);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             fail(exception.getMessage());
         }
 
@@ -143,12 +144,12 @@ public class ProjectUploadControllerIntegrationTests extends AbstractIntegration
         String serverUrl = "http://localhost:" + this.port + "/api/graphql/upload";
 
         // Send http request
-        var response = new TestRestTemplate().postForEntity(serverUrl, requestEntity, Map.class);
+        var response = new RestTemplate().postForEntity(serverUrl, requestEntity, Map.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         try {
             return new ObjectMapper().writeValueAsString(response.getBody());
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             fail(exception.getMessage());
         }
         return "";

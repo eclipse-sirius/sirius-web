@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.util.Optional;
 
 import org.eclipse.sirius.components.representations.IRepresentation;
+
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Used to deserialize a representation with Jackson.
@@ -28,6 +29,6 @@ public interface IRepresentationDeserializer {
 
     boolean canHandle(ObjectNode root);
 
-    Optional<IRepresentation> handle(ObjectMapper mapper, ObjectNode root);
+    Optional<IRepresentation> handle(JsonParser jsonParser, DeserializationContext context, ObjectNode root);
 
 }

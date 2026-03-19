@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.configuration;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 
@@ -30,6 +28,7 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 
 import graphql.GraphQL;
 import io.micrometer.core.instrument.MeterRegistry;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Spring configuration used to register all the Web Socket endpoints.

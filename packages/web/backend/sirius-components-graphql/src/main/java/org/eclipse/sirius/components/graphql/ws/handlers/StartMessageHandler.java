@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.ws.handlers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +38,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * This class will handle all the start messages sent by the consumers of the Web Socket API. It will executes the

@@ -17,7 +17,6 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramEventProcessor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
-import org.eclipse.sirius.web.application.undo.services.api.IRepresentationChangeHandler;
 import org.eclipse.sirius.components.collaborative.representations.api.IRepresentationEventProcessorRegistry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
@@ -31,6 +30,7 @@ import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderSizeAp
 import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderStyleAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.ResetNodeAppearanceChange;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.undo.services.api.IRepresentationChangeHandler;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeAppearanceChange;
 import org.springframework.stereotype.Service;
 

@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
@@ -27,6 +25,7 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectUpdateApp
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 
 import graphql.schema.DataFetchingEnvironment;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Data fetcher for the field Mutation#renameProject.

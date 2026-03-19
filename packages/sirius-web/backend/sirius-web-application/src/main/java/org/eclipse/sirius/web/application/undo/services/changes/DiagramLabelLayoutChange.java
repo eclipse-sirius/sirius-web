@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.undo.services.changes;
 
-import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramLabelLayoutEvent;
-
 import java.util.List;
 import java.util.UUID;
+
+import org.eclipse.sirius.components.diagrams.events.undoredo.DiagramLabelLayoutEvent;
 
 /**
  * Used to record changes for label layout.

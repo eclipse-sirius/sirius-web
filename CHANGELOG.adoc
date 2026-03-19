@@ -29,14 +29,17 @@ The service `HierarchyCreationService` is now implementing an interface `IHierar
 This will be used as an inspiration for the evolution of other similar services like `DiagramCreationService`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6331[#6331] [sirius-web] Clarify our logging policy in a document available in `doc/how-to/logging-policy.adoc`
 - https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Update the GraphQL API of `SelectionDescription` type.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6262[#6262] [core] The method `ICustomNodeStyleDeserializer#handle(...)` has been modified to `INodeStyle handle(ObjectMapper mapper, String root) throws JsonProcessingException;`
+The method `IRepresentationDeserializer#handle(...)` has been modified to `Optional<IRepresentation> handle(JsonParser jsonParser, DeserializationContext context, ObjectNode root);`
+The switch to Spring Boot 4.0 also come with a switch to Jackson 3, see the official https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md[documentation] for more details.
+Custom deserializers and migration services will probably be impacted.
 
 
 === Dependency update
 
 - [releng] Switch to lexical 0.42.0
 - https://github.com/eclipse-sirius/sirius-web/issues/6299[#6299] [releng] Switch to https://vite.dev/blog/announcing-vite8[Vite 8.0.1] and @vitejs/plugin-react 6.0.1
-
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.0.0[Spring Boot 4.0.0]
 
 
 === Bug fixes
@@ -143,6 +146,11 @@ An example can be found with `EllipseNodeConverter.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5982[#5982] [tree] Add the ability to trigger context menu entries using key bindings.
 The `TreeItemContextMenuEntryBuilder` subclasses now require a list of key bindings.
 `IKeyBindingConverter` and `KeyBindingConverter` have been moved from their respective packages to `org.eclipse.sirius.components.view.emf`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6262[#6262] [core] `ICustomNodeStyleDeserializer` `handle` method have been modified to `INodeStyle handle(ObjectMapper mapper, String root) throws JsonProcessingException;`
+`IRepresentationDeserializer` `handle` method have been modified to `Optional<IRepresentation> handle(JsonParser jsonParser, DeserializationContext context, ObjectNode root);`
+The switch to Spring Boot 4.0 also come with a switch to Jackson 3, see the official https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md[documentation] for more details.
+Your custom deserializers and migration services will probably be impacted.
+
 
 
 === Dependency update

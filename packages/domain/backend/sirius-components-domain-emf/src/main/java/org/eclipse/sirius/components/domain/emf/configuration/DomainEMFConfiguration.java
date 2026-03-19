@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo and others.
+ * Copyright (c) 2019, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,12 +14,12 @@ package org.eclipse.sirius.components.domain.emf.configuration;
 
 import java.util.Objects;
 
-import jakarta.annotation.PostConstruct;
-
 import org.eclipse.emf.ecore.EValidator.Registry;
 import org.eclipse.sirius.components.domain.DomainPackage;
 import org.eclipse.sirius.components.domain.emf.DomainValidator;
 import org.springframework.context.annotation.Configuration;
+
+import jakarta.annotation.PostConstruct;
 
 /**
  * Configuration of the EMF beans.

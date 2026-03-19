@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,6 @@ package org.eclipse.sirius.components.graphql.ws;
 
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +42,7 @@ import graphql.schema.GraphQLSchema;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Unit tests of the various Web Socket handlers. The handlers should implement the behavior described in the
