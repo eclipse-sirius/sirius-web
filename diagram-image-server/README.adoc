@@ -12,7 +12,7 @@ See file://../doc/iterations/2025.8/backend_api_export_diagram.adoc[the correspo
 Assuming you already have a running Sirius Web instance, the simplest way to launch the sverver for local testing is to:
 
 1. Install the required dependencies: `npm install`
-2. Launch the script: `node index.mjs -s http://your-sirius-web-server`
+2. Launch the script: `node index.mjs -s https://your-sirius-web-server`
 
 By default the image server itself will list to port 3000.
 You can change that using `-p another_port` (e.g. `-p 3001`) when lauching it.
@@ -22,6 +22,14 @@ The options available are:
 * `-s | --server`: the address of the Sirius Web server itself (e.g. https://sirius-web.example.com/)
 * `-p | --port`: the port to listen to (by default, 3000)
 * `-c | --cookie`: the name(s) of any cookie that, if received by the image server itself, will be forwarded to the Sirius Web server; by default, cookies named `SESSION` or `JSESSIONID` (if they exist) are forwarded. This option can be used multiple times if needed (e.g. `-c MAIN_COOKIE -c ANOTHER_ONE`)
+
+[IMPORTANT]
+----
+Note the `https` in the `https://your-sirius-web-server` URL above.
+The Sirius Web frontend must execute in a [Secure Context](https://developer.mozilla.org/en-US/docs/Web/Security/Defenses/Secure_Contexts) to work correctly.
+When testing locally, you can use plain HTTP if you target `localhost`, but for any real deployment (including inside a docker compose setup), the Sirius Web frontend *must* be accessed by HTTPS.
+Otherwise you will get errors like _TypeError: crypto.randomUUID is not a function_ and the frontend will not be able to communicate with the backend.
+----
 
 == API
 
