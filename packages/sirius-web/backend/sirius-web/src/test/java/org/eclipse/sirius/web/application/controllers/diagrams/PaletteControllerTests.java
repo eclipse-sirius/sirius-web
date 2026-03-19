@@ -15,11 +15,8 @@ package org.eclipse.sirius.web.application.controllers.diagrams;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
-import tools.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.Configuration;
+import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.TypeRef;
-import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.time.Duration;
 import java.util.List;
@@ -46,6 +43,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Integration tests of the palette controllers.
@@ -101,8 +100,13 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
                     .isNotEmpty()
                     .anySatisfy(toolLabel -> assertThat(toolLabel).isEqualTo("New entity"));
 
-            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            List<KeyBinding> newEntityKeyBindings = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.palette.paletteEntries[?(@.label == 'New entity')].keyBindings[*]", new TypeRef<List<KeyBinding>>() { });
+            List<Object> rawList = JsonPath.parse(result.data())
+                    .read("$.data.viewer.editingContext.representation.description.palette.paletteEntries[?(@.label == 'New entity')].keyBindings[*]");
+            List<KeyBinding> newEntityKeyBindings = this.objectMapper.convertValue(
+                    rawList,
+                    new TypeReference<>() {
+                    }
+            );
 
             assertThat(newEntityKeyBindings)
                     .hasSize(2)
@@ -145,20 +149,34 @@ public class PaletteControllerTests extends AbstractIntegrationTests {
                     .isNotEmpty()
                     .containsAll(List.of("Text", "Boolean", "Number"));
 
-            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            List<KeyBinding> textKeyBindings = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[?(@.label == 'Text')].keyBindings[*]", new TypeRef<List<KeyBinding>>() { });
+            DocumentContext context = JsonPath.parse(result.data());
+
+            List<KeyBinding> textKeyBindings = this.objectMapper.convertValue(
+                    context.read("$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[?(@.label == 'Text')].keyBindings[*]"),
+                    new TypeReference<>() {
+                    }
+            );
+
             assertThat(textKeyBindings)
                     .hasSize(2)
                     .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("s"))
                     .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isCtrl() && keyBinding.isMeta() && keyBinding.key().equals("s"));
 
-            List<KeyBinding> booleanKeyBindings = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[?(@.label == 'Boolean')].keyBindings[*]", new TypeRef<List<KeyBinding>>() { });
+            List<KeyBinding> booleanKeyBindings = this.objectMapper.convertValue(
+                    context.read("$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[?(@.label == 'Boolean')].keyBindings[*]"),
+                    new TypeReference<>() {
+                    }
+            );
             assertThat(booleanKeyBindings)
                     .hasSize(2)
                     .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("b"))
                     .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isCtrl() && keyBinding.isMeta() && keyBinding.key().equals("b"));
 
-            List<KeyBinding> numberKeyBindings = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[?(@.label == 'Number')].keyBindings[*]", new TypeRef<List<KeyBinding>>() { });
+            List<KeyBinding> numberKeyBindings = this.objectMapper.convertValue(
+                    context.read("$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[?(@.label == 'Number')].keyBindings[*]"),
+                    new TypeReference<>() {
+                    }
+            );
             assertThat(numberKeyBindings)
                     .hasSize(2)
                     .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("i"))

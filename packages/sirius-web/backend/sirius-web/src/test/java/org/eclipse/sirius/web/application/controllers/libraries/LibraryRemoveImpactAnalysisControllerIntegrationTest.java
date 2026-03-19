@@ -14,10 +14,7 @@ package org.eclipse.sirius.web.application.controllers.libraries;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import tools.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.time.Duration;
 import java.util.List;
@@ -65,6 +62,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Integration tests of the library controllers when computing the impact analysis of a library removal.
@@ -142,8 +140,9 @@ public class LibraryRemoveImpactAnalysisControllerIntegrationTest extends Abstra
             int nbElementModified = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.nbElementModified");
             assertThat(nbElementModified).isEqualTo(2);
 
-            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            DataTree dataTree = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree", DataTree.class);
+            Object rawNode = JsonPath.parse(result.data())
+                    .read("$.data.viewer.editingContext.representation.description.treeImpactAnalysisReport.impactTree");
+            DataTree dataTree = this.objectMapper.convertValue(rawNode, DataTree.class);
 
             assertThat(dataTree.id()).isEqualTo("impact_tree");
             assertThat(dataTree.nodes()).anySatisfy(node -> {
