@@ -12,14 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams;
 
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-
 import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.api.IStdDeserializerProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ICustomNodeStyleDeserializer;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 /**
  * The deserializer provider for {@link INodeStyle}.

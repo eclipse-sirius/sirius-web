@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,33 +12,29 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.representations;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationDeserializer;
 import org.eclipse.sirius.components.representations.IRepresentation;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Custom deserializer to customize the ObjectMapper.
  *
  * @author gcoutable
  */
-public class RepresentationStdDeserializer extends StdDeserializer<IRepresentation> {
-
-    private static final long serialVersionUID = -1759653601179599083L;
+public class RepresentationStdDeserializer extends StdDeserializer<IRepresentation> implements Serializable {
 
     private final List<IRepresentationDeserializer> representationDeserializers;
 
     public RepresentationStdDeserializer(List<IRepresentationDeserializer> representationDeserializers) {
-        this(null, representationDeserializers);
+        this(IRepresentation.class, representationDeserializers);
     }
 
     public RepresentationStdDeserializer(Class<?> valueClass, List<IRepresentationDeserializer> representationDeserializers) {
@@ -47,20 +43,13 @@ public class RepresentationStdDeserializer extends StdDeserializer<IRepresentati
     }
 
     @Override
-    public IRepresentation deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
-        IRepresentation representation = null;
-        ObjectCodec objectCodec = jsonParser.getCodec();
-        if (objectCodec instanceof ObjectMapper mapper) {
-            ObjectNode root = mapper.readTree(jsonParser);
+    public IRepresentation deserialize(JsonParser jsonParser, DeserializationContext context) throws JacksonException {
+        ObjectNode root = (ObjectNode) context.readTree(jsonParser);
 
-            // @formatter:off
-            representation = this.representationDeserializers.stream()
-                    .filter(representationDeserializer -> representationDeserializer.canHandle(root))
-                    .findFirst()
-                    .flatMap(representationDeserializer -> representationDeserializer.handle(mapper, root))
-                    .orElse(null);
-            // @formatter:on
-        }
-        return representation;
+        return this.representationDeserializers.stream()
+                .filter(representationDeserializer -> representationDeserializer.canHandle(root))
+                .findFirst()
+                .flatMap(representationDeserializer -> representationDeserializer.handle(jsonParser, context, root))
+                .orElse(null);
     }
 }
