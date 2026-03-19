@@ -12,14 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.ws.handlers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 
 import org.eclipse.sirius.components.graphql.ws.dto.IOperationMessage;
 import org.slf4j.Logger;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
+
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Common interface of all the message handlers.

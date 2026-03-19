@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +39,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
+
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Used to add representation data to the export of a project.

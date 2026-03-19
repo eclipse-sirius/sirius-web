@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import org.springframework.stereotype.Service;
 
 import org.eclipse.sirius.components.collaborative.forms.api.IFormQueryService;
 import org.eclipse.sirius.components.forms.AbstractWidget;
@@ -26,6 +25,7 @@ import org.eclipse.sirius.components.forms.Group;
 import org.eclipse.sirius.components.forms.SplitButton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 /**
  * Class used to manipulate forms.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,14 +13,14 @@
 package org.eclipse.sirius.components.core.architecture;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IDefaultIdentityService;
 import org.eclipse.sirius.components.core.api.IIdentityServiceDelegate;
 import org.eclipse.sirius.components.core.services.ComposedIdentityService;
-
-import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for the default {@link org.eclipse.sirius.components.core.api.IIdentityService} implementation.

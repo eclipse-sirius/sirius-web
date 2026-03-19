@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,8 +14,6 @@ package org.eclipse.sirius.components.forms.graphql.datafetchers.mutation;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import graphql.schema.DataFetchingEnvironment;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
 import org.eclipse.sirius.components.collaborative.forms.dto.EditTreeCheckboxInput;
@@ -23,6 +21,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
+
+import graphql.schema.DataFetchingEnvironment;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * The data fetcher used to edit a tree checkbox.

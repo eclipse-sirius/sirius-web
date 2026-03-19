@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.core.graphql.datafetchers.mutation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.MutationDataFetcher;
@@ -23,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 
 import graphql.schema.DataFetchingEnvironment;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Data fetcher for the field Mutation#executeWorkbenchOmniboxCommand.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -37,6 +36,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Integration tests of the document download controllers.
@@ -62,7 +62,7 @@ public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrat
     @GivenSiriusWebServer
     @DisplayName("Given a studio, when the download of a domain document is requested, then the domain is retrieved")
     public void givenStudioWhenTheDownloadOfDomainDocumentIsRequestedThenTheDomainIsRetrieved() {
-        var testRestTemplate = new TestRestTemplate();
+        var testRestTemplate = new RestTemplate();
 
         var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID + "/documents/" + StudioIdentifiers.DOMAIN_DOCUMENT;
 
@@ -78,7 +78,7 @@ public class DocumentDownloadControllerIntegrationTests extends AbstractIntegrat
     @GivenSiriusWebServer
     @DisplayName("Given a download document request, when a resource search service is provided, then the good resource is retrieved")
     public void givenDownloadDocumentRequestWhenAResourceSearchServiceIsProvidedThenTheGoodResourceIsRetrieved() throws IOException {
-        var testRestTemplate = new TestRestTemplate();
+        var testRestTemplate = new RestTemplate();
 
         var uri = "http://localhost:" + this.port + "/api/editingcontexts/" + PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID + "/documents/" + PapayaIdentifiers.PROJECT_OBJECT;
 

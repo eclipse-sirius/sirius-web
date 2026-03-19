@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,19 +12,16 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.tables;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import java.io.IOException;
-
 import org.eclipse.sirius.components.tables.ICell;
 import org.eclipse.sirius.components.tables.MultiSelectCell;
 import org.eclipse.sirius.components.tables.SelectCell;
 import org.eclipse.sirius.components.tables.TextfieldCell;
+
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.deser.std.StdDeserializer;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Custom deserializer for cell since Jackson need to know how to find the concrete class matching the JSON data.
@@ -34,7 +31,7 @@ import org.eclipse.sirius.components.tables.TextfieldCell;
 public class ICellDeserializer extends StdDeserializer<ICell> {
 
     public ICellDeserializer() {
-        this(null);
+        this(ICell.class);
     }
 
     public ICellDeserializer(Class<?> valueClass) {
@@ -42,18 +39,16 @@ public class ICellDeserializer extends StdDeserializer<ICell> {
     }
 
     @Override
-    public ICell deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
-        ICell cell = null;
-        ObjectCodec objectCodec = jsonParser.getCodec();
-        if (objectCodec instanceof ObjectMapper mapper) {
-            ObjectNode root = mapper.readTree(jsonParser);
-            cell = switch (root.get("type").asText()) {
-                case TextfieldCell.TYPE -> mapper.readValue(root.toString(), TextfieldCell.class);
-                case MultiSelectCell.TYPE -> mapper.readValue(root.toString(), MultiSelectCell.class);
-                case SelectCell.TYPE -> mapper.readValue(root.toString(), SelectCell.class);
-                default -> mapper.readValue(root.toString(), TextfieldCell.class);
-            };
-        }
-        return cell;
+    public ICell deserialize(JsonParser jsonParser, DeserializationContext context) {
+        JsonNode rootNode = context.readTree(jsonParser);
+        ObjectNode root = (ObjectNode) rootNode;
+
+        return switch (root.get("type").asText()) {
+            case TextfieldCell.TYPE -> context.readTreeAsValue(root, TextfieldCell.class);
+            case MultiSelectCell.TYPE -> context.readTreeAsValue(root, MultiSelectCell.class);
+            case SelectCell.TYPE -> context.readTreeAsValue(root, SelectCell.class);
+            default -> context.readTreeAsValue(root, TextfieldCell.class);
+        };
     }
+
 }

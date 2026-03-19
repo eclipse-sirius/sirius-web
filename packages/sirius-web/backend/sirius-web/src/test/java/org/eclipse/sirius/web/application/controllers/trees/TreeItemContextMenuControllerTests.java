@@ -15,10 +15,8 @@ package org.eclipse.sirius.web.application.controllers.trees;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.spi.mapper.JacksonMappingProvider;
 
 import java.time.Duration;
 import java.util.List;
@@ -54,6 +52,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import reactor.test.StepVerifier;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Integration tests of the tree item context menu controllers.
@@ -184,7 +183,6 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
         var treeId = new AtomicReference<String>();
 
         Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> treeId.set(tree.getId()));
-
         var helpId = new AtomicReference<String>();
         var toggleAbstractAction = new AtomicReference<String>();
 
@@ -196,27 +194,29 @@ public class TreeItemContextMenuControllerTests extends AbstractIntegrationTests
                     "treeItemId", ROOT_ENTITY_ID
             );
             var result = this.treeItemContextMenuQueryRunner.run(variables);
-
             Object document = Configuration.defaultConfiguration().jsonProvider().parse(result.data());
             List<String> actionLabels = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].label");
             List<String> actionIds = JsonPath.read(document, "$.data.viewer.editingContext.representation.description.contextMenu[*].id");
             assertThat(actionLabels).isNotEmpty().hasSizeGreaterThanOrEqualTo(3);
             assertThat(actionIds).isNotEmpty().hasSizeGreaterThanOrEqualTo(3);
-
             assertThat(actionIds).anyMatch(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL::equals);
 
             var helpIdIndex = actionLabels.indexOf("Help");
             var toggleAbstractActionIdIndex = actionLabels.indexOf("Toggle abstract");
 
-            Configuration configuration = Configuration.defaultConfiguration().mappingProvider(new JacksonMappingProvider(this.objectMapper));
-            FetchTreeItemContextMenuEntry helpFetchTreeItemContextMenuEntry = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.contextMenu[" + helpIdIndex + "]", FetchTreeItemContextMenuEntry.class);
+            FetchTreeItemContextMenuEntry helpFetchTreeItemContextMenuEntry = this.objectMapper.convertValue(
+                    JsonPath.parse(result.data()).read("$.data.viewer.editingContext.representation.description.contextMenu[" + helpIdIndex + "]"),
+                    FetchTreeItemContextMenuEntry.class
+            );
             assertThat(helpFetchTreeItemContextMenuEntry.keyBindings())
                     .hasSize(2)
                     .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("m"))
                     .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isCtrl() && keyBinding.isMeta() && keyBinding.key().equals("m"));
 
-            SingleClickTreeItemContextMenuEntry toggleAbstractSingleClickTreeItemContextMenuEntry = JsonPath.parse(result.data(), configuration).read("$.data.viewer.editingContext.representation.description.contextMenu[" + toggleAbstractActionIdIndex + "]",
-                    SingleClickTreeItemContextMenuEntry.class);
+            SingleClickTreeItemContextMenuEntry toggleAbstractSingleClickTreeItemContextMenuEntry = this.objectMapper.convertValue(
+                    JsonPath.parse(result.data()).read("$.data.viewer.editingContext.representation.description.contextMenu[" + toggleAbstractActionIdIndex + "]"),
+                    SingleClickTreeItemContextMenuEntry.class
+            );
             assertThat(toggleAbstractSingleClickTreeItemContextMenuEntry.keyBindings())
                     .hasSize(2)
                     .anyMatch(keyBinding -> !keyBinding.isAlt() && !keyBinding.isMeta() && keyBinding.isCtrl() && keyBinding.key().equals("b"))

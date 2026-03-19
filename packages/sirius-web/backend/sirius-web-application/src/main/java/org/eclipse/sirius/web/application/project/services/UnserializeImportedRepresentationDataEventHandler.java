@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
@@ -99,7 +99,7 @@ public class UnserializeImportedRepresentationDataEventHandler implements IEditi
                     );
                     payload = new UnserializeImportedRepresentationSuccessPayload(importDataInput.id(), data);
                 }
-            } catch (JsonProcessingException exception) {
+            } catch (JacksonException exception) {
                 this.logger.atWarn()
                         .setMessage("Deserialization of the representation failed")
                         .setCause(exception)

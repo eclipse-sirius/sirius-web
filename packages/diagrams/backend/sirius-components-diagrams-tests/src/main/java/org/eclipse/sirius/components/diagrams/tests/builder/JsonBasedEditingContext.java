@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.builder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +20,9 @@ import java.util.UUID;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Creates a basic editing context from json.
@@ -41,7 +41,7 @@ public class JsonBasedEditingContext implements IEditingContext {
         this.id = UUID.randomUUID();
         try {
             this.root = new ObjectMapper().readValue(json, Element.class);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             this.logger.atWarn()
                     .setMessage("Parsing of the Json based editing context failed")
                     .setCause(exception)

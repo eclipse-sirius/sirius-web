@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,6 @@
  *******************************************************************************/
 
 package org.eclipse.sirius.components.core.graphql.datafetchers;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,6 +30,8 @@ import graphql.relay.DefaultEdge;
 import graphql.relay.Edge;
 import graphql.relay.Relay;
 import graphql.schema.DataFetchingEnvironment;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Data fetcher for the field Viewer#workbenchOmniboxCommands.
@@ -61,7 +60,8 @@ public class ViewerWorkbenchOmniboxCommandsDataFetcher implements IDataFetcherWi
     public Connection<OmniboxCommand> get(DataFetchingEnvironment environment) throws Exception {
         String editingContextId = environment.getArgument(EDITING_CONTEXT_ID_ARGUMENT);
         Object argument = environment.getArgument(SELECTED_OBJECT_IDS_ARGUMENT);
-        List<String> selectedObjectIds = this.objectMapper.convertValue(argument, new TypeReference<>() { });
+        JavaType type = objectMapper.getTypeFactory().constructCollectionType(List.class, String.class);
+        List<String> selectedObjectIds = this.objectMapper.convertValue(argument, type);
         String query = environment.getArgument(QUERY_ARGUMENT);
 
         List<OmniboxCommand> omniboxCommands = this.workbenchOmniboxCommandSearchService.findAll(editingContextId, selectedObjectIds, query);

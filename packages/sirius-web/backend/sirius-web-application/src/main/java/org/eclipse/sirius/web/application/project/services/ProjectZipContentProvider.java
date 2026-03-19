@@ -12,7 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -97,7 +98,7 @@ public class ProjectZipContentProvider implements IProjectZipContentProvider {
 
         try {
             return this.objectMapper.readValue(manifestBytes, HashMap.class);
-        } catch (IOException exception) {
+        } catch (JacksonException exception) {
             this.logger.atWarn()
                     .setMessage("Deserialization of the manifest failed")
                     .setCause(exception)

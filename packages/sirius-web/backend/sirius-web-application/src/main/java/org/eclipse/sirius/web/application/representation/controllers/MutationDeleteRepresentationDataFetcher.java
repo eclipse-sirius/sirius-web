@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -25,6 +23,7 @@ import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.IExceptionWrapper;
 
 import graphql.schema.DataFetchingEnvironment;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Data fetcher for the field Mutation#deleteRepresentation.

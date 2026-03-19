@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.ws;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Collections;
@@ -51,6 +47,9 @@ import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * The entry point of the GraphQL Web Socket API.
@@ -303,7 +302,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             JsonNode jsonNode = this.objectMapper.readTree(message.getPayload());
             Optional<String> optionalType = this.getType(jsonNode);
             optionalOperationMessage = optionalType.flatMap(type -> this.getOperationMessage(jsonNode, type));
-        } catch (IOException exception) {
+        } catch (JacksonException exception) {
             this.logger.atWarn()
                     .setMessage("Deserialization of the WebSocket message failed. Message {}, Size {}")
                     .addArgument(message.getPayload())
@@ -342,7 +341,7 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
                 default:
                     break;
             }
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             this.logger.atWarn()
                     .setMessage("Deserialization of the WebSocket operation message failed. Type {}")
                     .addArgument(type)

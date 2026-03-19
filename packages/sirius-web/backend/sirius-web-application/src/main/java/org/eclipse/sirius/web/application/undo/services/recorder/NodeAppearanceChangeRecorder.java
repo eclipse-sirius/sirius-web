@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
@@ -32,7 +33,6 @@ import org.eclipse.sirius.components.diagrams.events.appearance.EditAppearanceEv
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.INodeAppearanceChange;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
 import org.eclipse.sirius.web.application.undo.services.api.INodeAppearanceChangeUndoRecorder;
 import org.eclipse.sirius.web.application.undo.services.changes.DiagramNodeAppearanceChange;
 import org.springframework.stereotype.Service;

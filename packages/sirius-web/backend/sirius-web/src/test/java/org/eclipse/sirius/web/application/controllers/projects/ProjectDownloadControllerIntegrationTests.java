@@ -33,7 +33,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -43,6 +42,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -268,7 +268,7 @@ public class ProjectDownloadControllerIntegrationTests extends AbstractIntegrati
         headers.setAccept(List.of(MediaType.parseMediaType("application/zip")));
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
-        var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
+        var response = new RestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         return response;
