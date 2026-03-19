@@ -48,16 +48,17 @@ Custom deserializers and migration services will probably be impacted.
 - [releng] Switch to `com.tngtech.archunit:archunit-junit5` 1.4.1
 - [releng] Switch to CheckStyle 13.3.0.
 Note this version requires at least Java 21 for the build environment (Sirius Web itself still only requires Java 17 to run).
+- [releng] Switch `@mui/material` to `7.3.10`
+- [releng] Switch `@mui/icons-material` to `7.3.10`
+- [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.4`
 
 
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5436[#5436] [diagram] Prevent custom handles from being lost after importing a project with a diagram representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/6320[#6320] [diagram] Prevent inside label to be centered regardless of the configured position
-- [releng] Switch `@mui/material` to `7.3.10`
-- [releng] Switch `@mui/icons-material` to `7.3.10`
-- [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.4`
 - https://github.com/eclipse-sirius/sirius-web/issues/6388[#6388] [diagram] Exclude `EdgeAnchorNode` from layout and thus avoid flickering of an edge on edge
+- https://github.com/eclipse-sirius/sirius-web/issues/6309[#6309] [diagram] Add support for multi-select node resizing with position adjustments
 
 
 === New Features

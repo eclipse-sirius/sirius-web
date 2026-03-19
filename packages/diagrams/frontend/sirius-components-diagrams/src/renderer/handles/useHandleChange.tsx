@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, Node, NodeChange, NodePositionChange, Position, getConnectedEdges, useStoreApi } from '@xyflow/react';
+import { Edge, Node, NodeChange, Position, getConnectedEdges, useStoreApi } from '@xyflow/react';
 import { useCallback } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { useStore } from '../../representation/useStore';
@@ -28,12 +28,10 @@ import {
   getBorderNodeParentIfExist,
 } from '../layout/layoutBorderNodes';
 import { EdgeAnchorNodeData, isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
+import { isMoving } from '../node/nodeChangePredicates';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
 import { UseHandleChangeValue } from './useHandleChange.types';
-
-const isNodePositionChange = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
-  change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
 
 const getEdgeAnchorNodePosition = (
   position: Position,
@@ -68,7 +66,7 @@ export const useHandleChange = (): UseHandleChangeValue => {
       const nodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
       const borderNodeId2NewPosition = new Map<string, BorderNodePosition>();
       const borderNodeId2ConnectionHandles = new Map<string, ConnectionHandle[]>();
-      changes.filter(isNodePositionChange).forEach((nodeDraggingChange) => {
+      changes.filter(isMoving).forEach((nodeDraggingChange) => {
         const movingNode = nodes.find((node) => nodeDraggingChange.id === node.id && !node.data.pinned);
         if (movingNode) {
           const borderNodeChild = nodes.find((node) => node.data.isBorderNode && node.parentId === movingNode.id);
