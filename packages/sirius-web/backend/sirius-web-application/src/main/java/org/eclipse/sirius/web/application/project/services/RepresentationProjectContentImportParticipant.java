@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,7 +109,7 @@ public class RepresentationProjectContentImportParticipant implements IProjectCo
                 var representation = jsonNode.get("representation").toString();
 
                 representations.add(new RepresentationSerializedImportData(id, projectId, descriptionId, targetObjectId, label, kind, representation));
-            } catch (IOException exception) {
+            } catch (JacksonException exception) {
                 logger.warn("Unable to convert one of the given representation : {}", exception.getMessage(), exception);
             }
         }

@@ -19,11 +19,16 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6262[#6262] [core] `ICustomNodeStyleDeserializer` `handle` method have been modified to `INodeStyle handle(ObjectMapper mapper, String root) throws JsonProcessingException;`
+`IRepresentationDeserializer` `handle` method have been modified to `Optional<IRepresentation> handle(JsonParser jsonParser, DeserializationContext context, ObjectNode root);`
+The switch to Spring Boot 4.0 also come with a switch to Jackson 3, see the official https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md[documentation] for more details.
+Your custom deserializers and migration services will probably be impacted.
 
 
 
 === Dependency update
 
+- [releng] Switch to Spring Boot 4.0
 
 
 
@@ -112,6 +117,11 @@ An example can be found with `EllipseNodeConverter.ts`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5982[#5982] [tree] Add the ability to trigger context menu entries using key bindings.
 The `TreeItemContextMenuEntryBuilder` subclasses now require a list of key bindings.
 `IKeyBindingConverter` and `KeyBindingConverter` have been moved from their respective packages to `org.eclipse.sirius.components.view.emf`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6262[#6262] [core] `ICustomNodeStyleDeserializer` `handle` method have been modified to `INodeStyle handle(ObjectMapper mapper, String root) throws JsonProcessingException;`
+`IRepresentationDeserializer` `handle` method have been modified to `Optional<IRepresentation> handle(JsonParser jsonParser, DeserializationContext context, ObjectNode root);`
+The switch to Spring Boot 4.0 also come with a switch to Jackson 3, see the official https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md[documentation] for more details.
+Your custom deserializers and migration services will probably be impacted.
+
 
 
 === Dependency update

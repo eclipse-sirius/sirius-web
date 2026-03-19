@@ -16,7 +16,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.web.client.RestTemplate;
+import tools.jackson.core.JacksonException;
 import tools.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.Configuration;
 import com.jayway.jsonpath.JsonPath;
@@ -50,7 +51,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ByteArrayResource;
@@ -228,7 +228,7 @@ public class ExportedRepresentationMigrationDataTests extends AbstractIntegratio
         String operations = "";
         try {
             operations = new ObjectMapper().writeValueAsString(payload);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             fail(exception.getMessage());
         }
 
@@ -248,12 +248,12 @@ public class ExportedRepresentationMigrationDataTests extends AbstractIntegratio
         String serverUrl = "http://localhost:" + this.port + "/api/graphql/upload";
 
         // Send http request
-        var response = new TestRestTemplate().postForEntity(serverUrl, requestEntity, Map.class);
+        var response = new RestTemplate().postForEntity(serverUrl, requestEntity, Map.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         try {
             return new ObjectMapper().writeValueAsString(response.getBody());
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             fail(exception.getMessage());
         }
         return "";
@@ -525,7 +525,7 @@ public class ExportedRepresentationMigrationDataTests extends AbstractIntegratio
         headers.setAccept(List.of(MediaType.parseMediaType("application/zip")));
         HttpEntity<String> entity = new HttpEntity<>(null, headers);
 
-        var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
+        var response = new RestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         return response;

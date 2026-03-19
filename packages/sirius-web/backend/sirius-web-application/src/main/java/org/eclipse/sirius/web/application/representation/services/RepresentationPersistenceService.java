@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Comparator;
 import java.util.List;
@@ -93,7 +93,7 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
         String content = "";
         try {
             content = this.objectMapper.writeValueAsString(representation);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
         return content;

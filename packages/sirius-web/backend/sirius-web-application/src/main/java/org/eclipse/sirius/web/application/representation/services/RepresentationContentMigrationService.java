@@ -12,10 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +29,7 @@ import org.eclipse.sirius.web.application.representation.services.api.IRepresent
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Used to retrieve the migrated content of the representation content.
@@ -65,7 +65,7 @@ public class RepresentationContentMigrationService implements IRepresentationCon
 
                 optionalObjectNode = Optional.of(objectNode);
             }
-        } catch (JsonProcessingException | IllegalArgumentException exception) {
+        } catch (JacksonException | IllegalArgumentException exception) {
             this.logger.warn(exception.getMessage());
         }
 

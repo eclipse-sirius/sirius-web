@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,28 +23,17 @@ import org.eclipse.sirius.components.graphql.ws.dto.IOperationMessage;
  *
  * @author sbegaudeau
  */
-public class StartMessage implements IOperationMessage {
+public record StartMessage(String type, String id, GraphQLPayload payload) implements IOperationMessage {
 
     public static final String START = "start";
 
-    private String type = START;
-
-    private String id;
-
-    private GraphQLPayload payload;
-
-    public StartMessage() {
-        // Used by Jackson
-    }
-
     public StartMessage(String id, GraphQLPayload graphQLPayload) {
-        this.id = Objects.requireNonNull(id);
-        this.payload = Objects.requireNonNull(graphQLPayload);
+        this(START, Objects.requireNonNull(id), Objects.requireNonNull(graphQLPayload));
     }
 
     @Override
     public String getType() {
-        return this.type;
+        return START;
     }
 
     public String getId() {

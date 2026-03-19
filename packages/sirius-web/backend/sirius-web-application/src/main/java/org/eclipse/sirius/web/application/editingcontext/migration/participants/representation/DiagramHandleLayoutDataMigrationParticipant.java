@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.migration.participants.representation;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -45,7 +45,11 @@ public class DiagramHandleLayoutDataMigrationParticipant implements IRepresentat
     public void replaceJsonNode(IEditingContext editingContext, ObjectNode root, String currentAttribute, JsonNode currentValue) {
         if (currentAttribute.equals(NODE_LAYOUT_DATA)) {
             if (root.get(NODE_LAYOUT_DATA) instanceof ObjectNode nodeLayoutData) {
-                nodeLayoutData.elements().forEachRemaining(node -> ((ObjectNode) node).putArray(HANDLES_LAYOUT_DATA));
+                for (JsonNode edgeLayoutDataElement : nodeLayoutData) {
+                    if (edgeLayoutDataElement instanceof ObjectNode elementObjectNode) {
+                        elementObjectNode.putArray(HANDLES_LAYOUT_DATA);
+                    }
+                }
             }
         }
     }

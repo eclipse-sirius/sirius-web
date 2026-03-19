@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.tests.builder;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,7 +41,7 @@ public class JsonBasedEditingContext implements IEditingContext {
         this.id = UUID.randomUUID();
         try {
             this.root = new ObjectMapper().readValue(json, Element.class);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
     }
