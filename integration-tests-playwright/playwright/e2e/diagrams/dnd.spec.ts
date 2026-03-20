@@ -298,8 +298,7 @@ test.describe('diagram - drag and drop', () => {
     page,
   }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    await page.getByTestId('arrange-all-menu').click();
-    await page.getByTestId('arrange-all-elk-layered').click();
+    await page.getByTestId('arrange-all-main-button').click();
 
     const parentNode = new PlaywrightNode(page, 'Description', 'List');
     const parentNodePositionInitial = await parentNode.getReactFlowXYPosition('Description');
