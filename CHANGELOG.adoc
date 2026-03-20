@@ -1,5 +1,48 @@
 = Changelog
 
+== 2026.5.0
+
+=== Shapes
+
+
+
+
+=== Architectural decision records
+
+
+
+
+=== Deprecation warning
+
+
+
+
+=== Breaking changes
+
+
+
+
+=== Dependency update
+
+
+
+
+=== Bug fixes
+
+
+
+
+=== New Features
+
+
+
+
+=== Improvements
+
+
+
+
+
 == 2026.3.0
 
 === Shapes
