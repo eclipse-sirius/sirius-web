@@ -13,5 +13,5 @@
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 
 export interface UseArrangeAllValue {
-  arrangeAll: (layoutOptions: LayoutOptions) => Promise<void>;
+  arrangeAll: (layoutOptions: LayoutOptions, selectedNodesIds?: string[]) => Promise<void>;
 }

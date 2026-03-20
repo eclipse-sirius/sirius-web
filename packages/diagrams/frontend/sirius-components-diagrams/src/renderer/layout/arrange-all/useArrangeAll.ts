@@ -22,6 +22,35 @@ import { useLayout } from '../useLayout';
 import { useSynchronizeLayoutData } from '../useSynchronizeLayoutData';
 import { UseArrangeAllValue } from './useArrangeAll.types';
 
+const getParentPosition = (node: Node<NodeData>, allNodes: Node<NodeData>[]): [number, number] => {
+  if (node.parentId) {
+    const parent = allNodes.find((n) => n.id === node.parentId);
+    if (parent) {
+      return getParentPosition(parent, allNodes);
+    }
+  }
+  return [node.position.x, node.position.y];
+};
+
+const computeSelectionOrigin = (nodes: Node<NodeData>[], allNodes: Node<NodeData>[]): [number, number] => {
+  let minX = Infinity;
+  let minY = Infinity;
+  let minXNode = 0;
+  let minYNode = 0;
+
+  nodes.forEach((node) => {
+    [minXNode, minYNode] = getParentPosition(node, allNodes);
+    if (minXNode < minX) {
+      minX = minXNode;
+    }
+    if (minYNode < minY) {
+      minY = minYNode;
+    }
+  });
+
+  return [minX, minY];
+};
+
 export const useArrangeAll = (): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { layout } = useLayout();
@@ -30,9 +59,25 @@ export const useArrangeAll = (): UseArrangeAllValue => {
   const { fitView } = useFitView();
   const { elkLayout } = useElkLayout();
 
-  const arrangeAll = async (layoutOptions: LayoutOptions): Promise<void> => {
-    await elkLayout(getNodes(), getEdges(), layoutOptions).then(
+  const arrangeAll = async (layoutOptions: LayoutOptions, selectedNodesIds?: string[]): Promise<void> => {
+    let nodesToLayout: Node<NodeData>[] = getNodes();
+    let minX: number,
+      minY: number = 0;
+    if (selectedNodesIds && selectedNodesIds.length > 0) {
+      nodesToLayout = getNodes().filter((node) => selectedNodesIds.includes(node.id));
+      [minX, minY] = computeSelectionOrigin(nodesToLayout, getNodes());
+    }
+    await elkLayout(nodesToLayout, getEdges(), layoutOptions).then(
       async (laidOutNodesWithElk: Node<NodeData, string>[]) => {
+        if (selectedNodesIds && selectedNodesIds.length > 0) {
+          let [newMinX, newMinY] = computeSelectionOrigin(laidOutNodesWithElk, getNodes());
+          laidOutNodesWithElk.forEach((node) => {
+            if (!node.parentId) {
+              node.position.x += minX - newMinX;
+              node.position.y += minY - newMinY;
+            }
+          });
+        }
         const laidOutMovedNodeIds = laidOutNodesWithElk
           .filter((node) => !node.data.isBorderNode && !node.data.pinned)
           .map((node) => node.id);
@@ -44,41 +89,27 @@ export const useArrangeAll = (): UseArrangeAllValue => {
               edge.data.bendingPoints = null;
             }
           });
-
+        const allNodes: Node<NodeData, string>[] = getNodes().map((node) => {
+          const modifiedNode = laidOutNodesWithElk.find((laidOutNode) => laidOutNode.id === node.id);
+          return modifiedNode ? modifiedNode : node;
+        });
         const diagramToLayout: RawDiagram = {
-          nodes: laidOutNodesWithElk,
+          nodes: allNodes,
           edges: edges,
         };
         const layoutPromise = new Promise<void>((resolve) => {
           layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-            const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
+            resolveNodeOverlap(
               laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
               'horizontal'
             ) as Node<NodeData, DiagramNodeType>[];
-            laidOutNodesWithElk.map((node) => {
-              const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
-              if (existingNode) {
-                return {
-                  ...node,
-                  position: existingNode.position,
-                  width: existingNode.width,
-                  height: existingNode.height,
-                  style: {
-                    ...node.style,
-                    width: `${existingNode.width}px`,
-                    height: `${existingNode.height}px`,
-                  },
-                };
-              }
-              return node;
-            });
-            setNodes(laidOutNodesWithElk);
+            setNodes(laidOutDiagram.nodes);
             setEdges(laidOutDiagram.edges);
             const finalDiagram: RawDiagram = {
-              nodes: laidOutNodesWithElk,
+              nodes: laidOutDiagram.nodes,
               edges: laidOutDiagram.edges,
             };
-            fitView({ duration: 200, nodes: laidOutNodesWithElk });
+            fitView({ duration: 200, nodes: laidOutDiagram.nodes });
             synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
             resolve();
           });

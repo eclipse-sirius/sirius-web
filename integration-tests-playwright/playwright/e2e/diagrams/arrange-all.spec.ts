@@ -35,7 +35,7 @@ test.describe('diagram - arrange all', () => {
 
   test('when a arrange all is triggered, then a fit to screen is applied', async ({ page }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
+    await expect(page.getByTestId('rf__wrapper').getByTestId('FreeForm - Wifi')).toBeInViewport();
     //move view port to hide some nodes
     await page.getByTestId('rf__wrapper').hover({ position: { x: 10, y: 10 } });
     await page.mouse.down();
@@ -115,5 +115,27 @@ test.describe('diagram - arrange all', () => {
     await page.getByTestId('arrange-all-elk-rect-packing').click();
 
     await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 }); // no error
+  });
+
+  test('when a arrange all is triggered on selected nodes and used from the groups palette option', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('arrange-direction');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const firstSelectedNodes = new PlaywrightNode(page, 'target');
+    const secondSelectedNodes = new PlaywrightNode(page, 'BNS');
+
+    await firstSelectedNodes.click();
+    await secondSelectedNodes.controlClick();
+    await secondSelectedNodes.openPalette();
+
+    await page.getByTestId('toolSection-Layout').click();
+    await page.getByTestId('tool-Flow Layout').click();
+
+    await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 });
   });
 });
