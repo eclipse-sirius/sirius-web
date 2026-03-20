@@ -1,0 +1,202 @@
+:author: Stéphane Bégaudeau
+:date: 2026-03-23
+:status: accepted
+:consulted: Pierre-Charles David
+:informed: Florian Rouëné
+:deciders: Stéphane Bégaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6047
+
+= ADR-225 - Lower the coupling of the refresh from the representation event processors
+
+== Context and Problem Statement
+
+The various representation event processors have too much responsibilities, they are used:
+
+- as the container of the representation state while it is being edited
+- as the entry point to perform changes on representations
+- to perform the refresh of the representations
+
+This creates a large set of constraints on those classes with tons of responsibilities mixed together.
+It is also visible in the use of some utility classes to bundle together more dependencies than what is being accepted by our Checkstyle configuration such as `DiagramEventProcessorParameters`.
+This issue keeps getting bigger.
+
+We have recently removed some responsibilities from the `EditingContextEventProcessor` by introducing new APIs such as `IChangeDescriptionConsumer`.
+This API allows services to react to a `ChangeDescription` received by the `EditingContextEventProcessor`.
+This has helped us extract features such as :
+
+- The persistence of the editing context
+- The disposal of dangling representations
+- The entire refresh sequence of the various `IRepresentationEventProcessor`
+
+Now we need to move a step further by removing some additional coupling from the implementations of the various `IRepresentationEventProcessor`.
+For that, we will start with the refresh which is the most complex one.
+
+This work will improve the quality of the code by lowering some coupling in some of our most critical classes.
+It will also help extend Sirius Components by providing new APIs to customize the lifecycle of the representation event processors.
+
+
+== Decision Drivers
+
+Since we have already removed some responsibilities related to the refresh from the `EditingContextEventProcessor` thanks to the introduction of the `RepresentationEventProcessorRefresher`.
+We should not add the burden of the refresh to another existing concept.
+
+One of the issues with the coupling of the refresh within the representation event processors is the coupling between the execution of the refresh which should be stateless and the state of the event processor which is inheritely stateful.
+This is visible in the refresh of the diagram which has grown significantly over the past few months by being coupled to multiple pieces of data.
+
+The best solution should have the lowest coupling possible between the refresh and the other concerns of the representation event processors.
+
+
+== Considered Options
+
+=== Extract the entire responsibility of the refresh
+
+Now that the `RepresentationEventProcessorRefresher` is available, we can remove entirely the management of the refresh from the representation event processors.
+For that a new service will be available for the `RepresentationEventProcessorRefresher`, the `IRepresentationRefresher`:
+
+```
+public interface IRepresentationRefresher {
+
+    boolean canHandle(IEditingContext editingContext, IRepresentationEventProcessor representationEventProcessor, ChangeDescription changeDescription);
+
+    void refresh(IEditingContext editingContext, IRepresentationEventProcessor representationEventProcessor, ChangeDescription changeDescription);
+}
+```
+
+This service will be used to query the state of a representation event processor, refresh it and then update it.
+
+Given that we don't want to refresh the representation in the `IRepresentationEventProcessor` anymore, we will also stop doing that in their constructor too.
+We will thus perform the initial refresh of the representation when it is being opened outside of the `IRepresentationEventProcessor`.
+Given that at this point in the lifecycle of the server, we will not have yet a representation event processor and given that if we can't perform the initial refresh we will not be able to create the representation event processor, the computation of the initial version of the representation must be different.
+For that, we will introduce various `IXxxEventProcessorInitializer` which will be used to compute the initial state of the representation event processor.
+
+```
+public interface IXxxEventProcessorInitializer {
+
+    Optional<Xxx> getRefreshedRepresentation(IEditingContext editingContext, String representationId);
+}
+```
+
+These services will be used by the various representation event processor factories.
+
+
+=== Improve the encapsulation
+
+We could try to simply encapsulate even better the refresh from the `IRepresentationEventProcessor` by introducing a dedicated service provided to their constructor.
+In an ideal world, it would look like the following pseudo-code:
+
+```
+public class FormEventProcessor implements IFormEventProcessor {
+
+  private final IFormRefresher formRefresher;
+
+  public FormEventProcessor(IFormRefresher formRefresher) {
+    var form = this.formRefresher.refresh(...);
+  }
+
+  public void refresh(ChangeDescription changeDescription) {
+    var form = this.formRefresher.refresh(...);
+  }
+}
+```
+
+This approach would reduce the number of dependencies used by the various representation event processors.
+
+While this approach would work, it comes with some drawbacks.
+First of all, we tried this before and over time some new complexity between the state of the representation event processors and the refresh introduces new issues which are solved most of the time by adding back some coupling.
+It is not a clean separation of both the state and the refresh of the representation event processor.
+
+On top of that, event if we did have a perfect encapsulation of the refresh in another service, there would be little reasons to keep this service hidden behind the method `IRepresentationEventProcessor#refresh`.
+The only real difference is the ability for us to update some parts of the internal state of the representation event processor that it not part of the `IRepresentation`.
+We do not gain anything by hiding such capability.
+
+
+== Decision Outcome
+
+In the context of lowering the coupling of the refresh from the representation event processors, facing the need to isolate this concern as much as possible we decided for extracting the entire refresh logic to achieve a clean separation, accepting a bigger impact in terms of API breaks.
+
+
+== Consequences
+
+=== Advantages
+
+The option selected will come with several advantages.
+First of all, we will move back to a constructor without any behavior and with less responsibilities for our representation event processors.
+If we can't refresh the representation, for example, if the studio defining its description is missing, we will not create an instance of the event processor which can't work.
+
+Finally, it will remove the two paths of code in the creation of a representation where we have optional parts that cannot really work if they are empty.
+This will make us dramatically simplify representation creation services such as `IDiagramCreationService` by merging `IDiagramCreationService#create` and `IDiagramCreationService#refresh`.
+
+
+=== Drawbacks
+
+This approach comes with some drawbacks too.
+It will require some major API changes in our most important concepts.
+While most downstream projects consuming Sirius Web do not manipulate the representation event processors directly, this change may have some impact down the road.
+
+
+== More Information
+
+Given that we will refresh the representation from outside, we will need to access and update the entire state from outside the representation event processor.
+We will thus need to encapsulate all those data to retrieve and update them at once.
+
+In the past, we have never formalized what the state of the representation event processor is.
+Most people may still assume that it is limited to the `IRepresentation`.
+We tried to move toward an immutable data structure for the state of the `DiagramEventProcessor` with the switch to a record for `DiagramContext`.
+
+This work has never been fully propagated to other representations.
+On top of that, it proved to be a bit disingenuous since one of the key use case of the `DiagramContext` is its ability to be updated from outside of the representation event processor to store new diagram events, view creation requests or view deletion requests.
+The `DiagramContext` has never been immutable and it can't be given the current architecture.
+It is literally the mutable state of the graphical data (like the `IEditingContext` is used for the semantic data).
+
+Extracting the refresh will make us face this reality even more.
+We will probably have to specify clearly the state of each representation event processors and define a way to update it.
+To be able to refresh the representation from outside, we may need to be able to retrieve more than the representation using `IRepresentationEventProcessor#getRepresentation: IRepresentation`.
+As an example, we may very well have to retrieve and edit things like `DiagramEventProcessor#currentRevisionId` or `DiagramEventProcessor#currentRevisionCause` from the outside.
+We may very well change `IRepresentationEventProcessor#getRepresentation: IRepresentation` to `IRepresentationEventProcessor#getRepresentationContext: IRepresentationContext`.
+
+Finally, we may also have to standardize a bit more the various representation events which are not respecting the event naming conventions and are not all considered as events (e.g. `ViewCreationRequest` or `ViewDeletionRequest`).
+As a result, one should not be surprised if, as a consequence of this work, we ended up with new APIs like:
+
+```java
+public interface IRepresentationContext {
+  IRepresentation getRepresentation();
+
+  List<IRepresentationEvent> getRepresentationEvents(); // Returns an immutable list
+  void registerRepresentationEvent(IRepresentationEvent representationEvent);
+}
+```
+
+With some implementations such as :
+
+```java
+public class DiagramContext implements IRepresentationContext {
+  public DiagramRevision getCurrentRevision() {
+    // ...
+  }
+
+  public void updateCurrentRevision(DiagramRevision revision) {
+    // ...
+  }
+}
+```
+
+and
+
+```java
+public record DiagramRevision(UUID id, String cause) {}
+```
+
+
+=== Implementation
+
+Given the critical nature of this change, we will move forward in several key steps:
+
+- Introduce the new provisional API and deprecate the existing one
+- Switch various representation event processors one after the other
+  - First, we will start with the `HierarchyEventProcessor` given it limited usage
+  - Then , we will align the `DeckEventProcessor` with the latest best practices
+  - Finally, we will validate the approach with the `DeckEventProcessor` which is complex enough with its support for events
+- Remove the previous API
+
+During this transition period, if an implementation of `IRepresentationRefresher` exists for a given representation event processor, we will use it.
+Otherwise, we will fallback to the existing method `IRepresentationEventProcessor#refresh`.
