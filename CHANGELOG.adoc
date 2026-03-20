@@ -35,6 +35,7 @@ This will be used as an inspiration for the evolution of other similar services 
 === Dependency update
 
 - [releng] Switch to lexical 0.42.0
+- https://github.com/eclipse-sirius/sirius-web/issues/6299[#6299] [releng] Switch to https://vite.dev/blog/announcing-vite8[Vite 8.0.1] and @vitejs/plugin-react 6.0.1
 
 
 
