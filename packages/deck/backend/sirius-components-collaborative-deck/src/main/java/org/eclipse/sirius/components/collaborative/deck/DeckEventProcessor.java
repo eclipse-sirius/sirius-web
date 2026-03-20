@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -21,7 +22,6 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
-import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventProcessor;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
@@ -63,12 +63,11 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     private final List<IDeckEventHandler> deckEventHandlers;
 
-    private final IDeckContext deckContext;
+    private DeckContext deckContext;
 
     public DeckEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, DeckCreationService deckCreationService,
-            List<IDeckEventHandler> deckEventHandlers, IDeckContext deckContext, IRepresentationPersistenceStrategy representationPersistenceStrategy,
+            List<IDeckEventHandler> deckEventHandlers, DeckContext deckContext, IRepresentationPersistenceStrategy representationPersistenceStrategy,
             IRepresentationSearchService representationSearchService) {
-
         this.editingContext = Objects.requireNonNull(editingContext);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
         this.deckCreationService = Objects.requireNonNull(deckCreationService);
@@ -77,13 +76,13 @@ public class DeckEventProcessor implements IDeckEventProcessor {
         this.representationPersistenceStrategy = Objects.requireNonNull(representationPersistenceStrategy);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
 
-        String id = this.deckContext.getDeck().getId();
+        String id = this.deckContext.deck().getId();
         this.logger.trace("Creating the deck event processor {}", id);
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database.
         Deck deck = this.deckCreationService.refresh(this.editingContext, deckContext).orElse(null);
-        this.deckContext.update(deck);
+        this.deckContext = new DeckContext(deck, deckContext.deckEvents());
 
         this.deckEventFlux = new DeckEventFlux(deck);
 
@@ -91,7 +90,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     @Override
     public IRepresentation getRepresentation() {
-        return this.deckContext.getDeck();
+        return this.deckContext.deck();
     }
 
     @Override
@@ -119,18 +118,17 @@ public class DeckEventProcessor implements IDeckEventProcessor {
     public void refresh(ChangeDescription changeDescription) {
         if (this.shouldRefresh(changeDescription)) {
             Deck refreshedDeckRepresentation = this.deckCreationService.refresh(this.editingContext, this.deckContext).orElse(null);
-            this.deckContext.reset();
-            this.deckContext.update(refreshedDeckRepresentation);
+            this.deckContext = new DeckContext(refreshedDeckRepresentation, new ArrayList<>());
             if (refreshedDeckRepresentation != null) {
                 this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedDeckRepresentation);
                 this.logger.trace("Deck refreshed: {}", refreshedDeckRepresentation.getId());
             }
-            this.deckEventFlux.deckRefreshed(changeDescription.getInput(), this.deckContext.getDeck());
-        } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.deckContext.getDeck().getId())) {
-            Optional<Deck> reloadedDeck = this.representationSearchService.findById(this.editingContext, this.deckContext.getDeck().getId(), Deck.class);
-            if (reloadedDeck.isPresent()) {
-                this.deckContext.update(reloadedDeck.get());
-                this.deckEventFlux.deckRefreshed(changeDescription.getInput(), this.deckContext.getDeck());
+            this.deckEventFlux.deckRefreshed(changeDescription.getInput(), this.deckContext.deck());
+        } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.deckContext.deck().getId())) {
+            Optional<Deck> optionalReloadedDeck = this.representationSearchService.findById(this.editingContext, this.deckContext.deck().getId(), Deck.class);
+            if (optionalReloadedDeck.isPresent()) {
+                this.deckContext = new DeckContext(optionalReloadedDeck.get(), new ArrayList<>());
+                this.deckEventFlux.deckRefreshed(changeDescription.getInput(), this.deckContext.deck());
             }
         }
     }
@@ -153,7 +151,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     @Override
     public void dispose() {
-        String id = Optional.ofNullable(this.deckContext.getDeck()).map(Deck::id).orElse(null);
+        String id = Optional.ofNullable(this.deckContext.deck()).map(Deck::id).orElse(null);
         this.logger.trace("Disposing the deck event processor {}", id);
         this.subscriptionManager.dispose();
         this.deckEventFlux.dispose();

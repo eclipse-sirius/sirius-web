@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.deck.Lane;
 import org.eclipse.sirius.components.deck.description.LaneDescription;
 import org.eclipse.sirius.components.deck.renderer.elements.LaneElementProps;
 import org.eclipse.sirius.components.deck.renderer.events.ChangeLaneCollapseStateDeckEvent;
-import org.eclipse.sirius.components.deck.renderer.events.IDeckEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
@@ -88,10 +87,11 @@ public class LaneComponent implements IComponent {
 
     private boolean computeCollapsed(Optional<Lane> optionalPreviousLane) {
         if (optionalPreviousLane.isPresent()) {
-            return this.props.optionalDeckEvent()
+            return this.props.deckEvents().stream()
                     .filter(ChangeLaneCollapseStateDeckEvent.class::isInstance)
                     .map(ChangeLaneCollapseStateDeckEvent.class::cast)
                     .filter(event -> event.laneId().equals(optionalPreviousLane.get().id()))
+                    .findFirst()
                     .map(ChangeLaneCollapseStateDeckEvent::collapsed)
                     .orElse(optionalPreviousLane.get().collapsed());
         }
@@ -99,10 +99,9 @@ public class LaneComponent implements IComponent {
     }
 
     private List<Element> getChildren(VariableManager variableManager, LaneDescription laneDescription, String laneId, List<Card> previousCards) {
-        Optional<IDeckEvent> optionalDeckEvent = this.props.optionalDeckEvent();
         return laneDescription.cardDescriptions().stream()
                 .map(cardDescription -> {
-                    CardComponentProps cardComponentProps = new CardComponentProps(variableManager, cardDescription, laneId, previousCards, optionalDeckEvent);
+                    CardComponentProps cardComponentProps = new CardComponentProps(variableManager, cardDescription, laneId, previousCards, this.props.deckEvents());
                     return new Element(CardComponent.class, cardComponentProps);
                 })
                 .toList();

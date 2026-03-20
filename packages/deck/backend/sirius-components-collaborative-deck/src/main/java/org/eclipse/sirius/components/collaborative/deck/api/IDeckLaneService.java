@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck.api;
 
+import org.eclipse.sirius.components.collaborative.deck.DeckContext;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeCardsVisibilityInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeLaneCollapsedStateInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.DropDeckLaneInput;
@@ -31,9 +32,9 @@ public interface IDeckLaneService {
 
     IPayload dropLane(DropDeckLaneInput dropDeckLaneInput, IEditingContext editingContext, Deck deck);
 
-    IPayload changeLaneCollapsedState(ChangeLaneCollapsedStateInput input, IEditingContext editingContext, IDeckContext deckContext);
+    IPayload changeLaneCollapsedState(ChangeLaneCollapsedStateInput input, IEditingContext editingContext, DeckContext deckContext);
 
-    IPayload changeCardsVisibility(ChangeCardsVisibilityInput input, IEditingContext editingContext, IDeckContext deckContext);
+    IPayload changeCardsVisibility(ChangeCardsVisibilityInput input, IEditingContext editingContext, DeckContext deckContext);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -53,12 +54,12 @@ public interface IDeckLaneService {
         }
 
         @Override
-        public IPayload changeLaneCollapsedState(ChangeLaneCollapsedStateInput input, IEditingContext editingContext, IDeckContext deckContext) {
+        public IPayload changeLaneCollapsedState(ChangeLaneCollapsedStateInput input, IEditingContext editingContext, DeckContext deckContext) {
             return null;
         }
 
         @Override
-        public IPayload changeCardsVisibility(ChangeCardsVisibilityInput input, IEditingContext editingContext, IDeckContext deckContext) {
+        public IPayload changeCardsVisibility(ChangeCardsVisibilityInput input, IEditingContext editingContext, DeckContext deckContext) {
             return null;
         }
     }

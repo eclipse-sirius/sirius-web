@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck.service;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
+import org.eclipse.sirius.components.collaborative.deck.DeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -27,7 +28,6 @@ import org.eclipse.sirius.components.deck.description.DeckDescription;
 import org.eclipse.sirius.components.deck.renderer.DeckRenderer;
 import org.eclipse.sirius.components.deck.renderer.component.DeckComponent;
 import org.eclipse.sirius.components.deck.renderer.component.DeckComponentProps;
-import org.eclipse.sirius.components.deck.renderer.events.IDeckEvent;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -63,8 +63,8 @@ public class DeckCreationService implements IDeckCreationService {
     }
 
     @Override
-    public Optional<Deck> refresh(IEditingContext editingContext, IDeckContext deckContext) {
-        Deck previousDeck = deckContext.getDeck();
+    public Optional<Deck> refresh(IEditingContext editingContext, DeckContext deckContext) {
+        Deck previousDeck = deckContext.deck();
         var optionalObject = this.objectSearchService.getObject(editingContext, previousDeck.targetObjectId());
         var optionalDeckDescription = this.representationDescriptionSearchService.findById(editingContext, previousDeck.getDescriptionId())
                 .filter(DeckDescription.class::isInstance)
@@ -79,17 +79,17 @@ public class DeckCreationService implements IDeckCreationService {
         return Optional.empty();
     }
 
-    private Deck doRender(Object targetObject, IEditingContext editingContext, DeckDescription deckDescription, Optional<IDeckContext> optionalDeckContext) {
+    private Deck doRender(Object targetObject, IEditingContext editingContext, DeckDescription deckDescription, Optional<DeckContext> optionalDeckContext) {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
         variableManager.put(VariableManager.SELF, targetObject);
         variableManager.put(DeckDescription.DECK_TARGET, targetObject);
         variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-        Optional<Deck> optionalPreviousDeck = optionalDeckContext.map(IDeckContext::getDeck);
-        Optional<IDeckEvent> optionalDeckEvent = optionalDeckContext.map(IDeckContext::getDeckEvent);
+        Optional<Deck> optionalPreviousDeck = optionalDeckContext.map(DeckContext::deck);
+        var deckEvents = optionalDeckContext.map(DeckContext::deckEvents).orElse(new ArrayList<>());
 
-        DeckComponentProps deckComponentProps = new DeckComponentProps(variableManager, deckDescription, optionalPreviousDeck, optionalDeckEvent);
+        DeckComponentProps deckComponentProps = new DeckComponentProps(variableManager, deckDescription, optionalPreviousDeck, deckEvents);
 
         Element element = new Element(DeckComponent.class, deckComponentProps);
         Deck newDeck = new DeckRenderer().render(element);

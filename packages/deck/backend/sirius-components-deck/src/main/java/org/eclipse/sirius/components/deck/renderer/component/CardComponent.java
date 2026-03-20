@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -81,11 +81,13 @@ public class CardComponent implements IComponent {
     }
 
     private boolean computeVisibility(Card previousCard) {
-        return this.props.optionalDeckEvent()
+        return this.props.deckEvents().stream()
                 .filter(ChangeCardsVisibilityDeckEvent.class::isInstance)
                 .map(ChangeCardsVisibilityDeckEvent.class::cast)
                 .map(ChangeCardsVisibilityDeckEvent::cardsVisibility)
-                .map(cardsVisibility -> cardsVisibility.get(previousCard.id()))
+                .map(cardsVisibility -> Optional.ofNullable(cardsVisibility.get(previousCard.id())))
+                .flatMap(Optional::stream)
+                .findFirst()
                 .orElse(previousCard.visible());
     }
 }
