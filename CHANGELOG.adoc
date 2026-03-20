@@ -9,7 +9,7 @@
 
 === Architectural decision records
 
-
+- [ADR-225] Lower the coupling of the refresh from the representation event processors
 
 
 === Deprecation warning
