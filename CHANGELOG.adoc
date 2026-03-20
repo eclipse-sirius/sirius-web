@@ -2,7 +2,7 @@
 
 == 2026.5.0
 
-=== Shapes
+=== Pitches
 
 
 
@@ -39,13 +39,18 @@
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6313[#6313] [doc] Improve the templates used for the functional and technical specifications.
+The functional specification will now use the same naming conventions as the shape up methodology with https://basecamp.com/shapeup/1.5-chapter-06[pitches] instead of shapes (https://basecamp.com/shapeup/1.1-chapter-02[shaping] is the process by which pitches are being created).
+The new template for functional specification is located in `doc/iterations/YYYY-MM/pitches/pitch.adoc`.
+The technical specifications will now rely on a new architectural decision record template located in `doc/adrs/adr.adoc`.
+This new template for ADRs will have several additional requirements compared to the previous one.
+It will require contributors to specify the persons involved in the decision process, to details the qualities expected of the solution, to list the various options considered, to clarify why a specific option has been selected, its advantages and drawbacks, which steps will be taken for the implementation among other things.
 
 
 
 == 2026.3.0
 
-=== Shapes
+=== Pitches
 
 - Keep details tab open on selection change
 - Add support the for selection dialog that can be confirmed without making a selection
@@ -202,7 +207,7 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 
 == 2026.1.0
 
-=== Shapes
+=== Pitches
 
 - Allow configuration of workbench panels
 - Remove usage of foreign keys between bounded contexts
@@ -492,7 +497,7 @@ Downstream applications can now implement `IUndoRedoIgnoreInputPredicate` to ign
 
 == 2025.12.0
 
-=== Shapes
+=== Pitches
 
 - Add command palette on projects page
 - Add support for indexing models
@@ -740,7 +745,7 @@ The executor typically needs to check the `menuEntryId` of the input to ensure i
 
 == 2025.10.0
 
-=== Shapes
+=== Pitches
 
 - Add support for exporting query result
 - Add support for search history
@@ -984,7 +989,7 @@ We have also added the `IInputDispatcher` which is in charge of dispatching an i
 
 == v2025.8.0
 
-=== Shapes
+=== Pitches
 
 - Add support for diagram customization
 - Add the ability to share the workbench state
@@ -1251,7 +1256,7 @@ The dialog can now display an impact analysis report, but isn't in charge of ret
 
 == v2025.6.0
 
-=== Shapes
+=== Pitches
 
 - Control the views available in a workbench
 
@@ -1465,7 +1470,7 @@ The _ExpandAll_ tool is now a Sirius Web contribution that can be enabled via th
 
 == v2025.4.0
 
-=== Shapes
+=== Pitches
 
 - Add support for edges connected to edges
 - Preserve custom edges rectilinearity
@@ -1698,7 +1703,7 @@ See the ADR 190 for additional details on the goal of this refactoring.
 
 == v2025.2.0
 
-=== Shapes
+=== Pitches
 
 - Add support for a query view
 - Lower the coupling between project and editing context
@@ -1901,7 +1906,7 @@ To achieve that a new concept, `ProjectSemanticData` has been added along with a
 
 == v2025.1.0
 
-=== Shapes
+=== Pitches
 
 
 === Architectural decision records
@@ -2031,7 +2036,7 @@ Downstream applications with a custom explorer that relies on `ExplorerDropTreeI
 
 == v2024.11.0
 
-=== Shapes
+=== Pitches
 
 - Add support for a table widget in form representations
 - Automatically select newly created nodes on diagrams
@@ -2221,7 +2226,7 @@ This will allow specifier to create images that fir perfectly in the project tem
 
 == v2024.9.0
 
-=== Shapes
+=== Pitches
 
 - Add tree representation in the view DSL
 - Add support for object duplication from Explorer
@@ -2361,7 +2366,7 @@ A migration participant has been added to automatically keep compatible all diag
 
 == v2024.7.0
 
-=== Shapes
+=== Pitches
 
 - Add support for text alignment on labels
 - Add support for gantt representation
@@ -2508,7 +2513,7 @@ We cannot rely on the error message recaived from the backend since Cross Origin
 
 == v2024.5.0
 
-=== Shapes
+=== Pitches
 
 - Configurable collapse
 - Add support for EMF models migration
@@ -2673,7 +2678,7 @@ They still support returning an `java.time.Instant` object directly.
 
 == v2024.3.0
 
-=== Shapes
+=== Pitches
 
 - Transform Sirius Web into an extensible platform
 - Facilitate the insertion of elements into a list node
@@ -2883,7 +2888,7 @@ In other scenarios, the default creation position border remains the eastern one
 
 == v2024.1.0
 
-=== Shapes
+=== Pitches
 
 - Add support for Portal representation
 - Add support for Gantt representation
@@ -3074,7 +3079,7 @@ image:doc/screenshots/biggerResizeHandles2.png[Compartment with header without s
 
 == v2023.12.0
 
-=== Shapes
+=== Pitches
 
 - Add support for custom nodes in Diagram representations
 - Add the possibility to specify a size ratio on node.
@@ -3287,7 +3292,7 @@ Node will not be outside of their container, nor on a node header because of a m
 
 == v2023.10.0
 
-=== Shapes
+=== Pitches
 
 - Add tool sections in the View DSL
 - Add support for Precondition Expressions in Tools
@@ -3438,7 +3443,7 @@ These color palettes are accessible in studio projects but are not visible in th
 
 == v2023.8.0
 
-=== Shapes
+=== Pitches
 
 - Add disable / enable concept for widgets
 - Add new custom widget to edit single and multi-valued references
@@ -3589,7 +3594,7 @@ Labels and node list are rendered with css.
 
 == v2023.6.0
 
-=== Shapes
+=== Pitches
 
 - Filter tree based representations
 - Add pages to form in the view DSL

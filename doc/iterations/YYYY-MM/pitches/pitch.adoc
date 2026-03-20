@@ -1,4 +1,12 @@
-= (appetite) Shape
+:author: lists the author of this document
+:date: YYYY-MM-DD
+:status: {proposed | rejected | accepted | deprecated | superseded by}
+:consulted: lists everyone whose opinions are sought and with whom there is a two-way communication
+:informed: lists everyone who is kept up-to-date on progress in one-way communication
+:deciders: lists everyone involved in the decision
+:issue: link to the related issue
+
+= (appetite) Pitch title
 
 == Problem
 
