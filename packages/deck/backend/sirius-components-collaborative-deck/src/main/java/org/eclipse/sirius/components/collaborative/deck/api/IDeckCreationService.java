@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.components.collaborative.deck.api;
 
 import java.util.Optional;
 
+import org.eclipse.sirius.components.collaborative.deck.DeckContext;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.description.DeckDescription;
@@ -43,7 +44,7 @@ public interface IDeckCreationService {
      *
      * <p>
      * Refreshing a deck seems to always be possible but it may not be the case. In some situation, the semantic element
-     * on which the previous deck has been created may not exist anymore and thus we can return an empty optional if we
+     * on which the previous deck has been created may not exist anymore, and thus we can return an empty optional if we
      * are unable to refresh the deck.
      * </p>
      *
@@ -53,7 +54,7 @@ public interface IDeckCreationService {
      *            The deck representation context
      * @return An updated deck if we have been able to refresh it.
      */
-    Optional<Deck> refresh(IEditingContext editingContext, IDeckContext deckContext);
+    Optional<Deck> refresh(IEditingContext editingContext, DeckContext deckContext);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -68,7 +69,7 @@ public interface IDeckCreationService {
         }
 
         @Override
-        public Optional<Deck> refresh(IEditingContext editingContext, IDeckContext deckContext) {
+        public Optional<Deck> refresh(IEditingContext editingContext, DeckContext deckContext) {
             return Optional.empty();
         }
     }

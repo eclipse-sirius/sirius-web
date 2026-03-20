@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
+import org.eclipse.sirius.components.collaborative.deck.DeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckLaneService;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeCardsVisibilityInput;
 import org.eclipse.sirius.components.collaborative.deck.dto.input.ChangeLaneCollapsedStateInput;
@@ -64,8 +64,6 @@ public class DeckLaneService implements IDeckLaneService {
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
     }
-
-
 
     @Override
     public IPayload editLane(EditDeckLaneInput editDeckLaneInput, IEditingContext editingContext, Deck deck) {
@@ -144,17 +142,17 @@ public class DeckLaneService implements IDeckLaneService {
     }
 
     @Override
-    public IPayload changeLaneCollapsedState(ChangeLaneCollapsedStateInput changeLaneCollapsedStateInput, IEditingContext editingContext, IDeckContext deckContext) {
-        deckContext.setDeckEvent(new ChangeLaneCollapseStateDeckEvent(changeLaneCollapsedStateInput.laneId(), changeLaneCollapsedStateInput.collapsed()));
+    public IPayload changeLaneCollapsedState(ChangeLaneCollapsedStateInput changeLaneCollapsedStateInput, IEditingContext editingContext, DeckContext deckContext) {
+        deckContext.deckEvents().add(new ChangeLaneCollapseStateDeckEvent(changeLaneCollapsedStateInput.laneId(), changeLaneCollapsedStateInput.collapsed()));
         return this.getPayload(changeLaneCollapsedStateInput.id());
     }
 
     @Override
-    public IPayload changeCardsVisibility(ChangeCardsVisibilityInput input, IEditingContext editingContext, IDeckContext deckContext) {
+    public IPayload changeCardsVisibility(ChangeCardsVisibilityInput input, IEditingContext editingContext, DeckContext deckContext) {
         Map<String, Boolean> cardsVisibility = new HashMap<>();
         input.visibleCardsIds().forEach(cardId -> cardsVisibility.put(cardId, true));
         input.hiddenCardsIds().forEach(cardId -> cardsVisibility.put(cardId, false));
-        deckContext.setDeckEvent(new ChangeCardsVisibilityDeckEvent(cardsVisibility));
+        deckContext.deckEvents().add(new ChangeCardsVisibilityDeckEvent(cardsVisibility));
         return this.getPayload(input.id());
     }
 }

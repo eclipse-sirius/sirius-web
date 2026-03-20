@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.deck;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -64,7 +65,7 @@ public class DeckEventProcessorFactory implements IRepresentationEventProcessorF
         var optionalDeck = this.representationSearchService.findById(editingContext, representationId, Deck.class);
         if (optionalDeck.isPresent()) {
             Deck deck = optionalDeck.get();
-            DeckContext deckContext = new DeckContext(deck);
+            DeckContext deckContext = new DeckContext(deck, new ArrayList<>());
 
             IRepresentationEventProcessor deckEventProcessor = new DeckEventProcessor(editingContext, this.subscriptionManagerFactory.create(), this.deckCreationService, this.deckEventHandlers,
                     deckContext, this.representationPersistenceStrategy, this.representationSearchService);

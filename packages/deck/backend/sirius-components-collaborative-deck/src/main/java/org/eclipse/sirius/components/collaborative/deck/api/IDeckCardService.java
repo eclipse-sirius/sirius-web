@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,6 @@ public interface IDeckCardService {
      * Move an existing card.
      */
     IPayload dropCard(DropDeckCardInput dropDeckCardInput, IEditingContext editingContext, Deck deck);
-
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.

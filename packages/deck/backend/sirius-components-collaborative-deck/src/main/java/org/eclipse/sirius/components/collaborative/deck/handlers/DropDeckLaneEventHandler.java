@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
-import org.eclipse.sirius.components.collaborative.deck.api.IDeckContext;
+import org.eclipse.sirius.components.collaborative.deck.DeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckEventHandler;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckInput;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckLaneService;
@@ -62,7 +62,7 @@ public class DropDeckLaneEventHandler implements IDeckEventHandler {
     }
 
     @Override
-    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IDeckContext deckContext, IDeckInput deckInput) {
+    public void handle(One<IPayload> payloadSink, Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, DeckContext deckContext, IDeckInput deckInput) {
         this.counter.increment();
 
         String message = this.messageService.invalidInput(deckInput.getClass().getSimpleName(), DropDeckLaneInput.class.getSimpleName());
@@ -70,7 +70,7 @@ public class DropDeckLaneEventHandler implements IDeckEventHandler {
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, deckInput.representationId(), deckInput);
 
         if (deckInput instanceof DropDeckLaneInput input) {
-            payload =  this.deckLaneService.dropLane(input, editingContext, deckContext.getDeck());
+            payload =  this.deckLaneService.dropLane(input, editingContext, deckContext.deck());
 
             changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, deckInput.representationId(), deckInput);
         }
