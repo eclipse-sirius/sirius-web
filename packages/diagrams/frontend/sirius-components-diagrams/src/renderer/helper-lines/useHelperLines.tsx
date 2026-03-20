@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,15 +25,13 @@ import { useCallback, useContext, useState } from 'react';
 import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf } from '../layout/layoutNode';
 import { horizontalHelperLinesSnapGap, verticalHelperLinesSnapGap } from '../layout/layoutParams';
+import { isResize } from '../node/nodeChangePredicates';
 import { HelperLinesContextValue } from './HelperLinesContext.types';
 import { HelperLinesContext } from './HelperLinesContext';
 import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
 
 const isMove = (change: NodeChange<Node<NodeData>>, dragging: boolean): change is NodePositionChange =>
   change.type === 'position' && (!dragging || (typeof change.dragging === 'boolean' && change.dragging));
-
-const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
-  change.type === 'dimensions' && (change.resizing ?? false);
 
 interface RectangularBounds {
   x1: number;

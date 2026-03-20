@@ -1,5 +1,33 @@
 = Changelog
 
+== 2026.5.0 (work in progress)
+
+=== Shapes
+
+
+=== Architectural decision records
+
+
+=== Deprecation warning
+
+
+=== Breaking changes
+
+
+=== Dependency update
+
+
+=== Bug fixes
+
+https://github.com/eclipse-sirius/sirius-web/issues/6309[#6309] [diagram] Add support for multi-select node resizing with position adjustments
+
+
+=== New Features
+
+
+=== Improvements
+
+
 == 2026.3.0 (work in progress)
 
 === Shapes
