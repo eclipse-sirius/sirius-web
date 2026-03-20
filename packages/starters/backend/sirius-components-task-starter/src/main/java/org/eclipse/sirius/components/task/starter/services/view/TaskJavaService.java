@@ -15,10 +15,8 @@ package org.eclipse.sirius.components.task.starter.services.view;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.emf.common.util.EList;
@@ -60,18 +58,39 @@ public class TaskJavaService {
     }
 
     public void editTask(EObject eObject, String name, String description, Instant startTime, Instant endTime, Integer progress) {
-        if (eObject instanceof AbstractTask task) {
+        if (eObject instanceof Task task) {
             if (name != null) {
                 task.setName(name);
             }
             if (description != null) {
                 task.setDescription(description);
             }
-            if (startTime != null) {
-                task.setStartTime(startTime);
-            }
-            if (endTime != null) {
-                task.setEndTime(endTime);
+            if (endTime != null && startTime != null) {
+                long differenceEnd = task.getEndTime().getEpochSecond() - endTime.getEpochSecond();
+                long differenceStart = task.getStartTime().getEpochSecond() - startTime.getEpochSecond();
+                boolean endPointed = false;
+                boolean startPointed = false;
+                List<DependencyLink> dependencies = task.getDependencies();
+                for (DependencyLink dep : dependencies) {
+                    if (dep.getTarget() == StartOrEnd.END) {
+                        endPointed = true;
+                    } else {
+                        startPointed = true;
+                    }
+                }
+                if (dependencies.isEmpty() || differenceEnd != differenceStart) {
+                    if (startPointed && !endPointed) {
+                        task.setEndTime(endTime.plus(differenceStart, ChronoUnit.SECONDS));
+                    } else if (endPointed && !startPointed) {
+                        task.setStartTime(startTime.plus(differenceEnd, ChronoUnit.SECONDS));
+                    } else if (!startPointed && !endPointed) {
+                        task.setStartTime(startTime);
+                        task.setEndTime(endTime);
+                    }
+                    if (!startPointed || !endPointed) {
+                        followTaskMoveDependency(task, new ArrayList<>());
+                    }
+                }
             }
             if (progress != null) {
                 task.setProgress(progress);
@@ -114,7 +133,8 @@ public class TaskJavaService {
     }
 
     private void deleteTasksRecursive(Task task) {
-        var inverseReferences = simpleCrossReferenceProvider.getInverseReferences(task);
+
+        Collection<EStructuralFeature.Setting> inverseReferences = simpleCrossReferenceProvider.getInverseReferences(task);
         for (EStructuralFeature.Setting inverseReference : inverseReferences) {
             if (inverseReference.getEObject() instanceof DependencyLink dep) {
                 EcoreUtil.delete(dep, true);
@@ -152,6 +172,7 @@ public class TaskJavaService {
                 //Ensure no dependency already exists between source and target to prevent duplicates or cycles
                 if (!isDuplicateOrCycle(sourceTask, targetTask)) {
                     targetTask.getDependencies().add(dependencyLink);
+                    this.followTaskMoveDependency(sourceTask, new ArrayList<>());
                 } else {
                     this.feedbackMessageService.addFeedbackMessage(new Message("Creating a dependency that is duplicate or cyclic is not possible.", MessageLevel.ERROR));
                 }
@@ -189,6 +210,86 @@ public class TaskJavaService {
         return isDuplicate || isCycle;
     }
 
+
+    private void followTaskMoveDependency(Task sourceTask, List<Task> taskMoved) {
+        List<Task> dependencies = new ArrayList<>();
+        List<Task> targetTasks = new ArrayList<>();
+        //get all tasks pointed by sourceTask
+        for (var inverseReference : simpleCrossReferenceProvider.getInverseReferences(sourceTask)) {
+            if (inverseReference.getEObject() instanceof DependencyLink dep) {
+                for (var inverseReferenceDependencyLink : simpleCrossReferenceProvider.getInverseReferences(dep)) {
+                    if (inverseReferenceDependencyLink.getEObject() instanceof Task targetTask) {
+                        targetTasks.add(targetTask);
+                    }
+                }
+            }
+        }
+        for (Task task : targetTasks) {
+            //Get the strongest dependency link
+            DependencyLink winner = null;
+            Instant latterInstant = null;
+            for (DependencyLink dep : task.getDependencies()) {
+                Instant newInstant = getLatterInstant(dep);
+                if (latterInstant == null || latterInstant.compareTo(newInstant) < 0) {
+                    latterInstant = newInstant;
+                    winner = dep;
+                }
+            }
+            if (!taskMoved.contains(task)) {
+                for (DependencyLink dep : task.getDependencies()) {
+                    Task bestSourceTask = (Task) dep.getDependency();
+                    if (dep.equals(winner)) {
+                        Instant sourceStart = bestSourceTask.getStartTime();
+                        Instant sourceEnd = bestSourceTask.getEndTime();
+                        Instant oldTaskStart = task.getStartTime();
+                        Instant oldTaskEnd = task.getEndTime();
+                        int delay = dep.getDuration();
+                        StartOrEnd sourceStartOrEnd = dep.getSource();
+                        StartOrEnd targetStartOrEnd = dep.getTarget();
+                        if (sourceStartOrEnd == StartOrEnd.END && targetStartOrEnd == StartOrEnd.START) {
+                            Instant newTaskStart = sourceEnd.plus(delay, ChronoUnit.HOURS);
+                            Instant newTaskEnd = Instant.ofEpochSecond(newTaskStart.getEpochSecond() + oldTaskEnd.getEpochSecond() - oldTaskStart.getEpochSecond());
+                            task.setEndTime(newTaskEnd);
+                            task.setStartTime(newTaskStart);
+                        } else if (sourceStartOrEnd == StartOrEnd.START && targetStartOrEnd == StartOrEnd.START) {
+                            Instant newTaskStart = sourceStart.plus(delay, ChronoUnit.HOURS);
+                            Instant newTaskEnd = Instant.ofEpochSecond(newTaskStart.getEpochSecond() + oldTaskEnd.getEpochSecond() - oldTaskStart.getEpochSecond());
+                            task.setEndTime(newTaskEnd);
+                            task.setStartTime(newTaskStart);
+                        } else if (sourceStartOrEnd == StartOrEnd.END && targetStartOrEnd == StartOrEnd.END) {
+                            Instant newTaskEnd = sourceEnd.plus(delay, ChronoUnit.HOURS);
+                            Instant newTaskStart = Instant.ofEpochSecond(newTaskEnd.getEpochSecond() - (oldTaskEnd.getEpochSecond() - oldTaskStart.getEpochSecond()));
+                            task.setEndTime(newTaskEnd);
+                            task.setStartTime(newTaskStart);
+                        } else if (sourceStartOrEnd == StartOrEnd.START && targetStartOrEnd == StartOrEnd.END) {
+                            Instant newTaskEnd = sourceStart.plus(delay, ChronoUnit.HOURS);
+                            Instant newTaskStart = Instant.ofEpochSecond(newTaskEnd.getEpochSecond() - (oldTaskEnd.getEpochSecond() - oldTaskStart.getEpochSecond()));
+                            task.setEndTime(newTaskEnd);
+                            task.setStartTime(newTaskStart);
+                        }
+                        if (bestSourceTask == sourceTask) {
+                            dependencies.add(task);
+                            taskMoved.add(task);
+                        }
+                    }
+                }
+            }
+        }
+        for (Task task : dependencies) {
+            followTaskMoveDependency(task, taskMoved);
+        }
+    }
+
+    private static Instant getLatterInstant(DependencyLink dep) {
+        Instant laterInstant = null;
+        Task source = (Task) dep.getDependency();
+        if (dep.getSource() == StartOrEnd.END) {
+            laterInstant = source.getEndTime().plus(dep.getDuration(), ChronoUnit.HOURS);
+        } else if (dep.getSource() == StartOrEnd.START) {
+            laterInstant = source.getStartTime().plus(dep.getDuration(), ChronoUnit.HOURS);
+        }
+        return laterInstant;
+    }
 
     public List<Task> getTasksWithTag(TaskTag tag, Workpackage workpackage) {
         return Optional.of(workpackage).stream()
