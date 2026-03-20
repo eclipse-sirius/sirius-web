@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.gantt.StartOrEnd;
  *
  * @author lfasani
  */
-public record CreateGanttTaskDependencyInput(UUID id, String editingContextId, String representationId, String sourceTaskId, String targetTaskId, int delay, StartOrEnd targetStartOrEnd, StartOrEnd sourceStartOrEnd) implements IGanttInput {
+public record CreateGanttTaskDependencyInput(UUID id, String editingContextId, String representationId, String sourceTaskId, String targetTaskId, StartOrEnd targetStartOrEnd, StartOrEnd sourceStartOrEnd) implements IGanttInput {
     public CreateGanttTaskDependencyInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);

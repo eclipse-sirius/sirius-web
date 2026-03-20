@@ -18,6 +18,7 @@ import reactor.test.StepVerifier;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -183,12 +184,12 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    assertThat(gantt.tasks().get(1).subTasks().get(0).subTasks()).hasSize(2);
-                    createdTaskId.set(gantt.tasks().get(1).subTasks().get(0).subTasks().get(1).id());
+                    assertThat(gantt.tasks().get(1).subTasks()).hasSize(2);
+                    createdTaskId.set(gantt.tasks().get(1).subTasks().get(1).id());
                 }, () -> fail(MISSING_GANTT));
 
         Runnable editGanttTask = () -> {
-            EditGanttTaskDetailInput editGanttTaskDetailInput = new EditGanttTaskDetailInput("Edited Task", null, "2023-12-16T07:30:00Z", null, TemporalType.DATE_TIME, 0);
+            EditGanttTaskDetailInput editGanttTaskDetailInput = new EditGanttTaskDetailInput("Edited Task", null, "2023-12-16T07:30:00Z", "2023-12-16T08:30:00Z", TemporalType.DATE_TIME, 0);
             var editGanttTaskInput = new EditGanttTaskInput(UUID.randomUUID(),
                     PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
@@ -206,7 +207,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    assertThat(gantt.tasks().get(1).subTasks().get(0).subTasks().get(1).detail())
+                    assertThat(gantt.tasks().get(1).subTasks().get(1).detail())
                             .hasFieldOrPropertyWithValue("name", "Edited Task")
                             .hasFieldOrPropertyWithValue("description", "")
                             .hasFieldOrPropertyWithValue("startTime", "2023-12-16T07:30:00Z");
@@ -390,6 +391,11 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
         var targetTaskId = new AtomicReference<String>();
         String taskName1 = "Development";
         String taskName2 = "Idea";
+
+        Instant ideaStartTime = Instant.parse("2023-12-10T08:30:00Z");
+        Instant ideaEndTime = Instant.parse("2023-12-11T17:30:00Z");
+        var compareOld = ideaEndTime.compareTo(ideaStartTime);
+
         Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
                 .filter(GanttRefreshedEventPayload.class::isInstance)
                 .map(GanttRefreshedEventPayload.class::cast)
@@ -408,7 +414,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
             var createGanttTaskDependencyInput = new CreateGanttTaskDependencyInput(
                     UUID.randomUUID(),
                     PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
-                    ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get(), 0, StartOrEnd.START, StartOrEnd.END);
+                    ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get(), StartOrEnd.START, StartOrEnd.END);
             var result = this.createTaskDependencyMutationRunner.run(createGanttTaskDependencyInput);
 
             String typename = JsonPath.read(result.data(), "$.data.createGanttTaskDependency.__typename");
@@ -428,6 +434,14 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                         }
                     }
                     assertThat(isPresent).isEqualTo(true);
+
+                    var taskDependency = new GanttNavigator(gantt).findTaskByName(taskName1);
+                    Instant ideaNewStart = Instant.parse(task.detail().startTime());
+                    Instant ideaNewEnd = Instant.parse(task.detail().endTime());
+                    var compareNew = ideaNewEnd.compareTo(ideaNewStart);
+
+                    assertThat(task.detail().startTime()).isEqualTo(taskDependency.detail().endTime());
+                    assertThat(compareNew).isEqualTo(compareOld);
                 }, () -> fail(MISSING_GANTT));
         
         Runnable deleteDependencyRunnable = () -> {
