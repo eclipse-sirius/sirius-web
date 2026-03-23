@@ -26,6 +26,7 @@
 
 === Dependency update
 
+- [releng] Switch to lexical 0.42.0
 
 
 
