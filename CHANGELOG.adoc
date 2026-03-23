@@ -70,6 +70,7 @@ The `TreeItemContextMenuEntryBuilder` subclasses now require a list of key bindi
 
 - [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v3.5.11[Spring Boot 3.5.11]
 - [releng] Switch to @ObeoNetwork/gantt-task-react 0.6.3
+- [releng] Switch to lexical 0.42.0
 
 
 === Bug fixes
