@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightLabel } from '../../helpers/PlaywrightLabel';
@@ -444,5 +445,386 @@ test.describe('diagram - label', () => {
       { expectedX: (labelBoundingBox?.x ?? 0) + 100 - 10, expectedY: (labelBoundingBox?.y ?? 0) + 100 - 10 },
       { timeout: 2000 }
     );
+  });
+});
+
+test.describe('diagram - label', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectLabelAlignment.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('labelAlignment');
+    await playwrightExplorer.expand('Root');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when the inside label has a position and overflow to none, then label position is correct', async ({
+    page,
+  }) => {
+    await new PlaywrightExplorer(page).select('diagram none');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    // TOP
+    // LEFT
+    const nodeTopLeft = new PlaywrightNode(page, 'Entity1', 'FreeForm', 0);
+    await nodeTopLeft.waitForAnimationToFinish();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+    const labelTopLeft = new PlaywrightLabel(page, 'TOP_LEFT');
+    const nodeTopLeftBoundingBox = await nodeTopLeft.nodeLocator.boundingBox();
+    const labelTopLeftBoundingBox = await labelTopLeft.labelContentLocator.locator('[data-svg="text"]').boundingBox();
+    expect((labelTopLeftBoundingBox?.x ?? 0) - (nodeTopLeftBoundingBox?.x ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopLeftBoundingBox?.x ?? 0) - (nodeTopLeftBoundingBox?.x ?? 0)).toBeGreaterThan(0);
+    expect((labelTopLeftBoundingBox?.y ?? 0) - (nodeTopLeftBoundingBox?.y ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopLeftBoundingBox?.y ?? 0) - (nodeTopLeftBoundingBox?.y ?? 0)).toBeGreaterThan(0);
+    expect(labelTopLeftBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //CENTER
+    const nodeTopCenter = new PlaywrightNode(page, 'Entity1', 'FreeForm', 1);
+    const labelTopCenter = new PlaywrightLabel(page, 'TOP_CENTER');
+    const nodeTopCenterBoundingBox = await nodeTopCenter.nodeLocator.boundingBox();
+    const labelTopCenterBoundingBox = await labelTopCenter.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelTopCenterBoundingBox?.x ?? 0) - (nodeTopCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
+    expect((labelTopCenterBoundingBox?.x ?? 0) - (nodeTopCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
+    expect((labelTopCenterBoundingBox?.y ?? 0) - (nodeTopCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopCenterBoundingBox?.y ?? 0) - (nodeTopCenterBoundingBox?.y ?? 0)).toBeGreaterThan(0);
+    expect(labelTopCenterBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //RIGHT
+    const nodeTopRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 2);
+    const labelTopRight = new PlaywrightLabel(page, 'TOP_RIGHT');
+    const nodeTopRightBoundingBox = await nodeTopRight.nodeLocator.boundingBox();
+    const labelTopRightBoundingBox = await labelTopRight.labelContentLocator.locator('[data-svg="text"]').boundingBox();
+    expect((labelTopRightBoundingBox?.x ?? 0) - (nodeTopRightBoundingBox?.x ?? 0)).toBeLessThanOrEqual(140);
+    expect((labelTopRightBoundingBox?.x ?? 0) - (nodeTopRightBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(130);
+    expect((labelTopRightBoundingBox?.y ?? 0) - (nodeTopRightBoundingBox?.y ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopRightBoundingBox?.y ?? 0) - (nodeTopRightBoundingBox?.y ?? 0)).toBeGreaterThan(0);
+    expect(labelTopRightBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+
+    // MIDDLE
+    // LEFT
+    const nodeMiddleLeft = new PlaywrightNode(page, 'Entity1', 'FreeForm', 3);
+    await nodeMiddleLeft.waitForAnimationToFinish();
+    const labelMiddleLeft = new PlaywrightLabel(page, 'MIDDLE_LEFT');
+    const nodeMiddleLeftBoundingBox = await nodeMiddleLeft.nodeLocator.boundingBox();
+    const labelMiddleLeftBoundingBox = await labelMiddleLeft.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelMiddleLeftBoundingBox?.x ?? 0) - (nodeMiddleLeftBoundingBox?.x ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelMiddleLeftBoundingBox?.x ?? 0) - (nodeMiddleLeftBoundingBox?.x ?? 0)).toBeGreaterThan(0);
+    expect((labelMiddleLeftBoundingBox?.y ?? 0) - (nodeMiddleLeftBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
+    expect((labelMiddleLeftBoundingBox?.y ?? 0) - (nodeMiddleLeftBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect(labelMiddleLeftBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //CENTER
+    const nodeMiddleCenter = new PlaywrightNode(page, 'Entity1', 'FreeForm', 4);
+    const labelMiddleCenter = new PlaywrightLabel(page, 'MIDDLE_CENTER');
+    const nodeMiddleCenterBoundingBox = await nodeMiddleCenter.nodeLocator.boundingBox();
+    const labelMiddleCenterBoundingBox = await labelMiddleCenter.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelMiddleCenterBoundingBox?.x ?? 0) - (nodeMiddleCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
+    expect((labelMiddleCenterBoundingBox?.x ?? 0) - (nodeMiddleCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
+    expect((labelMiddleCenterBoundingBox?.y ?? 0) - (nodeMiddleCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
+    expect((labelMiddleCenterBoundingBox?.y ?? 0) - (nodeMiddleCenterBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect(labelMiddleCenterBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //RIGHT
+    const nodeMiddleRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 5);
+    const labelMiddleRight = new PlaywrightLabel(page, 'MIDDLE_RIGHT');
+    const nodeMiddleRightBoundingBox = await nodeMiddleRight.nodeLocator.boundingBox();
+    const labelMiddleRightBoundingBox = await labelMiddleRight.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelMiddleRightBoundingBox?.x ?? 0) - (nodeMiddleRightBoundingBox?.x ?? 0)).toBeLessThanOrEqual(140);
+    expect((labelMiddleRightBoundingBox?.x ?? 0) - (nodeMiddleRightBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(125);
+    expect((labelMiddleRightBoundingBox?.y ?? 0) - (nodeMiddleRightBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
+    expect((labelMiddleRightBoundingBox?.y ?? 0) - (nodeMiddleRightBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect(labelMiddleRightBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+
+    // BOTTOM
+    // LEFT
+    const nodeBottomLeft = new PlaywrightNode(page, 'Entity1', 'FreeForm', 6);
+    await nodeBottomLeft.waitForAnimationToFinish();
+    const labelBottomLeft = new PlaywrightLabel(page, 'BOTTOM_LEFT');
+    const nodeBottomLeftBoundingBox = await nodeBottomLeft.nodeLocator.boundingBox();
+    const labelBottomLeftBoundingBox = await labelBottomLeft.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelBottomLeftBoundingBox?.x ?? 0) - (nodeBottomLeftBoundingBox?.x ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelBottomLeftBoundingBox?.x ?? 0) - (nodeBottomLeftBoundingBox?.x ?? 0)).toBeGreaterThan(0);
+    expect((labelBottomLeftBoundingBox?.y ?? 0) - (nodeBottomLeftBoundingBox?.y ?? 0)).toBeLessThanOrEqual(165);
+    expect((labelBottomLeftBoundingBox?.y ?? 0) - (nodeBottomLeftBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(155);
+    expect(labelBottomLeftBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //CENTER
+    const nodeBottomCenter = new PlaywrightNode(page, 'Entity1', 'FreeForm', 7);
+    const labelBottomCenter = new PlaywrightLabel(page, 'BOTTOM_CENTER');
+    const nodeBottomCenterBoundingBox = await nodeBottomCenter.nodeLocator.boundingBox();
+    const labelBottomCenterBoundingBox = await labelBottomCenter.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelBottomCenterBoundingBox?.x ?? 0) - (nodeBottomCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
+    expect((labelBottomCenterBoundingBox?.x ?? 0) - (nodeBottomCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
+    expect((labelBottomCenterBoundingBox?.y ?? 0) - (nodeBottomCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(165);
+    expect((labelBottomCenterBoundingBox?.y ?? 0) - (nodeBottomCenterBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(155);
+    expect(labelBottomCenterBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //RIGHT
+    const nodeBottomRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 8);
+    const labelBottomRight = new PlaywrightLabel(page, 'BOTTOM_RIGHT');
+    const nodeBottomRightBoundingBox = await nodeBottomRight.nodeLocator.boundingBox();
+    const labelBottomRightBoundingBox = await labelBottomRight.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelBottomRightBoundingBox?.x ?? 0) - (nodeBottomRightBoundingBox?.x ?? 0)).toBeLessThanOrEqual(140);
+    expect((labelBottomRightBoundingBox?.x ?? 0) - (nodeBottomRightBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(125);
+    expect((labelBottomRightBoundingBox?.y ?? 0) - (nodeBottomRightBoundingBox?.y ?? 0)).toBeLessThanOrEqual(165);
+    expect((labelBottomRightBoundingBox?.y ?? 0) - (nodeBottomRightBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(155);
+    expect(labelBottomRightBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+  });
+
+  test('when the inside label has a position and overflow to wrap, then label position is correct', async ({
+    page,
+  }) => {
+    await new PlaywrightExplorer(page).select('diagram wrap');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    // TOP
+    // LEFT
+    const nodeTopLeft = new PlaywrightNode(page, 'Entity1', 'FreeForm', 0);
+    await nodeTopLeft.waitForAnimationToFinish();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+    const labelTopLeft = new PlaywrightLabel(page, 'TOP_LEFT');
+    const nodeTopLeftBoundingBox = await nodeTopLeft.nodeLocator.boundingBox();
+    const labelTopLeftBoundingBox = await labelTopLeft.labelContentLocator.locator('[data-svg="text"]').boundingBox();
+    expect((labelTopLeftBoundingBox?.x ?? 0) - (nodeTopLeftBoundingBox?.x ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopLeftBoundingBox?.x ?? 0) - (nodeTopLeftBoundingBox?.x ?? 0)).toBeGreaterThan(0);
+    expect((labelTopLeftBoundingBox?.y ?? 0) - (nodeTopLeftBoundingBox?.y ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopLeftBoundingBox?.y ?? 0) - (nodeTopLeftBoundingBox?.y ?? 0)).toBeGreaterThan(0);
+    expect(labelTopLeftBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
+    //CENTER
+    const nodeTopCenter = new PlaywrightNode(page, 'Entity1', 'FreeForm', 1);
+    const labelTopCenter = new PlaywrightLabel(page, 'TOP_CENTER');
+    const nodeTopCenterBoundingBox = await nodeTopCenter.nodeLocator.boundingBox();
+    const labelTopCenterBoundingBox = await labelTopCenter.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelTopCenterBoundingBox?.x ?? 0) - (nodeTopCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
+    expect((labelTopCenterBoundingBox?.x ?? 0) - (nodeTopCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
+    expect((labelTopCenterBoundingBox?.y ?? 0) - (nodeTopCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopCenterBoundingBox?.y ?? 0) - (nodeTopCenterBoundingBox?.y ?? 0)).toBeGreaterThan(0);
+    expect(labelTopCenterBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
+    //RIGHT
+    const nodeTopRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 2);
+    const labelTopRight = new PlaywrightLabel(page, 'TOP_RIGHT');
+    const nodeTopRightBoundingBox = await nodeTopRight.nodeLocator.boundingBox();
+    const labelTopRightBoundingBox = await labelTopRight.labelContentLocator.locator('[data-svg="text"]').boundingBox();
+    expect((labelTopRightBoundingBox?.x ?? 0) - (nodeTopRightBoundingBox?.x ?? 0)).toBeLessThanOrEqual(145);
+    expect((labelTopRightBoundingBox?.x ?? 0) - (nodeTopRightBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(130);
+    expect((labelTopRightBoundingBox?.y ?? 0) - (nodeTopRightBoundingBox?.y ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopRightBoundingBox?.y ?? 0) - (nodeTopRightBoundingBox?.y ?? 0)).toBeGreaterThan(0);
+    expect(labelTopRightBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
+
+    // MIDDLE
+    // LEFT
+    const nodeMiddleLeft = new PlaywrightNode(page, 'Entity1', 'FreeForm', 3);
+    await nodeMiddleLeft.waitForAnimationToFinish();
+    const labelMiddleLeft = new PlaywrightLabel(page, 'MIDDLE_LEFT');
+    const nodeMiddleLeftBoundingBox = await nodeMiddleLeft.nodeLocator.boundingBox();
+    const labelMiddleLeftBoundingBox = await labelMiddleLeft.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelMiddleLeftBoundingBox?.x ?? 0) - (nodeMiddleLeftBoundingBox?.x ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelMiddleLeftBoundingBox?.x ?? 0) - (nodeMiddleLeftBoundingBox?.x ?? 0)).toBeGreaterThan(0);
+    expect((labelMiddleLeftBoundingBox?.y ?? 0) - (nodeMiddleLeftBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
+    expect((labelMiddleLeftBoundingBox?.y ?? 0) - (nodeMiddleLeftBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect(labelMiddleLeftBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
+    //CENTER
+    const nodeMiddleCenter = new PlaywrightNode(page, 'Entity1', 'FreeForm', 4);
+    const labelMiddleCenter = new PlaywrightLabel(page, 'MIDDLE_CENTER');
+    const nodeMiddleCenterBoundingBox = await nodeMiddleCenter.nodeLocator.boundingBox();
+    const labelMiddleCenterBoundingBox = await labelMiddleCenter.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelMiddleCenterBoundingBox?.x ?? 0) - (nodeMiddleCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
+    expect((labelMiddleCenterBoundingBox?.x ?? 0) - (nodeMiddleCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
+    expect((labelMiddleCenterBoundingBox?.y ?? 0) - (nodeMiddleCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
+    expect((labelMiddleCenterBoundingBox?.y ?? 0) - (nodeMiddleCenterBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect(labelMiddleCenterBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
+    //RIGHT
+    const nodeMiddleRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 5);
+    const labelMiddleRight = new PlaywrightLabel(page, 'MIDDLE_RIGHT');
+    const nodeMiddleRightBoundingBox = await nodeMiddleRight.nodeLocator.boundingBox();
+    const labelMiddleRightBoundingBox = await labelMiddleRight.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelMiddleRightBoundingBox?.x ?? 0) - (nodeMiddleRightBoundingBox?.x ?? 0)).toBeLessThanOrEqual(145);
+    expect((labelMiddleRightBoundingBox?.x ?? 0) - (nodeMiddleRightBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(125);
+    expect((labelMiddleRightBoundingBox?.y ?? 0) - (nodeMiddleRightBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
+    expect((labelMiddleRightBoundingBox?.y ?? 0) - (nodeMiddleRightBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect(labelMiddleRightBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
+
+    // BOTTOM
+    // LEFT
+    const nodeBottomLeft = new PlaywrightNode(page, 'Entity1', 'FreeForm', 6);
+    await nodeBottomLeft.waitForAnimationToFinish();
+    const labelBottomLeft = new PlaywrightLabel(page, 'BOTTOM_LEFT');
+    const nodeBottomLeftBoundingBox = await nodeBottomLeft.nodeLocator.boundingBox();
+    const labelBottomLeftBoundingBox = await labelBottomLeft.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelBottomLeftBoundingBox?.x ?? 0) - (nodeBottomLeftBoundingBox?.x ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelBottomLeftBoundingBox?.x ?? 0) - (nodeBottomLeftBoundingBox?.x ?? 0)).toBeGreaterThan(0);
+    expect((labelBottomLeftBoundingBox?.y ?? 0) - (nodeBottomLeftBoundingBox?.y ?? 0)).toBeLessThanOrEqual(165);
+    expect((labelBottomLeftBoundingBox?.y ?? 0) - (nodeBottomLeftBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(145);
+    expect(labelBottomLeftBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
+    //CENTER
+    const nodeBottomCenter = new PlaywrightNode(page, 'Entity1', 'FreeForm', 7);
+    const labelBottomCenter = new PlaywrightLabel(page, 'BOTTOM_CENTER');
+    const nodeBottomCenterBoundingBox = await nodeBottomCenter.nodeLocator.boundingBox();
+    const labelBottomCenterBoundingBox = await labelBottomCenter.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelBottomCenterBoundingBox?.x ?? 0) - (nodeBottomCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
+    expect((labelBottomCenterBoundingBox?.x ?? 0) - (nodeBottomCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
+    expect((labelBottomCenterBoundingBox?.y ?? 0) - (nodeBottomCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(165);
+    expect((labelBottomCenterBoundingBox?.y ?? 0) - (nodeBottomCenterBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(145);
+    expect(labelBottomCenterBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
+    //RIGHT
+    const nodeBottomRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 8);
+    const labelBottomRight = new PlaywrightLabel(page, 'BOTTOM_RIGHT');
+    const nodeBottomRightBoundingBox = await nodeBottomRight.nodeLocator.boundingBox();
+    const labelBottomRightBoundingBox = await labelBottomRight.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelBottomRightBoundingBox?.x ?? 0) - (nodeBottomRightBoundingBox?.x ?? 0)).toBeLessThanOrEqual(145);
+    expect((labelBottomRightBoundingBox?.x ?? 0) - (nodeBottomRightBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(125);
+    expect((labelBottomRightBoundingBox?.y ?? 0) - (nodeBottomRightBoundingBox?.y ?? 0)).toBeLessThanOrEqual(165);
+    expect((labelBottomRightBoundingBox?.y ?? 0) - (nodeBottomRightBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(145);
+    expect(labelBottomRightBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
+  });
+
+  test('when the inside label has a position and overflow to ellipse, then label position is correct', async ({
+    page,
+  }) => {
+    await new PlaywrightExplorer(page).select('diagram ellipse');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    // TOP
+    // LEFT
+    const nodeTopLeft = new PlaywrightNode(page, 'Entity1', 'FreeForm', 0);
+    await nodeTopLeft.waitForAnimationToFinish();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+    const labelTopLeft = new PlaywrightLabel(page, 'TOP_LEFT');
+    const nodeTopLeftBoundingBox = await nodeTopLeft.nodeLocator.boundingBox();
+    const labelTopLeftBoundingBox = await labelTopLeft.labelContentLocator.locator('[data-svg="text"]').boundingBox();
+    expect((labelTopLeftBoundingBox?.x ?? 0) - (nodeTopLeftBoundingBox?.x ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopLeftBoundingBox?.x ?? 0) - (nodeTopLeftBoundingBox?.x ?? 0)).toBeGreaterThan(0);
+    expect((labelTopLeftBoundingBox?.y ?? 0) - (nodeTopLeftBoundingBox?.y ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopLeftBoundingBox?.y ?? 0) - (nodeTopLeftBoundingBox?.y ?? 0)).toBeGreaterThan(0);
+    expect(labelTopLeftBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //CENTER
+    const nodeTopCenter = new PlaywrightNode(page, 'Entity1', 'FreeForm', 1);
+    const labelTopCenter = new PlaywrightLabel(page, 'TOP_CENTER');
+    const nodeTopCenterBoundingBox = await nodeTopCenter.nodeLocator.boundingBox();
+    const labelTopCenterBoundingBox = await labelTopCenter.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelTopCenterBoundingBox?.x ?? 0) - (nodeTopCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
+    expect((labelTopCenterBoundingBox?.x ?? 0) - (nodeTopCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
+    expect((labelTopCenterBoundingBox?.y ?? 0) - (nodeTopCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopCenterBoundingBox?.y ?? 0) - (nodeTopCenterBoundingBox?.y ?? 0)).toBeGreaterThan(0);
+    expect(labelTopCenterBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //RIGHT
+    const nodeTopRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 2);
+    const labelTopRight = new PlaywrightLabel(page, 'TOP_RIGHT');
+    const nodeTopRightBoundingBox = await nodeTopRight.nodeLocator.boundingBox();
+    const labelTopRightBoundingBox = await labelTopRight.labelContentLocator.locator('[data-svg="text"]').boundingBox();
+    expect((labelTopRightBoundingBox?.x ?? 0) - (nodeTopRightBoundingBox?.x ?? 0)).toBeLessThanOrEqual(145);
+    expect((labelTopRightBoundingBox?.x ?? 0) - (nodeTopRightBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(130);
+    expect((labelTopRightBoundingBox?.y ?? 0) - (nodeTopRightBoundingBox?.y ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelTopRightBoundingBox?.y ?? 0) - (nodeTopRightBoundingBox?.y ?? 0)).toBeGreaterThan(0);
+    expect(labelTopRightBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+
+    // MIDDLE
+    // LEFT
+    const nodeMiddleLeft = new PlaywrightNode(page, 'Entity1', 'FreeForm', 3);
+    await nodeMiddleLeft.waitForAnimationToFinish();
+    const labelMiddleLeft = new PlaywrightLabel(page, 'MIDDLE_LEFT');
+    const nodeMiddleLeftBoundingBox = await nodeMiddleLeft.nodeLocator.boundingBox();
+    const labelMiddleLeftBoundingBox = await labelMiddleLeft.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelMiddleLeftBoundingBox?.x ?? 0) - (nodeMiddleLeftBoundingBox?.x ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelMiddleLeftBoundingBox?.x ?? 0) - (nodeMiddleLeftBoundingBox?.x ?? 0)).toBeGreaterThan(0);
+    expect((labelMiddleLeftBoundingBox?.y ?? 0) - (nodeMiddleLeftBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
+    expect((labelMiddleLeftBoundingBox?.y ?? 0) - (nodeMiddleLeftBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect(labelMiddleLeftBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //CENTER
+    const nodeMiddleCenter = new PlaywrightNode(page, 'Entity1', 'FreeForm', 4);
+    const labelMiddleCenter = new PlaywrightLabel(page, 'MIDDLE_CENTER');
+    const nodeMiddleCenterBoundingBox = await nodeMiddleCenter.nodeLocator.boundingBox();
+    const labelMiddleCenterBoundingBox = await labelMiddleCenter.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelMiddleCenterBoundingBox?.x ?? 0) - (nodeMiddleCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
+    expect((labelMiddleCenterBoundingBox?.x ?? 0) - (nodeMiddleCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
+    expect((labelMiddleCenterBoundingBox?.y ?? 0) - (nodeMiddleCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
+    expect((labelMiddleCenterBoundingBox?.y ?? 0) - (nodeMiddleCenterBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect(labelMiddleCenterBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //RIGHT
+    const nodeMiddleRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 5);
+    const labelMiddleRight = new PlaywrightLabel(page, 'MIDDLE_RIGHT');
+    const nodeMiddleRightBoundingBox = await nodeMiddleRight.nodeLocator.boundingBox();
+    const labelMiddleRightBoundingBox = await labelMiddleRight.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelMiddleRightBoundingBox?.x ?? 0) - (nodeMiddleRightBoundingBox?.x ?? 0)).toBeLessThanOrEqual(145);
+    expect((labelMiddleRightBoundingBox?.x ?? 0) - (nodeMiddleRightBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(130);
+    expect((labelMiddleRightBoundingBox?.y ?? 0) - (nodeMiddleRightBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
+    expect((labelMiddleRightBoundingBox?.y ?? 0) - (nodeMiddleRightBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect(labelMiddleRightBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+
+    // BOTTOM
+    // LEFT
+    const nodeBottomLeft = new PlaywrightNode(page, 'Entity1', 'FreeForm', 6);
+    await nodeBottomLeft.waitForAnimationToFinish();
+    const labelBottomLeft = new PlaywrightLabel(page, 'BOTTOM_LEFT');
+    const nodeBottomLeftBoundingBox = await nodeBottomLeft.nodeLocator.boundingBox();
+    const labelBottomLeftBoundingBox = await labelBottomLeft.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelBottomLeftBoundingBox?.x ?? 0) - (nodeBottomLeftBoundingBox?.x ?? 0)).toBeLessThanOrEqual(10);
+    expect((labelBottomLeftBoundingBox?.x ?? 0) - (nodeBottomLeftBoundingBox?.x ?? 0)).toBeGreaterThan(0);
+    expect((labelBottomLeftBoundingBox?.y ?? 0) - (nodeBottomLeftBoundingBox?.y ?? 0)).toBeLessThanOrEqual(165);
+    expect((labelBottomLeftBoundingBox?.y ?? 0) - (nodeBottomLeftBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(155);
+    expect(labelBottomLeftBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //CENTER
+    const nodeBottomCenter = new PlaywrightNode(page, 'Entity1', 'FreeForm', 7);
+    const labelBottomCenter = new PlaywrightLabel(page, 'BOTTOM_CENTER');
+    const nodeBottomCenterBoundingBox = await nodeBottomCenter.nodeLocator.boundingBox();
+    const labelBottomCenterBoundingBox = await labelBottomCenter.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelBottomCenterBoundingBox?.x ?? 0) - (nodeBottomCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
+    expect((labelBottomCenterBoundingBox?.x ?? 0) - (nodeBottomCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
+    expect((labelBottomCenterBoundingBox?.y ?? 0) - (nodeBottomCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(165);
+    expect((labelBottomCenterBoundingBox?.y ?? 0) - (nodeBottomCenterBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(155);
+    expect(labelBottomCenterBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
+    //RIGHT
+    const nodeBottomRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 8);
+    const labelBottomRight = new PlaywrightLabel(page, 'BOTTOM_RIGHT');
+    const nodeBottomRightBoundingBox = await nodeBottomRight.nodeLocator.boundingBox();
+    const labelBottomRightBoundingBox = await labelBottomRight.labelContentLocator
+      .locator('[data-svg="text"]')
+      .boundingBox();
+    expect((labelBottomRightBoundingBox?.x ?? 0) - (nodeBottomRightBoundingBox?.x ?? 0)).toBeLessThanOrEqual(145);
+    expect((labelBottomRightBoundingBox?.x ?? 0) - (nodeBottomRightBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(130);
+    expect((labelBottomRightBoundingBox?.y ?? 0) - (nodeBottomRightBoundingBox?.y ?? 0)).toBeLessThanOrEqual(165);
+    expect((labelBottomRightBoundingBox?.y ?? 0) - (nodeBottomRightBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(155);
+    expect(labelBottomRightBoundingBox?.height).toBeLessThan(8); // Check label is only on 1 line
   });
 });
