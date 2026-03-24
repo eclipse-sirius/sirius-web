@@ -66,9 +66,9 @@ export const convertInsideLabel = (
     height: labelLayoutData?.size.height ?? 0,
   };
 
-  const alignement = AlignmentMap[gqlInsideLabel.insideLabelLocation];
-  if (alignement && alignement.isPrimaryVerticalAlignment) {
-    if (alignement.primaryAlignment === 'TOP') {
+  const alignment = AlignmentMap[gqlInsideLabel.insideLabelLocation];
+  if (alignment && alignment.isPrimaryVerticalAlignment) {
+    if (alignment.primaryAlignment === 'TOP') {
       if (insideLabel.isHeader) {
         insideLabel.headerPosition = 'TOP';
       }
@@ -81,7 +81,7 @@ export const convertInsideLabel = (
       }
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' };
     }
-    if (alignement.primaryAlignment === 'BOTTOM') {
+    if (alignment.primaryAlignment === 'BOTTOM') {
       if (insideLabel.isHeader) {
         insideLabel.headerPosition = 'BOTTOM';
       }
@@ -94,15 +94,23 @@ export const convertInsideLabel = (
       }
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' };
     }
-    if (alignement.primaryAlignment === 'MIDDLE') {
+    if (alignment.primaryAlignment === 'MIDDLE') {
       data.style = { ...data.style, display: 'flex', flexDirection: 'column', justifyContent: 'center' };
     }
     data.style = { ...data.style, alignItems: 'stretch' };
-    if (alignement.secondaryAlignment === 'LEFT' || alignement.secondaryAlignment === 'CENTER') {
-      insideLabel.style = { ...insideLabel.style, marginRight: 'auto' };
+    if (alignment.secondaryAlignment === 'LEFT' || alignment.secondaryAlignment === 'CENTER') {
+      if (insideLabel.overflowStrategy === 'NONE') {
+        insideLabel.contentStyle = { ...insideLabel.contentStyle, marginRight: 'auto' };
+      } else {
+        insideLabel.style = { ...insideLabel.style, marginRight: 'auto' };
+      }
     }
-    if (alignement.secondaryAlignment === 'RIGHT' || alignement.secondaryAlignment === 'CENTER') {
-      insideLabel.style = { ...insideLabel.style, marginLeft: 'auto' };
+    if (alignment.secondaryAlignment === 'RIGHT' || alignment.secondaryAlignment === 'CENTER') {
+      if (insideLabel.overflowStrategy === 'NONE') {
+        insideLabel.contentStyle = { ...insideLabel.contentStyle, marginLeft: 'auto' };
+      } else {
+        insideLabel.style = { ...insideLabel.style, marginLeft: 'auto' };
+      }
     }
   }
 
