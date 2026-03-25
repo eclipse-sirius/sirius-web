@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import {
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
 import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
+import { useTemporaryEdge } from './useTemporaryEdge';
 
 export const getConnectorToolsQuery = gql`
   query getConnectorTools(
@@ -117,8 +118,8 @@ const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingle
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
   const { editingContextId, diagramId, registerPostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-  const { connection, position, onConnectorContextualMenuClose, addTempConnectionLine, removeTempConnectionLine } =
-    useConnector();
+  const { connection, position, onConnectorContextualMenuClose } = useConnector();
+  const { addTempConnectionLine, removeTempConnectionLine } = useTemporaryEdge();
   const { addMessages, addErrorMessage } = useMultiToast();
 
   const { showDialog, isOpened } = useDialog();
@@ -266,7 +267,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
 
   useEffect(() => {
     if (connectorTools.length > 1) {
-      addTempConnectionLine();
+      addTempConnectionLine(sourceDiagramElementId, targetDiagramElementId);
     }
   }, [connection, connectorTools.length]);
 
