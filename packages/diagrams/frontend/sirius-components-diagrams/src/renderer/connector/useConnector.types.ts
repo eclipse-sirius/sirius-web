@@ -20,8 +20,6 @@ export interface UseConnectorValue {
   onConnectEnd: OnConnectEnd;
   onConnectorContextualMenuClose: () => void;
   onConnectionStartElementClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  addTempConnectionLine: () => void;
-  removeTempConnectionLine: () => void;
   connection: Connection | null;
   position: XYPosition | null;
   isConnectionInProgress: () => boolean;
