@@ -10,6 +10,7 @@
 === Architectural decision records
 
 - [ADR-225] Lower the coupling of the refresh from the representation event processors
+- [ADR-226] Add test suites to measure the performance of Sirius Web based applications
 
 
 === Deprecation warning

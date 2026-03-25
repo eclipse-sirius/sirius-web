@@ -1,0 +1,116 @@
+:author: Stéphane Bégaudeau
+:date: 2026-03-25
+:status: accepted
+:consulted: Pierre-Charles David
+:informed: Florian Rouëné
+:deciders: Stéphane Bégaudeau
+:pitch: docs/iterations/2026.5/measure_the_performance_of_sirius_web_based_applications.adoc
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6326
+
+= ADR-226 - Add test suites to measure the performance of Sirius Web based applications
+
+== Context and Problem Statement
+
+We need new test suites to measure the performance of Sirius Web based applications.
+These tests need to be executable while the server is up and running, locally or remotely.
+We want to share test fragments with downstream projects to help them build their own performance tests.
+
+For that, we need to select a tool or a framework to perform these tests.
+
+
+== Decision Drivers
+
+The tool or framework selected must to be open source.
+
+It needs to be stable, mature, and it should have been used for complex web applications.
+It needs to support both the HTTP and WebSocket protocols.
+The tool selected should have a sizable documentation and it should be easy for us to find some example online of complex use cases.
+
+It should be easy for us to setup and maintain these tests.
+This new dependency should be close to our existing technical stack to ensure that our development team will be able to use it quickly.
+
+
+== Considered Options
+
+=== Gatling
+
+https://docs.gatling.io
+
+Gatling is an open source load testing tool built on top of the JVM which can be used to measure the performance of web applications.
+Gatling supports both HTTP and WebSocket.
+
+It is well supported and it has been used by a lot of developers on complex projects.
+It has a large documentation and there are a lot of examples available online.
+
+It allows us to define our tests in Java.
+Given that we can use it in Java, it should be quite easy to integrate it in our development process (same IDE as usual, etc.).
+It should be quite easy for us to create custom maven modules to share utility services to reuse in other tests for downstream projects.
+
+
+=== Grafana k6
+
+https://grafana.com/docs/k6/latest/
+
+Grafana k6 is an open source load testing tool build on top of Go to also measure the performance of web applications.
+It has been created by developers from Grafana which have plenty of experience in terms of monitoring complex use cases.
+It also supports both HTTP and WebSocket.
+
+It allows us to define our tests in JavaScript.
+Given that we can use it in JavaScript, it should also be quite easy to integrate in our development process.
+It should be quite easy for us to create custom npm packages to share utility services to reuse in other tests for downstream projects.
+
+It is well supported and has a large documentation.
+Thanks to JavaScript, it may be easier to manipulate JSON payloads than with Gatling.
+On the other hand, it may be a bit more complex to providing typing and a proper build as it is often the case for npm packages.
+
+
+=== JMeter
+
+https://jmeter.apache.org
+
+JMeter is a Java based load testing tool.
+Contrary to Gatling or K6, it is based on a user interface.
+This seems more complex to configure and reuse than regular pieces of code given the persons that will write and maintain our performance tests.
+While HTTP is well supported by JMeter, WebSocket is not supported by default but a plugin is available for that.
+It is unclear if we can easily mix both HTTP and WebSocket requests in a single performance test, which is critical for us.
+
+Tests are contributed as XML files which are way more complex to review, maintain and share between projects.
+
+
+== Decision Outcome
+
+In the context of creating a suite of performance tests, facing the need to select a framework for our tests we decided for Gatling to achieve the creation of maintainable performance test suites with reusable fragments, accepting the need to learn another framework.
+
+While Gatling and K6 were both very close in terms of feature, one key deciding factor is the fact that K6 is using the GNU Affero General Public License v3.0 which is not part of the https://www.eclipse.org/legal/licenses/[approved licenses] for third party code in the Eclipse Foundation.
+Without this issue, choosing between Gatling or k6 would have been mostly a matter of personnal taste between Java and JavaScript.
+
+
+== Consequences
+
+=== Advantages
+
+Gatling has a proven record in terms of performance testing of complex web applications.
+It is well supported and has existed for a long time.
+
+
+=== Drawbacks
+
+Using Gatling will probably introduce an increase in continous integration time.
+Given that our continuous integration process is quite long, we may not execute Gatling tests in our main job.
+
+This will not execute the frontend code.
+Given the kind of web application we are building, the performance impact of the frontend should be minimal since our source of truth is the backend where all the semantic data and business behavior are done.
+
+
+== More Information
+
+=== Implementation
+
+We will first start with some basic tests to evaluate key use cases:
+
+- Create projects
+- Subscribe to a workbench for a specific editing context and receive various representation state
+- Perform some edits in a workbench
+
+Once we are confident in our ability to perform all the tests we want using Gatling, we will start building a set of services that can be reused accross tests and build more complex tests matching real use cases encountered by our users.
+
