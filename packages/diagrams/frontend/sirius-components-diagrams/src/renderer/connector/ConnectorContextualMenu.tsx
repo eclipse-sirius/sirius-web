@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
@@ -27,53 +27,19 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { isCursorNearCenterOfTheNode } from '../edge/EdgeLayout';
 import {
   ConnectorContextualMenuProps,
-  GetConnectorToolsData,
-  GetConnectorToolsVariables,
-  GQLDiagramDescription,
   GQLErrorPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
   GQLInvokeSingleClickOnTwoDiagramElementsToolInput,
   GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload,
   GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
-  GQLRepresentationDescription,
   GQLTool,
   GQLToolVariable,
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
 import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
+import { useConnectorPaletteContents } from './useConnectorPaletteContents';
 import { useTemporaryEdge } from './useTemporaryEdge';
-
-export const getConnectorToolsQuery = gql`
-  query getConnectorTools(
-    $editingContextId: ID!
-    $representationId: ID!
-    $sourceDiagramElementId: ID!
-    $targetDiagramElementId: ID!
-  ) {
-    viewer {
-      editingContext(editingContextId: $editingContextId) {
-        representation(representationId: $representationId) {
-          description {
-            ... on DiagramDescription {
-              connectorTools(
-                sourceDiagramElementId: $sourceDiagramElementId
-                targetDiagramElementId: $targetDiagramElementId
-              ) {
-                id
-                label
-                iconURL
-                ... on SingleClickOnTwoDiagramElementsTool {
-                  dialogDescriptionId
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
   mutation invokeSingleClickOnTwoDiagramElementsTool($input: InvokeSingleClickOnTwoDiagramElementsToolInput!) {
@@ -100,10 +66,6 @@ export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
     }
   }
 `;
-
-const isDiagramDescription = (
-  representationDescription: GQLRepresentationDescription
-): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
 const isErrorPayload = (payload: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
@@ -137,16 +99,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   const sourceDiagramElementId = connectionSource?.dataset.id ?? '';
   const targetDiagramElementId = connectionTarget?.dataset.id ?? '';
 
-  const variables: GetConnectorToolsVariables = {
-    editingContextId,
-    representationId: diagramId,
-    sourceDiagramElementId,
-    targetDiagramElementId,
-  };
-  const { loading, data, error } = useQuery<GetConnectorToolsData, GetConnectorToolsVariables>(getConnectorToolsQuery, {
-    variables,
-    skip: !connectionSource || !connectionTarget,
-  });
+  const { connectorTools, loading } = useConnectorPaletteContents(sourceDiagramElementId, targetDiagramElementId);
 
   const invokeOpenSelectionDialog = (tool: GQLSingleClickOnTwoDiagramElementsTool) => {
     const onConfirm = (variables: GQLToolVariable[]) => {
@@ -168,12 +121,6 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
       showDialog(tool.dialogDescriptionId, variables, onConfirm, onClose);
     }
   };
-
-  useEffect(() => {
-    if (error) {
-      addErrorMessage(error.message);
-    }
-  }, [error]);
 
   const [
     invokeSingleClickOnTwoDiagramElementsTool,
@@ -258,13 +205,6 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
     }
   }, [invokeSingleClickOnTwoDiagramElementToolData, invokeSingleClickOnTwoDiagramElementToolError]);
 
-  const connectorTools: GQLTool[] = [];
-  const representationDescription: GQLRepresentationDescription | null | undefined =
-    data?.viewer.editingContext?.representation?.description;
-  if (representationDescription && isDiagramDescription(representationDescription)) {
-    representationDescription.connectorTools.forEach((tool) => connectorTools.push(tool));
-  }
-
   useEffect(() => {
     if (connectorTools.length > 1) {
       addTempConnectionLine(sourceDiagramElementId, targetDiagramElementId);
@@ -272,10 +212,10 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   }, [connection, connectorTools.length]);
 
   useEffect(() => {
-    if (!loading && connection && data && connectorTools.length === 0) {
+    if (!loading && connection && connectorTools.length === 0) {
       addMessages([{ body: 'No edge found between source and target selected', level: 'WARNING' }]);
     }
-  }, [loading, data, connection, connectorTools.length]);
+  }, [loading, connectorTools, connection, connectorTools.length]);
 
   useEffect(() => {
     return () => removeTempConnectionLine();
@@ -287,7 +227,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
     }
   }, [connectorTools]);
 
-  if (!data || connectorTools.length <= 1) {
+  if (!connectorTools || connectorTools.length <= 1) {
     return null;
   }
 

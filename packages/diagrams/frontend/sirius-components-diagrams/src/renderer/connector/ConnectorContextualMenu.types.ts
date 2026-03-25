@@ -20,6 +20,10 @@ export interface ConnectorContextualMenuState {
   tool: GQLSingleClickOnTwoDiagramElementsTool | null;
 }
 
+export interface GQLInvokeSingleClickOnTwoDiagramElementsToolVariables {
+  input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput;
+}
+
 export interface GetConnectorToolsVariables {
   editingContextId: string;
   representationId: string;
@@ -42,33 +46,6 @@ export interface GQLToolVariable {
 
 export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
-export interface GetConnectorToolsData {
-  viewer: GQLViewer;
-}
-
-export interface GQLViewer {
-  editingContext: GQLEditingContext | null;
-}
-
-export interface GQLEditingContext {
-  representation: GQLRepresentationMetadata | null;
-}
-
-export interface GQLRepresentationMetadata {
-  description: GQLRepresentationDescription;
-}
-
-export interface GQLRepresentationDescription {
-  __typename: string;
-}
-
-export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  connectorTools: GQLTool[];
-}
-
-export interface GQLInvokeSingleClickOnTwoDiagramElementsToolVariables {
-  input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput;
-}
 export interface GQLInvokeSingleClickOnTwoDiagramElementsToolInput {
   id: string;
   editingContextId: string;
