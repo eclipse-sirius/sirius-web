@@ -1,0 +1,78 @@
+:author: Stéphane Bégaudeau
+:date: 2026-03-25
+:status: proposed
+:consulted: Pierre-Charles David
+:informed: Florian Rouëné
+:deciders: Stéphane Bégaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6326
+
+= (XS) Measure the performance of Sirius Web based applications
+
+== Problem
+
+We want to be able to measure the performance of Sirius Web based applications.
+We need to measure and track the changes in the performance of our application over time to be able to detect potential regressions, identify major performance issues and to track the progress on any future performance improvements.
+
+We don't know yet what kind of performance issues are the most important and what we want to focus on.
+As such, the performance test suites should help us evaluate various aspect of the performance of the application such as:
+
+- latency
+- throughput
+- network usage
+- cpu usage
+- memory usage
+
+
+== Key Result
+
+We should have a tool and some patterns to perform performance testing.
+It should allow us to measure the performance of the GraphQL HTTP API, the REST API and the WebSocket API simultaneously in one test if necessary.
+It should provide us with clear reports allowing us to track the performance of various use cases over time.
+We should be able to have keep some history of those performance reports.
+This history could be maintained manually in another document for now.
+We should keep a history of those performance reports to track the evolution of the performance of our application over time and to be able to identify potential regressions.
+
+The solution must be applicable to Sirius Web and downstream projects.
+It should be possible to reuse fragments of performance tests from Sirius Web in downstream applications.
+Those fragments should share the same philosophy as our reusable tests services such as query runners with the minimal amount of coupling necessary.
+
+
+=== Acceptance Criteria
+
+The performance test suites should be executable locally with a development instance.
+Such an instance should be able to have the frontend and backend running on two different ports (e.g. http://localhost:5173 and http://localhost:8080).
+They should also be able to run with a production instance where everything is packed into one executable.
+
+The performance test suites should also run during our continuous integration process.
+
+
+== Solution
+
+We will create a set of performance test suites based on reusable fragments that can be composed to write complex tests.
+It should also help initialize the state of the application with data that matches real usage patterns of Sirius Web.
+
+
+=== Scenario
+
+Sirius Web contributors should be able to write new performance tests and run existing ones.
+The manipulation of those performance tests should be straightforward and documented.
+
+
+=== Breadboarding
+
+No user interface needed
+
+
+=== Cutting backs
+
+We should be able to see a code coverage report of the application after the execution of the performance test suites to evaluate the parts of the application that have not be covered by the tests.
+
+
+== Rabbit holes
+
+We may identify some performance issues during our tests, we may not solve them but we will track them using Github issues.
+
+
+== No-gos
+
+None
