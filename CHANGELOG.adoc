@@ -70,6 +70,7 @@ Switch all usage of the logger to the fluent API to prepare for the addition of 
 - https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Move the selection dialog default settings to the backend
 Improve the log message used when logging exceptions.
 - https://github.com/eclipse-sirius/sirius-web/issues/6366[#6366] [diagram] Extract layout tools in several hooks.
+- https://github.com/eclipse-sirius/sirius-web/issues/6336[#6336] [diagram] Move the retrieval of the connector tools in a dedicated hook.
 
 
 
