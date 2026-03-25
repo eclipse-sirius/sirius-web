@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import { GQLNodeDescription } from './useConnector.types';
 
 const defaultValue: ConnectorContextValue = {
   connection: null,
-  position: null,
+  position: { x: 0, y: 0 },
   candidates: [],
   isNewConnection: false,
   setConnection: () => {},
@@ -37,7 +37,7 @@ export const ConnectorContext = React.createContext<ConnectorContextValue>(defau
 export const ConnectorContextProvider = ({ children }: ConnectorContextProviderProps) => {
   const [state, setState] = useState<ConnectorContextProviderState>({
     connection: null,
-    position: null,
+    position: { x: 0, y: 0 },
     candidates: [],
     isNewConnection: false,
   });

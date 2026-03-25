@@ -99,8 +99,6 @@ export const useConnector = (): UseConnectorValue => {
     []
   );
 
-  const onConnectorContextualMenuClose = () => resetConnection();
-
   const onConnectionStartElementClick = useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (event.button === 0) {
       setIsNewConnection(true);
@@ -137,7 +135,7 @@ export const useConnector = (): UseConnectorValue => {
     onConnect,
     onConnectStart,
     onConnectEnd,
-    onConnectorContextualMenuClose,
+    onConnectorContextualMenuClose: resetConnection,
     onConnectionStartElementClick,
     connection,
     position,
