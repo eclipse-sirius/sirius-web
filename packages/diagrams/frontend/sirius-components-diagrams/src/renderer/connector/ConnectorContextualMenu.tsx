@@ -11,69 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, useQuery } from '@apollo/client';
 import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
-import { memo, useContext, useEffect } from 'react';
-import { DiagramContext } from '../../contexts/DiagramContext';
-import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { memo, useEffect } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import {
-  ConnectorContextualMenuProps,
-  GetConnectorToolsData,
-  GetConnectorToolsVariables,
-  GQLDiagramDescription,
-  GQLRepresentationDescription,
-  GQLTool,
-} from './ConnectorContextualMenu.types';
+import { ConnectorContextualMenuProps, GQLTool } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
+import { useConnectorPaletteContents } from './useConnectorPaletteContents';
 import { useSingleClickOnTwoDiagramElementTool } from './useSingleClickOnTwoDiagramElementTool';
 import { useTemporaryEdge } from './useTemporaryEdge';
 
-export const getConnectorToolsQuery = gql`
-  query getConnectorTools(
-    $editingContextId: ID!
-    $representationId: ID!
-    $sourceDiagramElementId: ID!
-    $targetDiagramElementId: ID!
-  ) {
-    viewer {
-      editingContext(editingContextId: $editingContextId) {
-        representation(representationId: $representationId) {
-          description {
-            ... on DiagramDescription {
-              connectorTools(
-                sourceDiagramElementId: $sourceDiagramElementId
-                targetDiagramElementId: $targetDiagramElementId
-              ) {
-                id
-                label
-                iconURL
-                ... on SingleClickOnTwoDiagramElementsTool {
-                  dialogDescriptionId
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
-const isDiagramDescription = (
-  representationDescription: GQLRepresentationDescription
-): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
-
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
-  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { connection, position, onConnectorContextualMenuClose } = useConnector();
   const { addTempConnectionLine, removeTempConnectionLine } = useTemporaryEdge();
-  const { addMessages, addErrorMessage } = useMultiToast();
+  const { addMessages } = useMultiToast();
   const { screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { invokeConnectorTool, data: invokeSingleClickOnTwoDiagramElementToolCalled } =
     useSingleClickOnTwoDiagramElementTool();
@@ -89,29 +44,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   const sourceDiagramElementId = connectionSource?.dataset.id ?? '';
   const targetDiagramElementId = connectionTarget?.dataset.id ?? '';
 
-  const variables: GetConnectorToolsVariables = {
-    editingContextId,
-    representationId: diagramId,
-    sourceDiagramElementId,
-    targetDiagramElementId,
-  };
-  const { loading, data, error } = useQuery<GetConnectorToolsData, GetConnectorToolsVariables>(getConnectorToolsQuery, {
-    variables,
-    skip: !connectionSource || !connectionTarget,
-  });
-
-  useEffect(() => {
-    if (error) {
-      addErrorMessage(error.message);
-    }
-  }, [error]);
-
-  const connectorTools: GQLTool[] = [];
-  const representationDescription: GQLRepresentationDescription | null | undefined =
-    data?.viewer.editingContext?.representation?.description;
-  if (representationDescription && isDiagramDescription(representationDescription)) {
-    representationDescription.connectorTools.forEach((tool) => connectorTools.push(tool));
-  }
+  const { connectorTools, loading } = useConnectorPaletteContents(sourceDiagramElementId, targetDiagramElementId);
 
   useEffect(() => {
     if (connectorTools.length > 1) {
@@ -120,11 +53,10 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   }, [connection, connectorTools.length]);
 
   useEffect(() => {
-    if (!loading && connection && data && connectorTools.length === 0) {
-      onConnectorContextualMenuClose();
+    if (!loading && connection && connectorTools.length === 0) {
       addMessages([{ body: 'No edge found between source and target selected', level: 'WARNING' }]);
     }
-  }, [loading, data, connection, connectorTools.length]);
+  }, [loading, connectorTools, connection, connectorTools.length]);
 
   useEffect(() => {
     return () => removeTempConnectionLine();
@@ -141,7 +73,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
     invokeConnectorTool(tool, sourceDiagramElementId, targetDiagramElementId, cursorPositionX, cursorPositionY);
   };
 
-  if (!data || connectorTools.length <= 1) {
+  if (!connectorTools || connectorTools.length <= 1) {
     return null;
   }
 
