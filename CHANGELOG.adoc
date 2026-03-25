@@ -4,7 +4,7 @@
 
 === Pitches
 
-
+- Measure the performance of Sirius Web based applications
 
 
 === Architectural decision records
