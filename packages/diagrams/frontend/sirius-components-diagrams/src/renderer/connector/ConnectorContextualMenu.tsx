@@ -32,6 +32,7 @@ import {
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
 import { useSingleClickOnTwoDiagramElementTool } from './useSingleClickOnTwoDiagramElementTool';
+import { useTemporaryEdge } from './useTemporaryEdge';
 
 export const getConnectorToolsQuery = gql`
   query getConnectorTools(
@@ -70,8 +71,8 @@ const isDiagramDescription = (
 
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
-  const { connection, position, onConnectorContextualMenuClose, addTempConnectionLine, removeTempConnectionLine } =
-    useConnector();
+  const { connection, position, onConnectorContextualMenuClose } = useConnector();
+  const { addTempConnectionLine, removeTempConnectionLine } = useTemporaryEdge();
   const { addMessages, addErrorMessage } = useMultiToast();
   const { screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { invokeConnectorTool, data: invokeSingleClickOnTwoDiagramElementToolCalled } =
@@ -114,7 +115,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
 
   useEffect(() => {
     if (connectorTools.length > 1) {
-      addTempConnectionLine();
+      addTempConnectionLine(sourceDiagramElementId, targetDiagramElementId);
     }
   }, [connection, connectorTools.length]);
 
