@@ -9,7 +9,7 @@
 
 === Architectural decision records
 
-
+- [ADR-222] Allow to contribute query result actions
 
 
 === Deprecation warning

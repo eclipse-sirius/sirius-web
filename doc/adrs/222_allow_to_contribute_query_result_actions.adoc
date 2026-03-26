@@ -1,0 +1,61 @@
+= ADR-222 - Allow to contribute query result actions
+
+== Context
+
+The _Export as CSV_ button in the query view is hardcoded in Sirius Web's frontend.
+Downstream applications may want to add other actions to perform on query results, such as exporting to a different format, or using the results as input for other operations (e.g. create a representation based on the query).
+Sirius Web should provide a way to contribute these actions.
+
+== Decision
+
+=== Frontend
+
+We will replace the existing button with a split button.
+We will add the following extension point to let downstream applications contribute buttons to the query view.
+
+[source, typescript]
+====
+export const queryResultButtonExtensionPoint: DataExtensionPoint<Array<QueryResultButtonContribution>> = {
+  identifier: 'queryView#resultButton',
+  fallback: [],
+};
+
+export interface QueryResultButtonContribution {
+  label: string;
+  component: React.ComponentType<QueryResultButtonComponentProps>;
+}
+
+export interface QueryResultButtonComponentProps {
+  objectIds: string[];
+}
+====
+
+The `objectIds` parameter corresponds to the identifiers of the objects displayed in the query view result section.
+The `QueryResultButtonContribution` provides a `label` and a `component`.
+The `label` will be used in the popper menu of the split button to display the option to the end user when clicking on the expand icon of the split button.
+The `component` will be used to replace the button part of the split button once the action has been selected.
+
+Note that this solution expects downstream applications to provide a `Button` as their `component` to maintain the look and feel of the split button when changing the selected option.
+
+The existing _Export as CSV_ button will be contributed through the `queryResultButtonExtensionPoint` to validate the implementation.
+
+=== GraphQL
+
+No change in the GraphQL schemas.
+
+=== Backend
+
+No change in the backend: the existing _Export as CSV_ button will perform the same action as before.
+An additional contribution can be provided to fully test the behavior of the split button.
+
+== Consequences
+
+None.
+
+== Cutting backs
+
+None.
+
+== Status
+
+Proposed.
