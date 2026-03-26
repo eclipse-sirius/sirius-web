@@ -46,7 +46,7 @@ test.describe('edge on edge', () => {
     await playwrightNode2a.nodeLocator.hover({ position: { x: 10, y: 10 } });
     await playwrightNode2a.nodeLocator.hover({ position: { x: 50, y: 50 } });
     await page.mouse.up();
-    await page.getByTestId('connectorContextualMenu-E1toE2A').click();
+    await page.getByTestId('tool-E1toE2A').click();
     await expect(edges).toHaveCount(1);
     //Create edge to node
     await expect(page.getByTestId('creationhandle--right')).not.toBeAttached();
@@ -67,7 +67,7 @@ test.describe('edge on edge', () => {
       .first()
       .hover({ position: { x: 50, y: 10 }, force: true });
     await page.mouse.up();
-    await page.getByTestId('connectorContextualMenu-E2ToEdge1A').click();
+    await page.getByTestId('tool-E2ToEdge1A').click();
     await expect(edges).toHaveCount(3);
   });
 
@@ -85,7 +85,7 @@ test.describe('edge on edge', () => {
     await playwrightNode2a.nodeLocator.hover({ position: { x: 10, y: 10 } });
     await playwrightNode2a.nodeLocator.hover({ position: { x: 50, y: 50 } });
     await page.mouse.up();
-    await page.getByTestId('connectorContextualMenu-E1toE2A').click();
+    await page.getByTestId('tool-E1toE2A').click();
     await expect(edges).toHaveCount(1);
 
     //Create node to node 2
@@ -95,7 +95,7 @@ test.describe('edge on edge', () => {
     await playwrightNode2a.nodeLocator.hover({ position: { x: 10, y: 10 } });
     await playwrightNode2a.nodeLocator.hover({ position: { x: 50, y: 50 } });
     await page.mouse.up();
-    await page.getByTestId('connectorContextualMenu-E1toE2B').click();
+    await page.getByTestId('tool-E1toE2B').click();
     await expect(edges).toHaveCount(2);
   });
 });

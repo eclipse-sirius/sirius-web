@@ -64,6 +64,7 @@ Contributions have to return null in their component if they are not candidate o
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6540[#6540] [diagram] Use the palette to render connector tools
 
 
 
