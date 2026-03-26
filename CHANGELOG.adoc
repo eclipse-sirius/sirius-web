@@ -33,8 +33,7 @@ This will be used as an inspiration for the evolution of other similar services 
 === Dependency update
 
 - [releng] Switch to lexical 0.42.0
-
-
+- [releng] Switch to `jacoco-maven-plugin` 0.8.14
 
 === Bug fixes
 
