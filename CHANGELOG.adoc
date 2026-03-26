@@ -25,7 +25,17 @@
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6055[#6055] [releng] As of version 2026.7.0, Sirius Web now requires **Java 21** or later.
-- [releng] Switch to https://github.com/vitejs/vite/releases/tag/v8.0.13[Vite 8.0.13] and https://github.com/vitejs/vite-plugin-react/releases/tag/plugin-react%406.0.2[@vitejs/plugin-react 6.0.2]
+- [releng] Switch to https://github.com/vitejs/vite/releases/tag/v8.0.13[Vite 8.0.13] and https://github.com/vitejs/vite-plugin-react/releases/tag/plugin-react%406.0.2[@vitejs/plugin-react 6.0.2] 
+- [releng] Switch to `@fontsource/roboto` v5.2.10.
+An issue was present in the way fonts were declared in Sirius Web.
+One one side, some legacy code had a dependency to Lato which has never been used since the switch to MUI years ago (this has been removed).
+On another side, we had a MUI theme declaring that the font family was `Roboto, Helvetica, Arial, sans-serif` (the default MUI behavior).
+And finally, we had a dependency to `Roboto` which was not used at all.
+As a result, those who had `Roboto` installed on their machine could view Sirius Web using `Roboto`, otherwise it would fall back to `Helvetica`, `Arial` or some basic `sans-serif` fonts.
+This could massively change the appearance of Sirius Web depending on the machine.
+The situation is now clear, our theme is using `Roboto` so we are loading `Roboto` and everybody should see Sirius Web the same way.
+In the case of Sirius Web, we now have import declarations such as `import '@fontsource/roboto/300.css';` for the `300`, `400`, `500` and `700` font weights in our `index.tsx` given that our MUI theme is using Roboto with those specific font weights.
+The font weights used in the default MUI theme can be found here[https://mui.com/material-ui/customization/default-theme].
 
 
 === Bug fixes
