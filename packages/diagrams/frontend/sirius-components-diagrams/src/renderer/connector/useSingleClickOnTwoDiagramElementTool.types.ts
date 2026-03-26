@@ -14,13 +14,7 @@ import { GQLErrorPayload } from '@eclipse-sirius/sirius-components-core';
 import { GQLTool, GQLToolVariable } from '../palette/Palette.types';
 
 export interface UseSingleClickOnTwoDiagramElementToolValue {
-  invokeConnectorTool: (
-    tool: GQLTool,
-    sourceDiagramElementId: string,
-    targetDiagramElementId: string,
-    x: number,
-    y: number
-  ) => void;
+  invokeConnectorTool: (tool: GQLTool) => void;
   loading: boolean;
   data: GQLInvokeSingleClickOnTwoDiagramElementsToolData | null;
 }

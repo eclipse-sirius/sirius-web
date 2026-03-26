@@ -43,7 +43,8 @@ import { useStore } from '../representation/useStore';
 import { Diagram, DiagramRendererProps, EdgeData, NodeData, ReactFlowPropsCustomizer } from './DiagramRenderer.types';
 import { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './DiagramRendererExtensionPoints';
 import { useBorderChange } from './border/useBorderChange';
-import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
+import { ConnectorPalette } from './connector/ConnectorPalette';
+import { useConnectorPalette } from './connector/context/useConnectorPalette';
 import { useConnector } from './connector/useConnector';
 import { useResetXYFlowConnection } from './connector/useResetXYFlowConnection';
 import { DebugPanel } from './debug/DebugPanel';
@@ -440,7 +441,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { nodesDraggable } = useNodesDraggable();
 
-  const { isOpened } = useDiagramPalette();
+  const { isOpened: isDiagramPaletteOpened } = useDiagramPalette();
+  const { isOpened: isConnectorPaletteOpened } = useConnectorPalette();
 
   const { onEdgeContextMenu, onNodeContextMenu, onPaneContextMenu, onSelectionContextMenu } =
     useOnRightClickElement(selectedElementsIds);
@@ -514,14 +516,14 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           <Background style={{ background }} color="transparent" />
         )}
         {diagramDescription.toolbar ? <DiagramToolbar diagramToolbar={diagramDescription.toolbar} /> : null}
-        {isOpened ? (
+        {isDiagramPaletteOpened ? (
           <DiagramPalette
             diagramId={diagramRefreshedEventPayload.diagram.id}
             diagramTargetObjectId={diagramRefreshedEventPayload.diagram.targetObjectId}
           />
         ) : null}
         {diagramDescription.debug ? <DebugPanel reactFlowWrapper={ref} /> : null}
-        <ConnectorContextualMenu />
+        {isConnectorPaletteOpened ? <ConnectorPalette /> : null}
         {isHelperLineEnabled ? <HelperLines horizontal={horizontalHelperLine} vertical={verticalHelperLine} /> : null}
         {isMiniMapVisible && (
           <MiniMap pannable zoomable zoomStep={2} style={{ width: 150, height: 100, opacity: 0.75 }} />

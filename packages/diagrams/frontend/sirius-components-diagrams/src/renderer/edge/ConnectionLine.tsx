@@ -22,10 +22,9 @@ import {
   useStoreApi,
   useUpdateNodeInternals,
 } from '@xyflow/react';
-import React, { memo, useContext, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
-import { ConnectorContext } from '../connector/ConnectorContext';
-import { ConnectorContextValue } from '../connector/ConnectorContext.types';
+import { useConnectorPalette } from '../connector/context/useConnectorPalette';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
@@ -59,7 +58,7 @@ export const ConnectionLine = memo(
   }: ConnectionLineComponentProps<Node<NodeData>>) => {
     const theme = useTheme();
     const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-    const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
+    const { candidateDescriptionIds } = useConnectorPalette();
     const { diagramDescription } = useDiagramDescription();
     const { setNodes, getEdge, getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const updateNodeInternals = useUpdateNodeInternals();
@@ -139,7 +138,7 @@ export const ConnectionLine = memo(
       let isNodeCandidate = false;
 
       while (!isNodeCandidate && !!candidate) {
-        isNodeCandidate = candidates.map((candidate) => candidate.id).includes(candidate.data.descriptionId);
+        isNodeCandidate = candidateDescriptionIds.includes(candidate.data.descriptionId);
         if (isNodeCandidate && candidate && candidate.width && candidate.height) {
           const pointToSnap = getNearestPointInPerimeter(
             candidate.internals.positionAbsolute.x,

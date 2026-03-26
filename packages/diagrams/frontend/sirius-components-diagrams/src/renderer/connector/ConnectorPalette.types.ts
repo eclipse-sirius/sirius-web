@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,5 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLTool } from '../palette/Palette.types';
 
-export interface DiagramToolExecutorContextValue {
-  executeTool: (
-    x: number,
-    y: number,
-    diagramElementIds: string[],
-    targetObjectId: string,
-    onDirectEditClick: () => void,
-    tool: GQLTool
-  ) => void;
-  invokeConnectorTool: (tool: GQLTool) => void;
-}
-
-export interface DiagramToolExecutorContextProviderProps {
-  children?: React.ReactNode;
-}
+export interface ConnectorPaletteProps {}

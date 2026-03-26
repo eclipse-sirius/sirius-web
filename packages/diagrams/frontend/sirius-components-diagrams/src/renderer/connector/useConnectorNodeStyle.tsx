@@ -15,22 +15,17 @@ import { useTheme } from '@mui/material/styles';
 import { useContext, useMemo } from 'react';
 import { NodeContext } from '../node/NodeContext';
 import { NodeContextValue } from '../node/NodeContext.types';
-import { ConnectorContext } from './ConnectorContext';
-import { ConnectorContextValue } from './ConnectorContext.types';
-import { useConnector } from './useConnector';
+import { useConnectorPalette } from './context/useConnectorPalette';
 import { UseConnectorNodeStyleValue } from './useConnectorStyle.types';
 
 export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): UseConnectorNodeStyleValue => {
   const theme = useTheme();
-  const { isConnectionInProgress } = useConnector();
-  const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { candidateDescriptionIds, isConnectionInProgress } = useConnectorPalette();
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
-
   const style: React.CSSProperties = {};
+
   if (isConnectionInProgress) {
-    const isConnectionCompatibleNode = Boolean(
-      candidates.find((nodeDescription) => nodeDescription.id === descriptionId)
-    );
+    const isConnectionCompatibleNode = candidateDescriptionIds.includes(descriptionId);
     const isSelectedNode = hoveredNode?.id === nodeId;
     if (isConnectionCompatibleNode) {
       if (isSelectedNode) {
@@ -47,7 +42,7 @@ export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): Us
 
   const memoizedStyle = useMemo(
     () => style,
-    [candidates.map((candidate) => candidate.id).join('-'), isConnectionInProgress, hoveredNode?.id]
+    [candidateDescriptionIds.join('-'), isConnectionInProgress, hoveredNode?.id]
   );
 
   return { style: memoizedStyle };
