@@ -98,6 +98,6 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
 });
 
 export const ConnectorContextualMenu = memo(({}: ConnectorContextualMenuProps) => {
-  const { isConnectionInProgress } = useConnector();
-  return isConnectionInProgress() ? <ConnectorContextualMenuComponent /> : null;
+  const { connection } = useConnector();
+  return !!connection ? <ConnectorContextualMenuComponent /> : null;
 });

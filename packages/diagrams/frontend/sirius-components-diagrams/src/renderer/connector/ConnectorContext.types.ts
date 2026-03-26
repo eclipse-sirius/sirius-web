@@ -18,11 +18,10 @@ export interface ConnectorContextValue {
   connection: Connection | null;
   position: XYPosition;
   candidates: GQLNodeDescription[];
-  isNewConnection: boolean;
+  isConnectionInProgress: boolean;
   setConnection: (connection: Connection) => void;
   setPosition: (position: XYPosition) => void;
   setCandidates: (candidates: GQLNodeDescription[]) => void;
-  setIsNewConnection: (isNewConnection: boolean) => void;
   resetConnection: () => void;
 }
 

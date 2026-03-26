@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo and others.
+ * Copyright (c) 2023, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Handle, Position } from '@xyflow/react';
-import React, { memo, useMemo } from 'react';
-import { useConnector } from '../connector/useConnector';
+import { Handle, Position, ReactFlowState, useStore } from '@xyflow/react';
+import React, { memo } from 'react';
 import { ConnectionTargetHandleProps } from './ConnectionTargetHandle.types';
 import { useRefreshTargetHandles } from './useRefreshTargetHandles';
 
@@ -35,18 +34,15 @@ const targetTempHandleStyle: React.CSSProperties = {
   opacity: 0,
 };
 
+const isConnectionInProgressSelector = (state: ReactFlowState) => state.connection.inProgress;
+
 export const ConnectionTargetHandle = memo(({ nodeId }: ConnectionTargetHandleProps) => {
-  const { isConnectionInProgress, isReconnectionInProgress } = useConnector();
-
-  const shouldRender = useMemo(() => {
-    return isConnectionInProgress() || isReconnectionInProgress();
-  }, [isConnectionInProgress(), isReconnectionInProgress()]);
-
-  useRefreshTargetHandles(nodeId, shouldRender);
+  const isConnectionInProgress = useStore((state) => isConnectionInProgressSelector(state));
+  useRefreshTargetHandles(nodeId, isConnectionInProgress);
 
   return (
     <>
-      {shouldRender ? (
+      {isConnectionInProgress ? (
         <>
           <Handle
             id={`handle--${nodeId}--temp--top`}
