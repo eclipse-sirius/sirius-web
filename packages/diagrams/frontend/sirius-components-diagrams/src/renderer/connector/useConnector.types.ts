@@ -11,18 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Connection, OnConnect, OnConnectEnd, OnConnectStart, XYPosition } from '@xyflow/react';
+import { OnConnect, OnConnectEnd, OnConnectStart } from '@xyflow/react';
 import { GQLTool } from '../palette/Palette.types';
 
 export interface UseConnectorValue {
   onConnect: OnConnect;
   onConnectStart: OnConnectStart;
   onConnectEnd: OnConnectEnd;
-  onConnectorContextualMenuClose: () => void;
-  connection: Connection | null;
-  position: XYPosition;
-  isConnectionInProgress: boolean;
-  candidates: GQLNodeDescription[];
 }
 
 export interface GQLGetToolSectionsData {
