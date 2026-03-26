@@ -62,6 +62,20 @@ test.describe('edge-handle', () => {
     expect(csAfter.cx).toBe(handleCXBefore);
   });
 
+  test('when a connection starts the target handles are rendered, then when the connection ends the target handles are not rendered', async ({
+    page,
+  }) => {
+    await expect(page.locator('[data-handleid$="target"]')).toHaveCount(0);
+    const playwrightNode1a = new PlaywrightNode(page, 'Entity1');
+    await playwrightNode1a.click();
+    await page.getByTestId('creationhandle-left').hover();
+    await page.mouse.down();
+    await expect(page.locator('[data-handleid$="target"]')).toHaveCount(2);
+    await playwrightNode1a.nodeLocator.hover();
+    await page.mouse.up();
+    await expect(page.locator('[data-handleid$="target"]')).toHaveCount(0);
+  });
+
   test('when we select and edge, the handle style is updated', async ({ page }) => {
     const playwrightNode = new PlaywrightNode(page, 'Entity2');
     await playwrightNode.click();

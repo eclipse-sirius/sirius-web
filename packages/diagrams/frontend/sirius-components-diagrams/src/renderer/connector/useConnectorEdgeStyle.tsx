@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,15 +15,16 @@ import { useTheme } from '@mui/material/styles';
 import { useContext, useMemo } from 'react';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
+import { useConnector } from './useConnector';
 import { UseConnectorEdgeStyleValue } from './useConnectorEdgeStyle.types';
 
 export const useConnectorEdgeStyle = (descriptionId: string, isHovered: boolean): UseConnectorEdgeStyleValue => {
   const theme = useTheme();
-
-  const { candidates, isNewConnection } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { isConnectionInProgress } = useConnector();
+  const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
 
   const style: React.CSSProperties = {};
-  if (isNewConnection) {
+  if (isConnectionInProgress) {
     const isConnectionCompatibleNode = Boolean(
       candidates.find((nodeDescription) => nodeDescription.id === descriptionId)
     );
@@ -43,7 +44,7 @@ export const useConnectorEdgeStyle = (descriptionId: string, isHovered: boolean)
 
   const memoizedStyle = useMemo(
     () => style,
-    [candidates.map((candidate) => candidate.id).join('-'), isNewConnection, isHovered]
+    [candidates.map((candidate) => candidate.id).join('-'), isConnectionInProgress, isHovered]
   );
 
   return { style: memoizedStyle };

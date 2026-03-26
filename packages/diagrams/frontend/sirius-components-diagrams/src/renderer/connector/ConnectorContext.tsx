@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Connection, XYPosition } from '@xyflow/react';
+import { Connection, ReactFlowState, useStore, XYPosition } from '@xyflow/react';
 import React, { useState } from 'react';
 import {
   ConnectorContextProviderProps,
@@ -24,17 +24,21 @@ const defaultValue: ConnectorContextValue = {
   connection: null,
   position: { x: 0, y: 0 },
   candidates: [],
-  isNewConnection: false,
+  isConnectionInProgress: false,
   setConnection: () => {},
   setPosition: () => {},
   setCandidates: () => {},
   resetConnection: () => {},
-  setIsNewConnection: () => {},
 };
 
 export const ConnectorContext = React.createContext<ConnectorContextValue>(defaultValue);
 
+const isConnectionInProgressSelector = (state: ReactFlowState) =>
+  state.connection.inProgress && !!state.connection.fromHandle.id?.startsWith('creation');
+
 export const ConnectorContextProvider = ({ children }: ConnectorContextProviderProps) => {
+  const isConnectionInProgress = useStore((state) => isConnectionInProgressSelector(state));
+
   const [state, setState] = useState<ConnectorContextProviderState>({
     connection: null,
     position: { x: 0, y: 0 },
@@ -54,10 +58,6 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
     setState((prevState) => ({ ...prevState, candidates }));
   };
 
-  const setIsNewConnection = (isNewConnection: boolean) => {
-    setState((prevState) => ({ ...prevState, isNewConnection }));
-  };
-
   const resetConnection = () => {
     setState((prevState) => ({
       ...prevState,
@@ -74,12 +74,11 @@ export const ConnectorContextProvider = ({ children }: ConnectorContextProviderP
         connection: state.connection,
         position: state.position,
         candidates: state.candidates,
-        isNewConnection: state.isNewConnection,
+        isConnectionInProgress,
         setConnection,
         setPosition,
         setCandidates,
         resetConnection,
-        setIsNewConnection,
       }}>
       {children}
     </ConnectorContext.Provider>
