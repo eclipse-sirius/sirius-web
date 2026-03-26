@@ -19,11 +19,9 @@ export interface UseConnectorValue {
   onConnectStart: OnConnectStart;
   onConnectEnd: OnConnectEnd;
   onConnectorContextualMenuClose: () => void;
-  onConnectionStartElementClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   connection: Connection | null;
   position: XYPosition;
-  isConnectionInProgress: () => boolean;
-  isReconnectionInProgress: () => boolean;
+  isConnectionInProgress: boolean;
   candidates: GQLNodeDescription[];
 }
 

@@ -71,7 +71,7 @@ const connectionCreationHandleStyle = (
 export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: ConnectionCreationHandlesProps) => {
   const theme = useTheme();
   const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { onConnectionStartElementClick, isConnectionInProgress } = useConnector();
+  const { isConnectionInProgress } = useConnector();
   const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
@@ -96,7 +96,7 @@ export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: Con
   }, [candidates]);
 
   useEffect(() => {
-    if (!isConnectionInProgress()) {
+    if (!isConnectionInProgress) {
       setState((prevState) => ({
         ...prevState,
         isMouseDown: null,
@@ -104,8 +104,7 @@ export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: Con
     }
   }, [isConnectionInProgress]);
 
-  const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, position: Position) => {
-    onConnectionStartElementClick(event);
+  const handleOnMouseDown = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>, position: Position) => {
     setState((prevState) => ({
       ...prevState,
       isMouseDown: position,
