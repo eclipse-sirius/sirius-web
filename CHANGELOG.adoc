@@ -75,6 +75,7 @@ This package can thus be easily reused by those who want to integrate Markdown r
 - https://github.com/eclipse-sirius/sirius-web/issues/6461[#6461] [core] Make `IOmniboxCommandOrderer` extensible by downstream applications.
 Downstream applications can implement `IOmniboxCommandOrdererDelegate` to define their own ordering strategy.
 - https://github.com/eclipse-sirius/sirius-web/issues/6726[#6726] [releng] Start extracting the manual code annotated with '@generated NOT' from generated code into a spec package.
+- https://github.com/eclipse-sirius/sirius-web/issues/6538[#6538] [diagram] Align the lifecycle of the connector tool popup and the palette
 
 
 

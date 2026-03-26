@@ -12,11 +12,10 @@
  *******************************************************************************/
 
 import { Edge, FinalConnectionState, InternalNode, Node, OnConnectEnd, useStoreApi, XYPosition } from '@xyflow/react';
-import { useCallback, useContext } from 'react';
+import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { HandleNodeData } from '../node/HandleNode.types';
-import { ConnectorPaletteContext } from './context/ConnectorPaletteContext';
-import { ConnectorPaletteContextValue } from './context/ConnectorPaletteContext.types';
+import { useConnectorPalette } from './context/useConnectorPalette';
 import { UseConnectorValue } from './useConnector.types';
 
 const computePalettePosition = (event: MouseEvent | TouchEvent): XYPosition => {
@@ -40,8 +39,7 @@ const isHandleNode = (node: InternalNode<Node<NodeData>>): node is InternalNode<
   node.type === 'handleNode';
 
 export const useConnector = (): UseConnectorValue => {
-  const { showConnectorPalette, candidateDescriptionIds } =
-    useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
+  const { showConnectorPalette, candidateDescriptionIds } = useConnectorPalette();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = store.getState();
 
@@ -79,6 +77,7 @@ export const useConnector = (): UseConnectorValue => {
                 candidate = store.getState().nodeLookup.get(candidate.parentId || '');
               }
             }
+
             if (isNodeCandidate) {
               openPalette(event, sourceDiagramElementId, targetDiagramElementId);
             }

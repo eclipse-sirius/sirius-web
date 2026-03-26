@@ -12,15 +12,13 @@
  *******************************************************************************/
 
 import { useTheme } from '@mui/material/styles';
-import { useContext, useMemo } from 'react';
-import { ConnectorPaletteContext } from './context/ConnectorPaletteContext';
-import { ConnectorPaletteContextValue } from './context/ConnectorPaletteContext.types';
+import { useMemo } from 'react';
+import { useConnectorPalette } from './context/useConnectorPalette';
 import { UseConnectorEdgeStyleValue } from './useConnectorEdgeStyle.types';
 
 export const useConnectorEdgeStyle = (descriptionId: string, isHovered: boolean): UseConnectorEdgeStyleValue => {
   const theme = useTheme();
-  const { candidateDescriptionIds, isConnectionInProgress } =
-    useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
+  const { candidateDescriptionIds, isConnectionInProgress } = useConnectorPalette();
 
   const style: React.CSSProperties = {};
   if (isConnectionInProgress) {

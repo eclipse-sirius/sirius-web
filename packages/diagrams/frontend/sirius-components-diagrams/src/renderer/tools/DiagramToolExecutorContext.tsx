@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import React from 'react';
+import { useSingleClickOnTwoDiagramElementTool } from '../connector/useSingleClickOnTwoDiagramElementTool';
 import {
   DiagramToolExecutorContextProviderProps,
   DiagramToolExecutorContextValue,
@@ -20,13 +21,14 @@ import { useInvokePaletteTool } from './useInvokePaletteTool';
 
 const defaultValue: DiagramToolExecutorContextValue = {
   executeTool: () => {},
+  invokeConnectorTool: () => {},
 };
 
 export const DiagramToolExecutorContext = React.createContext<DiagramToolExecutorContextValue>(defaultValue);
 
 export const DiagramToolExecutorContextProvider = ({ children }: DiagramToolExecutorContextProviderProps) => {
   const { invokeTool } = useInvokePaletteTool();
-
+  const { invokeConnectorTool } = useSingleClickOnTwoDiagramElementTool();
   const executeTool = (
     x: number,
     y: number,
@@ -38,5 +40,9 @@ export const DiagramToolExecutorContextProvider = ({ children }: DiagramToolExec
     invokeTool(x, y, diagramElementIds, targetObjectId, onDirectEditClick, tool);
   };
 
-  return <DiagramToolExecutorContext.Provider value={{ executeTool }}>{children}</DiagramToolExecutorContext.Provider>;
+  return (
+    <DiagramToolExecutorContext.Provider value={{ executeTool, invokeConnectorTool }}>
+      {children}
+    </DiagramToolExecutorContext.Provider>
+  );
 };
