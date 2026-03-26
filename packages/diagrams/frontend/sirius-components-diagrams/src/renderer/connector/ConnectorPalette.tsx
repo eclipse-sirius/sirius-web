@@ -11,24 +11,24 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import { memo, useContext, useEffect } from 'react';
+import { memo, useCallback, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { Palette } from '../palette/Palette';
+import { PalettePortal } from '../palette/PalettePortal';
 import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
+import { isTool, isToolSection } from './../palette/Palette';
 import { GQLTool } from './../palette/Palette.types';
 import { ConnectorPaletteProps } from './ConnectorPalette.types';
 import { useConnectorPalette } from './context/useConnectorPalette';
+import { GQLPalette } from './useConnector.types';
 import { useConnectorPaletteContents } from './useConnectorPaletteContents';
 import { UseConnectorPaletteContentValue } from './useConnectorPaletteContents.types';
 import { useTemporaryEdge } from './useTemporaryEdge';
 
-const getToolsCount = (connectorTools: GQLTool[]): number => connectorTools.length;
+const getToolsCount = (connectorTools: GQLPalette): number =>
+  connectorTools ? connectorTools.paletteEntries.length : 0;
 
 export const ConnectorPalette = memo(({}: ConnectorPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
@@ -44,61 +44,70 @@ export const ConnectorPalette = memo(({}: ConnectorPaletteProps) => {
   const { invokeConnectorTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
   const { addTempConnectionLine, removeTempConnectionLine } = useTemporaryEdge();
 
-  const { connectorTools }: UseConnectorPaletteContentValue = useConnectorPaletteContents(
+  const { connectorPalette }: UseConnectorPaletteContentValue = useConnectorPaletteContents(
     sourceDiagramElementId || '',
     targetDiagramElementId || ''
   );
-  const toolsCount = connectorTools ? getToolsCount(connectorTools) : 0;
+  const toolsCount = connectorPalette ? getToolsCount(connectorPalette) : 0;
 
   const onClose = () => {
     hideConnectorPalette();
     removeTempConnectionLine();
   };
 
+  const onKeyDown = useCallback(
+    (event: React.KeyboardEvent<Element>) => {
+      const { key } = event;
+      if (isOpened && key === 'Escape') {
+        event.stopPropagation();
+        onClose();
+      }
+    },
+    [hideConnectorPalette, isOpened]
+  );
+
   const onToolClick = (tool: GQLTool) => {
     invokeConnectorTool(tool);
-    hideConnectorPalette();
-    removeTempConnectionLine();
+    onClose();
   };
 
   useEffect(() => {
-    if (connectorTools && getToolsCount(connectorTools) === 1) {
-      connectorTools.map(onToolClick);
+    if (connectorPalette && getToolsCount(connectorPalette) === 1) {
+      connectorPalette.quickAccessTools
+        .concat(
+          connectorPalette.paletteEntries
+            .filter(isTool)
+            .concat(connectorPalette.paletteEntries.filter(isToolSection).flatMap((toolSection) => toolSection.tools))
+        )
+        .map(onToolClick);
     } else if (
-      connectorTools &&
+      connectorPalette &&
       sourceDiagramElementId &&
       targetDiagramElementId &&
-      getToolsCount(connectorTools) > 1
+      getToolsCount(connectorPalette) > 1
     ) {
       addTempConnectionLine(sourceDiagramElementId, targetDiagramElementId);
     }
-  }, [connectorTools.length]);
+  }, [connectorPalette?.paletteEntries.length]);
 
-  const shouldRender = !!toolsCount && sourceDiagramElementId && connectorTools && isOpened && paletteX && paletteY;
-
-  const connectionTarget: HTMLElement | null = targetDiagramElementId
-    ? document.querySelector(`[data-id="${targetDiagramElementId}"]`)
-    : null;
+  const shouldRender = !!toolsCount && sourceDiagramElementId && connectorPalette && isOpened && paletteX && paletteY;
 
   if (readOnly) {
     return null;
   }
   return shouldRender ? (
-    <Menu
-      open={!!shouldRender}
-      onClose={onClose}
-      anchorEl={connectionTarget}
-      anchorReference="anchorPosition"
-      data-testid="connectorContextualMenu"
-      anchorPosition={{ left: paletteX, top: paletteY }}>
-      {connectorTools.map((tool) => (
-        <MenuItem key={tool.id} onClick={() => onToolClick(tool)} data-testid={`connectorContextualMenu-${tool.label}`}>
-          <ListItemIcon>
-            <IconOverlay iconURLs={tool.iconURL} alt={tool.label} title={tool.label} />
-          </ListItemIcon>
-          <Typography>{tool.label}</Typography>
-        </MenuItem>
-      ))}
-    </Menu>
+    <PalettePortal>
+      <div onKeyDown={onKeyDown}>
+        <Palette
+          x={paletteX}
+          y={paletteY}
+          diagramElementIds={[sourceDiagramElementId]}
+          palette={connectorPalette}
+          onToolClick={onToolClick}
+          onClose={onClose}
+          paletteToolListExtensions={[]}
+        />
+      </div>
+    </PalettePortal>
   ) : null;
 });

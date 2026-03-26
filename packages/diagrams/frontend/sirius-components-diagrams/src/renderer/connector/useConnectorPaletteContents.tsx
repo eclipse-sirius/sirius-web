@@ -17,6 +17,7 @@ import { useContext, useEffect } from 'react';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { GQLPalette } from '../palette/Palette.types';
 import {
   GetConnectorToolsData,
   GetConnectorToolsVariables,
@@ -95,5 +96,15 @@ export const useConnectorPaletteContents = (
     }
   }, [paletteError]);
 
-  return { connectorTools, loading };
+  let connectorPalette: GQLPalette | null = null;
+
+  if (connectorTools) {
+    connectorPalette = {
+      id: `${sourceDiagramElementId}-${targetDiagramElementId}`,
+      paletteEntries: connectorTools,
+      quickAccessTools: [],
+    };
+  }
+
+  return { connectorPalette, loading };
 };

@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLPalette } from '../palette/Palette.types';
+
 export interface GetConnectorToolsVariables {
   editingContextId: string;
   representationId: string;
@@ -19,7 +21,7 @@ export interface GetConnectorToolsVariables {
 }
 
 export interface UseConnectorPaletteContentValue {
-  connectorTools: GQLTool[];
+  connectorPalette: GQLPalette | null;
   loading: boolean;
 }
 

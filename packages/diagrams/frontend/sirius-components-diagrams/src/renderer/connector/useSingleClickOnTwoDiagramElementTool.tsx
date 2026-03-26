@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, useReactFlow, useStoreApi } from '@xyflow/react';
+import { Edge, Node, useStoreApi, useViewport } from '@xyflow/react';
 import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -86,7 +86,7 @@ export const useSingleClickOnTwoDiagramElementTool = (): UseSingleClickOnTwoDiag
   } = useConnectorPalette();
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-  const { screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
   const invokeSingleClickOnTwoDiagramElementsTool = (input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput) =>
     invokeTool({ variables: { input } });
 
@@ -143,7 +143,12 @@ export const useSingleClickOnTwoDiagramElementTool = (): UseSingleClickOnTwoDiag
   };
 
   const invokeToolMutation = (tool: GQLTool, variables: GQLToolVariable[]) => {
-    let { x, y } = screenToFlowPosition({ x: toolX || 0, y: toolY || 0 });
+    let x: number = toolX || 0;
+    let y: number = toolY || 0;
+    if (viewportZoom !== 0 && x && y) {
+      x = (x - viewportX) / viewportZoom;
+      y = (y - viewportY) / viewportZoom;
+    }
     const target = store.getState().nodeLookup.get(targetDiagramElementId || '');
 
     if (target) {
