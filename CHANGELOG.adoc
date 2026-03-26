@@ -34,7 +34,7 @@
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6540[#6540] [diagram] Use the palette to render connector tools
 
 
 === Improvements
