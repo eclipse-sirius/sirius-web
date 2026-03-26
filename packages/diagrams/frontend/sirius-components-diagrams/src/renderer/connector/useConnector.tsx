@@ -30,17 +30,17 @@ import { EdgeAnchorNodeCreationHandlesData } from '../node/EdgeAnchorNodeCreatio
 import { useConnectorPalette } from './context/useConnectorPalette';
 import { UseConnectorValue } from './useConnector.types';
 
-const computePalettePosition = (event: MouseEvent | TouchEvent): XYPosition => {
+const computePalettePosition = (event: MouseEvent | TouchEvent, bounds: DOMRect | undefined): XYPosition => {
   if ('clientX' in event && 'clientY' in event) {
     return {
-      x: event.clientX,
-      y: event.clientY,
+      x: event.clientX - (bounds?.left ?? 0),
+      y: event.clientY - (bounds?.top ?? 0),
     };
   } else if ('touches' in event) {
     const touchEvent = event as TouchEvent;
     return {
-      x: touchEvent.touches[0]?.clientX || 0,
-      y: touchEvent.touches[0]?.clientY || 0,
+      x: touchEvent.touches[0]?.clientX || 0 - (bounds?.left ?? 0),
+      y: touchEvent.touches[0]?.clientY || 0 - (bounds?.top ?? 0),
     };
   } else {
     return { x: 0, y: 0 };
@@ -57,7 +57,9 @@ export const useConnector = (): UseConnectorValue => {
 
   const openPalette = useCallback(
     (event: MouseEvent | TouchEvent, sourceDiagramElementId: string, targetDiagramElementId: string) => {
-      const palettePosition = computePalettePosition(event);
+      const { domNode } = store.getState();
+      const domElement = domNode?.getBoundingClientRect();
+      const palettePosition = computePalettePosition(event, domElement);
       if (!event.altKey && !event.ctrlKey) {
         event.preventDefault();
         showConnectorPalette(palettePosition.x, palettePosition.y, sourceDiagramElementId, targetDiagramElementId);
