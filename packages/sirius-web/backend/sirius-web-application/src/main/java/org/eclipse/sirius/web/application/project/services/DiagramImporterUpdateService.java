@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -75,6 +72,7 @@ import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelUnder
 import org.eclipse.sirius.components.diagrams.events.appearance.label.LabelVisibilityAppearanceChange;
 import org.eclipse.sirius.components.diagrams.layoutdata.DiagramLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.EdgeLayoutData;
+import org.eclipse.sirius.components.diagrams.layoutdata.HandleLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.LabelLayoutData;
 import org.eclipse.sirius.components.diagrams.layoutdata.NodeLayoutData;
 import org.eclipse.sirius.components.diagrams.renderer.LabelAppearanceHandler;
@@ -82,11 +80,6 @@ import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.services.api.IDiagramImporterNodeStyleAppearanceChangeHandler;
 import org.eclipse.sirius.web.application.project.services.api.IRepresentationImporterUpdateService;
-import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 
 /**
@@ -99,8 +92,6 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
     private final IEditingContextSearchService editingContextSearchService;
 
-    private final ObjectMapper objectMapper;
-
     private final IRepresentationSearchService representationSearchService;
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;
@@ -111,12 +102,9 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
 
     private final IRepresentationPersistenceService representationPersistenceService;
 
-    private final Logger logger = LoggerFactory.getLogger(DiagramImporterUpdateService.class);
-
-    public DiagramImporterUpdateService(IEditingContextSearchService editingContextSearchService, ObjectMapper objectMapper, IRepresentationSearchService representationSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, DiagramCreationService diagramCreationService, List<IDiagramImporterNodeStyleAppearanceChangeHandler> diagramImporterNodeStyleAppearanceChangeHandlers,
+    public DiagramImporterUpdateService(IEditingContextSearchService editingContextSearchService, IRepresentationSearchService representationSearchService, IRepresentationDescriptionSearchService representationDescriptionSearchService, DiagramCreationService diagramCreationService, List<IDiagramImporterNodeStyleAppearanceChangeHandler> diagramImporterNodeStyleAppearanceChangeHandlers,
             IRepresentationPersistenceService representationPersistenceService) {
         this.editingContextSearchService = Objects.requireNonNull(editingContextSearchService);
-        this.objectMapper = Objects.requireNonNull(objectMapper);
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramCreationService = Objects.requireNonNull(diagramCreationService);
@@ -171,18 +159,11 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                 var optionalRepresentationMetadataId = new UUIDParser().parse(newRepresentationId);
 
                 if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadataId.isPresent() && updatedDiagram.isPresent()) {
-                    var semanticData = AggregateReference.<SemanticData, UUID>to(optionalSemanticDataId.get());
-                    var representationMetadata = AggregateReference.<RepresentationMetadata, UUID>to(optionalRepresentationMetadataId.get());
 
                     var laidOutDiagram = Diagram.newDiagram(updatedDiagram.get())
                             .layoutData(newLayoutData)
                             .build();
-                    try {
-                        String json = this.objectMapper.writeValueAsString(laidOutDiagram);
-                        this.representationPersistenceService.save(cause, editingContext.get(), laidOutDiagram);
-                    } catch (JsonProcessingException exception) {
-                        this.logger.warn(exception.getMessage(), exception);
-                    }
+                    this.representationPersistenceService.save(cause, editingContext.get(), laidOutDiagram);
                 }
             }
         }
@@ -222,8 +203,10 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
             }
             if (newNodeLayoutId != null) {
                 var oldLayoutNodeData = oldNodeLayoutData.get(key);
+                var newHandleLayoutData = oldLayoutNodeData.handleLayoutData().stream().map(handleLayoutData -> new HandleLayoutData(edgeElementOldNewIds.get(handleLayoutData.edgeId()),
+                        handleLayoutData.position(), handleLayoutData.handlePosition(), handleLayoutData.type())).toList();
                 var newNodeLayoutData = new NodeLayoutData(newNodeLayoutId, oldLayoutNodeData.position(), oldLayoutNodeData.size(), oldLayoutNodeData.resizedByUser(),
-                        oldLayoutNodeData.movedByUser(), oldLayoutNodeData.handleLayoutData(), oldLayoutNodeData.minComputedSize());
+                        oldLayoutNodeData.movedByUser(), newHandleLayoutData, oldLayoutNodeData.minComputedSize());
                 newLayoutData.nodeLayoutData().put(newNodeLayoutId, newNodeLayoutData);
             }
         });
