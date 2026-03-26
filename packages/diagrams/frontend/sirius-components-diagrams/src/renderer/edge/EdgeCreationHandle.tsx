@@ -14,8 +14,7 @@
 import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { ConnectorPaletteContext } from '../connector/context/ConnectorPaletteContext';
-import { ConnectorPaletteContextValue } from '../connector/context/ConnectorPaletteContext.types';
+import { useConnectorPalette } from '../connector/context/useConnectorPalette';
 import { useHandles } from '../connector/useHandles';
 import { useConnectionCandidatesQuery } from '../handles/useConnectionCandidatesQuery';
 import { EdgeCreationHandleProps } from './EdgeCreationHandle.types';
@@ -25,7 +24,7 @@ export const EdgeCreationHandle = ({ edgeId, edgePath, isPathDragged }: EdgeCrea
   const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, edgeId);
   const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
-  const { setCandidateDescriptionIds } = useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
+  const { setCandidateDescriptionIds } = useConnectorPalette();
 
   // Unmount/Mount around the center of the edge while selected
   useEffect(() => {

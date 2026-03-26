@@ -23,10 +23,9 @@ import {
   useUpdateNodeInternals,
 } from '@xyflow/react';
 import { pointToRendererPoint } from '@xyflow/system';
-import React, { memo, useContext, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
-import { ConnectorPaletteContext } from '../connector/context/ConnectorPaletteContext';
-import { ConnectorPaletteContextValue } from '../connector/context/ConnectorPaletteContext.types';
+import { useConnectorPalette } from '../connector/context/useConnectorPalette';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
@@ -59,7 +58,7 @@ export const ConnectionLine = memo(
   }: ConnectionLineComponentProps<Node<NodeData>>) => {
     const theme = useTheme();
     const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-    const { candidateDescriptionIds } = useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
+    const { candidateDescriptionIds } = useConnectorPalette();
     const { diagramDescription } = useDiagramDescription();
     const { setNodes, getEdge, getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const updateNodeInternals = useUpdateNodeInternals();

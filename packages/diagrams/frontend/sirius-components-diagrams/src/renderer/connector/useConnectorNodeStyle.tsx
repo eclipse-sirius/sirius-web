@@ -15,14 +15,12 @@ import { useTheme } from '@mui/material/styles';
 import { useContext, useMemo } from 'react';
 import { NodeContext } from '../node/NodeContext';
 import { NodeContextValue } from '../node/NodeContext.types';
-import { ConnectorPaletteContext } from './context/ConnectorPaletteContext';
-import { ConnectorPaletteContextValue } from './context/ConnectorPaletteContext.types';
+import { useConnectorPalette } from './context/useConnectorPalette';
 import { UseConnectorNodeStyleValue } from './useConnectorStyle.types';
 
 export const useConnectorNodeStyle = (nodeId: string, descriptionId: string): UseConnectorNodeStyleValue => {
   const theme = useTheme();
-  const { candidateDescriptionIds, isConnectionInProgress } =
-    useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
+  const { candidateDescriptionIds, isConnectionInProgress } = useConnectorPalette();
   const { hoveredNode } = useContext<NodeContextValue>(NodeContext);
   const style: React.CSSProperties = {};
 
