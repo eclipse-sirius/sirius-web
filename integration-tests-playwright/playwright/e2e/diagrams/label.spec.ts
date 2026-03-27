@@ -275,18 +275,21 @@ test.describe('diagram - label', () => {
     await playwrightExplorer.select('diagram');
 
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    const beginLabelContentBoxBefore = await page.getByTestId('Label content - Begin').boundingBox();
-    const centerLabelContentBoxBefore = await page.getByTestId('Label content - Center').boundingBox();
-    const endLabelContentBoxBefore = await page.getByTestId('Label content - End').boundingBox();
+    const labelBegin = new PlaywrightLabel(page, 'Begin');
+    const labelCenter = new PlaywrightLabel(page, 'Center');
+    const labelEnd = new PlaywrightLabel(page, 'End');
+    const beginLabelContentBoxBefore = await labelBegin.labelContentLocator.boundingBox();
+    const centerLabelContentBoxBefore = await labelCenter.labelContentLocator.boundingBox();
+    const endLabelContentBoxBefore = await labelEnd.labelContentLocator.boundingBox();
 
     const edge = new PlaywrightEdge(page);
     await edge.openPalette();
     await expect(page.getByTestId('Reset labels sizes - Tool')).toBeAttached();
     await page.getByTestId('Reset labels sizes - Tool').click();
 
-    const beginLabelContentBoxAfter = await page.getByTestId('Label content - Begin').boundingBox();
-    const centerLabelContentBoxAfter = await page.getByTestId('Label content - Center').boundingBox();
-    const endLabelContentBoxAfter = await page.getByTestId('Label content - End').boundingBox();
+    const beginLabelContentBoxAfter = await labelBegin.labelContentLocator.boundingBox();
+    const centerLabelContentBoxAfter = await labelCenter.labelContentLocator.boundingBox();
+    const endLabelContentBoxAfter = await labelEnd.labelContentLocator.boundingBox();
 
     expect(beginLabelContentBoxAfter?.height).not.toBe(beginLabelContentBoxBefore?.height);
     expect(beginLabelContentBoxAfter?.width).not.toBe(beginLabelContentBoxBefore?.width);
