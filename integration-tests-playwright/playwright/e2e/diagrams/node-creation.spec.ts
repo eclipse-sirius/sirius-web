@@ -77,7 +77,8 @@ test.describe('diagram - node creation', () => {
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').first().click();
     const entity4SecondNode = new PlaywrightNode(page, 'Entity4', 'FreeForm', 1);
-    const reactFlowXYPositionEntity4Second = await entity4SecondNode.getReactFlowXYPosition();
+    await entity4SecondNode.waitForAnimationToFinish();
+    const reactFlowXYPositionEntity4Second = await entity4SecondNode.getReactFlowXYPosition('Entity4', false);
     const nodeGap = 25;
     expect(reactFlowXYPositionEntity4Second.y).toBe(reactFlowXYPositionEntity4First.y);
     expect(reactFlowXYPositionEntity4Second.x).toBe(

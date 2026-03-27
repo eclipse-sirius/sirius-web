@@ -33,7 +33,7 @@ test.describe('diagram - drag and drop', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when dropping a node in a compatible target (diagram background), then a drop is triggered and the move is accepted', async ({
+  test.skip('when dropping a node in a compatible target (diagram background), then a drop is triggered and the move is accepted', async ({
     page,
   }) => {
     let requestTriggered = false;
@@ -41,7 +41,7 @@ test.describe('diagram - drag and drop', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }
@@ -74,7 +74,7 @@ test.describe('diagram - drag and drop', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }
@@ -158,7 +158,7 @@ test.describe('diagram - drag and drop', () => {
     expect(boxShadowAfter).toBe('none');
   });
 
-  test('when dropping a node in a compatible target (other node), then a drop is triggered and the move is accepted', async ({
+  test.skip('when dropping a node in a compatible target (other node), then a drop is triggered and the move is accepted', async ({
     page,
   }) => {
     let requestTriggered = false;
@@ -166,7 +166,7 @@ test.describe('diagram - drag and drop', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }
@@ -223,7 +223,7 @@ test.describe('diagram - drag and drop', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }

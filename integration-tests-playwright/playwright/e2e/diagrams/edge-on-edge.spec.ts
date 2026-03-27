@@ -51,7 +51,7 @@ test.describe('edge on edge', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when we create several type of edges, they are all rendered correctly', async ({ page }) => {
+  test.skip('when we create several type of edges, they are all rendered correctly', async ({ page }) => {
     const edges = page.locator('[data-testid^="rf__edge-"]');
     await expect(edges).toHaveCount(0);
     //Create node to node

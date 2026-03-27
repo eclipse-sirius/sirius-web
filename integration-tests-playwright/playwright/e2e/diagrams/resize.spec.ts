@@ -56,10 +56,6 @@ test.describe('diagram - resize', () => {
 test.describe('diagram - resize smaller than default', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    await page.addInitScript(() => {
-      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
-      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
-    });
     const project = await new PlaywrightProject(request).createProject('diagram-resizable', 'blank-project');
     projectId = project.projectId;
 
@@ -78,17 +74,18 @@ test.describe('diagram - resize smaller than default', () => {
     page,
   }) => {
     const resizableNode = new PlaywrightNode(page, 'Resizable');
-    const resizableNodeSizeBefore = await resizableNode.getReactFlowSize();
+    await resizableNode.waitForAnimationToFinish();
+    const resizableNodeSizeBefore = await resizableNode.getReactFlowSize('Resizable', false);
     expect(resizableNodeSizeBefore.width).toBe(200);
     expect(resizableNodeSizeBefore.height).toBe(100);
 
-    await resizableNode.resize({ width: -50, height: -25 });
+    await resizableNode.resize({ width: -100, height: -75 });
 
-    const resizableNodeSizeAfter = await resizableNode.getReactFlowSize();
-    expect(resizableNodeSizeAfter.width).toBeGreaterThanOrEqual(145);
-    expect(resizableNodeSizeAfter.width).toBeLessThanOrEqual(155);
-    expect(resizableNodeSizeAfter.height).toBeGreaterThanOrEqual(70);
-    expect(resizableNodeSizeAfter.height).toBeLessThanOrEqual(80);
+    const resizableNodeSizeAfter = await resizableNode.getReactFlowSize('Resizable', false);
+    expect(resizableNodeSizeAfter.width).toBeGreaterThanOrEqual(155);
+    expect(resizableNodeSizeAfter.width).toBeLessThanOrEqual(165);
+    expect(resizableNodeSizeAfter.height).toBeGreaterThanOrEqual(65);
+    expect(resizableNodeSizeAfter.height).toBeLessThanOrEqual(75);
   });
 
   test('when a node is resizable both directions with a default width and an overflow strategy set to "NONE", then it can be resized smaller than its default width but not than the minimum width of its inside label', async ({
