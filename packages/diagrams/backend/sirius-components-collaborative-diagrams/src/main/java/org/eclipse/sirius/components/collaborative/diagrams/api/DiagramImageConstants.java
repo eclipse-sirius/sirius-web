@@ -49,6 +49,10 @@ public final class DiagramImageConstants {
 
     public static final String RESET_HANDLES = IMAGES_ROOT_FOLDER + "/reset_handles.svg";
 
+    public static final String LAYERED_SVG = IMAGES_ROOT_FOLDER + "/layered.svg";
+
+    public static final String RECTPACKING_SVG = IMAGES_ROOT_FOLDER + "/rectpacking.svg";
+
     private DiagramImageConstants() {
         // Prevent instantiation
     }

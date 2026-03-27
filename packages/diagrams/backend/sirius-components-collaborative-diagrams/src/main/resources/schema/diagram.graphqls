@@ -414,6 +414,18 @@ type SingleClickOnTwoDiagramElementsCandidate {
   targets: [DiagramElementDescription!]!
 }
 
+type LayoutOptionEntry {
+  key: String!
+  value: String!
+}
+
+type LayoutConfiguration {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  layoutOptions: [LayoutOptionEntry!]!
+}
+
 type DiagramDescription implements RepresentationDescription {
   id: ID!
   label: String!
@@ -425,6 +437,7 @@ type DiagramDescription implements RepresentationDescription {
   toolbar: DiagramToolbar
   palette(diagramElementIds: [ID!]): Palette!
   actions(diagramElementId: ID!): [Action!]!
+  layoutConfigurations: [LayoutConfiguration!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
