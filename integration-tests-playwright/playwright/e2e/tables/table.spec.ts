@@ -42,6 +42,7 @@ test.describe('table', () => {
   });
 
   test('when the representation id of a table change, then the table is not dispose', async ({ page }) => {
+    test.setTimeout(30_000); // like we explicitly wait for the dispose timeout, we need to increase the timeout
     const table = new PlaywrightTable(page);
     await expect(table.tableLocator).toBeAttached();
     await table.changeRowPerPage(5);
