@@ -150,6 +150,16 @@ public class DiagramDescriptionBuilder {
     }
 
     /**
+     * Setter for ShowMinimap.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder showMinimap(java.lang.Boolean value) {
+        this.getDiagramDescription().setShowMinimap(value);
+        return this;
+    }
+
+    /**
      * Setter for Description.
      *
      * @generated

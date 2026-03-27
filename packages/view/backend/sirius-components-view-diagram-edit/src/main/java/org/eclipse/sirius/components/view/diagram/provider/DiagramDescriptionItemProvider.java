@@ -60,6 +60,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
 
             this.addAutoLayoutPropertyDescriptor(object);
             this.addArrangeLayoutDirectionPropertyDescriptor(object);
+            this.addShowMinimapPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -87,6 +88,18 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
                 this.getString("_UI_DiagramDescription_arrangeLayoutDirection_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_arrangeLayoutDirection_feature", "_UI_DiagramDescription_type"),
                 DiagramPackage.Literals.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Show Minimap feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addShowMinimapPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_DiagramDescription_showMinimap_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramDescription_showMinimap_feature", "_UI_DiagramDescription_type"),
+                DiagramPackage.Literals.DIAGRAM_DESCRIPTION__SHOW_MINIMAP, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -168,6 +181,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         switch (notification.getFeatureID(DiagramDescription.class)) {
             case DiagramPackage.DIAGRAM_DESCRIPTION__AUTO_LAYOUT:
             case DiagramPackage.DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__SHOW_MINIMAP:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case DiagramPackage.DIAGRAM_DESCRIPTION__TOOLBAR:

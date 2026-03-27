@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * Descriptions</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout
  * Direction</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isShowMinimap <em>Show Minimap</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
@@ -159,6 +160,29 @@ public interface DiagramDescription extends RepresentationDescription {
      * @generated
      */
     void setArrangeLayoutDirection(ArrangeLayoutDirection value);
+
+    /**
+     * Returns the value of the '<em><b>Show Minimap</b></em>' attribute. The default value is <code>"true"</code>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Show Minimap</em>' attribute.
+     * @see #setShowMinimap(boolean)
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ShowMinimap()
+     * @model default="true"
+     * @generated
+     */
+    boolean isShowMinimap();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isShowMinimap
+     * <em>Show Minimap</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Show Minimap</em>' attribute.
+     * @see #isShowMinimap()
+     * @generated
+     */
+    void setShowMinimap(boolean value);
 
     /**
      * Returns the value of the '<em><b>Group Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--
