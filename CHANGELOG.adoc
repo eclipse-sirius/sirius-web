@@ -54,6 +54,7 @@ It will require contributors to specify the persons involved in the decision pro
 
 - Keep details tab open on selection change
 - Add support the for selection dialog that can be confirmed without making a selection
+- Add support for the auto-alignment edge feature
 
 
 === Architectural decision records
