@@ -22,7 +22,7 @@ import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresent
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useLayoutConfigurations } from './arrange-all/useLayoutConfigurations';
 import { useElkLayout } from './elk/useElkLayout';
-import { cleanLayoutArea, layout, prepareLayoutArea, prepareLayoutLabels } from './layout';
+import { cleanLayoutArea, layout, prepareLayoutArea, prepareLayoutLabels, prepareListNodeLayout } from './layout';
 import { RawDiagram } from './layout.types';
 import { UseLayoutState, UseLayoutValue } from './useLayout.types';
 
@@ -98,7 +98,12 @@ export const useLayout = (): UseLayoutValue => {
       }));
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
       prepareLayoutLabels(state.previousDiagram, state.diagramToLayout);
-      if (diagramDescription?.autoLayout && layoutConfigurations[0]) {
+      if (
+        layoutConfigurations[0] &&
+        (diagramDescription?.layoutOption === 'AUTO_LAYOUT' ||
+          (diagramDescription?.layoutOption === 'AUTO_UNTIL_MANUAL' && state.diagramToLayout.autoLaidOut))
+      ) {
+        prepareListNodeLayout(state.previousDiagram, state.diagramToLayout);
         elkLayout(state.diagramToLayout.nodes, state.diagramToLayout.edges, layoutConfigurations[0].layoutOptions).then(
           (layoutNodes) => {
             const updatedLayoutNodes = layoutNodes.map((n) => {

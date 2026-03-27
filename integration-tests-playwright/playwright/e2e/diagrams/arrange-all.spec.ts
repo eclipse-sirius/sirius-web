@@ -35,19 +35,20 @@ test.describe('diagram - arrange all', () => {
 
   test('when a arrange all is triggered, then a fit to screen is applied', async ({ page }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
+    const wifiNode = new PlaywrightNode(page, 'Wifi');
+    await expect(wifiNode.nodeLocator).toBeInViewport();
     //move view port to hide some nodes
     await page.getByTestId('rf__wrapper').hover({ position: { x: 10, y: 10 } });
     await page.mouse.down();
     await page.mouse.move(10, 10, { steps: 2 });
     await page.mouse.up();
 
-    await expect(page.getByTestId('FreeForm - Wifi')).not.toBeInViewport();
+    await expect(wifiNode.nodeLocator).not.toBeInViewport();
 
     await page.getByTestId('arrange-all-menu').click();
     await page.getByTestId('arrange-all-elk-layered').click();
 
-    await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
+    await expect(wifiNode.nodeLocator).toBeInViewport();
   });
 });
 

@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.AutoLayoutState;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramLayoutDataInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DiagramRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelLayoutDataInput;
@@ -155,7 +156,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable initialDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), initialPosition, initialSize, true, false, List.of(), new Size(0, 0));
-            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of());
+            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of(), AutoLayoutState.UNCHANGED);
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
@@ -184,7 +185,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable modifyDiagramLayout = () -> {
             var humanNodeLayout = new NodeLayoutDataInput(humanNodeId.get(), modifiedPosition, modifiedSize, true, false, List.of(), new Size(0, 0));
-            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of());
+            var layoutData = new DiagramLayoutDataInput(List.of(humanNodeLayout), List.of(), List.of(), AutoLayoutState.UNCHANGED);
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
@@ -254,7 +255,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable initialDiagramLayout = () -> {
             var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), initialPosition, initialSize, false, false);
-            var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
+            var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout), AutoLayoutState.UNCHANGED);
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };
@@ -282,7 +283,7 @@ public class DomainDiagramControllerTests extends AbstractIntegrationTests {
 
         Runnable modifyDiagramLayout = () -> {
             var humansLabelLayout = new LabelLayoutDataInput(humansEdgeCenterLabelId.get(), modifiedPosition, modifiedSize, true, false);
-            var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout));
+            var layoutData = new DiagramLayoutDataInput(List.of(), List.of(), List.of(humansLabelLayout), AutoLayoutState.UNCHANGED);
             var layoutInput = new LayoutDiagramInput(currentRevisionId.get(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, diagramId.get(), "refresh", layoutData);
             this.layoutDiagramMutationRunner.run(layoutInput);
         };

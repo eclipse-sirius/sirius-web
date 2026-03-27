@@ -165,6 +165,7 @@ A key binding needs to contain at least one of `Control`, `Alt`, or `Meta` to be
 - https://github.com/eclipse-sirius/sirius-web/issues/5982[#5982] [tree] Add the ability to trigger context menu entries using key bindings.
 As for diagram tools, it is now possible to add `KeyBinding` instances to context menu entries in trees.
 Note that for the moment, only entries that aren't overridden in the frontend can be triggered with key bindings, although it is possible to define key bindings for any entry.
+- https://github.com/eclipse-sirius/sirius-web/issues/6118[#6118] [diagram] Add support for auto layout until change
 
 
 === Improvements

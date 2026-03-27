@@ -77,7 +77,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
           nodes: laidOutDiagram.nodes as Node<NodeData, DiagramNodeType>[],
           edges: laidOutDiagram.edges,
         };
-        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
       });
     }
   };
@@ -147,7 +147,7 @@ export const useDistributeElements = (): UseDistributeElementsValue => {
             nodes: laidOutDiagram.nodes,
             edges: laidOutDiagram.edges,
           };
-          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'UNCHANGED');
         });
       }
     }, []);

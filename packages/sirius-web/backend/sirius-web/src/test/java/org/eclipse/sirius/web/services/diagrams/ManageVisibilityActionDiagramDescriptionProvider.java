@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.web.services.diagrams;
+
+import java.util.Objects;
+import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -26,6 +29,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularN
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
@@ -34,9 +38,6 @@ import org.eclipse.sirius.web.application.editingcontext.EditingContext;
 import org.eclipse.sirius.web.services.OnStudioTests;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Used to provide a view based diagram description to test diagrams with manage visibility actions.
@@ -76,7 +77,7 @@ public class ManageVisibilityActionDiagramDescriptionProvider implements IEditin
         viewForDiagramDesc.getDescriptions().add(this.createDiagramDescription());
 
         viewForDiagramDesc.eAllContents().forEachRemaining(eObject ->
-            eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes()))));
+                eObject.eAdapters().add(new IDAdapter(UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes()))));
 
         String resourcePath = UUID.nameUUIDFromBytes("ManageVisibilityActionDiagramDescription".getBytes()).toString();
         JsonResource resource = new JSONResourceFactory().createResourceFromPath(resourcePath);
@@ -120,7 +121,7 @@ public class ManageVisibilityActionDiagramDescriptionProvider implements IEditin
                 .domainType("papaya:Project")
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
-                .autoLayout(false)
+                .layoutOption(DiagramLayoutOption.NONE)
                 .build();
 
         return this.diagramDescription;

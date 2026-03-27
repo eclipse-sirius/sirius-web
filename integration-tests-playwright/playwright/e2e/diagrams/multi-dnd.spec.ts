@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { expect, test } from '@playwright/test';
+import { expect, test, Page } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -87,12 +87,17 @@ test.describe('diagram - drag and drop of multiple elements', () => {
     // Now, inside the diagram, select both attributes from the 'Source' entity
     const attr1NodeBefore = new PlaywrightNode(page, 'attr1', 'IconLabel');
     await attr1NodeBefore.click();
+    // Hide Node Panel Info to avoid overlap in diagram
+    const panel = page.locator('.react-flow__panel.bottom.left').first();
+    await panel.evaluate((node) => {
+      node.style.visibility = 'hidden';
+    });
 
     const attr2NodeBefore = new PlaywrightNode(page, 'attr2', 'IconLabel');
     await attr2NodeBefore.controlClick();
 
     // And move them inside the 'Target' entity
-    await attr2NodeBefore.move({ x: 400, y: 0 });
+    await attr2NodeBefore.move({ x: 10, y: -300 });
 
     await page.waitForFunction(
       () => {
@@ -148,12 +153,17 @@ test.describe('diagram - drag and drop of multiple elements', () => {
     // Now, inside the diagram, select both attributes from the 'Source' entity
     const attr1NodeBefore = new PlaywrightNode(page, 'attr1', 'IconLabel');
     await attr1NodeBefore.click();
+    // Hide Node Panel Info to avoid overlap in diagram
+    const panel = page.locator('.react-flow__panel.bottom.left').first();
+    await panel.evaluate((node) => {
+      node.style.visibility = 'hidden';
+    });
 
     const attr2NodeBefore = new PlaywrightNode(page, 'attr2', 'IconLabel');
     await attr2NodeBefore.controlClick();
 
     // And move them directly on the diagram area (not on an entity)
-    await attr2NodeBefore.move({ x: 200, y: 200 });
+    await attr2NodeBefore.move({ x: 400, y: 100 });
 
     await page.waitForFunction(
       () => {

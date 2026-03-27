@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.view.builder.providers.DefaultColorProvider
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
+import org.eclipse.sirius.components.view.diagram.DiagramLayoutOption;
 import org.eclipse.sirius.components.view.emf.diagram.IDiagramIdProvider;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
@@ -117,11 +118,11 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(domainDiagramDescription, cache));
 
         domainDiagramDescription.getNodeDescriptions().stream()
-            .filter(nodeDescription -> nodeDescription.getName().equals(EntityNodeDescriptionProvider.ENTITY_NODE_DESCRIPTION_NAME))
-            .flatMap(entityNodeScription -> entityNodeScription.getChildrenDescriptions().stream())
-            .filter(nodeDescription -> nodeDescription.getName().equals(EntityNodeDescriptionProvider.ATTRIBUTE_NODE_DESCRIPTION_NAME))
-            .findFirst()
-            .ifPresent(attributeNodeDescription -> domainDiagramDescription.getPalette().getDropNodeTool().getAcceptedNodeTypes().add(attributeNodeDescription));
+                .filter(nodeDescription -> nodeDescription.getName().equals(EntityNodeDescriptionProvider.ENTITY_NODE_DESCRIPTION_NAME))
+                .flatMap(entityNodeScription -> entityNodeScription.getChildrenDescriptions().stream())
+                .filter(nodeDescription -> nodeDescription.getName().equals(EntityNodeDescriptionProvider.ATTRIBUTE_NODE_DESCRIPTION_NAME))
+                .findFirst()
+                .ifPresent(attributeNodeDescription -> domainDiagramDescription.getPalette().getDropNodeTool().getAcceptedNodeTypes().add(attributeNodeDescription));
 
         domainView.eAllContents().forEachRemaining(eObject -> {
             var id = UUID.nameUUIDFromBytes(EcoreUtil.getURI(eObject).toString().getBytes());
@@ -138,7 +139,7 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
 
     private DiagramDescription domainDiagramDescription() {
         var newEntity = "newEntity";
-        var newEntityExpr =  "aql:newEntity";
+        var newEntityExpr = "aql:newEntity";
         var initialChangeContext = new ViewBuilders().newChangeContext()
                 .expression("aql:self")
                 .children(this.withNewEntity("NewEntity", newEntity))
@@ -185,10 +186,10 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .build();
 
         var toolbar = new DiagramBuilders().newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
-        var diagramDescription = new DiagramBuilders()
+        return new DiagramBuilders()
                 .newDiagramDescription()
                 .name("Domain")
                 .domainType("domain::Domain")
@@ -196,9 +197,8 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
                 .palette(palette)
                 .toolbar(toolbar)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.DOWN)
+                .layoutOption(DiagramLayoutOption.AUTO_UNTIL_MANUAL)
                 .build();
-
-        return diagramDescription;
     }
 
     /**
@@ -210,14 +210,14 @@ public class DomainDiagramDescriptionProvider implements IEditingContextProcesso
         fullBody.addAll(Arrays.asList(body));
 
         return new ViewBuilders().newCreateInstance()
-             .referenceName("types")
-             .typeName("domain::Entity")
-             .variableName(variableName)
-             .children(new ViewBuilders().newChangeContext()
-                     .expression("aql:" + variableName)
-                     .children(fullBody.toArray(new Operation[0]))
-                     .build())
-             .build();
+                .referenceName("types")
+                .typeName("domain::Entity")
+                .variableName(variableName)
+                .children(new ViewBuilders().newChangeContext()
+                        .expression("aql:" + variableName)
+                        .children(fullBody.toArray(new Operation[0]))
+                        .build())
+                .build();
     }
 
 
