@@ -89,6 +89,8 @@ Add log messages for the manipulation of projects
 - https://github.com/eclipse-sirius/sirius-web/issues/5646[#5646] [diagram] Don't invoke deletion command for empty diagram selection
 - https://github.com/eclipse-sirius/sirius-web/issues/6363[#6363] [test] Add new architecture tests for data fetchers.
 They ensure that each data fetcher is annotated by a data fetcher annotation and has a name matching `<Type><Field>DataFetcher`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6346[#6346] [form] Ensure forms are read-only when opened on a library editing context.
+The backend now sends a `canEdit=false` capability when subscribing to such form.
 
 
 
