@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 package org.eclipse.sirius.web.application.controllers.forms;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.eclipse.sirius.components.forms.tests.FormEventPayloadConsumer.assertRefreshedFormThat;
 
 import java.time.Duration;
@@ -23,6 +24,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import org.eclipse.sirius.components.collaborative.forms.dto.FormCapabilitiesRefreshedEventPayload;
 import org.eclipse.sirius.components.collaborative.forms.dto.FormRefreshedEventPayload;
 import org.eclipse.sirius.components.forms.AbstractWidget;
 import org.eclipse.sirius.components.forms.Group;
@@ -90,7 +92,7 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a read only object, when we subscribe to its details view, then the widget of the form are read only")
-    public void givenReadOnlyObjectWhenWeSubscribreToItsDetailsViewThenTheWidgetOfTheFormAreReadOnly() {
+    public void givenReadOnlyObjectWhenWeSubscribeToItsDetailsViewThenTheWidgetOfTheFormAreReadOnly() {
         var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.PAPAYA_LIBRARY_OBJECT_SIRIUS_WEB_TESTS_DATA.toString()));
         var input = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
         var flux = this.detailsEventSubscriptionRunner.run(input)
@@ -108,6 +110,26 @@ public class DetailsViewControllerIntegrationTests extends AbstractIntegrationTe
 
         StepVerifier.create(flux)
                 .consumeNextWith(formContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a library editing context, when we subscribe to the details view, then the form is read only")
+    public void givenLibraryEditingContextWhenWeSubscribeToDetailsViewThenFormIsReadOnly() {
+        var detailsRepresentationId = this.representationIdBuilder.buildDetailsRepresentationId(List.of(PapayaIdentifiers.PAPAYA_LIBRARY_JAVA_PACKAGE_ID.toString()));
+        var input = new DetailsEventInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_LIBRARY_EDITING_CONTEXT_ID.toString(), detailsRepresentationId);
+        var flux = this.detailsEventSubscriptionRunner.run(input).flux();
+
+        Consumer<Object> formCapabilitiesMatcher = object -> Optional.of(object)
+                .filter(FormCapabilitiesRefreshedEventPayload.class::isInstance)
+                .map(FormCapabilitiesRefreshedEventPayload.class::cast)
+                .map(FormCapabilitiesRefreshedEventPayload::capabilities)
+                .ifPresentOrElse(capabilities -> assertThat(capabilities.canEdit()).isFalse(), () -> fail("Missing form capabilities"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(formCapabilitiesMatcher)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
