@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -8,52 +8,75 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     Obeo - initial API and implementation
+ * Obeo - initial API and implementation
  *******************************************************************************/
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import ViewComfyIcon from '@mui/icons-material/ViewComfy';
+import { gql, useQuery } from '@apollo/client';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
-import { useTranslation } from 'react-i18next';
-import { useDiagramDescription } from '../../../contexts/useDiagramDescription';
+import { useContext, useMemo } from 'react';
+import { DiagramContext } from '../../../contexts/DiagramContext';
 import { LayoutConfiguration, UseLayoutConfigurationsValue } from './useLayoutConfigurations.types';
 
-const elkLayeredOptions = (direction: string): LayoutOptions => ({
-  'elk.algorithm': 'layered',
-  'elk.layered.spacing.nodeNodeBetweenLayers': '80',
-  'layering.strategy': 'NETWORK_SIMPLEX',
-  'elk.spacing.componentComponent': '60',
-  'elk.spacing.nodeNode': '80',
-  'elk.direction': `${direction}`,
-  'elk.layered.spacing.edgeNodeBetweenLayers': '80',
-  'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
-});
+const getLayoutOptionsQuery = gql`
+  query getLayoutOptions($editingContextId: ID!, $representationId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          description {
+            ... on DiagramDescription {
+              layoutConfigurations {
+                id
+                label
+                iconURL
+                layoutOptions {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
-const elkRectPackingOptions: LayoutOptions = {
-  'elk.algorithm': 'rectpacking',
-  'elk.spacing.nodeNode': '50',
-  'elk.rectpacking.trybox': 'true',
-  'widthApproximation.targetWidth': '1',
-  'elk.contentAlignment': 'V_TOP H_CENTER',
-};
+const EMPTY_ARRAY: LayoutConfiguration[] = [];
 
 export const useLayoutConfigurations = (): UseLayoutConfigurationsValue => {
-  const { diagramDescription } = useDiagramDescription();
-  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'useLayoutConfigurations' });
+  const { editingContextId, diagramId } = useContext(DiagramContext);
 
-  const layoutConfigurationWithLayeredAlgorithm: LayoutConfiguration = {
-    id: 'elk-layered',
-    label: t('arrangeAllLayered'),
-    icon: <AccountTreeIcon fontSize="small" />,
-    layoutOptions: elkLayeredOptions(diagramDescription.arrangeLayoutDirection),
-  };
-  const layoutConfigurationWithRectPackingAlgorithm: LayoutConfiguration = {
-    id: 'elk-rect-packing',
-    label: t('arrangeAllRectPacking'),
-    icon: <ViewComfyIcon fontSize="small" />,
-    layoutOptions: elkRectPackingOptions,
-  };
+  const { data, loading, error } = useQuery(getLayoutOptionsQuery, {
+    variables: {
+      editingContextId,
+      representationId: diagramId,
+    },
+  });
+
+  const layoutConfigurations = useMemo(() => {
+    if (!data || loading || error) {
+      return EMPTY_ARRAY;
+    }
+
+    const layoutData = data.viewer?.editingContext?.representation?.description?.layoutConfigurations;
+
+    return layoutData.map((layout): LayoutConfiguration => {
+      const optionsObject: LayoutOptions = {};
+
+      if (layout.layoutOptions) {
+        layout.layoutOptions.forEach((opt: { key: string; value: string }) => {
+          optionsObject[opt.key] = opt.value;
+        });
+      }
+      return {
+        id: layout.id,
+        label: layout.label,
+        iconURL: layout.iconURL,
+        layoutOptions: optionsObject,
+      };
+    });
+  }, [data, loading, error]);
 
   return {
-    layoutConfigurations: [layoutConfigurationWithLayeredAlgorithm, layoutConfigurationWithRectPackingAlgorithm],
+    layoutConfigurations,
   };
 };

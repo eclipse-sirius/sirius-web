@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -108,7 +109,9 @@ export const ArrangeAllButton = ({ disabled }: ArrangeAllButtonProps) => {
                 disabled={disabled}
                 data-testid={`arrange-all-${layoutConfiguration.id}`}
                 onClick={() => handleArrangeAll(layoutConfiguration.layoutOptions)}>
-                <ListItemIcon>{layoutConfiguration.icon}</ListItemIcon>
+                <ListItemIcon>
+                  <IconOverlay iconURLs={layoutConfiguration.iconURL} alt={layoutConfiguration.label} />
+                </ListItemIcon>
                 <ListItemText primary={layoutConfiguration.label} />
               </MenuItem>
             );

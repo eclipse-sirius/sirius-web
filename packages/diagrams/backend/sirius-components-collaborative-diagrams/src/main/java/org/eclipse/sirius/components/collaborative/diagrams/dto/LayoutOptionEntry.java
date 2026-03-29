@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -9,16 +9,14 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- *******************************************************************************/
-import { LayoutOptions } from 'elkjs/lib/elk-api';
+ ******************************************************************************/
 
-export interface UseLayoutConfigurationsValue {
-  layoutConfigurations: LayoutConfiguration[];
-}
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-export interface LayoutConfiguration {
-  id: string;
-  label: string;
-  iconURL: string[];
-  layoutOptions: LayoutOptions;
+/**
+ * Represents a key-value pair for layout options.
+ *
+ * @author ocailleau
+ */
+public record LayoutOptionEntry(String key, String value) {
 }

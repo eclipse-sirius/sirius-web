@@ -113,6 +113,10 @@ public interface IMessageService {
 
     String failedToRename();
 
+    String diagramLayoutFlow();
+
+    String diagramLayoutCompact();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -352,6 +356,16 @@ public interface IMessageService {
 
         @Override
         public String failedToRename() {
+            return "";
+        }
+
+        @Override
+        public String diagramLayoutFlow() {
+            return "";
+        }
+
+        @Override
+        public String diagramLayoutCompact() {
             return "";
         }
     }
