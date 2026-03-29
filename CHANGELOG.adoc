@@ -24,6 +24,7 @@
 
 === Dependency update
 
+- [releng] Switch to https://github.com/xyflow/xyflow/releases/tag/@xyflow/react@12.10.1[xyflow 12.10.1]
 
 
 
