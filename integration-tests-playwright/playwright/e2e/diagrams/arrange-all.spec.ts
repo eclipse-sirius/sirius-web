@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
@@ -115,5 +116,46 @@ test.describe('diagram - arrange all', () => {
     await page.getByTestId('arrange-all-elk-rect-packing').click();
 
     await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 }); // no error
+  });
+});
+
+test.describe('diagram - arrange all', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeWithBendingPointsAndCustomHandles.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('NewSystem');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a edge has some bending points and custom handles, then after triggering an arrangeAll they are reset', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.select('Topography');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const playwrightEdge = new PlaywrightEdge(page);
+
+    await playwrightEdge.openPalette();
+    await expect(page.getByTestId('Reset handles positions - Tool')).toBeAttached();
+    await expect(page.getByTestId('Reset bending points - Tool')).toBeAttached();
+    await playwrightEdge.closePalette();
+
+    await page.getByTestId('arrange-all-menu').click();
+    await page.getByTestId('arrange-all-elk-layered').click();
+
+    await playwrightEdge.openPalette();
+    await expect(page.getByTestId('Reset handles positions - Tool')).not.toBeAttached();
+    await expect(page.getByTestId('Reset bending points - Tool')).not.toBeAttached();
+    await playwrightEdge.closePalette();
   });
 });

@@ -29,7 +29,8 @@
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5436[#5436] [diagram] Prevent custom handles from being lost after importing a project with a diagram representation.
+- https://github.com/eclipse-sirius/sirius-web/issues/6342[#6342] [diagram] Remove bending points and custom handles after an `arrangeAll`
 
 
 === New Features
