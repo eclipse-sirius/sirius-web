@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,22 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Connection, OnConnect, OnConnectEnd, OnConnectStart, XYPosition } from '@xyflow/react';
+import { OnConnect, OnConnectEnd, OnConnectStart } from '@xyflow/react';
 import { GQLTool } from '../palette/Palette.types';
 
 export interface UseConnectorValue {
   onConnect: OnConnect;
   onConnectStart: OnConnectStart;
   onConnectEnd: OnConnectEnd;
-  onConnectorContextualMenuClose: () => void;
-  onConnectionStartElementClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  addTempConnectionLine: () => void;
-  removeTempConnectionLine: () => void;
-  connection: Connection | null;
-  position: XYPosition | null;
-  isConnectionInProgress: () => boolean;
-  isReconnectionInProgress: () => boolean;
-  candidates: GQLNodeDescription[];
 }
 
 export interface GQLGetToolSectionsData {
