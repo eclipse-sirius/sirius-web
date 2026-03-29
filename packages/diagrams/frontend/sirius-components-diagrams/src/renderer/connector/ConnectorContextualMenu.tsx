@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,37 +11,27 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import { Edge, Node, useReactFlow, useStoreApi, XYPosition } from '@xyflow/react';
+import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { DiagramDialogVariable } from '../../dialog/DialogContextExtensionPoints.types';
-import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { isCursorNearCenterOfTheNode } from '../edge/EdgeLayout';
 import {
   ConnectorContextualMenuProps,
   GetConnectorToolsData,
   GetConnectorToolsVariables,
   GQLDiagramDescription,
-  GQLErrorPayload,
-  GQLInvokeSingleClickOnTwoDiagramElementsToolData,
-  GQLInvokeSingleClickOnTwoDiagramElementsToolInput,
-  GQLInvokeSingleClickOnTwoDiagramElementsToolPayload,
-  GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload,
-  GQLInvokeSingleClickOnTwoDiagramElementsToolVariables,
   GQLRepresentationDescription,
   GQLTool,
-  GQLToolVariable,
 } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
-import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
+import { useSingleClickOnTwoDiagramElementTool } from './useSingleClickOnTwoDiagramElementTool';
 
 export const getConnectorToolsQuery = gql`
   query getConnectorTools(
@@ -74,56 +64,18 @@ export const getConnectorToolsQuery = gql`
   }
 `;
 
-export const invokeSingleClickOnTwoDiagramElementsToolMutation = gql`
-  mutation invokeSingleClickOnTwoDiagramElementsTool($input: InvokeSingleClickOnTwoDiagramElementsToolInput!) {
-    invokeSingleClickOnTwoDiagramElementsTool(input: $input) {
-      __typename
-      ... on InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
-        id
-        newSelection {
-          entries {
-            id
-          }
-        }
-        messages {
-          body
-          level
-        }
-      }
-      ... on ErrorPayload {
-        messages {
-          body
-          level
-        }
-      }
-    }
-  }
-`;
-
 const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
-const isErrorPayload = (payload: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-const isSuccessPayload = (
-  payload: GQLInvokeSingleClickOnTwoDiagramElementsToolPayload
-): payload is GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload =>
-  payload.__typename === 'InvokeSingleClickOnTwoDiagramElementsToolSuccessPayload';
-
-const isSingleClickOnTwoDiagramElementsTool = (tool: GQLTool): tool is GQLSingleClickOnTwoDiagramElementsTool =>
-  tool.__typename === 'SingleClickOnTwoDiagramElementsTool';
-
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
-  const { editingContextId, diagramId, registerPostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
-  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const { connection, position, onConnectorContextualMenuClose, addTempConnectionLine, removeTempConnectionLine } =
     useConnector();
   const { addMessages, addErrorMessage } = useMultiToast();
-
-  const { showDialog, isOpened } = useDialog();
-
-  const { getNodes, screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { invokeConnectorTool, data: invokeSingleClickOnTwoDiagramElementToolCalled } =
+    useSingleClickOnTwoDiagramElementTool();
 
   const connectionSource: HTMLElement | null = connection
     ? document.querySelector(`[data-id="${connection.source}"]`)
@@ -147,115 +99,11 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
     skip: !connectionSource || !connectionTarget,
   });
 
-  const invokeOpenSelectionDialog = (tool: GQLSingleClickOnTwoDiagramElementsTool) => {
-    const onConfirm = (variables: GQLToolVariable[]) => {
-      invokeToolMutation(tool, variables);
-    };
-
-    const onClose = () => {
-      onShouldConnectorContextualMenuClose();
-    };
-
-    const sourceNode = getNodes().find((node) => node.id === sourceDiagramElementId);
-    const targetNode = getNodes().find((node) => node.id === targetDiagramElementId);
-    if (sourceNode && targetNode) {
-      const variables: DiagramDialogVariable[] = [
-        { name: 'targetObjectId', value: sourceNode.data.targetObjectId },
-        { name: 'sourceDiagramElementTargetObjectId', value: sourceNode.data.targetObjectId },
-        { name: 'targetDiagramElementTargetObjectId', value: targetNode.data.targetObjectId },
-      ];
-      showDialog(tool.dialogDescriptionId, variables, onConfirm, onClose);
-    }
-  };
-
   useEffect(() => {
     if (error) {
       addErrorMessage(error.message);
     }
   }, [error]);
-
-  const [
-    invokeSingleClickOnTwoDiagramElementsTool,
-    {
-      data: invokeSingleClickOnTwoDiagramElementToolData,
-      error: invokeSingleClickOnTwoDiagramElementToolError,
-      called: invokeSingleClickOnTwoDiagramElementToolCalled,
-      reset,
-    },
-  ] = useMutation<
-    GQLInvokeSingleClickOnTwoDiagramElementsToolData,
-    GQLInvokeSingleClickOnTwoDiagramElementsToolVariables
-  >(invokeSingleClickOnTwoDiagramElementsToolMutation);
-
-  const invokeTool = (tool: GQLTool) => {
-    if (isSingleClickOnTwoDiagramElementsTool(tool)) {
-      if (tool.dialogDescriptionId) {
-        if (!isOpened) {
-          invokeOpenSelectionDialog(tool);
-        }
-      } else {
-        invokeToolMutation(tool, []);
-      }
-    }
-  };
-
-  const invokeToolMutation = (tool: GQLTool, variables: GQLToolVariable[]) => {
-    let targetHandlePosition: XYPosition = { x: 0, y: 0 };
-    if (position) {
-      targetHandlePosition = screenToFlowPosition({ x: position.x, y: position.y });
-    }
-    const target = store.getState().nodeLookup.get(targetDiagramElementId);
-    if (target && position) {
-      const isNearCenter = isCursorNearCenterOfTheNode(target, {
-        x: targetHandlePosition.x,
-        y: targetHandlePosition.y,
-      });
-
-      if (isNearCenter) {
-        targetHandlePosition = { x: 0, y: 0 };
-      }
-    }
-
-    const input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput = {
-      id: crypto.randomUUID(),
-      editingContextId,
-      representationId: diagramId,
-      diagramSourceElementId: sourceDiagramElementId,
-      diagramTargetElementId: targetDiagramElementId,
-      toolId: tool.id,
-      sourcePositionX: 0,
-      sourcePositionY: 0,
-      targetPositionX: targetHandlePosition.x,
-      targetPositionY: targetHandlePosition.y,
-      variables,
-    };
-    invokeSingleClickOnTwoDiagramElementsTool({ variables: { input } });
-  };
-
-  const onShouldConnectorContextualMenuClose = () => {
-    onConnectorContextualMenuClose();
-    reset();
-  };
-
-  useEffect(() => {
-    if (invokeSingleClickOnTwoDiagramElementToolData) {
-      const payload = invokeSingleClickOnTwoDiagramElementToolData.invokeSingleClickOnTwoDiagramElementsTool;
-      if (isErrorPayload(payload)) {
-        addMessages(payload.messages);
-      }
-      if (isSuccessPayload(payload)) {
-        const { id, newSelection } = payload;
-        if (newSelection?.entries.length ?? 0 > 0) {
-          registerPostToolSelection(id, newSelection);
-        }
-        addMessages(payload.messages);
-        onShouldConnectorContextualMenuClose();
-      }
-    }
-    if (invokeSingleClickOnTwoDiagramElementToolError?.message) {
-      addErrorMessage(invokeSingleClickOnTwoDiagramElementToolError.message);
-    }
-  }, [invokeSingleClickOnTwoDiagramElementToolData, invokeSingleClickOnTwoDiagramElementToolError]);
 
   const connectorTools: GQLTool[] = [];
   const representationDescription: GQLRepresentationDescription | null | undefined =
@@ -272,6 +120,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
 
   useEffect(() => {
     if (!loading && connection && data && connectorTools.length === 0) {
+      onConnectorContextualMenuClose();
       addMessages([{ body: 'No edge found between source and target selected', level: 'WARNING' }]);
     }
   }, [loading, data, connection, connectorTools.length]);
@@ -284,7 +133,12 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
     if (!invokeSingleClickOnTwoDiagramElementToolCalled && connectorTools.length === 1 && connectorTools[0]) {
       invokeTool(connectorTools[0]);
     }
-  }, [connectorTools]);
+  }, [connectorTools.length]);
+
+  const invokeTool = (tool: GQLTool) => {
+    const { x: cursorPositionX, y: cursorPositionY } = screenToFlowPosition({ x: position.x, y: position.y });
+    invokeConnectorTool(tool, sourceDiagramElementId, targetDiagramElementId, cursorPositionX, cursorPositionY);
+  };
 
   if (!data || connectorTools.length <= 1) {
     return null;
@@ -293,7 +147,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   return (
     <Menu
       open={!!connection}
-      onClose={onShouldConnectorContextualMenuClose}
+      onClose={onConnectorContextualMenuClose}
       anchorEl={connectionTarget}
       anchorReference="anchorPosition"
       data-testid="connectorContextualMenu"
