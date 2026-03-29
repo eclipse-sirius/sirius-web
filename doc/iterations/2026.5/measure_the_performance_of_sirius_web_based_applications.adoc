@@ -1,6 +1,6 @@
 :author: Stéphane Bégaudeau
 :date: 2026-03-25
-:status: proposed
+:status: accepted
 :consulted: Pierre-Charles David
 :informed: Florian Rouëné
 :deciders: Stéphane Bégaudeau
