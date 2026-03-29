@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Objects;
@@ -100,7 +100,7 @@ public class RepresentationSearchService implements IRepresentationSearchService
         try {
             IRepresentation representation = this.objectMapper.readValue(content, IRepresentation.class);
             optionalRepresentation = Optional.of(representation);
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             this.logger.warn(exception.getMessage(), exception);
         }
         return optionalRepresentation;

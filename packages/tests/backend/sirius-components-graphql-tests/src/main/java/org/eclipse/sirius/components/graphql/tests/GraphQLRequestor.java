@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,6 @@
 package org.eclipse.sirius.components.graphql.tests;
 
 import static org.assertj.core.api.Assertions.fail;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.Map;
 import java.util.Objects;
@@ -32,6 +28,9 @@ import graphql.ExecutionResult;
 import graphql.GraphQL;
 import graphql.execution.reactive.SubscriptionPublisher;
 import reactor.core.publisher.Flux;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * Used to execute GraphQL requests.
@@ -42,11 +41,11 @@ import reactor.core.publisher.Flux;
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class GraphQLRequestor implements IGraphQLRequestor {
 
-    private final ObjectMapper objectMapper;
+    private final JsonMapper objectMapper;
 
     private final GraphQL graphQL;
 
-    public GraphQLRequestor(ObjectMapper objectMapper, GraphQL graphQL) {
+    public GraphQLRequestor(JsonMapper objectMapper, GraphQL graphQL) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.graphQL = Objects.requireNonNull(graphQL);
     }
@@ -62,7 +61,7 @@ public class GraphQLRequestor implements IGraphQLRequestor {
         try {
             var result = this.objectMapper.writeValueAsString(executionResult.toSpecification());
             return new GraphQLResult(result, executionResult.getErrors(), executionResult.getExtensions());
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             fail(exception.getMessage());
         }
         return null;
@@ -115,7 +114,7 @@ public class GraphQLRequestor implements IGraphQLRequestor {
         Flux<String> body = Flux.empty();
         try {
             body = Flux.just(this.objectMapper.writeValueAsString(response));
-        } catch (JsonProcessingException exception) {
+        } catch (JacksonException exception) {
             fail(exception.getMessage());
         }
         return body;

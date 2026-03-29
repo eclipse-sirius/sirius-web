@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,15 +12,14 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.representations.migration;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Used to manipulate the Json content before deserialization.
@@ -44,16 +43,17 @@ public class RepresentationMigrationService {
         }
 
         List<String> attributes = new ArrayList<>();
-        root.fieldNames().forEachRemaining(attributes::add);
+        root.properties().forEach(entry -> attributes.add(entry.getKey()));
+
         for (String attribute : attributes) {
             var currentNode = root.get(attribute);
 
-            if (currentNode.isObject() && currentNode.isContainerNode()) {
+            if (currentNode.isObject() && currentNode.isContainer()) {
                 this.parseProperties((ObjectNode) currentNode, mapper);
             }
-            if (currentNode.isArray() && currentNode.isContainerNode()) {
+            if (currentNode.isArray() && currentNode.isContainer()) {
                 for (JsonNode objNode : currentNode) {
-                    if (objNode.isContainerNode()) {
+                    if (objNode.isContainer()) {
                         this.parseProperties((ObjectNode) objNode, mapper);
                     }
                 }

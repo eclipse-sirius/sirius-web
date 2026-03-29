@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;

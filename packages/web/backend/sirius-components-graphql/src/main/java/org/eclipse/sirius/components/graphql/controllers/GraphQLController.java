@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.graphql.controllers;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +26,7 @@ import org.eclipse.sirius.components.graphql.api.GraphQLConstants;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +41,8 @@ import graphql.ExecutionResult;
 import graphql.GraphQL;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * The entry point of the GraphQL HTTP API.
@@ -115,7 +114,7 @@ public class GraphQLController {
 
     private final Logger logger = LoggerFactory.getLogger(GraphQLController.class);
 
-    private final ObjectMapper objectMapper;
+    private final JsonMapper objectMapper;
 
     private final GraphQL graphQL;
 
@@ -123,7 +122,7 @@ public class GraphQLController {
 
     private final Timer graphQLUploadTimer;
 
-    public GraphQLController(ObjectMapper objectMapper, GraphQL graphQL, MeterRegistry meterRegistry) {
+    public GraphQLController(JsonMapper objectMapper, GraphQL graphQL, MeterRegistry meterRegistry) {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.graphQL = Objects.requireNonNull(graphQL);
 
@@ -167,7 +166,7 @@ public class GraphQLController {
             try {
                 String stringSpecification = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(executionResult.toSpecification());
                 this.logger.warn(stringSpecification);
-            } catch (JsonProcessingException exception) {
+            } catch (JsonParseException exception) {
                 this.logger.warn(exception.getMessage(), exception);
             }
         }
@@ -190,7 +189,7 @@ public class GraphQLController {
         Optional<GraphQLPayload> optionalGraphQLPayload = this.getGraphQLPayload(operations);
         Optional<JsonNode> optionalJsonNode = this.getJsonNode(map);
 
-        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         if (optionalGraphQLPayload.isPresent() && optionalJsonNode.isPresent()) {
             GraphQLPayload graphQLPayload = optionalGraphQLPayload.get();
             JsonNode jsonNode = optionalJsonNode.get();
@@ -224,11 +223,7 @@ public class GraphQLController {
     private Optional<GraphQLPayload> getGraphQLPayload(String operations) {
         Optional<GraphQLPayload> optionalGraphQLPayload = Optional.empty();
         if (operations != null) {
-            try {
-                optionalGraphQLPayload = Optional.of(this.objectMapper.readValue(operations, GraphQLPayload.class));
-            } catch (IOException exception) {
-                this.logger.warn(exception.getMessage(), exception);
-            }
+            optionalGraphQLPayload = Optional.of(this.objectMapper.readValue(operations, GraphQLPayload.class));
         } else {
             this.logger.warn("Missing operations parameter");
         }
@@ -238,11 +233,7 @@ public class GraphQLController {
     private Optional<JsonNode> getJsonNode(String map) {
         Optional<JsonNode> optionalJsonNode = Optional.empty();
         if (map != null) {
-            try {
-                optionalJsonNode = Optional.of(this.objectMapper.readTree(map));
-            } catch (IOException exception) {
-                this.logger.warn(exception.getMessage(), exception);
-            }
+            optionalJsonNode = Optional.of(this.objectMapper.readTree(map));
         } else {
             this.logger.warn("Missing map parameter");
         }

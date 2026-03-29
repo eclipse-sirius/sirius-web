@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.selection.graphql.datafetchers.selection;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;

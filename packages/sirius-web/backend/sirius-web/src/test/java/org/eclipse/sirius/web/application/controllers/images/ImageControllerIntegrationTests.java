@@ -50,7 +50,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -59,6 +58,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Integration tests of the image controllers.
@@ -127,7 +128,7 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
         var uri = "http://localhost:" + port + "/api/images/icons/Resource.svg";
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
-        var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
+        var response = new RestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
@@ -138,7 +139,7 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
         var uri = "http://localhost:" + port + "/api/images/" + TestIdentifiers.SYSML_IMAGE;
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
-        var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
+        var response = new RestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         try {
@@ -159,8 +160,11 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
         var uri = "http://localhost:" + port + "/api/images/THIS_IMAGE_DOES_NOT_EXIST";
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
-        var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        try {
+            new RestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
+        } catch (HttpClientErrorException exception) {
+            assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Test
@@ -182,7 +186,7 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
         var uri = "http://localhost:" + port + "/api/images/" + imageId;
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
-        var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
+        var response = new RestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         try {
@@ -248,8 +252,11 @@ public class ImageControllerIntegrationTests extends AbstractIntegrationTests {
         var uri = "http://localhost:" + port + "/api/images/" + TestIdentifiers.SYSML_IMAGE;
 
         HttpEntity<String> entity = new HttpEntity<>(null, new HttpHeaders());
-        var response = new TestRestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        try {
+            new RestTemplate().exchange(uri, HttpMethod.GET, entity, Resource.class);
+        } catch (HttpClientErrorException exception) {
+            assertThat(exception.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Test

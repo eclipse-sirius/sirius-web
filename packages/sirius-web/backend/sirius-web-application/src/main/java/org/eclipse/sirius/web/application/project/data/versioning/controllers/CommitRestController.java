@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -91,7 +91,7 @@ public class CommitRestController {
                 return new ResponseEntity<>(successPayload.commits(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = """
@@ -174,7 +174,7 @@ public class CommitRestController {
                 return new ResponseEntity<>(successPayload.commit(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = "Get the change in the given commit of the given project.")
@@ -194,7 +194,7 @@ public class CommitRestController {
                 return new ResponseEntity<>(successPayload.commitChanges(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(description = "Get the change with the given id (changeId) in the given commit of the given project. The changeId is the id of the DataVersion that changed in the commit.")
@@ -214,6 +214,6 @@ public class CommitRestController {
                 return new ResponseEntity<>(successPayload.commitChange(), HttpStatus.OK);
             }
         }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

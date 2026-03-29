@@ -13,7 +13,7 @@
 
 package org.eclipse.sirius.components.tables.graphql.datafetchers.mutation;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;

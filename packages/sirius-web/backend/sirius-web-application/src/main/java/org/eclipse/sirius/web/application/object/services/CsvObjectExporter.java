@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.web.application.object.services;
-
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -28,6 +26,7 @@ import org.eclipse.sirius.web.application.object.services.api.IObjectExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import tools.jackson.dataformat.csv.CsvMapper;
 
 /**
  * Used to export objects as CSV resources.
@@ -47,7 +46,6 @@ public class CsvObjectExporter implements IObjectExporter {
         this.identityService = Objects.requireNonNull(identityService);
         this.labelService = Objects.requireNonNull(labelService);
     }
-
 
     @Override
     public boolean canHandle(List<Object> objects, String mediaType) {

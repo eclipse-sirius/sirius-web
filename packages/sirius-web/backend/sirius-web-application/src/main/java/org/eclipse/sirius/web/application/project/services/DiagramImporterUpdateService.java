@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -180,7 +180,7 @@ public class DiagramImporterUpdateService implements IRepresentationImporterUpda
                     try {
                         String json = this.objectMapper.writeValueAsString(laidOutDiagram);
                         this.representationPersistenceService.save(cause, editingContext.get(), laidOutDiagram);
-                    } catch (JsonProcessingException exception) {
+                    } catch (JacksonException exception) {
                         this.logger.warn(exception.getMessage(), exception);
                     }
                 }
