@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,10 @@ export interface ConnectorContextualMenuProps {}
 export interface ConnectorContextualMenuState {
   openDialogInvoked: boolean;
   tool: GQLSingleClickOnTwoDiagramElementsTool | null;
+}
+
+export interface GQLInvokeSingleClickOnTwoDiagramElementsToolVariables {
+  input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput;
 }
 
 export interface GetConnectorToolsVariables {
@@ -42,33 +46,6 @@ export interface GQLToolVariable {
 
 export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
-export interface GetConnectorToolsData {
-  viewer: GQLViewer;
-}
-
-export interface GQLViewer {
-  editingContext: GQLEditingContext | null;
-}
-
-export interface GQLEditingContext {
-  representation: GQLRepresentationMetadata | null;
-}
-
-export interface GQLRepresentationMetadata {
-  description: GQLRepresentationDescription;
-}
-
-export interface GQLRepresentationDescription {
-  __typename: string;
-}
-
-export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  connectorTools: GQLTool[];
-}
-
-export interface GQLInvokeSingleClickOnTwoDiagramElementsToolVariables {
-  input: GQLInvokeSingleClickOnTwoDiagramElementsToolInput;
-}
 export interface GQLInvokeSingleClickOnTwoDiagramElementsToolInput {
   id: string;
   editingContextId: string;
