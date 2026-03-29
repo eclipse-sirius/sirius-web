@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,7 +94,7 @@ public class InvokeSingleClickTreeItemContextMenuEntryEventHandler implements IT
 
                 if (status instanceof Success success) {
                     changeDescription = new ChangeDescription(success.getChangeKind(), treeInput.representationId(), treeInput, success.getParameters());
-                    payload = new SuccessPayload(treeInput.id());
+                    payload = new SuccessPayload(treeInput.id(), success.getMessages());
                 } else if (status instanceof Failure failure) {
                     payload = new ErrorPayload(treeInput.id(), failure.getMessages());
                 }
