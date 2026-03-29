@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.representation.services;
 
 import java.util.Objects;
 
+import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceService;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationPersistenceStrategy;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.events.ICause;
@@ -33,9 +34,9 @@ public class RepresentationPersistenceStrategy implements IRepresentationPersist
 
     private final IRepresentationContentSearchService representationContentSearchService;
 
-    private final RepresentationPersistenceService representationPersistenceService;
+    private final IRepresentationPersistenceService representationPersistenceService;
 
-    public RepresentationPersistenceStrategy(IRepresentationContentSearchService representationContentSearchService, RepresentationPersistenceService representationPersistenceService) {
+    public RepresentationPersistenceStrategy(IRepresentationContentSearchService representationContentSearchService, IRepresentationPersistenceService representationPersistenceService) {
         this.representationContentSearchService = Objects.requireNonNull(representationContentSearchService);
         this.representationPersistenceService = Objects.requireNonNull(representationPersistenceService);
     }

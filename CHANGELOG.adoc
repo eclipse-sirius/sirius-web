@@ -235,6 +235,7 @@ Other representations will follow the same patterns.
 Those new APIs and constants are still subject to various changes but once the API will be stable, existing variables will be marked as deprecated.
 New variables will only be available thanks to the new API such as `DiagramVariables.SELECTED_NODES` or `DiagramVariables.SELECTED_EDGES` for group tools.
 The current constants and the new ones can be mixed without issues.
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [core] The method `IRepresentationEventProcessor#refresh` will be removed and it will be replaced by dedicated stateless services implementing `IRepresentationRefresher`
 
 
 === Breaking changes
@@ -356,6 +357,9 @@ The workbench view ID is now `related-views`.
 `PublishLibrariesInput#projectId` has been replaced with `PublishLibrariesInput#editingContextId`.
 Note that the namespace of published libraries from studios still matches the `projectId` of the published studio.
 - [sirius-web] The method signature of `IRepresentationContentMigrationService#getMigratedContent` has been modified to take individual parameters (`String representationContent, String kind, String lastMigrationPerformed, String migrationVersion`) instead of domain objects (`RepresentationMetadata representationMetadata, RepresentationContent representationContent`).
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [charts] The mutable class `HierarchyContext` has been transformed into an immutable record.
+The service `HierarchyCreationService` is now implementing an interface `IHierarchyCreationService` and its two methods `HierarchyCreationService#create` and `HierarchyCreationService#render` have been merged into a single method with a new signature `IHierarchyCreationService#create`.
+This will be used as an inspiration for the evolution of other similar services like `DiagramCreationService`.
 
 
 === Dependency update
@@ -493,6 +497,11 @@ The only difference is that this new marker has a second range of two dots after
 Downstream applications can now implement `IUndoRedoIgnoreInputPredicate` to ignore additional inputs from the `UndoRedoRecorder`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6027[#6027] [diagram] Improve visual feedback when dragging a node to show which targets are compatible/valid/invalid for a drop
 - https://github.com/eclipse-sirius/sirius-web/issues/6113[#6113] [core] Allow the customization of the workbench configuration
+- https://github.com/eclipse-sirius/sirius-web/issues/6032[#6032] [diagram] Ensure edge handles on border nodes are placed opposite their anchor point
+- https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [charts] Perform the refresh of the hierarchy representation outside of its representation event processor.
+To perform the refresh of the representation event processor, an instance of `IRepresentationRefresher` will be required.
+A new method `IHierarchyEventProcessor#updateState` is available to update the state of the hierarchy event processor and publish a new hierarchy to the subscribers.
+
 
 
 == 2025.12.0
