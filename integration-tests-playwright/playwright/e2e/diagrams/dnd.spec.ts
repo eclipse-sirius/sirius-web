@@ -41,7 +41,7 @@ test.describe('diagram - drag and drop', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }
@@ -74,7 +74,7 @@ test.describe('diagram - drag and drop', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }
@@ -166,7 +166,7 @@ test.describe('diagram - drag and drop', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }
@@ -223,7 +223,7 @@ test.describe('diagram - drag and drop', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'dropNodes'
+        JSON.parse(request.postData()!).operationName === 'dropNodes'
       ) {
         requestTriggered = true;
       }
