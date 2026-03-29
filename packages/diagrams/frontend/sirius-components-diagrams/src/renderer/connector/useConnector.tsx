@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Theme, useTheme } from '@mui/material/styles';
 import {
   Connection,
   Edge,
@@ -27,20 +26,11 @@ import {
   useUpdateNodeInternals,
 } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
-import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { getEdgeParameters } from '../edge/EdgeLayout';
 import { EdgeAnchorNodeCreationHandlesData } from '../node/EdgeAnchorNodeCreationHandles.types';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
 import { UseConnectorValue } from './useConnector.types';
-
-const tempConnectionLineStyle = (theme: Theme): React.CSSProperties => {
-  return {
-    stroke: theme.palette.selected,
-    strokeWidth: theme.spacing(0.2),
-  };
-};
 
 const isEdgeAnchorNodeCreationHandles = (node: Node<NodeData>): node is Node<EdgeAnchorNodeCreationHandlesData> =>
   node.type === 'edgeAnchorNodeCreationHandles';
@@ -56,11 +46,7 @@ export const useConnector = (): UseConnectorValue => {
     isNewConnection,
     setIsNewConnection,
   } = useContext<ConnectorContextValue>(ConnectorContext);
-  const theme = useTheme();
-
-  const { diagramDescription } = useDiagramDescription();
-
-  const { setEdges, setNodes, getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = store.getState();
   const updateNodeInternals = useUpdateNodeInternals();
@@ -147,61 +133,12 @@ export const useConnector = (): UseConnectorValue => {
     []
   );
 
-  const addTempConnectionLine = () => {
-    const sourceNode = nodeLookup.get(connection?.source ?? '');
-    const targetNode = nodeLookup.get(connection?.target ?? '');
-    if (sourceNode && targetNode && !!connection) {
-      const { targetPosition, sourcePosition } = getEdgeParameters(
-        sourceNode,
-        targetNode,
-        store.getState().nodeLookup,
-        diagramDescription.arrangeLayoutDirection,
-        []
-      );
-
-      const edge: Edge<EdgeData> = {
-        id: 'temp',
-        source: connection.source ?? '',
-        target: connection.target ?? '',
-        sourceHandle: `creationhandle--${connection.source}--${sourcePosition}`,
-        targetHandle: `handle--${connection.target}--temp--${targetPosition}`,
-        type: 'smoothstep',
-        animated: true,
-        reconnectable: false,
-        style: tempConnectionLineStyle(theme),
-        zIndex: 2002,
-      };
-      setEdges((previousEdges) => [...previousEdges, edge]);
-    }
-  };
-
-  const removeTempConnectionLine = () => {
-    setEdges((previousEdges) => previousEdges.filter((previousEdge) => !previousEdge.id.includes('temp')));
-    setNodes((previousNodes) =>
-      previousNodes.map((previousNode) => {
-        if (previousNode.data.connectionLinePositionOnNode !== 'none' || previousNode.data.isHovered) {
-          return {
-            ...previousNode,
-            data: {
-              ...previousNode.data,
-              connectionLinePositionOnNode: 'none',
-              isHovered: false,
-            },
-          };
-        }
-        return previousNode;
-      })
-    );
-  };
-
   return {
     onConnect,
     onConnectStart,
     onConnectEnd,
     onConnectorContextualMenuClose,
     onConnectionStartElementClick,
-    addTempConnectionLine,
-    removeTempConnectionLine,
     connection,
     position,
     isConnectionInProgress,

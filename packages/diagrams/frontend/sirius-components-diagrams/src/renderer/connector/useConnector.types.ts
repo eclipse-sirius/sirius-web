@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,6 @@ export interface UseConnectorValue {
   onConnectEnd: OnConnectEnd;
   onConnectorContextualMenuClose: () => void;
   onConnectionStartElementClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
-  addTempConnectionLine: () => void;
-  removeTempConnectionLine: () => void;
   connection: Connection | null;
   position: XYPosition | null;
   isConnectionInProgress: () => boolean;
