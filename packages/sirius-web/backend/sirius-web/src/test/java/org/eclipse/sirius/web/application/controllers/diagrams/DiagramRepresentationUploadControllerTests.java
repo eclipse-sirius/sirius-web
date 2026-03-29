@@ -31,6 +31,7 @@ import java.util.zip.ZipOutputStream;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationSearchService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
+import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.graphql.controllers.GraphQLPayload;
 import org.eclipse.sirius.emfjson.resource.JsonResourceFactoryImpl;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
@@ -192,6 +193,12 @@ public class DiagramRepresentationUploadControllerTests extends AbstractIntegrat
         assertThat(diagram.getLayoutData().edgeLayoutData().size()).isEqualTo(1);
         assertThat(diagram.getLayoutData().edgeLayoutData().values().stream().map(edgeLayoutData -> edgeLayoutData.bendingPoints().size())).allMatch(size -> size == 4);
         assertThat(diagram.getLayoutData().nodeLayoutData().size()).isEqualTo(3);
+        var nodeLayoutData = diagram.getLayoutData().nodeLayoutData().values();
+        assertThat(nodeLayoutData).anySatisfy(layoutData -> assertThat(layoutData.handleLayoutData()).anySatisfy(handleLayoutData -> {
+            assertThat(diagram.getEdges().stream().map(Edge::getId)).contains(handleLayoutData.edgeId());
+            assertThat(handleLayoutData.position().x()).isEqualTo(72);
+            assertThat(handleLayoutData.position().y()).isEqualTo(-6);
+        }));
         assertThat(diagram.getLayoutData().labelLayoutData().size()).isEqualTo(3);
         var edge = diagram.getEdges().get(0);
         assertThat(edge.getCustomizedStyleProperties().size()).isEqualTo(4);
@@ -255,7 +262,9 @@ public class DiagramRepresentationUploadControllerTests extends AbstractIntegrat
                      "ff02f72f-6be4-43bb-b581-aa9dd6a7b9d2": {
                        "descriptionURI": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38",
                        "type": "siriusComponents://representation?type=Diagram",
-                       "targetObjectURI": "sirius:///f03b8538-17f9-4df3-82b1-d378b6ce4e4e#9a543523-e43b-436b-a642-5ee5dcee0a95"
+                       "targetObjectURI": "sirius:///f03b8538-17f9-4df3-82b1-d378b6ce4e4e#9a543523-e43b-436b-a642-5ee5dcee0a95",
+                       "migrationVersion": "2025.4.0-202504011650",
+                       "latestMigrationPerformed": "DiagramHandleLayoutDataMigrationParticipant"
                      }
                    }
                  }
