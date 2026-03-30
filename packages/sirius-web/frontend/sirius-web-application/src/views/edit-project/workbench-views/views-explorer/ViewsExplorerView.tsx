@@ -15,6 +15,9 @@ import {
   Selection,
   SelectionEntry,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -224,70 +227,83 @@ export const ViewsExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCo
       );
     }
 
+    const toolbar = (
+      <TreeToolBar
+        editingContextId={editingContextId}
+        readOnly={readOnly}
+        treeFilters={[]}
+        onRevealSelection={revealSelection}
+        onTreeFilterMenuItemClick={() => {}}
+        onFilter={() => {
+          setState((prevState) => {
+            return !prevState.filterBar
+              ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
+              : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+          });
+        }}
+        treeToolBarContributionComponents={[]}>
+        <></>
+      </TreeToolBar>
+    );
+
     if (!state.tree) {
       return (
-        <div className={classes.treeView} ref={treeElement}>
-          <RepresentationLoadingIndicator />
-        </div>
+        <ViewAccordion id={id} title={t('viewExplorerTitle')}>
+          <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+          <ViewAccordionContent>
+            <div className={classes.treeView} ref={treeElement}>
+              <RepresentationLoadingIndicator />
+            </div>
+          </ViewAccordionContent>
+        </ViewAccordion>
       );
     }
 
     return (
-      <div className={classes.treeView} ref={treeElement}>
-        <TreeToolBar
-          editingContextId={editingContextId}
-          readOnly={readOnly}
-          onRevealSelection={revealSelection}
-          treeFilters={[]}
-          onTreeFilterMenuItemClick={() => {}}
-          onFilter={() => {
-            setState((prevState) => {
-              return !prevState.filterBar
-                ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
-                : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-            });
-          }}
-          treeToolBarContributionComponents={[]}>
-          <></>
-        </TreeToolBar>
-        {filterBar}
-        {state.tree.children.length === 0 ? (
-          <div className={classes.idle}>
-            <Typography variant="subtitle2">{t('noRepresentation')}</Typography>
+      <ViewAccordion id={id} title={t('viewExplorerTitle')}>
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+        <ViewAccordionContent>
+          <div className={classes.treeView} ref={treeElement}>
+            {filterBar}
+            {state.tree.children.length === 0 ? (
+              <div className={classes.idle}>
+                <Typography variant="subtitle2">{t('noView')}</Typography>
+              </div>
+            ) : (
+              <div className={classes.treeContent}>
+                <TreeView
+                  editingContextId={editingContextId}
+                  readOnly={readOnly}
+                  tree={state.tree}
+                  textToHighlight={state.filterBarText}
+                  textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+                  onExpandedElementChange={onExpandedElementChange}
+                  expanded={state.expanded}
+                  maxDepth={state.maxDepth}
+                  treeItemActionRender={(props) => {
+                    if (
+                      props.item.kind === 'siriusWeb://representationKind' ||
+                      props.item.kind === 'siriusWeb://representationDescriptionType'
+                    ) {
+                      return null;
+                    } else {
+                      return <TreeItemAction {...props} />;
+                    }
+                  }}
+                  onTreeItemClick={onTreeItemClick}
+                  selectTreeItems={(selectedTreeItemIds: string[]) =>
+                    setState((prevState) => {
+                      return { ...prevState, selectedTreeItemIds };
+                    })
+                  }
+                  selectedTreeItemIds={state.selectedTreeItemIds}
+                  data-testid="viewsexplorer://"
+                />
+              </div>
+            )}
           </div>
-        ) : (
-          <div className={classes.treeContent}>
-            <TreeView
-              editingContextId={editingContextId}
-              readOnly={readOnly}
-              tree={state.tree}
-              textToHighlight={state.filterBarText}
-              textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-              onExpandedElementChange={onExpandedElementChange}
-              expanded={state.expanded}
-              maxDepth={state.maxDepth}
-              treeItemActionRender={(props) => {
-                if (
-                  props.item.kind === 'siriusWeb://representationKind' ||
-                  props.item.kind === 'siriusWeb://representationDescriptionType'
-                ) {
-                  return null;
-                } else {
-                  return <TreeItemAction {...props} />;
-                }
-              }}
-              onTreeItemClick={onTreeItemClick}
-              selectTreeItems={(selectedTreeItemIds: string[]) =>
-                setState((prevState) => {
-                  return { ...prevState, selectedTreeItemIds };
-                })
-              }
-              selectedTreeItemIds={state.selectedTreeItemIds}
-              data-testid="viewsexplorer://"
-            />
-          </div>
-        )}
-      </div>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );

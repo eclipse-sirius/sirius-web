@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,18 @@ afterEach(() => {
   cleanup();
   vi.clearAllMocks();
 });
+
+/* react-resizable-panel uses [ResizeObserver](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver) which is currently not supported by JSDom: https://github.com/jsdom/jsdom/issues/3368.
+ * To avoid tests failing, we mock the react-resizable-panels components.
+ */
+vi.mock('react-resizable-panels', () => ({
+  Group: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-group">{children}</div>,
+  Panel: ({ children, id }: { children?: React.ReactNode; id?: string }) => (
+    <div data-testid={id ? `mock-panel-${id}` : 'mock-panel'}>{children}</div>
+  ),
+  Separator: ({ className }: { className?: string }) => <div className={className} data-testid="mock-separator" />,
+  usePanelRef: () => ({ current: null }),
+}));
 
 const defaultWorkbenchConfiguration: WorkbenchConfiguration = {
   mainPanel: null,
