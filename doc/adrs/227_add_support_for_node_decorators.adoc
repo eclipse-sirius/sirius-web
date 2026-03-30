@@ -1,0 +1,114 @@
+:author: Gwendal Daniel
+:date: 2026-03-30
+:status: proposed
+:consulted: Stéphane Bégaudeau
+:informed: Séraphin Costa
+:deciders: Stéphane Bégaudeau
+:pitch: docs/iterations/2026.5/add_support_for_node_decorators.adoc
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6355
+
+= ADR-227 - Add support for node decorators
+
+== Context and Problem Statement
+
+We want to let specifiers define decorators on diagram's nodes.
+These decorators will be specified at the view DSL level, and rendered with the diagram by the frontend.
+
+A decorator will consist of:
+
+- A name
+- A label (may be used to render tooltips)
+- An image
+- A position (north, south, etc)
+- A precondition
+
+Decorators should not cover other elements potentially displayed in the node (like inner nodes, labels, or actions).
+
+To do that, we need to add decorators as part of the diagram rendering process, and ensure these decorators are correctly positioned w.r.t. their definition.
+
+== Decision Drivers
+
+Since we are dealing with positioning dom elements, we can leverage either CSS or Javascript.
+
+The best solution should be adapted to the current specification of decorators. 
+
+
+== Considered Options
+
+=== CSS positioning
+
+CSS can take care of:
+
+- The position of the decorator w.r.t. the containing node
+- The margins around the decorator (if any)
+- The z-index of the decorator, which should be consistent with the z-index of other elements in the diagram (in particular inner nodes, labels, and actions).
+- Hide decorator images overflowing their containing node
+
+
+=== JS positioning
+
+JS positioning can handle manually moved decorators, especially when the parent node is resized (similarly to how elements in a free form are moved when their container is resized).
+
+JS positioning would most likely require some CSS to take care of other aspects of the rendering (e.g. to manage z-index or overflowing images).
+
+
+== Decision Outcome
+
+Since we don't want to support any interactivity with decorators at the moment, there is no need to compute or store previous coordinates of a decorator, which could require Javascript.
+
+CSS is good enough to position decorators and ensure they do not cover with other elements contained in the node.
+
+
+== Consequences
+
+=== Advantages
+
+The code responsible for positioning the decorators won't be scattered between CSS and Javascript.
+
+
+=== Drawbacks
+
+The CSS solution is probably not the best option to prevent decorator overlaps, or dynamically adapt decorator images (e.g. resize the decorators to better fit a node being resized).
+
+Note that these features are not in the scope of the current work, but supporting them later may require to replace some CSS by their Javascript counterparts.
+
+
+== More Information
+
+We will update the GraphQL schema as follows:
+
+[source, graphqls]
+----
+type Node {
+    // [...]
+    decorators: [NodeDecorator!]!
+}
+
+type NodeDecorator {
+    label: String!
+    position: NodeDecoratorPosition!
+    iconURL: String!
+}
+
+enum NodeDecoratorPosition {
+    North,
+    North_West,
+    West,
+    // other positions
+}
+----
+
+The view DSL and description will be updated to provide values for these new fields.
+
+
+=== Implementation
+
+Since most of the complexity of this feature is in the frontend implementation, we'll quickly set up an environment to iterate on the rendering:
+
+* Implement a first version of the frontend 
+** Rely on a temporary data fetcher to return hardcoded decorators for manual testing purposes (enabled via a specific parameter)
+** Only render the first decorator at each position, do not deal with tooltips
+* Add support for rendering multiple decorators at a given position (via a tooltip)
+* Update the view DSL and the converter to properly render specified decorators
+** Remove the temporary data fetcher
+** Add backend and frontend tests
