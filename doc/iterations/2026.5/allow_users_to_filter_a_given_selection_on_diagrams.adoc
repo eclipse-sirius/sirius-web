@@ -1,0 +1,56 @@
+:author: Michael Charfadi
+:date: 2026-03-30
+:status: accepted
+:consulted: Stéphane Bégaudeau
+:informed: Stéphane Bégaudeau
+:deciders: Stéphane Bégaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6352
+
+= (S) Allow users to filter a given selection on diagrams
+
+== Problem
+
+When selecting with the lasso on a diagram, all elements inside the lasso are selected but we might want to use a group tool that is only available on some type of element.
+We want to be able to filter a given selection on diagrams.
+
+
+== Key Result
+
+Users should have a menu to filter a given selection.
+Specifiers can contribute entries in this menu to add a custom selection filter.
+The solution must be applicable to Sirius Web and downstream projects.
+
+
+=== Acceptance Criteria
+
+A default implementation to filter edges, nodes and nodes without icon labels will be implemented and tested with a backend test and a Playwright test.
+
+
+== Solution
+
+A backend API will be used to declare filters and their behavior.
+
+
+=== Scenario
+
+An user wants to filter a multi selection to select only the nodes.
+He clicks on the filter button on the diagram toolbar and select the menu button option "Select nodes"
+
+
+=== Breadboarding
+
+A menu button will be added on the diagram toolbar with each menu representing a filter.
+
+
+=== Cutting backs
+
+None
+
+
+== Rabbit holes
+
+None
+
+
+== No-gos
+
