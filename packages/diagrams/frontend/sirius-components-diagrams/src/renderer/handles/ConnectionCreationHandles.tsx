@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,11 +15,9 @@ import { Edge, Handle, Node, Position, useStoreApi } from '@xyflow/react';
 import React, { memo, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { ConnectorContext } from '../connector/ConnectorContext';
-import { ConnectorContextValue } from '../connector/ConnectorContext.types';
-import { useConnector } from '../connector/useConnector';
 import { useConnectionCandidatesQuery } from './useConnectionCandidatesQuery';
 
+import { useConnectorPalette } from '../connector/context/useConnectorPalette';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionCreationHandlesProps, ConnectionCreationHandlesState } from './ConnectionCreationHandles.types';
 import { useRefreshTargetHandles } from './useRefreshTargetHandles';
@@ -71,8 +69,7 @@ const connectionCreationHandleStyle = (
 export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: ConnectionCreationHandlesProps) => {
   const theme = useTheme();
   const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { onConnectionStartElementClick, isConnectionInProgress } = useConnector();
-  const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { setCandidateDescriptionIds, isConnectionInProgress } = useConnectorPalette();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   // If diagramElementId is set then we use it for the request otherwise we use the id of the node used to place the handle
@@ -90,13 +87,13 @@ export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: Con
   useRefreshTargetHandles(nodeId, shouldRender);
 
   useEffect(() => {
-    if (candidates !== null) {
-      setCandidates(candidates);
+    if (!!candidates) {
+      setCandidateDescriptionIds(candidates.map((candidate) => candidate.id));
     }
   }, [candidates]);
 
   useEffect(() => {
-    if (!isConnectionInProgress()) {
+    if (!isConnectionInProgress) {
       setState((prevState) => ({
         ...prevState,
         isMouseDown: null,
@@ -104,8 +101,7 @@ export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: Con
     }
   }, [isConnectionInProgress]);
 
-  const handleOnMouseDown = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, position: Position) => {
-    onConnectionStartElementClick(event);
+  const handleOnMouseDown = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>, position: Position) => {
     setState((prevState) => ({
       ...prevState,
       isMouseDown: position,
