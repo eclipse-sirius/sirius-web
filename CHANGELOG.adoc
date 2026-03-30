@@ -26,8 +26,7 @@
 
 === Dependency update
 
-
-
+- [frontend] Switch to `@fontsource/roboto` v5.2.10
 
 === Bug fixes
 
