@@ -10,29 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import { ImperativePanelHandle, Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { ForwardedRef, forwardRef, useCallback, useImperativeHandle, useRef, useState } from 'react';
+import { Group, Panel, PanelImperativeHandle, Separator } from 'react-resizable-panels';
 import { makeStyles } from 'tss-react/mui';
-import { PanelsProps, PanelState, WorkbenchPanelHandle } from './Panels.types';
+import { PanelsProps, WorkbenchPanelHandle } from './Panels.types';
+import { SidePanel } from './SidePanel';
+import { SidePanelHandle } from './SidePanel.types';
 import { Sidebar } from './Sidebar';
-import {
-  WorkbenchPanelsHandle,
-  WorkbenchViewConfiguration,
-  WorkbenchViewContribution,
-  WorkbenchViewHandle,
-} from './Workbench.types';
-import { WorkbenchPart } from './WorkbenchPart';
-
-/**
- * React Resizable Panels based panels
- */
+import { WorkbenchPanelsHandle, WorkbenchViewConfiguration } from './Workbench.types';
 
 const usePanelStyles = makeStyles()((theme) => ({
-  panel: {
-    display: 'grid',
-    gridTemplateRows: 'minmax(0, 1fr)',
-    gridTemplateColumns: 'minmax(0, 1fr)',
-  },
   mainArea: {
     display: 'grid',
     height: '100%',
@@ -44,14 +31,6 @@ const usePanelStyles = makeStyles()((theme) => ({
     borderColor: theme.palette.divider,
     borderRightStyle: 'solid',
     borderRightWidth: '1px',
-  },
-  horizontalResizer: {
-    display: 'grid',
-    height: `1px`,
-    backgroundColor: theme.palette.divider,
-    borderColor: theme.palette.divider,
-    borderBottomStyle: 'solid',
-    borderBottomWidth: '1px',
   },
 }));
 
@@ -70,298 +49,121 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     }: PanelsProps,
     refPanelsHandle: ForwardedRef<WorkbenchPanelsHandle | null>
   ) => {
-    let leftInitialActiveConfigurationIds: string[] = [];
-    if (leftPanelConfiguration) {
-      leftInitialActiveConfigurationIds = leftPanelConfiguration.views
-        .filter((configuration) => configuration && configuration.isActive)
-        .map((configuration) => configuration.id);
-    } else if (leftContributions[0]) {
-      leftInitialActiveConfigurationIds = [leftContributions[0].id];
-    }
-
-    let rightInitialActiveConfigurationIds: string[] = [];
-    if (rightPanelConfiguration) {
-      rightInitialActiveConfigurationIds = rightPanelConfiguration.views
-        .filter((configuration) => configuration && configuration.isActive)
-        .map((configuration) => configuration.id);
-    } else if (rightContributions[0]) {
-      rightInitialActiveConfigurationIds = [rightContributions[0].id];
-    }
-
-    const leftInitialState: PanelState = {
-      selectedContributionIds: leftInitialActiveConfigurationIds,
-      isOpen: leftPanelConfiguration?.isOpen ?? false,
-    };
-    const rightInitialState: PanelState = {
-      selectedContributionIds: rightInitialActiveConfigurationIds,
-      isOpen: rightPanelConfiguration?.isOpen ?? false,
-    };
-
     const { classes } = usePanelStyles();
-    const leftWorkbenchViewRef = useRef<Map<string, WorkbenchViewHandle>>(new Map());
-    const rightWorkbenchViewRef = useRef<Map<string, WorkbenchViewHandle>>(new Map());
-    const leftRef = useRef<ImperativePanelHandle>(null);
-    const rightRef = useRef<ImperativePanelHandle>(null);
-    const [leftPanelState, setLeftPanelState] = useState<PanelState>(leftInitialState);
-    const [rightPanelState, setRightPanelState] = useState<PanelState>(rightInitialState);
+    const viewPanelRefs = useRef<Map<string, PanelImperativeHandle>>(new Map());
+    const leftSidePanelRef = useRef<SidePanelHandle>(null);
+    const rightSidePanelRef = useRef<SidePanelHandle>(null);
 
-    const leftSelectedContributions: WorkbenchViewContribution[] = leftContributions.filter((contribution) =>
-      leftPanelState.selectedContributionIds.includes(contribution.id)
-    );
-    const rightSelectedContributions: WorkbenchViewContribution[] = rightContributions.filter((contribution) =>
-      rightPanelState.selectedContributionIds.includes(contribution.id)
-    );
+    const [leftSelectedIds, setLeftSelectedIds] = useState<string[]>([]);
+    const [rightSelectedIds, setRightSelectedIds] = useState<string[]>([]);
+
+    const handleLeftSelectedIdsChange = useCallback((ids: string[]) => {
+      setLeftSelectedIds(ids);
+    }, []);
+
+    const handleRightSelectedIdsChange = useCallback((ids: string[]) => {
+      setRightSelectedIds(ids);
+    }, []);
 
     useImperativeHandle(
       refPanelsHandle,
       () => {
         return {
           getWorkbenchPanelConfigurations: () => {
+            const leftState = leftSidePanelRef.current?.getPanelState();
+            const rightState = rightSidePanelRef.current?.getPanelState();
+
             const leftViewConfigurations: WorkbenchViewConfiguration[] = leftContributions.map((contribution) => {
-              const data: Record<string, unknown> =
-                leftWorkbenchViewRef.current.get(contribution.id)?.getWorkbenchViewConfiguration() ?? {};
+              const handles = leftSidePanelRef.current?.getWorkbenchViewHandles() ?? [];
+              const handle = handles.find((h) => h.id === contribution.id);
+              const data: Record<string, unknown> = handle?.getWorkbenchViewConfiguration() ?? {};
               return {
                 id: contribution.id,
-                isActive: leftPanelState.selectedContributionIds.includes(contribution.id),
+                isActive: leftState?.selectedContributionIds.includes(contribution.id) ?? false,
                 ...data,
               };
             });
             const rightViewConfigurations: WorkbenchViewConfiguration[] = rightContributions.map((contribution) => {
-              const data: Record<string, unknown> =
-                rightWorkbenchViewRef.current.get(contribution.id)?.getWorkbenchViewConfiguration() ?? {};
+              const handles = rightSidePanelRef.current?.getWorkbenchViewHandles() ?? [];
+              const handle = handles.find((h) => h.id === contribution.id);
+              const data: Record<string, unknown> = handle?.getWorkbenchViewConfiguration() ?? {};
               return {
                 id: contribution.id,
-                isActive: rightPanelState.selectedContributionIds.includes(contribution.id),
+                isActive: rightState?.selectedContributionIds.includes(contribution.id) ?? false,
                 ...data,
               };
             });
             return [
-              { id: 'left', isOpen: leftPanelState?.isOpen, views: leftViewConfigurations },
-              { id: 'right', isOpen: rightPanelState?.isOpen, views: rightViewConfigurations },
+              { id: 'left', isOpen: leftState?.isOpen ?? false, views: leftViewConfigurations },
+              { id: 'right', isOpen: rightState?.isOpen ?? false, views: rightViewConfigurations },
             ];
           },
           getWorkbenchPanelHandles: () => {
             const panelHandles: WorkbenchPanelHandle[] = [];
             panelHandles.push({
               side: 'left',
-              getWorkbenchViewHandles: () =>
-                Array.from(leftWorkbenchViewRef.current.values()).filter((handle) =>
-                  leftPanelState.selectedContributionIds.includes(handle.id)
-                ),
+              getWorkbenchViewHandles: () => leftSidePanelRef.current?.getWorkbenchViewHandles() ?? [],
             });
             panelHandles.push({
               side: 'right',
-              getWorkbenchViewHandles: () =>
-                Array.from(rightWorkbenchViewRef.current.values()).filter((handle) =>
-                  rightPanelState.selectedContributionIds.includes(handle.id)
-                ),
+              getWorkbenchViewHandles: () => rightSidePanelRef.current?.getWorkbenchViewHandles() ?? [],
             });
             return panelHandles;
           },
         };
       },
-      [
-        leftContributions,
-        leftSelectedContributions,
-        leftPanelState,
-        rightContributions,
-        rightSelectedContributions,
-        rightPanelState,
-      ]
+      [leftContributions, rightContributions, leftSelectedIds, rightSelectedIds]
     );
 
     const handleLeftContributionClicked = (id: string) => {
-      if (leftRef.current) {
-        if (leftPanelState.selectedContributionIds.includes(id)) {
-          if (leftRef.current.isExpanded() && leftPanelState.selectedContributionIds.length === 1) {
-            leftRef.current.collapse();
-          }
-        } else {
-          if (leftRef.current.isCollapsed()) {
-            leftRef.current.expand();
-          }
-        }
-      }
-
-      setLeftPanelState((prevState) => {
-        if (prevState.selectedContributionIds.includes(id)) {
-          return {
-            ...prevState,
-            selectedContributionIds: prevState.selectedContributionIds.filter(
-              (contributionId) => contributionId !== id
-            ),
-          };
-        } else {
-          return {
-            ...prevState,
-            selectedContributionIds: [...prevState.selectedContributionIds, id],
-          };
-        }
-      });
+      leftSidePanelRef.current?.handleContributionClicked(id);
     };
 
     const handleRightContributionClicked = (id: string) => {
-      if (rightRef.current) {
-        if (rightPanelState.selectedContributionIds.includes(id)) {
-          if (rightRef.current.isExpanded() && rightPanelState.selectedContributionIds.length === 1) {
-            rightRef.current.collapse();
-          }
-        } else {
-          if (rightRef.current.isCollapsed()) {
-            rightRef.current.expand();
-          }
-        }
-      }
-
-      setRightPanelState((prevState) => {
-        if (prevState.selectedContributionIds.includes(id)) {
-          return {
-            ...prevState,
-            selectedContributionIds: prevState.selectedContributionIds.filter(
-              (contributionId) => contributionId !== id
-            ),
-          };
-        } else {
-          return {
-            ...prevState,
-            selectedContributionIds: [...prevState.selectedContributionIds, id],
-          };
-        }
-      });
+      rightSidePanelRef.current?.handleContributionClicked(id);
     };
 
-    const toggleLeftPanel = (isOpen: boolean) => {
-      setLeftPanelState((prevState) => ({ ...prevState, isOpen }));
-    };
-
-    const toggleRightPanel = (isOpen: boolean) => {
-      setRightPanelState((prevState) => ({ ...prevState, isOpen }));
-    };
-
-    const collapsedSize: number = 0;
     return (
       <div style={{ display: 'flex' }}>
         <Sidebar
           side="left"
           contributions={leftContributions}
-          selectedContributionIds={leftPanelState.selectedContributionIds}
+          selectedContributionIds={leftSelectedIds}
           onContributionClick={handleLeftContributionClicked}
         />
-        <PanelGroup direction="horizontal">
-          <Panel
-            id="left"
-            className={classes.panel}
-            defaultSize={leftPanelState.isOpen ? leftPanelInitialSize : collapsedSize}
-            collapsible
-            collapsedSize={collapsedSize}
-            minSize={10}
-            onExpand={() => toggleLeftPanel(true)}
-            onCollapse={() => toggleLeftPanel(false)}
-            ref={leftRef}>
-            {leftPanelState.isOpen ? (
-              <PanelGroup direction="vertical">
-                {leftSelectedContributions.map((leftContribution, index) => (
-                  <>
-                    <Panel
-                      id={leftContribution.id}
-                      key={leftContribution.id}
-                      order={index}
-                      className={classes.panel}
-                      minSize={10}>
-                      <WorkbenchPart
-                        editingContextId={editingContextId}
-                        readOnly={readOnly}
-                        side="left"
-                        contribution={leftContribution}
-                        initialConfiguration={
-                          leftPanelConfiguration?.views.find(
-                            (configuration) => configuration && configuration.id === leftContribution.id
-                          ) ?? null
-                        }
-                        ref={(workbenchViewHandle: WorkbenchViewHandle | null) => {
-                          if (workbenchViewHandle) {
-                            leftWorkbenchViewRef.current.set(leftContribution.id, workbenchViewHandle);
-                          }
-                          return () => {
-                            leftWorkbenchViewRef.current.delete(leftContribution.id);
-                          };
-                        }}
-                      />
-                    </Panel>
-                    {index < leftSelectedContributions.length - 1 ? (
-                      <PanelResizeHandle
-                        key={`left-resizer-${leftContribution.id}`}
-                        className={classes.horizontalResizer}
-                        data-testid="view-resizer"
-                      />
-                    ) : null}
-                  </>
-                ))}
-              </PanelGroup>
-            ) : null}
-          </Panel>
-          <PanelResizeHandle className={classes.verticalResizer} data-testid="left-resizer" />
-          <Panel id="mainArea" minSize={30}>
+        <Group orientation="horizontal">
+          <SidePanel
+            ref={leftSidePanelRef}
+            side="left"
+            editingContextId={editingContextId}
+            readOnly={readOnly}
+            contributions={leftContributions}
+            panelConfiguration={leftPanelConfiguration}
+            panelInitialSize={leftPanelInitialSize}
+            viewPanelRefs={viewPanelRefs}
+            onSelectedContributionIdsChange={handleLeftSelectedIdsChange}
+          />
+          <Separator className={classes.verticalResizer} data-testid="left-resizer" />
+          <Panel id="mainArea" minSize="30%">
             <div className={classes.mainArea}>{mainArea}</div>
           </Panel>
-          <PanelResizeHandle className={classes.verticalResizer} data-testid="right-resizer" />
-          <Panel
-            id="right"
-            className={classes.panel}
-            defaultSize={rightPanelState.isOpen ? rightPanelInitialSize : collapsedSize}
-            collapsible
-            collapsedSize={collapsedSize}
-            minSize={10}
-            onExpand={() => toggleRightPanel(true)}
-            onCollapse={() => toggleRightPanel(false)}
-            ref={rightRef}>
-            {rightPanelState.isOpen ? (
-              <PanelGroup direction="vertical">
-                {rightSelectedContributions.map((rightContribution, index) => (
-                  <>
-                    <Panel
-                      id={rightContribution.id}
-                      key={rightContribution.id}
-                      order={index}
-                      className={classes.panel}
-                      minSize={10}>
-                      <WorkbenchPart
-                        editingContextId={editingContextId}
-                        readOnly={readOnly}
-                        side="right"
-                        contribution={rightContribution}
-                        initialConfiguration={
-                          rightPanelConfiguration?.views.find(
-                            (configuration) => configuration && configuration.id === rightContribution.id
-                          ) ?? null
-                        }
-                        ref={(workbenchViewHandle: WorkbenchViewHandle | null) => {
-                          if (workbenchViewHandle) {
-                            rightWorkbenchViewRef.current.set(rightContribution.id, workbenchViewHandle);
-                          }
-                          return () => {
-                            rightWorkbenchViewRef.current.delete(rightContribution.id);
-                          };
-                        }}
-                      />
-                    </Panel>
-                    {index < rightSelectedContributions.length - 1 ? (
-                      <PanelResizeHandle
-                        key={`right-resizer-${rightContribution.id}`}
-                        className={classes.horizontalResizer}
-                        data-testid="view-resizer"
-                      />
-                    ) : null}
-                  </>
-                ))}
-              </PanelGroup>
-            ) : null}
-          </Panel>
-        </PanelGroup>
+          <Separator className={classes.verticalResizer} data-testid="right-resizer" />
+          <SidePanel
+            ref={rightSidePanelRef}
+            side="right"
+            editingContextId={editingContextId}
+            readOnly={readOnly}
+            contributions={rightContributions}
+            panelConfiguration={rightPanelConfiguration}
+            panelInitialSize={rightPanelInitialSize}
+            viewPanelRefs={viewPanelRefs}
+            onSelectedContributionIdsChange={handleRightSelectedIdsChange}
+          />
+        </Group>
         <Sidebar
-          contributions={rightContributions}
           side="right"
-          selectedContributionIds={rightPanelState.selectedContributionIds}
+          contributions={rightContributions}
+          selectedContributionIds={rightSelectedIds}
           onContributionClick={handleRightContributionClicked}
         />
       </div>
