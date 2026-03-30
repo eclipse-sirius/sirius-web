@@ -47,7 +47,8 @@ The new template for functional specification is located in `doc/iterations/YYYY
 The technical specifications will now rely on a new architectural decision record template located in `doc/adrs/adr.adoc`.
 This new template for ADRs will have several additional requirements compared to the previous one.
 It will require contributors to specify the persons involved in the decision process, to details the qualities expected of the solution, to list the various options considered, to clarify why a specific option has been selected, its advantages and drawbacks, which steps will be taken for the implementation among other things.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6346[#6346] [form] Ensure forms are read-only when opened on a library editing context.
+The backend now sends a `canEdit=false` capability when subscribing to such form.
 
 
 == 2026.3.0
