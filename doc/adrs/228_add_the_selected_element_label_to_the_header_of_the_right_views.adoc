@@ -1,0 +1,100 @@
+:author: Théo Giraudet
+:date: 2026-03-30
+:status: proposed
+:consulted: Mélanie Bats
+:informed: /
+:deciders: Stéphane Bégaudeau, Mélanie Bats
+:pitch: /
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6297
+
+= ADR-228 - Add the selected element label in the header of the right views
+
+== Context and Problem Statement
+
+The right views of the workbench display information relative to a specific element.
+By default, these views are synchronized with the selected element, but they can be locked and then unsynchronized from this one.
+In such a situation, identifying which element the views are related to can be challenging, especially for Query, Related Views, or Related Elements which do not display this information.
+
+== Decision Drivers
+
+The label of the displayed element must be synchronized with the element displayed, i.e., when renaming the element, the label must also be changed, even if the view is locked.
+This synchronization must have as little impact as possible on the performance since this is only a usability feature.
+
+== Considered Options
+
+=== Send the label over the views subscription when possible
+
+Most views have an existing subscription.
+The idea here is to reuse them to also send the label of the displayed element.
+Some views do not use subscription, for instance, the Query view.
+For those views, this solution requires the use of a new subscription to get the information.
+
+=== One subscription per label to display
+
+A solution is to use one subscription per right views requiring to display the label.
+This solution is probably the simplest, but it requires a significant number of subscriptions (one per right views) just to display labels, which can have a considerable impact on performance.
+
+== Decision Outcome
+
+While the second option is the simplest and proposes a unified solution, its performance impact is too significant. 
+We therefore choose the first option: reuse existing subscriptions when possible.
+
+== Consequences
+
+=== Advantages
+
+By reusing existing subscriptions when possible, we limit the network overhead of this new feature.
+The label is also guaranteed to be consistent with the representation state since it is delivered in the same payload.
+
+=== Drawbacks
+
+The selected solution still requires new subscriptions for some views.
+For a classic Flow project, one subscription will be needed for the Query View, but more can be required if other projects have views that do not use a representation subscription.
+
+== More Information
+
+=== Implementation
+
+This work will require two different mechanisms to get the labels: modifying the existing representation subscriptions to add the related element labels; adding a new hook to get the information when no existing subscription is available.
+
+Regarding the existing subscriptions, we will, for the beginning, only modify the form subscription since this is currently the only one used by the right views.
+The GraphQL type `form` will be modified as follows:
+
+[source,graphqls]
+----
+type Form implements Representation {
+  id: ID!
+  metadata: RepresentationMetadata!
+  targetObjectId: ID!
+  targetObjectLabel: String! # new field
+  pages: [Page!]!
+}
+----
+
+Other representation subscriptions will be updated later.
+
+Regarding the hook, we will add a new `useObjectsSubscription` and a new subscription `objectsEvent`.
+They take a list of semantic IDs and return the associated semantic objects, enabling it to be used in other context where we need to subscribe to semantic elements.
+Here are the new GraphQL types:
+
+[source,graphqls]
+----
+extend type Subscription {
+  objectsEvent(input: ObjectsEventInput!): ObjectsEventPayload!
+}
+
+input ObjectsEventInput {
+  id: ID!
+  editingContextId: ID!
+  objectIds: [ID!]!
+}
+
+union ObjectsEventPayload = ErrorPayload | ObjectsRefreshedEventPayload
+
+type ObjectsRefreshedEventPayload {
+  id: ID!
+  objects: [Object!]!
+}
+----
+
+The type `Object`, defined in `core.graphqls`, already contains the label.
