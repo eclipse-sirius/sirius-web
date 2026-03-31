@@ -134,8 +134,8 @@ public class BuilderGenerator {
         StreamSupport.stream(Spliterators.spliterator(allViewContent, Spliterator.ORDERED), false).filter(GenModel.class::isInstance).map(GenModel.class::cast).forEach(model -> {
             try {
                 gen.doGen(model);
-            } catch (IOException e1) {
-                LOGGER.error(e1.getMessage());
+            } catch (IOException exception) {
+                LOGGER.warn(exception.getMessage());
             }
         });
         LOGGER.info("Generated!");
