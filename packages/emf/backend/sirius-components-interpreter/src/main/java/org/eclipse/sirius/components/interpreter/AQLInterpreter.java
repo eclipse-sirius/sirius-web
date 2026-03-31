@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -209,11 +209,23 @@ public class AQLInterpreter implements IInterpreter {
     private void log(String expression, Diagnostic diagnostic) {
         if (diagnostic.getMessage() != null) {
             if (Diagnostic.INFO == diagnostic.getSeverity()) {
-                this.logger.info("An info has occurred with the expression '{}': {}", expression, diagnostic.getMessage());
+                this.logger.atInfo()
+                        .setMessage("An info has occurred with the expression '{}': {}")
+                        .addArgument(expression)
+                        .addArgument(diagnostic.getMessage())
+                        .log();
             } else if (Diagnostic.WARNING == diagnostic.getSeverity()) {
-                this.logger.warn("A warning has occurred with the expression '{}': {}", expression, diagnostic.getMessage());
+                this.logger.atWarn()
+                        .setMessage("A warning has occurred with the expression '{}': {}")
+                        .addArgument(expression)
+                        .addArgument(diagnostic.getMessage())
+                        .log();
             } else if (Diagnostic.ERROR == diagnostic.getSeverity() || Diagnostic.CANCEL == diagnostic.getSeverity()) {
-                this.logger.warn("An error has occurred with the expression '{}': {}", expression, diagnostic.getMessage());
+                this.logger.atWarn()
+                        .setMessage("An error has occurred with the expression '{}': {}")
+                        .addArgument(expression)
+                        .addArgument(diagnostic.getMessage())
+                        .log();
             }
         }
 

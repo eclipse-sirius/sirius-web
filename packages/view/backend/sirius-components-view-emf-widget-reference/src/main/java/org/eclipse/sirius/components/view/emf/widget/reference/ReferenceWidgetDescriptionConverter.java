@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,10 @@ public class ReferenceWidgetDescriptionConverter implements IWidgetDescriptionCo
             String descriptionId = this.widgetIdProvider.getFormElementDescriptionId(referenceDescription);
 
             if (referenceDescription.getReferenceNameExpression().isEmpty()) {
-                this.logger.warn("Invalid empty Reference Name Expression on widget {}", referenceDescription.getName());
+                this.logger.atWarn()
+                        .setMessage("Invalid empty Reference Name Expression on widget {}")
+                        .addArgument(referenceDescription.getName())
+                        .log();
             } else {
                 var builder = org.eclipse.sirius.components.widget.reference.ReferenceWidgetDescription.newReferenceWidgetDescription(descriptionId);
 

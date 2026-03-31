@@ -64,7 +64,10 @@ public class JSONExternalResourceLoaderService implements IExternalResourceLoade
             }
             bufferedInputStream.reset();
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         return canHandle;
     }
@@ -86,7 +89,10 @@ public class JSONExternalResourceLoaderService implements IExternalResourceLoade
 
             resource = jsonResource;
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         if (resource == null) {

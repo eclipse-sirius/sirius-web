@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,7 +48,6 @@ import reactor.core.publisher.Sinks.One;
  * @author arichard
  */
 public class FormDescriptionEditorEventProcessor implements IFormDescriptionEditorEventProcessor {
-    private final Logger logger = LoggerFactory.getLogger(FormDescriptionEditorEventProcessor.class);
 
     private final IEditingContext editingContext;
 
@@ -68,8 +67,14 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
 
     private final FormDescriptionEditorEventFlux formDescriptionEditorEventFlux;
 
+    private final Logger logger = LoggerFactory.getLogger(FormDescriptionEditorEventProcessor.class);
+
     public FormDescriptionEditorEventProcessor(FormDescriptionEditorEventProcessorParameters parameters) {
-        this.logger.trace("Creating the form description editor event processor {}", parameters.formDescriptionEditorContext().getFormDescriptionEditor().getId());
+        this.logger.atTrace()
+                .setMessage("Creating the form description editor event processor {}")
+                .addArgument(parameters.formDescriptionEditorContext().getFormDescriptionEditor().getId())
+                .log();
+
         this.editingContext = parameters.editingContext();
         this.formDescriptionEditorContext = parameters.formDescriptionEditorContext();
         this.formDescriptionEditorEventHandlers = parameters.formDescriptionEditorEventHandlers();
@@ -86,7 +91,10 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
         this.formDescriptionEditorEventFlux = new FormDescriptionEditorEventFlux(formDescriptionEditor);
 
         if (formDescriptionEditor != null) {
-            this.logger.trace("FormDescriptionEditor refreshed: {})", formDescriptionEditor.getId());
+            this.logger.atTrace()
+                    .setMessage("FormDescriptionEditor refreshed: {}")
+                    .addArgument(formDescriptionEditor.getId())
+                    .log();
         }
     }
 
@@ -108,7 +116,10 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
                 IFormDescriptionEditorEventHandler formDescriptionEditorEventHandler = optionalFormEventHandler.get();
                 formDescriptionEditorEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.formDescriptionEditorContext, formDescriptionEditorInput);
             } else {
-                this.logger.warn("No handler found for event: {}", formDescriptionEditorInput);
+                this.logger.atWarn()
+                        .setMessage("No handler found for event: {}")
+                        .addArgument(formDescriptionEditorInput)
+                        .log();
             }
         }
     }
@@ -123,7 +134,11 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
         if (this.shouldRefresh(changeDescription) || this.shouldReload(changeDescription)) {
             FormDescriptionEditor refreshedFormDescriptionEditor = this.formDescriptionEditorCreationService.refresh(this.editingContext, this.formDescriptionEditorContext);
             if (refreshedFormDescriptionEditor != null) {
-                this.logger.trace("FormDescriptionEditor refreshed: {}", refreshedFormDescriptionEditor.getId());
+                this.logger.atTrace()
+                        .setMessage("FormDescriptionEditor refreshed: {}")
+                        .addArgument(refreshedFormDescriptionEditor.getId())
+                        .log();
+
                 this.formDescriptionEditorContext.update(refreshedFormDescriptionEditor);
                 this.formDescriptionEditorEventFlux.formDescriptionEditorRefreshed(changeDescription.getInput(), refreshedFormDescriptionEditor);
             }
@@ -136,18 +151,14 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
 
     private boolean shouldRefresh(ChangeDescription changeDescription) {
         FormDescriptionEditor formDescriptionEditor = this.formDescriptionEditorContext.getFormDescriptionEditor();
-        // @formatter:off
+
         var optionalFormDescriptionEditorDescription = this.representationDescriptionSearchService.findById(this.editingContext, formDescriptionEditor.getDescriptionId())
                 .filter(FormDescriptionEditorDescription.class::isInstance)
                 .map(FormDescriptionEditorDescription.class::cast);
-        // @formatter:on
 
-        // @formatter:off
         return optionalFormDescriptionEditorDescription.flatMap(this.representationRefreshPolicyRegistry::getRepresentationRefreshPolicy)
                 .orElseGet(this::getDefaultRefreshPolicy)
                 .shouldRefresh(changeDescription);
-        // @formatter:on
-
     }
 
     private IRepresentationRefreshPolicy getDefaultRefreshPolicy() {
@@ -161,17 +172,18 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
 
     @Override
     public Flux<IPayload> getOutputEvents(IInput input) {
-        // @formatter:off
         return Flux.merge(
-            this.formDescriptionEditorEventFlux.getFlux(input),
-            this.subscriptionManager.getFlux(input)
+                this.formDescriptionEditorEventFlux.getFlux(input),
+                this.subscriptionManager.getFlux(input)
         );
-        // @formatter:on
     }
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the form description editor event processor {}", this.formDescriptionEditorContext.getFormDescriptionEditor().getId());
+        this.logger.atTrace()
+                .setMessage("Disposing the form description editor event processor {}")
+                .addArgument(this.formDescriptionEditorContext.getFormDescriptionEditor().getId())
+                .log();
 
         this.subscriptionManager.dispose();
 

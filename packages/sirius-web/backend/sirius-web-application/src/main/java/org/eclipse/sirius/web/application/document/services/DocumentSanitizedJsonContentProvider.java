@@ -85,10 +85,16 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
                 long start = System.nanoTime();
                 var hasForbiddenProxies = !allowProxies && this.proxyValidator.hasProxies(inputResource);
                 Duration timeToTestProxies = Duration.ofNanos(System.nanoTime() - start);
-                this.logger.trace("Checked for proxies in {}ms", timeToTestProxies.toMillis());
+                this.logger.atTrace()
+                        .setMessage("Checked for proxies in {}ms")
+                        .addArgument(timeToTestProxies.toMillis())
+                        .log();
 
                 if (hasForbiddenProxies) {
-                    this.logger.warn("The resource {} contains unresolvable proxies and will not be uploaded.", name);
+                    this.logger.atWarn()
+                            .setMessage("The resource {} contains unresolvable proxies and will not be uploaded.")
+                            .addArgument(name)
+                            .log();
                 } else {
                     JsonResource outputResource;
                     if (Objects.equals(inputResource.getURI(), resourceURI) && inputResource instanceof JsonResource jsonInputResource) {
@@ -116,7 +122,10 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
 
                         optionalResult = Optional.of(new SanitizedResult(outputStream.toString(), idMappings, loadingResult.loadingReport()));
                     } catch (IOException exception) {
-                        this.logger.warn(exception.getMessage(), exception);
+                        this.logger.atWarn()
+                                .setMessage(exception.getMessage())
+                                .setCause(exception)
+                                .log();
                     }
                 }
             } finally {
@@ -175,7 +184,10 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
         try {
             inputStream.transferTo(baos);
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         byte[] bytes = baos.toByteArray();
         return this.externalResourceLoaderServices.stream()

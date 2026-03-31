@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -69,6 +69,7 @@ public class DefaultIndexUpdateService implements IDefaultIndexUpdateService {
                 BulkIngester<Void> bulkIngester = BulkIngester.of(bulkIngesterBuilder -> bulkIngesterBuilder
                         .client(this.optionalElasticSearchClient.get())
                 );
+
                 for (Resource resourceToIndex : emfEditingContext.getDomain().getResourceSet().getResources()) {
                     StreamSupport.stream(Spliterators.spliteratorUnknownSize(resourceToIndex.getAllContents(), Spliterator.ORDERED), false)
                         .forEach(eObject -> {
@@ -88,8 +89,13 @@ public class DefaultIndexUpdateService implements IDefaultIndexUpdateService {
                 bulkIngester.close();
             }
         }
+
         Duration timeToIndexEditingContext = Duration.ofNanos(System.nanoTime() - start);
-        this.logger.trace("Indexed editing context {} in {}ms", editingContext.getId(), timeToIndexEditingContext.toMillis());
+        this.logger.atTrace()
+                .setMessage("Indexed editing context {} in {}ms")
+                .addArgument(editingContext.getId())
+                .addArgument(timeToIndexEditingContext.toMillis())
+                .log();
     }
 
     private void clearIndex(IEditingContext editingContext) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -111,7 +111,12 @@ public class ReferenceLibraryImportHandler implements IEditingContextEventHandle
                         var isAlreadyUsed = editingContextSemanticData.getDependencies().stream()
                                 .anyMatch(dependency -> dependency.dependencySemanticDataId().getId().equals(library.getSemanticData().getId()));
                         if (isAlreadyUsed) {
-                            this.logger.warn("Cannot add a dependency to library " + library.getNamespace() + ":" + library.getName() + ":" + library.getVersion() + " since the dependency already exists");
+                            this.logger.atWarn()
+                                    .setMessage("Cannot add a dependency to library {}:{}:{} since the dependency already exists")
+                                    .addArgument(library.getNamespace())
+                                    .addArgument(library.getName())
+                                    .addArgument(library.getVersion())
+                                    .log();
                         } else {
                             newLibraries.add(library);
                         }

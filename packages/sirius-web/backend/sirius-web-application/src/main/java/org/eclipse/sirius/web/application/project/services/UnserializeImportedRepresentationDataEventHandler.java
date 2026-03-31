@@ -99,8 +99,11 @@ public class UnserializeImportedRepresentationDataEventHandler implements IEditi
                     );
                     payload = new UnserializeImportedRepresentationSuccessPayload(importDataInput.id(), data);
                 }
-            } catch (JsonProcessingException e) {
-                logger.warn(e.getMessage(), e);
+            } catch (JsonProcessingException exception) {
+                this.logger.atWarn()
+                        .setMessage(exception.getMessage())
+                        .setCause(exception)
+                        .log();
             }
         }
 

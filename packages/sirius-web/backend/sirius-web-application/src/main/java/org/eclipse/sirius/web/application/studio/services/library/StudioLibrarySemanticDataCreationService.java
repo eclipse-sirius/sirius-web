@@ -100,7 +100,10 @@ public class StudioLibrarySemanticDataCreationService implements IStudioLibraryS
                         Resource sharedComponentsResource = this.getOrCreateLibraryResource("shared_components", resourceId, resourceSet);
                         sharedComponentsResource.getContents().add(libraryCandidate);
                     } else {
-                        this.logger.warn("No project found for editing context {}", input.editingContextId());
+                        this.logger.atWarn()
+                                .setMessage("No project found for editing context {}")
+                                .addArgument(input.editingContextId())
+                                .log();
                     }
                 }
             }

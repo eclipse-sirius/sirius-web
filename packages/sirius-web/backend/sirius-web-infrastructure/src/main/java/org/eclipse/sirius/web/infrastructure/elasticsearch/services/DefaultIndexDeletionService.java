@@ -51,7 +51,10 @@ public class DefaultIndexDeletionService implements IDefaultIndexDeletionService
                     indexDeleted = true;
                 }
             } catch (IOException | ElasticsearchException exception) {
-                this.logger.warn("An error occurred while deleting the index", exception);
+                this.logger.atWarn()
+                        .setMessage("An error occurred while deleting the index")
+                        .setCause(exception)
+                        .log();
             }
         }
         return indexDeleted;

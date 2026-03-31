@@ -66,7 +66,10 @@ public class RepresentationContentMigrationService implements IRepresentationCon
                 optionalObjectNode = Optional.of(objectNode);
             }
         } catch (JsonProcessingException | IllegalArgumentException exception) {
-            this.logger.warn(exception.getMessage());
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return optionalObjectNode;

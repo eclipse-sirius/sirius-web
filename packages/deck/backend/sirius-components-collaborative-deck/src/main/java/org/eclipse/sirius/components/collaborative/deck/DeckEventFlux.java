@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,11 +34,11 @@ import reactor.core.publisher.Sinks.Many;
  */
 public class DeckEventFlux {
 
-    private final Logger logger = LoggerFactory.getLogger(DeckEventFlux.class);
-
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private Deck currentDeck;
+
+    private final Logger logger = LoggerFactory.getLogger(DeckEventFlux.class);
 
     public DeckEventFlux(Deck currentDeck) {
         this.currentDeck = Objects.requireNonNull(currentDeck);
@@ -49,8 +49,10 @@ public class DeckEventFlux {
         if (this.sink.currentSubscriberCount() > 0) {
             EmitResult emitResult = this.sink.tryEmitNext(new DeckRefreshedEventPayload(input.id(), this.currentDeck));
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a DeckRefreshedEventPayload: {}";
-                this.logger.warn(pattern, emitResult);
+                this.logger.atWarn()
+                        .setMessage("An error has occurred while emitting a DeckRefreshedEventPayload: {}")
+                        .addArgument(emitResult)
+                        .log();
             }
         }
     }
@@ -63,8 +65,10 @@ public class DeckEventFlux {
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, emitResult);
+            this.logger.atWarn()
+                    .setMessage("An error has occurred while marking the publisher as complete: {}")
+                    .addArgument(emitResult)
+                    .log();
         }
     }
 }

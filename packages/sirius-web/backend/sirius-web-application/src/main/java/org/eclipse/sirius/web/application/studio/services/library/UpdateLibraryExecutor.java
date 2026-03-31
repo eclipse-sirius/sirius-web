@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -120,8 +120,12 @@ public class UpdateLibraryExecutor implements IUpdateLibraryExecutor {
 
                     long start = System.nanoTime();
                     Map<EObject, Collection<Setting>> removedProxies = this.proxyRemovalService.removeUnresolvedProxies(siriusWebEditingContext);
+
                     Duration timeToRemoveProxies = Duration.ofNanos(System.nanoTime() - start);
-                    this.logger.trace("Removed proxies in {}ms", timeToRemoveProxies.toMillis());
+                    this.logger.atTrace()
+                            .setMessage("Removed proxies in {}ms")
+                            .addArgument(timeToRemoveProxies.toMillis())
+                            .log();
 
                     result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of(REMOVED_PROXIES_PARAMETER_KEY, removedProxies), List.of(new Message("Library " + oldLibrary.getName() + " updated to version " + newLibrary.getVersion(), MessageLevel.SUCCESS)));
                 } else {
@@ -184,7 +188,12 @@ public class UpdateLibraryExecutor implements IUpdateLibraryExecutor {
                 .flatMap(this.semanticDataSearchService::findById);
         if (optionalSemanticData.isPresent()) {
             if (optionalSemanticData.get().getDependencies().stream().anyMatch(dependency -> dependency.dependencySemanticDataId().equals(library.getSemanticData()))) {
-                this.logger.warn("Cannot add the dependency to library " + library.getNamespace() + ":" + library.getName() + ":" + library.getVersion() + ": the dependency already exists");
+                this.logger.atWarn()
+                        .setMessage("Cannot add the dependency to library {}:{}:{}: the dependency already exists")
+                        .addArgument(library.getNamespace())
+                        .addArgument(library.getName())
+                        .addArgument(library.getVersion())
+                        .log();
             } else {
                 this.semanticDataUpdateService.addDependencies(cause, AggregateReference.to(optionalSemanticData.get().getId()), List.of(library.getSemanticData()));
             }

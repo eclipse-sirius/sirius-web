@@ -67,7 +67,10 @@ public class DefaultIndexCreationService implements IDefaultIndexCreationService
                     indexCreated = true;
                 }
             } catch (IOException | ElasticsearchException exception) {
-                this.logger.warn("An error occurred while creating the index", exception);
+                this.logger.atWarn()
+                        .setMessage("An error occurred while creating the index")
+                        .setCause(exception)
+                        .log();
             }
         }
         return indexCreated;

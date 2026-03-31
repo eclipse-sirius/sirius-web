@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,16 +107,18 @@ public class StartMessageHandler implements IWebSocketMessageHandler {
 
     private void subscribe(String id, Publisher<ExecutionResult> publisher) {
         Consumer<ExecutionResult> consumer = result -> this.send(this.objectMapper, this.session, new DataMessage(id, result.toSpecification()), this.logger);
-        Consumer<Throwable> onErrorConsumer = error -> {
-            this.logger.warn(error.getMessage(), error);
+        Consumer<Throwable> onErrorConsumer = throwable -> {
+            this.logger.atWarn()
+                    .setMessage(throwable.getMessage())
+                    .setCause(throwable)
+                    .log();
+
             this.send(this.objectMapper, this.session, new ErrorMessage(id, null), this.logger);
         };
         Runnable onCompleteConsumer = () -> this.send(this.objectMapper, this.session, new CompleteMessage(id), this.logger);
 
-        // @formatter:off
         Disposable subscription = Flux.from(publisher)
                 .subscribe(consumer, onErrorConsumer, onCompleteConsumer);
-        // @formatter:on
 
         SubscriptionEntry entry = new SubscriptionEntry(id, subscription);
 

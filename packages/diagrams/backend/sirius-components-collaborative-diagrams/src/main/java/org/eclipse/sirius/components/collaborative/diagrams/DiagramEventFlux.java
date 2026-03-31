@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,11 +36,11 @@ import reactor.core.publisher.Sinks.Many;
  */
 public class DiagramEventFlux {
 
-    private final Logger logger = LoggerFactory.getLogger(DiagramEventFlux.class);
-
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private Diagram currentDiagram;
+
+    private final Logger logger = LoggerFactory.getLogger(DiagramEventFlux.class);
 
     public DiagramEventFlux(Diagram currentDiagram) {
         this.currentDiagram = Objects.requireNonNull(currentDiagram);
@@ -58,8 +58,10 @@ public class DiagramEventFlux {
 
             EmitResult emitResult = this.sink.tryEmitNext(new DiagramRefreshedEventPayload(id, this.currentDiagram, cause, referencePosition));
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a DiagramRefreshedEventPayload: {}";
-                this.logger.warn(pattern, emitResult);
+                this.logger.atWarn()
+                        .setMessage("An error has occurred while emitting a DiagramRefreshedEventPayload: {}")
+                        .addArgument(emitResult)
+                        .log();
             }
         }
     }
@@ -76,8 +78,10 @@ public class DiagramEventFlux {
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, emitResult);
+            this.logger.atWarn()
+                    .setMessage("An error has occurred while marking the publisher as complete: {}")
+                    .addArgument(emitResult)
+                    .log();
         }
     }
 

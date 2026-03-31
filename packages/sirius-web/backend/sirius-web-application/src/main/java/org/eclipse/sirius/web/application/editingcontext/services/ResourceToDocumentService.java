@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,10 +73,14 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
             resource.save(outputStream, options);
 
             for (Resource.Diagnostic warning : resource.getWarnings()) {
-                this.logger.warn(warning.getMessage());
+                this.logger.atWarn()
+                        .setMessage(warning.getMessage())
+                        .log();
             }
             for (Resource.Diagnostic error : resource.getErrors()) {
-                this.logger.warn(error.getMessage());
+                this.logger.atWarn()
+                        .setMessage(error.getMessage())
+                        .log();
             }
 
             Optional<ResourceMetadataAdapter> optionalResourceMetadataAdapter = resource.eAdapters().stream()
@@ -104,7 +108,10 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
             var documentData = new DocumentData(document, serializationListener.getePackageEntries());
             optionalDocumentData = Optional.of(documentData);
         } catch (IllegalArgumentException | IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         return optionalDocumentData;
     }

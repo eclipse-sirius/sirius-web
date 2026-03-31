@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,13 +62,27 @@ public class OperationValidator implements IOperationValidator {
             if (expectedVariable.isMany() && value instanceof Collection<?> collection) {
                 var allMatch = collection.stream().allMatch(expectedVariable.type()::isInstance);
                 if (!allMatch) {
-                    this.logger.trace("{}: The variable '{}' does not match one of the expected type {}", operationName, variableName, expectedVariable.type());
+                    this.logger.atTrace()
+                            .setMessage("{}: The variable '{}' does not match one of the expected type {}")
+                            .addArgument(operationName)
+                            .addArgument(variableName)
+                            .addArgument(expectedVariable.type())
+                            .log();
                 }
             } else if (!expectedVariable.type().isInstance(value)) {
-                this.logger.trace("{}: The variable '{}' does not match one of the expected type {}", operationName, variableName, expectedVariable.type());
+                this.logger.atTrace()
+                        .setMessage("{}: The variable '{}' does not match one of the expected type {}")
+                        .addArgument(operationName)
+                        .addArgument(variableName)
+                        .addArgument(expectedVariable.type())
+                        .log();
             }
         } else {
-            this.logger.trace("{}: The variable '{}' is missing", operationName, variableName);
+            this.logger.atTrace()
+                    .setMessage("{}: The variable '{}' is missing")
+                    .addArgument(operationName)
+                    .addArgument(variableName)
+                    .log();
         }
     }
 }

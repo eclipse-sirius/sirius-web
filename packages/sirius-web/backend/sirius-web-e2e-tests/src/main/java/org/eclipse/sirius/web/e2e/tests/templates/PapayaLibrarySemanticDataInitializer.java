@@ -83,7 +83,9 @@ public class PapayaLibrarySemanticDataInitializer implements ISemanticDataInitia
             if (optionalMapInterface.isPresent()) {
                 papayaInterface.getExtends().add(optionalMapInterface.get());
             } else {
-                this.logger.warn("Cannot find the Map interface from the Java library");
+                this.logger.atWarn()
+                        .setMessage("Cannot find the Map interface from the Java library")
+                        .log();
             }
             papayaPackage.getTypes().add(papayaInterface);
 

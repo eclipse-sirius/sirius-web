@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -196,16 +196,22 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
                     }
 
                 } else if (result instanceof Failure<UploadedResource> failure) {
-                    this.logger.warn(failure.message());
+                    this.logger.atWarn()
+                            .setMessage(failure.message())
+                            .log();
                 }
             }
 
             this.rewriteProxiesService.rewriteProxies(editingContext, documentIds, semanticIds);
             List<Resource> removedResources = this.removeResourcesWithInvalidProxies(editingContext);
             if (!removedResources.isEmpty()) {
-                this.logger.warn("Some documents with invalid references were not imported: {}", removedResources.stream()
-                        .map(resource -> this.getDocumentName(resource).orElse(resource.getURI().toString()))
-                        .collect(Collectors.joining(", ")));
+                this.logger.atWarn()
+                        .setMessage("Some documents with invalid references were not imported: {}")
+                        .addArgument(() -> removedResources.stream()
+                                .map(resource -> this.getDocumentName(resource).orElse(resource.getURI().toString()))
+                                .collect(Collectors.joining(", "))
+                        )
+                        .log();
             }
             this.editingContextPersistenceService.persist(new CopySemanticDataCause(UUID.randomUUID(), cause, semanticIds, documentIds), editingContext);
         }

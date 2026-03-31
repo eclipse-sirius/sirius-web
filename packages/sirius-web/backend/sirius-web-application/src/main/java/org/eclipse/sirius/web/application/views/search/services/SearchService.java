@@ -67,7 +67,13 @@ public class SearchService implements ISearchService {
                     .limit(MAX_RESULT_SIZE)
                     .map(Object.class::cast).toList();
             var duration = Duration.ofNanos(System.nanoTime() - start);
-            this.logger.debug("Search found {} matches in {}s", result.size(), duration.toMillis());
+
+            this.logger.atDebug()
+                    .setMessage("Search found {} matches in {}s")
+                    .addArgument(() -> result.size())
+                    .addArgument(duration.toMillis())
+                    .log();
+
             return result;
         }
         return List.of();

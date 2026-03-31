@@ -68,7 +68,9 @@ public class GraphQLConfiguration {
         var options = SchemaPrinter.Options.defaultOptions();
         String schema = new SchemaPrinter(options).print(graphQLSchema);
 
-        this.logger.trace(schema);
+        this.logger.atTrace()
+                .setMessage(schema)
+                .log();
 
         ExecutionStrategy queryExecutionStrategy = new AsyncExecutionStrategy(dataFetcherExceptionHandler);
         // @see https://www.graphql-java.com/documentation/v11/execution/ The graphql specification says that mutations
@@ -106,11 +108,18 @@ public class GraphQLConfiguration {
             SchemaParser schemaParser = new SchemaParser();
 
             Resource[] resources = resourcePatternResolver.getResources("classpath*:/schema/**/*.graphqls");
-            this.logger.info("{} GraphQL schemas found", resources.length);
+
+            this.logger.atInfo()
+                    .setMessage("{} GraphQL schemas found")
+                    .addArgument(resources.length)
+                    .log();
+
             for (Resource resource : resources) {
-                if (this.logger.isInfoEnabled()) {
-                    this.logger.info("Processing the GraphQL schema: {}", resource.getURL());
-                }
+                this.logger.atInfo()
+                        .setMessage("Processing the GraphQL schema: {}")
+                        .addArgument(resource.getURL())
+                        .log();
+
                 TypeDefinitionRegistry childTypeDefinitionRegistry = schemaParser.parse(resource.getInputStream());
                 typeRegistry.merge(childTypeDefinitionRegistry);
             }
@@ -124,7 +133,10 @@ public class GraphQLConfiguration {
 
             return new SchemaGenerator().makeExecutableSchema(typeRegistry, runtimeWiring);
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         return null;
     }

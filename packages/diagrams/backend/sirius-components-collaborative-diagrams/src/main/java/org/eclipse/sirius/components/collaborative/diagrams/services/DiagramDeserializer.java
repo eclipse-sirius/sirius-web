@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,12 +38,10 @@ public class DiagramDeserializer implements IRepresentationDeserializer {
 
     @Override
     public boolean canHandle(ObjectNode root) {
-        // @formatter:off
         return Optional.ofNullable(root.get("kind"))
                 .map(JsonNode::asText)
                 .filter(Diagram.KIND::equals)
                 .isPresent();
-        // @formatter:on
     }
 
     @Override
@@ -51,7 +49,10 @@ public class DiagramDeserializer implements IRepresentationDeserializer {
         try {
             return Optional.of(mapper.readValue(root.toString(), Diagram.class));
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return Optional.empty();

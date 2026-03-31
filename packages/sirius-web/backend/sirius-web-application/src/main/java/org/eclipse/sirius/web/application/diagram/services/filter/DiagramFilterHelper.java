@@ -84,7 +84,12 @@ public class DiagramFilterHelper implements IDiagramFilterHelper {
 
             One<IPayload> payloadSink = Sinks.one();
             Many<ChangeDescription> changeDescriptions = Sinks.many().unicast().onBackpressureBuffer();
-            Consumer<Throwable> errorConsumer = throwable -> this.logger.warn(throwable.getMessage(), throwable);
+
+            Consumer<Throwable> errorConsumer = throwable -> this.logger.atWarn()
+                    .setMessage(throwable.getMessage())
+                    .setCause(throwable)
+                    .log();
+
             changeDescriptions.asFlux().subscribe(changeDescription -> {
                 editingContextEventProcessor.getRepresentationEventProcessors().forEach(eventProcessor -> {
                     var optionalRefresher = this.representationRefreshers.stream()
@@ -107,8 +112,12 @@ public class DiagramFilterHelper implements IDiagramFilterHelper {
 
             EmitResult changeDescriptionEmitResult = changeDescriptions.tryEmitComplete();
             if (changeDescriptionEmitResult.isFailure()) {
+                this.logger.atWarn()
+                        .setMessage("An error has occurred while marking the publisher as complete: {}")
+                        .addArgument(changeDescriptionEmitResult)
+                        .log();
+
                 String errorMessage = MessageFormat.format("An error has occurred while marking the publisher as complete: {0}", changeDescriptionEmitResult);
-                this.logger.warn(errorMessage);
                 result = new Failure(errorMessage);
             } else {
                 if (handlerResult instanceof SuccessPayload) {
@@ -121,7 +130,10 @@ public class DiagramFilterHelper implements IDiagramFilterHelper {
         }
 
         String errorMessage = "Cannot find the diagramEventProcessor or the editingContextEventProcessor";
-        this.logger.warn(errorMessage);
+        this.logger.atWarn()
+                .setMessage(errorMessage)
+                .log();
+
         return new Failure(errorMessage);
     }
 

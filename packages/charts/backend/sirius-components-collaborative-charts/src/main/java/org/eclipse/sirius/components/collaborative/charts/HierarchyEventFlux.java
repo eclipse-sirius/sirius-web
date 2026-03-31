@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,11 +33,11 @@ import reactor.core.publisher.Sinks.Many;
  */
 public class HierarchyEventFlux {
 
-    private final Logger logger = LoggerFactory.getLogger(HierarchyEventFlux.class);
-
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private Hierarchy currentHierarchy;
+
+    private final Logger logger = LoggerFactory.getLogger(HierarchyEventFlux.class);
 
     public HierarchyEventFlux(Hierarchy currentHierarchy) {
         this.currentHierarchy = Objects.requireNonNull(currentHierarchy);
@@ -48,8 +48,10 @@ public class HierarchyEventFlux {
         if (this.sink.currentSubscriberCount() > 0) {
             EmitResult emitResult = this.sink.tryEmitNext(new HierarchyRefreshedEventPayload(input.id(), this.currentHierarchy));
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a HierarchyRefreshedEventPayload: {}";
-                this.logger.warn(pattern, emitResult);
+                this.logger.atWarn()
+                        .setMessage("An error has occurred while emitting a HierarchyRefreshedEventPayload: {}")
+                        .addArgument(emitResult)
+                        .log();
             }
         }
     }
@@ -62,8 +64,10 @@ public class HierarchyEventFlux {
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, emitResult);
+            this.logger.atWarn()
+                    .setMessage("An error has occurred while marking the publisher as complete: {}")
+                    .addArgument(emitResult)
+                    .log();
         }
     }
 

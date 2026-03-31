@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -74,8 +74,6 @@ import reactor.core.publisher.Sinks.One;
  */
 public class FormEventProcessor implements IFormEventProcessor {
 
-    private final Logger logger = LoggerFactory.getLogger(FormEventProcessor.class);
-
     private final IEditingContext editingContext;
 
     private final IObjectService objectService;
@@ -106,6 +104,8 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private final VariableManager variableManager;
 
+    private final Logger logger = LoggerFactory.getLogger(FormEventProcessor.class);
+
     public FormEventProcessor(FormEventProcessorConfiguration configuration,
             ISubscriptionManager subscriptionManager,
             IRepresentationSearchService representationSearchService,
@@ -113,7 +113,11 @@ public class FormEventProcessor implements IFormEventProcessor {
             IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
             IFormPostProcessor formPostProcessor,
             IFormCapabilitiesService formCapabilitiesService) {
-        this.logger.trace("Creating the form event processor {}", configuration.formCreationParameters().getId());
+        this.logger.atTrace()
+                .setMessage("Creating the form event processor {}")
+                .addArgument(configuration.formCreationParameters().getId())
+                .log();
+
         this.editingContext = Objects.requireNonNull(configuration.editingContext());
         this.objectService = Objects.requireNonNull(configuration.objectService());
         this.formCreationParameters = Objects.requireNonNull(configuration.formCreationParameters());
@@ -171,7 +175,10 @@ public class FormEventProcessor implements IFormEventProcessor {
                 IFormEventHandler formEventHandler = optionalFormEventHandler.get();
                 formEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.currentForm.get(), formInput);
             } else {
-                this.logger.warn("No handler found for event: {}", formInput);
+                this.logger.atWarn()
+                        .setMessage("No handler found for event: {}")
+                        .addArgument(formInput)
+                        .log();
             }
         } else if (representationInput instanceof ITableInput tableInput) {
             Optional<ITableEventHandler> optionalTableEventHandler = this.tableEventHandlers.stream()
@@ -186,13 +193,22 @@ public class FormEventProcessor implements IFormEventProcessor {
                     if (tableDescriptionOptional.isPresent()) {
                         tableEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, new TableContext(tableOptional.get()), tableDescriptionOptional.get(), tableInput);
                     } else {
-                        this.logger.warn("No table description found for event: {}", tableInput);
+                        this.logger.atWarn()
+                                .setMessage("No table description found for event: {}")
+                                .addArgument(tableInput)
+                                .log();
                     }
                 } else {
-                    this.logger.warn("No table found for event: {}", tableInput);
+                    this.logger.atWarn()
+                            .setMessage("No table found for event: {}")
+                            .addArgument(tableInput)
+                            .log();
                 }
             } else {
-                this.logger.warn("No handler found for event: {}", tableInput);
+                this.logger.atWarn()
+                        .setMessage("No handler found for event: {}")
+                        .addArgument(tableInput)
+                        .log();
             }
         }
     }
@@ -240,7 +256,10 @@ public class FormEventProcessor implements IFormEventProcessor {
         if (this.sink.currentSubscriberCount() > 0) {
             EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().id(), this.currentForm.get()));
             if (emitResult.isFailure()) {
-                this.logger.warn("An error has occurred while emitting a FormRefreshedEventPayload: {}", emitResult);
+                this.logger.atWarn()
+                        .setMessage("An error has occurred while emitting a FormRefreshedEventPayload: {}")
+                        .addArgument(emitResult)
+                        .log();
             }
         }
     }
@@ -273,7 +292,10 @@ public class FormEventProcessor implements IFormEventProcessor {
 
         form = this.formPostProcessor.postProcess(form, this.variableManager);
 
-        this.logger.trace("Form refreshed: {}", form.getId());
+        this.logger.atTrace()
+                .setMessage("Form refreshed: {}")
+                .addArgument(form.getId())
+                .log();
 
         return form;
     }
@@ -298,13 +320,19 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the form event processor {}", this.formCreationParameters.getId());
+        this.logger.atTrace()
+                .setMessage("Disposing the form event processor {}")
+                .addArgument(this.formCreationParameters.getId())
+                .log();
 
         this.subscriptionManager.dispose();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            this.logger.warn("An error has occurred while marking the publisher as complete: {}", emitResult);
+            this.logger.atWarn()
+                    .setMessage("An error has occurred while marking the publisher as complete: {}")
+                    .addArgument(emitResult)
+                    .log();
         }
     }
 

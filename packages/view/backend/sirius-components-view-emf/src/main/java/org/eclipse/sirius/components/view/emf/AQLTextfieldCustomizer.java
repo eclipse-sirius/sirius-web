@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,8 @@ import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.NodeLabelStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -63,6 +65,8 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
     private final ApplicationContext applicationContext;
 
     private final List<IJavaServiceProvider> javaServiceProviders;
+
+    private final Logger logger = LoggerFactory.getLogger(AQLTextfieldCustomizer.class);
 
     public AQLTextfieldCustomizer(ApplicationContext applicationContext, List<IJavaServiceProvider> javaServiceProviders) {
         this.applicationContext = Objects.requireNonNull(applicationContext);
@@ -144,8 +148,11 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
                 .map(serviceClass -> {
                     try {
                         return beanFactory.createBean(serviceClass);
-                    } catch (BeansException beansException) {
-                        //this.logger.warn("Error while trying to instantiate Java service class " + serviceClass.getName(), beansException);
+                    } catch (BeansException exception) {
+                        this.logger.atWarn()
+                                .setMessage(exception.getMessage())
+                                .setCause(exception)
+                                .log();
                         return null;
                     }
                 })

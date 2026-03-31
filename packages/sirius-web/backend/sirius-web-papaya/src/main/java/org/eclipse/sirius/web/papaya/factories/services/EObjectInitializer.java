@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -323,7 +323,10 @@ public class EObjectInitializer implements IEObjectInitializer {
         try {
             optionalJavaClass = Optional.of(java.lang.Class.forName(type.getQualifiedName()));
         } catch (ClassNotFoundException exception) {
-            this.logger.warn(exception.getMessage());
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return optionalJavaClass;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,6 @@ import reactor.core.publisher.Sinks.One;
  */
 @Service
 public class InvokeEditingContextActionEventHandler implements IEditingContextEventHandler {
-    private final Logger logger = LoggerFactory.getLogger(InvokeEditingContextActionEventHandler.class);
 
     private final ICollaborativeMessageService messageService;
 
@@ -54,16 +53,16 @@ public class InvokeEditingContextActionEventHandler implements IEditingContextEv
 
     private final List<IEditingContextActionHandler> editingContextActionHandlers;
 
+    private final Logger logger = LoggerFactory.getLogger(InvokeEditingContextActionEventHandler.class);
+
     public InvokeEditingContextActionEventHandler(List<IEditingContextActionHandler> editingContextActionHandlers, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.editingContextActionHandlers = Objects.requireNonNull(editingContextActionHandlers);
 
         this.messageService = Objects.requireNonNull(messageService);
 
-        // @formatter:off
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @Override
@@ -79,22 +78,22 @@ public class InvokeEditingContextActionEventHandler implements IEditingContextEv
         IPayload payload = new ErrorPayload(input.id(), message);
         ChangeDescription changeDescription = new ChangeDescription(ChangeKind.NOTHING, editingContext.getId(), input);
 
-        if (input instanceof InvokeEditingContextActionInput) {
-            InvokeEditingContextActionInput invokeEditingContextActionInput = (InvokeEditingContextActionInput) input;
-
-            // @formatter:off
+        if (input instanceof InvokeEditingContextActionInput invokeEditingContextActionInput) {
             IStatus status = this.editingContextActionHandlers.stream()
-                .filter(handler -> handler.canHandle(editingContext, invokeEditingContextActionInput.actionId()))
-                .findFirst()
-                .map(handler -> handler.handle(editingContext, invokeEditingContextActionInput.actionId()))
-                .orElse(new Failure("No handler could be found for action with id " + invokeEditingContextActionInput.actionId()));
-            // @formatter:on
+                    .filter(handler -> handler.canHandle(editingContext, invokeEditingContextActionInput.actionId()))
+                    .findFirst()
+                    .map(handler -> handler.handle(editingContext, invokeEditingContextActionInput.actionId()))
+                    .orElse(new Failure("No handler could be found for action with id " + invokeEditingContextActionInput.actionId()));
 
             if (status instanceof Success success) {
                 payload = new SuccessPayload(invokeEditingContextActionInput.id());
                 changeDescription = new ChangeDescription(success.getChangeKind(), editingContext.getId(), input);
             } else if (status instanceof Failure failure) {
-                this.logger.warn("The action with id {} could not be executed", invokeEditingContextActionInput.actionId());
+                this.logger.atWarn()
+                        .setMessage("The action with id {} could not be executed")
+                        .addArgument(invokeEditingContextActionInput.actionId())
+                        .log();
+
                 payload = new ErrorPayload(input.id(), failure.getMessages());
             }
         }

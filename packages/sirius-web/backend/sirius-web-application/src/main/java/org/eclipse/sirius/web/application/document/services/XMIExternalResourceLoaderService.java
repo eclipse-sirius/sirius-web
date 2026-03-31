@@ -53,7 +53,10 @@ public class XMIExternalResourceLoaderService implements IExternalResourceLoader
                 canHandle = true;
             }
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         return canHandle;
     }
@@ -68,7 +71,10 @@ public class XMIExternalResourceLoaderService implements IExternalResourceLoader
 
             resource = xmiResource;
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         if (resource == null) {

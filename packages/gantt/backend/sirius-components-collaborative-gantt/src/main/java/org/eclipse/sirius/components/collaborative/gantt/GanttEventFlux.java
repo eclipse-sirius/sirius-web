@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,11 +34,11 @@ import reactor.core.publisher.Sinks.Many;
  */
 public class GanttEventFlux {
 
-    private final Logger logger = LoggerFactory.getLogger(GanttEventFlux.class);
-
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
 
     private Gantt currentGantt;
+
+    private final Logger logger = LoggerFactory.getLogger(GanttEventFlux.class);
 
     public GanttEventFlux(Gantt currentGantt) {
         this.currentGantt = Objects.requireNonNull(currentGantt);
@@ -49,8 +49,10 @@ public class GanttEventFlux {
         if (this.sink.currentSubscriberCount() > 0) {
             EmitResult emitResult = this.sink.tryEmitNext(new GanttRefreshedEventPayload(input.id(), this.currentGantt));
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting a GanttRefreshedEventPayload: {}";
-                this.logger.warn(pattern, emitResult);
+                this.logger.atWarn()
+                        .setMessage("An error has occurred while emitting a GanttRefreshedEventPayload: {}")
+                        .addArgument(emitResult)
+                        .log();
             }
         }
     }
@@ -63,8 +65,10 @@ public class GanttEventFlux {
     public void dispose() {
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, emitResult);
+            this.logger.atWarn()
+                    .setMessage("An error has occurred while marking the publisher as complete: {}")
+                    .addArgument(emitResult)
+                    .log();
         }
     }
 

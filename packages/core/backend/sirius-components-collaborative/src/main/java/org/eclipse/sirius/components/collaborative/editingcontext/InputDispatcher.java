@@ -70,7 +70,11 @@ public class InputDispatcher implements IInputDispatcher {
 
     @Override
     public void dispatch(ExecutorService executorService, Sinks.One<IPayload> payloadSink, Sinks.Many<Boolean> canBeDisposedSink, Sinks.Many<ChangeDescription> changeDescriptionSink, IEditingContext editingContext, IInput input) {
-        this.logger.trace("Input received: {}", input);
+        this.logger.atTrace()
+                .setMessage("Input received: {}")
+                .addArgument(input)
+                .log();
+
         long start = System.currentTimeMillis();
 
         AtomicReference<IInput> inputAfterPreProcessing = new AtomicReference<>(input);
@@ -108,7 +112,10 @@ public class InputDispatcher implements IInputDispatcher {
             editingContextEventHandler.handle(payloadSink, changeDescriptionSink, editingContext, input);
         } else {
             payloadSink.tryEmitValue(new ErrorPayload(input.id(), "No handler found for event: " + input));
-            this.logger.warn("No handler found for event: {}", input);
+            this.logger.atWarn()
+                    .setMessage("No handler found for event: {}")
+                    .addArgument(input)
+                    .log();
         }
     }
 
@@ -120,7 +127,10 @@ public class InputDispatcher implements IInputDispatcher {
             representationEventProcessor.handle(payloadSink, changeDescriptionSink, representationInput);
         } else {
             payloadSink.tryEmitValue(new ErrorPayload(representationInput.id(), "No representation event processor found for event: " + representationInput));
-            this.logger.warn("No representation event processor found for event: {}", representationInput);
+            this.logger.atWarn()
+                    .setMessage("No representation event processor found for event: {}")
+                    .addArgument(representationInput)
+                    .log();
         }
     }
 
@@ -130,8 +140,10 @@ public class InputDispatcher implements IInputDispatcher {
         if (this.representationEventProcessorRegistry.values(editingContext.getId()).isEmpty()) {
             Sinks.EmitResult emitResult = canBeDisposedSink.tryEmitNext(Boolean.TRUE);
             if (emitResult.isFailure()) {
-                String pattern = "An error has occurred while emitting that the processor can be disposed: {}";
-                this.logger.warn(pattern, emitResult);
+                this.logger.atWarn()
+                        .setMessage("An error has occurred while emitting that the processor can be disposed: {}")
+                        .addArgument(emitResult)
+                        .log();
             }
         }
     }

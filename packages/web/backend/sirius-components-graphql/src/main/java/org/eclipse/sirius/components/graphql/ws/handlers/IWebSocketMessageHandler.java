@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2022 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,12 +34,19 @@ public interface IWebSocketMessageHandler {
             TextMessage textMessage = new TextMessage(responsePayload);
             synchronized (session) {
                 if (session.isOpen()) {
-                    logger.trace("Message sent: {}", message);
+                    logger.atTrace()
+                            .setMessage("Message sent: {}")
+                            .addArgument(message)
+                            .log();
+
                     session.sendMessage(textMessage);
                 }
             }
         } catch (IOException exception) {
-            logger.warn(exception.getMessage(), exception);
+            logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
     }
 }

@@ -65,7 +65,12 @@ public class UndoRedoRecorder implements IInputPreProcessor, IInputPostProcessor
             siriusEditingContext.getInputId2change().put(input.id(), changeDescription);
             siriusEditingContext.getChangeRecorder().endRecording();
             long stop = System.nanoTime();
-            this.logger.debug("UndoRedoRecorder post-processing of input {} in {}ms", input.getClass().getSimpleName(), Duration.ofNanos(stop - start).toMillis());
+
+            this.logger.atDebug()
+                    .setMessage("UndoRedoRecorder post-processing of input {} in {}ms")
+                    .addArgument(input.getClass().getSimpleName())
+                    .addArgument(Duration.ofNanos(stop - start).toMillis())
+                    .log();
         }
     }
 }

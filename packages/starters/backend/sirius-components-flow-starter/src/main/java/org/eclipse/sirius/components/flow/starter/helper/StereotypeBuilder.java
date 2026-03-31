@@ -70,7 +70,10 @@ public class StereotypeBuilder {
 
             content = outputStream.toString();
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         return content;
     }
@@ -84,7 +87,10 @@ public class StereotypeBuilder {
             Resource inputResource = this.loadFromXMI(uri, inputStream);
             content = this.saveAsJSON(uri, inputResource);
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         long end = System.currentTimeMillis();

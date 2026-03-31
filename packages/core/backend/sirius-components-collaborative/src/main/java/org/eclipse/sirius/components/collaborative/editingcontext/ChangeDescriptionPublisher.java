@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -62,8 +62,10 @@ public class ChangeDescriptionPublisher implements IChangeDescriptionConsumer {
 
                     Sinks.EmitResult emitResult = payloadSink.tryEmitNext(new RepresentationRenamedEventPayload(correlationId, representationId, representationLabel));
                     if (emitResult.isFailure()) {
-                        String pattern = "An error has occurred while emitting a RepresentationRenamedEventPayload: {}";
-                        this.logger.warn(pattern, emitResult);
+                        this.logger.atWarn()
+                                .setMessage("An error has occurred while emitting a RepresentationRenamedEventPayload: {}")
+                                .addArgument(emitResult)
+                                .log();
                     }
                 }
             }

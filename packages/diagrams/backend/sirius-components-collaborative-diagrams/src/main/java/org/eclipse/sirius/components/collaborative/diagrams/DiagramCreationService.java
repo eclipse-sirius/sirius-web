@@ -201,7 +201,10 @@ public class DiagramCreationService implements IDiagramCreationService {
 
         long end = System.currentTimeMillis();
         this.timer.record(end - start, TimeUnit.MILLISECONDS);
-        this.logger.trace("diagram refreshed in {}ms", end - start);
+        this.logger.atTrace()
+                .setMessage("diagram refreshed in {}ms")
+                .addArgument(end - start)
+                .log();
 
         return newDiagram;
     }

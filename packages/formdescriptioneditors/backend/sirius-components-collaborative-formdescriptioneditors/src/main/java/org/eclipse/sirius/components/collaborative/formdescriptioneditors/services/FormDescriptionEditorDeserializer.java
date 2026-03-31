@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,12 +38,10 @@ public class FormDescriptionEditorDeserializer implements IRepresentationDeseria
 
     @Override
     public boolean canHandle(ObjectNode root) {
-        // @formatter:off
         return Optional.ofNullable(root.get("kind"))
                 .map(JsonNode::asText)
                 .filter(FormDescriptionEditor.KIND::equals)
                 .isPresent();
-        // @formatter:on
     }
 
     @Override
@@ -51,7 +49,10 @@ public class FormDescriptionEditorDeserializer implements IRepresentationDeseria
         try {
             return Optional.of(mapper.readValue(root.toString(), FormDescriptionEditor.class));
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return Optional.empty();

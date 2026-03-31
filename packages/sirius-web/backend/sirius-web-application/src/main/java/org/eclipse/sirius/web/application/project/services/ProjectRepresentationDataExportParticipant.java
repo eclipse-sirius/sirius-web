@@ -123,7 +123,9 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
                         }
                     }
                     if (uriFragment.isEmpty()) {
-                        this.logger.warn("The serialization of the representationManifest won't be complete.");
+                        this.logger.atWarn()
+                                .setMessage("The serialization of the representationManifest won't be complete")
+                                .log();
                     }
 
                     Map<String, String> representationManifest = Map.of(
@@ -148,7 +150,10 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
                         outputStream.write(bytes);
                         outputStream.closeEntry();
                     } catch (IOException exception) {
-                        this.logger.warn(exception.getMessage());
+                        this.logger.atWarn()
+                                .setMessage(exception.getMessage())
+                                .setCause(exception)
+                                .log();
                     }
                 }
             }

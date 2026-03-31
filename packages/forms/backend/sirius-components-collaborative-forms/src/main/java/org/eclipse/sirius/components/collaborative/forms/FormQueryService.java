@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -53,7 +53,10 @@ public class FormQueryService implements IFormQueryService {
                         .findFirst());
 
         if (optionalWidget.isEmpty()) {
-            this.logger.warn("The widget with the id {} has not been found", widgetId);
+            this.logger.atWarn()
+                    .setMessage("The widget with the id {} has not been found")
+                    .addArgument(widgetId)
+                    .log();
         }
 
         return optionalWidget;

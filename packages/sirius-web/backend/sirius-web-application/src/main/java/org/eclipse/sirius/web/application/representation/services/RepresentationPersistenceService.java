@@ -94,7 +94,10 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
         try {
             content = this.objectMapper.writeValueAsString(representation);
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         return content;
     }

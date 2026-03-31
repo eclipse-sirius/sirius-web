@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,7 +60,10 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
             String filterValue = this.objectMapper.readValue(columnFilter.value(), new TypeReference<>() { });
             isValid = this.type.getName() != null && this.type.getName().contains(filterValue);
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         return isValid;
     }
@@ -76,7 +79,10 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
                         int minValue = Integer.parseInt(filterValues.get(0));
                         isValid = minValue <= nbAnnotation;
                     } catch (NumberFormatException exception) {
-                        this.logger.warn(exception.getMessage(), exception);
+                        this.logger.atWarn()
+                                .setMessage(exception.getMessage())
+                                .setCause(exception)
+                                .log();
                     }
                 }
                 if (filterValues.get(1) != null && !filterValues.get(1).isBlank()) {
@@ -84,13 +90,19 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
                         int maxValue = Integer.parseInt(filterValues.get(1));
                         isValid = isValid && maxValue >= nbAnnotation;
                     } catch (NumberFormatException exception) {
-                        this.logger.warn(exception.getMessage(), exception);
+                        this.logger.atWarn()
+                                .setMessage(exception.getMessage())
+                                .setCause(exception)
+                                .log();
                         isValid = true;
                     }
                 }
             }
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         return  isValid;
     }

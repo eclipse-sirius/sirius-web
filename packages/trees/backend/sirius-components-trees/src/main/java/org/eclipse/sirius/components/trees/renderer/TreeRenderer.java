@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2024 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -121,7 +121,10 @@ public class TreeRenderer {
     }
 
     private TreeItem renderWarningTreeItem(String id, String kind, StyledString label, List<String> iconURL, VariableManager currentVariableManager) {
-        this.logger.warn("Possible infinite loop encountered during tree rendering. Item with id '{}' has already been encountered as ancestors", id);
+        this.logger.atWarn()
+                .setMessage("Possible infinite loop encountered during tree rendering. Item with id '{}' has already been encountered as ancestors")
+                .addArgument(id)
+                .log();
 
         List<StyledStringFragment> fragments = new ArrayList<>(label.styledStringFragments());
         fragments.add(0, new StyledStringFragment("<Item rendering loop> ", StyledStringFragmentStyle.newDefaultStyledStringFragmentStyle()

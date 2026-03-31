@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,13 +49,13 @@ import reactor.core.publisher.Sinks.One;
 @Service
 public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandler {
 
-    private final Logger logger = LoggerFactory.getLogger(MoveWidgetEventHandler.class);
-
     private final IObjectSearchService objectSearchService;
 
     private final ICollaborativeFormDescriptionEditorMessageService messageService;
 
     private final Counter counter;
+
+    private final Logger logger = LoggerFactory.getLogger(MoveWidgetEventHandler.class);
 
     public MoveWidgetEventHandler(IObjectSearchService objectSearchService, ICollaborativeFormDescriptionEditorMessageService messageService, MeterRegistry meterRegistry) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
@@ -134,7 +134,10 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
                         success = true;
                     }
                 } catch (IndexOutOfBoundsException exception) {
-                    this.logger.warn(exception.getMessage(), exception);
+                    this.logger.atWarn()
+                            .setMessage(exception.getMessage())
+                            .setCause(exception)
+                            .log();
                 }
             }
         }

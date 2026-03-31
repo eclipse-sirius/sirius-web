@@ -50,8 +50,6 @@ import reactor.core.publisher.Sinks.One;
  */
 public class PortalEventProcessor implements IPortalEventProcessor {
 
-    private final Logger logger = LoggerFactory.getLogger(PortalEventProcessor.class);
-
     private final IEditingContext editingContext;
 
     private final IRepresentationSearchService representationSearchService;
@@ -65,6 +63,8 @@ public class PortalEventProcessor implements IPortalEventProcessor {
     private Portal currentPortal;
 
     private final Many<IPayload> sink = Sinks.many().multicast().directBestEffort();
+
+    private final Logger logger = LoggerFactory.getLogger(PortalEventProcessor.class);
 
     public PortalEventProcessor(IEditingContext editingContext, IRepresentationSearchService representationSearchService, IRepresentationPersistenceStrategy representationPersistenceStrategy,
             List<IPortalEventHandler> portalEventHandlers, ISubscriptionManager subscriptionManager, Portal portal) {
@@ -97,7 +97,10 @@ public class PortalEventProcessor implements IPortalEventProcessor {
                 PortalContext context = new PortalContext(this.representationSearchService, this.editingContext, this.currentPortal, portalInput);
                 portalEventHandler.handle(payloadSink, changeDescriptionSink, context);
             } else {
-                this.logger.warn("No handler found for event: {}", portalInput);
+                this.logger.atWarn()
+                        .setMessage("No handler found for event: {}")
+                        .addArgument(portalInput)
+                        .log();
             }
         }
     }
@@ -144,7 +147,10 @@ public class PortalEventProcessor implements IPortalEventProcessor {
         if (this.sink.currentSubscriberCount() > 0) {
             EmitResult emitResult = this.sink.tryEmitNext(new PortalRefreshedEventPayload(input.id(), this.currentPortal));
             if (emitResult.isFailure()) {
-                this.logger.warn("An error has occurred while emitting a PortalRefreshedEventPayload: {}", emitResult);
+                this.logger.atWarn()
+                        .setMessage("An error has occurred while emitting a PortalRefreshedEventPayload: {}")
+                        .addArgument(emitResult)
+                        .log();
             }
         }
     }
@@ -161,8 +167,10 @@ public class PortalEventProcessor implements IPortalEventProcessor {
         this.subscriptionManager.dispose();
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, emitResult);
+            this.logger.atWarn()
+                    .setMessage("An error has occurred while marking the publisher as complete: {}")
+                    .addArgument(emitResult)
+                    .log();
         }
     }
 }

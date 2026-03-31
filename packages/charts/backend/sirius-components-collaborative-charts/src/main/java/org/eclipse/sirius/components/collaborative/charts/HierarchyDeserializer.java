@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -36,9 +36,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class HierarchyDeserializer implements IRepresentationDeserializer {
 
-    private final Logger logger = LoggerFactory.getLogger(HierarchyDeserializer.class);
-
     private final IURLParser urlParser;
+
+    private final Logger logger = LoggerFactory.getLogger(HierarchyDeserializer.class);
 
     public HierarchyDeserializer(IURLParser urlParser) {
         this.urlParser = Objects.requireNonNull(urlParser);
@@ -46,12 +46,10 @@ public class HierarchyDeserializer implements IRepresentationDeserializer {
 
     @Override
     public boolean canHandle(ObjectNode root) {
-        // @formatter:off
         return Optional.ofNullable(root.get("kind"))
                 .map(JsonNode::asText)
                 .filter(this::isHierarchyRepresentation)
                 .isPresent();
-        // @formatter:on
     }
 
     private boolean isHierarchyRepresentation(String kind) {
@@ -64,7 +62,10 @@ public class HierarchyDeserializer implements IRepresentationDeserializer {
         try {
             return Optional.of(mapper.readValue(root.toString(), Hierarchy.class));
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return Optional.empty();

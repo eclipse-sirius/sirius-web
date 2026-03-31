@@ -67,7 +67,10 @@ public class GanttEventProcessor implements IGanttEventProcessor {
     public GanttEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, GanttCreationService ganttCreationService,
             IRepresentationSearchService representationSearchService, List<IGanttEventHandler> ganttEventHandlers, GanttContext ganttContext,
             IRepresentationPersistenceStrategy representationPersistenceStrategy) {
-        this.logger.trace("Creating the gantt event processor {}", ganttContext.getGantt().getId());
+        this.logger.atTrace()
+                .setMessage("Creating the gantt event processor {}")
+                .addArgument(ganttContext.getGantt().getId())
+                .log();
 
         this.editingContext = Objects.requireNonNull(editingContext);
         this.subscriptionManager = Objects.requireNonNull(subscriptionManager);
@@ -107,7 +110,10 @@ public class GanttEventProcessor implements IGanttEventProcessor {
                 IGanttEventHandler ganttEventHandler = optionalGanttEventHandler.get();
                 ganttEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.ganttContext, ganttInput);
             } else {
-                this.logger.warn("No handler found for event: {}", ganttInput);
+                this.logger.atWarn()
+                        .setMessage("No handler found for event: {}")
+                        .addArgument(ganttInput)
+                        .log();
             }
         }
     }
@@ -123,9 +129,15 @@ public class GanttEventProcessor implements IGanttEventProcessor {
 
             if (refreshedGanttRepresentation != null) {
                 this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedGanttRepresentation);
-                this.logger.trace("Gantt refreshed: {}", ganttId);
+                this.logger.atTrace()
+                        .setMessage("Gantt refreshed: {}")
+                        .addArgument(ganttId)
+                        .log();
             } else {
-                this.logger.warn("Gantt refresh failed: {}", ganttId);
+                this.logger.atWarn()
+                        .setMessage("Gantt refresh failed: {}")
+                        .addArgument(ganttId)
+                        .log();
             }
 
             this.ganttEventFlux.ganttRefreshed(changeDescription.getInput(), this.ganttContext.getGantt());
@@ -160,7 +172,10 @@ public class GanttEventProcessor implements IGanttEventProcessor {
                 .map(Gantt::id)
                 .orElse(null);
 
-        this.logger.trace("Disposing the gantt event processor {}", id);
+        this.logger.atTrace()
+                .setMessage("Disposing the gantt event processor {}")
+                .addArgument(id)
+                .log();
 
         this.subscriptionManager.dispose();
 
