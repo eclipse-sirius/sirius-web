@@ -35,6 +35,8 @@ This will be used as an inspiration for the evolution of other similar services 
 - [releng] Switch to lexical 0.42.0
 - [releng] Switch to `jacoco-maven-plugin` 0.8.14
 - [releng] Switch to `com.tngtech.archunit:archunit-junit5` 1.4.1
+- [releng] Switch to CheckStyle 13.3.0.
+Note this version requires at least Java 21 for the build environment (Sirius Web itself still only requires Java 17 to run).
 
 === Bug fixes
 

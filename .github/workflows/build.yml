@@ -61,7 +61,7 @@ jobs:
       - name: Setup Java SDK
         uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: 21
           distribution: "temurin"
 
       - name: Setup some global environment variables
