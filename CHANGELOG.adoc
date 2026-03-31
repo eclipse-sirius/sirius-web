@@ -17,6 +17,7 @@
 - [ADR-226] Add test suites to measure the performance of Sirius Web based applications
 - [ADR-227] Add support for node decorators
 - [ADR-228] Add auto alignment for edges
+- [ADR-229] Add the selected element label in the header of the right views
 
 
 === Deprecation warning
