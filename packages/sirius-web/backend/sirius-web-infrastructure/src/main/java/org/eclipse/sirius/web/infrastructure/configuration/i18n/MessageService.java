@@ -267,4 +267,14 @@ public class MessageService implements IMessageService {
     public String failedToRename() {
         return this.messageSourceAccessor.getMessage("FAILED_TO_RENAME");
     }
+
+    @Override
+    public String diagramLayoutFlow() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_LAYOUT_FLOW");
+    }
+
+    @Override
+    public String diagramLayoutCompact() {
+        return this.messageSourceAccessor.getMessage("DIAGRAM_LAYOUT_COMPACT");
+    }
 }

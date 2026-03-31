@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,10 @@ public final class DiagramImageConstants {
     public static final String RESET_BENDING_POINTS = IMAGES_ROOT_FOLDER + "/reset_bending_points.svg";
 
     public static final String RESET_HANDLES = IMAGES_ROOT_FOLDER + "/reset_handles.svg";
+
+    public static final String LAYERED_SVG = IMAGES_ROOT_FOLDER + "/layered.svg";
+
+    public static final String RECTPACKING_SVG = IMAGES_ROOT_FOLDER + "/rectpacking.svg";
 
     private DiagramImageConstants() {
         // Prevent instantiation

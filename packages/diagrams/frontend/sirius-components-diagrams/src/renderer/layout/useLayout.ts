@@ -46,7 +46,7 @@ export const useLayout = (): UseLayoutValue => {
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const [state, setState] = useState<UseLayoutState>(initialState);
   const { elkLayout } = useElkLayout();
-  const { layoutConfigurations } = useLayoutConfigurations();
+  const { layoutConfigurations, loading: layoutConfigurationsLoading } = useLayoutConfigurations();
   const { diagramDescription } = useDiagramDescription();
 
   const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
@@ -96,7 +96,12 @@ export const useLayout = (): UseLayoutValue => {
         hiddenContainer: hiddenContainer,
         root: root,
       }));
-    } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
+    } else if (
+      state.currentStep === 'LAYOUT' &&
+      state.hiddenContainer &&
+      state.diagramToLayout &&
+      !layoutConfigurationsLoading
+    ) {
       prepareLayoutLabels(state.previousDiagram, state.diagramToLayout);
       if (diagramDescription?.autoLayout && layoutConfigurations[0]) {
         elkLayout(state.diagramToLayout.nodes, state.diagramToLayout.edges, layoutConfigurations[0].layoutOptions).then(
@@ -147,8 +152,14 @@ export const useLayout = (): UseLayoutValue => {
       state.onLaidoutDiagram(state.laidoutDiagram);
       setState(() => initialState);
     }
-  }, [state.currentStep, state.hiddenContainer, state.referencePosition, state.layoutDirection]);
-
+  }, [
+    state.currentStep,
+    state.hiddenContainer,
+    state.referencePosition,
+    state.layoutDirection,
+    layoutConfigurations.map((layoutConfiguration) => layoutConfiguration.id).join(),
+    layoutConfigurationsLoading,
+  ]);
   return {
     layout: layoutDiagram,
   };
