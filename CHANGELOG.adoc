@@ -38,6 +38,7 @@ This will be used as an inspiration for the evolution of other similar services 
 
 === Bug fixes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6155[#6155] [diagram] Prevent edge handle to be detached from its node after resize
 
 
 
