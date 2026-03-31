@@ -83,7 +83,10 @@ public class UploadFileLoader implements IUploadFileLoader {
         try (var inputStream = file.getInputStream()) {
             optionalContent = this.documentSanitizedJsonContentProvider.getContent(resourceSet, file.getName(), inputStream, allowProxies, applyMigrationParticipants);
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return optionalContent;

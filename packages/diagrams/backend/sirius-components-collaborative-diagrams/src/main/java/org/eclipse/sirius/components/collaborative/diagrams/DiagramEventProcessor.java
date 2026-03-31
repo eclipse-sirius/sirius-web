@@ -88,7 +88,10 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
     private String currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
 
     public DiagramEventProcessor(DiagramEventProcessorParameters parameters) {
-        this.logger.trace("Creating the diagram event processor {}", parameters.diagramContext().diagram().getId());
+        this.logger.atTrace()
+                .setMessage("Creating the diagram event processor {}")
+                .addArgument(parameters.diagramContext().diagram().getId())
+                .log();
 
         this.editingContext = parameters.editingContext();
         this.diagramContext = parameters.diagramContext();
@@ -110,7 +113,10 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         this.diagramEventFlux = new DiagramEventFlux(diagram);
 
         if (diagram != null) {
-            this.logger.trace("Diagram refreshed: {})", diagram.getId());
+            this.logger.atTrace()
+                    .setMessage("Diagram refreshed: {}")
+                    .addArgument(diagram.getId())
+                    .log();
         }
     }
 
@@ -153,7 +159,10 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
                 IDiagramEventHandler diagramEventHandler = optionalDiagramEventHandler.get();
                 diagramEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.diagramContext, diagramInput);
             } else {
-                this.logger.warn("No handler found for event: {}", diagramInput);
+                this.logger.atWarn()
+                        .setMessage("No handler found for event: {}")
+                        .addArgument(diagramInput)
+                        .log();
             }
         }
     }
@@ -166,7 +175,10 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedDiagram);
 
             if (refreshedDiagram != null) {
-                this.logger.trace("Diagram refreshed: {}", refreshedDiagram.getId());
+                this.logger.atTrace()
+                        .setMessage("Diagram refreshed: {}")
+                        .addArgument(refreshedDiagram.getId())
+                        .log();
             }
 
             this.diagramContext = new DiagramContext(refreshedDiagram);
@@ -252,7 +264,10 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the diagram event processor {}", this.diagramContext.diagram().getId());
+        this.logger.atTrace()
+                .setMessage("Disposing the diagram event processor {}")
+                .addArgument(this.diagramContext.diagram().getId())
+                .log();
 
         this.subscriptionManager.dispose();
         this.diagramEventFlux.dispose();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,7 +66,6 @@ public class ViewConverter implements IViewConverter {
         List<ViewConverterResult> viewConverterResult = new ArrayList<>();
         List<RepresentationDescription> allViewsRepresentationDescriptions = views.stream().flatMap(v -> v.getDescriptions().stream()).toList();
         views.forEach(view -> {
-
             AQLInterpreter interpreter = this.viewAQLInterpreterFactory.createInterpreter(editingContext, view);
             try {
                 viewConverterResult.addAll(view.getDescriptions().stream()
@@ -75,11 +74,13 @@ public class ViewConverter implements IViewConverter {
                         .toList());
 
                 viewConverterResult.addAll(this.convertDialogDescriptions(view, interpreter));
-
             } catch (NullPointerException exception) {
                 // Can easily happen if the View model is currently invalid/inconsistent, typically because it is
                 // currently being created or edited.
-                this.logger.debug("Exception while converting view", exception);
+                this.logger.atDebug()
+                        .setMessage("Exception while converting view")
+                        .setCause(exception)
+                        .log();
             }
         });
 

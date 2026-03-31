@@ -88,7 +88,10 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     @Override
     public Mono<IPayload> dispatchEvent(String editingContextId, IInput input) {
         var timeoutFallback = Mono.just(new ErrorPayload(input.id(), this.messageService.timeout()))
-                .doOnSuccess(payload -> this.logger.warn("Timeout fallback for the input {}", input));
+                .doOnSuccess(payload -> this.logger.atWarn()
+                        .setMessage("Timeout fallback for the input {}")
+                        .addArgument(input)
+                        .log());
 
         return this.getOrCreateEditingContextEventProcessor(editingContextId)
                 .map(processor -> processor.handle(input).timeout(Duration.ofSeconds(5), timeoutFallback))
@@ -115,7 +118,9 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
                         if (canBeDisposed.booleanValue() && representationEventProcessorRegistry.values(editingContextId).isEmpty()) {
                             this.disposeEditingContextEventProcessor(editingContextId);
                         } else {
-                            this.logger.trace("Stopping the disposal of the editing context");
+                            this.logger.atTrace()
+                                    .setMessage("Stopping the disposal of the editing context")
+                                    .log();
                         }
                     });
 
@@ -135,12 +140,17 @@ public class EditingContextEventProcessorRegistry implements IEditingContextEven
     public void disposeEditingContextEventProcessor(String editingContextId) {
         Optional.ofNullable(this.editingContextEventProcessors.remove(editingContextId)).ifPresent(EditingContextEventProcessorEntry::dispose);
 
-        this.logger.trace("Editing context event processors count: {}", this.editingContextEventProcessors.size());
+        this.logger.atTrace()
+                .setMessage("Editing context event processors count: {}")
+                .addArgument(this.editingContextEventProcessors.size())
+                .log();
     }
 
     @PreDestroy
     public void dispose() {
-        this.logger.debug("Shutting down all the editing context event processors");
+        this.logger.atDebug()
+                .setMessage("Shutting down all the editing context event processors")
+                .log();
 
         this.editingContextEventProcessors.values().forEach(EditingContextEventProcessorEntry::dispose);
         this.editingContextEventProcessors.clear();

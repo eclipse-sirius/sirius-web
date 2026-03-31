@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,12 +34,14 @@ import org.eclipse.sirius.components.annotations.Builder;
 import org.eclipse.sirius.components.annotations.Immutable;
 import org.eclipse.sirius.components.annotations.RepositoryFragment;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
 
 /**
  * Superclass of all the coding rules test cases.
  *
  * @author sbegaudeau
  */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public abstract class AbstractCodingRulesTests {
 
     private static final String GRAPHQL_GUAVA = "graphql.com.google..";
@@ -475,5 +477,74 @@ public abstract class AbstractCodingRulesTests {
                 return !(javaMethod.getRawReturnType().isAnnotatedWith(Builder.class) || javaMethod.getRawReturnType().getSimpleName().endsWith("Builder"));
             }
         };
+    }
+
+    @Test
+    public void noClassesShouldUseTheNonFluentLogAPI() {
+        var rule = ArchRuleDefinition.noClasses()
+                .that()
+                .resideInAPackage(this.getProjectRootPackage())
+                .should()
+                .callMethod(Logger.class, "warn", String.class)
+                .orShould()
+                .callMethod(Logger.class, "warn", String.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "warn", String.class, Object.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "warn", String.class, Object[].class)
+                .orShould()
+                .callMethod(Logger.class, "warn", String.class, Throwable.class)
+                .orShould()
+                .callMethod(Logger.class, "isWarnEnabled")
+                .orShould()
+                .callMethod(Logger.class, "info", String.class)
+                .orShould()
+                .callMethod(Logger.class, "info", String.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "info", String.class, Object.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "info", String.class, Object[].class)
+                .orShould()
+                .callMethod(Logger.class, "info", String.class, Throwable.class)
+                .orShould()
+                .callMethod(Logger.class, "isInfoEnabled")
+                .orShould()
+                .callMethod(Logger.class, "debug", String.class)
+                .orShould()
+                .callMethod(Logger.class, "debug", String.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "debug", String.class, Object.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "debug", String.class, Object[].class)
+                .orShould()
+                .callMethod(Logger.class, "debug", String.class, Throwable.class)
+                .orShould()
+                .callMethod(Logger.class, "isDebugEnabled")
+                .orShould()
+                .callMethod(Logger.class, "trace", String.class)
+                .orShould()
+                .callMethod(Logger.class, "trace", String.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "trace", String.class, Object.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "trace", String.class, Object[].class)
+                .orShould()
+                .callMethod(Logger.class, "trace", String.class, Throwable.class)
+                .orShould()
+                .callMethod(Logger.class, "isTraceEnabled")
+                .orShould()
+                .callMethod(Logger.class, "error", String.class)
+                .orShould()
+                .callMethod(Logger.class, "error", String.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "error", String.class, Object.class, Object.class)
+                .orShould()
+                .callMethod(Logger.class, "error", String.class, Object[].class)
+                .orShould()
+                .callMethod(Logger.class, "error", String.class, Throwable.class)
+                .orShould()
+                .callMethod(Logger.class, "isErrorEnabled");
+
+        rule.check(this.getClasses());
     }
 }

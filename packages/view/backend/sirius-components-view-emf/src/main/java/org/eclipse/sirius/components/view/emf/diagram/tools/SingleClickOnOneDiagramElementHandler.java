@@ -122,7 +122,12 @@ public class SingleClickOnOneDiagramElementHandler implements ISingleClickOnOneD
                 VariableManager childVariableManager = variableManager.createChild();
                 result = this.toolExecutor.executeTool(nodeTool, interpreter, childVariableManager);
             } else {
-                this.logger.warn("The tool {0} cannot be applied on the current diagram {1} and editing context {2}", toolId, diagramContext.diagram().getId(), editingContext.getId());
+                this.logger.atWarn()
+                        .setMessage("The tool {} cannot be applied on the current diagram {} and editing context {}")
+                        .addArgument(toolId)
+                        .addArgument(diagramContext.diagram().getId())
+                        .addArgument(editingContext.getId())
+                        .log();
             }
 
             if (result instanceof Success success) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -246,7 +246,10 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
         if (optionalOperationMessage.isPresent()) {
             IOperationMessage operationMessage = optionalOperationMessage.get();
 
-            this.logger.trace("Message received: {}", operationMessage);
+            this.logger.atTrace()
+                    .setMessage("Message received: {}")
+                    .addArgument(operationMessage)
+                    .log();
 
             if (operationMessage instanceof ConnectionInitMessage) {
                 new ConnectionInitMessageHandler(session, this.objectMapper).handle();
@@ -278,11 +281,17 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             String responsePayload = this.objectMapper.writeValueAsString(message);
             TextMessage textMessage = new TextMessage(responsePayload);
 
-            this.logger.trace("Message sent: {}", message);
+            this.logger.atTrace()
+                    .setMessage("Message sent: {}")
+                    .addArgument(message)
+                    .log();
 
             session.sendMessage(textMessage);
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
     }
 
@@ -294,7 +303,10 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             Optional<String> optionalType = this.getType(jsonNode);
             optionalOperationMessage = optionalType.flatMap(type -> this.getOperationMessage(jsonNode, type));
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return optionalOperationMessage;
@@ -328,7 +340,10 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
                     break;
             }
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return optionalOperationMessage;
@@ -338,10 +353,8 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         this.listener.afterConnectionEstablished(session);
 
-        // @formatter:off
         Disposable subscribe = Flux.interval(GRAPHQL_KEEP_ALIVE_INTERVAL)
                 .subscribe(data -> this.send(session, new ConnectionKeepAliveMessage()));
-        // @formatter:on
         this.sessions2keepAliveSubscriptions.put(session, subscribe);
     }
 

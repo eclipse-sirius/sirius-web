@@ -106,11 +106,17 @@ public class StudioLibraryRepresentationPublicationListener {
                                 optionalRepresentationContent.get().getMigrationVersion()
                         );
                     } else {
-                        this.logger.warn("Cannot find representation content with id {}", representationMetadata.getRepresentationMetadataId());
+                        this.logger.atWarn()
+                                .setMessage("Cannot find representation content with id {}")
+                                .addArgument(representationMetadata.getRepresentationMetadataId())
+                                .log();
                     }
                 }
             } else {
-                this.logger.warn("Cannot find semantic data with id {}", publishLibrariesInput.editingContextId());
+                this.logger.atWarn()
+                        .setMessage("Cannot find semantic data with id {}")
+                        .addArgument(publishLibrariesInput.editingContextId())
+                        .log();
             }
         }
     }

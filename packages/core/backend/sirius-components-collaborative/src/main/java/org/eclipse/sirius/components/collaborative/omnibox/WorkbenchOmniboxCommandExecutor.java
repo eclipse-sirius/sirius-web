@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,11 @@ public class WorkbenchOmniboxCommandExecutor implements IWorkbenchOmniboxCommand
             IWorkbenchOmniboxCommandHandler workbenchOmniboxCommandHandler = optionalOmniboxCommandHandler.get();
             payload = workbenchOmniboxCommandHandler.handle(input);
         } else {
-            this.logger.warn("No handler found for event: {}", input);
+            this.logger.atWarn()
+                    .setMessage("No handler found for event: {}")
+                    .addArgument(input)
+                    .log();
+
             payload = new ErrorPayload(input.id(), List.of(new Message(this.collaborativeMessageService.notFound(), MessageLevel.ERROR)));
         }
         return payload;

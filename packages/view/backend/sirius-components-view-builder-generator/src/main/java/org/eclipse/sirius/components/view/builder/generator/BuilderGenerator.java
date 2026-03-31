@@ -72,11 +72,17 @@ public class BuilderGenerator {
 
     public static void main(String[] args) {
         for (String string : args) {
-            LOGGER.info(string);
+            LOGGER.atInfo()
+                    .setMessage(string)
+                    .log();
         }
         String javaVersion = Runtime.version().toString();
         String time = LocalDateTime.now().toString();
-        LOGGER.info("********\nBuild Time: " + time + "\nJava Version: " + javaVersion + "\n********");
+        LOGGER.atInfo()
+                .setMessage("********\nBuild Time: {}\nJava Version: {}\n********")
+                .addArgument(time)
+                .addArgument(javaVersion)
+                .log();
 
         ResourceSet resourceSet = new ResourceSetImpl();
         resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION, new EcoreResourceFactoryImpl());
@@ -135,10 +141,15 @@ public class BuilderGenerator {
             try {
                 gen.doGen(model);
             } catch (IOException exception) {
-                LOGGER.warn(exception.getMessage());
+                LOGGER.atWarn()
+                        .setMessage(exception.getMessage())
+                        .setCause(exception)
+                        .log();
             }
         });
-        LOGGER.info("Generated!");
+        LOGGER.atInfo()
+                .setMessage("Generated!")
+                .log();
     }
 
     private StringBuilder getFactoryClassBody(GenPackage pak) {
@@ -198,7 +209,9 @@ public class BuilderGenerator {
     private StringBuilder getBody(GenClass clazz) {
         StringBuilder body = new StringBuilder();
         if (!clazz.isAbstract()) {
-            LOGGER.info(clazz.capName(clazz.getName()));
+            LOGGER.atInfo()
+                    .setMessage(clazz.capName(clazz.getName()))
+                    .log();
             body.append("""
                         /**
                          * Create instance #eObjType.
@@ -231,7 +244,10 @@ public class BuilderGenerator {
         for (GenFeature feat : clazz.getAllGenFeatures()) {
             if (!feat.getEcoreFeature().isDerived() && feat.getEcoreFeature().isChangeable()) {
                 if (!feat.getEcoreFeature().isMany()) {
-                    LOGGER.info(clazz.capName(clazz.getName()));
+                    LOGGER.atInfo()
+                            .setMessage(clazz.capName(clazz.getName()))
+                            .log();
+
                     body.append("""
                                 /**
                                  * Setter for #accessor.
@@ -410,10 +426,19 @@ public class BuilderGenerator {
             jMerger.setTargetCompilationUnit(jMerger.createCompilationUnitForContents(beforeGen));
             jMerger.merge();
             String mergedContent = jMerger.getTargetCompilationUnit().getContents();
-            LOGGER.info("MERGED " + Path.of(outDirectory, fileName));
+
+            LOGGER.atInfo()
+                    .setMessage("MERGED {}")
+                    .addArgument(() -> Path.of(outDirectory, fileName))
+                    .log();
+
             Files.writeString(Path.of(outDirectory, fileName), mergedContent);
         } else {
-            LOGGER.info("NEW " + Path.of(this.outputDirectory, fileName));
+            LOGGER.atInfo()
+                    .setMessage("NEW {}")
+                    .addArgument(() -> Path.of(this.outputDirectory, fileName))
+                    .log();
+
             Files.writeString(Path.of(outDirectory, fileName), contentToGenerate, StandardOpenOption.CREATE);
         }
     }

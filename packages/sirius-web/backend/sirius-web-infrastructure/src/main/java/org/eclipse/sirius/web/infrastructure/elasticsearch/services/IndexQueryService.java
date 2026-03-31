@@ -69,11 +69,19 @@ public class IndexQueryService implements IIndexQueryService {
                         , IIndexEntry.class);
                 result = response.hits().hits().stream().map(Hit::source).toList();
             } catch (IOException | ElasticsearchException exception) {
-                this.logger.warn("An error occurred while querying indices", exception);
+                this.logger.atWarn()
+                        .setMessage("An error occurred while querying indices")
+                        .setCause(exception)
+                        .log();
             }
         }
+
         Duration timeToPerformQuery = Duration.ofNanos(System.nanoTime() - start);
-        this.logger.trace("Query performed in {} ms", timeToPerformQuery.toMillis());
+        this.logger.atTrace()
+                .setMessage("Query performed in {} ms")
+                .addArgument(timeToPerformQuery.toMillis())
+                .log();
+
         return result;
     }
 

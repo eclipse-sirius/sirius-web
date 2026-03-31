@@ -42,7 +42,6 @@ public class StudioLibraryPublicationListener {
 
     private final Logger logger = LoggerFactory.getLogger(StudioLibraryPublicationListener.class);
 
-
     public StudioLibraryPublicationListener(ILibraryCreationService libraryCreationService, IProjectEditingContextService projectEditingContextService) {
         this.libraryCreationService = Objects.requireNonNull(libraryCreationService);
         this.projectEditingContextService = Objects.requireNonNull(projectEditingContextService);
@@ -66,7 +65,10 @@ public class StudioLibraryPublicationListener {
                         .build(semanticDataCreatedEvent);
                 this.libraryCreationService.createLibrary(library);
             } else {
-                this.logger.warn("No project found for editing context {}", publishLibrariesInput.editingContextId());
+                this.logger.atWarn()
+                        .setMessage("No project found for editing context {}")
+                        .addArgument(publishLibrariesInput.editingContextId())
+                        .log();
             }
         }
     }

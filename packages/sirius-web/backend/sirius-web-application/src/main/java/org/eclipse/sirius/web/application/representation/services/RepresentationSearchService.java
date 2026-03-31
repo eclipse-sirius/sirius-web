@@ -101,7 +101,10 @@ public class RepresentationSearchService implements IRepresentationSearchService
             IRepresentation representation = this.objectMapper.readValue(content, IRepresentation.class);
             optionalRepresentation = Optional.of(representation);
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         return optionalRepresentation;
     }

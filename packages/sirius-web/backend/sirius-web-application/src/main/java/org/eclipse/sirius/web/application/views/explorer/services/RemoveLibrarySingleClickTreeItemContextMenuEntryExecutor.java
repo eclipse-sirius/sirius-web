@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -112,8 +112,12 @@ public class RemoveLibrarySingleClickTreeItemContextMenuEntryExecutor implements
 
                 long start = System.nanoTime();
                 this.proxyRemovalService.removeUnresolvedProxies(siriusWebEditingContext);
+
                 Duration timeToRemoveProxies = Duration.ofNanos(System.nanoTime() - start);
-                this.logger.trace("Removed proxies in {}ms", timeToRemoveProxies.toMillis());
+                this.logger.atTrace()
+                        .setMessage("Removed proxies in {}ms")
+                        .addArgument(timeToRemoveProxies.toMillis())
+                        .log();
 
                 result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
             }
@@ -150,6 +154,7 @@ public class RemoveLibrarySingleClickTreeItemContextMenuEntryExecutor implements
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .forEach(libraries::add);
+
         List<Resource> libraryResources = new ArrayList<>();
         for (Resource resource : editingContext.getDomain().getResourceSet().getResources()) {
             resource.eAdapters().stream()

@@ -110,7 +110,11 @@ public class RepresentationProjectContentImportParticipant implements IProjectCo
 
                 representations.add(new RepresentationSerializedImportData(id, projectId, descriptionId, targetObjectId, label, kind, representation));
             } catch (IOException exception) {
-                logger.warn("Unable to convert one of the given representation : {}", exception.getMessage(), exception);
+                logger.atWarn()
+                        .setMessage("Unable to convert one of the given representation : {}")
+                        .addArgument(exception.getMessage())
+                        .setCause(exception)
+                        .log();
             }
         }
         return representations;

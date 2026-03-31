@@ -85,7 +85,10 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the hierarchy event processor {}", this.hierarchyContext.hierarchy().getId());
+        this.logger.atTrace()
+                .setMessage("Disposing the hierarchy event processor {}")
+                .addArgument(this.hierarchyContext.hierarchy().getId())
+                .log();
 
         this.subscriptionManager.dispose();
         this.hierarchyEventFlux.dispose();

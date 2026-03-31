@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,18 +31,21 @@ import org.slf4j.LoggerFactory;
  */
 public class JsonBasedEditingContext implements IEditingContext {
 
-    private final Logger logger = LoggerFactory.getLogger(JsonBasedEditingContext.class);
-
     private final UUID id;
 
     private Element root;
+
+    private final Logger logger = LoggerFactory.getLogger(JsonBasedEditingContext.class);
 
     public JsonBasedEditingContext(String json) {
         this.id = UUID.randomUUID();
         try {
             this.root = new ObjectMapper().readValue(json, Element.class);
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
     }
 
@@ -52,7 +55,10 @@ public class JsonBasedEditingContext implements IEditingContext {
             String content = Files.readString(path);
             this.root = new ObjectMapper().readValue(content, Element.class);
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
     }
 

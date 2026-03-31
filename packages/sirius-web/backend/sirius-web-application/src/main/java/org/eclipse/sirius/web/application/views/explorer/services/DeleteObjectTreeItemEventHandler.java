@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,10 +73,16 @@ public class DeleteObjectTreeItemEventHandler implements IDeleteTreeItemHandler 
                 this.editService.delete(object);
                 result = new Success(ChangeKind.SEMANTIC_CHANGE, Map.of());
             } else {
-                this.logger.warn("The object with the id {} does not exist", treeItem.getId());
+                this.logger.atWarn()
+                        .setMessage("The object with the id {} does not exist")
+                        .addArgument(treeItem.getId())
+                        .log();
             }
         } else {
-            this.logger.warn("Unable to retrieve the tree description with the id {}", tree.getDescriptionId());
+            this.logger.atWarn()
+                    .setMessage("Unable to retrieve the tree description with the id {}")
+                    .addArgument(tree.getDescriptionId())
+                    .log();
         }
         return result;
     }

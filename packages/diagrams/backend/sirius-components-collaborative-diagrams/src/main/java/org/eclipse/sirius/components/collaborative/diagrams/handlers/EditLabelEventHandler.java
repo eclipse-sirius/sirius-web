@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -142,7 +142,12 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                 variableManager.put(VariableManager.SELF, self);
                 if (nodeDescription.getLabelEditHandler() != null) {
                     nodeDescription.getLabelEditHandler().apply(variableManager, newText);
-                    this.logger.debug("Edited label of diagram element {} to {}", node.getId(), newText);
+
+                    this.logger.atDebug()
+                            .setMessage("Edited label of diagram element {} to {}")
+                            .addArgument(node.getId())
+                            .addArgument(newText)
+                            .log();
                 }
             }
         }
@@ -178,9 +183,18 @@ public class EditLabelEventHandler implements IDiagramEventHandler {
                     variableManager.put(EdgeDescription.SEMANTIC_EDGE_SOURCE, semanticEdgeSource);
                     variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticEdgeTarget);
                     edgeDescription.getLabelEditHandler().editLabel(variableManager, optionalEdgeLabelKind.get(), newText);
-                    this.logger.debug("Edited label of diagram element {} to {}", edge.getId(), newText);
+
+                    this.logger.atDebug()
+                            .setMessage("Edited label of diagram element {} to {}")
+                            .addArgument(edge.getId())
+                            .addArgument(newText)
+                            .log();
                 } else {
-                    this.logger.debug("No label with id {} to edit on edge {}", labelId, edge.getId());
+                    this.logger.atDebug()
+                            .setMessage("No label with id {} to edit on edge {}")
+                            .addArgument(labelId)
+                            .addArgument(edge.getId())
+                            .log();
                 }
             }
         }

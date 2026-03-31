@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,9 @@ public class AbstractValidatingAggregateRoot<AGGREGATE_ROOT_TYPE extends Abstrac
                         .map(violation -> violation.getPropertyPath().toString() + " " + violation.getMessage())
                         .collect(Collectors.joining(", "));
 
-                this.logger.warn(message);
+                this.logger.atWarn()
+                        .setMessage(message)
+                        .log();
             }
         }
         return super.registerEvent(event);

@@ -1,0 +1,113 @@
+= Logging Policy
+
+SLF4J is the framework to use to log messages.
+A logger should be created as the last parameter of a class using the following piece of code:
+
+```java
+public class Service {
+    private final Logger logger = LoggerFactory.getLogger(Service.class);
+}
+```
+
+== Logger Usage
+
+We must leverage the SLF4J fluent API in order to clearly identify:
+
+- The message
+- The argument(s)
+- The potential cause
+- Additional metadata provided as key / value parameters
+
+For that we must use the following pattern:
+
+```java
+this.logger.atWarn()
+        .setMessage("Action {} failed to be executed")
+        .addArgument(invokeEditingContextActionInput.actionId())
+        .log();
+```
+
+We must not use the various methods `logger.isXxxEnabled()` such as `logger.isWarnEnabled()` and instead provide a supplier for expensive arguments.
+We should provide, as key / value parameters, the local variables used to figure out the context of the log message.
+If some arguments need to be provided in a message, there is a very good reason to consider them as additional key / value parameters.
+
+```java
+this.logger.atInfo()
+        .setMessage("Project {} created")
+        .addArgument(projectId)
+        .addKeyValue("projectId", projectId)
+        .log();
+```
+
+We must never log identifying details in the messages such as labels or any user-supplied piece of information, only machine-readable identifiers.
+
+
+== Language
+
+Log messages must be written in english.
+They should not use any form of internationalization.
+
+Log messages are intended to developers and administrators while error messages returned in payload for example are intended to end users.
+They do not share the same skillset not have the same goals.
+As such, log messages should not provide the same information, language or tone as messages returned to the end user.
+
+
+== Tone
+
+Log messages should be factual and specify precisely what has happened.
+They should be concise, predictable and actionable.
+
+Here are a couple of examples:
+
+- "Project xxx created"
+- "Representation xxx deleted"
+- "Textfield xxx edited"
+- "Library xxx:yyy:zzz added as a dependency of the project xxx"
+- "20 project(s) retrieved"
+- "Project xxx retrieved"
+- "Diagram xxx refreshed. Reason: SemanticChange, Correlation Id: xxx"
+
+
+
+== Exception Logging
+
+A proper message describing the process that has been interrupted will be required for the logging of every exception.
+Using the exception message as the message of the log does not provide anything relevant and it just duplicates the first line of the cause.
+As a result, this pattern will not be accepted anymore:
+
+```java
+try {
+    // ...
+} catch (IOException exception) {
+    this.logger.atWarn()
+            .setMessage(exception.getMessage())
+            .setCause(exception)
+            .log();
+}
+```
+
+
+==  Logging Strategy
+
+=== ERROR
+
+We must log one message using the `error` level anytime we encounter a non-recoverable error such as an error that would crash the entire server or create some loss of data.
+In practice, this should never happen in our code given that we should not find ourselves in such sitation.
+This should pretty much only appear in low level code such as Spring Data support which would prevent the application from starting if the database is not found.
+
+
+=== WARN
+
+We must log one message per exception using the `warn` level along with a dedicated message describing the process interrupted.
+We must also log at least one message using the `warn` level per operation failure.
+The presence of warn messages should be tested.
+
+
+=== DEBUG
+
+We may log one debug message per assumption failure.
+
+
+=== TRACE
+
+We may log one trace message per assumption success.

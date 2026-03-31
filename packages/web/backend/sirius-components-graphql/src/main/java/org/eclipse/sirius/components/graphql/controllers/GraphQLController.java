@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,8 +24,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.eclipse.sirius.components.graphql.api.GraphQLConstants;
 import org.eclipse.sirius.components.graphql.api.UploadFile;
 import org.slf4j.Logger;
@@ -44,6 +42,7 @@ import graphql.ExecutionResult;
 import graphql.GraphQL;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * The entry point of the GraphQL HTTP API.
@@ -166,9 +165,14 @@ public class GraphQLController {
         if (!executionResult.getErrors().isEmpty()) {
             try {
                 String stringSpecification = this.objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(executionResult.toSpecification());
-                this.logger.warn(stringSpecification);
+                this.logger.atWarn()
+                        .setMessage(stringSpecification)
+                        .log();
             } catch (JsonProcessingException exception) {
-                this.logger.warn(exception.getMessage(), exception);
+                this.logger.atWarn()
+                        .setMessage(exception.getMessage())
+                        .setCause(exception)
+                        .log();
             }
         }
     }
@@ -200,12 +204,10 @@ public class GraphQLController {
             if (optionalVariables.isPresent()) {
                 Map<String, Object> variables = optionalVariables.get();
 
-                // @formatter:off
                 ExecutionInput executionInput = ExecutionInput.newExecutionInput()
                         .query(graphQLPayload.getQuery())
                         .variables(variables)
                         .build();
-                // @formatter:on
 
                 long start = System.currentTimeMillis();
                 ExecutionResult executionResult = this.graphQL.execute(executionInput);
@@ -227,10 +229,15 @@ public class GraphQLController {
             try {
                 optionalGraphQLPayload = Optional.of(this.objectMapper.readValue(operations, GraphQLPayload.class));
             } catch (IOException exception) {
-                this.logger.warn(exception.getMessage(), exception);
+                this.logger.atWarn()
+                        .setMessage(exception.getMessage())
+                        .setCause(exception)
+                        .log();
             }
         } else {
-            this.logger.warn("Missing operations parameter");
+            this.logger.atWarn()
+                    .setMessage("Missing operations parameter")
+                    .log();
         }
         return optionalGraphQLPayload;
     }
@@ -241,10 +248,15 @@ public class GraphQLController {
             try {
                 optionalJsonNode = Optional.of(this.objectMapper.readTree(map));
             } catch (IOException exception) {
-                this.logger.warn(exception.getMessage(), exception);
+                this.logger.atWarn()
+                        .setMessage(exception.getMessage())
+                        .setCause(exception)
+                        .log();
             }
         } else {
-            this.logger.warn("Missing map parameter");
+            this.logger.atWarn()
+                    .setMessage("Missing map parameter")
+                    .log();
         }
 
         return optionalJsonNode;
@@ -283,10 +295,15 @@ public class GraphQLController {
 
                     optionalVariables = Optional.of(variables);
                 } catch (IOException exception) {
-                    this.logger.warn(exception.getMessage(), exception);
+                    this.logger.atWarn()
+                            .setMessage(exception.getMessage())
+                            .setCause(exception)
+                            .log();
                 }
             } else {
-                this.logger.warn("Missing multipart file");
+                this.logger.atWarn()
+                        .setMessage("Missing multipart file")
+                        .log();
             }
         }
         return optionalVariables;

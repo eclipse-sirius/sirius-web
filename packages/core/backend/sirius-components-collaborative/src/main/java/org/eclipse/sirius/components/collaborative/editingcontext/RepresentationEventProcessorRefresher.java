@@ -69,7 +69,10 @@ public class RepresentationEventProcessorRefresher implements IChangeDescription
             }
             this.refreshOtherRepresentations(editingContext, changeDescription);
         } catch (Exception exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         var timer = this.meterRegistry.timer(Monitoring.TIMER_REFRESH_REPRESENTATION, "changeDescription", changeDescription.getSourceId());

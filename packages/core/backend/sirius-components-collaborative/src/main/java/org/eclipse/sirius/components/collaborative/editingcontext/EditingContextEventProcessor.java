@@ -98,7 +98,10 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     private Disposable setupChangeDescriptionSinkConsumer() {
         Consumer<ChangeDescription> consumer = changeDescription -> changeDescriptionListener.onChange(this.sink, this.canBeDisposedSink, this.editingContext, changeDescription);
-        Consumer<Throwable> errorConsumer = throwable -> this.logger.warn(throwable.getMessage(), throwable);
+        Consumer<Throwable> errorConsumer = throwable -> this.logger.atWarn()
+                .setMessage(throwable.getMessage())
+                .setCause(throwable)
+                .log();
 
         return this.changeDescriptionSink.asFlux().subscribe(consumer, errorConsumer);
     }
@@ -112,12 +115,18 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     public Mono<IPayload> handle(IInput input) {
         Timer.Sample handleTimer = Timer.start(this.meterRegistry);
         if (this.executorService.isShutdown()) {
-            this.logger.warn("Handler for editing context {} is shutdown", this.editingContext.getId());
+            this.logger.atWarn()
+                    .setMessage("Handler for editing context {} is shutdown")
+                    .addArgument(this.editingContext.getId())
+                    .log();
+
             handleTimer.stop(this.meterRegistry.timer(Monitoring.EVENT_HANDLER, INPUT, input.getClass().getSimpleName(), "inputId", input.id().toString()));
             return Mono.empty();
         }
 
-        this.logger.trace(input.toString());
+        this.logger.atTrace()
+                .setMessage(input.toString())
+                .log();
 
         One<IPayload> payloadSink = Sinks.one();
         Future<?> future = this.executorService.submit(() -> this.inputDispatcher.dispatch(this.executorService, payloadSink, this.canBeDisposedSink, this.changeDescriptionSink, this.editingContext, input));
@@ -125,14 +134,21 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             // Block until the event has been processed
             future.get();
         } catch (InterruptedException | ExecutionException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
         handleTimer.stop(this.meterRegistry.timer(Monitoring.TIMER_PROCESSING_INPUT, "input", input.getClass().getSimpleName(),
                 "inputId", input.id().toString()));
 
         return payloadSink.asMono()
                 .log(this.getClass().getName(), Level.FINEST, SignalType.ON_NEXT, SignalType.ON_ERROR)
-                .doOnError(throwable -> this.logger.warn(throwable.getMessage(), throwable));
+                .doOnError(throwable -> this.logger.atWarn()
+                        .setMessage(throwable.getMessage())
+                        .setCause(throwable)
+                        .log()
+                );
     }
 
 
@@ -158,12 +174,17 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the editing context event processor {}", this.editingContext.getId());
+        this.logger.atTrace()
+                .setMessage("Disposing the editing context event processor {}")
+                .addArgument(this.editingContext.getId())
+                .log();
 
         EmitResult changeDescriptionEmitResult = this.changeDescriptionSink.tryEmitComplete();
         if (changeDescriptionEmitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, changeDescriptionEmitResult);
+            this.logger.atWarn()
+                    .setMessage("An error has occurred while marking the publisher as complete: {}")
+                    .addArgument(changeDescriptionEmitResult)
+                    .log();
         }
         this.changeDescriptionDisposable.dispose();
 
@@ -175,8 +196,10 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, emitResult);
+            this.logger.atWarn()
+                    .setMessage("An error has occurred while marking the publisher as complete: {}")
+                    .addArgument(emitResult)
+                    .log();
         }
 
     }

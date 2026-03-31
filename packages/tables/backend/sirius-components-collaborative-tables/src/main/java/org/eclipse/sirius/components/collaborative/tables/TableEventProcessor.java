@@ -81,7 +81,10 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
     public TableEventProcessor(TableCreationParameters tableCreationParameters, List<ITableEventHandler> tableEventHandlers, ITableContext tableContext,
             ISubscriptionManager subscriptionManager, MeterRegistry meterRegistry, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry,
             IRepresentationPersistenceStrategy representationPersistenceStrategy) {
-        this.logger.trace("Creating the table event processor {}", tableCreationParameters.getEditingContext().getId());
+        this.logger.atTrace()
+                .setMessage("Creating the table event processor {}")
+                .addArgument(tableCreationParameters.getEditingContext().getId())
+                .log();
 
         this.tableCreationParameters = Objects.requireNonNull(tableCreationParameters);
         this.tableEventHandlers = Objects.requireNonNull(tableEventHandlers);
@@ -123,7 +126,10 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                 tableEventHandler.handle(payloadSink, changeDescriptionSink, this.tableCreationParameters.getEditingContext(), this.tableContext, this.tableCreationParameters.getTableDescription(),
                         tableInput);
             } else {
-                this.logger.warn("No handler found for event: {}", tableInput);
+                this.logger.atWarn()
+                        .setMessage("No handler found for event: {}")
+                        .addArgument(tableInput)
+                        .log();
             }
         }
     }
@@ -148,13 +154,18 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
             this.tableContext.update(table);
             if (table != null) {
                 this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.tableCreationParameters.getEditingContext(), table);
-                this.logger.trace("Table refreshed: {}", table.getId());
+                this.logger.atTrace()
+                        .setMessage("Table refreshed: {}")
+                        .addArgument(table.getId())
+                        .log();
             }
             if (this.sink.currentSubscriberCount() > 0) {
                 EmitResult emitResult = this.sink.tryEmitNext(new TableRefreshedEventPayload(changeDescription.getInput().id(), table));
                 if (emitResult.isFailure()) {
-                    String pattern = "An error has occurred while emitting a TableRefreshedEventPayload: {}";
-                    this.logger.warn(pattern, emitResult);
+                    this.logger.atWarn()
+                            .setMessage("An error has occurred while emitting a TableRefreshedEventPayload: {}")
+                            .addArgument(emitResult)
+                            .log();
                 }
             }
 
@@ -168,7 +179,10 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                         .ifPresent(newGlobalFilter -> {
                             EmitResult emitResult = this.sink.tryEmitNext(new TableGlobalFilterValuePayload(changeDescription.getInput().id(), newGlobalFilter));
                             if (emitResult.isFailure()) {
-                                this.logger.warn("An error has occurred while emitting a TableGlobalFilterValuePayload: {}", emitResult);
+                                this.logger.atWarn()
+                                        .setMessage("An error has occurred while emitting a TableGlobalFilterValuePayload: {}")
+                                        .addArgument(emitResult)
+                                        .log();
                             }
                         });
             }
@@ -180,7 +194,10 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                         .ifPresent(newColumnFilters -> {
                             EmitResult emitResult = this.sink.tryEmitNext(new TableColumnFilterPayload(changeDescription.getInput().id(), newColumnFilters));
                             if (emitResult.isFailure()) {
-                                this.logger.warn("An error has occurred while emitting a TableColumnFilterPayload: {}", emitResult);
+                                this.logger.atWarn()
+                                        .setMessage("An error has occurred while emitting a TableColumnFilterPayload: {}")
+                                        .addArgument(emitResult)
+                                        .log();
                             }
                         });
             }
@@ -192,7 +209,10 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                         .ifPresent(newColumnSort -> {
                             EmitResult emitResult = this.sink.tryEmitNext(new TableColumnSortPayload(changeDescription.getInput().id(), newColumnSort));
                             if (emitResult.isFailure()) {
-                                this.logger.warn("An error has occurred while emitting a TableColumnSortPayload: {}", emitResult);
+                                this.logger.atWarn()
+                                        .setMessage("An error has occurred while emitting a TableColumnSortPayload: {}")
+                                        .addArgument(emitResult)
+                                        .log();
                             }
                         });
             }
@@ -238,7 +258,12 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
         Element element = new Element(TableComponent.class, props);
 
         Table table = new TableRenderer(this.tableCreationParameters.getCustomCellDescriptors()).render(element);
-        this.logger.trace("Table refreshed: {}", this.tableCreationParameters.getEditingContext().getId());
+
+        this.logger.atTrace()
+                .setMessage("Table refreshed: {}")
+                .addArgument(this.tableCreationParameters.getEditingContext().getId())
+                .log();
+
         return table;
     }
 
@@ -255,14 +280,19 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
 
     @Override
     public void dispose() {
-        this.logger.trace("Disposing the table event processor {}", this.tableCreationParameters.getEditingContext().getId());
+        this.logger.atTrace()
+                .setMessage("Disposing the table event processor {}")
+                .addArgument(this.tableCreationParameters.getEditingContext().getId())
+                .log();
 
         this.subscriptionManager.dispose();
 
         EmitResult emitResult = this.sink.tryEmitComplete();
         if (emitResult.isFailure()) {
-            String pattern = "An error has occurred while marking the publisher as complete: {}";
-            this.logger.warn(pattern, emitResult);
+            this.logger.atWarn()
+                    .setMessage("An error has occurred while marking the publisher as complete: {}")
+                    .addArgument(emitResult)
+                    .log();
         }
     }
 

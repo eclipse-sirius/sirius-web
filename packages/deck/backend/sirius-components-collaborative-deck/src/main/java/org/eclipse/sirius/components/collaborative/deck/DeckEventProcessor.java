@@ -47,8 +47,6 @@ import reactor.core.publisher.Sinks.One;
  */
 public class DeckEventProcessor implements IDeckEventProcessor {
 
-    private final Logger logger = LoggerFactory.getLogger(DeckEventProcessor.class);
-
     private final IEditingContext editingContext;
 
     private final ISubscriptionManager subscriptionManager;
@@ -65,6 +63,8 @@ public class DeckEventProcessor implements IDeckEventProcessor {
 
     private DeckContext deckContext;
 
+    private final Logger logger = LoggerFactory.getLogger(DeckEventProcessor.class);
+
     public DeckEventProcessor(IEditingContext editingContext, ISubscriptionManager subscriptionManager, DeckCreationService deckCreationService,
             List<IDeckEventHandler> deckEventHandlers, DeckContext deckContext, IRepresentationPersistenceStrategy representationPersistenceStrategy,
             IRepresentationSearchService representationSearchService) {
@@ -77,7 +77,10 @@ public class DeckEventProcessor implements IDeckEventProcessor {
         this.representationSearchService = Objects.requireNonNull(representationSearchService);
 
         String id = this.deckContext.deck().getId();
-        this.logger.trace("Creating the deck event processor {}", id);
+        this.logger.atTrace()
+                .setMessage("Creating the deck event processor {}")
+                .addArgument(id)
+                .log();
 
         // We automatically refresh the representation before using it since things may have changed since the moment it
         // has been saved in the database.
@@ -109,7 +112,10 @@ public class DeckEventProcessor implements IDeckEventProcessor {
                 IDeckEventHandler deckEventHandler = optionalDeckEventHandler.get();
                 deckEventHandler.handle(payloadSink, changeDescriptionSink, this.editingContext, this.deckContext, deckInput);
             } else {
-                this.logger.warn("No handler found for event: {}", deckInput);
+                this.logger.atWarn()
+                        .setMessage("No handler found for event: {}")
+                        .addArgument(deckInput)
+                        .log();
             }
         }
     }
@@ -121,7 +127,10 @@ public class DeckEventProcessor implements IDeckEventProcessor {
             this.deckContext = new DeckContext(refreshedDeckRepresentation, new ArrayList<>());
             if (refreshedDeckRepresentation != null) {
                 this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedDeckRepresentation);
-                this.logger.trace("Deck refreshed: {}", refreshedDeckRepresentation.getId());
+                this.logger.atTrace()
+                        .setMessage("Deck refreshed: {}")
+                        .addArgument(refreshedDeckRepresentation.getId())
+                        .log();
             }
             this.deckEventFlux.deckRefreshed(changeDescription.getInput(), this.deckContext.deck());
         } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.deckContext.deck().getId())) {
@@ -152,7 +161,11 @@ public class DeckEventProcessor implements IDeckEventProcessor {
     @Override
     public void dispose() {
         String id = Optional.ofNullable(this.deckContext.deck()).map(Deck::id).orElse(null);
-        this.logger.trace("Disposing the deck event processor {}", id);
+        this.logger.atTrace()
+                .setMessage("Disposing the deck event processor {}")
+                .addArgument(id)
+                .log();
+
         this.subscriptionManager.dispose();
         this.deckEventFlux.dispose();
     }

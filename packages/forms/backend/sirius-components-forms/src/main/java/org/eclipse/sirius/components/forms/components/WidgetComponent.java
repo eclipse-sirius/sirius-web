@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -124,8 +124,10 @@ public class WidgetComponent implements IComponent {
                     .map(Optional::get)
                     .orElse(null);
             if (element == null) {
-                String pattern = "Unsupported widget description: {}";
-                this.logger.warn(pattern, widgetDescription.getClass().getSimpleName());
+                this.logger.atWarn()
+                        .setMessage("Unsupported widget description: {}")
+                        .addArgument(widgetDescription.getClass().getSimpleName())
+                        .log();
             }
         }
         return element;

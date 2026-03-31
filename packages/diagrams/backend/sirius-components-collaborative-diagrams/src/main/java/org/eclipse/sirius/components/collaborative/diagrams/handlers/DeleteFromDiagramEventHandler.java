@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -186,16 +186,28 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                 var self = optionalSelf.get();
                 var variableManager = this.populateVariableManager(editingContext, diagramContext, self, node, null);
                 NodeDescription nodeDescription = optionalNodeDescription.get();
-                this.logger.debug("Deleted diagram element {}", node.getId());
+                this.logger.atDebug()
+                        .setMessage("Deleted diagram element {}")
+                        .addArgument(node.getId())
+                        .log();
+
                 result = nodeDescription.getDeleteHandler().apply(variableManager);
             } else {
                 String message = this.messageService.semanticObjectNotFound(node.getTargetObjectId());
-                this.logger.debug(message);
+
+                this.logger.atDebug()
+                        .setMessage(message)
+                        .log();
+
                 result = new Failure(message);
             }
         } else {
             String message = this.messageService.nodeDescriptionNotFound(node.getId());
-            this.logger.debug(message);
+
+            this.logger.atDebug()
+                    .setMessage(message)
+                    .log();
+
             result = new Failure(message);
         }
         return result;
@@ -217,16 +229,29 @@ public class DeleteFromDiagramEventHandler implements IDiagramEventHandler {
                         .ifPresent(semanticElement -> variableManager.put(EdgeDescription.SEMANTIC_EDGE_TARGET, semanticElement));
 
                 EdgeDescription edgeDescription = optionalEdgeDescription.get();
-                this.logger.debug("Deleted diagram edge {}", edge.getId());
+
+                this.logger.atDebug()
+                        .setMessage("Deleted diagram edge {}")
+                        .addArgument(edge.getId())
+                        .log();
+
                 result = edgeDescription.getDeleteHandler().apply(variableManager);
             } else {
                 String message = this.messageService.semanticObjectNotFound(edge.getTargetObjectId());
-                this.logger.debug(message);
+
+                this.logger.atDebug()
+                        .setMessage(message)
+                        .log();
+
                 result = new Failure(message);
             }
         } else {
             String message = this.messageService.edgeDescriptionNotFound(edge.getId());
-            this.logger.debug(message);
+
+            this.logger.atDebug()
+                    .setMessage(message)
+                    .log();
+
             result = new Failure(message);
         }
         return result;

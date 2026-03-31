@@ -67,7 +67,12 @@ public class ResourceLoader implements IResourceLoader {
 
             optionalResource = Optional.of(resource);
         } catch (IOException | IllegalArgumentException exception) {
-            this.logger.warn("An error occured while loading document {}: {}.", id, exception.getMessage());
+            this.logger.atWarn()
+                    .setMessage("An error occured while loading document {}")
+                    .addArgument(id)
+                    .setCause(exception)
+                    .log();
+
             resourceSet.getResources().remove(resource);
         }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -98,7 +98,10 @@ public class ProjectZipContentProvider implements IProjectZipContentProvider {
         try {
             return this.objectMapper.readValue(manifestBytes, HashMap.class);
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return Map.of();
@@ -123,7 +126,10 @@ public class ProjectZipContentProvider implements IProjectZipContentProvider {
                 zipEntry = zipperProjectInputStream.getNextEntry();
             }
         } catch (IOException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return entries;

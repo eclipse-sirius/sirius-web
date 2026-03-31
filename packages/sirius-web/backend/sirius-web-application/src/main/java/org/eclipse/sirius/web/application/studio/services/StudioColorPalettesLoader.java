@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,11 @@ public class StudioColorPalettesLoader implements IStudioColorPalettesLoader {
             resource.load(inputStream, null);
             resource.eAdapters().add(new ResourceMetadataAdapter("studioColorPalettes", true));
         } catch (IOException exception) {
-            this.logger.warn("An error occured while loading document studioColorPalettes.json: {}.", exception.getMessage());
+            this.logger.atWarn()
+                    .setMessage("An error occurred while loading document studioColorPalettes.json: {}")
+                    .addArgument(exception.getMessage())
+                    .setCause(exception);
+
             resourceSet.getResources().remove(resource);
         }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -94,7 +94,12 @@ public class ProjectDuplicationApplicationService implements IProjectDuplication
                 IResult<Project> result = this.projectCreationService.createProject(initializeProjectInput, projectZipContent.projectName() + " - Copy", natures);
                 if (result instanceof Success<Project> success) {
                     payload = new DuplicateProjectSuccessPayload(input.id(), projectMapper.toDTO(success.data()));
-                    this.logger.trace("The project {} has been duplicated in project {}", project.getId(), success.data().getId());
+
+                    this.logger.atTrace()
+                            .setMessage("The project {} has been duplicated in project {}")
+                            .addArgument(project.getId())
+                            .addArgument(success.data().getId())
+                            .log();
                 }
             } else {
                 payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());

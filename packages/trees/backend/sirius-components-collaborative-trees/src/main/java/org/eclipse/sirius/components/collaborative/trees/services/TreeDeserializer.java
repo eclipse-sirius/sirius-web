@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -39,9 +39,9 @@ public class TreeDeserializer implements IRepresentationDeserializer {
     @Override
     public boolean canHandle(ObjectNode root) {
         return Optional.ofNullable(root.get("kind"))
-            .map(JsonNode::asText)
-            .filter(Tree.KIND::equals)
-            .isPresent();
+                .map(JsonNode::asText)
+                .filter(Tree.KIND::equals)
+                .isPresent();
     }
 
     @Override
@@ -49,7 +49,10 @@ public class TreeDeserializer implements IRepresentationDeserializer {
         try {
             return Optional.of(mapper.readValue(root.toString(), Tree.class));
         } catch (JsonProcessingException exception) {
-            this.logger.warn(exception.getMessage(), exception);
+            this.logger.atWarn()
+                    .setMessage(exception.getMessage())
+                    .setCause(exception)
+                    .log();
         }
 
         return Optional.empty();
