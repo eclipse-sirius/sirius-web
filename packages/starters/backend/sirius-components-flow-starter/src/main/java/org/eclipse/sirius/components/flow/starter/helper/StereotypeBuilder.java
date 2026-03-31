@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -70,7 +70,7 @@ public class StereotypeBuilder {
 
             content = outputStream.toString();
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
         return content;
     }
@@ -84,7 +84,7 @@ public class StereotypeBuilder {
             Resource inputResource = this.loadFromXMI(uri, inputStream);
             content = this.saveAsJSON(uri, inputResource);
         } catch (IOException exception) {
-            this.logger.error(exception.getMessage(), exception);
+            this.logger.warn(exception.getMessage(), exception);
         }
 
         long end = System.currentTimeMillis();
