@@ -63,6 +63,9 @@ A new provisional method `IHierarchyEventProcessor#update` is available to updat
 - https://github.com/eclipse-sirius/sirius-web/issues/6334[#6334] [diagram] Use a dedicated hook to improve temporary edge rendering
 - https://github.com/eclipse-sirius/sirius-web/issues/6229[#6229] [selection] Improve the user experience of the selection dialog.
 It now comes with small improvements in the filter bar for better reuse
+- https://github.com/eclipse-sirius/sirius-web/issues/6363[#6363] [test] Add new architecture tests for data fetchers.
+They ensure that: each data fetcher is annotated by a data fetcher annotation; each data fetcher class has a name matching `<Type><Field>DataFetcher`.
+
 
 
 
