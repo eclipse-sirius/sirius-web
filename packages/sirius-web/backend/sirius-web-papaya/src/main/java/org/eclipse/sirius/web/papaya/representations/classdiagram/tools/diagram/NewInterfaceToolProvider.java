@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.classdiagram.tools.diagram;
 
+import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -28,9 +29,42 @@ import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.dialogs.
 public class NewInterfaceToolProvider {
 
     public NodeTool getTool(IViewDiagramElementFinder cache) {
+        return new DiagramBuilders().newNodeTool()
+                .name("New interface")
+                .iconURLsExpression("/icons/papaya/full/obj16/Interface.svg")
+                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog())
+                .body(
+                        new ViewBuilders().newIf()
+                                .conditionExpression("aql:selectedObject <> null")
+                                .children(
+                                        new ViewBuilders().newChangeContext()
+                                                .expression("aql:selectedObject")
+                                                .children(
+                                                        this.createInstance(cache)
+                                                )
+                                                .build()
+                                )
+                                .build(),
+                        new ViewBuilders().newIf()
+                                .conditionExpression("aql:selectedObject = null and self.hasTypeContainer()")
+                                .children(
+                                        new ViewBuilders().newChangeContext()
+                                                .expression("aql:self.getFirstTypeContainer()")
+                                                .children(
+                                                        this.createInstance(cache)
+                                                )
+                                                .build()
+                                )
+                                .build()
+                )
+                .description("This Tool allows to create a new Papaya::Interface concept.")
+                .build();
+    }
+
+    private CreateInstance createInstance(IViewDiagramElementFinder cache) {
         var interfaceNodeDescription = cache.getNodeDescription(InterfaceNodeDescriptionProvider.NAME).orElse(null);
 
-        var createInstance = new ViewBuilders().newCreateInstance()
+        return new ViewBuilders().newCreateInstance()
                 .referenceName("types")
                 .typeName("papaya::Interface")
                 .variableName("newInterface")
@@ -55,21 +89,6 @@ public class NewInterfaceToolProvider {
                                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                                 .build()
                 )
-                .build();
-
-        return new DiagramBuilders().newNodeTool()
-                .name("New interface")
-                .iconURLsExpression("/icons/papaya/full/obj16/Interface.svg")
-                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog())
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:selectedObject")
-                                .children(
-                                        createInstance
-                                )
-                                .build()
-                )
-                .description("This Tool allows to create a new Papaya::Interface concept.")
                 .build();
     }
 }

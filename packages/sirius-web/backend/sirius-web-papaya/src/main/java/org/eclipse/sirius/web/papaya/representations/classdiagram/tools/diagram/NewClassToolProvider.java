@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.papaya.representations.classdiagram.tools.diagram;
 
+import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
@@ -28,9 +29,41 @@ import org.eclipse.sirius.web.papaya.representations.classdiagram.tools.dialogs.
 public class NewClassToolProvider {
 
     public NodeTool getTool(IViewDiagramElementFinder cache) {
-        var classNodeDescription = cache.getNodeDescription(ClassNodeDescriptionProvider.NAME).orElse(null);
+        return new DiagramBuilders().newNodeTool()
+                .name("New class")
+                .iconURLsExpression("/icons/papaya/full/obj16/Class.svg")
+                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog())
+                .body(
+                        new ViewBuilders().newIf()
+                                .conditionExpression("aql:selectedObject <> null")
+                                .children(
+                                        new ViewBuilders().newChangeContext()
+                                                .expression("aql:selectedObject")
+                                                .children(
+                                                        this.createInstance(cache)
+                                                )
+                                                .build()
+                                )
+                                .build(),
+                        new ViewBuilders().newIf()
+                                .conditionExpression("aql:selectedObject = null and self.hasTypeContainer()")
+                                .children(
+                                        new ViewBuilders().newChangeContext()
+                                                .expression("aql:self.getFirstTypeContainer()")
+                                                .children(
+                                                        this.createInstance(cache)
+                                                )
+                                                .build()
+                                )
+                                .build()
+                )
+                .description("This Tool allows to create a new Papaya::Class concept.")
+                .build();
+    }
 
-        var createInstance = new ViewBuilders().newCreateInstance()
+    private CreateInstance createInstance(IViewDiagramElementFinder cache) {
+        var classNodeDescription = cache.getNodeDescription(ClassNodeDescriptionProvider.NAME).orElse(null);
+        return new ViewBuilders().newCreateInstance()
                 .referenceName("types")
                 .typeName("papaya::Class")
                 .variableName("newClass")
@@ -55,21 +88,6 @@ public class NewClassToolProvider {
                                 .containmentKind(NodeContainmentKind.CHILD_NODE)
                                 .build()
                 )
-                .build();
-
-        return new DiagramBuilders().newNodeTool()
-                .name("New class")
-                .iconURLsExpression("/icons/papaya/full/obj16/Class.svg")
-                .dialogDescription(new TypeContainerSelectionDialogDescriptionProvider().getDialog())
-                .body(
-                        new ViewBuilders().newChangeContext()
-                                .expression("aql:selectedObject")
-                                .children(
-                                        createInstance
-                                )
-                                .build()
-                )
-                .description("This Tool allows to create a new Papaya::Class concept.")
                 .build();
     }
 }
