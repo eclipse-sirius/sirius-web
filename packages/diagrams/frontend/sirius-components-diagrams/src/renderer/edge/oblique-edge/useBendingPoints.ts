@@ -87,6 +87,10 @@ export const useBendingPoints = (
         (_, i) => !isMultipleOfTwo(i) || i === index
       );
       edge.data.bendingPoints = newBendingPoints;
+      edge.data.relativePositionBendingPoints = newBendingPoints.map((point) => ({
+        x: point.x - sourceX,
+        y: point.y - sourceY,
+      }));
       setEdges(edges);
       synchronizeEdgeLayoutData(edges, getNodes());
       setState((prevState) => ({
