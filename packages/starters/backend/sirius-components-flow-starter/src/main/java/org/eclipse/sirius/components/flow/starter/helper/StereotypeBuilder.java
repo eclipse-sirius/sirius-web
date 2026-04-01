@@ -71,7 +71,7 @@ public class StereotypeBuilder {
             content = outputStream.toString();
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Creation of the stereotype body failed")
                     .setCause(exception)
                     .log();
         }
@@ -88,7 +88,7 @@ public class StereotypeBuilder {
             content = this.saveAsJSON(uri, inputResource);
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Creation of the stereotype body failed")
                     .setCause(exception)
                     .log();
         }

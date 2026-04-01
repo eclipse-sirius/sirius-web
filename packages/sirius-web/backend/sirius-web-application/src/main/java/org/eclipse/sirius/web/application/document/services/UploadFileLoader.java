@@ -12,10 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.services;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -64,7 +62,7 @@ public class UploadFileLoader implements IUploadFileLoader {
     public IResult<UploadedResource> load(ResourceSet resourceSet, IEMFEditingContext emfEditingContext, UploadFile file, boolean allowProxies, boolean readOnly) {
         var fileName = file.getName();
         var applyMigrationParticipants = this.migrationParticipantPredicates.stream().anyMatch(predicate -> predicate.test(emfEditingContext.getId()));
-        var optionalSanitizedContent = this.getSanitizedContent(resourceSet, file, allowProxies, applyMigrationParticipants);
+        var optionalSanitizedContent = this.documentSanitizedJsonContentProvider.getContent(resourceSet, file.getName(), file.getInputStream(), allowProxies, applyMigrationParticipants);
         if (optionalSanitizedContent.isPresent()) {
             String id = UUID.randomUUID().toString();
             SanitizedResult sanitizedContent = optionalSanitizedContent.get();
@@ -75,20 +73,5 @@ public class UploadFileLoader implements IUploadFileLoader {
             }
         }
         return new Failure<>(this.messageService.unexpectedError());
-    }
-
-    private Optional<SanitizedResult>  getSanitizedContent(ResourceSet resourceSet, UploadFile file, boolean allowProxies, boolean applyMigrationParticipants) {
-        Optional<SanitizedResult> optionalContent = Optional.empty();
-
-        try (var inputStream = file.getInputStream()) {
-            optionalContent = this.documentSanitizedJsonContentProvider.getContent(resourceSet, file.getName(), inputStream, allowProxies, applyMigrationParticipants);
-        } catch (IOException exception) {
-            this.logger.atWarn()
-                    .setMessage(exception.getMessage())
-                    .setCause(exception)
-                    .log();
-        }
-
-        return optionalContent;
     }
 }

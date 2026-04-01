@@ -43,7 +43,7 @@ public class JsonBasedEditingContext implements IEditingContext {
             this.root = new ObjectMapper().readValue(json, Element.class);
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Parsing of the Json based editing context failed")
                     .setCause(exception)
                     .log();
         }
@@ -56,7 +56,7 @@ public class JsonBasedEditingContext implements IEditingContext {
             this.root = new ObjectMapper().readValue(content, Element.class);
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Parsing of the Json based editing context failed")
                     .setCause(exception)
                     .log();
         }

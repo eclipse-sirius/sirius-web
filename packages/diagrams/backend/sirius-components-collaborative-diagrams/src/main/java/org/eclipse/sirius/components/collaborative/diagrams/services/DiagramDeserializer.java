@@ -50,7 +50,7 @@ public class DiagramDeserializer implements IRepresentationDeserializer {
             return Optional.of(mapper.readValue(root.toString(), Diagram.class));
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Diagram deserialization failed")
                     .setCause(exception)
                     .log();
         }

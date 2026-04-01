@@ -324,7 +324,8 @@ public class EObjectInitializer implements IEObjectInitializer {
             optionalJavaClass = Optional.of(java.lang.Class.forName(type.getQualifiedName()));
         } catch (ClassNotFoundException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Retrieval of the class {} failed")
+                    .addArgument(type.getQualifiedName())
                     .setCause(exception)
                     .log();
         }

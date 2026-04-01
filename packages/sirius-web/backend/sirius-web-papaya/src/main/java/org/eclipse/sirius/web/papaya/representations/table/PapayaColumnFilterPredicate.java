@@ -61,7 +61,7 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
             isValid = this.type.getName() != null && this.type.getName().contains(filterValue);
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the column filter failed")
                     .setCause(exception)
                     .log();
         }
@@ -80,7 +80,8 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
                         isValid = minValue <= nbAnnotation;
                     } catch (NumberFormatException exception) {
                         this.logger.atWarn()
-                                .setMessage(exception.getMessage())
+                                .setMessage("Deserialization of the filter minimal value failed. Value: {}")
+                                .addArgument(filterValues.get(0))
                                 .setCause(exception)
                                 .log();
                     }
@@ -91,7 +92,8 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
                         isValid = isValid && maxValue >= nbAnnotation;
                     } catch (NumberFormatException exception) {
                         this.logger.atWarn()
-                                .setMessage(exception.getMessage())
+                                .setMessage("Deserialization of the filter maximal value failed. Value {}")
+                                .addArgument(filterValues.get(1))
                                 .setCause(exception)
                                 .log();
                         isValid = true;
@@ -100,7 +102,7 @@ public class PapayaColumnFilterPredicate implements Predicate<ColumnFilter> {
             }
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the column filter failed")
                     .setCause(exception)
                     .log();
         }

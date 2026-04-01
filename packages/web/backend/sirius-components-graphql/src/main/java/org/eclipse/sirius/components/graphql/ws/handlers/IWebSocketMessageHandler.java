@@ -44,7 +44,8 @@ public interface IWebSocketMessageHandler {
             }
         } catch (IOException exception) {
             logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Sending WebSocket message failed. Message {}")
+                    .addArgument(message)
                     .setCause(exception)
                     .log();
         }

@@ -69,7 +69,7 @@ public class CsvObjectExporter implements IObjectExporter {
             result = Optional.of(stringWriter.toString().getBytes(StandardCharsets.UTF_8));
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("CSV serialization failed")
                     .setCause(exception)
                     .log();
         }

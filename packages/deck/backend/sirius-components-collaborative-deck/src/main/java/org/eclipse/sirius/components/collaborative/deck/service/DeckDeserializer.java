@@ -50,7 +50,7 @@ public class DeckDeserializer implements IRepresentationDeserializer {
             return Optional.of(mapper.readValue(root.toString(), Deck.class));
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deck deserialization failed")
                     .setCause(exception)
                     .log();
         }

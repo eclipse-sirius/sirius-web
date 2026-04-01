@@ -50,7 +50,7 @@ public class FormDeserializer implements IRepresentationDeserializer {
             return Optional.of(mapper.readValue(root.toString(), Form.class));
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Form deserialization failed")
                     .setCause(exception)
                     .log();
         }

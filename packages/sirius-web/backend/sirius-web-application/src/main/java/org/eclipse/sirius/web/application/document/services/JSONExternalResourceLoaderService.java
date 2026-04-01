@@ -65,7 +65,8 @@ public class JSONExternalResourceLoaderService implements IExternalResourceLoade
             bufferedInputStream.reset();
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Detection of the type of the resource {} failed")
+                    .addArgument(resourceURI)
                     .setCause(exception)
                     .log();
         }
@@ -90,7 +91,8 @@ public class JSONExternalResourceLoaderService implements IExternalResourceLoade
             resource = jsonResource;
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the resource {} failed")
+                    .addArgument(resourceURI)
                     .setCause(exception)
                     .log();
         }

@@ -109,7 +109,8 @@ public class ResourceToDocumentService implements IResourceToDocumentService {
             optionalDocumentData = Optional.of(documentData);
         } catch (IllegalArgumentException | IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the resource {} failed")
+                    .addArgument(resource.getURI())
                     .setCause(exception)
                     .log();
         }

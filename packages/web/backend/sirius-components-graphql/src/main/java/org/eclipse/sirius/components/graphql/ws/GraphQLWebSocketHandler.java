@@ -289,7 +289,8 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             session.sendMessage(textMessage);
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Sending of the WebSocket message failed. Message: {}")
+                    .addArgument(message.getType())
                     .setCause(exception)
                     .log();
         }
@@ -304,7 +305,9 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             optionalOperationMessage = optionalType.flatMap(type -> this.getOperationMessage(jsonNode, type));
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the WebSocket message failed. Message {}, Size {}")
+                    .addArgument(message.getPayload())
+                    .addArgument(message.getPayloadLength())
                     .setCause(exception)
                     .log();
         }
@@ -341,7 +344,8 @@ public class GraphQLWebSocketHandler extends TextWebSocketHandler implements Sub
             }
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the WebSocket operation message failed. Type {}")
+                    .addArgument(type)
                     .setCause(exception)
                     .log();
         }

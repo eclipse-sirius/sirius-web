@@ -190,7 +190,8 @@ public class EEnumIfDescriptionProvider implements IEMFFormIfDescriptionProvider
                 }
             } catch (NumberFormatException exception) {
                 this.logger.atWarn()
-                        .setMessage(exception.getMessage())
+                        .setMessage("Parsing of the EEnum literal value {} failed")
+                        .addArgument(newValue)
                         .setCause(exception)
                         .log();
 

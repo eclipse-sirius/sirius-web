@@ -125,7 +125,9 @@ public class MoveToolbarActionEventHandler implements IFormDescriptionEditorEven
                     }
                 } catch (IndexOutOfBoundsException exception) {
                     this.logger.atWarn()
-                            .setMessage(exception.getMessage())
+                            .setMessage("Move of the toolbar action {} to index {} failed")
+                            .addArgument(toolbarActionId)
+                            .addArgument(index)
                             .setCause(exception)
                             .log();
                 }

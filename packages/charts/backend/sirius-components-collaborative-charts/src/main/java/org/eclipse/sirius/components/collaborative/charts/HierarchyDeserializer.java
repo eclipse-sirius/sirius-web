@@ -63,7 +63,7 @@ public class HierarchyDeserializer implements IRepresentationDeserializer {
             return Optional.of(mapper.readValue(root.toString(), Hierarchy.class));
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Hierarchy deserialization failed")
                     .setCause(exception)
                     .log();
         }

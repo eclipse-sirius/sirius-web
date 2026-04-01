@@ -105,7 +105,9 @@ public class MovePageEventHandler implements IFormDescriptionEditorEventHandler 
                                 success.set(true);
                             } catch (IndexOutOfBoundsException exception) {
                                 this.logger.atWarn()
-                                        .setMessage(exception.getMessage())
+                                        .setMessage("Move the page {} to index {} failed")
+                                        .addArgument(pageId)
+                                        .addArgument(index)
                                         .setCause(exception)
                                         .log();
                             }

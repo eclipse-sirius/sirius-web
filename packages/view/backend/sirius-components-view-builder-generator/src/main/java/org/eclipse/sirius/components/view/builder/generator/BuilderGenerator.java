@@ -142,7 +142,7 @@ public class BuilderGenerator {
                 gen.doGen(model);
             } catch (IOException exception) {
                 LOGGER.atWarn()
-                        .setMessage(exception.getMessage())
+                        .setMessage("Code generation failed")
                         .setCause(exception)
                         .log();
             }

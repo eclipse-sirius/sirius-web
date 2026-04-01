@@ -99,7 +99,9 @@ public class ServiceInterpreter implements IInterpreter {
                 result = new Result(Optional.ofNullable(evaluation), Status.OK);
             } catch (AcceleoQueryEvaluationException exception) {
                 this.logger.atWarn()
-                        .setMessage(exception.getMessage())
+                        .setMessage("Execution of the service {} failed. Expression: {}")
+                        .addArgument(serviceName)
+                        .addArgument(expressionBody)
                         .setCause(exception)
                         .log();
             }

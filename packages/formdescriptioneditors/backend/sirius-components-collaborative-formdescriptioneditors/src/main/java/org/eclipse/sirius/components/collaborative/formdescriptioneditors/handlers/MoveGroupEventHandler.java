@@ -108,7 +108,9 @@ public class MoveGroupEventHandler implements IFormDescriptionEditorEventHandler
                                 success.set(true);
                             } catch (IndexOutOfBoundsException exception) {
                                 this.logger.atWarn()
-                                        .setMessage(exception.getMessage())
+                                        .setMessage("Move of the group {} to index {} failed")
+                                        .addArgument(groupId)
+                                        .addArgument(index)
                                         .setCause(exception)
                                         .log();
                             }

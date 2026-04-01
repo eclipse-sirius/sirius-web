@@ -150,7 +150,8 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
                         return beanFactory.createBean(serviceClass);
                     } catch (BeansException exception) {
                         this.logger.atWarn()
-                                .setMessage(exception.getMessage())
+                                .setMessage("Instantiation of the service {} failed")
+                                .addArgument(serviceClass.getSimpleName())
                                 .setCause(exception)
                                 .log();
                         return null;

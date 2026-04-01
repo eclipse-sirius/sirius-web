@@ -84,7 +84,8 @@ public class RepresentationEventProcessorProvider implements IRepresentationEven
                                         .log();
                             }
                         }, throwable -> this.logger.atWarn()
-                                .setMessage(throwable.getMessage())
+                                .setMessage("Retrieval of the representation event processor {} failed")
+                                .addArgument(representationId)
                                 .setCause(throwable)
                                 .log()
                         );

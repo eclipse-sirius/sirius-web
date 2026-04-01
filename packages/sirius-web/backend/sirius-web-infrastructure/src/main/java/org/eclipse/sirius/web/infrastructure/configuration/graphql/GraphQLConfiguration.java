@@ -134,7 +134,7 @@ public class GraphQLConfiguration {
             return new SchemaGenerator().makeExecutableSchema(typeRegistry, runtimeWiring);
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Parsing of the GraphQL schema failed")
                     .setCause(exception)
                     .log();
         }

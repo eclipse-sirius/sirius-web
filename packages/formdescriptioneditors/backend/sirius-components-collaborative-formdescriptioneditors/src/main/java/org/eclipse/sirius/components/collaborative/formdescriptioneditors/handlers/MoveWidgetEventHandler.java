@@ -135,7 +135,9 @@ public class MoveWidgetEventHandler implements IFormDescriptionEditorEventHandle
                     }
                 } catch (IndexOutOfBoundsException exception) {
                     this.logger.atWarn()
-                            .setMessage(exception.getMessage())
+                            .setMessage("Move of the widget {} to index {} failed")
+                            .addArgument(widgetId)
+                            .addArgument(index)
                             .setCause(exception)
                             .log();
                 }
