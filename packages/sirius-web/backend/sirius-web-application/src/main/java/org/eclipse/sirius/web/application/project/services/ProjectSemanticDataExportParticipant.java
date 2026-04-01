@@ -147,7 +147,8 @@ public class ProjectSemanticDataExportParticipant implements IProjectExportParti
                     outputStream.closeEntry();
                 } catch (IOException exception) {
                     this.logger.atWarn()
-                            .setMessage(exception.getMessage())
+                            .setMessage("Serialization of the resource {} failed")
+                            .addArgument(resource.getURI())
                             .setCause(exception)
                             .log();
                 }

@@ -50,7 +50,7 @@ public class GanttDeserializer implements IRepresentationDeserializer {
             return Optional.of(mapper.readValue(root.toString(), Gantt.class));
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Gantt deserialization failed")
                     .setCause(exception)
                     .log();
         }

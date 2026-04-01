@@ -101,7 +101,7 @@ public class UnserializeImportedRepresentationDataEventHandler implements IEditi
                 }
             } catch (JsonProcessingException exception) {
                 this.logger.atWarn()
-                        .setMessage(exception.getMessage())
+                        .setMessage("Deserialization of the representation failed")
                         .setCause(exception)
                         .log();
             }

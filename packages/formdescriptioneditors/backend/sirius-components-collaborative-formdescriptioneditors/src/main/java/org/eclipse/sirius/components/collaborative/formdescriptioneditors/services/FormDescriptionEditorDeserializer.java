@@ -50,7 +50,7 @@ public class FormDescriptionEditorDeserializer implements IRepresentationDeseria
             return Optional.of(mapper.readValue(root.toString(), FormDescriptionEditor.class));
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Form Description Editor deserialization failed")
                     .setCause(exception)
                     .log();
         }

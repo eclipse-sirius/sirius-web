@@ -50,7 +50,7 @@ public class TableDeserializer implements IRepresentationDeserializer {
             return Optional.of(mapper.readValue(root.toString(), Table.class));
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Table deserialization failed")
                     .setCause(exception)
                     .log();
         }

@@ -67,7 +67,8 @@ public class ProjectExportService implements IProjectExportService {
             this.addManifest(project, manifestEntries, zipOutputStream);
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Export of the project {} as a zip file failed")
+                    .addArgument(project.getId())
                     .setCause(exception)
                     .log();
             outputStream.reset();
@@ -90,7 +91,8 @@ public class ProjectExportService implements IProjectExportService {
             outputStream.closeEntry();
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Serialization of the manifest for the project {} failed")
+                    .addArgument(project.getId())
                     .setCause(exception)
                     .log();
         }

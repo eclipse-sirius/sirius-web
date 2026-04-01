@@ -50,7 +50,7 @@ public class TreeDeserializer implements IRepresentationDeserializer {
             return Optional.of(mapper.readValue(root.toString(), Tree.class));
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Tree deserialization failed")
                     .setCause(exception)
                     .log();
         }

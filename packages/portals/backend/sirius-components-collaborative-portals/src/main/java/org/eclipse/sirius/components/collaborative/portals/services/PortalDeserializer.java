@@ -50,7 +50,7 @@ public class PortalDeserializer implements IRepresentationDeserializer {
             return Optional.of(mapper.readValue(root.toString(), Portal.class));
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Portal deserialization failed")
                     .setCause(exception)
                     .log();
         }

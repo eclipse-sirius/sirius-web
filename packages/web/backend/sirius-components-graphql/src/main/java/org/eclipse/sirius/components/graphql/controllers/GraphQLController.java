@@ -170,7 +170,7 @@ public class GraphQLController {
                         .log();
             } catch (JsonProcessingException exception) {
                 this.logger.atWarn()
-                        .setMessage(exception.getMessage())
+                        .setMessage("Computation of the GraphQL error(s) to log failed")
                         .setCause(exception)
                         .log();
             }
@@ -223,14 +223,15 @@ public class GraphQLController {
         return responseEntity;
     }
 
-    private Optional<GraphQLPayload> getGraphQLPayload(String operations) {
+    private Optional<GraphQLPayload> getGraphQLPayload(String payload) {
         Optional<GraphQLPayload> optionalGraphQLPayload = Optional.empty();
-        if (operations != null) {
+        if (payload != null) {
             try {
-                optionalGraphQLPayload = Optional.of(this.objectMapper.readValue(operations, GraphQLPayload.class));
+                optionalGraphQLPayload = Optional.of(this.objectMapper.readValue(payload, GraphQLPayload.class));
             } catch (IOException exception) {
                 this.logger.atWarn()
-                        .setMessage(exception.getMessage())
+                        .setMessage("Deserialization of the GraphQL payload failed. Payload: {}")
+                        .addArgument(payload)
                         .setCause(exception)
                         .log();
             }
@@ -249,7 +250,8 @@ public class GraphQLController {
                 optionalJsonNode = Optional.of(this.objectMapper.readTree(map));
             } catch (IOException exception) {
                 this.logger.atWarn()
-                        .setMessage(exception.getMessage())
+                        .setMessage("Deserialization of the variable map failed. Map: {}")
+                        .addArgument(map)
                         .setCause(exception)
                         .log();
             }
@@ -296,7 +298,9 @@ public class GraphQLController {
                     optionalVariables = Optional.of(variables);
                 } catch (IOException exception) {
                     this.logger.atWarn()
-                            .setMessage(exception.getMessage())
+                            .setMessage("Read of the input stream of the uploaded file(s) failed. Filename: {}. Size: {}")
+                            .addArgument(file.getOriginalFilename())
+                            .addArgument(file.getSize())
                             .setCause(exception)
                             .log();
                 }

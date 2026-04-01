@@ -70,7 +70,8 @@ public class RepresentationEventProcessorRefresher implements IChangeDescription
             this.refreshOtherRepresentations(editingContext, changeDescription);
         } catch (Exception exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Refresh of the representation failed. Change Description: {}")
+                    .addArgument(changeDescription)
                     .setCause(exception)
                     .log();
         }

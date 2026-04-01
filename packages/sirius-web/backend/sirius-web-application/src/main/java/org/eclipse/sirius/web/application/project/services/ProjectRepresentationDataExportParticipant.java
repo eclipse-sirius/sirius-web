@@ -151,7 +151,8 @@ public class ProjectRepresentationDataExportParticipant implements IProjectExpor
                         outputStream.closeEntry();
                     } catch (IOException exception) {
                         this.logger.atWarn()
-                                .setMessage(exception.getMessage())
+                                .setMessage("Serialization of the representation {} failed")
+                                .addArgument(representationMetadata.getRepresentationMetadataId())
                                 .setCause(exception)
                                 .log();
                     }

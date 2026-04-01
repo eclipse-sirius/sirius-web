@@ -54,7 +54,8 @@ public class XMIExternalResourceLoaderService implements IExternalResourceLoader
             }
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Detection of the type of the resource {} failed")
+                    .addArgument(resourceURI)
                     .setCause(exception)
                     .log();
         }
@@ -72,7 +73,8 @@ public class XMIExternalResourceLoaderService implements IExternalResourceLoader
             resource = xmiResource;
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the resource {} failed")
+                    .addArgument(resourceURI)
                     .setCause(exception)
                     .log();
         }

@@ -215,7 +215,9 @@ public class BaseRenderer {
                 }
             } catch (ReflectiveOperationException | SecurityException | IllegalArgumentException exception) {
                 this.logger.atWarn()
-                        .setMessage(exception.getMessage())
+                        .setMessage("Rendering of the component {} failed. Props: {}")
+                        .addArgument(type.getSimpleName())
+                        .addArgument(props)
                         .setCause(exception)
                         .log();
             }

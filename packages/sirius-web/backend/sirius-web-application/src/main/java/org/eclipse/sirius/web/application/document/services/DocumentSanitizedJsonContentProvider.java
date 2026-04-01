@@ -123,7 +123,8 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
                         optionalResult = Optional.of(new SanitizedResult(outputStream.toString(), idMappings, loadingResult.loadingReport()));
                     } catch (IOException exception) {
                         this.logger.atWarn()
-                                .setMessage(exception.getMessage())
+                                .setMessage("Sanitization of the resource {} failed")
+                                .addArgument(name)
                                 .setCause(exception)
                                 .log();
                     }
@@ -185,7 +186,8 @@ public class DocumentSanitizedJsonContentProvider implements IDocumentSanitizedJ
             inputStream.transferTo(baos);
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Retrieval of the resource {} failed")
+                    .addArgument(resourceURI)
                     .setCause(exception)
                     .log();
         }

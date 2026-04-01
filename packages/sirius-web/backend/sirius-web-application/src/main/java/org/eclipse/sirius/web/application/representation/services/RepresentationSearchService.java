@@ -102,7 +102,7 @@ public class RepresentationSearchService implements IRepresentationSearchService
             optionalRepresentation = Optional.of(representation);
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the representation failed")
                     .setCause(exception)
                     .log();
         }

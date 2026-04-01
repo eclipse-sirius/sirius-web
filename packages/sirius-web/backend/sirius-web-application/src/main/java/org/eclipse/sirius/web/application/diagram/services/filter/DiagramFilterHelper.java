@@ -86,7 +86,7 @@ public class DiagramFilterHelper implements IDiagramFilterHelper {
             Many<ChangeDescription> changeDescriptions = Sinks.many().unicast().onBackpressureBuffer();
 
             Consumer<Throwable> errorConsumer = throwable -> this.logger.atWarn()
-                    .setMessage(throwable.getMessage())
+                    .setMessage("Retrieval of the change description failed")
                     .setCause(throwable)
                     .log();
 

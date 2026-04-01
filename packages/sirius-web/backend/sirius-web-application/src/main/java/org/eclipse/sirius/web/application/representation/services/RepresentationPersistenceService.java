@@ -95,7 +95,8 @@ public class RepresentationPersistenceService implements IRepresentationPersiste
             content = this.objectMapper.writeValueAsString(representation);
         } catch (JsonProcessingException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Serialization of the representation {} failed")
+                    .addArgument(representation.getId())
                     .setCause(exception)
                     .log();
         }

@@ -99,7 +99,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
     private Disposable setupChangeDescriptionSinkConsumer() {
         Consumer<ChangeDescription> consumer = changeDescription -> changeDescriptionListener.onChange(this.sink, this.canBeDisposedSink, this.editingContext, changeDescription);
         Consumer<Throwable> errorConsumer = throwable -> this.logger.atWarn()
-                .setMessage(throwable.getMessage())
+                .setMessage("Retrieval of the change description failed")
                 .setCause(throwable)
                 .log();
 
@@ -135,7 +135,8 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
             future.get();
         } catch (InterruptedException | ExecutionException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Input processing interrupted. Input: {}")
+                    .addArgument(input)
                     .setCause(exception)
                     .log();
         }
@@ -145,7 +146,7 @@ public class EditingContextEventProcessor implements IEditingContextEventProcess
         return payloadSink.asMono()
                 .log(this.getClass().getName(), Level.FINEST, SignalType.ON_NEXT, SignalType.ON_ERROR)
                 .doOnError(throwable -> this.logger.atWarn()
-                        .setMessage(throwable.getMessage())
+                        .setMessage("Retrieval of the payload failed")
                         .setCause(throwable)
                         .log()
                 );

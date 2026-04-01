@@ -99,7 +99,7 @@ public class ProjectZipContentProvider implements IProjectZipContentProvider {
             return this.objectMapper.readValue(manifestBytes, HashMap.class);
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the manifest failed")
                     .setCause(exception)
                     .log();
         }
@@ -127,7 +127,7 @@ public class ProjectZipContentProvider implements IProjectZipContentProvider {
             }
         } catch (IOException exception) {
             this.logger.atWarn()
-                    .setMessage(exception.getMessage())
+                    .setMessage("Deserialization of the zip file failed")
                     .setCause(exception)
                     .log();
         }

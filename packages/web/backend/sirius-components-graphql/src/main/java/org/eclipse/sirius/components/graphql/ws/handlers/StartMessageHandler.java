@@ -109,7 +109,7 @@ public class StartMessageHandler implements IWebSocketMessageHandler {
         Consumer<ExecutionResult> consumer = result -> this.send(this.objectMapper, this.session, new DataMessage(id, result.toSpecification()), this.logger);
         Consumer<Throwable> onErrorConsumer = throwable -> {
             this.logger.atWarn()
-                    .setMessage(throwable.getMessage())
+                    .setMessage("Retrieval of the content of the GraphQL subscription failed")
                     .setCause(throwable)
                     .log();
 

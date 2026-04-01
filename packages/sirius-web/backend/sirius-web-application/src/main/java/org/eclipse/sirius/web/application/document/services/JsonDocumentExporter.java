@@ -59,7 +59,8 @@ public class JsonDocumentExporter implements IDocumentExporter {
                 optionalBytes = Optional.of(outputStream.toByteArray());
             } catch (IOException exception) {
                 this.logger.atWarn()
-                        .setMessage(exception.getMessage())
+                        .setMessage("Json serialization of the resource {} failed")
+                        .addArgument(resource.getURI())
                         .setCause(exception)
                         .log();
             }
