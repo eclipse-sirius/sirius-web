@@ -60,8 +60,7 @@ It will require contributors to specify the persons involved in the decision pro
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [charts] Perform the refresh of the hierarchy representation outside of its representation event processor.
 To perform the refresh of the representation event processor, an instance of `IRepresentationRefresher` will be required.
 A new provisional method `IHierarchyEventProcessor#update` is available to update the state of the hierarchy event processor and publish a new hierarchy to the subscribers.
-
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6215[#6215] [diagram] When a tool opens a selection dialog to ask for input, the tree displayed in the dialog is now expanded to reveal the element on which the tool was invoked to provide better context.
 
 == 2026.3.0
 
@@ -217,8 +216,6 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6287[#6287] [sirius-web] Add a cancel button to the _New Project_ creation page.
 - https://github.com/eclipse-sirius/sirius-web/issues/6267[#6267] [sirius-web] Allow customizing the content of the Views Explorer via delegates.
 - https://github.com/eclipse-sirius/sirius-web/issues/6268[#6268] [sirius-web] Allow customizing the labels of the Views Explorer via delegates.
-
-
 
 == 2026.1.0
 
