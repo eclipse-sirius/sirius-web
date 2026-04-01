@@ -64,6 +64,7 @@ A new provisional method `IHierarchyEventProcessor#update` is available to updat
 - https://github.com/eclipse-sirius/sirius-web/issues/6229[#6229] [selection] Improve the user experience of the selection dialog.
 It now comes with small improvements in the filter bar for better reuse
 - https://github.com/eclipse-sirius/sirius-web/issues/6366[#6366] [diagram] Extract layout tools in several hooks.
+- https://github.com/eclipse-sirius/sirius-web/issues/6354[#6354] [diagram] Allow the layout use make same size to be used on nodes that don't have the same depth
 
 
 
