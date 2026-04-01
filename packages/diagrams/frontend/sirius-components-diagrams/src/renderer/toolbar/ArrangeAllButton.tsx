@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -25,7 +26,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useArrangeAll } from '../layout/arrange-all/useArrangeAll';
 import { useLayoutConfigurations } from '../layout/arrange-all/useLayoutConfigurations';
-import { LayoutConfiguration } from '../layout/arrange-all/useLayoutConfigurations.types';
+import { GQLLayoutConfigurations } from '../layout/arrange-all/useLayoutConfigurations.types';
 import { ArrangeAllButtonProps, ArrangeAllButtonState } from './ArrangeAllButton.types';
 
 export const ArrangeAllButton = ({ disabled }: ArrangeAllButtonProps) => {
@@ -101,14 +102,16 @@ export const ArrangeAllButton = ({ disabled }: ArrangeAllButtonProps) => {
           anchorEl={anchorArrangeMenuRef.current}
           onClose={onCloseMenu}
           data-testid="arrange-all-actions">
-          {layoutConfigurations.map((layoutConfiguration: LayoutConfiguration) => {
+          {layoutConfigurations.map((layoutConfiguration: GQLLayoutConfigurations) => {
             return (
               <MenuItem
                 key={layoutConfiguration.id}
                 disabled={disabled}
                 data-testid={`arrange-all-${layoutConfiguration.id}`}
                 onClick={() => handleArrangeAll(layoutConfiguration.layoutOptions)}>
-                <ListItemIcon>{layoutConfiguration.icon}</ListItemIcon>
+                <ListItemIcon>
+                  <IconOverlay iconURLs={layoutConfiguration.iconURL} alt={layoutConfiguration.label} />
+                </ListItemIcon>
                 <ListItemText primary={layoutConfiguration.label} />
               </MenuItem>
             );
