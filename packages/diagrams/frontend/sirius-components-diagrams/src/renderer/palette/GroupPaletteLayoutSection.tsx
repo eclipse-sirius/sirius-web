@@ -36,7 +36,11 @@ import { AlignVerticalTopIcon } from '../../icons/AlignVerticalTopIcon';
 import { JustifyHorizontalIcon } from '../../icons/JustifyHorizontalIcon';
 import { JustifyVerticalIcon } from '../../icons/JustifyVerticalIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { useDistributeElements } from '../layout/useDistributeElements';
+import { useArrangeIn } from '../layout/layout-tools/useArrangeIn';
+import { useDistributeElements } from '../layout/layout-tools/useDistributeElements';
+import { useDistributeNodesOnGap } from '../layout/layout-tools/useDistributeNodesOnGap';
+import { useJustifyElements } from '../layout/layout-tools/useJustifyElements';
+import { useMakeSameSize } from '../layout/layout-tools/useMakeSameSize';
 import { ListNodeData } from '../node/ListNode.types';
 
 const useStyle = makeStyles()((theme) => ({
@@ -117,21 +121,18 @@ export const GroupPaletteLayoutSection = ({
   };
 
   const {
-    distributeGapVertically,
-    distributeGapHorizontally,
     distributeAlignLeft,
     distributeAlignRight,
     distributeAlignCenter,
     distributeAlignTop,
     distributeAlignBottom,
     distributeAlignMiddle,
-    justifyHorizontally,
-    justifyVertically,
-    arrangeInRow,
-    arrangeInColumn,
-    arrangeInGrid,
-    makeNodesSameSize,
   } = useDistributeElements();
+  const { arrangeInRow, arrangeInColumn, arrangeInGrid } = useArrangeIn();
+  const { distributeGapHorizontally, distributeGapVertically } = useDistributeNodesOnGap();
+  const { makeNodesSameSize } = useMakeSameSize();
+  const { justifyHorizontally, justifyVertically } = useJustifyElements();
+
   const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
