@@ -13,36 +13,50 @@
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { DiagramNodeType } from '../../node/NodeTypes.types';
+import { RawDiagram } from '../layout.types';
+import { useLayout } from '../useLayout';
+import { useSynchronizeLayoutData } from '../useSynchronizeLayoutData';
 import { UseMakeSameSizeValue } from './useMakeSameSize.types';
-import { useProcessLayoutTool } from './useProcessLayoutTool';
 
 export const useMakeSameSize = (): UseMakeSameSizeValue => {
-  const { getNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const { processLayoutTool } = useProcessLayoutTool();
+  const { getNodes, getNode, getEdges, setNodes } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { layout } = useLayout();
+  const { synchronizeLayoutData } = useSynchronizeLayoutData();
 
-  const makeNodesSameSize = useCallback((selectedNodeIds: string[], refElementId: string | null) => {
-    processLayoutTool(
-      selectedNodeIds,
-      (_selectedNodes, refNode) => {
-        return getNodes().map((node) => {
-          if (!selectedNodeIds.includes(node.id) || node.data.nodeDescription?.userResizable === 'NONE') {
-            return node;
-          }
+  const makeNodesSameSize = useCallback((selectedNodeIds: string[], refElementId: string) => {
+    const refNode = getNode(refElementId);
 
-          return {
-            ...node,
-            width: refNode.width,
-            height: refNode.height,
-            data: {
-              ...node.data,
-              resizedByUser: true,
-            },
-          };
-        });
-      },
-      null,
-      refElementId
-    );
+    if (refNode) {
+      const updatedNodes = getNodes().map((node) => {
+        if (!selectedNodeIds.includes(node.id) || node.data.nodeDescription?.userResizable === 'NONE') {
+          return node;
+        }
+
+        return {
+          ...node,
+          width: refNode.width,
+          height: refNode.height,
+          data: {
+            ...node.data,
+            resizedByUser: true,
+          },
+        };
+      });
+      const diagramToLayout: RawDiagram = {
+        nodes: [...updatedNodes] as Node<NodeData, DiagramNodeType>[],
+        edges: getEdges(),
+      };
+
+      layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
+        const finalDiagram: RawDiagram = {
+          nodes: laidOutDiagram.nodes as Node<NodeData, DiagramNodeType>[],
+          edges: laidOutDiagram.edges,
+        };
+        setNodes(laidOutDiagram.nodes);
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+      });
+    }
   }, []);
 
   return {

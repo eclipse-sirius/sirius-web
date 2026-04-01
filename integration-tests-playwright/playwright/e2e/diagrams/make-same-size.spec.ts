@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,5 +77,48 @@ test.describe('diagram - make same size', () => {
     const c2AttributesPosition = await c2Node.getReactFlowXYPosition('Attributes', false);
 
     expect(c2AttributesPosition.x).toBe(1);
+  });
+});
+
+test.describe('diagram - make same size', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('Papaya - Blank', 'papaya-empty');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('papayaApplicationConcern.xml');
+    await playwrightExplorer.expand('papayaApplicationConcern.xml');
+    await playwrightExplorer.expand('Project');
+    await playwrightExplorer.createRepresentation('Application Concern', 'Lifecycle Diagram', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a make same size is triggered between a parent and one of its child, then the child get the size of the parent', async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const nodeParent = new PlaywrightNode(page, 'Application Concern');
+    const nodeChild = new PlaywrightNode(page, 'Controller');
+
+    await nodeChild.click();
+    await nodeParent.controlClick();
+
+    const nodeParentSizeBefore = await nodeParent.getReactFlowSize('Application Concern', false);
+
+    await nodeParent.openPalette();
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('toolSection-Layout').click();
+    await page.getByTestId('Palette').getByTestId('tool-Make same size').click();
+    await nodeParent.closePalette();
+    const nodeChildSizeAfter = await nodeChild.getReactFlowSize('Controller', false);
+
+    expect(nodeParentSizeBefore.width).toBe(nodeChildSizeAfter.width);
+    expect(nodeParentSizeBefore.height).toBe(nodeChildSizeAfter.height);
   });
 });
