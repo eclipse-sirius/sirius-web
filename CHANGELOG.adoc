@@ -80,6 +80,7 @@ Add log messages for the manipulation of projects
 - https://github.com/eclipse-sirius/sirius-web/issues/6269[#6269] [view] Add more selection dialog labels customization in the View DSL.
 + Come with a migration participant to rename the name of `selectionMessage` and `noSelectionLabel` feature name into `descriptionExpression` and `noSelectionActionLabelExpression`.
 - https://github.com/eclipse-sirius/sirius-web/issues/5646[#5646] [diagram] Don't invoke deletion command for empty diagram selection
+- https://github.com/eclipse-sirius/sirius-web/issues/6354[#6354] [diagram] Allow the layout use make same size to be used on nodes that don't have the same depth
 
 
 
