@@ -116,6 +116,7 @@ The backend now sends a `canEdit=false` capability when subscribing to such form
 - https://github.com/eclipse-sirius/sirius-web/issues/6428[#6428] [forms] The existing `widgetContributionExtensionPoint` frontend extension point can now be used to override the frontend implementation of a widget with a custom React component (which only needs to implement `PropertySectionComponent<GQLWidget>`).
 See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6243[#6243] [sirius-web] Add documentation in the new representation modal.
+- https://github.com/eclipse-sirius/sirius-web/issues/6349[#6349] [diagram] Prevent minor misalignment on edges by align edge source and target positions.
 
 
 

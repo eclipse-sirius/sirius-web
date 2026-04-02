@@ -29,6 +29,7 @@ import { DiagramNodeType } from '../node/NodeTypes.types';
 import { getHandleCoordinatesByPosition } from './EdgeLayout';
 import { MultiLabelEdgeData } from './MultiLabelEdge.types';
 import { MultiLabelRectilinearEditableEdge } from './rectilinear-edge/MultiLabelRectilinearEditableEdge';
+import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 
 function isMultipleOfTwo(num: number): boolean {
   return num % 2 === 0;
@@ -112,6 +113,44 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     case Position.Bottom:
       targetY = targetY + handleTargetRadius;
       break;
+  }
+
+  const threshold = 10;
+  if (!data?.bendingPoints || data.bendingPoints.length === 0) {
+    if (Math.abs(sourceX - targetX) < threshold) {
+      const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
+        (handle) => handle.id === sourceHandleId
+      );
+      const targetHandle: ConnectionHandle | undefined = (targetNode.data.connectionHandles ?? []).find(
+        (handle) => handle.id === targetHandleId
+      );
+      const middleX = (sourceX + targetX) / 2;
+      if (sourceHandle) {
+        sourceHandle.handleStyleTransform = `translateX(${middleX - sourceX}px)`;
+      }
+      if (targetHandle) {
+        targetHandle.handleStyleTransform = `translateX(${middleX - targetX}px)`;
+      }
+      sourceX = middleX;
+      targetX = middleX;
+    }
+    if (Math.abs(sourceY - targetY) < threshold) {
+      const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
+        (handle) => handle.id === sourceHandleId
+      );
+      const targetHandle: ConnectionHandle | undefined = (targetNode.data.connectionHandles ?? []).find(
+        (handle) => handle.id === targetHandleId
+      );
+      const middleY = (sourceY + targetY) / 2;
+      if (sourceHandle) {
+        sourceHandle.handleStyleTransform = `translateY(${middleY - sourceY}px)`;
+      }
+      if (targetHandle) {
+        targetHandle.handleStyleTransform = `translateY(${middleY - targetY}px)`;
+      }
+      sourceY = middleY;
+      targetY = middleY;
+    }
   }
 
   let bendingPoints: XYPosition[] = [];
