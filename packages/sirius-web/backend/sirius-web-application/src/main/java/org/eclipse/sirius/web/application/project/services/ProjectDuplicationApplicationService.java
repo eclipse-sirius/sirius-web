@@ -30,6 +30,7 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
+import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
@@ -44,6 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Arthur Daussy
  */
 @Service
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ProjectDuplicationApplicationService implements IProjectDuplicationApplicationService {
 
     private final IProjectExportService exportService;
@@ -92,19 +94,38 @@ public class ProjectDuplicationApplicationService implements IProjectDuplication
                 InitializeProjectInput initializeProjectInput = new InitializeProjectInput(input.id(), input, projectZipContent);
                 var natures = this.getNatures(projectZipContent.manifest().get(ProjectZipContent.NATURES));
                 IResult<Project> result = this.projectCreationService.createProject(initializeProjectInput, projectZipContent.projectName() + " - Copy", natures);
-                if (result instanceof Success<Project> success) {
-                    payload = new DuplicateProjectSuccessPayload(input.id(), projectMapper.toDTO(success.data()));
-
-                    this.logger.atTrace()
-                            .setMessage("The project {} has been duplicated in project {}")
-                            .addArgument(project.getId())
-                            .addArgument(success.data().getId())
+                if (result instanceof Failure<Project>) {
+                    this.logger.atWarn()
+                            .setMessage("Duplication of project {} failed")
+                            .addArgument(input.projectId())
+                            .addKeyValue("projectId", input.projectId())
                             .log();
+                } else if (result instanceof Success<Project> success) {
+                    this.logger.atInfo()
+                            .setMessage("The project {} has been created by duplicating the project {}")
+                            .addArgument(success.data().getId())
+                            .addArgument(project.getId())
+                            .addKeyValue("projectId", success.data().getId())
+                            .log();
+
+                    payload = new DuplicateProjectSuccessPayload(input.id(), projectMapper.toDTO(success.data()));
                 }
             } else {
+                this.logger.atWarn()
+                        .setMessage("Project duplication failed because the project {} is unreadable")
+                        .addArgument(input.projectId())
+                        .addKeyValue("projectId", input.projectId())
+                        .log();
+
                 payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
             }
         } else {
+            this.logger.atWarn()
+                    .setMessage("Project duplication failed because the project {} has not been found")
+                    .addArgument(input.projectId())
+                    .addKeyValue("projectId", input.projectId())
+                    .log();
+
             payload = new ErrorPayload(input.id(), this.messageService.notFound());
         }
 

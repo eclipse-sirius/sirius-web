@@ -94,6 +94,11 @@ public class MessageService implements IMessageService {
     }
 
     @Override
+    public String unreadableFile() {
+        return this.messageSourceAccessor.getMessage("UNREADABLE_FILE");
+    }
+
+    @Override
     public String unpinSelectedElements() {
         return this.messageSourceAccessor.getMessage("UNPIN_SELECTED_ELEMENTS");
     }

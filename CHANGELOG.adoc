@@ -70,6 +70,7 @@ Switch all usage of the logger to the fluent API to prepare for the addition of 
 Improve the log message used when logging exceptions.
 The log level of the registration of the GraphQL schema on startup has been changed from `INFO` to `DEBUG`.
 Add log messages for the access to the main parts of the application (project templates, project, libraries, editing context, subscriptions).
+Add log messages for the manipulation of projects
 - https://github.com/eclipse-sirius/sirius-web/issues/6366[#6366] [diagram] Extract layout tools in several hooks.
 - https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Move the selection dialog default settings to the backend
 

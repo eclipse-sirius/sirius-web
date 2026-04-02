@@ -22,6 +22,8 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectDeletionA
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,8 @@ public class ProjectDeletionApplicationService implements IProjectDeletionApplic
 
     private final IProjectDeletionService projectDeletionService;
 
+    private final Logger logger = LoggerFactory.getLogger(ProjectDeletionApplicationService.class);
+
     public ProjectDeletionApplicationService(IProjectDeletionService projectDeletionService) {
         this.projectDeletionService = Objects.requireNonNull(projectDeletionService);
     }
@@ -46,8 +50,20 @@ public class ProjectDeletionApplicationService implements IProjectDeletionApplic
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {
+            this.logger.atWarn()
+                    .setMessage("Deletion of project {} failed")
+                    .addArgument(input.projectId())
+                    .addKeyValue("projectId", input.projectId())
+                    .log();
+
             payload = new ErrorPayload(input.id(), failure.message());
         } else if (result instanceof Success<Void>) {
+            this.logger.atInfo()
+                    .setMessage("Project {} deleted")
+                    .addArgument(input.projectId())
+                    .addKeyValue("projectId", input.projectId())
+                    .log();
+
             payload = new SuccessPayload(input.id());
         }
         return payload;

@@ -43,6 +43,8 @@ public interface IMessageService {
 
     String unexpectedError();
 
+    String unreadableFile();
+
     String unpinSelectedElements();
 
     String unavailableFeature();
@@ -177,6 +179,11 @@ public interface IMessageService {
 
         @Override
         public String unexpectedError() {
+            return "";
+        }
+
+        @Override
+        public String unreadableFile() {
             return "";
         }
 
