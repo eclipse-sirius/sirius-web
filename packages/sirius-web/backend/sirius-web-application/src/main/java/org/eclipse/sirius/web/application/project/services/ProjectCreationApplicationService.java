@@ -29,6 +29,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProje
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author sbegaudeau
  */
 @Service
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ProjectCreationApplicationService implements IProjectCreationApplicationService {
 
     private final IProjectCreationService projectCreationService;
@@ -47,6 +50,8 @@ public class ProjectCreationApplicationService implements IProjectCreationApplic
     private final IProjectMapper projectMapper;
 
     private final IMessageService messageService;
+
+    private final Logger logger = LoggerFactory.getLogger(ProjectCreationApplicationService.class);
 
     public ProjectCreationApplicationService(IProjectCreationService projectCreationService, List<IProjectTemplateProvider> projectTemplateProviders, IProjectMapper projectMapper, IMessageService messageService) {
         this.projectCreationService = Objects.requireNonNull(projectCreationService);
@@ -73,11 +78,28 @@ public class ProjectCreationApplicationService implements IProjectCreationApplic
                     .toList();
             var result = this.projectCreationService.createProject(input, input.name(), natures);
             if (result instanceof Failure<Project> failure) {
+                this.logger.atWarn()
+                        .setMessage("Project creation failed")
+                        .addKeyValue("projectTemplateId", projectTemplate.id())
+                        .log();
+
                 payload = new ErrorPayload(input.id(), failure.message());
             } else if (result instanceof Success<Project> success) {
+                this.logger.atInfo()
+                        .setMessage("Project {} created")
+                        .addArgument(success.data().getId())
+                        .addKeyValue("projectTemplateId", projectTemplate.id())
+                        .log();
+
                 payload = new CreateProjectSuccessPayload(input.id(), this.projectMapper.toDTO(success.data()));
             }
         } else {
+            this.logger.atWarn()
+                    .setMessage("Project creation failed because the project template {} is missing")
+                    .addArgument(input.templateId())
+                    .addKeyValue("projectTemplateId", input.templateId())
+                    .log();
+
             payload = new ErrorPayload(input.id(), this.messageService.notFound());
         }
 

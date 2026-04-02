@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,9 +24,12 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.application.project.services.api.IProjectUploadApplicationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
+import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +49,8 @@ public class ProjectUploadApplicationService implements IProjectUploadApplicatio
 
     private final IMessageService messageService;
 
+    private final Logger logger = LoggerFactory.getLogger(ProjectUpdateApplicationService.class);
+
     public ProjectUploadApplicationService(ProjectZipContentProvider projectZipContentProvider, IProjectCreationService projectCreationService, IProjectMapper projectMapper, IMessageService messageService) {
         this.projectZipContentProvider = Objects.requireNonNull(projectZipContentProvider);
         this.projectCreationService = Objects.requireNonNull(projectCreationService);
@@ -63,12 +68,25 @@ public class ProjectUploadApplicationService implements IProjectUploadApplicatio
 
             var natures = this.getNatures(projectZipContent.manifest().get(ProjectZipContent.NATURES));
             IResult<Project> result = this.projectCreationService.createProject(new InitializeProjectInput(input.id(), input, projectZipContent), projectZipContent.projectName(), natures);
-            if (result instanceof Success<Project> success) {
+            if (result instanceof Failure<Project>) {
+                this.logger.atWarn()
+                        .setMessage("Project upload failed")
+                        .log();
+            } else if (result instanceof Success<Project> success) {
+                this.logger.atInfo()
+                        .setMessage("Project {} uploaded")
+                        .addArgument(success.data().getId())
+                        .log();
+
                 var project = success.data();
                 payload = new UploadProjectSuccessPayload(input.id(), this.projectMapper.toDTO(project));
             }
         } else {
-            payload = new ErrorPayload(input.id(), this.messageService.unexpectedError());
+            this.logger.atWarn()
+                    .setMessage("Project upload failed because the uploaded file is unreadable")
+                    .log();
+
+            payload = new ErrorPayload(input.id(), this.messageService.unreadableFile());
         }
 
         return payload;

@@ -22,6 +22,8 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectUpdateApp
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,8 @@ public class ProjectUpdateApplicationService implements IProjectUpdateApplicatio
 
     private final IProjectUpdateService projectUpdateService;
 
+    private final Logger logger = LoggerFactory.getLogger(ProjectUpdateApplicationService.class);
+
     public ProjectUpdateApplicationService(IProjectUpdateService projectUpdateService) {
         this.projectUpdateService = Objects.requireNonNull(projectUpdateService);
     }
@@ -46,8 +50,20 @@ public class ProjectUpdateApplicationService implements IProjectUpdateApplicatio
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {
+            this.logger.atWarn()
+                    .setMessage("Rename of project {} failed")
+                    .addArgument(input.projectId())
+                    .addKeyValue("projectId", input.projectId())
+                    .log();
+
             payload = new ErrorPayload(input.id(), failure.message());
         } else if (result instanceof Success<Void>) {
+            this.logger.atInfo()
+                    .setMessage("Project {} renamed")
+                    .addArgument(input.projectId())
+                    .addKeyValue("projectId", input.projectId())
+                    .log();
+
             payload = new RenameProjectSuccessPayload(input.id());
         }
         return payload;
