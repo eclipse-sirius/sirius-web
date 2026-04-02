@@ -63,7 +63,7 @@ test.describe('edge', () => {
   }) => {
     const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
     await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 50 });
+    await playwrightNode.move({ x: 200, y: 75 });
 
     const playwrightEdge = new PlaywrightEdge(page);
 
@@ -444,5 +444,55 @@ test.describe('edge', () => {
 
     const edge = new PlaywrightEdge(page);
     await expect(edge.edgeLocator).toBeAttached();
+  });
+});
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgesAutoAlignment.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('edgesAutoAlignment');
+    await playwrightExplorer.expand('joliot');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when edges source and target are closed, then edges path are aligned', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.select('diagramWithAutoAlignment');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const edge1 = new PlaywrightEdge(page);
+    const edge2 = new PlaywrightEdge(page, 1);
+
+    const edge1Path = await edge1.getEdgePath();
+    expect(edge1Path?.trim()).toMatch(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
+
+    const edge2Path = await edge2.getEdgePath();
+    expect(edge2Path?.trim()).toMatch(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
+  });
+
+  test('when edges source and target are closed but have bending points, then edges path are not aligned', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.select('diagramWithoutAutoAlignment');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const edge1 = new PlaywrightEdge(page);
+    const edge2 = new PlaywrightEdge(page, 1);
+
+    const edge1Path = await edge1.getEdgePath();
+    expect(edge1Path?.trim()).not.toMatch(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
+
+    const edge2Path = await edge2.getEdgePath();
+    expect(edge2Path?.trim()).not.toMatch(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
   });
 });

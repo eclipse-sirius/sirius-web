@@ -103,7 +103,7 @@ They ensure that each data fetcher is annotated by a data fetcher annotation and
 The backend now sends a `canEdit=false` capability when subscribing to such form.
 - https://github.com/eclipse-sirius/sirius-web/issues/6248[#6248] [view] Add an `endUserDocumentation` field in `RepresentationDescription`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6336[#6336] [diagram] Move the retrieval of the connector tools in a dedicated hook.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6349[#6349] [diagram] Prevent minor misalignment on edges by align edge source and target positions.
 
 
 == 2026.3.0
