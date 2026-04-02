@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -78,6 +78,20 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
     targetHandleId ?? '',
     targetLayoutHandler?.calculateCustomNodeEdgeHandlePosition
   );
+
+  const threshold = 10;
+  if (!data?.bendingPoints || data.bendingPoints.length === 0) {
+    if (Math.abs(sourceX - targetX) < threshold) {
+      const middleX = (sourceX + targetX) / 2;
+      sourceX = middleX;
+      targetX = middleX;
+    }
+    if (Math.abs(sourceY - targetY) < threshold) {
+      const middleY = (sourceY + targetY) / 2;
+      sourceY = middleY;
+      targetY = middleY;
+    }
+  }
 
   // trick to have the source of the edge positioned at the very border of a node
   // if the edge has a marker, then only the marker need to touch the node

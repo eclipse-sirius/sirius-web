@@ -48,6 +48,7 @@ This will be used as an inspiration for the evolution of other similar services 
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3647[#3647] [diagram] Add support for diagram style with background customization
+- https://github.com/eclipse-sirius/sirius-web/issues/6349[#6349] [diagram] Prevent minor misalignment on edges by align edge source and target positions
 
 
 === Improvements
