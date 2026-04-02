@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,8 @@ import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateApplicationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -36,6 +38,8 @@ public class ViewerAllProjectTemplatesDataFetcher implements IDataFetcherWithFie
 
     private final IProjectTemplateApplicationService projectTemplateApplicationService;
 
+    private final Logger logger = LoggerFactory.getLogger(ViewerAllProjectTemplatesDataFetcher.class);
+
     public ViewerAllProjectTemplatesDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectTemplateApplicationService projectTemplateApplicationService) {
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectTemplateApplicationService = Objects.requireNonNull(projectTemplateApplicationService);
@@ -45,9 +49,21 @@ public class ViewerAllProjectTemplatesDataFetcher implements IDataFetcherWithFie
     public List<ProjectTemplateDTO> get(DataFetchingEnvironment environment) throws Exception {
         var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.CREATE);
         if (!hasCapability) {
+            this.logger.atWarn()
+                    .setMessage("Access denied to project templates")
+                    .addKeyValue("capabilityType", SiriusWebCapabilities.PROJECT)
+                    .addKeyValue("capability", SiriusWebCapabilities.Project.CREATE)
+                    .log();
             return List.of();
         }
 
-        return this.projectTemplateApplicationService.findAll();
+        var projectTemplates = this.projectTemplateApplicationService.findAll();
+
+        this.logger.atInfo()
+                .setMessage("{} project template(s) retrieved")
+                .addArgument(projectTemplates.size())
+                .log();
+
+        return projectTemplates;
     }
 }

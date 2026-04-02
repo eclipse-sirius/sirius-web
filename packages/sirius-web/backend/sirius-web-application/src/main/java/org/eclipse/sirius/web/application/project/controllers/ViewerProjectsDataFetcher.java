@@ -28,6 +28,8 @@ import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
 import org.eclipse.sirius.web.domain.pagination.Window;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.domain.ScrollPosition;
 
@@ -65,6 +67,8 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
 
     private final ILimitProvider limitProvider;
 
+    private final Logger logger = LoggerFactory.getLogger(ViewerProjectsDataFetcher.class);
+
     public ViewerProjectsDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectSearchApplicationService projectSearchApplicationService, ILimitProvider limitProvider) {
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectSearchApplicationService = Objects.requireNonNull(projectSearchApplicationService);
@@ -75,6 +79,11 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
     public Connection<DataFetcherResult<ProjectDTO>> get(DataFetchingEnvironment environment) throws Exception {
         var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.LIST);
         if (!hasCapability) {
+            this.logger.atWarn()
+                    .setMessage("Access denied to projects")
+                    .addKeyValue("capabilityType", SiriusWebCapabilities.PROJECT)
+                    .addKeyValue("capability", SiriusWebCapabilities.Project.LIST)
+                    .log();
             return new DefaultConnection<>(List.of(), new PageInfoWithCount(null, null, false, false, 0));
         }
 
@@ -88,7 +97,14 @@ public class ViewerProjectsDataFetcher implements IDataFetcherWithFieldCoordinat
         int limit = this.limitProvider.getLimit(20, first, last, after, before);
 
         var projectPage = this.projectSearchApplicationService.findAll(position, limit, filter);
-        return this.toConnection(projectPage);
+        var connection = this.toConnection(projectPage);
+
+        this.logger.atInfo()
+                .setMessage("{} project(s) retrieved")
+                .addArgument(connection.getEdges().size())
+                .log();
+
+        return connection;
     }
 
     public KeysetScrollPosition getPosition(Optional<String> after, Optional<String> before) {

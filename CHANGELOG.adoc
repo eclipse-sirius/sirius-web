@@ -67,9 +67,11 @@ A new provisional method `IHierarchyEventProcessor#update` is available to updat
 It now comes with small improvements in the filter bar for better reuse
 - https://github.com/eclipse-sirius/sirius-web/issues/6331[#6331] [sirius-web] Improve the log level of existing log messages to align them with our logging policy.
 Switch all usage of the logger to the fluent API to prepare for the addition of more data.
-- https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Move the selection dialog default settings to the backend
 Improve the log message used when logging exceptions.
+The log level of the registration of the GraphQL schema on startup has been changed from `INFO` to `DEBUG`.
+Add log messages for the access to the main parts of the application (project templates, project, libraries, editing context, subscriptions).
 - https://github.com/eclipse-sirius/sirius-web/issues/6366[#6366] [diagram] Extract layout tools in several hooks.
+- https://github.com/eclipse-sirius/sirius-web/issues/6250[#6250] [selection] Move the selection dialog default settings to the backend
 
 
 
