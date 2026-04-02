@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ package org.eclipse.sirius.web.application.editingcontext.services;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IEditingContextEventProcessorRegistry;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
@@ -28,6 +29,9 @@ import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEva
 import org.eclipse.sirius.web.application.library.services.api.ILibraryEditingContextService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
@@ -54,6 +58,8 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
 
     private final IMessageService messageService;
 
+    private final Logger logger = LoggerFactory.getLogger(EventProcessorSubscriptionProvider.class);
+
     public EventProcessorSubscriptionProvider(IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry, IProjectEditingContextService projectEditingContextService, ILibraryEditingContextService libraryEditingContextService, ICapabilityEvaluator capabilityEvaluator,
                                               List<IRepresentationEventProcessorFluxCustomizer> representationEventProcessorFluxCustomizers, IEventProcessorSubscriptionSchedulerProvider eventProcessorSubscriptionSchedulerProvider, IMessageService messageService) {
         this.editingContextEventProcessorRegistry = Objects.requireNonNull(editingContextEventProcessorRegistry);
@@ -67,6 +73,9 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
 
     @Override
     public Flux<IPayload> getSubscription(String editingContextId, String representationId, IInput input) {
+        MDC.put("editingContextId", editingContextId);
+        MDC.put("representationId", representationId);
+
         var canView = false;
         var optionalProjectId = this.projectEditingContextService.getProjectId(editingContextId);
         if (optionalProjectId.isPresent()) {
@@ -79,12 +88,32 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
         }
 
         if (!canView) {
+            this.logger.atWarn()
+                    .setMessage("Access denied to payload flux for representation {}")
+                    .addArgument(representationId)
+                    .log();
             return Flux.just(new ErrorPayload(input.id(), this.messageService.unauthorized()));
         }
 
-        return this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId)
+        Optional<Flux<IPayload>> optionalPayloadFlux = this.editingContextEventProcessorRegistry.getOrCreateEditingContextEventProcessor(editingContextId)
                 .flatMap(processor -> processor.acquireRepresentationEventProcessor(representationId, input))
-                .map(representationEventProcessor -> this.customizeFlux(editingContextId, representationId, input, representationEventProcessor))
+                .map(representationEventProcessor -> this.customizeFlux(editingContextId, representationId, input, representationEventProcessor));
+
+        if (optionalPayloadFlux.isPresent()) {
+            this.logger.atInfo()
+                    .setMessage("Payload flux for representation {} retrieved")
+                    .addArgument(representationId)
+                    .log();
+        } else {
+            this.logger.atWarn()
+                    .setMessage("Payload flux for representation {} not found")
+                    .addArgument(representationId)
+                    .log();
+        }
+
+        MDC.clear();
+
+        return optionalPayloadFlux
                 .orElse(Flux.empty())
                 .publishOn(this.eventProcessorSubscriptionScheduler);
     }

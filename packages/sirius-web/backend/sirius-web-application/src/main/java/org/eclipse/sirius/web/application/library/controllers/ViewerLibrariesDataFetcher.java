@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
+import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
+import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
 import graphql.relay.DefaultConnection;
@@ -24,15 +36,6 @@ import graphql.relay.DefaultEdge;
 import graphql.relay.Edge;
 import graphql.relay.Relay;
 import graphql.schema.DataFetchingEnvironment;
-import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
-import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
-import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
-import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 /**
  * Data fetcher for the field Viewer#libraries.
@@ -50,6 +53,8 @@ public class ViewerLibrariesDataFetcher implements IDataFetcherWithFieldCoordina
 
     private final ILibraryApplicationService libraryApplicationService;
 
+    private final Logger logger = LoggerFactory.getLogger(ViewerLibrariesDataFetcher.class);
+
     public ViewerLibrariesDataFetcher(ICapabilityEvaluator capabilityEvaluator, ILibraryApplicationService libraryApplicationService) {
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.libraryApplicationService = Objects.requireNonNull(libraryApplicationService);
@@ -59,6 +64,11 @@ public class ViewerLibrariesDataFetcher implements IDataFetcherWithFieldCoordina
     public Connection<LibraryDTO> get(DataFetchingEnvironment environment) throws Exception {
         var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.LIBRARY, null, SiriusWebCapabilities.Library.LIST);
         if (!hasCapability) {
+            this.logger.atWarn()
+                    .setMessage("Access denied to libraries")
+                    .addKeyValue("capabilityType", SiriusWebCapabilities.LIBRARY)
+                    .addKeyValue("capability", SiriusWebCapabilities.Library.LIST)
+                    .log();
             return new DefaultConnection<>(List.of(), new PageInfoWithCount(null, null, false, false, 0));
         }
 
@@ -71,7 +81,14 @@ public class ViewerLibrariesDataFetcher implements IDataFetcherWithFieldCoordina
 
         var pageable = PageRequest.of(page, limit);
         var libraryPage = this.libraryApplicationService.findAll(pageable);
-        return this.toConnection(libraryPage);
+        var connection = this.toConnection(libraryPage);
+
+        this.logger.atInfo()
+                .setMessage("{} library(ies) retrieved")
+                .addArgument(connection.getEdges().size())
+                .log();
+
+        return connection;
     }
 
     private Connection<LibraryDTO> toConnection(Page<LibraryDTO> libraryPage) {

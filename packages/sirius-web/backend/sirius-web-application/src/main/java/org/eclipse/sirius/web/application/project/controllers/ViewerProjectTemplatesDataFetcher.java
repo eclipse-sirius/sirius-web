@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
+import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
+import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
+import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
+import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateApplicationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;
 import graphql.relay.DefaultConnection;
@@ -24,15 +36,6 @@ import graphql.relay.DefaultEdge;
 import graphql.relay.Edge;
 import graphql.relay.Relay;
 import graphql.schema.DataFetchingEnvironment;
-import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
-import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
-import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
-import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
-import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
-import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateApplicationService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 
 /**
  * Data fetcher for the field Viewer#projectTemplates.
@@ -52,6 +55,8 @@ public class ViewerProjectTemplatesDataFetcher implements IDataFetcherWithFieldC
 
     private final IProjectTemplateApplicationService projectTemplateApplicationService;
 
+    private final Logger logger = LoggerFactory.getLogger(ViewerProjectTemplatesDataFetcher.class);
+
     public ViewerProjectTemplatesDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectTemplateApplicationService projectTemplateApplicationService) {
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectTemplateApplicationService = Objects.requireNonNull(projectTemplateApplicationService);
@@ -61,6 +66,11 @@ public class ViewerProjectTemplatesDataFetcher implements IDataFetcherWithFieldC
     public Connection<ProjectTemplateDTO> get(DataFetchingEnvironment environment) throws Exception {
         var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.CREATE);
         if (!hasCapability) {
+            this.logger.atWarn()
+                    .setMessage("Access denied to project templates")
+                    .addKeyValue("capabilityType", SiriusWebCapabilities.PROJECT)
+                    .addKeyValue("capability", SiriusWebCapabilities.Project.CREATE)
+                    .log();
             return new DefaultConnection<>(List.of(), new PageInfoWithCount(null, null, false, false, 0));
         }
 
@@ -75,7 +85,14 @@ public class ViewerProjectTemplatesDataFetcher implements IDataFetcherWithFieldC
 
         var pageable = PageRequest.of(page, limit);
         var projectTemplatePage = this.projectTemplateApplicationService.findAll(pageable, context);
-        return this.toConnection(projectTemplatePage);
+        var connection = this.toConnection(projectTemplatePage);
+
+        this.logger.atInfo()
+                .setMessage("{} project template(s) retrieved")
+                .addArgument(connection.getEdges().size())
+                .log();
+
+        return connection;
     }
 
     private Connection<ProjectTemplateDTO> toConnection(Page<ProjectTemplateDTO> projectTemplatePage) {

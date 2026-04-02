@@ -23,6 +23,9 @@ import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
@@ -41,6 +44,8 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
 
     private final IProjectSearchApplicationService projectSearchApplicationService;
 
+    private final Logger logger = LoggerFactory.getLogger(ViewerProjectDataFetcher.class);
+
     public ViewerProjectDataFetcher(ICapabilityEvaluator capabilityEvaluator, IProjectSearchApplicationService projectSearchApplicationService) {
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
         this.projectSearchApplicationService = Objects.requireNonNull(projectSearchApplicationService);
@@ -49,22 +54,47 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
     @Override
     public DataFetcherResult<ProjectDTO> get(DataFetchingEnvironment environment) throws Exception {
         String projectId = environment.getArgument(PROJECT_ID_ARGUMENT);
-        var optionalProject = this.projectSearchApplicationService.findById(projectId);
+
+        MDC.put("projectId", projectId);
 
         var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.VIEW);
-        if (!hasCapability || optionalProject.isEmpty()) {
+        if (!hasCapability) {
+            this.logger.atWarn()
+                    .setMessage("Access denied to project {}")
+                    .addArgument(projectId)
+                    .addKeyValue("capabilityType", SiriusWebCapabilities.PROJECT)
+                    .addKeyValue("capability", SiriusWebCapabilities.Project.VIEW)
+                    .log();
             return null;
         }
 
-        var project = optionalProject.get();
+        DataFetcherResult<ProjectDTO> result = null;
+        var optionalProject = this.projectSearchApplicationService.findById(projectId);
+        if (optionalProject.isPresent()) {
+            var project = optionalProject.get();
 
-        Map<String, Object> localContext = new HashMap<>();
-        localContext.put(SiriusWebLocalContextConstants.PROJECT_ID, projectId);
+            this.logger.atInfo()
+                    .setMessage("Project {} retrieved")
+                    .addArgument(projectId)
+                    .log();
 
-        return DataFetcherResult.<ProjectDTO> newResult()
-                .data(project)
-                .localContext(localContext)
-                .build();
+            Map<String, Object> localContext = new HashMap<>();
+            localContext.put(SiriusWebLocalContextConstants.PROJECT_ID, projectId);
+
+            result = DataFetcherResult.<ProjectDTO> newResult()
+                    .data(project)
+                    .localContext(localContext)
+                    .build();
+        } else {
+            this.logger.atWarn()
+                    .setMessage("Project {} not found")
+                    .addArgument(projectId)
+                    .log();
+        }
+
+        MDC.clear();
+
+        return result;
     }
 
 }

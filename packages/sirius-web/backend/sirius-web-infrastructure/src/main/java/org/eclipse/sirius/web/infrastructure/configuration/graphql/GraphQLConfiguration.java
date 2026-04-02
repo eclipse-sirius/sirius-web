@@ -109,13 +109,13 @@ public class GraphQLConfiguration {
 
             Resource[] resources = resourcePatternResolver.getResources("classpath*:/schema/**/*.graphqls");
 
-            this.logger.atInfo()
+            this.logger.atDebug()
                     .setMessage("{} GraphQL schemas found")
                     .addArgument(resources.length)
                     .log();
 
             for (Resource resource : resources) {
-                this.logger.atInfo()
+                this.logger.atDebug()
                         .setMessage("Processing the GraphQL schema: {}")
                         .addArgument(resource.getURL())
                         .log();
