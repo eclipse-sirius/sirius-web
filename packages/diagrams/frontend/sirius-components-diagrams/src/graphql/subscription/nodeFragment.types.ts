@@ -38,6 +38,7 @@ export interface GQLNode<T extends GQLNodeStyle> {
 }
 
 export interface GQLNodeDecorator {
+  id: string;
   label: string;
   position: GQLNodeDecoratorPosition;
   iconURL: string;

@@ -64,6 +64,7 @@ fragment nodeFragment on Node {
   customizedStyleProperties
   initialBorderNodePosition
   decorators {
+    id
     label
     position
     iconURL

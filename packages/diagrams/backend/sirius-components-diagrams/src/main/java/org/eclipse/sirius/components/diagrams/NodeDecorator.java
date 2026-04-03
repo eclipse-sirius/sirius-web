@@ -19,9 +19,10 @@ import java.util.Objects;
  *
  * @author gdaniel
  */
-public record NodeDecorator(String label, NodeDecoratorPosition position, String iconURL) {
+public record NodeDecorator(String id, String label, NodeDecoratorPosition position, String iconURL) {
 
     public NodeDecorator {
+        Objects.requireNonNull(id);
         Objects.requireNonNull(label);
         Objects.requireNonNull(position);
         Objects.requireNonNull(iconURL);

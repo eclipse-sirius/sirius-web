@@ -49,6 +49,7 @@ public class NodeDecoratorsDataFetcher implements IDataFetcherWithFieldCoordinat
         this.enabledDecorators = enableDecorators;
     }
 
+    @SuppressWarnings("checkstyle:MultipleStringLiterals")
     @Override
     public DataFetcherResult<List<NodeDecorator>> get(DataFetchingEnvironment environment) throws Exception {
         List<NodeDecorator> decorators = new ArrayList<>();
@@ -61,21 +62,21 @@ public class NodeDecoratorsDataFetcher implements IDataFetcherWithFieldCoordinat
         if (this.enabledDecorators) {
             if (node != null && node.getTargetObjectLabel() != null) {
                 if (node.getTargetObjectLabel().contains("Decorator")) {
-                    decorators.add(new NodeDecorator("North Decorator", NodeDecoratorPosition.NORTH, PUBLIC));
-                    decorators.add(new NodeDecorator("North Decorator 2", NodeDecoratorPosition.NORTH, PRIVATE));
-                    decorators.add(new NodeDecorator("North East Decorator", NodeDecoratorPosition.NORTH_EAST, PRIVATE));
-                    decorators.add(new NodeDecorator("East Decorator", NodeDecoratorPosition.EAST, PROTECTED));
-                    decorators.add(new NodeDecorator("South East Decorator", NodeDecoratorPosition.SOUTH_EAST, PACKAGE));
-                    decorators.add(new NodeDecorator("South Decorator", NodeDecoratorPosition.SOUTH, PUBLIC));
-                    decorators.add(new NodeDecorator("South West Decorator", NodeDecoratorPosition.SOUTH_WEST, PUBLIC));
-                    decorators.add(new NodeDecorator("West Decorator", NodeDecoratorPosition.WEST, PROTECTED));
-                    decorators.add(new NodeDecorator("North West Decorator", NodeDecoratorPosition.NORTH_WEST, PRIVATE));
-                    decorators.add(new NodeDecorator("Center Decorator", NodeDecoratorPosition.CENTER, PACKAGE));
+                    decorators.add(new NodeDecorator("North Decorator", "North Decorator", NodeDecoratorPosition.NORTH, PUBLIC));
+                    decorators.add(new NodeDecorator("North Decorator 2", "North Decorator 2", NodeDecoratorPosition.NORTH, PRIVATE));
+                    decorators.add(new NodeDecorator("North East Decorator", "North East Decorator", NodeDecoratorPosition.NORTH_EAST, PRIVATE));
+                    decorators.add(new NodeDecorator("East Decorator", "East Decorator", NodeDecoratorPosition.EAST, PROTECTED));
+                    decorators.add(new NodeDecorator("South East Decorator", "South East Decorator", NodeDecoratorPosition.SOUTH_EAST, PACKAGE));
+                    decorators.add(new NodeDecorator("South Decorator", "South Decorator", NodeDecoratorPosition.SOUTH, PUBLIC));
+                    decorators.add(new NodeDecorator("South West Decorator", "South West Decorator", NodeDecoratorPosition.SOUTH_WEST, PUBLIC));
+                    decorators.add(new NodeDecorator("West Decorator", "West Decorator", NodeDecoratorPosition.WEST, PROTECTED));
+                    decorators.add(new NodeDecorator("North West Decorator", "North West Decorator", NodeDecoratorPosition.NORTH_WEST, PRIVATE));
+                    decorators.add(new NodeDecorator("Center Decorator", "Center Decorator", NodeDecoratorPosition.CENTER, PACKAGE));
                 } else if (node.getTargetObjectLabel().contains("Papaya")) {
-                    decorators.add(new NodeDecorator("Papaya", NodeDecoratorPosition.NORTH, "/project-templates/Cosmic-Papaya.jpeg"));
-                    decorators.add(new NodeDecorator("Papaya2", NodeDecoratorPosition.EAST, "/project-templates/Retro-Papaya.jpeg"));
-                    decorators.add(new NodeDecorator("Papaya3", NodeDecoratorPosition.WEST, PUBLIC));
-                    decorators.add(new NodeDecorator("Papaya4", NodeDecoratorPosition.SOUTH_WEST, PRIVATE));
+                    decorators.add(new NodeDecorator("Papaya", "Papaya", NodeDecoratorPosition.NORTH, "/project-templates/Cosmic-Papaya.jpeg"));
+                    decorators.add(new NodeDecorator("Papaya2", "Papaya2", NodeDecoratorPosition.EAST, "/project-templates/Retro-Papaya.jpeg"));
+                    decorators.add(new NodeDecorator("Papaya3", "Papaya3", NodeDecoratorPosition.WEST, PUBLIC));
+                    decorators.add(new NodeDecorator("Papaya4", "Papaya4", NodeDecoratorPosition.SOUTH_WEST, PRIVATE));
                 }
             }
         }

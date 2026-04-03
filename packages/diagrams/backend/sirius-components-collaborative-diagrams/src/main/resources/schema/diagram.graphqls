@@ -129,6 +129,7 @@ type Node {
 }
 
 type NodeDecorator {
+  id: String!
   label: String!
   position: NodeDecoratorPosition!
   iconURL: String!
