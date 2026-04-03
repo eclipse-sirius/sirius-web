@@ -10,12 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, Node, useReactFlow } from '@xyflow/react';
+import { Edge, Node, useReactFlow, useUpdateNodeInternals } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { useFitView } from '../../fit-to-screen/useFitView';
-import { DiagramNodeType } from '../../node/NodeTypes.types';
-import { useOverlap } from '../../overlap/useOverlap';
 import { useElkLayout } from '../elk/useElkLayout';
 import { RawDiagram } from '../layout.types';
 import { useLayout } from '../useLayout';
@@ -26,60 +24,49 @@ export const useArrangeAll = (): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-  const { resolveNodeOverlap } = useOverlap();
+  const updateNodeInternals = useUpdateNodeInternals();
   const { fitView } = useFitView();
   const { elkLayout } = useElkLayout();
 
   const arrangeAll = async (layoutOptions: LayoutOptions): Promise<void> => {
     await elkLayout(getNodes(), getEdges(), layoutOptions).then(
       async (laidOutNodesWithElk: Node<NodeData, string>[]) => {
-        const laidOutMovedNodeIds = laidOutNodesWithElk
-          .filter((node) => !node.data.isBorderNode && !node.data.pinned)
-          .map((node) => node.id);
-        const edges = getEdges();
-        edges
-          .filter((edge) => laidOutMovedNodeIds.includes(edge.source) || laidOutMovedNodeIds.includes(edge.target))
-          .forEach((edge: Edge<EdgeData, string>) => {
-            if (edge.data?.bendingPoints) {
-              edge.data.bendingPoints = null;
-            }
+        //Removed bending point
+        const edges = getEdges().map((edge: Edge<EdgeData, string>) => {
+          if (edge.data?.bendingPoints) {
+            edge.data.bendingPoints = null;
+          }
+          return edge;
+        });
+        //Removed custom handles for edges
+        const laidOutNodesWithElkWithoutCustomHandles = laidOutNodesWithElk.map((node) => {
+          const handles = node.data.connectionHandles.map((handle) => {
+            return {
+              ...handle,
+              XYPosition: null,
+            };
           });
 
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              connectionHandles: handles,
+            },
+          };
+        });
+
         const diagramToLayout: RawDiagram = {
-          nodes: laidOutNodesWithElk,
-          edges: edges,
+          nodes: laidOutNodesWithElkWithoutCustomHandles,
+          edges,
         };
         const layoutPromise = new Promise<void>((resolve) => {
           layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-            const overlapFreeLaidOutNodes: Node<NodeData, string>[] = resolveNodeOverlap(
-              laidOutDiagram.nodes.filter((n) => !n.data.isBorderNode),
-              'horizontal'
-            ) as Node<NodeData, DiagramNodeType>[];
-            laidOutNodesWithElk.map((node) => {
-              const existingNode = overlapFreeLaidOutNodes.find((laidOutNode) => laidOutNode.id === node.id);
-              if (existingNode) {
-                return {
-                  ...node,
-                  position: existingNode.position,
-                  width: existingNode.width,
-                  height: existingNode.height,
-                  style: {
-                    ...node.style,
-                    width: `${existingNode.width}px`,
-                    height: `${existingNode.height}px`,
-                  },
-                };
-              }
-              return node;
-            });
-            setNodes(laidOutNodesWithElk);
+            setNodes(laidOutDiagram.nodes);
             setEdges(laidOutDiagram.edges);
-            const finalDiagram: RawDiagram = {
-              nodes: laidOutNodesWithElk,
-              edges: laidOutDiagram.edges,
-            };
-            fitView({ duration: 200, nodes: laidOutNodesWithElk });
-            synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+            fitView({ duration: 200, nodes: laidOutDiagram.nodes });
+            updateNodeInternals(laidOutDiagram.nodes.map((node) => node.id));
+            synchronizeLayoutData(crypto.randomUUID(), 'layout', laidOutDiagram);
             resolve();
           });
         });
