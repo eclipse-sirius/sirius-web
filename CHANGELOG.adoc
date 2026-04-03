@@ -8,6 +8,7 @@
 - Add support for the auto-alignment edge feature
 - Add a description in the new representation modal
 - Add support for node decorators
+- Add support for diagram minimap default visibility
 
 
 === Architectural decision records
