@@ -417,8 +417,7 @@ test.describe('diagram - label', () => {
   });
 
   test('when dragging a center edge label, then no offset apply on the drop position', async ({ page }) => {
-    await page.getByTestId('arrange-all-menu').click();
-    await page.getByTestId('arrange-all-elk-layered').click();
+    await page.getByTestId('arrange-all-main-button').click();
     const rootNode = new PlaywrightNode(page, 'Root', 'List');
     await rootNode.waitForAnimationToFinish();
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();

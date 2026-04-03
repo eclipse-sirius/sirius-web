@@ -125,7 +125,7 @@ export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => 
 
   return (
     <>
-      <Panel position="top-left">
+      <Panel position="top-left" data-testid="diagram-toolbar">
         <Paper style={{ display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
           <Box
             ref={collapsibleContentRef}

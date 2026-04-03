@@ -232,7 +232,7 @@ Trees defined via the view DSL can alternatively provide a tooltip expression vi
 - https://github.com/eclipse-sirius/sirius-web/issues/6287[#6287] [sirius-web] Add a cancel button to the _New Project_ creation page.
 - https://github.com/eclipse-sirius/sirius-web/issues/6267[#6267] [sirius-web] Allow customizing the content of the Views Explorer via delegates.
 - https://github.com/eclipse-sirius/sirius-web/issues/6268[#6268] [sirius-web] Allow customizing the labels of the Views Explorer via delegates.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6300[#6300] [diagram] Make the arrange-all button remember the last layout configuration
 
 
 == 2026.1.0
