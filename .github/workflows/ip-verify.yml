@@ -14,7 +14,7 @@ jobs:
       - name: Setup Java SDK
         uses: actions/setup-java@v4
         with:
-          java-version: 11
+          java-version: 21
 
       - name: Cache Maven packages
         uses: actions/cache@v4
