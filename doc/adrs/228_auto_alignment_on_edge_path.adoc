@@ -1,0 +1,92 @@
+:author: Florian Rouëné
+:date: 2026-03-31
+:status: proposed
+:consulted: Stéphane Bégaudeau
+:informed: Michaël Charfadi
+:deciders: Stéphane Bégaudeau
+:pitch: docs/iterations/2026.5/auto-alignment-edge.adoc
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6349
+
+= ADR-228 - Add auto alignment for edges with a small gap in their path
+
+== Context and Problem Statement
+
+When rendering diagrams, small visual gaps or "jumps" appear on edges where the source and target coordinates are very close (horizontally or vertically).
+This issue degrades the diagram's readability and aesthetics.
+This misalignment creates a poor user experience and wastes time for teams manually adjusting edges in complex diagrams.
+
+== Decision Drivers
+
+- User Experience: Eliminate visual clutter and perceived imprecision.
+- Performance: Ensure no degradation in rendering performance.
+- Compatibility: Maintain backward compatibility with existing customizations (bending points, custom handles).
+- Maintainability: Solution should be easy to test and maintain.
+
+== Considered Options
+
+=== Option 1: Adjust Handles for Alignment
+
+Adjust the position of edge handles to ensure alignment when the gap between source and target coordinates is ≤ _threshold_.
+Only if the edge (bending point) and/or node (handle) are not customized.
+
+Pros:
+
+- Guarantees perfect alignment easily.
+- No impact on node positions.
+
+Cons:
+
+- The edge's handle may be slightly offset from the node.
+
+=== Option 2: Move Nodes Entirely
+
+Automatically adjust the position of connected nodes to eliminate small gaps.
+
+Pros:
+
+- Guarantees perfect alignment and handle position.
+
+Cons:
+
+- Risk of unintended layout changes, potential conflicts with user-defined node positions.
+
+=== Option 3: Force Straight Paths
+
+Force a straight line path for edges with gaps.
+
+Pros:
+
+- Simple to implement, ensures alignment.
+
+Cons:
+
+- The edge loses its rectilinearity, which is not acceptable.
+
+== Decision Outcome
+
+In the context of improving diagram readability and preserving user customizations, we decided for Option 1.
+
+It resolves the core issue without overriding user-defined customizations.
+Proof of concept confirmed feasibility without performance degradation.
+
+== Consequences
+
+=== Advantages
+
+Eliminates visible misalignment for non-customized edges within the threshold.
+
+No performance impact or regression on existing features.
+
+Maintains compatibility with bending points and custom handles.
+
+=== Drawbacks
+
+Requires careful tuning of the gap threshold to balance correction vs. unnecessary adjustments.
+
+== More Information
+
+=== Implementation
+
+- Frontend: Implement the handle adjustment logic in the edge rendering component.
+- Threshold: Manual tests to adjust the threshold.
+- Testing: Add some Playwright tests to ensure non-regression.
