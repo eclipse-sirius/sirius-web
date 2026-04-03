@@ -12,12 +12,13 @@
  *******************************************************************************/
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
 import Tooltip from '@mui/material/Tooltip';
-import { useContext } from 'react';
+import Typography from '@mui/material/Typography';
+import React, { useContext } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { GQLNodeDecorator } from '../../graphql/subscription/nodeFragment.types';
 import { DecoratorProps } from './Decorator.types';
 
-const useStyles = makeStyles()((_) => ({
+const useStyles = makeStyles()((theme) => ({
   north: {
     gridArea: 'N',
     justifySelf: 'center',
@@ -63,6 +64,11 @@ const useStyles = makeStyles()((_) => ({
     justifySelf: 'center',
     alignSelf: 'center',
   },
+  tooltip: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(2),
+  },
 }));
 
 export const Decorator = ({ position, decorators }: DecoratorProps) => {
@@ -73,9 +79,16 @@ export const Decorator = ({ position, decorators }: DecoratorProps) => {
   const firstDecorator: GQLNodeDecorator | undefined = decorators.at(0);
 
   if (firstDecorator) {
+    const tooltipContent = decorators.map((decorator) => (
+      <div key={decorator.id} className={classes.tooltip}>
+        <img width={16} height={16} alt={decorator.label} src={httpOrigin + decorator.iconURL} />
+        <Typography style={{ maxWidth: '100%' }}>{decorator.label}</Typography>
+      </div>
+    ));
+
     return (
       <div className={classes[position.toLowerCase()]}>
-        <Tooltip title={firstDecorator.label || ''}>
+        <Tooltip title={<React.Fragment>{tooltipContent}</React.Fragment>}>
           <img alt={firstDecorator.label} src={httpOrigin + firstDecorator.iconURL} />
         </Tooltip>
       </div>
