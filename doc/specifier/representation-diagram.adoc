@@ -30,3 +30,54 @@ Specifiers should be careful to use key bindings that work along with browser sh
 
 The direct edit has a higher precedence than key binding matching. 
 As a result, defining a key binding without modifiers on a diagram element that supports direct edit won't work as expected, since the direct edit will always be triggered instead of the tool with the key binding.
+
+== Selection Dialog
+
+Any tool can declare a `Selection Dialog` that will be opened when the tool is executed.
+This dialog allows the user to select zero, one or several elements from a list of candidates defined by the specifier.
+The specifier can configure the dialog to allow zero, one or several selections whether the `optional` property is set to `true` and whether the `multiple` property is set to `true`.
+
+Knowing that the specifier needs to define a bunch of expressions to configure the different labels of different aspects of the dialog.
+It can also rely on default values returns by these expressions when they are not defined.
+
+=== Title expressions
+
+There are three expressions for the dialog title:
+
+* Default Title Expression: Used when the dialog is opened for the first time, and also when the selection is mandatory.
+* No Selection Title Expression: Used when the selection is optional and the action allowing to confirm the dialog without selection is chosen.
+* With Selection Title Expression: Used when the selection is optional and the action requiring a selection is chosen.
+
+=== Description expression
+
+The Description expression is used to explain the purpose of the dialog to the user.
+
+=== Action expressions
+
+There are two actions only displayed when the dialog allows optional selection.
+Each action has a label expression and a description expression:
+
+* No Selection Action Label Expression: Used to define the label of the action allowing to confirm the dialog without selection.
+* No Selection Action Description Expression: Used to define the description of the action allowing to confirm the dialog without selection.
+* With Selection Action Label Expression: Used to define the label of the action making the selection mandatory.
+* With Selection Action Description Expression: Used to define the description of the action making the selection mandatory.
+
+NOTE: If the dialog is optional the specifier is able to miss the expressions related to these actions since they will not be displayed in the dialog.
+
+=== Confirm button expressions
+
+There are three expressions for the confirm button:
+
+* No Selection Confirm Button Label Expression: Used when the selection is optional and the action allowing to confirm the dialog without selection is chosen.
+* Selection Required Without Selection Confirm Button Label Expression: Used when the selection is mandatory, or when the action making the selection mandatory is chosen but no selection has been made.
+* Selection Required With Selection Confirm Button Label Expression: Used when the selection is mandatory, or when the action making the selection mandatory is chosen and a selection has been made.
+
+=== Status message expressions
+
+There are three expressions for the status message:
+
+* No Selection Action Status Message Expression: Used when the selection is optional and the action allowing to confirm the dialog without selection is chosen.
+* Selection Required Without Selection Status Message Expression: Used when the dialog is optional and the action making the selection mandatory is chosen but no selection has been made.
+* Selection Required With Selection Status Message Expression: Used when the selection is mandatory, or when the action making the selection mandatory is chosen and a selection has been made.
+Unlike all other expressions above, this one is evaluated every time the user updates the selection.
+The specifier has access to the `selectedObjectIds` variables that contains the list of selected element IDs, and can use it to update the status message accordingly.
