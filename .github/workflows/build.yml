@@ -182,7 +182,7 @@ jobs:
         if: startsWith(env.GITHUB_REF, 'refs/tags/v')
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: mvn -B deploy -f packages/pom.xml
+        run: mvn -B deploy -DskipTests -f packages/pom.xml
 
       - name: Publish the frontend packages
         if: startsWith(env.GITHUB_REF, 'refs/tags/v')
