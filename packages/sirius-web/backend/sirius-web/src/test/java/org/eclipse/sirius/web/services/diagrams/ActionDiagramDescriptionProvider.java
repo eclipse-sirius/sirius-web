@@ -143,6 +143,7 @@ public class ActionDiagramDescriptionProvider implements IEditingContextProcesso
                 .palette(diagramPalette)
                 .autoLayout(false)
                 .style(new DiagramBuilders().newDiagramStyleDescription().build())
+                .minimapVisible(false)
                 .build();
 
         return this.diagramDescription;
