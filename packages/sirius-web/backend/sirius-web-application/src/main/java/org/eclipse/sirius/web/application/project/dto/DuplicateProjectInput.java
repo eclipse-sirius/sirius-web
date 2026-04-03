@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.dto;
 
-import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
+
 import org.eclipse.sirius.components.core.api.IInput;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Input used to duplicate a new project.

@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.web.application.omnibox.services.api.IProjectsOmniboxCommandSearchService;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.eclipse.sirius.components.core.graphql.dto.PageInfoWithCount;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
+import org.eclipse.sirius.web.application.omnibox.services.api.IProjectsOmniboxCommandSearchService;
 
 import graphql.relay.Connection;
 import graphql.relay.ConnectionCursor;

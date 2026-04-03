@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandOrderer;
+import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.eclipse.sirius.web.application.omnibox.services.api.IProjectsOmniboxCommandProvider;
 import org.eclipse.sirius.web.application.omnibox.services.api.IProjectsOmniboxCommandSearchService;
-import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.springframework.stereotype.Service;
 
 /**

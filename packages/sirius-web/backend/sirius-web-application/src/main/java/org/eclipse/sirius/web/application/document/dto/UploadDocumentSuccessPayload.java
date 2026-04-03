@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.document.dto;
 
-import jakarta.validation.constraints.NotNull;
-import org.eclipse.sirius.components.core.api.IPayload;
-
 import java.util.Map;
 import java.util.UUID;
+
+import org.eclipse.sirius.components.core.api.IPayload;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * The payload of the upload document mutation.

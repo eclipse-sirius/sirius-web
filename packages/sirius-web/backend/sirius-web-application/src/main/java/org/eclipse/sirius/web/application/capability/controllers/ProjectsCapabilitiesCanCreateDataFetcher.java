@@ -14,11 +14,12 @@ package org.eclipse.sirius.web.application.capability.controllers;
 
 import java.util.Objects;
 
-import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field ProjectsCapabilities#canCreate.

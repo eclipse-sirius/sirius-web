@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.services;
 
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.ObjectMapper;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -35,6 +32,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Used to persist representations.

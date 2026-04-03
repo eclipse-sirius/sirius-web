@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.nodeaction.managevisibility;
 
+import java.util.List;
+
 import org.eclipse.sirius.components.collaborative.diagrams.api.nodeactions.IManageVisibilityMenuActionProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.managevisibility.ManageVisibilityAction;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -19,8 +21,6 @@ import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Used to provide the reveal all action for the manage visibility node action.

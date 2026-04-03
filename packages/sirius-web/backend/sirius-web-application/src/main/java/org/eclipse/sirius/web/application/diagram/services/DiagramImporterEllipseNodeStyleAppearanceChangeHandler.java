@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.diagram.services;
 
+import java.util.Optional;
+
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.events.appearance.IAppearanceChange;
 import org.eclipse.sirius.components.diagrams.events.appearance.NodeBackgroundAppearanceChange;
@@ -21,8 +23,6 @@ import org.eclipse.sirius.components.diagrams.events.appearance.NodeBorderStyleA
 import org.eclipse.sirius.web.application.diagram.EllipseNodeStyle;
 import org.eclipse.sirius.web.application.project.services.api.IDiagramImporterNodeStyleAppearanceChangeHandler;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 /**
  * Implementation to handle ellipse node style.

@@ -16,6 +16,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.ICustomNodeStyle
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.web.application.diagram.EllipseNodeStyle;
 import org.springframework.stereotype.Service;
+
 import tools.jackson.core.JacksonException;
 import tools.jackson.core.JsonParser;
 import tools.jackson.databind.DeserializationContext;

@@ -15,7 +15,6 @@ package org.eclipse.sirius.web.application.editingcontext.migration.participants
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-
 import org.eclipse.sirius.components.emf.migration.api.IMigrationParticipant;
 import org.eclipse.sirius.components.view.tree.TreePackage;
 import org.springframework.stereotype.Service;

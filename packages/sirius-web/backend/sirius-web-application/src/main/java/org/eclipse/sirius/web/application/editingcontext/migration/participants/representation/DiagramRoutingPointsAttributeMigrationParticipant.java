@@ -13,12 +13,12 @@
 
 package org.eclipse.sirius.web.application.editingcontext.migration.participants.representation;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.node.ObjectNode;
-
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.springframework.stereotype.Service;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * Remove the attribute routing points from diagram representation and in its content.

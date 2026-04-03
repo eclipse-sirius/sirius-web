@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.diagram.dto;
 
-import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
-
 import java.util.List;
 import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 
 /**
  * Input for the edition of an ellipse node's appearance.

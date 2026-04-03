@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.representation.services;
 
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
-
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -29,6 +25,10 @@ import org.eclipse.sirius.web.application.representation.services.api.IRepresent
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.node.ObjectNode;
 
 /**
