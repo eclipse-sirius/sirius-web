@@ -53,6 +53,7 @@ This will be used as an inspiration for the evolution of other similar services 
 Decorators can be placed on any of the cardinal and ordinal directions (north, north west, etc) or at the center position.
 Sirius Web provides and uses a `DecoratorContainer` that can render these decorators at the appropriate position.
 Downstream applications can either reuse this container, or manually handle the `NodeData#decorators` in their renderers to adapt decorator rendering to their custom nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/6383[#63830] [diagram] Display all the decorators on a given position in a tooltip.
 
 
 === Improvements
