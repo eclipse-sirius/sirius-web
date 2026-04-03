@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.ObjectMapper;
-
 import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.util.ArrayList;
@@ -38,6 +35,9 @@ import org.eclipse.sirius.web.domain.events.IDomainEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * {@link IProjectContentImportParticipant} in charge of importing representations in a project.

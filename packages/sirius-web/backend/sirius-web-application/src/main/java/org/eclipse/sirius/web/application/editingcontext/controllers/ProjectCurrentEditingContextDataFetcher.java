@@ -19,8 +19,8 @@ import java.util.Objects;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
-import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextApplicationService;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
+import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextApplicationService;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;

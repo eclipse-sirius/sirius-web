@@ -12,6 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.diagram.services;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
 import org.eclipse.sirius.components.diagrams.components.NodeAppearance;
@@ -24,12 +30,6 @@ import org.eclipse.sirius.components.diagrams.events.appearance.ResetNodeAppeara
 import org.eclipse.sirius.components.diagrams.renderer.INodeAppearanceHandler;
 import org.eclipse.sirius.web.application.diagram.EllipseNodeStyle;
 import org.springframework.stereotype.Service;
-
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Default implementation of a service used to handle the customization of a ellipse node's appearance.

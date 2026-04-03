@@ -16,12 +16,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import graphql.schema.DataFetchingEnvironment;
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.web.application.SiriusWebLocalContextConstants;
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+
+import graphql.schema.DataFetchingEnvironment;
 
 /**
  * Data fetcher for the field ProjectCapabilities#canDuplicate.

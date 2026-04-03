@@ -12,9 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.dto;
 
-import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
+
 import org.eclipse.sirius.components.core.api.IPayload;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Used to indicate that a project has been successfully duplicated.

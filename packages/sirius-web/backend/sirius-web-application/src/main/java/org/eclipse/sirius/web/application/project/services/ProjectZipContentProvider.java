@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services;
 
-import tools.jackson.core.JacksonException;
-import tools.jackson.databind.ObjectMapper;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,6 +27,9 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectZipConten
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 /**
  * Builder {@link ProjectZipContent} for zipped projects.

@@ -12,10 +12,10 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services.api;
 
+import java.util.Map;
+
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.application.project.services.RepresentationImportData;
-
-import java.util.Map;
 
 /**
  * Service used to update imported representation.

@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.application.views.viewsexplorer.services;
 
 import java.util.List;
 import java.util.Objects;
+
 import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHandler;
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;

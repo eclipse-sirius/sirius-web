@@ -13,9 +13,9 @@
 package org.eclipse.sirius.web.application.project.services;
 
 import org.eclipse.sirius.web.application.project.dto.NatureDTO;
+import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
-import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.springframework.stereotype.Component;
 
 /**

@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.editingcontext.migration.participants.representation;
 
-import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.node.ObjectNode;
-
 import org.eclipse.sirius.components.collaborative.representations.migration.IRepresentationMigrationParticipant;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.springframework.stereotype.Service;
+
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 /**
  * RepresentationMigrationParticipant that remove the attribute userResizable from diagram representation.
