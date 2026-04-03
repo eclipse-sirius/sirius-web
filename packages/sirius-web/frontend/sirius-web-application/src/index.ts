@@ -82,12 +82,14 @@ export { type RepresentationAreaProps } from './onboarding/RepresentationsArea.t
 export { routerExtensionPoint } from './router/RouterExtensionPoints';
 export { CursorBasedPagination } from './table/CursorBasedPagination';
 export type { CursorBasedPaginationProps } from './table/CursorBasedPagination.types';
+export { siriusWebTheme } from './theme/siriusWebTheme';
 export { useCurrentViewer } from './viewer/useCurrentViewer';
 export type { UseCurrentViewerValue } from './viewer/useCurrentViewer.types';
 export { useViewer } from './viewer/useViewer';
 export type { UseViewerValue } from './viewer/useViewer.types';
 export { ViewerContext, ViewerContextProvider } from './viewer/ViewerContext';
 export type { ViewerContextProviderProps, ViewerContextValue } from './viewer/ViewerContext.types';
+export { DisplayLibraryNavbar } from './views/display-library/DisplayLibraryNavbar';
 export { DisplayLibraryView } from './views/display-library/DisplayLibraryView';
 export { useCurrentLibrary } from './views/display-library/useCurrentLibrary';
 export type { UseCurrentLibraryValue } from './views/display-library/useCurrentLibrary.types';
