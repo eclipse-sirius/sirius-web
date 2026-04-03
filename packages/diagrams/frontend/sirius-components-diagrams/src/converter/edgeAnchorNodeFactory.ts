@@ -77,6 +77,7 @@ export const createEdgeAnchorNode = (
       minComputedWidth: null,
       minComputedHeight: null,
       isLastNodeSelected: false,
+      decorators: [],
     },
   };
 };
