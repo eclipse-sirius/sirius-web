@@ -27,6 +27,7 @@ import { ListNodeData } from '../renderer/node/ListNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertBorderNodePosition } from './convertBorderNodes';
+import { convertDecorators } from './convertDecorators';
 import { convertLineStyle, isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
@@ -55,6 +56,7 @@ const toListNode = (
     labelEditable,
     deletable,
     customizedStyleProperties,
+    decorators,
   } = gqlNode;
 
   const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
@@ -69,6 +71,8 @@ const toListNode = (
   const isNew = gqlNodeLayoutData === undefined;
   const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
   const movedByUser = gqlNodeLayoutData?.movedByUser ?? false;
+
+  const nodeDecorators = convertDecorators(decorators);
 
   const data: ListNodeData = {
     targetObjectId,
@@ -119,6 +123,7 @@ const toListNode = (
     minComputedWidth: gqlNodeLayoutData?.minComputedSize?.width ?? null,
     minComputedHeight: gqlNodeLayoutData?.minComputedSize?.height ?? null,
     isLastNodeSelected: false,
+    decorators: nodeDecorators,
   };
 
   data.insideLabel = convertInsideLabel(

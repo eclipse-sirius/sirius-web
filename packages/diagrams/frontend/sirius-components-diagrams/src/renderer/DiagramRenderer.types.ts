@@ -67,6 +67,7 @@ export interface NodeData extends Record<string, unknown> {
   nodeAppearanceData: NodeAppearanceData;
   minComputedWidth: number | null;
   minComputedHeight: number | null;
+  decorators: Map<NodeDecoratorPosition, NodeDecorator[]>;
 }
 
 export type ConnectionLinePositionOnNode = 'none' | 'center' | 'border';
@@ -86,6 +87,24 @@ export enum BorderNodePosition {
   EAST,
   SOUTH,
   WEST,
+}
+
+export enum NodeDecoratorPosition {
+  NORTH,
+  NORTH_EAST,
+  EAST,
+  SOUTH_EAST,
+  SOUTH,
+  SOUTH_WEST,
+  WEST,
+  NORTH_WEST,
+  CENTER,
+}
+
+export interface NodeDecorator {
+  label: string;
+  iconURL: string;
+  position: NodeDecoratorPosition;
 }
 
 export interface EdgeData extends Record<string, unknown> {

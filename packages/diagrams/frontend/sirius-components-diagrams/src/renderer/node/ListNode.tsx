@@ -21,6 +21,7 @@ import { Label } from '../Label';
 import { ActionsContainer } from '../actions/ActionsContainer';
 import { useConnectionLineNodeStyle } from '../connector/useConnectionLineNodeStyle';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
+import { DecoratorContainer } from '../decorators/DecoratorContainer';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
@@ -41,6 +42,7 @@ const listNodeStyle = (
   const listNodeStyle: React.CSSProperties = {
     width: '100%',
     height: '100%',
+    position: 'relative',
     opacity: faded ? '0.4' : '',
     ...style,
     background: getCSSColor(String(style.background), theme),
@@ -109,6 +111,7 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`List - ${data?.insideLabel?.text}`}>
+          <DecoratorContainer decorators={data.decorators} />
           <div className={classes.labelAndAction}>
             <div className={classes.label}>
               {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}

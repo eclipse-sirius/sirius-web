@@ -24,6 +24,7 @@ import {
   IConvertEngine,
   INodeConverter,
   convertBorderNodePosition,
+  convertDecorators,
   convertHandles,
   convertInsideLabel,
   convertLineStyle,
@@ -59,6 +60,7 @@ const toEllipseNode = (
     labelEditable,
     deletable,
     customizedStyleProperties,
+    decorators,
   } = gqlNode;
 
   const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
@@ -73,6 +75,7 @@ const toEllipseNode = (
   const isNew = gqlNodeLayoutData === undefined;
   const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
   const movedByUser = gqlNodeLayoutData?.movedByUser ?? false;
+  const nodeDecorators = convertDecorators(decorators);
 
   const data: EllipseNodeData = {
     targetObjectId,
@@ -115,6 +118,7 @@ const toEllipseNode = (
     minComputedWidth: gqlNodeLayoutData?.minComputedSize.width ?? null,
     minComputedHeight: gqlNodeLayoutData?.minComputedSize.height ?? null,
     isLastNodeSelected: false,
+    decorators: nodeDecorators,
   };
 
   data.insideLabel = convertInsideLabel(

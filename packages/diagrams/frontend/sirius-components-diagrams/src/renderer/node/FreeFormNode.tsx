@@ -21,6 +21,7 @@ import { Label } from '../Label';
 import { ActionsContainer } from '../actions/ActionsContainer';
 import { useConnectionLineNodeStyle } from '../connector/useConnectionLineNodeStyle';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
+import { DecoratorContainer } from '../decorators/DecoratorContainer';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
@@ -166,6 +167,7 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
           onDrop={handleOnDrop}
           data-testid={`FreeForm - ${data?.targetObjectLabel}`}>
           <div data-svg="image" style={{ ...backgroundStyle }} />
+          <DecoratorContainer decorators={data.decorators} />
           <div className={classes.labelAndAction}>
             <div className={classes.label}>
               {data.insideLabel && <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} />}
