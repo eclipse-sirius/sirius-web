@@ -23,6 +23,8 @@ const useStyles = makeStyles()((theme) => ({
   actionsContainer: {
     gridRow: 1,
     gridColumn: 1,
+    width: 'fit-content',
+    justifySelf: 'flex-end',
     zIndex: 10,
     display: 'flex',
     flexDirection: 'row',

@@ -41,9 +41,9 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-datatree", 100.0),
   new ModuleCoverage("sirius-components-charts", 84.0),
   new ModuleCoverage("sirius-components-collaborative-charts", 77.0),
-  new ModuleCoverage("sirius-components-diagrams", 92.0),
+  new ModuleCoverage("sirius-components-diagrams", 91.0),
   new ModuleCoverage("sirius-components-collaborative-diagrams", 89.0),
-  new ModuleCoverage("sirius-components-diagrams-graphql", 80.0),
+  new ModuleCoverage("sirius-components-diagrams-graphql", 74.0),
   new ModuleCoverage("sirius-components-gantt", 91.0),
   new ModuleCoverage("sirius-components-collaborative-gantt", 86.0),
   new ModuleCoverage("sirius-components-gantt-graphql", 91.0),
@@ -101,7 +101,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-view-diagram-customnodes-edit", 80.0),
   new ModuleCoverage("sirius-web-domain", 93.0),
   new ModuleCoverage("sirius-web-application", 90.0),
-  new ModuleCoverage("sirius-web-infrastructure", 94.0),
+  new ModuleCoverage("sirius-web-infrastructure", 93.0),
   new ModuleCoverage("sirius-web-starter", 96.0),
   new ModuleCoverage("sirius-web", 37.0)
 );

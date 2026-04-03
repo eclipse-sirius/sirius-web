@@ -17,6 +17,7 @@ import { memo, useMemo } from 'react';
 import { Label } from '../Label';
 import { useConnectionLineNodeStyle } from '../connector/useConnectionLineNodeStyle';
 import { useConnectorNodeStyle } from '../connector/useConnectorNodeStyle';
+import { DecoratorContainer } from '../decorators/DecoratorContainer';
 import { useDrop } from '../drop/useDrop';
 import { useDropNodeStyle } from '../dropNode/useDropNodeStyle';
 import { ConnectionCreationHandles } from '../handles/ConnectionCreationHandles';
@@ -80,6 +81,7 @@ export const IconLabelNode: NodeComponentsMap['iconLabelNode'] = memo(
         onDragOver={onDragOver}
         onDrop={handleOnDrop}
         data-testid={`IconLabel - ${data?.insideLabel?.text}`}>
+        <DecoratorContainer decorators={data.decorators} />
         {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
         {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
         <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />

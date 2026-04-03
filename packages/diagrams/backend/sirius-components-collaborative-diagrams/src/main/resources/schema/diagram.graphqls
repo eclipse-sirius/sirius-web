@@ -125,6 +125,25 @@ type Node {
   deletable: Boolean!
   customizedStyleProperties: [NodeStyleProperty!]!
   initialBorderNodePosition: BorderNodePosition!
+  decorators: [NodeDecorator!]!
+}
+
+type NodeDecorator {
+  label: String!
+  position: NodeDecoratorPosition!
+  iconURL: String!
+}
+
+enum NodeDecoratorPosition {
+  NORTH
+  NORTH_EAST
+  EAST
+  SOUTH_EAST
+  SOUTH
+  SOUTH_WEST
+  WEST
+  NORTH_WEST
+  CENTER
 }
 
 enum NodeStyleProperty {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,25 @@ export interface GQLNode<T extends GQLNodeStyle> {
   deletable: boolean;
   customizedStyleProperties: string[];
   initialBorderNodePosition: GQLBorderNodePosition;
+  decorators: GQLNodeDecorator[];
 }
+
+export interface GQLNodeDecorator {
+  label: string;
+  position: GQLNodeDecoratorPosition;
+  iconURL: string;
+}
+
+export type GQLNodeDecoratorPosition =
+  | 'NORTH'
+  | 'NORTH_EAST'
+  | 'EAST'
+  | 'SOUTH_EAST'
+  | 'SOUTH'
+  | 'SOUTH_WEST'
+  | 'WEST'
+  | 'NORTH_WEST'
+  | 'CENTER';
 
 export type GQLBorderNodePosition = 'WEST' | 'EAST' | 'SOUTH' | 'NORTH' | 'NONE';
 

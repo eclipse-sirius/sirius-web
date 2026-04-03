@@ -54,6 +54,7 @@ const toIconLabelNode = (
     labelEditable,
     deletable,
     customizedStyleProperties,
+    decorators,
   } = gqlNode;
 
   const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
@@ -105,6 +106,7 @@ const toIconLabelNode = (
     minComputedHeight: null,
     isLastNodeSelected: false,
     moving: false,
+    decorators,
   };
 
   data.insideLabel = convertInsideLabel(

@@ -54,6 +54,7 @@ const toRectangularNode = (
     labelEditable,
     deletable,
     customizedStyleProperties,
+    decorators,
   } = gqlNode;
 
   const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
@@ -113,6 +114,7 @@ const toRectangularNode = (
     minComputedHeight: gqlNodeLayoutData?.minComputedSize?.height ?? null,
     isLastNodeSelected: false,
     moving: false,
+    decorators,
   };
 
   data.insideLabel = convertInsideLabel(

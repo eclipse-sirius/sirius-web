@@ -55,6 +55,7 @@ const toListNode = (
     labelEditable,
     deletable,
     customizedStyleProperties,
+    decorators,
   } = gqlNode;
 
   const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
@@ -120,6 +121,7 @@ const toListNode = (
     minComputedHeight: gqlNodeLayoutData?.minComputedSize?.height ?? null,
     isLastNodeSelected: false,
     moving: false,
+    decorators,
   };
 
   data.insideLabel = convertInsideLabel(

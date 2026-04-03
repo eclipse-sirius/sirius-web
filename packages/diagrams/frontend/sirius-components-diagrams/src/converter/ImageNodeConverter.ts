@@ -49,6 +49,7 @@ const toImageNode = (
     labelEditable,
     deletable,
     customizedStyleProperties,
+    decorators,
   } = gqlNode;
 
   const handleLayoutData: GQLHandleLayoutData[] = gqlDiagram.layoutData.nodeLayoutData
@@ -107,6 +108,7 @@ const toImageNode = (
     minComputedHeight: null,
     isLastNodeSelected: false,
     moving: false,
+    decorators,
   };
 
   data.insideLabel = convertInsideLabel(
