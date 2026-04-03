@@ -70,6 +70,7 @@ const createEdgeAnchorNodeCreationHandles = (
       minComputedWidth: null,
       minComputedHeight: null,
       isLastNodeSelected: false,
+      decorators: [],
     },
   };
 };
