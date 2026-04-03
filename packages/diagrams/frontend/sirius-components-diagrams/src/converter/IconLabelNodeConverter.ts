@@ -26,6 +26,7 @@ import { IconLabelNodeData } from '../renderer/node/IconLabelNode.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
 import { convertBorderNodePosition } from './convertBorderNodes';
+import { convertDecorators } from './convertDecorators';
 import { isListLayoutStrategy } from './convertDiagram';
 import { convertHandles } from './convertHandles';
 import { convertInsideLabel, convertOutsideLabels } from './convertLabel';
@@ -54,6 +55,7 @@ const toIconLabelNode = (
     labelEditable,
     deletable,
     customizedStyleProperties,
+    decorators,
   } = gqlNode;
 
   const gqlNodeLayoutData: GQLNodeLayoutData | undefined = gqlDiagram.layoutData.nodeLayoutData.find(
@@ -65,6 +67,8 @@ const toIconLabelNode = (
   const isNew = gqlNodeLayoutData === undefined;
   const resizedByUser = gqlNodeLayoutData?.resizedByUser ?? false;
   const movedByUser = gqlNodeLayoutData?.movedByUser ?? false;
+
+  const nodeDecorators = convertDecorators(decorators);
 
   const data: IconLabelNodeData = {
     targetObjectId,
@@ -104,6 +108,7 @@ const toIconLabelNode = (
     minComputedWidth: null,
     minComputedHeight: null,
     isLastNodeSelected: false,
+    decorators: nodeDecorators,
   };
 
   data.insideLabel = convertInsideLabel(

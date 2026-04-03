@@ -16,6 +16,7 @@ import {
   ConnectionCreationHandles,
   ConnectionHandles,
   ConnectionTargetHandle,
+  DecoratorContainer,
   Label,
   Resizer,
   useConnectionLineNodeStyle,
@@ -88,6 +89,7 @@ export const EllipseNode: NodeComponentsMap['ellipseNode'] = memo(
           onDragOver={onDragOver}
           onDrop={handleOnDrop}
           data-testid={`Ellipse - ${data?.insideLabel?.text}`}>
+          <DecoratorContainer decorators={data.decorators}></DecoratorContainer>
           {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
           {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />

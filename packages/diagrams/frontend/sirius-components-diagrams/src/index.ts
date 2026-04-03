@@ -16,6 +16,7 @@ export type { DiagramContextValue } from './contexts/DiagramContext.types';
 export { NodeTypeContext } from './contexts/NodeContext';
 export type { NodeTypeContextValue, NodeTypeContributionElement } from './contexts/NodeContext.types';
 export { convertBorderNodePosition } from './converter/convertBorderNodes';
+export { convertDecorator, convertDecoratorPosition, convertDecorators } from './converter/convertDecorators';
 export { convertLineStyle, isListLayoutStrategy } from './converter/convertDiagram';
 export { AlignmentMap } from './converter/convertDiagram.types';
 export type { IConvertEngine, INodeConverter } from './converter/ConvertEngine.types';
@@ -33,7 +34,7 @@ export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment
 export type { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from './graphql/subscription/diagramFragment.types';
 export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
-export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
+export type { GQLNode, GQLNodeDecorator, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
 export { Action, ACTION_ICON_SIZE } from './renderer/actions/Action';
 export type { ActionProps } from './renderer/actions/Action.types';
 export { ActionsContainer } from './renderer/actions/ActionsContainer';
@@ -45,6 +46,8 @@ export { ManageVisibilityContext } from './renderer/actions/visibility/ManageVis
 export type { ManageVisibilityContextValue } from './renderer/actions/visibility/ManageVisibilityContextProvider.types';
 export { useConnectionLineNodeStyle } from './renderer/connector/useConnectionLineNodeStyle';
 export { useConnectorNodeStyle } from './renderer/connector/useConnectorNodeStyle';
+export { DecoratorContainer } from './renderer/decorators/DecoratorContainer';
+export type { DecoratorContainerProps } from './renderer/decorators/DecoratorContainer.types';
 export { BorderNodePosition as BorderNodePosition } from './renderer/DiagramRenderer.types';
 export type { Diagram, EdgeData, NodeData, ReactFlowPropsCustomizer } from './renderer/DiagramRenderer.types';
 export { diagramRendererReactFlowPropsCustomizerExtensionPoint } from './renderer/DiagramRendererExtensionPoints';
