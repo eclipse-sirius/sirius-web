@@ -89,6 +89,7 @@ Add log messages for the manipulation of projects
 - [ADR-222] Add auto layout until manual change on diagram
 - [ADR-223] Add the ability to hide the diagram toolbar
 - [ADR-224] Add support for Selection Dialog that can be confirmed without making selection
+- [ADR-227] Allow users to filter a given selection on diagrams 
 
 
 === Deprecation warning

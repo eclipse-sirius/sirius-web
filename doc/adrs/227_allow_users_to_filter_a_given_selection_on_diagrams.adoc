@@ -1,0 +1,117 @@
+:author: Michael Charfadi
+:date: 2026-03-30
+:status: proposed
+:consulted: 
+:informed: 
+:deciders: Stéphane Bégaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6352
+
+= (XS) Allow users to filter a given selection on diagrams 
+
+== Context and Problem Statement
+
+When selecting with the lasso on a diagram, all elements inside the lasso are selected but we might want to use a group tool that is only available on some type of element.
+
+We want to be able to filter a given selection on diagrams.
+
+
+== Decision Drivers
+
+Users should have a menu to filter a given selection.
+
+Specifiers can contribute entries in this menu to add a custom selection filter.
+
+The solution must be applicable to Sirius Web and downstream projects.
+
+
+== Considered Options
+
+=== First Option
+
+We can already add custom tools thanks to `IGroupPaletteToolsProvider` & `ISingleClickOnMultipleDiagramElementHandler`.
+
+These tools can modify the current selection leveraging the `WorkbenchSelectionEntries`.
+
+As such a group tool filtering the selection to select only the nodes would look like this.
+
+[source,java]
+----
+public class FilterNodesToolHandler implements ISingleClickOnMultipleDiagramElementHandler {
+
+    public static final String FILTER_NODES_TOOL_ID = "filter-nodes";
+
+    private final IDiagramQueryService diagramQueryService;
+
+    public FilterNodesToolHandler(IDiagramQueryService diagramQueryService) {
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
+    }
+
+    @Override
+    public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, String toolId, List<String> diagramElementIds) {
+        return FilterNodesToolHandler.FILTER_NODES_TOOL_ID.equals(toolId);
+    }
+
+    @Override
+    public IStatus execute(IEditingContext editingContext, DiagramContext diagramContext, String toolId, List<String> diagramElementIds, List<ToolVariable> variables) {
+        List<WorkbenchSelectionEntry> workbenchSelectionEntries = diagramElementIds.stream()
+                .flatMap(diagramElementId -> this.diagramQueryService.findNodeById(diagramContext.diagram(), diagramElementId).stream())
+                .map(Node::getId)
+                .map(WorkbenchSelectionEntry::new)
+                .toList();
+
+        WorkbenchSelection newSelection = new  WorkbenchSelection(workbenchSelectionEntries);
+
+        var success = new Success();
+        success.getParameters().put(Success.NEW_SELECTION, newSelection);
+        return success;
+    }
+----
+
+=== Second Option
+
+The selection filters would be more accessible if the menu was accessible from the `DiagramPanel` instead of the `Palette`.
+
+We could add a `FilterSelectionSection` inside the `DiagramPanel` in the view dsl.
+
+This `FilterSelectionSection` could have several `FilterSelectionTool`.
+
+Some API like `IFilterSelectionToolHandler` & `IFilterSelectionToolProvider` could be added in order to manage these tools.
+
+
+=== Third Option
+
+We will allow the declaration of `ToolSections` inside a `DiagramToolBar`.
+
+A tool section will be rendered as a menu button and the node tools inside it as menu entries.
+
+This will allow a lot more scenarios as tools not related to the selection could also be contributed.
+
+An `IDiagramToolBarSectionsProvider` will be added to declare the tools sections on the backend.
+
+Existing `ISingleClickOnMultipleDiagramElementHandler` will be used to handle the tools.
+
+
+=== Scenario
+
+Sirius Web contributors should be able to add filter selection tools.
+
+How to contribute such tools should be straightforward and documented.
+
+
+=== Breadboarding
+
+The `DiagramPanel` or the `Palette` should render the filter selection tools.
+
+
+=== Cutting backs
+
+
+
+== Rabbit holes
+
+The position of the button menu on the `DiagramPanel` would be rendered either at then end or the beginning of the panel.
+
+
+== No-gos
+
+None
