@@ -39,7 +39,7 @@ Custom deserializers and migration services will probably be impacted.
 
 - [releng] Switch to lexical 0.42.0
 - https://github.com/eclipse-sirius/sirius-web/issues/6299[#6299] [releng] Switch to https://vite.dev/blog/announcing-vite8[Vite 8.0.1] and @vitejs/plugin-react 6.0.1
-- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.0.0[Spring Boot 4.0.0]
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.0.5[Spring Boot 4.0.5]
 
 
 === Bug fixes
