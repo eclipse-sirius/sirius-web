@@ -1,0 +1,34 @@
+name: Check PR Size
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write # Required to post comments
+
+jobs:
+  audit-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.GITHUB_EVENT_PR_HEAD_SHA }}
+          persist-credentials: false
+
+      - name: Setup Node SDK
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.16
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Run Audit Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd scripts
+          npm init -y
+          npm install @actions/core @actions/github
+          node ./check-pr-size.mjs
