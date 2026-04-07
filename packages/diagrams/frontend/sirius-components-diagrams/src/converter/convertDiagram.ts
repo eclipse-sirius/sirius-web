@@ -112,8 +112,11 @@ const getOrCreateAnchorNodeEdge = (
 ): Node<NodeData | EdgeAnchorNodeData> | undefined => {
   // We need to use the already rendered node in order to preserve its position and avoid flickering after a refresh
   const id = type === 'source' ? gqlEdge.sourceId : gqlEdge.targetId;
+
+  const existingEdge = state.edgeLookup.get(gqlEdge.sourceId) || state.edgeLookup.get(gqlEdge.targetId) || null;
+
   let edgeAnchorNode =
-    state.nodeLookup.get(id) || createEdgeAnchorNode(gqlEdge, type, gqlDiagram.layoutData.nodeLayoutData);
+    state.nodeLookup.get(id) || createEdgeAnchorNode(gqlEdge, existingEdge, type, gqlDiagram.layoutData.nodeLayoutData);
 
   const newHandles = convertHandles(id, gqlDiagram.edges, []);
 
