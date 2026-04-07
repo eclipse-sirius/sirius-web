@@ -57,6 +57,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - [releng] Switch `@mui/material` to `7.3.10`
 - [releng] Switch `@mui/icons-material` to `7.3.10`
 - [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.4`
+- https://github.com/eclipse-sirius/sirius-web/issues/6388[#6388] [diagram] Exclude `EdgeAnchorNode` from layout and thus avoid flickering of an edge on edge
 
 
 === New Features

@@ -21,9 +21,10 @@ import { Root, createRoot } from 'react-dom/client';
 import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
 import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
 import { NodeData } from '../DiagramRenderer.types';
-import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
 import { Label } from '../Label';
 import { DiagramDirectEditContextProvider } from '../direct-edit/DiagramDirectEditContext';
+import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
+import { isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
 import { FreeFormNode } from '../node/FreeFormNode';
 import { FreeFormNodeData } from '../node/FreeFormNode.types';
 import { ListNode } from '../node/ListNode';
@@ -34,7 +35,7 @@ import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
-import { getChildren, computeNewlyNodePosition } from './layoutNode';
+import { computeNewlyNodePosition, getChildren } from './layoutNode';
 import { gap } from './layoutParams';
 
 const emptyNodeProps = {
@@ -324,8 +325,8 @@ const layoutDiagram = (
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[],
   autoLayout: boolean
 ) => {
-  const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden);
-  const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
+  const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node));
+  const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId && !isEdgeAnchorNode(node));
 
   const layoutEngine: ILayoutEngine = new LayoutEngine();
 
