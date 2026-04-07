@@ -9,7 +9,7 @@
 - Add a description in the new representation modal
 - Add support for node decorators
 - Add support for diagram minimap default visibility
-- Allow users to filter a given selection on diagrams 
+- Allow users to filter a given selection on diagrams
 
 
 === Architectural decision records
@@ -59,6 +59,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - https://github.com/eclipse-sirius/sirius-web/issues/6320[#6320] [diagram] Prevent inside label to be centered regardless of the configured position
 - https://github.com/eclipse-sirius/sirius-web/issues/6388[#6388] [diagram] Exclude `EdgeAnchorNode` from layout and thus avoid flickering of an edge on edge
 - https://github.com/eclipse-sirius/sirius-web/issues/6309[#6309] [diagram] Add support for multi-select node resizing with position adjustments
+- https://github.com/eclipse-sirius/sirius-web/issues/6386[#6386] [6386] Fix an issue where the handles of an edge on edge could be incorrect
 
 
 === New Features
