@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Edge, Handle, Node, NodeProps, Position, ReactFlowState, useReactFlow, useStore } from '@xyflow/react';
 import { memo, useEffect } from 'react';
+import { getNodePositionAbsoluteFromSvgPathAndPositionRation } from '../../converter/edgeAnchorNodeFactory';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getHandlePositionFromNodeAndPath } from '../edge/EdgeLayout';
 import { useRefreshConnectionHandles } from '../handles/useRefreshConnectionHandles';
@@ -61,15 +62,11 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
         setNodes((prevNodes) =>
           prevNodes.map((prevNode) => {
             if (prevNode.id === id && edgePath) {
-              //Get the point on the svgPath where the EdgeAnchorNode will be placed
-              var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-              svgPath.setAttribute('d', edgePath);
-              const pathLength = svgPath.getTotalLength();
-              let points = svgPath.getPointAtLength(pathLength * 0.5);
-              if (data.isLayouted && data.positionRatio) {
-                points = svgPath.getPointAtLength(pathLength * data.positionRatio);
-              }
-
+              const points = getNodePositionAbsoluteFromSvgPathAndPositionRation(
+                edgePath,
+                data.positionRatio,
+                data.isLayouted
+              );
               //Update the handles position
               const connectionHandles = data.connectionHandles.map((connectionHandle) => {
                 const connectedEdge = getEdge(connectionHandle.edgeId);
