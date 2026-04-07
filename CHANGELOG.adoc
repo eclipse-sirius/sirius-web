@@ -89,7 +89,8 @@ Add log messages for the manipulation of projects
 - https://github.com/eclipse-sirius/sirius-web/issues/5646[#5646] [diagram] Don't invoke deletion command for empty diagram selection
 - https://github.com/eclipse-sirius/sirius-web/issues/6363[#6363] [test] Add new architecture tests for data fetchers.
 They ensure that each data fetcher is annotated by a data fetcher annotation and has a name matching `<Type><Field>DataFetcher`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6396[#6396] [diagram] The diagram palette now supports fuzzy matching when searching for tools.
+For example entering either `att def` of `NAD` will now find a tool named `New Attribute Definition`.
 
 
 == 2026.3.0
