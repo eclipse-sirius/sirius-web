@@ -30,8 +30,8 @@ import { updateHandleFromReferencePosition } from '../renderer/layout/UpdateHand
 import { RawDiagram } from '../renderer/layout/layout.types';
 import {
   computeBorderNodeExtents,
-  computeBorderNodePositions,
   computeBorderNodeLabelPosition,
+  computeBorderNodePositions,
 } from '../renderer/layout/layoutBorderNodes';
 import { layoutHandles } from '../renderer/layout/layoutHandles';
 import { updateHandleViewModifier } from '../renderer/layout/updateHandleViewModifier';
@@ -45,6 +45,7 @@ import { ImageNodeConverter } from './ImageNodeConverter';
 import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
 import { convertEdgeType } from './convertEdge';
+import { convertHandles } from './convertHandles';
 import { convertContentStyle, convertLabelStyle } from './convertLabel';
 import { createEdgeAnchorNode } from './edgeAnchorNodeFactory';
 
@@ -107,13 +108,14 @@ const getOrCreateAnchorNodeEdge = (
   gqlDiagram: GQLDiagram,
   state: ReactFlowState<Node<NodeData>, Edge<EdgeData>>,
   type: HandleType,
-  gqlEdge: GQLEdge,
-  edges: GQLEdge[]
+  gqlEdge: GQLEdge
 ): Node<NodeData | EdgeAnchorNodeData> | undefined => {
   // We need to use the already rendered node in order to preserve its position and avoid flickering after a refresh
   const id = type === 'source' ? gqlEdge.sourceId : gqlEdge.targetId;
   let edgeAnchorNode =
-    state.nodeLookup.get(id) || createEdgeAnchorNode(gqlEdge, type, edges, gqlDiagram.layoutData.nodeLayoutData);
+    state.nodeLookup.get(id) || createEdgeAnchorNode(gqlEdge, type, gqlDiagram.layoutData.nodeLayoutData);
+
+  const newHandles = convertHandles(id, gqlDiagram.edges, []);
 
   // Today, we only have one EdgeAnchorNode for each edge used as source or target
   const edgeLayoutData = gqlDiagram.layoutData.edgeLayoutData.find((layoutData) => layoutData.id === id);
@@ -124,10 +126,17 @@ const getOrCreateAnchorNodeEdge = (
         ...edgeAnchorNode.data,
         positionRatio: edgeLayoutData.edgeAnchorLayoutData[0].positionRatio,
         isLayouted: true,
+        connectionHandles: newHandles,
       },
     };
   }
-  return edgeAnchorNode;
+  return {
+    ...edgeAnchorNode,
+    data: {
+      ...edgeAnchorNode.data,
+      connectionHandles: newHandles,
+    },
+  };
 };
 
 const defaultNodeConverters: INodeConverter[] = [
@@ -204,7 +213,7 @@ export const convertDiagram = (
     if (!sourceNode) {
       //If the node used as an anchor was not converted already
       if (!nodeId2node.get(gqlEdge.sourceId)) {
-        sourceNode = getOrCreateAnchorNodeEdge(gqlDiagram, state, 'source', gqlEdge, gqlDiagram.edges);
+        sourceNode = getOrCreateAnchorNodeEdge(gqlDiagram, state, 'source', gqlEdge);
         if (sourceNode) {
           nodeId2node.set(sourceNode.id, sourceNode);
           nodes.push(sourceNode);
@@ -214,7 +223,7 @@ export const convertDiagram = (
 
     if (!targetNode) {
       if (!nodeId2node.get(gqlEdge.targetId)) {
-        targetNode = getOrCreateAnchorNodeEdge(gqlDiagram, state, 'target', gqlEdge, gqlDiagram.edges);
+        targetNode = getOrCreateAnchorNodeEdge(gqlDiagram, state, 'target', gqlEdge);
         if (targetNode) {
           nodeId2node.set(targetNode.id, targetNode);
           nodes.push(targetNode);
