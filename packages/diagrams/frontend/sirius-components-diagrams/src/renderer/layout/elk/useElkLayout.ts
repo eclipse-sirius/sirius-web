@@ -15,6 +15,7 @@ import { Edge, Node } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { isEdgeAnchorNode } from '../../node/EdgeAnchorNode.types';
 import { ListNodeData } from '../../node/ListNode.types';
 import { UseElkLayoutValue } from './useElkLayout.types';
 
@@ -27,7 +28,7 @@ const reverseOrderMap = <K, V>(map: Map<K, V>): Map<K, V> => {
 
 const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
   const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
-  for (const node of nodes.filter((n) => !n.hidden)) {
+  for (const node of nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node))) {
     const parentNodeId: string = node.parentId ?? 'root';
     if (!subNodes.has(parentNodeId)) {
       subNodes.set(parentNodeId, []);
