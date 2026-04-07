@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useContext, useEffect, useState } from 'react';
+import { useDebounce } from '@eclipse-sirius/sirius-components-core';
+import { useContext } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -37,22 +38,11 @@ const useStyles = makeStyles()((theme) => ({
 // How long the user has to hover on the element for the actions to be displayed (in ms).
 const REVEAL_DELAY = 500;
 
-const useDelayedToggle = (delay: number): boolean => {
-  const [toggle, setToggle] = useState<boolean>(false);
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setToggle(true);
-    }, delay);
-    return () => clearTimeout(timeoutId);
-  }, []);
-  return toggle;
-};
-
 export const ActionsContainer = ({ diagramElementId }: ActionsContainerProps) => {
   const { classes } = useStyles();
 
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const delayPassed = useDelayedToggle(REVEAL_DELAY);
+  const delayPassed = useDebounce(true, REVEAL_DELAY);
   const shouldDisplay = delayPassed && !readOnly;
 
   const { actions } = useActions(diagramElementId, !shouldDisplay);

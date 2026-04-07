@@ -10,7 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { DRAG_SOURCES_TYPE, GQLStyledString, StyledLabel } from '@eclipse-sirius/sirius-components-core';
+import { DRAG_SOURCES_TYPE, GQLStyledString, StyledLabel, useDebounce } from '@eclipse-sirius/sirius-components-core';
+import Tooltip from '@mui/material/Tooltip';
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PartHovered, TreeItemProps, TreeItemState } from './TreeItem.types';
@@ -132,7 +133,9 @@ export const TreeItem = ({
 
   const { classes } = useTreeItemStyle({ depth });
   const { onDropTreeItem } = useDropTreeItem(editingContextId, treeId);
-  const { tooltip } = useTreeItemTooltip(editingContextId, treeId, item.id, state.partHovered !== 'item');
+
+  const partHoveredForTooltip: string | null = useDebounce(state.partHovered, 500);
+  const { tooltip } = useTreeItemTooltip(editingContextId, treeId, item.id, partHoveredForTooltip !== 'item');
 
   const handleMouseEnter = (partHovered: PartHovered) => {
     setState((prevState) => ({ ...prevState, partHovered }));
@@ -335,16 +338,17 @@ export const TreeItem = ({
             }}
             data-testid={dataTestid}>
             <div className={`${classes.content} ${item.selectable ? '' : classes.nonSelectable}`}>
-              <div
-                className={`${classes.imageAndLabel} ${
-                  item.selectable ? classes.imageAndLabelSelectable : ''
-                } iconAndText`}
-                onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
-                title={tooltip}
-                data-testid={label}>
-                <TreeItemIcon item={item} />
-                {text}
-              </div>
+              <Tooltip open={tooltip?.length > 0 && state.partHovered === 'item'} title={tooltip}>
+                <div
+                  className={`${classes.imageAndLabel} ${
+                    item.selectable ? classes.imageAndLabelSelectable : ''
+                  } iconAndText`}
+                  onDoubleClick={() => item.hasChildren && onExpand(item.id, depth)}
+                  data-testid={label}>
+                  <TreeItemIcon item={item} />
+                  {text}
+                </div>
+              </Tooltip>
               <div onClick={onTreeItemAction}>
                 {treeItemActionRender ? (
                   treeItemActionRender({
