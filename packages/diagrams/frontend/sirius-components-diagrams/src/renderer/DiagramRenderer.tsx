@@ -26,6 +26,7 @@ import {
   OnNodesChange,
   ReactFlow,
   ReactFlowProps,
+  SelectionMode,
   applyNodeChanges,
   useReactFlow,
   useStoreApi,
@@ -458,7 +459,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onEdgeMouseEnter: onEdgeMouseEnter,
     onEdgeMouseLeave: onEdgeMouseLeave,
     onSelectionChange: onSelectionChange,
-
+    selectionMode: SelectionMode.Partial,
     maxZoom: 40,
     minZoom: 0.1,
     snapToGrid: isSnapToGridEnabled,
