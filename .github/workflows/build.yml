@@ -112,6 +112,7 @@ jobs:
           npx yalc add @eclipse-sirius/sirius-components-gantt
           npx yalc add @eclipse-sirius/sirius-components-impactanalysis
           npx yalc add @eclipse-sirius/sirius-components-omnibox
+          npx yalc add @eclipse-sirius/sirius-components-palette
           npx yalc add @eclipse-sirius/sirius-components-portals
           npx yalc add @eclipse-sirius/sirius-components-selection
           npx yalc add @eclipse-sirius/sirius-components-tables
@@ -176,6 +177,7 @@ jobs:
           retention-days: 5
 
       - name: Check the global code coverage
+        if: startsWith(env.GITHUB_REF, 'refs/tags/v') == false && env.GITHUB_REF != 'refs/heads/master' && env.GITHUB_REF != 'refs/heads/cooldown'
         run: jshell scripts/check-coverage.jsh
 
       - name: Publish the backend
