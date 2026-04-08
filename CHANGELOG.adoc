@@ -54,6 +54,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5436[#5436] [diagram] Prevent custom handles from being lost after importing a project with a diagram representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/6320[#6320] [diagram] Prevent inside label to be centered regardless of the configured position
+- https://github.com/eclipse-sirius/sirius-web/issues/6342[#6342] [diagram] Remove bending points and custom handles after an `arrangeAll`
 
 
 
