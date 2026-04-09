@@ -19,6 +19,8 @@ import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.IDecoratorDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDecoratorDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.diagrams.description.SemanticDecoratorDescription;
+import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
  * Finds the requested node decorators.
@@ -34,9 +36,10 @@ public class DecoratorDescriptionRequestor implements IDecoratorDescriptionReque
     }
 
     @Override
-    public List<IDecoratorDescription> find(NodeDescription nodeDescription) {
+    public List<IDecoratorDescription> find(NodeDescription nodeDescription, VariableManager variableManager) {
         return this.decoratorDescriptions.stream()
-                .filter(decoratorDescription -> this.matchesNodeDescription(decoratorDescription, nodeDescription))
+                .filter(decoratorDescription -> this.matchesNodeDescription(decoratorDescription, nodeDescription)
+                        || this.matchesTargetObject(decoratorDescription, variableManager))
                 .toList();
     }
 
@@ -44,6 +47,14 @@ public class DecoratorDescriptionRequestor implements IDecoratorDescriptionReque
         boolean result = false;
         if (decoratorDescription instanceof NodeDecoratorDescription nodeDecoratorDescription) {
             result = nodeDecoratorDescription.getNodeDescriptions().stream().anyMatch(decoratorNodeDescription -> Objects.equals(decoratorNodeDescription.getId(), nodeDescription.getId()));
+        }
+        return result;
+    }
+
+    private boolean matchesTargetObject(IDecoratorDescription decoratorDescription, VariableManager variableManager) {
+        boolean result = false;
+        if (decoratorDescription instanceof SemanticDecoratorDescription semanticDecoratorDescription) {
+            result = semanticDecoratorDescription.getDomainTypePredicate().test(variableManager);
         }
         return result;
     }

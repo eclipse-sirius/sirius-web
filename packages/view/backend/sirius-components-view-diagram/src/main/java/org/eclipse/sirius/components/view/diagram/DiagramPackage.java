@@ -4528,6 +4528,86 @@ public interface DiagramPackage extends EPackage {
     int NODE_DECORATOR_DESCRIPTION_OPERATION_COUNT = DECORATOR_DESCRIPTION_OPERATION_COUNT + 0;
 
     /**
+     * The meta object id for the
+     * '{@link org.eclipse.sirius.components.view.diagram.impl.SemanticDecoratorDescriptionImpl <em>Semantic Decorator
+     * Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.view.diagram.impl.SemanticDecoratorDescriptionImpl
+     * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSemanticDecoratorDescription()
+     * @generated
+     */
+    int SEMANTIC_DECORATOR_DESCRIPTION = 53;
+
+    /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SEMANTIC_DECORATOR_DESCRIPTION__LABEL_EXPRESSION = DECORATOR_DESCRIPTION__LABEL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SEMANTIC_DECORATOR_DESCRIPTION__PRECONDITION_EXPRESSION = DECORATOR_DESCRIPTION__PRECONDITION_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SEMANTIC_DECORATOR_DESCRIPTION__ICON_URL_EXPRESSION = DECORATOR_DESCRIPTION__ICON_URL_EXPRESSION;
+
+    /**
+     * The feature id for the '<em><b>Position</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SEMANTIC_DECORATOR_DESCRIPTION__POSITION = DECORATOR_DESCRIPTION__POSITION;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SEMANTIC_DECORATOR_DESCRIPTION__NAME = DECORATOR_DESCRIPTION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Domain Type</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE = DECORATOR_DESCRIPTION_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Semantic Decorator Description</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SEMANTIC_DECORATOR_DESCRIPTION_FEATURE_COUNT = DECORATOR_DESCRIPTION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of operations of the '<em>Semantic Decorator Description</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int SEMANTIC_DECORATOR_DESCRIPTION_OPERATION_COUNT = DECORATOR_DESCRIPTION_OPERATION_COUNT + 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrowStyle <em>Arrow Style</em>}'
      * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4535,7 +4615,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrowStyle()
      * @generated
      */
-    int ARROW_STYLE = 53;
+    int ARROW_STYLE = 54;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LayoutDirection <em>Layout
@@ -4545,7 +4625,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLayoutDirection()
      * @generated
      */
-    int LAYOUT_DIRECTION = 54;
+    int LAYOUT_DIRECTION = 55;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LineStyle <em>Line Style</em>}'
@@ -4555,7 +4635,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLineStyle()
      * @generated
      */
-    int LINE_STYLE = 55;
+    int LINE_STYLE = 56;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.NodeContainmentKind <em>Node
@@ -4565,7 +4645,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getNodeContainmentKind()
      * @generated
      */
-    int NODE_CONTAINMENT_KIND = 56;
+    int NODE_CONTAINMENT_KIND = 57;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.SynchronizationPolicy
@@ -4575,7 +4655,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSynchronizationPolicy()
      * @generated
      */
-    int SYNCHRONIZATION_POLICY = 57;
+    int SYNCHRONIZATION_POLICY = 58;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.InsideLabelPosition <em>Inside
@@ -4585,7 +4665,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getInsideLabelPosition()
      * @generated
      */
-    int INSIDE_LABEL_POSITION = 58;
+    int INSIDE_LABEL_POSITION = 59;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.OutsideLabelPosition <em>Outside
@@ -4595,7 +4675,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getOutsideLabelPosition()
      * @generated
      */
-    int OUTSIDE_LABEL_POSITION = 59;
+    int OUTSIDE_LABEL_POSITION = 60;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelOverflowStrategy <em>Label
@@ -4605,7 +4685,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelOverflowStrategy()
      * @generated
      */
-    int LABEL_OVERFLOW_STRATEGY = 60;
+    int LABEL_OVERFLOW_STRATEGY = 61;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection <em>Arrange
@@ -4615,7 +4695,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getArrangeLayoutDirection()
      * @generated
      */
-    int ARRANGE_LAYOUT_DIRECTION = 61;
+    int ARRANGE_LAYOUT_DIRECTION = 62;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.LabelTextAlign <em>Label Text
@@ -4625,7 +4705,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getLabelTextAlign()
      * @generated
      */
-    int LABEL_TEXT_ALIGN = 62;
+    int LABEL_TEXT_ALIGN = 63;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.UserResizableDirection <em>User
@@ -4635,7 +4715,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getUserResizableDirection()
      * @generated
      */
-    int USER_RESIZABLE_DIRECTION = 63;
+    int USER_RESIZABLE_DIRECTION = 64;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode
@@ -4645,7 +4725,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getHeaderSeparatorDisplayMode()
      * @generated
      */
-    int HEADER_SEPARATOR_DISPLAY_MODE = 64;
+    int HEADER_SEPARATOR_DISPLAY_MODE = 65;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.EdgeType <em>Edge Type</em>}' enum.
@@ -4655,7 +4735,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getEdgeType()
      * @generated
      */
-    int EDGE_TYPE = 65;
+    int EDGE_TYPE = 66;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.view.diagram.DecoratorPosition <em>Decorator
@@ -4665,7 +4745,7 @@ public interface DiagramPackage extends EPackage {
      * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getDecoratorPosition()
      * @generated
      */
-    int DECORATOR_POSITION = 66;
+    int DECORATOR_POSITION = 67;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription
@@ -7321,6 +7401,28 @@ public interface DiagramPackage extends EPackage {
     EReference getNodeDecoratorDescription_NodeDescriptions();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription
+     * <em>Semantic Decorator Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Semantic Decorator Description</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription
+     * @generated
+     */
+    EClass getSemanticDecoratorDescription();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription#getDomainType <em>Domain
+     * Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Domain Type</em>'.
+     * @see org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription#getDomainType()
+     * @see #getSemanticDecoratorDescription()
+     * @generated
+     */
+    EAttribute getSemanticDecoratorDescription_DomainType();
+
+    /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription
      * <em>Decorator Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -9482,6 +9584,25 @@ public interface DiagramPackage extends EPackage {
          * @generated
          */
         EReference NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS = eINSTANCE.getNodeDecoratorDescription_NodeDescriptions();
+
+        /**
+         * The meta object literal for the
+         * '{@link org.eclipse.sirius.components.view.diagram.impl.SemanticDecoratorDescriptionImpl <em>Semantic
+         * Decorator Description</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.view.diagram.impl.SemanticDecoratorDescriptionImpl
+         * @see org.eclipse.sirius.components.view.diagram.impl.DiagramPackageImpl#getSemanticDecoratorDescription()
+         * @generated
+         */
+        EClass SEMANTIC_DECORATOR_DESCRIPTION = eINSTANCE.getSemanticDecoratorDescription();
+
+        /**
+         * The meta object literal for the '<em><b>Domain Type</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE = eINSTANCE.getSemanticDecoratorDescription_DomainType();
 
         /**
          * The meta object literal for the

@@ -81,6 +81,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
+import org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -466,6 +467,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EClass nodeDecoratorDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass semanticDecoratorDescriptionEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2899,6 +2907,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getSemanticDecoratorDescription() {
+        return this.semanticDecoratorDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSemanticDecoratorDescription_DomainType() {
+        return (EAttribute) this.semanticDecoratorDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getDecoratorDescription() {
         return this.decoratorDescriptionEClass;
     }
@@ -3399,6 +3427,9 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.nodeDecoratorDescriptionEClass = this.createEClass(NODE_DECORATOR_DESCRIPTION);
         this.createEReference(this.nodeDecoratorDescriptionEClass, NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS);
 
+        this.semanticDecoratorDescriptionEClass = this.createEClass(SEMANTIC_DECORATOR_DESCRIPTION);
+        this.createEAttribute(this.semanticDecoratorDescriptionEClass, SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE);
+
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.layoutDirectionEEnum = this.createEEnum(LAYOUT_DIRECTION);
@@ -3480,6 +3511,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.edgeToolSectionEClass.getESuperTypes().add(this.getToolSection());
         this.dropNodeToolEClass.getESuperTypes().add(this.getTool());
         this.nodeDecoratorDescriptionEClass.getESuperTypes().add(this.getDecoratorDescription());
+        this.semanticDecoratorDescriptionEClass.getESuperTypes().add(this.getDecoratorDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.diagramDescriptionEClass, DiagramDescription.class, "DiagramDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3970,6 +4002,10 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEClass(this.nodeDecoratorDescriptionEClass, NodeDecoratorDescription.class, "NodeDecoratorDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getNodeDecoratorDescription_NodeDescriptions(), this.getNodeDescription(), null, "nodeDescriptions", null, 0, -1, NodeDecoratorDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.semanticDecoratorDescriptionEClass, SemanticDecoratorDescription.class, "SemanticDecoratorDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getSemanticDecoratorDescription_DomainType(), theViewPackage.getDomainType(), "domainType", null, 0, 1, SemanticDecoratorDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");

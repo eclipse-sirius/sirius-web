@@ -86,6 +86,9 @@ Downstream applications can either reuse this container, or manually handle the 
 Specifiers can now define `NodeDecorators` as part of their `DiagramDescription`.
 A node decorator references the `NodeDescriptions` on which it can be applied, and has a `preconditionExpression` to further detail when it should be displayed.
 Decorators also have an `iconURLExpression` and `labelExpression` to specify the decorator's icon and the message to display in the tooltip when hovering it.
+- https://github.com/eclipse-sirius/sirius-web/issues/6410[#6410] [diagram] Add support for semantic decorators in diagrams.
+Specifiers can now use `SemanticDecoratorDescription` to define decorators that are applied on nodes representing a given domain type.
+The decorator also accepts a `preconditionExpression` to further detail when it should be displayed.
 
 
 === Improvements

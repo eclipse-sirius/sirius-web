@@ -29,6 +29,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelD
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDecoratorDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.RectangularNodeStyleDescriptionBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.SemanticDecoratorDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.diagram.DecoratorPosition;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -89,22 +90,40 @@ public class NodeDecoratorDiagramDescriptionProvider implements IEditingContextP
     }
 
     private DiagramDescription createDiagramDescription() {
-        var nodeStyle = new RectangularNodeStyleDescriptionBuilder()
+        var componentNodeStyle = new RectangularNodeStyleDescriptionBuilder()
                 .build();
 
-        var insideLabel = new InsideLabelDescriptionBuilder()
+        var componentInsideLabel = new InsideLabelDescriptionBuilder()
                 .labelExpression("aql:self.name")
                 .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
                 .position(InsideLabelPosition.TOP_CENTER)
                 .build();
 
-        var nodeDescription = new NodeDescriptionBuilder()
+        var componentNodeDescription = new NodeDescriptionBuilder()
                 .name("Component")
                 .domainType("papaya:Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
-                .insideLabel(insideLabel)
+                .insideLabel(componentInsideLabel)
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .style(nodeStyle)
+                .style(componentNodeStyle)
+                .build();
+
+        var classifierNodeStyle = new RectangularNodeStyleDescriptionBuilder()
+                .build();
+
+        var classifierInsideLabel = new InsideLabelDescriptionBuilder()
+                .labelExpression("aql:self.name")
+                .style(DiagramFactory.eINSTANCE.createInsideLabelStyle())
+                .position(InsideLabelPosition.TOP_CENTER)
+                .build();
+
+        var classifierNodeDescription = new NodeDescriptionBuilder()
+                .name("Classifier")
+                .domainType("papaya:Classifier")
+                .semanticCandidatesExpression("aql:self.eAllContents()")
+                .insideLabel(classifierInsideLabel)
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .style(classifierNodeStyle)
                 .build();
 
         var diagramPalette = new DiagramPaletteBuilder()
@@ -112,41 +131,57 @@ public class NodeDecoratorDiagramDescriptionProvider implements IEditingContextP
 
         var decorator1 = new NodeDecoratorDescriptionBuilder()
                 .name("Decorator1")
-                .iconURLExpression("/icons/full/obj16/HideTool.svg")
+                .iconURLExpression("aql:'/icons/full/obj16/HideTool.svg'")
                 .preconditionExpression("aql:true")
                 .labelExpression("aql:'Decorator1 label'")
-                .nodeDescriptions(nodeDescription)
+                .nodeDescriptions(componentNodeDescription)
                 .position(DecoratorPosition.NORTH_EAST)
                 .build();
 
         var decorator2 = new NodeDecoratorDescriptionBuilder()
                 .name("Decorator2")
-                .iconURLExpression("/icons/full/obj16/DeleteTool.svg")
+                .iconURLExpression("aql:'/icons/full/obj16/DeleteTool.svg'")
                 .preconditionExpression("aql:true")
                 .labelExpression("aql:'Decorator2 label'")
-                .nodeDescriptions(nodeDescription)
+                .nodeDescriptions(componentNodeDescription)
                 .position(DecoratorPosition.NORTH_EAST)
                 .build();
 
         var decorator3 = new NodeDecoratorDescriptionBuilder()
                 .name("Decorator3")
-                .iconURLExpression("/icons/full/obj16/NodeTool.svg")
+                .iconURLExpression("aql:'/icons/full/obj16/NodeTool.svg'")
                 .preconditionExpression("aql:self.oclIsKindOf(papaya::Component) and self.name = 'sirius-web-starter'")
                 .labelExpression("aql:'Decorator3 ' + self.name")
-                .nodeDescriptions(nodeDescription)
+                .nodeDescriptions(componentNodeDescription)
                 .position(DecoratorPosition.SOUTH_EAST)
+                .build();
+
+        var semanticDecorator1 = new SemanticDecoratorDescriptionBuilder()
+                .name("SemanticDecorator Classifier")
+                .iconURLExpression("aql:'/icons/full/obj16/NodeTool.svg'")
+                .labelExpression("aql:'SemanticDecorator Classifier'")
+                .domainType("papaya::Classifier")
+                .position(DecoratorPosition.EAST)
+                .build();
+
+        var semanticDecorator2 = new SemanticDecoratorDescriptionBuilder()
+                .name("SemanticDecorator Interface")
+                .iconURLExpression("aql:'/icons/full/obj16/DeleteTool.svg'")
+                .labelExpression("aql:'SemanticDecorator Interface'")
+                .domainType("papaya:Interface")
+                .position(DecoratorPosition.EAST)
                 .build();
 
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'NodeDecoratorDiagram'")
                 .domainType("papaya:Project")
-                .nodeDescriptions(nodeDescription)
+                .nodeDescriptions(componentNodeDescription, classifierNodeDescription)
                 .edgeDescriptions()
                 .palette(diagramPalette)
                 .autoLayout(false)
                 .style(new DiagramBuilders().newDiagramStyleDescription().build())
-                .decoratorDescriptions(decorator1, decorator2, decorator3)
+                .decoratorDescriptions(decorator1, decorator2, decorator3, semanticDecorator1, semanticDecorator2)
                 .build();
 
         return this.diagramDescription;

@@ -371,6 +371,15 @@ public interface DiagramFactory extends EFactory {
     NodeDecoratorDescription createNodeDecoratorDescription();
 
     /**
+     * Returns a new object of class '<em>Semantic Decorator Description</em>'. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return a new object of class '<em>Semantic Decorator Description</em>'.
+     * @generated
+     */
+    SemanticDecoratorDescription createSemanticDecoratorDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

@@ -389,6 +389,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected ConditionalDiagramStyleItemProvider conditionalDiagramStyleItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription} instances. <!-- begin-user-doc -->
@@ -397,6 +398,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * @generated
      */
     protected SelectionDialogDescriptionItemProvider selectionDialogDescriptionItemProvider;
+
     /**
      * This keeps track of the one adapter used for all
      * {@link org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription} instances. <!-- begin-user-doc
@@ -1046,14 +1048,17 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription} instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription} instances. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
      *
      * @generated
      */
     protected NodeDecoratorDescriptionItemProvider nodeDecoratorDescriptionItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -1064,6 +1069,30 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
         }
 
         return this.nodeDecoratorDescriptionItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected SemanticDecoratorDescriptionItemProvider semanticDecoratorDescriptionItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createSemanticDecoratorDescriptionAdapter() {
+        if (this.semanticDecoratorDescriptionItemProvider == null) {
+            this.semanticDecoratorDescriptionItemProvider = new SemanticDecoratorDescriptionItemProvider(this);
+        }
+
+        return this.semanticDecoratorDescriptionItemProvider;
     }
 
     /**
@@ -1277,6 +1306,8 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             this.diagramToolbarItemProvider.dispose();
         if (this.nodeDecoratorDescriptionItemProvider != null)
             this.nodeDecoratorDescriptionItemProvider.dispose();
+        if (this.semanticDecoratorDescriptionItemProvider != null)
+            this.semanticDecoratorDescriptionItemProvider.dispose();
     }
 
     /**

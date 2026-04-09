@@ -36,6 +36,8 @@ public interface IDiagramIdProvider extends IRepresentationDescriptionIdProvider
 
     String NODE_DECORATOR_KIND = "siriusComponents://nodeDecorator";
 
+    String SEMANTIC_DECORATOR_KIND = "siriusComponents://semanticDecorator";
+
     @Override
     String getId(DiagramDescription diagramDescription);
 

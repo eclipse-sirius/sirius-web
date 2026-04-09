@@ -29,7 +29,6 @@ import org.eclipse.sirius.components.diagrams.NodeDecoratorPosition;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.description.IDecoratorDescription;
-import org.eclipse.sirius.components.diagrams.description.NodeDecoratorDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -212,7 +211,7 @@ public class NodeComponent implements IComponent {
         Integer defaultHeight = nodeDescription.getDefaultHeightProvider().apply(nodeVariableManager);
         var initialBorderNodePosition = this.props.getInitialBorderNodePosition();
 
-        List<NodeDecorator> nodeDecorators = this.props.getDecoratorDescriptionRequestor().find(nodeDescription).stream()
+        List<NodeDecorator> nodeDecorators = this.props.getDecoratorDescriptionRequestor().find(nodeDescription, nodeVariableManager).stream()
                 .map(decoratorDescription -> this.computeNodeDecorator(nodeId, decoratorDescription, nodeVariableManager))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
@@ -245,13 +244,11 @@ public class NodeComponent implements IComponent {
 
     private Optional<NodeDecorator> computeNodeDecorator(String nodeId, IDecoratorDescription decoratorDescription, VariableManager nodeVariableManager) {
         Optional<NodeDecorator> result = Optional.empty();
-        if (decoratorDescription instanceof NodeDecoratorDescription nodeDecoratorDescription) {
-            if (nodeDecoratorDescription.getPreconditionPredicate().test(nodeVariableManager)) {
-                String nodeDecoratorId = this.computeNodeDecoratorId(nodeId, nodeDecoratorDescription, nodeDecoratorDescription.getPosition());
-                String label = nodeDecoratorDescription.getLabelProvider().apply(nodeVariableManager);
-                String iconURL = nodeDecoratorDescription.getIconURLProvider().apply(nodeVariableManager);
-                result = Optional.of(new NodeDecorator(nodeDecoratorId, label, nodeDecoratorDescription.getPosition(), iconURL));
-            }
+        if (decoratorDescription != null && decoratorDescription.getPreconditionPredicate().test(nodeVariableManager)) {
+            String nodeDecoratorId = this.computeNodeDecoratorId(nodeId, decoratorDescription, decoratorDescription.getPosition());
+            String label = decoratorDescription.getLabelProvider().apply(nodeVariableManager);
+            String iconURL = decoratorDescription.getIconURLProvider().apply(nodeVariableManager);
+            result = Optional.of(new NodeDecorator(nodeDecoratorId, label, decoratorDescription.getPosition(), iconURL));
         }
         return result;
     }
@@ -363,8 +360,8 @@ public class NodeComponent implements IComponent {
         return new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId(), containmentKind, targetObjectId);
     }
 
-    private String computeNodeDecoratorId(String nodeId, NodeDecoratorDescription nodeDecoratorDescription, NodeDecoratorPosition position) {
-        String rawId = nodeId + nodeDecoratorDescription.getId() + position.name();
+    private String computeNodeDecoratorId(String nodeId, IDecoratorDescription decoratorDescription, NodeDecoratorPosition position) {
+        String rawId = nodeId + decoratorDescription.getId() + position.name();
         return UUID.nameUUIDFromBytes(rawId.getBytes()).toString();
     }
 

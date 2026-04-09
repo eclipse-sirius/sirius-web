@@ -96,6 +96,17 @@ public class NodeDecoratorDiagramControllerTests extends AbstractIntegrationTest
             assertThat(siriusWebDomainDecorators)
                     .anySatisfy(decorator -> assertThat(decorator.label()).isEqualTo("Decorator1 label"))
                     .anySatisfy(decorator -> assertThat(decorator.label()).isEqualTo("Decorator2 label"));
+
+            Node failureNode = diagramNavigator.nodeWithLabel("Failure").getNode();
+            List<NodeDecorator> failureNodeDecorators = failureNode.getDecorators();
+            assertThat(failureNodeDecorators).hasSize(1)
+                    .anySatisfy(decorator -> assertThat(decorator.label()).isEqualTo("SemanticDecorator Classifier"));
+
+            Node abstractTestNode = diagramNavigator.nodeWithLabel("AbstractTest").getNode();
+            List<NodeDecorator> abstractTestNodeDecorators = abstractTestNode.getDecorators();
+            assertThat(abstractTestNodeDecorators).hasSize(2)
+                    .anySatisfy(decorator -> assertThat(decorator.label()).isEqualTo("SemanticDecorator Classifier"))
+                    .anySatisfy(decorator -> assertThat(decorator.label()).isEqualTo("SemanticDecorator Interface"));
         });
 
         StepVerifier.create(flux)

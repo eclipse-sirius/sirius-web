@@ -69,6 +69,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
+import org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -360,6 +361,11 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseNodeDecoratorDescription(NodeDecoratorDescription object) {
             return DiagramAdapterFactory.this.createNodeDecoratorDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseSemanticDecoratorDescription(SemanticDecoratorDescription object) {
+            return DiagramAdapterFactory.this.createSemanticDecoratorDescriptionAdapter();
         }
 
         @Override
@@ -1149,6 +1155,20 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createNodeDecoratorDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription <em>Semantic Decorator
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription
+     * @generated
+     */
+    public Adapter createSemanticDecoratorDescriptionAdapter() {
         return null;
     }
 

@@ -68,6 +68,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
+import org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -597,6 +598,15 @@ public class DiagramSwitch<T> extends Switch<T> {
                 T result = this.caseNodeDecoratorDescription(nodeDecoratorDescription);
                 if (result == null)
                     result = this.caseDecoratorDescription(nodeDecoratorDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION: {
+                SemanticDecoratorDescription semanticDecoratorDescription = (SemanticDecoratorDescription) theEObject;
+                T result = this.caseSemanticDecoratorDescription(semanticDecoratorDescription);
+                if (result == null)
+                    result = this.caseDecoratorDescription(semanticDecoratorDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1364,6 +1374,21 @@ public class DiagramSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseNodeDecoratorDescription(NodeDecoratorDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Semantic Decorator Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Semantic Decorator Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSemanticDecoratorDescription(SemanticDecoratorDescription object) {
         return null;
     }
 

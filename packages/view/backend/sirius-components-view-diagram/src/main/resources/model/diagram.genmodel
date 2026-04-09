@@ -384,5 +384,8 @@
     <genClasses ecoreClass="diagram.ecore#//NodeDecoratorDescription">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDecoratorDescription/nodeDescriptions"/>
     </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//SemanticDecoratorDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//SemanticDecoratorDescription/domainType"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>

@@ -71,6 +71,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
+import org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -210,6 +211,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createDiagramToolbar();
             case DiagramPackage.NODE_DECORATOR_DESCRIPTION:
                 return this.createNodeDecoratorDescription();
+            case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION:
+                return this.createSemanticDecoratorDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -746,6 +749,17 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
     public NodeDecoratorDescription createNodeDecoratorDescription() {
         NodeDecoratorDescriptionImpl nodeDecoratorDescription = new NodeDecoratorDescriptionImpl();
         return nodeDecoratorDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public SemanticDecoratorDescription createSemanticDecoratorDescription() {
+        SemanticDecoratorDescriptionImpl semanticDecoratorDescription = new SemanticDecoratorDescriptionImpl();
+        return semanticDecoratorDescription;
     }
 
     /**

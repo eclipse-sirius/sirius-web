@@ -527,4 +527,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="nodeDescriptions" upperBound="-1"
         eType="#//NodeDescription"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SemanticDecoratorDescription" eSuperTypes="#//DecoratorDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//DomainType"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.sirius.components.diagrams.description.IDecoratorDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
+import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
  * Finds the requested node decorators.
@@ -24,5 +25,5 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
  */
 public interface IDecoratorDescriptionRequestor {
 
-    List<IDecoratorDescription> find(NodeDescription nodeDescription);
+    List<IDecoratorDescription> find(NodeDescription nodeDescription, VariableManager variableManager);
 }

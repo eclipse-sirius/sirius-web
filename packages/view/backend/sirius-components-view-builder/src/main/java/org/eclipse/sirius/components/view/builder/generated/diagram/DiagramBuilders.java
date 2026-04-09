@@ -437,5 +437,15 @@ public class DiagramBuilders {
         return new NodeDecoratorDescriptionBuilder();
     }
 
+    /**
+     * Instantiate a SemanticDecoratorDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public SemanticDecoratorDescriptionBuilder newSemanticDecoratorDescription() {
+        return new SemanticDecoratorDescriptionBuilder();
+    }
+
 
 }
