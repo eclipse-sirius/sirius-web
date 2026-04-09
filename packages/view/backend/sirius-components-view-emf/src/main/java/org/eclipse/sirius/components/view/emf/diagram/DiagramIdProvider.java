@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.view.diagram.DialogDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
+import org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription;
 import org.springframework.stereotype.Service;
 
 /**
@@ -82,13 +83,19 @@ public class DiagramIdProvider implements IDiagramIdProvider {
 
     @Override
     public String getId(DecoratorDescription decoratorDescription) {
+        String result = null;
         if (decoratorDescription instanceof NodeDecoratorDescription nodeDecoratorDescription) {
             String sourceId = this.getSourceIdFromElementDescription(nodeDecoratorDescription);
             String sourceElementId = this.identityService.getId(nodeDecoratorDescription);
-            return NODE_DECORATOR_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
+            result = NODE_DECORATOR_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
+                    + sourceElementId;
+        } else if (decoratorDescription instanceof SemanticDecoratorDescription semanticDecoratorDescription) {
+            String sourceId = this.getSourceIdFromElementDescription(semanticDecoratorDescription);
+            String sourceElementId = this.identityService.getId(semanticDecoratorDescription);
+            result = SEMANTIC_DECORATOR_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
                     + sourceElementId;
         }
-        return null;
+        return result;
     }
 
     private String getDialogDescriptionTypeName(DialogDescription dialogDescription) {

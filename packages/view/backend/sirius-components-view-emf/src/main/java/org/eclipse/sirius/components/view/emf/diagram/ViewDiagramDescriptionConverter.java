@@ -55,6 +55,7 @@ import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDecoratorDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
+import org.eclipse.sirius.components.diagrams.description.SemanticDecoratorDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
 import org.eclipse.sirius.components.diagrams.elements.EdgeElementProps;
 import org.eclipse.sirius.components.diagrams.elements.NodeElementProps;
@@ -366,14 +367,14 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
     private Optional<IDecoratorDescription> convert(org.eclipse.sirius.components.view.diagram.DecoratorDescription viewDecoratorDescription,
             ViewDiagramDescriptionConverterContext converterContext) {
 
+        AQLInterpreter interpreter = converterContext.getInterpreter();
+
         Optional<IDecoratorDescription> result = Optional.empty();
 
         if (viewDecoratorDescription instanceof org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription viewNodeDecoratorDescription) {
             List<NodeDescription> nodeDescriptions = viewNodeDecoratorDescription.getNodeDescriptions().stream()
                     .map(converterContext.getConvertedNodes()::get)
                     .toList();
-
-            AQLInterpreter interpreter = converterContext.getInterpreter();
 
             result = Optional.of(NodeDecoratorDescription.newNodeDecoratorDescription(this.diagramIdProvider.getId(viewNodeDecoratorDescription))
                     .labelProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDecoratorDescription.getLabelExpression()))
@@ -384,6 +385,26 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                     .iconURLProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDecoratorDescription.getIconURLExpression()))
                     .position(NodeDecoratorPosition.valueOf(viewNodeDecoratorDescription.getPosition().getName()))
                     .nodeDescriptions(nodeDescriptions)
+                    .build());
+        } else if (viewDecoratorDescription instanceof org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription viewSemanticDecoratorDescription) {
+            String domainType = viewSemanticDecoratorDescription.getDomainType();
+
+            Predicate<VariableManager> domainTypePredicate = variableManager ->
+                    variableManager.get(VariableManager.SELF, Object.class)
+                            .filter(EObject.class::isInstance)
+                            .map(EObject.class::cast)
+                            .filter(candidate -> new DomainClassPredicate(domainType).test(candidate.eClass()))
+                            .isPresent();
+
+            result = Optional.of(SemanticDecoratorDescription.newSemanticDecoratorDescription(this.diagramIdProvider.getId(viewSemanticDecoratorDescription))
+                    .labelProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewSemanticDecoratorDescription.getLabelExpression()))
+                    .preconditionPredicate(variableManager -> {
+                        Result preconditionResult = interpreter.evaluateExpression(variableManager.getVariables(), viewSemanticDecoratorDescription.getPreconditionExpression());
+                        return preconditionResult.asBoolean().orElse(true);
+                    })
+                    .iconURLProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewSemanticDecoratorDescription.getIconURLExpression()))
+                    .position(NodeDecoratorPosition.valueOf(viewSemanticDecoratorDescription.getPosition().getName()))
+                    .domainTypePredicate(domainTypePredicate)
                     .build());
         }
         return result;

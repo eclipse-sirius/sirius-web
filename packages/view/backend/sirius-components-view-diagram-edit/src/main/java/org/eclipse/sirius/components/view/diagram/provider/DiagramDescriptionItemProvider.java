@@ -204,6 +204,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultDiagramPalette()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE, DiagramFactory.eINSTANCE.createGroupPalette()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS, DiagramFactory.eINSTANCE.createNodeDecoratorDescription()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS, DiagramFactory.eINSTANCE.createSemanticDecoratorDescription()));
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Node");
