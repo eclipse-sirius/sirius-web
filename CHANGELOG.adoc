@@ -94,6 +94,7 @@ They ensure that each data fetcher is annotated by a data fetcher annotation and
 - https://github.com/eclipse-sirius/sirius-web/issues/6346[#6346] [form] Ensure forms are read-only when opened on a library editing context.
 The backend now sends a `canEdit=false` capability when subscribing to such form.
 - https://github.com/eclipse-sirius/sirius-web/issues/6248[#6248] [view] Add an `endUserDocumentation` field in `RepresentationDescription`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6408[#6408] [storybook] Add diagram layout testing for the storybook
 
 
 

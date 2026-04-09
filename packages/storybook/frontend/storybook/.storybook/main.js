@@ -8,7 +8,7 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- * Obeo - initial API and implementation
+ *     Obeo - initial API and implementation
  *******************************************************************************/
 import { createRequire } from "module";
 import { dirname, join, resolve } from "path";
@@ -44,7 +44,11 @@ const config = {
         },
       },
       optimizeDeps: {
-        include: ["@eclipse-sirius/sirius-web-application"],
+        include: [
+          "@eclipse-sirius/sirius-web-application",
+          "@eclipse-sirius/sirius-components-core",
+          "@eclipse-sirius/sirius-components-diagrams",
+        ],
       },
       define: {
         "process.env": {},
