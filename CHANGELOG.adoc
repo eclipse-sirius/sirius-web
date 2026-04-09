@@ -70,6 +70,10 @@ Decorators can be placed on any of the cardinal and ordinal directions (north, n
 Sirius Web provides and uses a `DecoratorContainer` that can render these decorators at the appropriate position.
 Downstream applications can either reuse this container, or manually handle the `NodeData#decorators` in their renderers to adapt decorator rendering to their custom nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/6383[#63830] [diagram] Display all the decorators on a given position in a tooltip.
+- https://github.com/eclipse-sirius/sirius-web/issues/6406[#6406] [diagram] Add backend support for node decorators.
+Specifiers can now define `NodeDecorators` as part of their `DiagramDescription`.
+A node decorator references the `NodeDescriptions` on which it can be applied, and has a `preconditionExpression` to further detail when it should be displayed.
+Decorators also have an `iconURLExpression` and `labelExpression` to specify the decorator's icon and the message to display in the tooltip when hovering it.
 
 
 === Improvements
