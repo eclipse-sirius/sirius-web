@@ -153,6 +153,7 @@ public class DiagramRendererEdgeTests {
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
                 .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
+                .decoratorDescriptions(List.of())
                 .build();
 
         VariableManager variableManager = new VariableManager();

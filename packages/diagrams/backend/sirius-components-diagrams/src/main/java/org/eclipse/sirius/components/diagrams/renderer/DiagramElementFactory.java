@@ -127,7 +127,8 @@ public class DiagramElementFactory implements IElementFactory {
                     .outsideLabels(outsideLabels)
                     .labelEditable(nodeElementProps.isLabelEditable())
                     .deletable(nodeElementProps.isDeletable())
-                    .customizedStyleProperties(nodeElementProps.getCustomizedStyleProperties());
+                    .customizedStyleProperties(nodeElementProps.getCustomizedStyleProperties())
+                    .decorators(nodeElementProps.getDecorators());
 
             if (insideLabel != null) {
                 nodeBuilder.insideLabel(insideLabel);

@@ -209,6 +209,18 @@ public class DiagramDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for DecoratorDescriptions.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder decoratorDescriptions(org.eclipse.sirius.components.view.diagram.DecoratorDescription ... values) {
+        for (org.eclipse.sirius.components.view.diagram.DecoratorDescription value : values) {
+            this.getDiagramDescription().getDecoratorDescriptions().add(value);
+        }
+        return this;
+    }
+
 
 }
 

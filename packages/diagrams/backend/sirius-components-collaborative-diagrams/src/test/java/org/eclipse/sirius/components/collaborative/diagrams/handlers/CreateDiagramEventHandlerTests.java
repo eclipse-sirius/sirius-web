@@ -66,6 +66,7 @@ public class CreateDiagramEventHandlerTests {
                         .dropHandler(variableManager -> new Failure(""))
                         .iconURLsProvider(variableManager -> List.of())
                         .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
+                        .decoratorDescriptions(List.of())
                         .build();
 
                 return Optional.of(diagramDescription);

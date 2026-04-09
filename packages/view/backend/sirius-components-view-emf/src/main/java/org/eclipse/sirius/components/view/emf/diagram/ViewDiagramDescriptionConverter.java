@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.InsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.LabelOverflowStrategy;
 import org.eclipse.sirius.components.diagrams.LabelTextAlign;
 import org.eclipse.sirius.components.diagrams.ListLayoutStrategy;
+import org.eclipse.sirius.components.diagrams.NodeDecoratorPosition;
 import org.eclipse.sirius.components.diagrams.OutsideLabelLocation;
 import org.eclipse.sirius.components.diagrams.UserResizableDirection;
 import org.eclipse.sirius.components.diagrams.components.BorderNodePosition;
@@ -46,10 +47,12 @@ import org.eclipse.sirius.components.diagrams.components.LabelIdProvider;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeLabelKind;
+import org.eclipse.sirius.components.diagrams.description.IDecoratorDescription;
 import org.eclipse.sirius.components.diagrams.description.IEdgeEditLabelHandler;
 import org.eclipse.sirius.components.diagrams.description.InsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelDescription;
 import org.eclipse.sirius.components.diagrams.description.LabelStyleDescription;
+import org.eclipse.sirius.components.diagrams.description.NodeDecoratorDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.description.OutsideLabelDescription;
 import org.eclipse.sirius.components.diagrams.description.SynchronizationPolicy;
@@ -154,6 +157,12 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
             return stylesFactory.createDiagramStyle(effectiveStyle);
         };
 
+        List<IDecoratorDescription> decoratorDescriptions = viewDiagramDescription.getDecoratorDescriptions().stream()
+                .map(viewNodeDecoratorDescription -> this.convert(viewNodeDecoratorDescription, converterContext))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+
         var builder = DiagramDescription.newDiagramDescription(this.diagramIdProvider.getId(viewDiagramDescription))
                 .label(Optional.ofNullable(viewDiagramDescription.getName()).orElse(DEFAULT_DIAGRAM_LABEL))
                 .labelProvider(variableManager -> this.computeDiagramLabel(viewDiagramDescription, variableManager, interpreter))
@@ -175,7 +184,8 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .edgeDescriptions(edgeDescriptions)
                 .dropHandler(this.createDiagramDropHandler(viewDiagramDescription, converterContext))
                 .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewDiagramDescription.getIconExpression()))
-                .styleProvider(styleProvider);
+                .styleProvider(styleProvider)
+                .decoratorDescriptions(decoratorDescriptions);
 
         new ToolFinder().findDropNodeTool(viewDiagramDescription).ifPresent(dropNoteTool -> {
             builder.dropNodeHandler(this.createDropNodeHandler(dropNoteTool, converterContext));
@@ -350,6 +360,32 @@ public class ViewDiagramDescriptionConverter implements IRepresentationDescripti
                 .ifPresent(labelEditTool -> builder.labelEditHandler(this.createNodeLabelEditHandler(viewNodeDescription, converterContext)));
         NodeDescription result = builder.build();
         converterContext.getConvertedNodes().put(viewNodeDescription, result);
+        return result;
+    }
+
+    private Optional<IDecoratorDescription> convert(org.eclipse.sirius.components.view.diagram.DecoratorDescription viewDecoratorDescription,
+            ViewDiagramDescriptionConverterContext converterContext) {
+
+        Optional<IDecoratorDescription> result = Optional.empty();
+
+        if (viewDecoratorDescription instanceof org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription viewNodeDecoratorDescription) {
+            List<NodeDescription> nodeDescriptions = viewNodeDecoratorDescription.getNodeDescriptions().stream()
+                    .map(converterContext.getConvertedNodes()::get)
+                    .toList();
+
+            AQLInterpreter interpreter = converterContext.getInterpreter();
+
+            result = Optional.of(NodeDecoratorDescription.newNodeDecoratorDescription(this.diagramIdProvider.getId(viewNodeDecoratorDescription))
+                    .labelProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDecoratorDescription.getLabelExpression()))
+                    .preconditionPredicate(variableManager -> {
+                        Result preconditionResult = interpreter.evaluateExpression(variableManager.getVariables(), viewNodeDecoratorDescription.getPreconditionExpression());
+                        return preconditionResult.asBoolean().orElse(true);
+                    })
+                    .iconURLProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewNodeDecoratorDescription.getIconURLExpression()))
+                    .position(NodeDecoratorPosition.valueOf(viewNodeDecoratorDescription.getPosition().getName()))
+                    .nodeDescriptions(nodeDescriptions)
+                    .build());
+        }
         return result;
     }
 

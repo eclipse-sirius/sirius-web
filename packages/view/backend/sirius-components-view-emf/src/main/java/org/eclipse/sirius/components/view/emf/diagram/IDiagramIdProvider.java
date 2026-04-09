@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram;
 
-
+import org.eclipse.sirius.components.view.diagram.DecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
@@ -34,6 +34,8 @@ public interface IDiagramIdProvider extends IRepresentationDescriptionIdProvider
 
     String SELECTION_DIALOG_TREE_DESCRIPTION_KIND = "siriusComponents://selectionDialogTreeDescription";
 
+    String NODE_DECORATOR_KIND = "siriusComponents://nodeDecorator";
+
     @Override
     String getId(DiagramDescription diagramDescription);
 
@@ -42,6 +44,8 @@ public interface IDiagramIdProvider extends IRepresentationDescriptionIdProvider
     String getId(DialogDescription dialogDescription);
 
     String getId(SelectionDialogTreeDescription selectionDialogTreeDescription);
+
+    String getId(DecoratorDescription decoratorDescription);
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -67,6 +71,11 @@ public interface IDiagramIdProvider extends IRepresentationDescriptionIdProvider
 
         @Override
         public String getId(SelectionDialogTreeDescription selectionDialogTreeDescription) {
+            return "";
+        }
+
+        @Override
+        public String getId(DecoratorDescription decoratorDescription) {
             return "";
         }
 

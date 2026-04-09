@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,6 +75,8 @@ public final class Node implements IDiagramElement {
     private boolean pinned;
 
     private Set<String> customizedStyleProperties;
+
+    private List<NodeDecorator> decorators;
 
     private Node() {
         // Prevent instantiation
@@ -194,6 +196,10 @@ public final class Node implements IDiagramElement {
         return this.customizedStyleProperties;
     }
 
+    public List<NodeDecorator> getDecorators() {
+        return this.decorators;
+    }
+
     @Override
     public String toString() {
         String insideLabelText = "";
@@ -257,6 +263,8 @@ public final class Node implements IDiagramElement {
 
         private Set<String> customizedStyleProperties;
 
+        private List<NodeDecorator> decorators;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -284,6 +292,7 @@ public final class Node implements IDiagramElement {
             this.deletable = node.isDeletable();
             this.pinned = node.isPinned();
             this.customizedStyleProperties = node.getCustomizedStyleProperties();
+            this.decorators = node.getDecorators();
         }
 
         public Builder type(String type) {
@@ -391,6 +400,11 @@ public final class Node implements IDiagramElement {
             return this;
         }
 
+        public Builder decorators(List<NodeDecorator> decorators) {
+            this.decorators = Objects.requireNonNull(decorators);
+            return this;
+        }
+
         public Node build() {
             Node node = new Node();
             node.id = Objects.requireNonNull(this.id);
@@ -415,6 +429,7 @@ public final class Node implements IDiagramElement {
             node.deletable = this.deletable;
             node.pinned = this.pinned;
             node.customizedStyleProperties = Objects.requireNonNull(this.customizedStyleProperties);
+            node.decorators = Objects.requireNonNull(this.decorators);
             return node;
         }
     }

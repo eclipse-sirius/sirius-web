@@ -35,6 +35,8 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle <em>Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getConditionalStyles <em>Conditional
  * Styles</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getDecoratorDescriptions <em>Decorator
+ * Descriptions</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
@@ -197,6 +199,18 @@ public interface DiagramDescription extends RepresentationDescription {
      * @generated
      */
     EList<ConditionalDiagramStyle> getConditionalStyles();
+
+    /**
+     * Returns the value of the '<em><b>Decorator Descriptions</b></em>' containment reference list. The list contents
+     * are of type {@link org.eclipse.sirius.components.view.diagram.DecoratorDescription}. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @return the value of the '<em>Decorator Descriptions</em>' containment reference list.
+     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_DecoratorDescriptions()
+     * @model containment="true"
+     * @generated
+     */
+    EList<DecoratorDescription> getDecoratorDescriptions();
 
     /**
      * Returns the value of the '<em><b>Group Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--

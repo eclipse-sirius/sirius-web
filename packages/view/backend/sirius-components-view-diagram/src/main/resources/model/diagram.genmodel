@@ -98,6 +98,17 @@
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//EdgeType/SmartManhattan"/>
       <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//EdgeType/Oblique"/>
     </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="diagram.ecore#//DecoratorPosition">
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DecoratorPosition/NORTH"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DecoratorPosition/NORTH_WEST"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DecoratorPosition/WEST"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DecoratorPosition/SOUTH_WEST"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DecoratorPosition/SOUTH"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DecoratorPosition/SOUTH_EAST"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DecoratorPosition/EAST"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DecoratorPosition/NORTH_EAST"/>
+      <genEnumLiterals ecoreEnumLiteral="diagram.ecore#//DecoratorPosition/CENTER"/>
+    </genEnums>
     <genClasses ecoreClass="diagram.ecore#//DiagramDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/autoLayout"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/toolbar"/>
@@ -108,6 +119,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramDescription/arrangeLayoutDirection"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/style"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/conditionalStyles"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference diagram.ecore#//DiagramDescription/decoratorDescriptions"/>
     </genClasses>
     <genClasses image="false" ecoreClass="diagram.ecore#//DiagramElementDescription">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramElementDescription/name"/>
@@ -361,6 +373,16 @@
     <genClasses ecoreClass="diagram.ecore#//DiagramToolbar">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramToolbar/preconditionExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DiagramToolbar/expandedByDefault"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="diagram.ecore#//DecoratorDescription">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DecoratorDescription/labelExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DecoratorDescription/preconditionExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DecoratorDescription/iconURLExpression"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DecoratorDescription/position"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute diagram.ecore#//DecoratorDescription/name"/>
+    </genClasses>
+    <genClasses ecoreClass="diagram.ecore#//NodeDecoratorDescription">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference diagram.ecore#//NodeDecoratorDescription/nodeDescriptions"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

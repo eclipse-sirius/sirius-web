@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.CreateView;
+import org.eclipse.sirius.components.view.diagram.DecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DeleteView;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -56,6 +57,7 @@ import org.eclipse.sirius.components.view.diagram.LabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -348,6 +350,16 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseDiagramToolbar(DiagramToolbar object) {
             return DiagramAdapterFactory.this.createDiagramToolbarAdapter();
+        }
+
+        @Override
+        public Adapter caseDecoratorDescription(DecoratorDescription object) {
+            return DiagramAdapterFactory.this.createDecoratorDescriptionAdapter();
+        }
+
+        @Override
+        public Adapter caseNodeDecoratorDescription(NodeDecoratorDescription object) {
+            return DiagramAdapterFactory.this.createNodeDecoratorDescriptionAdapter();
         }
 
         @Override
@@ -1123,6 +1135,34 @@ public class DiagramAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createDiagramToolbarAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription <em>Node Decorator
+     * Description</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription
+     * @generated
+     */
+    public Adapter createNodeDecoratorDescriptionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class
+     * '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription <em>Decorator Description</em>}'. <!--
+     * begin-user-doc --> This default implementation returns null so that we can easily ignore cases; it's useful to
+     * ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.view.diagram.DecoratorDescription
+     * @generated
+     */
+    public Adapter createDecoratorDescriptionAdapter() {
         return null;
     }
 

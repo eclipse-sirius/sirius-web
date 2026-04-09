@@ -58,6 +58,7 @@ public class TestDiagramDescriptionBuilder {
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
                 .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
+                .decoratorDescriptions(List.of())
                 .build();
     }
 
