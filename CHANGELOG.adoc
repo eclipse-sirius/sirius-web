@@ -54,7 +54,9 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5436[#5436] [diagram] Prevent custom handles from being lost after importing a project with a diagram representation.
 - https://github.com/eclipse-sirius/sirius-web/issues/6320[#6320] [diagram] Prevent inside label to be centered regardless of the configured position
-
+- [releng] Switch `@mui/material` to `7.3.10`
+- [releng] Switch `@mui/icons-material` to `7.3.10`
+- [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.4`
 
 
 === New Features
