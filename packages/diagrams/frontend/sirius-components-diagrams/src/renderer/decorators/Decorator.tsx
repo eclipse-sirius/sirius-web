@@ -91,13 +91,12 @@ export const Decorator = ({ position, decorators }: DecoratorProps) => {
     );
 
     return (
-      <div className={classes[position.toLowerCase()]}>
+      <div className={classes[position.toLowerCase()]} data-testid={'Decorator - ' + position.toLowerCase()}>
         <Tooltip title={tooltipContent}>
           <img alt={firstDecorator.label} src={httpOrigin + firstDecorator.iconURL} />
         </Tooltip>
       </div>
     );
-  } else {
-    return null;
   }
+  return null;
 };

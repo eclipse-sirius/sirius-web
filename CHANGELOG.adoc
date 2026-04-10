@@ -134,6 +134,7 @@ See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6349[#6349] [diagram] Prevent minor misalignment on edges by align edge source and target positions.
 - https://github.com/eclipse-sirius/sirius-web/issues/6319[#6319] [tree] Wait for 500ms before asking for the tooltip of a tree item
 - https://github.com/eclipse-sirius/sirius-web/issues/6354[#6354] [diagram] Allow the layout use make same size to be used on nodes that don't have the same depth
+- https://github.com/eclipse-sirius/sirius-web/issues/6414[#6414] [diagram] Add e2e test for node decorators.
 
 
 
