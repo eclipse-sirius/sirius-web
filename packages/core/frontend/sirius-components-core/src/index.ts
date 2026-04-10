@@ -18,6 +18,7 @@ export type * from './contexts/ServerContext.types';
 export * from './contexts/ToastContext';
 export type * from './contexts/ToastContext.types';
 export * from './dataTransferTypes';
+export { useDebounce } from './debounce/useDebounce';
 export { ExtensionProvider } from './extension/ExtensionProvider';
 export { type ExtensionProviderProps } from './extension/ExtensionProvider.types';
 export { ExtensionRegistry } from './extension/ExtensionRegistry';
