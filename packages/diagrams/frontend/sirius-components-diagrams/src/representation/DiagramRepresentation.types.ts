@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { Selection, WorkbenchMainRepresentationHandle } from '@eclipse-sirius/sirius-components-core';
 import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.types';
 import { GQLDiagramEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 
@@ -76,4 +76,9 @@ export interface GQLDropNodeCompatibility {
   droppedNodeDescriptionId: string;
   droppableOnDiagram: boolean;
   droppableOnNodeTypes: string[];
+}
+
+export interface WorkbenchDiagramRepresentationHandle extends WorkbenchMainRepresentationHandle {
+  applyLayout: ((layoutOptions: Record<string, string>) => Promise<void>) | null;
+  exportSVG: ((callback: (dataUrl: string) => void) => void) | null;
 }

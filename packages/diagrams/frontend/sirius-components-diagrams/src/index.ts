@@ -30,10 +30,17 @@ export type {
 export { useDialog } from './dialog/useDialog';
 export type { UseDialogValue } from './dialog/useDialog.types';
 export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment.types';
-export type { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from './graphql/subscription/diagramFragment.types';
-export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
+export type {
+  GQLDiagram,
+  GQLEdgeLayoutData,
+  GQLHandleLayoutData,
+  GQLNodeLayoutData,
+  GQLRepresentationMetadata,
+} from './graphql/subscription/diagramFragment.types';
+export type { GQLEdge, GQLEdgeStyle } from './graphql/subscription/edgeFragment.types';
+export type { GQLInsideLabel, GQLLabel, GQLLabelStyle } from './graphql/subscription/labelFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
-export type { GQLNode, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
+export type { GQLNode, GQLNodeStyle, GQLRectangularNodeStyle } from './graphql/subscription/nodeFragment.types';
 export { Action, ACTION_ICON_SIZE } from './renderer/actions/Action';
 export type { ActionProps } from './renderer/actions/Action.types';
 export { ActionsContainer } from './renderer/actions/ActionsContainer';
@@ -91,10 +98,14 @@ export type {
   DiagramPaletteToolContributionProps,
 } from './renderer/palette/extensions/DiagramPaletteToolContribution.types';
 export { diagramPaletteToolExtensionPoint } from './renderer/palette/extensions/DiagramPaletteToolExtensionPoints';
+export type { GQLPalette } from './renderer/palette/Palette.types';
 export type { DiagramToolbarActionProps } from './renderer/toolbar/DiagramToolbar.types';
 export { diagramToolbarActionExtensionPoint } from './renderer/toolbar/DiagramToolbarExtensionPoints';
 export type { IElementSVGExportHandler } from './renderer/toolbar/experimental-svg-export/SVGExportEngine.types';
 export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/toolbar/experimental-svg-export/SVGExportHandlerExtensionPoints';
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
-export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
+export type {
+  GQLDiagramDescription,
+  WorkbenchDiagramRepresentationHandle,
+} from './representation/DiagramRepresentation.types';

@@ -63,6 +63,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3647[#3647] [diagram] Add support for diagram style with background customization
+- https://github.com/eclipse-sirius/sirius-web/issues/6241[#6241] [storybook] Add storybook for sirius components testing
 
 
 === Improvements
@@ -96,6 +97,7 @@ They ensure that each data fetcher is annotated by a data fetcher annotation and
 - https://github.com/eclipse-sirius/sirius-web/issues/6346[#6346] [form] Ensure forms are read-only when opened on a library editing context.
 The backend now sends a `canEdit=false` capability when subscribing to such form.
 - https://github.com/eclipse-sirius/sirius-web/issues/6248[#6248] [view] Add an `endUserDocumentation` field in `RepresentationDescription`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6408[#6408] [storybook] Add diagram layout testing for the storybook
 
 
 

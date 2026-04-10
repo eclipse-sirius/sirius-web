@@ -12,13 +12,9 @@
  *******************************************************************************/
 
 import { gql, useQuery } from '@apollo/client';
-import {
-  RepresentationComponentProps,
-  Selection,
-  useMultiToast,
-  WorkbenchMainRepresentationHandle,
-} from '@eclipse-sirius/sirius-components-core';
+import { RepresentationComponentProps, Selection, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { ReactFlowProvider } from '@xyflow/react';
+import { LayoutOptions } from 'elkjs';
 import { ForwardedRef, forwardRef, memo, useEffect, useImperativeHandle, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramDescriptionContext } from '../contexts/DiagramDescriptionContext';
@@ -29,14 +25,17 @@ import { DiagramDirectEditContextProvider } from '../renderer/direct-edit/Diagra
 import { DropNodeContextProvider } from '../renderer/dropNode/DropNodeContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
 import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
+import { useArrangeAll } from '../renderer/layout/arrange-all/useArrangeAll';
 import { NodeContextProvider } from '../renderer/node/NodeContext';
 import { DiagramPaletteContextProvider } from '../renderer/palette/contexts/DiagramPaletteContext';
 import { useApplySelection } from '../renderer/selection/useApplySelection';
+import { useExportToImage } from '../renderer/toolbar/useExportToImage';
 import {
   DiagramRepresentationState,
   GQLDiagramDescription,
   GQLDiagramDescriptionData,
   GQLDiagramDescriptionVariables,
+  WorkbenchDiagramRepresentationHandle,
 } from './DiagramRepresentation.types';
 import { DiagramSubscriptionProvider } from './DiagramSubscriptionProvider';
 
@@ -77,15 +76,17 @@ export const getDiagramDescription = gql`
 
 /**
  * This is needed because the DiagramRepresentation component, which receives the `ref`, can not use it itself:
- * the `applySelection` it needs to publish with `useImperativeHandle` can only be implemented from inside
+ * the `applySelection` and `applyLayout` it needs to publish with `useImperativeHandle` can only be implemented from inside
  * the React Flow context (where `useApplySelection()` can be invoked).
  */
-const ApplySelectionWrapper = forwardRef(
+const ApplyWrapper = forwardRef(
   (
     props: { representationId: string; children: React.ReactNode },
-    ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+    ref: ForwardedRef<WorkbenchDiagramRepresentationHandle>
   ) => {
     const { applySelection: applyAndRevealSelection } = useApplySelection();
+    const { arrangeAll } = useArrangeAll();
+    const { exportToSVG } = useExportToImage();
     useImperativeHandle(
       ref,
       () => {
@@ -93,6 +94,12 @@ const ApplySelectionWrapper = forwardRef(
           id: props.representationId,
           applySelection: (selection: Selection) => {
             applyAndRevealSelection(selection, true);
+          },
+          applyLayout: async (layoutOptions: LayoutOptions) => {
+            await arrangeAll(layoutOptions);
+          },
+          exportSVG: (callback: (dataUrl: string) => void) => {
+            exportToSVG(callback);
           },
         };
       },
@@ -103,10 +110,10 @@ const ApplySelectionWrapper = forwardRef(
 );
 
 export const DiagramRepresentation = memo(
-  forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
+  forwardRef<WorkbenchDiagramRepresentationHandle, RepresentationComponentProps>(
     (
       { editingContextId, representationId, readOnly }: RepresentationComponentProps,
-      ref: ForwardedRef<WorkbenchMainRepresentationHandle>
+      ref: ForwardedRef<WorkbenchDiagramRepresentationHandle>
     ) => {
       const [state, setState] = useState<DiagramRepresentationState>({
         id: crypto.randomUUID(),
@@ -190,7 +197,7 @@ export const DiagramRepresentation = memo(
                             consumePostToolSelection,
                             toolSelections: state.toolSelections,
                           }}>
-                          <ApplySelectionWrapper representationId={representationId} ref={ref}>
+                          <ApplyWrapper representationId={representationId} ref={ref}>
                             <ManageVisibilityContextProvider>
                               <DialogContextProvider>
                                 <DiagramSubscriptionProvider
@@ -200,7 +207,7 @@ export const DiagramRepresentation = memo(
                                 />
                               </DialogContextProvider>
                             </ManageVisibilityContextProvider>
-                          </ApplySelectionWrapper>
+                          </ApplyWrapper>
                         </DiagramContext.Provider>
                       </DiagramDescriptionContext.Provider>
                     </FullscreenContextProvider>
