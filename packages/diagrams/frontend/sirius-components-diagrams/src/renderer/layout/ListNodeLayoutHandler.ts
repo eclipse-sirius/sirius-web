@@ -58,7 +58,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   public handle(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<ListNodeData, string>,
+    node: Node<ListNodeData, DiagramNodeType>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
@@ -83,7 +83,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
 
   handleLeafNode(
     previousDiagram: RawDiagram | null,
-    node: Node<ListNodeData, string>,
+    node: Node<ListNodeData, DiagramNodeType>,
     _visibleNodes: Node<NodeData, DiagramNodeType>[],
     borderWidth: number,
     forceDimensions?: ForcedDimensions
@@ -127,7 +127,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
   private handleParentNode(
     layoutEngine: ILayoutEngine,
     previousDiagram: RawDiagram | null,
-    node: Node<ListNodeData, string>,
+    node: Node<ListNodeData, DiagramNodeType>,
     visibleNodes: Node<NodeData, DiagramNodeType>[],
     directChildren: Node<NodeData, DiagramNodeType>[],
     newlyAddedNodes: Node<NodeData, DiagramNodeType>[],
@@ -143,7 +143,7 @@ export class ListNodeLayoutHandler implements INodeLayoutHandler<ListNodeData> {
     const northBorderNodeFootprintWidth = getNorthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
     const southBorderNodeFootprintWidth = getSouthBorderNodeFootprintWidth(visibleNodes, borderNodes, previousDiagram);
 
-    const previousNode: Node<NodeData, string> | undefined = (previousDiagram?.nodes ?? []).find(
+    const previousNode: Node<NodeData, DiagramNodeType> | undefined = (previousDiagram?.nodes ?? []).find(
       (previouseNode) => previouseNode.id === node.id
     );
 
