@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo and others.
+ * Copyright (c) 2023, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -54,12 +54,13 @@ const handleStyle = (
   position: Position,
   isVirtualHandle: boolean,
   isHidden: boolean,
-  XYPosition: XYPosition | null
+  XYPosition: XYPosition | null,
+  transform: string | null
 ): React.CSSProperties => {
   if (XYPosition) {
     const style: React.CSSProperties = {
       position: 'absolute',
-      transform: 'none',
+      transform: transform ?? 'none',
       pointerEvents: 'none',
       backgroundColor: 'white',
       border: '1px solid black',
@@ -88,7 +89,7 @@ const handleStyle = (
   } else {
     const style: React.CSSProperties = {
       position: 'relative',
-      transform: 'none',
+      transform: transform ?? 'none',
       pointerEvents: 'none',
       backgroundColor: 'black',
       border: 'black',
@@ -131,7 +132,8 @@ export const ConnectionHandles = memo(({ connectionHandles }: ConnectionHandlesP
                     connectionHandle.position,
                     connectionHandle.isVirtualHandle,
                     connectionHandle.isHidden,
-                    connectionHandle.XYPosition
+                    connectionHandle.XYPosition,
+                    connectionHandle.handleStyleTransform
                   )}
                   type={connectionHandle.type}
                   position={connectionHandle.position}
