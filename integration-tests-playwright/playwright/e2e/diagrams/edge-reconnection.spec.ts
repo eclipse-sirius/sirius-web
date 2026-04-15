@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
@@ -53,7 +53,8 @@ test.describe('edge - reconnection', () => {
     const sourceReconnectHandle = page.locator(`.react-flow__edgeupdater-source`).first();
     await sourceReconnectHandle.hover();
     await page.mouse.down();
-    await page.mouse.move(newSourceNodeXYPosition.x + newSourceNodeXYPosition.width / 2, newSourceNodeXYPosition.y);
+    await page.mouse.move(newSourceNodeXYPosition.x + newSourceNodeXYPosition.width / 2, newSourceNodeXYPosition.y / 2);
+    await page.mouse.move(newSourceNodeXYPosition.x + newSourceNodeXYPosition.width / 2, newSourceNodeXYPosition.y + 5);
     await page.mouse.up();
 
     await page.waitForFunction(() => !!document.querySelector('[data-testid="DataSource2-toggle"]'));
