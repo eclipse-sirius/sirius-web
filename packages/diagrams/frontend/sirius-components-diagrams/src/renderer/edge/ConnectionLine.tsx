@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import {
   useStoreApi,
   useUpdateNodeInternals,
 } from '@xyflow/react';
+import { pointToRendererPoint } from '@xyflow/system';
 import React, { memo, useContext, useEffect, useState } from 'react';
 import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { ConnectorContext } from '../connector/ConnectorContext';
@@ -48,8 +49,7 @@ export const ConnectionLine = memo(
   ({
     fromX,
     fromY,
-    toX,
-    toY,
+    pointer,
     fromPosition,
     toPosition,
     fromNode,
@@ -71,8 +71,9 @@ export const ConnectionLine = memo(
     const sourceHandle = getEdges().find((e) => e.id === edgeId)?.sourceHandle;
     const handleToUpdate = targetHandle === fromHandle.id ? sourceHandle : targetHandle;
 
-    let updatedToY = toY;
-    let updatedToX = toX;
+    const updatedPos = pointToRendererPoint(pointer, store.getState().transform, false, [1, 1]);
+    let updatedToY = updatedPos.y;
+    let updatedToX = updatedPos.x;
 
     useEffect(() => {
       // When reconnection to a node
@@ -157,7 +158,7 @@ export const ConnectionLine = memo(
     useEffect(() => {
       // When reconnection to a node
       if (toNode && edgeId && handleToUpdate) {
-        const isNearCenter = isCursorNearCenterOfTheNode(toNode, { x: toX, y: toY });
+        const isNearCenter = isCursorNearCenterOfTheNode(toNode, { x: updatedPos.x, y: updatedPos.y });
         if (!isNearCenter) {
           const updatedHandles = getUpdatedHandleForNode(
             toNode,
@@ -249,7 +250,7 @@ export const ConnectionLine = memo(
       );
 
       if (candidate) {
-        const isNearCenter = isCursorNearCenterOfTheNode(candidate, { x: toX, y: toY });
+        const isNearCenter = isCursorNearCenterOfTheNode(candidate, { x: updatedPos.x, y: updatedPos.y });
         setNodes((previousNodes) =>
           previousNodes.map((previousNode) => {
             if (previousNode.id === candidate.id) {
