@@ -53,6 +53,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - [releng] Switch `@mui/icons-material` to `7.3.10`
 - [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.4`
 - [releng] Switch AQL 8.1.2
+- [releng] Switch to https://github.com/xyflow/xyflow/releases/tag/@xyflow/react@12.10.2[xyflow 12.10.2]
 
 
 === Bug fixes
