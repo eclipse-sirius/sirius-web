@@ -28,6 +28,7 @@ const createEdgeAnchorNodeCreationHandles = (
     id: `edgeAnchorNodeCreationHandles-${edgeId}`,
     type: 'edgeAnchorNodeCreationHandles',
     position,
+    selectable: false,
     data: {
       targetObjectId: '',
       targetObjectKind: '',

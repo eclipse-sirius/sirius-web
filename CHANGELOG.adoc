@@ -110,6 +110,8 @@ The backend now sends a `canEdit=false` capability when subscribing to such form
 - https://github.com/eclipse-sirius/sirius-web/issues/6369[#6369] [diagram] Enable clicking behind the multiple-selection rectangle
 - https://github.com/eclipse-sirius/sirius-web/issues/6300[#6300] [diagram] Make the arrange-all button remember the last layout configuration used.
 - https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] Preserve edge path when moving both source and target
+- https://github.com/eclipse-sirius/sirius-web/issues/6352[#6336] [6352] A new button in the diagram tool bar was added to filter the selection.
+You can add menu items with `IDiagramToolbarFilterSelectionProvider` and their handler with `IFilterSelectionHandler` where you need to return the list of element ids that will be selected.
 
 
 
