@@ -32,12 +32,12 @@ import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { LayoutEngine } from './LayoutEngine';
 import { ILayoutEngine, INodeLayoutHandler } from './LayoutEngine.types';
+import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import { isEastBorderNode, isWestBorderNode } from './layoutBorderNodes';
 import { computeNewlyNodePosition, getChildren } from './layoutNode';
 import { gap } from './layoutParams';
-import { ListNodeLayoutHandler } from './ListNodeLayoutHandler';
 
 const emptyNodeProps = {
   selected: false,
@@ -395,10 +395,10 @@ export const prepareListNodeLayout = (previousDiagram: RawDiagram | null, diagra
   const listNodeLayoutHandler = new ListNodeLayoutHandler();
   const layoutEngine: ILayoutEngine = new LayoutEngine();
 
-  const visibleNodes: Node<NodeData, string>[] = diagram.nodes.filter((node) => !node.hidden);
-  const listNodes: Node<ListNodeData, string>[] = visibleNodes.filter(isListNode);
+  const visibleNodes: Node<NodeData, DiagramNodeType>[] = diagram.nodes.filter((node) => !node.hidden);
+  const listNodes: Node<ListNodeData, DiagramNodeType>[] = visibleNodes.filter(isListNode);
 
-  listNodes.forEach((node: Node<ListNodeData, string>) => {
+  listNodes.forEach((node: Node<ListNodeData, DiagramNodeType>) => {
     const directChildren = visibleNodes.filter((visibleNode) => visibleNode.parentId === node.id);
     listNodeLayoutHandler.handle(layoutEngine, previousDiagram, node, visibleNodes, directChildren, []);
   });
