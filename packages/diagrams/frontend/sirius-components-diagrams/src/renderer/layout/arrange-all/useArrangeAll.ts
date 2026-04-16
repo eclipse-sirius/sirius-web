@@ -28,40 +28,26 @@ export const useArrangeAll = (): UseArrangeAllValue => {
   const { elkLayout } = useElkLayout();
 
   const arrangeAll = async (layoutOptions: LayoutOptions): Promise<void> => {
-    await elkLayout(getNodes(), getEdges(), layoutOptions).then(
-      async (laidOutNodesWithElk: Node<NodeData, string>[]) => {
-        const laidOutMovedNodeIds = laidOutNodesWithElk
-          .filter((node) => !node.data.isBorderNode && !node.data.pinned)
-          .map((node) => node.id);
-        const edges = getEdges();
-        edges
-          .filter((edge) => laidOutMovedNodeIds.includes(edge.source) || laidOutMovedNodeIds.includes(edge.target))
-          .forEach((edge: Edge<EdgeData, string>) => {
-            if (edge.data?.bendingPoints) {
-              edge.data.bendingPoints = null;
-            }
-          });
-
-        const diagramToLayout: RawDiagram = {
-          nodes: laidOutNodesWithElk,
-          edges: edges,
-        };
-        const layoutPromise = new Promise<void>((resolve) => {
-          layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-            setNodes(laidOutDiagram.nodes);
-            setEdges(laidOutDiagram.edges);
-            const finalDiagram: RawDiagram = {
-              nodes: laidOutDiagram.nodes,
-              edges: laidOutDiagram.edges,
-            };
-            fitView({ duration: 200, nodes: laidOutDiagram.nodes });
-            synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
-            resolve();
-          });
+    await elkLayout(getNodes(), getEdges(), layoutOptions).then(async (laidOutDiagramWithElk: RawDiagram) => {
+      const diagramToLayout: RawDiagram = {
+        nodes: laidOutDiagramWithElk.nodes,
+        edges: laidOutDiagramWithElk.edges,
+      };
+      const layoutPromise = new Promise<void>((resolve) => {
+        layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
+          setNodes(laidOutDiagram.nodes);
+          setEdges(laidOutDiagram.edges);
+          const finalDiagram: RawDiagram = {
+            nodes: laidOutDiagram.nodes,
+            edges: laidOutDiagram.edges,
+          };
+          fitView({ duration: 200, nodes: laidOutDiagram.nodes });
+          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram);
+          resolve();
         });
-        await layoutPromise;
-      }
-    );
+      });
+      await layoutPromise;
+    });
   };
 
   return {

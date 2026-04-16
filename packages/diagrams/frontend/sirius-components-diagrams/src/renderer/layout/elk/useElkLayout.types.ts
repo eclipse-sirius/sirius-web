@@ -13,11 +13,12 @@
 import { Edge, Node } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { RawDiagram } from '../layout.types';
 
 export interface UseElkLayoutValue {
   elkLayout: (
     nodes: Node<NodeData, string>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ) => Promise<Node<NodeData, string>[]>;
+  ) => Promise<RawDiagram>;
 }

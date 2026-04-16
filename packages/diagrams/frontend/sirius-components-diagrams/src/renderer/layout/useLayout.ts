@@ -108,8 +108,8 @@ export const useLayout = (): UseLayoutValue => {
           true
         );
         elkLayout(postLaidoutDiagram.nodes, postLaidoutDiagram.edges, layoutConfigurations[0].layoutOptions).then(
-          (layoutNodes) => {
-            const updatedLayoutNodes = layoutNodes.map((n) => {
+          (layoutDiagram) => {
+            const updatedLayoutNodes = layoutDiagram.nodes.map((n) => {
               return {
                 ...n,
                 data: {

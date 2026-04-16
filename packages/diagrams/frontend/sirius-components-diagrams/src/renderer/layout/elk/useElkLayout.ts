@@ -16,6 +16,7 @@ import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { EdgeData, NodeData, BorderNodePosition } from '../../DiagramRenderer.types';
 import { isEdgeAnchorNode } from '../../node/EdgeAnchorNode.types';
+import { RawDiagram } from '../layout.types';
 import { UseElkLayoutValue } from './useElkLayout.types';
 
 const computeLabels = (node: Node<NodeData, string>): ElkLabel[] => {
@@ -132,6 +133,21 @@ export const useElkLayout = (): UseElkLayoutValue => {
               };
             }
           }) ?? [],
+        edges: edges.map((edge) => {
+          const elkEdge = layoutGraph?.edges?.find((e) => e.id === edge.id);
+          if (elkEdge) {
+            return {
+              ...edge,
+              data: {
+                ...edge.data,
+                bendingPoints:
+                  elkEdge.sections?.flatMap((section) => section.bendPoints).filter((bendPoint) => !!bendPoint) ?? [],
+              },
+            };
+          } else {
+            return edge;
+          }
+        }),
       };
     } catch (message) {
       addErrorMessage('An error occurred during the arrange all elements ');
@@ -139,17 +155,18 @@ export const useElkLayout = (): UseElkLayoutValue => {
     }
   };
 
-  const applyElkOnNodes = async (
+  const applyElkOnDiagram = async (
     nodes: Node<NodeData, string>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
+  ): Promise<RawDiagram> => {
     let layoutAllNodes: Node<NodeData, string>[] = [];
+    let layoutAllEdges: Edge<EdgeData>[] = [];
     await getELKLayout(
       nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node)),
       edges,
       layoutOptions
-    ).then(({ nodes: elkNodes }) => {
+    ).then(({ nodes: elkNodes, edges: elkEdges }) => {
       const elkNodesMap = new Map<string, ElkNode>();
 
       const collectNode = (node: ElkNode) => {
@@ -175,16 +192,18 @@ export const useElkLayout = (): UseElkLayoutValue => {
         }
         return node;
       });
+      layoutAllEdges = elkEdges;
     });
-    return layoutAllNodes;
+    return { nodes: layoutAllNodes, edges: layoutAllEdges };
   };
 
   const elkLayout = async (
     nodes: Node<NodeData, string>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
-    return await applyElkOnNodes(nodes, edges, layoutOptions);
+  ): Promise<RawDiagram> => {
+    const diagram = await applyElkOnDiagram(nodes, edges, layoutOptions);
+    return { nodes: diagram.nodes, edges: diagram.edges };
   };
 
   return {
