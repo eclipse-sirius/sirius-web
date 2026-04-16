@@ -96,6 +96,13 @@ export const ObliqueEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData
       break;
   }
 
+  if (data?.relativePositionBendingPoints && sourceNode.data.moving && targetNode.data.moving) {
+    data.bendingPoints = data.relativePositionBendingPoints.map((relativePositionBendingPoint) => ({
+      x: relativePositionBendingPoint.x + sourceX,
+      y: relativePositionBendingPoint.y + sourceY,
+    }));
+  }
+
   return (
     <MultiLabelObliqueEditableEdge
       {...props}
