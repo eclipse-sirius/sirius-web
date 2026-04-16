@@ -209,6 +209,16 @@ public class DiagramDescriptionBuilder {
         return this;
     }
 
+    /**
+     * Setter for MinimapVisible.
+     *
+     * @generated
+     */
+    public DiagramDescriptionBuilder minimapVisible(java.lang.Boolean value) {
+        this.getDiagramDescription().setMinimapVisible(value);
+        return this;
+    }
+
 
 }
 
