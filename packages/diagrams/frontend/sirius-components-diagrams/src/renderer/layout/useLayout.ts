@@ -100,8 +100,8 @@ export const useLayout = (): UseLayoutValue => {
       prepareLayoutLabels(state.previousDiagram, state.diagramToLayout);
       if (diagramDescription?.autoLayout && layoutConfigurations[0]) {
         elkLayout(state.diagramToLayout.nodes, state.diagramToLayout.edges, layoutConfigurations[0].layoutOptions).then(
-          (layoutNodes) => {
-            const updatedLayoutNodes = layoutNodes.map((n) => {
+          (layoutDiagram) => {
+            const updatedLayoutNodes = layoutDiagram.nodes.map((n) => {
               return {
                 ...n,
                 data: {

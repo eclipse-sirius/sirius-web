@@ -17,6 +17,7 @@ import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { isEdgeAnchorNode } from '../../node/EdgeAnchorNode.types';
 import { ListNodeData } from '../../node/ListNode.types';
+import { RawDiagram } from '../layout.types';
 import { UseElkLayoutValue } from './useElkLayout.types';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
@@ -117,6 +118,19 @@ export const useElkLayout = (): UseElkLayoutValue => {
               };
             }
           }) ?? [],
+        edges: layoutGraph?.edges?.map((edge) => {
+          const originalEdge = edges.find((e) => e.id === edge.id);
+          return (
+            originalEdge && {
+              ...originalEdge,
+              data: {
+                ...originalEdge.data,
+                bendingPoints:
+                  edge.sections?.flatMap((section) => section.bendPoints).filter((bendPoint) => !!bendPoint) ?? [],
+              },
+            }
+          );
+        }),
         layoutReturn: layoutGraph,
       };
     } catch (message) {
@@ -130,8 +144,9 @@ export const useElkLayout = (): UseElkLayoutValue => {
     allNodes: Node<NodeData, string>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
+  ): Promise<RawDiagram> => {
     let layoutAllNodes: Node<NodeData, string>[] = [];
+    let layoutAllEdges: Edge<EdgeData>[] = [];
     const parentNodeWithNewSize: Node<NodeData>[] = [];
     for (const [parentNodeId, nodes] of subNodes) {
       const parentNode: Node<NodeData, string> | undefined = allNodes.find((node) => node.id === parentNodeId);
@@ -161,7 +176,7 @@ export const useElkLayout = (): UseElkLayoutValue => {
           return parentNodeWithNewSize.find((layoutNode) => layoutNode.id === node.id) ?? node;
         });
       await getELKLayout(subGroupNodes, subGroupEdges, layoutOptions, parentNodeId, headerVerticalFootprint).then(
-        ({ nodes: layoutSubNodes, layoutReturn }) => {
+        ({ nodes: layoutSubNodes, edges: elkEdges, layoutReturn }) => {
           const parentNode = allNodes.find((node) => node.id === parentNodeId);
           if (layoutReturn) {
             if (parentNode) {
@@ -174,20 +189,21 @@ export const useElkLayout = (): UseElkLayoutValue => {
           } else {
             layoutAllNodes = nodes;
           }
+          layoutAllEdges = [...layoutAllEdges, ...elkEdges];
         }
       );
     }
-    return layoutAllNodes;
+    return { nodes: layoutAllNodes, edges: layoutAllEdges };
   };
 
   const elkLayout = async (
     nodes: Node<NodeData, string>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
+  ): Promise<RawDiagram> => {
     const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrderMap(getSubNodes(nodes));
-    const layoutNodes = await applyElkOnSubNodes(subNodes, nodes, edges, layoutOptions);
-    return layoutNodes.reverse();
+    const diagram = await applyElkOnSubNodes(subNodes, nodes, edges, layoutOptions);
+    return { nodes: diagram.nodes.reverse(), edges: diagram.edges };
   };
 
   return {
