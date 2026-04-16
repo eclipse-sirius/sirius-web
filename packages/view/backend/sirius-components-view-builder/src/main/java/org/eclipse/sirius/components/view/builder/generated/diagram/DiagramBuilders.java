@@ -427,5 +427,15 @@ public class DiagramBuilders {
         return new DiagramToolbarBuilder();
     }
 
+    /**
+     * Instantiate a NodeDecoratorDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public NodeDecoratorDescriptionBuilder newNodeDecoratorDescription() {
+        return new NodeDecoratorDescriptionBuilder();
+    }
+
 
 }

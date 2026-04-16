@@ -16,9 +16,11 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.view.diagram.DecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
 import org.springframework.stereotype.Service;
@@ -73,6 +75,17 @@ public class DiagramIdProvider implements IDiagramIdProvider {
             String sourceId = this.getSourceIdFromElementDescription(treeDescription);
             String sourceElementId = this.identityService.getId(treeDescription);
             return SELECTION_DIALOG_TREE_DESCRIPTION_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
+                    + sourceElementId;
+        }
+        return null;
+    }
+
+    @Override
+    public String getId(DecoratorDescription decoratorDescription) {
+        if (decoratorDescription instanceof NodeDecoratorDescription nodeDecoratorDescription) {
+            String sourceId = this.getSourceIdFromElementDescription(nodeDecoratorDescription);
+            String sourceElementId = this.identityService.getId(nodeDecoratorDescription);
+            return NODE_DECORATOR_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
                     + sourceElementId;
         }
         return null;

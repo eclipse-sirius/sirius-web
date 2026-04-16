@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -117,6 +117,7 @@ public class NodeChildrenComponent implements IComponent {
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
                     .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
                     .initialBorderNodePosition(initialBorderNodePosition)
+                    .decoratorDescriptionRequestor(this.props.getNodeComponentProps().getDecoratorDescriptionRequestor())
                     .build();
             return new Element(NodeComponent.class, nodeComponentProps);
         }).toList();
@@ -155,6 +156,7 @@ public class NodeChildrenComponent implements IComponent {
                     .operationValidator(this.props.getNodeComponentProps().getOperationValidator())
                     .nodeAppearanceHandlers(this.props.getNodeComponentProps().getNodeAppearanceHandlers())
                     .initialBorderNodePosition(BorderNodePosition.NONE)
+                    .decoratorDescriptionRequestor(this.props.getNodeComponentProps().getDecoratorDescriptionRequestor())
                     .build();
 
             return new Element(NodeComponent.class, nodeComponentProps);

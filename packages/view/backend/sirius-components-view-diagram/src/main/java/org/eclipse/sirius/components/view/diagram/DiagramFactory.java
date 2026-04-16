@@ -362,6 +362,15 @@ public interface DiagramFactory extends EFactory {
     DiagramToolbar createDiagramToolbar();
 
     /**
+     * Returns a new object of class '<em>Node Decorator Description</em>'. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return a new object of class '<em>Node Decorator Description</em>'.
+     * @generated
+     */
+    NodeDecoratorDescription createNodeDecoratorDescription();
+
+    /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @return the package supported by this factory.

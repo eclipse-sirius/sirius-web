@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.CreateView;
+import org.eclipse.sirius.components.view.diagram.DecoratorPosition;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DeleteView;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -59,6 +60,7 @@ import org.eclipse.sirius.components.view.diagram.LayoutDirection;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
+import org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
@@ -206,6 +208,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createAction();
             case DiagramPackage.DIAGRAM_TOOLBAR:
                 return this.createDiagramToolbar();
+            case DiagramPackage.NODE_DECORATOR_DESCRIPTION:
+                return this.createNodeDecoratorDescription();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -245,6 +249,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.createHeaderSeparatorDisplayModeFromString(eDataType, initialValue);
             case DiagramPackage.EDGE_TYPE:
                 return this.createEdgeTypeFromString(eDataType, initialValue);
+            case DiagramPackage.DECORATOR_POSITION:
+                return this.createDecoratorPositionFromString(eDataType, initialValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -284,6 +290,8 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
                 return this.convertHeaderSeparatorDisplayModeToString(eDataType, instanceValue);
             case DiagramPackage.EDGE_TYPE:
                 return this.convertEdgeTypeToString(eDataType, instanceValue);
+            case DiagramPackage.DECORATOR_POSITION:
+                return this.convertDecoratorPositionToString(eDataType, instanceValue);
             default:
                 throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -734,6 +742,17 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      *
      * @generated
      */
+    @Override
+    public NodeDecoratorDescription createNodeDecoratorDescription() {
+        NodeDecoratorDescriptionImpl nodeDecoratorDescription = new NodeDecoratorDescriptionImpl();
+        return nodeDecoratorDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public ArrowStyle createArrowStyleFromString(EDataType eDataType, String initialValue) {
         ArrowStyle result = ArrowStyle.get(initialValue);
         if (result == null)
@@ -999,6 +1018,27 @@ public class DiagramFactoryImpl extends EFactoryImpl implements DiagramFactory {
      * @generated
      */
     public String convertEdgeTypeToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public DecoratorPosition createDecoratorPositionFromString(EDataType eDataType, String initialValue) {
+        DecoratorPosition result = DecoratorPosition.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertDecoratorPositionToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

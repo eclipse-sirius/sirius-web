@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection;
 import org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle;
+import org.eclipse.sirius.components.view.diagram.DecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
@@ -55,6 +56,8 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getStyle <em>Style</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getConditionalStyles
  * <em>Conditional Styles</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramDescriptionImpl#getDecoratorDescriptions
+ * <em>Decorator Descriptions</em>}</li>
  * </ul>
  *
  * @generated
@@ -170,6 +173,16 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @ordered
      */
     protected EList<ConditionalDiagramStyle> conditionalStyles;
+
+    /**
+     * The cached value of the '{@link #getDecoratorDescriptions() <em>Decorator Descriptions</em>}' containment
+     * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getDecoratorDescriptions()
+     * @generated
+     * @ordered
+     */
+    protected EList<DecoratorDescription> decoratorDescriptions;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -425,6 +438,19 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
      * @generated
      */
     @Override
+    public EList<DecoratorDescription> getDecoratorDescriptions() {
+        if (this.decoratorDescriptions == null) {
+            this.decoratorDescriptions = new EObjectContainmentEList<>(DecoratorDescription.class, this, DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS);
+        }
+        return this.decoratorDescriptions;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public GroupPalette getGroupPalette() {
         return this.groupPalette;
     }
@@ -489,6 +515,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.basicSetStyle(null, msgs);
             case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
                 return ((InternalEList<?>) this.getConditionalStyles()).basicRemove(otherEnd, msgs);
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS:
+                return ((InternalEList<?>) this.getDecoratorDescriptions()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -519,6 +547,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.getStyle();
             case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.getConditionalStyles();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS:
+                return this.getDecoratorDescriptions();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -562,6 +592,10 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 this.getConditionalStyles().clear();
                 this.getConditionalStyles().addAll((Collection<? extends ConditionalDiagramStyle>) newValue);
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS:
+                this.getDecoratorDescriptions().clear();
+                this.getDecoratorDescriptions().addAll((Collection<? extends DecoratorDescription>) newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -601,6 +635,9 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
             case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
                 this.getConditionalStyles().clear();
                 return;
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS:
+                this.getDecoratorDescriptions().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -631,6 +668,8 @@ public class DiagramDescriptionImpl extends RepresentationDescriptionImpl implem
                 return this.style != null;
             case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
                 return this.conditionalStyles != null && !this.conditionalStyles.isEmpty();
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS:
+                return this.decoratorDescriptions != null && !this.decoratorDescriptions.isEmpty();
         }
         return super.eIsSet(featureID);
     }
