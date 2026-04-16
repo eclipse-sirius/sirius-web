@@ -69,6 +69,10 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3647[#3647] [diagram] Add support for diagram style with background customization
+- https://github.com/eclipse-sirius/sirius-web/issues/6377[#6377] [diagram] Add frontend support for rendering node decorators.
+Decorators can be placed on any of the cardinal and ordinal directions (north, north west, etc) or at the center position.
+Sirius Web provides and uses a `DecoratorContainer` that can render these decorators at the appropriate position.
+Downstream applications can either reuse this container, or manually handle the `NodeData#decorators` in their renderers to adapt decorator rendering to their custom nodes.
 
 
 === Improvements
