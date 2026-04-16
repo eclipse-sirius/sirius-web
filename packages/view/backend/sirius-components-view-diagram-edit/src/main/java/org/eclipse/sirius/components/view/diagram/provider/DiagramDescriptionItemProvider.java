@@ -108,6 +108,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__STYLE);
             this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES);
+            this.childrenFeatures.add(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS);
         }
         return this.childrenFeatures;
     }
@@ -179,6 +180,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
             case DiagramPackage.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS:
             case DiagramPackage.DIAGRAM_DESCRIPTION__STYLE:
             case DiagramPackage.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES:
+            case DiagramPackage.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
                 return;
         }
@@ -201,6 +203,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES, DiagramFactory.eINSTANCE.createConditionalDiagramStyle()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultDiagramPalette()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE, DiagramFactory.eINSTANCE.createGroupPalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS, DiagramFactory.eINSTANCE.createNodeDecoratorDescription()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS, DiagramFactory.eINSTANCE.createSemanticDecoratorDescription()));
 
         NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
         nodeChild.setName("Node");

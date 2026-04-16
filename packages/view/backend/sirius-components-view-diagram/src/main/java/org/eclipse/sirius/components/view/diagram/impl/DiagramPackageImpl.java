@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.CreateView;
+import org.eclipse.sirius.components.view.diagram.DecoratorDescription;
+import org.eclipse.sirius.components.view.diagram.DecoratorPosition;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DeleteView;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -66,6 +68,7 @@ import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.NodeContainmentKind;
+import org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -78,6 +81,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
+import org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
@@ -462,6 +466,27 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      *
      * @generated
      */
+    private EClass nodeDecoratorDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass semanticDecoratorDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EClass decoratorDescriptionEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EEnum arrowStyleEEnum = null;
 
     /**
@@ -547,6 +572,13 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     private EEnum edgeTypeEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum decoratorPositionEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -707,6 +739,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
     @Override
     public EReference getDiagramDescription_ConditionalStyles() {
         return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDiagramDescription_DecoratorDescriptions() {
+        return (EReference) this.diagramDescriptionEClass.getEStructuralFeatures().get(9);
     }
 
     /**
@@ -2845,6 +2887,106 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EClass getNodeDecoratorDescription() {
+        return this.nodeDecoratorDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getNodeDecoratorDescription_NodeDescriptions() {
+        return (EReference) this.nodeDecoratorDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getSemanticDecoratorDescription() {
+        return this.semanticDecoratorDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getSemanticDecoratorDescription_DomainType() {
+        return (EAttribute) this.semanticDecoratorDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EClass getDecoratorDescription() {
+        return this.decoratorDescriptionEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDecoratorDescription_LabelExpression() {
+        return (EAttribute) this.decoratorDescriptionEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDecoratorDescription_PreconditionExpression() {
+        return (EAttribute) this.decoratorDescriptionEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDecoratorDescription_IconURLExpression() {
+        return (EAttribute) this.decoratorDescriptionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDecoratorDescription_Position() {
+        return (EAttribute) this.decoratorDescriptionEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDecoratorDescription_Name() {
+        return (EAttribute) this.decoratorDescriptionEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getArrowStyle() {
         return this.arrowStyleEEnum;
     }
@@ -2975,6 +3117,16 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
      * @generated
      */
     @Override
+    public EEnum getDecoratorPosition() {
+        return this.decoratorPositionEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public DiagramFactory getDiagramFactory() {
         return (DiagramFactory) this.getEFactoryInstance();
     }
@@ -3001,6 +3153,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__ARRANGE_LAYOUT_DIRECTION);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__STYLE);
         this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES);
+        this.createEReference(this.diagramDescriptionEClass, DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS);
 
         this.diagramElementDescriptionEClass = this.createEClass(DIAGRAM_ELEMENT_DESCRIPTION);
         this.createEAttribute(this.diagramElementDescriptionEClass, DIAGRAM_ELEMENT_DESCRIPTION__NAME);
@@ -3264,6 +3417,19 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.createEAttribute(this.diagramToolbarEClass, DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION);
         this.createEAttribute(this.diagramToolbarEClass, DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT);
 
+        this.decoratorDescriptionEClass = this.createEClass(DECORATOR_DESCRIPTION);
+        this.createEAttribute(this.decoratorDescriptionEClass, DECORATOR_DESCRIPTION__LABEL_EXPRESSION);
+        this.createEAttribute(this.decoratorDescriptionEClass, DECORATOR_DESCRIPTION__PRECONDITION_EXPRESSION);
+        this.createEAttribute(this.decoratorDescriptionEClass, DECORATOR_DESCRIPTION__ICON_URL_EXPRESSION);
+        this.createEAttribute(this.decoratorDescriptionEClass, DECORATOR_DESCRIPTION__POSITION);
+        this.createEAttribute(this.decoratorDescriptionEClass, DECORATOR_DESCRIPTION__NAME);
+
+        this.nodeDecoratorDescriptionEClass = this.createEClass(NODE_DECORATOR_DESCRIPTION);
+        this.createEReference(this.nodeDecoratorDescriptionEClass, NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS);
+
+        this.semanticDecoratorDescriptionEClass = this.createEClass(SEMANTIC_DECORATOR_DESCRIPTION);
+        this.createEAttribute(this.semanticDecoratorDescriptionEClass, SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE);
+
         // Create enums
         this.arrowStyleEEnum = this.createEEnum(ARROW_STYLE);
         this.layoutDirectionEEnum = this.createEEnum(LAYOUT_DIRECTION);
@@ -3278,6 +3444,7 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.userResizableDirectionEEnum = this.createEEnum(USER_RESIZABLE_DIRECTION);
         this.headerSeparatorDisplayModeEEnum = this.createEEnum(HEADER_SEPARATOR_DISPLAY_MODE);
         this.edgeTypeEEnum = this.createEEnum(EDGE_TYPE);
+        this.decoratorPositionEEnum = this.createEEnum(DECORATOR_POSITION);
     }
 
     /**
@@ -3343,6 +3510,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.nodeToolSectionEClass.getESuperTypes().add(this.getToolSection());
         this.edgeToolSectionEClass.getESuperTypes().add(this.getToolSection());
         this.dropNodeToolEClass.getESuperTypes().add(this.getTool());
+        this.nodeDecoratorDescriptionEClass.getESuperTypes().add(this.getDecoratorDescription());
+        this.semanticDecoratorDescriptionEClass.getESuperTypes().add(this.getDecoratorDescription());
 
         // Initialize classes, features, and operations; add parameters
         this.initEClass(this.diagramDescriptionEClass, DiagramDescription.class, "DiagramDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3365,6 +3534,8 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEReference(this.getDiagramDescription_Style(), this.getDiagramStyleDescription(), null, "style", null, 0, 1, DiagramDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getDiagramDescription_ConditionalStyles(), this.getConditionalDiagramStyle(), null, "conditionalStyles", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDiagramDescription_DecoratorDescriptions(), this.getDecoratorDescription(), null, "decoratorDescriptions", null, 0, -1, DiagramDescription.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.diagramElementDescriptionEClass, DiagramElementDescription.class, "DiagramElementDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3816,6 +3987,26 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.initEAttribute(this.getDiagramToolbar_ExpandedByDefault(), this.ecorePackage.getEBoolean(), "expandedByDefault", "true", 0, 1, DiagramToolbar.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.decoratorDescriptionEClass, DecoratorDescription.class, "DecoratorDescription", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDecoratorDescription_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", null, 0, 1, DecoratorDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDecoratorDescription_PreconditionExpression(), theViewPackage.getInterpretedExpression(), "preconditionExpression", null, 0, 1, DecoratorDescription.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDecoratorDescription_IconURLExpression(), theViewPackage.getInterpretedExpression(), "iconURLExpression", null, 0, 1, DecoratorDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDecoratorDescription_Position(), this.getDecoratorPosition(), "position", null, 0, 1, DecoratorDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDecoratorDescription_Name(), theViewPackage.getIdentifier(), "name", null, 0, 1, DecoratorDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.nodeDecoratorDescriptionEClass, NodeDecoratorDescription.class, "NodeDecoratorDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getNodeDecoratorDescription_NodeDescriptions(), this.getNodeDescription(), null, "nodeDescriptions", null, 0, -1, NodeDecoratorDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.semanticDecoratorDescriptionEClass, SemanticDecoratorDescription.class, "SemanticDecoratorDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getSemanticDecoratorDescription_DomainType(), theViewPackage.getDomainType(), "domainType", null, 0, 1, SemanticDecoratorDescription.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         // Initialize enums and add enum literals
         this.initEEnum(this.arrowStyleEEnum, ArrowStyle.class, "ArrowStyle");
         this.addEEnumLiteral(this.arrowStyleEEnum, ArrowStyle.NONE);
@@ -3900,6 +4091,17 @@ public class DiagramPackageImpl extends EPackageImpl implements DiagramPackage {
         this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.MANHATTAN);
         this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.SMART_MANHATTAN);
         this.addEEnumLiteral(this.edgeTypeEEnum, EdgeType.OBLIQUE);
+
+        this.initEEnum(this.decoratorPositionEEnum, DecoratorPosition.class, "DecoratorPosition");
+        this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.NORTH);
+        this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.NORTH_WEST);
+        this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.WEST);
+        this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.SOUTH_WEST);
+        this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.SOUTH);
+        this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.SOUTH_EAST);
+        this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.EAST);
+        this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.NORTH_EAST);
+        this.addEEnumLiteral(this.decoratorPositionEEnum, DecoratorPosition.CENTER);
 
         // Create resource
         this.createResource(eNS_URI);

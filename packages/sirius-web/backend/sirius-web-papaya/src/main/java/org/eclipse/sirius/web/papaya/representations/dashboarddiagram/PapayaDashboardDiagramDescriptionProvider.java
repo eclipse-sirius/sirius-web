@@ -81,6 +81,7 @@ public class PapayaDashboardDiagramDescriptionProvider implements IEditingContex
                 .labelProvider(variableManager -> "Papaya Dashboard Diagram")
                 .targetObjectIdProvider(this::getDiagramTargetObjectId)
                 .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
+                .decoratorDescriptions(List.of())
                 .build();
         return List.of(dashboardDescription);
     }

@@ -99,7 +99,8 @@ public class TestDiagramBuilder {
                 .collapsingState(CollapsingState.EXPANDED)
                 .outsideLabels(outsideLabels)
                 .customizedStyleProperties(Set.of())
-                .initialBorderNodePosition(BorderNodePosition.EAST);
+                .initialBorderNodePosition(BorderNodePosition.EAST)
+                .decorators(List.of());
 
         if (withInsideLabel) {
             LabelStyle labelStyle = LabelStyle.newLabelStyle()

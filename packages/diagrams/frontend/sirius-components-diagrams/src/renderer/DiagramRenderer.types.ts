@@ -16,7 +16,7 @@ import { GQLNodeDescription } from '../graphql/query/nodeDescriptionFragment.typ
 import { GQLDiagramRefreshedEventPayload } from '../graphql/subscription/diagramEventSubscription.types';
 import { GQLEdgeStyle } from '../graphql/subscription/edgeFragment.types';
 import { GQLLabelStyle } from '../graphql/subscription/labelFragment.types';
-import { GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
+import { GQLNodeDecorator, GQLNodeStyle } from '../graphql/subscription/nodeFragment.types';
 import { MultiLabelEdgeData } from './edge/MultiLabelEdge.types';
 import { ConnectionHandle } from './handles/ConnectionHandles.types';
 import { DiagramNodeType } from './node/NodeTypes.types';
@@ -67,6 +67,7 @@ export interface NodeData extends Record<string, unknown> {
   nodeAppearanceData: NodeAppearanceData;
   minComputedWidth: number | null;
   minComputedHeight: number | null;
+  decorators: GQLNodeDecorator[];
 }
 
 export type ConnectionLinePositionOnNode = 'none' | 'center' | 'border';

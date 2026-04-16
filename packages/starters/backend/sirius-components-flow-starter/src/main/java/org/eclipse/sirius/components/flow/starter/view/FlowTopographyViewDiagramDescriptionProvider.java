@@ -30,8 +30,10 @@ import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.IDiagramElementDescriptionProvider;
 import org.eclipse.sirius.components.view.builder.providers.IRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.view.diagram.DecoratorPosition;
 import org.eclipse.sirius.components.view.diagram.DiagramPalette;
 import org.eclipse.sirius.components.view.diagram.DiagramToolSection;
+import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 
@@ -52,8 +54,8 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
         var diagramDescriptionBuilder = this.diagramBuilderHelper.newDiagramDescription();
 
         var toolbar = this.diagramBuilderHelper.newDiagramToolbar()
-            .expandedByDefault(true)
-            .build();
+                .expandedByDefault(true)
+                .build();
 
         var diagramDescription = diagramDescriptionBuilder
                 .autoLayout(false)
@@ -63,7 +65,6 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
                 .toolbar(toolbar)
                 .style(this.diagramBuilderHelper.newDiagramStyleDescription().build())
                 .build();
-
 
         var cache = new ViewDiagramElementFinder();
         var diagramElementDescriptionProviders = List.of(
@@ -81,6 +82,15 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
         diagramElementDescriptionProviders.stream().map(IDiagramElementDescriptionProvider::create).forEach(cache::put);
 
         diagramElementDescriptionProviders.forEach(diagramElementDescriptionProvider -> diagramElementDescriptionProvider.link(diagramDescription, cache));
+
+        diagramDescription.getDecoratorDescriptions().add(this.diagramBuilderHelper.newNodeDecoratorDescription()
+                .position(DecoratorPosition.NORTH_EAST)
+                .name("EmptyNameDecorator")
+                .nodeDescriptions(cache.getNodeDescriptions().toArray(new NodeDescription[0]))
+                .labelExpression("aql:self.eClass().name + ' should have a name'")
+                .preconditionExpression("aql:self.oclIsKindOf(flow::Named) and self.name = ''")
+                .iconURLExpression("aql:'/flow-images/error_decorator.svg'")
+                .build());
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
@@ -112,7 +122,6 @@ public class FlowTopographyViewDiagramDescriptionProvider implements IRepresenta
         var setValueName = this.viewBuilderHelper.newSetValue()
                 .featureName("name")
                 .valueExpression("aql:'CompositeProcessor' + self.eContainer().eContents()->filter(flow::CompositeProcessor)->size()");
-
 
         var changeContextNewInstance = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:newInstance")

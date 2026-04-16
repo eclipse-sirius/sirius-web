@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle;
 import org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.CreateView;
+import org.eclipse.sirius.components.view.diagram.DecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DeleteView;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -55,6 +56,7 @@ import org.eclipse.sirius.components.view.diagram.LabelDescription;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LayoutStrategyDescription;
 import org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeLabelStyle;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
@@ -66,6 +68,7 @@ import org.eclipse.sirius.components.view.diagram.OutsideLabelStyle;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
+import org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool;
 import org.eclipse.sirius.components.view.diagram.Style;
 import org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool;
@@ -579,6 +582,31 @@ public class DiagramSwitch<T> extends Switch<T> {
             case DiagramPackage.DIAGRAM_TOOLBAR: {
                 DiagramToolbar diagramToolbar = (DiagramToolbar) theEObject;
                 T result = this.caseDiagramToolbar(diagramToolbar);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.DECORATOR_DESCRIPTION: {
+                DecoratorDescription decoratorDescription = (DecoratorDescription) theEObject;
+                T result = this.caseDecoratorDescription(decoratorDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.NODE_DECORATOR_DESCRIPTION: {
+                NodeDecoratorDescription nodeDecoratorDescription = (NodeDecoratorDescription) theEObject;
+                T result = this.caseNodeDecoratorDescription(nodeDecoratorDescription);
+                if (result == null)
+                    result = this.caseDecoratorDescription(nodeDecoratorDescription);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION: {
+                SemanticDecoratorDescription semanticDecoratorDescription = (SemanticDecoratorDescription) theEObject;
+                T result = this.caseSemanticDecoratorDescription(semanticDecoratorDescription);
+                if (result == null)
+                    result = this.caseDecoratorDescription(semanticDecoratorDescription);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1331,6 +1359,51 @@ public class DiagramSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseDiagramToolbar(DiagramToolbar object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Node Decorator Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Node Decorator Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseNodeDecoratorDescription(NodeDecoratorDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Semantic Decorator Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Semantic Decorator Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseSemanticDecoratorDescription(SemanticDecoratorDescription object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Decorator Description</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will terminate the switch. <!--
+     * end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Decorator Description</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDecoratorDescription(DecoratorDescription object) {
         return null;
     }
 

@@ -16,11 +16,14 @@ import java.util.Objects;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.view.diagram.DecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramElementDescription;
 import org.eclipse.sirius.components.view.diagram.DialogDescription;
+import org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription;
+import org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription;
 import org.springframework.stereotype.Service;
 
 /**
@@ -76,6 +79,23 @@ public class DiagramIdProvider implements IDiagramIdProvider {
                     + sourceElementId;
         }
         return null;
+    }
+
+    @Override
+    public String getId(DecoratorDescription decoratorDescription) {
+        String result = null;
+        if (decoratorDescription instanceof NodeDecoratorDescription nodeDecoratorDescription) {
+            String sourceId = this.getSourceIdFromElementDescription(nodeDecoratorDescription);
+            String sourceElementId = this.identityService.getId(nodeDecoratorDescription);
+            result = NODE_DECORATOR_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
+                    + sourceElementId;
+        } else if (decoratorDescription instanceof SemanticDecoratorDescription semanticDecoratorDescription) {
+            String sourceId = this.getSourceIdFromElementDescription(semanticDecoratorDescription);
+            String sourceElementId = this.identityService.getId(semanticDecoratorDescription);
+            result = SEMANTIC_DECORATOR_KIND + "?" + SOURCE_KIND + "=" + VIEW_SOURCE_KIND + "&" + SOURCE_ID + "=" + sourceId + "&" + SOURCE_ELEMENT_ID + "="
+                    + sourceElementId;
+        }
+        return result;
     }
 
     private String getDialogDescriptionTypeName(DialogDescription dialogDescription) {

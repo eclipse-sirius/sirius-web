@@ -85,6 +85,17 @@
     <eLiterals name="SmartManhattan" value="1" literal="SmartManhattan"/>
     <eLiterals name="Oblique" value="2" literal="Oblique"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="DecoratorPosition">
+    <eLiterals name="NORTH"/>
+    <eLiterals name="NORTH_WEST" value="1"/>
+    <eLiterals name="WEST" value="2"/>
+    <eLiterals name="SOUTH_WEST" value="3"/>
+    <eLiterals name="SOUTH" value="4"/>
+    <eLiterals name="SOUTH_EAST" value="5"/>
+    <eLiterals name="EAST" value="6"/>
+    <eLiterals name="NORTH_EAST" value="7"/>
+    <eLiterals name="CENTER" value="8"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramDescription" eSuperTypes="../../../../../sirius-components-view/src/main/resources/model/view.ecore#//RepresentationDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="autoLayout" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -104,6 +115,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
         eType="#//ConditionalDiagramStyle" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="decoratorDescriptions"
+        upperBound="-1" eType="#//DecoratorDescription" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DiagramElementDescription" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"
@@ -501,5 +514,20 @@
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="expandedByDefault" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DecoratorDescription" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="labelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="iconURLExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="position" eType="#//DecoratorPosition"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//Identifier"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NodeDecoratorDescription" eSuperTypes="#//DecoratorDescription">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nodeDescriptions" upperBound="-1"
+        eType="#//NodeDescription"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SemanticDecoratorDescription" eSuperTypes="#//DecoratorDescription">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//DomainType"/>
   </eClassifiers>
 </ecore:EPackage>

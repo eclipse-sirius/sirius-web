@@ -427,5 +427,25 @@ public class DiagramBuilders {
         return new DiagramToolbarBuilder();
     }
 
+    /**
+     * Instantiate a NodeDecoratorDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public NodeDecoratorDescriptionBuilder newNodeDecoratorDescription() {
+        return new NodeDecoratorDescriptionBuilder();
+    }
+
+    /**
+     * Instantiate a SemanticDecoratorDescriptionBuilder .
+     *
+     * @author BuilderGenerator
+     * @generated
+     */
+    public SemanticDecoratorDescriptionBuilder newSemanticDecoratorDescription() {
+        return new SemanticDecoratorDescriptionBuilder();
+    }
+
 
 }

@@ -58,6 +58,7 @@ public class DiagramComponent implements IComponent {
 
         IDiagramElementRequestor diagramElementRequestor = new DiagramElementRequestor();
         INodeDescriptionRequestor nodeDescriptionRequestor = new NodeDescriptionRequestor(allDiagramDescriptions);
+        IDecoratorDescriptionRequestor decoratorDescriptionRequestor = new DecoratorDescriptionRequestor(diagramDescription);
 
         var nodes = diagramDescription.getNodeDescriptions().stream()
                 .map(nodeDescription -> {
@@ -86,6 +87,7 @@ public class DiagramComponent implements IComponent {
                             .operationValidator(this.props.getOperationValidator())
                             .nodeAppearanceHandlers(this.props.getNodeAppearanceHandlers())
                             .initialBorderNodePosition(BorderNodePosition.NONE)
+                            .decoratorDescriptionRequestor(decoratorDescriptionRequestor)
                             .build();
                     return new Element(NodeComponent.class, nodeComponentProps);
                 }).toList();

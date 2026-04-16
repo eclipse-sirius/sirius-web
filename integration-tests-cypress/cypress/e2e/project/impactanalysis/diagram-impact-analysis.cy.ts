@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,7 +44,7 @@ describe('Impact analysis - diagram', () => {
         details.getTextField('Name').type('InitialName{enter}');
         new Explorer().createRepresentation('Root', diagramDescriptionName, diagramTitle);
 
-        diagram.getNodes('Impact analysis diagram', 'InitialName').findByTestId('Label - InitialName').rightclick();
+        diagram.getNodes('Impact analysis diagram', 'InitialName').rightclick();
         diagram.getPalette().should('exist');
         diagram.getPalette().findByTestId('tool-Tool with impact analysis').click();
         impactAnalysis.getImpactAnalysisDialog().should('exist');

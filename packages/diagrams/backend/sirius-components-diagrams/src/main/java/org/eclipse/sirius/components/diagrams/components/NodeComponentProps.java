@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,6 +65,8 @@ public final class NodeComponentProps implements IProps {
 
     private BorderNodePosition initialBorderNodePosition;
 
+    private IDecoratorDescriptionRequestor decoratorDescriptionRequestor;
+
     private NodeComponentProps() {
         // Prevent instantiation
     }
@@ -129,6 +131,10 @@ public final class NodeComponentProps implements IProps {
         return this.initialBorderNodePosition;
     }
 
+    public IDecoratorDescriptionRequestor getDecoratorDescriptionRequestor() {
+        return this.decoratorDescriptionRequestor;
+    }
+
     public static Builder newNodeComponentProps() {
         return new Builder();
     }
@@ -170,6 +176,8 @@ public final class NodeComponentProps implements IProps {
         private List<INodeAppearanceHandler> nodeAppearanceHandlers;
 
         private BorderNodePosition initialBorderNodePosition;
+
+        private IDecoratorDescriptionRequestor decoratorDescriptionRequestor;
 
         public Builder variableManager(VariableManager variableManager) {
             this.variableManager = Objects.requireNonNull(variableManager);
@@ -246,6 +254,11 @@ public final class NodeComponentProps implements IProps {
             return this;
         }
 
+        public Builder decoratorDescriptionRequestor(IDecoratorDescriptionRequestor decoratorDescriptionRequestor) {
+            this.decoratorDescriptionRequestor = Objects.requireNonNull(decoratorDescriptionRequestor);
+            return this;
+        }
+
         public NodeComponentProps build() {
             NodeComponentProps nodeComponentProps = new NodeComponentProps();
             nodeComponentProps.variableManager = Objects.requireNonNull(this.variableManager);
@@ -263,6 +276,7 @@ public final class NodeComponentProps implements IProps {
             nodeComponentProps.parentElementState = Objects.requireNonNull(this.parentElementState);
             nodeComponentProps.nodeAppearanceHandlers = Objects.requireNonNull(this.nodeAppearanceHandlers);
             nodeComponentProps.initialBorderNodePosition = Objects.requireNonNull(this.initialBorderNodePosition);
+            nodeComponentProps.decoratorDescriptionRequestor = Objects.requireNonNull(this.decoratorDescriptionRequestor);
             return nodeComponentProps;
         }
     }

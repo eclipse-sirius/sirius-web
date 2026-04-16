@@ -129,6 +129,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .collapsingState(CollapsingState.EXPANDED)
                 .customizedStyleProperties(Set.of())
                 .initialBorderNodePosition(BorderNodePosition.EAST)
+                .decorators(List.of())
                 .build();
     }
 
@@ -145,6 +146,7 @@ public class GetConnectorToolsEventHandlerTests {
                 .dropHandler(variableManager -> new Failure(""))
                 .iconURLsProvider(variableManager -> List.of())
                 .styleProvider(variableManager -> DiagramStyle.newDiagramStyle().build())
+                .decoratorDescriptions(List.of())
                 .build();
 
         Node sourceNode = this.getNode(SOURCE_NODE_ID, SOURCE_NODE_TARGET_ID);
