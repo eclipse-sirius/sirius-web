@@ -17,6 +17,7 @@ import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { isEdgeAnchorNode } from '../../node/EdgeAnchorNode.types';
 import { ListNodeData } from '../../node/ListNode.types';
+import { DiagramNodeType } from '../../node/NodeTypes.types';
 import { UseElkLayoutValue } from './useElkLayout.types';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
@@ -26,8 +27,8 @@ const reverseOrderMap = <K, V>(map: Map<K, V>): Map<K, V> => {
   return new Map<K, V>(reversedNodes);
 };
 
-const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
-  const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
+const getSubNodes = (nodes: Node<NodeData, DiagramNodeType>[]): Map<string, Node<NodeData, DiagramNodeType>[]> => {
+  const subNodes: Map<string, Node<NodeData, DiagramNodeType>[]> = new Map<string, Node<NodeData, DiagramNodeType>[]>();
   for (const node of nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node))) {
     const parentNodeId: string = node.parentId ?? 'root';
     if (!subNodes.has(parentNodeId)) {
@@ -38,14 +39,14 @@ const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData
   return subNodes;
 };
 
-const computeHeaderVerticalFootprint = (node: Node<NodeData, string> | undefined): number => {
+const computeHeaderVerticalFootprint = (node: Node<NodeData, DiagramNodeType> | undefined): number => {
   if (node && node.data.insideLabel?.isHeader) {
     return node.data.insideLabel.height;
   }
   return 0;
 };
 
-const computeLabels = (node: Node<NodeData, string>): ElkLabel[] => {
+const computeLabels = (node: Node<NodeData, DiagramNodeType>): ElkLabel[] => {
   const labels: ElkLabel[] = [];
   if (node && node.data.insideLabel) {
     const elkLabel: ElkLabel = {
@@ -126,15 +127,15 @@ export const useElkLayout = (): UseElkLayoutValue => {
   };
 
   const applyElkOnSubNodes = async (
-    subNodes: Map<string, Node<NodeData, string>[]>,
-    allNodes: Node<NodeData, string>[],
+    subNodes: Map<string, Node<NodeData, DiagramNodeType>[]>,
+    allNodes: Node<NodeData, DiagramNodeType>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
-    let layoutAllNodes: Node<NodeData, string>[] = [];
+  ): Promise<Node<NodeData, DiagramNodeType>[]> => {
+    let layoutAllNodes: Node<NodeData, DiagramNodeType>[] = [];
     const parentNodeWithNewSize: Node<NodeData>[] = [];
     for (const [parentNodeId, nodes] of subNodes) {
-      const parentNode: Node<NodeData, string> | undefined = allNodes.find((node) => node.id === parentNodeId);
+      const parentNode: Node<NodeData, DiagramNodeType> | undefined = allNodes.find((node) => node.id === parentNodeId);
       const subGroupEdges: Edge<EdgeData>[] = [];
       edges.forEach((edge) => {
         const isTargetInside = nodes.some((node) => node.id === edge.target);
@@ -181,11 +182,11 @@ export const useElkLayout = (): UseElkLayoutValue => {
   };
 
   const elkLayout = async (
-    nodes: Node<NodeData, string>[],
+    nodes: Node<NodeData, DiagramNodeType>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
-  ): Promise<Node<NodeData, string>[]> => {
-    const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrderMap(getSubNodes(nodes));
+  ): Promise<Node<NodeData, DiagramNodeType>[]> => {
+    const subNodes: Map<string, Node<NodeData, DiagramNodeType>[]> = reverseOrderMap(getSubNodes(nodes));
     const layoutNodes = await applyElkOnSubNodes(subNodes, nodes, edges, layoutOptions);
     return layoutNodes.reverse();
   };

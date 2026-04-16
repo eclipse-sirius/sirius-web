@@ -70,6 +70,7 @@ test.describe('edge-handle', () => {
     await playwrightNode1a.click();
     await page.getByTestId('creationhandle-left').hover();
     await page.mouse.down();
+    await page.mouse.move(400, 400);
     await expect(page.locator('[data-handleid$="target"]')).toHaveCount(2);
     await playwrightNode1a.nodeLocator.hover();
     await page.mouse.up();

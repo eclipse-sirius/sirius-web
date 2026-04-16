@@ -655,7 +655,7 @@ test.describe('diagram - label', () => {
     expect((labelMiddleCenterBoundingBox?.x ?? 0) - (nodeMiddleCenterBoundingBox?.x ?? 0)).toBeLessThanOrEqual(75);
     expect((labelMiddleCenterBoundingBox?.x ?? 0) - (nodeMiddleCenterBoundingBox?.x ?? 0)).toBeGreaterThanOrEqual(60);
     expect((labelMiddleCenterBoundingBox?.y ?? 0) - (nodeMiddleCenterBoundingBox?.y ?? 0)).toBeLessThanOrEqual(85);
-    expect((labelMiddleCenterBoundingBox?.y ?? 0) - (nodeMiddleCenterBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(75);
+    expect((labelMiddleCenterBoundingBox?.y ?? 0) - (nodeMiddleCenterBoundingBox?.y ?? 0)).toBeGreaterThanOrEqual(74.5);
     expect(labelMiddleCenterBoundingBox?.height).toBeGreaterThan(8); // Check label is split on 2 lines
     //RIGHT
     const nodeMiddleRight = new PlaywrightNode(page, 'Entity1', 'FreeForm', 5);

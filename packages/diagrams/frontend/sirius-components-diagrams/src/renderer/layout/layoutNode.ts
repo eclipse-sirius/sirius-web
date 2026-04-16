@@ -12,16 +12,19 @@
  *******************************************************************************/
 import { Box, Dimensions, InternalNode, Node, NodePositionChange, Rect, XYPosition } from '@xyflow/react';
 import { boxToRect, NodeLookup, rectToBox } from '@xyflow/system';
+import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
+import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
 import { InsideLabel, NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { computePreviousPosition } from './bounds';
 import { RawDiagram } from './layout.types';
 import {
   getBorderNodeExtent,
+  getNewlyAddedBorderNodePosition,
   isEastBorderNode,
   isNorthBorderNode,
   isSouthBorderNode,
   isWestBorderNode,
-  getNewlyAddedBorderNodePosition,
 } from './layoutBorderNodes';
 import {
   borderNodeOffset,
@@ -29,12 +32,9 @@ import {
   defaultNodeMargin,
   defaultWidth,
   gap,
-  rectangularNodePadding,
   maxOverflowIteration,
+  rectangularNodePadding,
 } from './layoutParams';
-import { DiagramNodeType } from '../node/NodeTypes.types';
-import { GQLReferencePosition } from '../../graphql/subscription/diagramEventSubscription.types';
-import { GQLArrangeLayoutDirection } from '../../representation/DiagramRepresentation.types';
 
 /**
  * It requires that nodes are already positioned
@@ -243,7 +243,7 @@ const getRightMostSibling = (
 };
 
 export const setBorderNodesPosition = (
-  borderNodes: Node<NodeData, string>[],
+  borderNodes: Node<NodeData, DiagramNodeType>[],
   nodeToLayout: Node<NodeData>,
   previousDiagram: RawDiagram | null,
   calculateCustomNodeBorderNodePosition?:
