@@ -99,7 +99,15 @@ export const useLayout = (): UseLayoutValue => {
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
       prepareLayoutLabels(state.previousDiagram, state.diagramToLayout);
       if (diagramDescription?.autoLayout && layoutConfigurations[0]) {
-        elkLayout(state.diagramToLayout.nodes, state.diagramToLayout.edges, layoutConfigurations[0].layoutOptions).then(
+        const postLaidoutDiagram = layout(
+          { nodes: state.diagramToLayout.nodes, edges: state.diagramToLayout.edges },
+          { nodes: state.diagramToLayout.nodes, edges: state.diagramToLayout.edges },
+          state.referencePosition,
+          state.layoutDirection,
+          nodeLayoutHandlers,
+          true
+        );
+        elkLayout(postLaidoutDiagram.nodes, postLaidoutDiagram.edges, layoutConfigurations[0].layoutOptions).then(
           (layoutNodes) => {
             const updatedLayoutNodes = layoutNodes.map((n) => {
               return {

@@ -39,7 +39,7 @@ test.describe('diagram - auto-layout', () => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
 
-    const captureSubsystemNode = new PlaywrightNode(page, 'Capture_Subsystem');
+    const captureSubsystemNode = new PlaywrightNode(page, 'Wifi');
     const captureSubsystemPosition = await captureSubsystemNode.getReactFlowXYPosition();
     expect(captureSubsystemPosition.x).toBe(12);
     expect(captureSubsystemPosition.y).toBe(12);
@@ -48,8 +48,8 @@ test.describe('diagram - auto-layout', () => {
     const dspPosition = await dspNode.getReactFlowXYPosition();
     expect(dspPosition.x).toBeLessThanOrEqual(124);
     expect(dspPosition.x).toBeGreaterThanOrEqual(120);
-    expect(dspPosition.y).toBeLessThanOrEqual(46);
-    expect(dspPosition.y).toBeGreaterThanOrEqual(42);
+    expect(dspPosition.y).toBeLessThanOrEqual(36);
+    expect(dspPosition.y).toBeGreaterThanOrEqual(32);
   });
 
   test('when moving a node on an auto-layout diagram, then move is reset to its default position', async ({ page }) => {
@@ -57,22 +57,27 @@ test.describe('diagram - auto-layout', () => {
     await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
 
     const wifiNode = new PlaywrightNode(page, 'Wifi');
-    const wifiPositionBefore = await wifiNode.getDOMXYPosition();
-    await wifiNode.move({ x: 100, y: 100 });
+    const wifiPositionBefore = await wifiNode.getReactFlowXYPosition();
+    await wifiNode.move({ x: 100, y: -100 });
 
     await page.waitForFunction(
       ({ expectedX, expectedY }) => {
-        const node = document.querySelector(`[data-testid="FreeForm - Wifi"]`);
-        if (!node) {
-          return false;
-        }
-        const nodeBoundingBox = node.getBoundingClientRect();
-        return (
-          nodeBoundingBox.x > expectedX - 5 &&
-          nodeBoundingBox.x < expectedX + 5 &&
-          nodeBoundingBox.y > expectedY - 5 &&
-          nodeBoundingBox.y < expectedY + 5
-        );
+        const nodePanelInfo = document.querySelector('div[data-testid="nodePanelInfos"]');
+        if (!nodePanelInfo) return false;
+
+        const spans = nodePanelInfo.querySelectorAll('span');
+        let xValue, yValue;
+
+        spans.forEach((span) => {
+          const text = span.textContent || '';
+          if (text.includes('x :')) {
+            xValue = Number(text.split('x :')[1]?.trim());
+          } else if (text.includes('y :')) {
+            yValue = Number(text.split('y :')[1]?.trim());
+          }
+        });
+
+        return xValue === expectedX && yValue === expectedY;
       },
       {
         expectedX: wifiPositionBefore.x,

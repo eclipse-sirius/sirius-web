@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import { LayoutConfiguration, UseLayoutConfigurationsValue } from './useLayoutCo
 const elkLayeredOptions = (direction: string): LayoutOptions => ({
   'elk.algorithm': 'layered',
   'elk.layered.spacing.nodeNodeBetweenLayers': '80',
-  'layering.strategy': 'NETWORK_SIMPLEX',
+  'elk.layered.layering.strategy': 'NETWORK_SIMPLEX',
   'elk.spacing.componentComponent': '60',
   'elk.spacing.nodeNode': '80',
   'elk.direction': `${direction}`,

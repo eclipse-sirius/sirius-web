@@ -14,36 +14,9 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { Edge, Node } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
-import { EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { EdgeData, NodeData, BorderNodePosition } from '../../DiagramRenderer.types';
 import { isEdgeAnchorNode } from '../../node/EdgeAnchorNode.types';
-import { ListNodeData } from '../../node/ListNode.types';
 import { UseElkLayoutValue } from './useElkLayout.types';
-
-const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
-
-const reverseOrderMap = <K, V>(map: Map<K, V>): Map<K, V> => {
-  const reversedNodes = Array.from(map.entries()).reverse();
-  return new Map<K, V>(reversedNodes);
-};
-
-const getSubNodes = (nodes: Node<NodeData, string>[]): Map<string, Node<NodeData, string>[]> => {
-  const subNodes: Map<string, Node<NodeData, string>[]> = new Map<string, Node<NodeData, string>[]>();
-  for (const node of nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node))) {
-    const parentNodeId: string = node.parentId ?? 'root';
-    if (!subNodes.has(parentNodeId)) {
-      subNodes.set(parentNodeId, []);
-    }
-    subNodes.get(parentNodeId)?.push(node);
-  }
-  return subNodes;
-};
-
-const computeHeaderVerticalFootprint = (node: Node<NodeData, string> | undefined): number => {
-  if (node && node.data.insideLabel?.isHeader) {
-    return node.data.insideLabel.height;
-  }
-  return 0;
-};
 
 const computeLabels = (node: Node<NodeData, string>): ElkLabel[] => {
   const labels: ElkLabel[] = [];
@@ -72,6 +45,55 @@ const computeLabels = (node: Node<NodeData, string>): ElkLabel[] => {
   return labels;
 };
 
+const computePortSide = (borderNodePosition: BorderNodePosition | null): string => {
+  let portSide: string = 'UNDEFINED';
+  if (borderNodePosition === BorderNodePosition.EAST) {
+    portSide = 'EAST';
+  } else if (borderNodePosition === BorderNodePosition.WEST) {
+    portSide = 'WEST';
+  } else if (borderNodePosition === BorderNodePosition.NORTH) {
+    portSide = 'NORTH';
+  } else if (borderNodePosition === BorderNodePosition.SOUTH) {
+    portSide = 'SOUTH';
+  }
+  return portSide;
+};
+
+const buildElkNodeChildrenAndPorts = (
+  node: Node<NodeData>,
+  nodes: Node<NodeData>[],
+  options: LayoutOptions
+): ElkNode => {
+  const elkNodeChildren: ElkNode[] = nodes
+    .filter((n) => !n.data.isBorderNode)
+    .filter((n) => n.parentId === node.id)
+    .map((n) => buildElkNodeChildrenAndPorts(n, nodes, options));
+
+  const elkNodePorts: ElkNode[] = nodes
+    .filter((n) => n.data.isBorderNode)
+    .filter((n) => n.parentId === node.id)
+    .map((n) => buildElkNodeChildrenAndPorts(n, nodes, options));
+
+  return {
+    id: node.id,
+    x: node.position.x,
+    y: node.position.y,
+    width: node.width,
+    height: node.height,
+    labels: computeLabels(node),
+    children: elkNodeChildren,
+    ports: elkNodePorts,
+    layoutOptions: {
+      ...options,
+      'elk.port.side': `${computePortSide(node.data.borderNodePosition)}`,
+    },
+  };
+};
+
+const convertToElkGraph = (nodes: Node<NodeData>[], options: LayoutOptions): ElkNode[] => {
+  return nodes.filter((n) => !n.parentId).map((node) => buildElkNodeChildrenAndPorts(node, nodes, options));
+};
+
 export const useElkLayout = (): UseElkLayoutValue => {
   const { addErrorMessage } = useMultiToast();
   const elk = new ELK();
@@ -79,28 +101,21 @@ export const useElkLayout = (): UseElkLayoutValue => {
   const getELKLayout = async (
     nodes: Node<NodeData>[],
     edges: Edge<EdgeData>[],
-    options: LayoutOptions = {},
-    parentNodeId: string,
-    headerVerticalFootprint: number
+    options: LayoutOptions = {}
   ): Promise<any> => {
     const graph: ElkNode = {
-      id: parentNodeId,
-      layoutOptions: options,
-      children: nodes.map((node) => ({
-        labels: computeLabels(node),
-        ...node,
-      })),
+      id: 'root',
+      children: convertToElkGraph(nodes, options),
       edges: edges
         .filter(
           (edge) => nodes.some((node) => node.id === edge.source) && nodes.some((node) => node.id === edge.target)
         )
-        .map((edge) => {
-          return {
-            id: edge.id,
-            sources: [edge.source],
-            targets: [edge.target],
-          };
-        }),
+        .map((edge) => ({
+          id: edge.id,
+          sources: [edge.source],
+          targets: [edge.target],
+        })),
+      layoutOptions: options,
     };
     try {
       const layoutGraph = await elk.layout(graph);
@@ -113,11 +128,10 @@ export const useElkLayout = (): UseElkLayoutValue => {
             } else {
               return {
                 ...node,
-                position: { x: node.x ?? 0, y: (node.y ?? 0) + headerVerticalFootprint },
+                position: { x: node.x ?? 0, y: node.y ?? 0 },
               };
             }
           }) ?? [],
-        layoutReturn: layoutGraph,
       };
     } catch (message) {
       addErrorMessage('An error occurred during the arrange all elements ');
@@ -125,58 +139,43 @@ export const useElkLayout = (): UseElkLayoutValue => {
     }
   };
 
-  const applyElkOnSubNodes = async (
-    subNodes: Map<string, Node<NodeData, string>[]>,
-    allNodes: Node<NodeData, string>[],
+  const applyElkOnNodes = async (
+    nodes: Node<NodeData, string>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
   ): Promise<Node<NodeData, string>[]> => {
     let layoutAllNodes: Node<NodeData, string>[] = [];
-    const parentNodeWithNewSize: Node<NodeData>[] = [];
-    for (const [parentNodeId, nodes] of subNodes) {
-      const parentNode: Node<NodeData, string> | undefined = allNodes.find((node) => node.id === parentNodeId);
-      const subGroupEdges: Edge<EdgeData>[] = [];
-      edges.forEach((edge) => {
-        const isTargetInside = nodes.some((node) => node.id === edge.target);
-        const isSourceInside = nodes.some((node) => node.id === edge.source);
-        if (isTargetInside && isSourceInside) {
-          subGroupEdges.push(edge);
+    await getELKLayout(
+      nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node)),
+      edges,
+      layoutOptions
+    ).then(({ nodes: elkNodes }) => {
+      const elkNodesMap = new Map<string, ElkNode>();
+
+      const collectNode = (node: ElkNode) => {
+        elkNodesMap.set(node.id, node);
+        if (node.children) {
+          node.children.forEach((child) => collectNode(child));
         }
-        if (isTargetInside && !isSourceInside) {
-          edge.target = parentNodeId;
+      };
+
+      elkNodes.forEach((rootNode: ElkNode) => collectNode(rootNode));
+      layoutAllNodes = nodes.map((node) => {
+        const elkNode = elkNodesMap.get(node.id);
+        if (elkNode) {
+          return {
+            ...node,
+            position: {
+              x: elkNode.x ?? node.position.x,
+              y: elkNode.y ?? node.position.y,
+            },
+            width: elkNode.width,
+            height: elkNode.height,
+          };
         }
-        if (!isTargetInside && isSourceInside) {
-          edge.source = parentNodeId;
-        }
+        return node;
       });
-      if ((parentNode && isListData(parentNode)) || nodes.every((node) => node.data.isBorderNode)) {
-        // No elk layout for child of container list or for border node
-        layoutAllNodes = [...layoutAllNodes, ...nodes.reverse()];
-        continue;
-      }
-      const headerVerticalFootprint: number = computeHeaderVerticalFootprint(parentNode);
-      const subGroupNodes: Node<NodeData>[] = nodes
-        .filter((node) => !node.data.isBorderNode)
-        .map((node) => {
-          return parentNodeWithNewSize.find((layoutNode) => layoutNode.id === node.id) ?? node;
-        });
-      await getELKLayout(subGroupNodes, subGroupEdges, layoutOptions, parentNodeId, headerVerticalFootprint).then(
-        ({ nodes: layoutSubNodes, layoutReturn }) => {
-          const parentNode = allNodes.find((node) => node.id === parentNodeId);
-          if (layoutReturn) {
-            if (parentNode) {
-              parentNode.width = layoutReturn.width;
-              parentNode.height = layoutReturn.height + headerVerticalFootprint;
-              parentNode.style = { width: `${parentNode.width}px`, height: `${parentNode.height}px` };
-              parentNodeWithNewSize.push(parentNode);
-            }
-            layoutAllNodes = [...layoutAllNodes, ...layoutSubNodes, ...nodes.filter((node) => node.data.isBorderNode)];
-          } else {
-            layoutAllNodes = nodes;
-          }
-        }
-      );
-    }
+    });
     return layoutAllNodes;
   };
 
@@ -185,9 +184,7 @@ export const useElkLayout = (): UseElkLayoutValue => {
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
   ): Promise<Node<NodeData, string>[]> => {
-    const subNodes: Map<string, Node<NodeData, string>[]> = reverseOrderMap(getSubNodes(nodes));
-    const layoutNodes = await applyElkOnSubNodes(subNodes, nodes, edges, layoutOptions);
-    return layoutNodes.reverse();
+    return await applyElkOnNodes(nodes, edges, layoutOptions);
   };
 
   return {
