@@ -42,6 +42,7 @@ import {
   GQLWidget,
   PropertySectionComponent,
   widgetContributionExtensionPoint,
+  widgetOverrideExtensionPoint,
 } from '@eclipse-sirius/sirius-components-forms';
 import { GanttRepresentation } from '@eclipse-sirius/sirius-components-gantt';
 import {
@@ -493,6 +494,18 @@ defaultExtensionRegistry.putData(widgetContributionExtensionPoint, {
   ],
 });
 
+/*******************************************************************************
+ * Widget overrides
+ *
+ * Used to override the rendering of existing widgets in form
+ *
+ *******************************************************************************/
+
+defaultExtensionRegistry.putData(widgetOverrideExtensionPoint, {
+  identifier: `siriusWeb_${widgetOverrideExtensionPoint.identifier}`,
+  data: [
+  ],
+});
 /*******************************************************************************
  *
  * Project settings
