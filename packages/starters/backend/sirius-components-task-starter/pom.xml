@@ -41,6 +41,10 @@
 			<id>Central</id>
 			<url>https://repo.maven.apache.org/maven2</url>
 		</repository>
+		<repository>
+			<id>github-pepper-mm</id>
+			<url>https://maven.pkg.github.com/ObeoNetwork/pepper-mm</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -51,14 +55,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-task</artifactId>
-			<version>2026.3.3</version>
+			<groupId>pepper-mm</groupId>
+			<artifactId>pepper-mm</artifactId>
+			<version>2026.3.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-task-edit</artifactId>
-			<version>2026.3.3</version>
+			<groupId>pepper-mm</groupId>
+			<artifactId>pepper-edit</artifactId>
+			<version>2026.3.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>

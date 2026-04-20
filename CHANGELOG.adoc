@@ -53,7 +53,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - [releng] Switch `@mui/icons-material` to `7.3.10`
 - [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.4`
 - [releng] Switch AQL 8.1.2
-
+- [releng] https://github.com/eclipse-sirius/sirius-web/issues/6403[#6403] Use pepper-mm instead of the old internal task metamodel used in the tests and task-starter
 
 === Bug fixes
 
