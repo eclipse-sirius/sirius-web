@@ -19,6 +19,7 @@
 - [ADR-227] Add support for node decorators
 - [ADR-228] Add auto alignment for edges
 - [ADR-229] Add the selected element label in the header of the right views
+- [ADR-230] Add the ability to override the frontend behavior of form widgets
 
 
 === Deprecation warning

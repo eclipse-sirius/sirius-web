@@ -1,0 +1,142 @@
+:author: Pierre-Charles David
+:date: 2026-04-20
+:status: proposed
+:consulted: Stéphane Bégaudeau, Axel Richard
+:informed: Stéphane Bégaudeau, Axel Richard
+:deciders: Stéphane Bégaudeau
+:pitch: link to the related pitch (if any)
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6428
+
+= ADR-230 - Add the ability to override the frontend behavior of form widgets
+
+== Context and Problem Statement
+
+The different kinds of widgets supported in Forms have their behavior defined on the backend.
+
+In some scenarios (e.g. in the context of https://github.com/eclipse-syson/syson/issues/2097), we need to have widgets whose behavior is defined (at least partially) on the frontend.
+In this case we want a widget that looks like a button and that, when clicked, opens a specific modal instead of invoking a backend action.
+
+Currently, this is only possible through the definition of a new _type_ of custom widget, which requires significant work (on the frontend and the backend).
+
+
+== Decision Drivers
+
+- Compatiblity: The solution should be compatible with the existing widget system and not require any change to existing widgets (core or custom).
+- Generality: While the immediate need is for _button_ widgets, the solution should be general enough to support any kind of widget (core or custom).
+- Usability: The solution should be easy to use for developers defining new widgets.
+In particular, it should be much simpler to use than the current approach of defining a new type of custom widget with backend behavior in the simple cases (otherwise there is no point).
+
+
+== Considered Options
+
+=== First Option: generalization of the existing custom widget extension point
+
+We can reuse the existing extension point and simply make it more flexible and general.
+
+Instead of looking for custom widget in the `widgetContributionExtensionPoint` _after_ all core widgets have been handled, we look for a widget contribution _before_.
+For existing widgets (core or custom) this will not change anything, as they all have a custom `__typename` so the order in which we make the lookup does not matter.
+
+However this unlocks that ability for a frontend extension to completely override any widget (core or custom) and provide a completely different React component to redefine both how it is rendered and how it behaves, without requiring any change on the backend.
+
+[source,typescript]
+----
+const CustomWidgetComponent = widgetContributions
+  .map((widgetContribution) => widgetContribution.component(widget))
+  .find((component) => component !== null);
+if (CustomWidgetComponent) {
+    propertySection = (
+      <CustomWidgetComponent
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        key={widget.id}
+        readOnly={readOnly}
+      />
+    );
+} else if (isCoreWidget(widget)) {
+  handleCoreWidget(widget);
+}
+----
+
+The only requirement is that the widget to override must still be defined and rendered on the backend, and in a way that the frontent can identify it in a non-ambiguous way.
+
+The signature of the existing lookup function in the extension point gives access to the whole `GQLwidget`: `component: (widget: GQLWidget) => PropertySectionComponent<GQLWidget> | null`.
+For each frontend override, the backend widget definition and frontend override must be designed together to ensure proper identification without risking to override unintended widgets.
+This can easily be done using the widget's _label_ (all widgets have one), for example by adding a prefix to it in the backend definition.
+Given that the frontend override has complete control over the React component used to render the widget, it can simply drop any technical prefix used for identification purposes and render the widget with the expected label.
+
+- On the backend, use a _Label expression_ like: `myOverrride:originalLabel`.
+- On the frontend, look for widgets with a label starting with `myOverride:`, and render them by removing the prefix.
+- For such widget, in the React component used, drop the `myOverride:` prefix from what is actually displayed on screen.
+
+
+=== Second Option: addition backend configuration and new frontend extension point
+
+This option is to add an optional flag and/or `actionId` to widget definitions on the backend.
+Specifier could set this flag to indicate that the widget's behavior is defined on the frontend, and contribute the corresponding behavior through an frontend extension point.
+
+This would probably work but it requires changes to the backend and to the existing widget definition format, which would be a problem for compatibility.
+
+It also limits the power of frontend-defined widgets, as they would still be rendered using one of the existing widget types and only their behavior (for a button, `onClick`) could be defined on the frontend, while we may want to define other aspects of the widget (e.g. its rendering) on the frontend as well.
+
+
+=== Third Option: new dedicated fontend extension point
+
+Another option is to add a _new extension point_ on the frontend to allow the definition of new widgets whose behavior is defined on the frontend.
+This was tested, and works fine.
+
+The newly added extension point is similar to the existing one for custom widgets (reusing the `WidgetContribution` type):
+
+[source,typescript]
+----
+export const widgetOverrideExtensionPoint: DataExtensionPoint<Array<WidgetContribution>> = {
+  identifier: 'form#widgetOverride',
+  fallback: [],
+};
+----
+
+To allow the definition of a widget completelty defined on the frontend, the new extension point would be invoked at the begining of `PropertySection.tsx`, where we determine which React component to user to render a given widget:
+
+[source,typescript]
+----
+const WidgetOverrideComponent = widgetOverrides
+    .map((widgetOverride) => widgetOverride.component(widget))
+    .find((component) => component !== null);
+if (WidgetOverrideComponent) {
+  propertySection = (
+    <WidgetOverrideComponent
+      editingContextId={editingContextId}
+      formId={formId}
+      widget={widget}
+      key={widget.id}
+      readOnly={readOnly}
+    />
+  );
+} else if (isCoreWidget(widget)) {
+  handleCoreWidget(widget);
+} else {
+  handleCustomWidgets(..);
+}
+----
+
+To use it, a widget of a supported type must still be rendered on the backend, but a frontend extension can then completely override it and provide a completely different React component to redefine both how it is rendered and how it behaves.
+
+
+== Decision Outcome
+
+In the context of overriding the frontend behavior of form widgets, facing the need for a simple and powerful solution we decided for the reuse of the custom widget extension point to achieve quick and effective results, accepting the increase in responsibility for those who will use it.
+This option is both the simplest (with the least impact) and the most general one.
+
+
+== Consequences
+
+=== Advantages
+
+- No incompatibility or migration issue, as there is no change on the backend and the existing widget definition format can be kept as is.
+- It allows to override any widget (core or custom) and not only specific types of widgets.
+
+
+=== Drawbacks
+
+- It requires some care in the design of frontend overrides and backend widget definitions to ensure proper identification and avoid unintended overrides.
+- Because we reuse the existing `widgetContributionExtensionPoint` as is, custom frontend widget are required to contribute an `icon` and a `previewComponent` (which can be `() => null`) even though they are useless in their case.
