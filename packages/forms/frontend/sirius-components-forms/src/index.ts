@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo and others.
+ * Copyright (c) 2022, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ export * from './form/FormEventFragments';
 export type * from './form/FormEventFragments.types';
 export type { PreviewWidgetProps, WidgetContribution } from './form/WidgetContribution.types';
 export { widgetContributionExtensionPoint } from './form/WidgetContributionExtensionPoints';
+export { widgetOverrideExtensionPoint } from './form/WidgetOverrideExtensionPoints';
 export * from './groups/Group';
 export * from './groups/Group.types';
 export type { ButtonStyleProps } from './propertysections/ButtonPropertySection.types';

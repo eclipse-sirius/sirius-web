@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import {
   GQLWidget,
 } from '../form/FormEventFragments.types';
 import { widgetContributionExtensionPoint } from '../form/WidgetContributionExtensionPoints';
+import { widgetOverrideExtensionPoint } from '../form/WidgetOverrideExtensionPoints';
 import { ButtonPropertySection } from './ButtonPropertySection';
 import { ChartWidgetPropertySection } from './ChartWidgetPropertySection';
 import { CheckboxPropertySection } from './CheckboxPropertySection';
@@ -74,9 +75,23 @@ const isRichText = (widget: GQLWidget): widget is GQLRichText => widget.__typena
 
 export const PropertySection = ({ editingContextId, formId, widget, readOnly }: PropertySectionProps) => {
   const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
+  const { data: widgetOverrides } = useData(widgetOverrideExtensionPoint);
 
   let propertySection: JSX.Element | null = null;
-  if (isTextfield(widget) || isTextarea(widget)) {
+  const WidgetOverrideComponent = widgetOverrides
+    .map((widgetOverride) => widgetOverride.component(widget))
+    .find((component) => component !== null);
+  if (WidgetOverrideComponent) {
+    propertySection = (
+      <WidgetOverrideComponent
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        key={widget.id}
+        readOnly={readOnly}
+      />
+    );
+  } else if (isTextfield(widget) || isTextarea(widget)) {
     propertySection = (
       <TextfieldPropertySection
         editingContextId={editingContextId}
