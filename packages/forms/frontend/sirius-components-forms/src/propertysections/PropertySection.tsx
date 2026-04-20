@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -76,7 +76,20 @@ export const PropertySection = ({ editingContextId, formId, widget, readOnly }: 
   const { data: widgetContributions } = useData(widgetContributionExtensionPoint);
 
   let propertySection: JSX.Element | null = null;
-  if (isTextfield(widget) || isTextarea(widget)) {
+  const CustomWidgetComponent = widgetContributions
+    .map((widgetContribution) => widgetContribution.component(widget))
+    .find((component) => component !== null);
+  if (CustomWidgetComponent) {
+    propertySection = (
+      <CustomWidgetComponent
+        editingContextId={editingContextId}
+        formId={formId}
+        widget={widget}
+        key={widget.id}
+        readOnly={readOnly}
+      />
+    );
+  } else if (isTextfield(widget) || isTextarea(widget)) {
     propertySection = (
       <TextfieldPropertySection
         editingContextId={editingContextId}
@@ -247,22 +260,7 @@ export const PropertySection = ({ editingContextId, formId, widget, readOnly }: 
       />
     );
   } else {
-    const CustomWidgetComponent = widgetContributions
-      .map((widgetContribution) => widgetContribution.component(widget))
-      .find((component) => component !== null);
-    if (CustomWidgetComponent) {
-      propertySection = (
-        <CustomWidgetComponent
-          editingContextId={editingContextId}
-          formId={formId}
-          widget={widget}
-          key={widget.id}
-          readOnly={readOnly}
-        />
-      );
-    } else {
-      console.error(`Unsupported widget type ${widget.__typename}`);
-    }
+    console.error(`Unsupported widget type ${widget.__typename}`);
   }
   return <div className="PropertySection">{propertySection}</div>;
 };

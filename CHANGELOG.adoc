@@ -110,6 +110,8 @@ The backend now sends a `canEdit=false` capability when subscribing to such form
 - https://github.com/eclipse-sirius/sirius-web/issues/6300[#6300] [diagram] Make the arrange-all button remember the last layout configuration used.
 - https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] Preserve edge path when moving both source and target
 - https://github.com/eclipse-sirius/sirius-web/issues/6403[#6403] [releng] Use pepper-mm instead of the old internal task metamodel used in the tests and task-starter
+- https://github.com/eclipse-sirius/sirius-web/issues/6428[#6428] [forms] The existing `widgetContributionExtensionPoint` frontend extension point can now be used to override the frontend implementation of a widget with a custom React component (which only needs to implement `PropertySectionComponent<GQLWidget>`).
+See ADR-230 for the details.
 
 
 
