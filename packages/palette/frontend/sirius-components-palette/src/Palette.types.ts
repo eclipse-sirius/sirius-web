@@ -12,11 +12,6 @@
  *******************************************************************************/
 
 import { GQLKeyBinding } from '@eclipse-sirius/sirius-components-core';
-import { PaletteExtensionSectionProps } from './PaletteExtensionSection.types';
-
-export interface ContextualPaletteStyleProps {
-  toolCount: number;
-}
 
 export interface GQLTool {
   id: string;
@@ -32,21 +27,6 @@ export interface GQLToolVariable {
 }
 
 export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
-
-export interface PaletteProps {
-  x: number;
-  y: number;
-  diagramElementId: string;
-  targetObjectId: string;
-  onDirectEditClick: () => void;
-  onClose: () => void;
-  children: React.ReactElement<PaletteExtensionSectionProps>[];
-}
-
-export interface PaletteStyleProps {
-  paletteWidth: string;
-  paletteHeight: string;
-}
 
 export interface GQLTool extends GQLPaletteEntry {
   label: string;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -58,7 +58,6 @@ export const Palette = ({
   palette,
   onToolClick,
   onClose,
-  paletteToolListExtensions,
 }: PaletteProps) => {
   const { domNode } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { getUpdatedModalPosition, getUpdatedBounds } = useGetUpdatedModalPosition();
@@ -200,9 +199,8 @@ export const Palette = ({
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
                 lastToolInvoked={lastToolInvoked}
-                diagramElementIds={diagramElementIds}>
-                {paletteToolListExtensions}
-              </PaletteToolList>
+                representationElementIds={diagramElementIds}
+              />
             )}
           </Box>
         </ClickAwayListener>

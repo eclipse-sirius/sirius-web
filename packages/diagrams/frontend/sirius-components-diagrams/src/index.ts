@@ -100,3 +100,9 @@ export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/tool
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
 export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
+export { PaletteAppearanceSection } from './renderer/palette/appearance/PaletteAppearanceSection';
+export { AppearancePaletteEntry } from './renderer/palette/appearance/AppearancePaletteEntry';
+export { GroupPaletteLayoutSection } from './renderer/palette/GroupPaletteLayoutSection';
+export { GroupPaletteLayoutPaletteEntry } from './renderer/palette/GroupPaletteLayoutPaletteEntry';
+export { ShowInSection } from './renderer/palette/ShowInSection';
+export { ShowInPaletteEntry } from './renderer/palette/ShowInPaletteEntry';

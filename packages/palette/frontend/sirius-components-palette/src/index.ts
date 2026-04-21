@@ -11,13 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export { PaletteExtensionSection } from './PaletteExtensionSection';
-export type {
-  PaletteExtensionSectionComponentProps,
-  PaletteExtensionSectionProps,
-} from './PaletteExtensionSection.types';
 export { PaletteSearchField } from './search/PaletteSearchField';
 export { PaletteSearchResult } from './search/PaletteSearchResult';
 export { ToolListItem } from './tool-list-item/ToolListItem';
 export { PaletteToolList } from './tool-list/PaletteToolList';
 export { PaletteToolSectionList } from './tool-list/PaletteToolSectionList';
+export type {
+  PaletteEntriesContributionProps,
+  PaletteExtensionSectionComponentProps,
+  PaletteExtensionEntryComponentProps,
+} from './extension/PaletteEntriesContribution.types';
+export { paletteEntriesExtensionPoint } from './extension/PaletteEntriesExtensionPoints';

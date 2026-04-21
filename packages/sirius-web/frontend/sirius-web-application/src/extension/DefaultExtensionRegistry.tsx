@@ -22,19 +22,25 @@ import {
 import { DeckRepresentation } from '@eclipse-sirius/sirius-components-deck';
 import {
   ActionProps,
+  AppearancePaletteEntry,
   DiagramDialogContribution,
   DiagramNodeActionOverrideContribution,
   DiagramRepresentation,
   EdgeAppearanceSection,
   EdgeData,
+  GroupPaletteLayoutPaletteEntry,
+  GroupPaletteLayoutSection,
   ImageNodeAppearanceSection,
   NodeData,
+  PaletteAppearanceSection,
   PaletteAppearanceSectionContributionProps,
   RectangularNodeAppearanceSection,
   diagramDialogContributionExtensionPoint,
   diagramNodeActionOverrideContributionExtensionPoint,
   diagramToolbarActionExtensionPoint,
   paletteAppearanceSectionExtensionPoint,
+  ShowInPaletteEntry,
+  ShowInSection,
 } from '@eclipse-sirius/sirius-components-diagrams';
 import { FormDescriptionEditorRepresentation } from '@eclipse-sirius/sirius-components-formdescriptioneditors';
 import {
@@ -50,6 +56,10 @@ import {
   OmniboxCommandOverrideContribution,
   omniboxCommandOverrideContributionExtensionPoint,
 } from '@eclipse-sirius/sirius-components-omnibox';
+import {
+  PaletteEntriesContributionProps,
+  paletteEntriesExtensionPoint,
+} from '@eclipse-sirius/sirius-components-palette';
 import { PortalRepresentation } from '@eclipse-sirius/sirius-components-portals';
 import { SelectionDialog } from '@eclipse-sirius/sirius-components-selection';
 import {
@@ -720,6 +730,58 @@ const queryResultButtonContributions: QueryResultButtonContribution[] = [
 defaultExtensionRegistry.putData<QueryResultButtonContribution[]>(queryViewResultButtonExtensionPoint, {
   identifier: `siriusweb_${queryViewResultButtonExtensionPoint.identifier}`,
   data: queryResultButtonContributions,
+});
+
+/*******************************************************************************
+ *
+ * Diagram palette tool section contributions
+ *
+ * Used to provide palette tool sections for the diagram palette
+ *
+ *******************************************************************************/
+defaultExtensionRegistry.putData<PaletteEntriesContributionProps[]>(paletteEntriesExtensionPoint, {
+  identifier: `siriusweb_${paletteEntriesExtensionPoint.identifier}`,
+  data: [
+    {
+      id: 'appearance',
+      canHandle: (representationElementIds: string[]) => {
+        const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+        return (
+          representationElementIds.filter(
+            (elementId) => !!store.getState().nodeLookup.get(elementId) || store.getState().edgeLookup.get(elementId)
+          ).length >= 1
+        );
+      },
+      component: AppearancePaletteEntry,
+      sectionComponent: PaletteAppearanceSection,
+    },
+    {
+      id: 'layout_section',
+      canHandle: (representationElementIds: string[]) => {
+        const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+        return (
+          representationElementIds.filter(
+            (elementId) => !!store.getState().nodeLookup.get(elementId) || store.getState().edgeLookup.get(elementId)
+          ).length > 1
+        );
+      },
+      component: GroupPaletteLayoutPaletteEntry,
+      sectionComponent: GroupPaletteLayoutSection,
+    },
+    {
+      id: 'show_in',
+      canHandle: (representationElementIds: string[]) => {
+        const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+        return (
+          representationElementIds.filter(
+            (elementId) => !!store.getState().nodeLookup.get(elementId) || store.getState().edgeLookup.get(elementId)
+          ).length >= 1
+        );
+      },
+      component: ShowInPaletteEntry,
+      sectionComponent: ShowInSection,
+    },
+  ],
 });
 
 export { defaultExtensionRegistry };

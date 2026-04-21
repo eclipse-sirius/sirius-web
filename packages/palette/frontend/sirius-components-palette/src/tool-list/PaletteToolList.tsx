@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -21,10 +22,12 @@ import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
-import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
+import { GQLPalette, GQLPaletteEntry, GQLTool } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { PaletteToolListProps, PaletteToolListStateValue } from './PaletteToolList.types';
 import { PaletteToolSectionList } from './PaletteToolSectionList';
+import { PaletteEntriesContributionProps } from '../extension/PaletteEntriesContribution.types';
+import { paletteEntriesExtensionPoint } from '../extension/PaletteEntriesExtensionPoints';
 
 const useStyle = makeStyles()((theme) => ({
   container: {
@@ -63,8 +66,7 @@ const useStyle = makeStyles()((theme) => ({
 }));
 
 const defaultStateValue: PaletteToolListStateValue = {
-  toolSection: null,
-  extensionSection: null,
+  toolSectionId: null,
 };
 
 const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
@@ -85,30 +87,23 @@ export const PaletteToolList = ({
   palette,
   onToolClick,
   onBackToMainList,
-  diagramElementIds,
+  representationElementIds,
   onClose,
   lastToolInvoked,
-  children,
 }: PaletteToolListProps) => {
   const [state, setState] = useState<PaletteToolListStateValue>(defaultStateValue);
 
   const { classes } = useStyle();
 
-  const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSection: GQLToolSection) => {
-    event.stopPropagation();
-    setState((prevState) => ({ ...prevState, toolSection, extensionSection: null }));
-  };
+  const extensionEntriesData: DataExtension<PaletteEntriesContributionProps[]> = useData(paletteEntriesExtensionPoint);
 
-  const handleExtensionSectionClick = (
-    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
-    extensionSectionId: string
-  ) => {
+  const handleToolSectionClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, toolSectionId: string) => {
     event.stopPropagation();
-    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: extensionSectionId }));
+    setState((prevState) => ({ ...prevState, toolSectionId }));
   };
 
   const handleBackToMainList = () => {
-    setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: null }));
+    setState((prevState) => ({ ...prevState, toolSectionId: null }));
     onBackToMainList();
   };
 
@@ -128,7 +123,7 @@ export const PaletteToolList = ({
         <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label} placement="right">
           <ListItemButton
             className={classes.listItemButton}
-            onClick={(event) => handleToolSectionClick(event, paletteEntry)}
+            onClick={(event) => handleToolSectionClick(event, paletteEntry.id)}
             data-testid={`toolSection-${paletteEntry.label}`}>
             <ListItemText primary={paletteEntry.label} className={classes.listItemText} />
             <NavigateNextIcon />
@@ -140,22 +135,12 @@ export const PaletteToolList = ({
     }
     return [];
   });
-
-  children.forEach((extensionSection) => {
-    const extensionSectionId = extensionSection.props.id;
-    const extensionSectionTitle = extensionSection.props.title;
-    listItemsRendered.push(
-      <Tooltip key={`tooltip_${extensionSectionId}`} title={extensionSectionTitle} placement="right">
-        <ListItemButton
-          className={classes.listItemButton}
-          onClick={(event) => handleExtensionSectionClick(event, extensionSectionId)}
-          data-testid={`toolSection-${extensionSectionTitle}`}>
-          <ListItemText primary={extensionSectionTitle} className={classes.listItemText} />
-          <NavigateNextIcon />
-        </ListItemButton>
-      </Tooltip>
-    );
-  });
+  extensionEntriesData.data
+    .filter((extensionEntry) => extensionEntry.canHandle(representationElementIds))
+    .forEach((extensionEntry) => {
+      const EntryComponent = extensionEntry.component;
+      listItemsRendered.push(<EntryComponent onToolClick={onToolClick} onToolSectionClick={handleToolSectionClick} />);
+    });
 
   const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
   const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
@@ -174,7 +159,7 @@ export const PaletteToolList = ({
           <Slide
             key={'slide_' + entry.id}
             direction={'left'}
-            in={state.toolSection?.id === entry.id}
+            in={state.toolSectionId === entry.id}
             container={containerRef.current}
             unmountOnExit
             mountOnEnter>
@@ -188,31 +173,32 @@ export const PaletteToolList = ({
           </Slide>
         ))}
 
-        {children.map((extensionSection) => {
-          const extensionSectionId = extensionSection.props.id;
-          const SectionComponent = extensionSection.props.component;
-          return (
-            <Slide
-              key={'extension_' + extensionSectionId}
-              direction={'left'}
-              in={state.extensionSection === extensionSectionId}
-              container={containerRef.current}
-              unmountOnExit
-              mountOnEnter>
-              <div className={classes.toolList}>
-                <SectionComponent
-                  onBackToMainList={handleBackToMainList}
-                  diagramElementIds={diagramElementIds}
-                  onClose={onClose}
-                />
-              </div>
-            </Slide>
-          );
-        })}
+        {extensionEntriesData.data
+          .filter((entry: PaletteEntriesContributionProps) => !!entry.sectionComponent)
+          .map((toolSection: PaletteEntriesContributionProps) => {
+            const SectionComponent = toolSection.sectionComponent;
+            return SectionComponent ? (
+              <Slide
+                key={'extension_' + toolSection.id}
+                direction={'left'}
+                in={state.toolSectionId === toolSection.id}
+                container={containerRef.current}
+                unmountOnExit
+                mountOnEnter>
+                <div className={classes.toolList}>
+                  <SectionComponent
+                    onBackToMainList={handleBackToMainList}
+                    representationElementIds={representationElementIds}
+                    onClose={onClose}
+                  />
+                </div>
+              </Slide>
+            ) : null;
+          })}
 
         <Slide
           direction={'right'}
-          in={state.toolSection === null && state.extensionSection === null}
+          in={state.toolSectionId === null}
           container={containerRef.current}
           appear={false}
           unmountOnExit
