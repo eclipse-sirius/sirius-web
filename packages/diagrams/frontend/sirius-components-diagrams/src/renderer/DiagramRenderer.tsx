@@ -47,7 +47,6 @@ import { ConnectorContextualMenu } from './connector/ConnectorContextualMenu';
 import { useConnector } from './connector/useConnector';
 import { useResetXYFlowConnection } from './connector/useResetXYFlowConnection';
 import { DebugPanel } from './debug/DebugPanel';
-import { useDiagramDelete } from './delete/useDiagramDelete';
 import { useDiagramDirectEdit } from './direct-edit/useDiagramDirectEdit';
 import { useNodesDraggable } from './drag/useNodesDraggable';
 import { useDrop } from './drop/useDrop';
@@ -101,7 +100,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   useDynamicEdgeSelectionArea();
 
   const { onDirectEdit } = useDiagramDirectEdit();
-  const { onDelete } = useDiagramDelete();
   const { onKeyBinding } = useDiagramKeyBinding(diagramRefreshedEventPayload.diagram.targetObjectId);
 
   const ref = useRef<HTMLDivElement | null>(null);
@@ -424,7 +422,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const onKeyDown = useCallback((event: React.KeyboardEvent<Element>) => {
     onDirectEdit(event);
-    onDelete(event);
     onKeyBinding(event);
   }, []);
 

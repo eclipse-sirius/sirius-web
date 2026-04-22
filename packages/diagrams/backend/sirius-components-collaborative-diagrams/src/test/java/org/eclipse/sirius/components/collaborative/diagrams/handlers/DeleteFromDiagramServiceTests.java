@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,18 +18,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
-import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.messages.ICollaborativeDiagramMessageService;
+import org.eclipse.sirius.components.collaborative.diagrams.services.DeleteFromDiagramService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -40,19 +35,15 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.Success;
 import org.junit.jupiter.api.Test;
-
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
-import reactor.core.publisher.Sinks;
-import reactor.core.publisher.Sinks.Many;
-import reactor.core.publisher.Sinks.One;
 
 /**
  * Tests of the delete from diagram event handler.
  *
  * @author sbegaudeau
  */
-public class DeleteFromDiagramEventHandlerTests {
+public class DeleteFromDiagramServiceTests {
 
     private static final String NODE_ID = "nodeId";
 
@@ -68,7 +59,10 @@ public class DeleteFromDiagramEventHandlerTests {
     private final IDiagramQueryService diagramQueryService = new IDiagramQueryService.NoOp() {
         @Override
         public Optional<Node> findNodeById(Diagram diagram, String nodeId) {
-            return Optional.of(new TestDiagramBuilder().getNode(NODE_ID, true));
+            if (nodeId.equals(NODE_ID)) {
+                return Optional.of(new TestDiagramBuilder().getNode(NODE_ID, true));
+            }
+            return Optional.empty();
         }
 
         @Override
@@ -99,50 +93,30 @@ public class DeleteFromDiagramEventHandlerTests {
 
     @Test
     public void testNodeSemanticDeletionFromDiagram() {
-        var handler = new DeleteFromDiagramEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
-                new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
+        var deleteFromDiagramService = new DeleteFromDiagramService(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
+                new ICollaborativeDiagramMessageService.NoOp());
 
         var nodeIds = List.of(NODE_ID);
-        var edgeIds = List.<String>of();
-        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds);
 
-        One<IPayload> payloadSink = Sinks.one();
-        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
-
-        assertThat(handler.canHandle(null, input)).isTrue();
 
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
-        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
-
-        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
-        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
-
-        IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(DeleteFromDiagramSuccessPayload.class);
+        var resultStatus = deleteFromDiagramService.deleteFromDiagram(new IEditingContext.NoOp(), diagramContext, nodeIds, List.of());
+        assertThat(resultStatus).isInstanceOf(Success.class);
     }
 
     @Test
     public void testEdgeSemanticDeletionFromDiagram() {
-        var handler = new DeleteFromDiagramEventHandler(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
-                new ICollaborativeDiagramMessageService.NoOp(), new IFeedbackMessageService.NoOp(), new SimpleMeterRegistry());
+        var deleteFromDiagramService = new DeleteFromDiagramService(this.objectSearchService, this.diagramQueryService, this.diagramDescriptionService, this.representationDescriptionSearchService,
+                new ICollaborativeDiagramMessageService.NoOp());
 
-        var nodeIds = List.<String>of();
         var edgeIds = List.of(EDGE_ID);
-        var input = new DeleteFromDiagramInput(UUID.randomUUID(), "editingContextId", "representationId", nodeIds, edgeIds);
 
-        One<IPayload> payloadSink = Sinks.one();
-        Many<ChangeDescription> changeDescriptionSink = Sinks.many().unicast().onBackpressureBuffer();
-
-        assertThat(handler.canHandle(null, input)).isTrue();
 
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString()));
-        handler.handle(payloadSink, changeDescriptionSink, new IEditingContext.NoOp(), diagramContext, input);
+        var resultStatus = deleteFromDiagramService.deleteFromDiagram(new IEditingContext.NoOp(), diagramContext, edgeIds, List.of());
 
-        ChangeDescription changeDescription = changeDescriptionSink.asFlux().blockFirst();
-        assertThat(changeDescription.getKind()).isEqualTo(ChangeKind.SEMANTIC_CHANGE);
 
-        IPayload payload = payloadSink.asMono().block();
-        assertThat(payload).isInstanceOf(DeleteFromDiagramSuccessPayload.class);
+        assertThat(resultStatus).isInstanceOf(Success.class);
 
         assertThat(diagramContext.diagramEvents()).hasSize(1);
         IDiagramEvent diagramEvent = diagramContext.diagramEvents().get(0);
