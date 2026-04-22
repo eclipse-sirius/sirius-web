@@ -110,16 +110,16 @@ test.describe('edge on edge', () => {
     page,
   }) => {
     const edges = page.locator('[data-testid^="rf__edge-"]');
-    await expect(edges).toHaveCount(2);
+    await expect(edges).toHaveCount(3);
 
-    await expect(page.locator('.source_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_right')).toHaveCount(2);
     await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
     await expect(page.locator('.source_handle_left')).toHaveCount(0);
     await expect(page.locator('.source_handle_top')).toHaveCount(0);
 
     await expect(page.locator('.target_handle_right')).toHaveCount(0);
     await expect(page.locator('.target_handle_bottom')).toHaveCount(0);
-    await expect(page.locator('.target_handle_left')).toHaveCount(1);
+    await expect(page.locator('.target_handle_left')).toHaveCount(2);
     await expect(page.locator('.target_handle_top')).toHaveCount(1);
   });
 });

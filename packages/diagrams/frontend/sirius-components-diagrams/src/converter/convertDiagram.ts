@@ -45,7 +45,6 @@ import { ImageNodeConverter } from './ImageNodeConverter';
 import { ListNodeConverter } from './ListNodeConverter';
 import { RectangleNodeConverter } from './RectangleNodeConverter';
 import { convertEdgeType } from './convertEdge';
-import { convertHandles } from './convertHandles';
 import { convertContentStyle, convertLabelStyle } from './convertLabel';
 import { createEdgeAnchorNode } from './edgeAnchorNodeFactory';
 
@@ -109,37 +108,22 @@ const getOrCreateAnchorNodeEdge = (
   state: ReactFlowState<Node<NodeData>, Edge<EdgeData>>,
   type: HandleType,
   gqlEdge: GQLEdge
-): Node<NodeData | EdgeAnchorNodeData> | undefined => {
+): Node<NodeData | EdgeAnchorNodeData> => {
+  const id = gqlEdge.id;
+  // This can be used to pre calculate the position of the edgeAnchorNode
+  const existingSourceTargetEdge =
+    state.edgeLookup.get(gqlEdge.sourceId) || state.edgeLookup.get(gqlEdge.targetId) || null;
+
+  // Today, we only have one EdgeAnchorNode per edge on edge (an edge can't have both its source and target on another edge)
+  const edgeLayoutData = gqlDiagram.layoutData.edgeLayoutData.find((layoutData) => layoutData.id === id)
+    ?.edgeAnchorLayoutData[0];
+
   // We need to use the already rendered node in order to preserve its position and avoid flickering after a refresh
-  const id = type === 'source' ? gqlEdge.sourceId : gqlEdge.targetId;
-
-  const existingEdge = state.edgeLookup.get(gqlEdge.sourceId) || state.edgeLookup.get(gqlEdge.targetId) || null;
-
   let edgeAnchorNode =
-    state.nodeLookup.get(id) || createEdgeAnchorNode(gqlEdge, existingEdge, type, gqlDiagram.layoutData.nodeLayoutData);
+    state.nodeLookup.get(id) ||
+    createEdgeAnchorNode(gqlEdge, existingSourceTargetEdge, type, gqlDiagram.layoutData.nodeLayoutData, edgeLayoutData);
 
-  const newHandles = convertHandles(id, gqlDiagram.edges, []);
-
-  // Today, we only have one EdgeAnchorNode for each edge used as source or target
-  const edgeLayoutData = gqlDiagram.layoutData.edgeLayoutData.find((layoutData) => layoutData.id === id);
-  if (edgeLayoutData && edgeLayoutData.edgeAnchorLayoutData.length === 1 && edgeLayoutData.edgeAnchorLayoutData[0]) {
-    return {
-      ...edgeAnchorNode,
-      data: {
-        ...edgeAnchorNode.data,
-        positionRatio: edgeLayoutData.edgeAnchorLayoutData[0].positionRatio,
-        isLayouted: true,
-        connectionHandles: newHandles,
-      },
-    };
-  }
-  return {
-    ...edgeAnchorNode,
-    data: {
-      ...edgeAnchorNode.data,
-      connectionHandles: newHandles,
-    },
-  };
+  return edgeAnchorNode;
 };
 
 const defaultNodeConverters: INodeConverter[] = [

@@ -40,6 +40,7 @@ const handleStyle = (isHidden: boolean, position: Position): React.CSSProperties
       style.left = '-75%';
       break;
   }
+
   if (isHidden) {
     style.opacity = 0;
   }
@@ -51,7 +52,7 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
     const { setNodes, getEdge, getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
     // Subscribe to the path of the edge used to position the node
-    const edgePath = useStore((state) => edgePathSelector(state, id)) as string;
+    const edgePath = useStore((state) => edgePathSelector(state, data.sourceTargetEdgeId)) as string;
 
     // Refresh handles if connectionHandles changed
     useRefreshConnectionHandles(id, data.connectionHandles);
@@ -71,8 +72,7 @@ export const EdgeAnchorNode: NodeComponentsMap['edgeAnchorNode'] = memo(
               const connectionHandles = data.connectionHandles.map((connectionHandle) => {
                 const connectedEdge = getEdge(connectionHandle.edgeId);
                 if (connectedEdge) {
-                  const otherEndNodeId = connectedEdge.source === id ? connectedEdge.target : connectedEdge.source;
-                  const otherEndNode = getNode(otherEndNodeId);
+                  const otherEndNode = getNode(data.sourceTargetNodeId);
                   if (otherEndNode) {
                     const handlePosition = getHandlePositionFromNodeAndPath(edgePath, points, otherEndNode);
                     return {

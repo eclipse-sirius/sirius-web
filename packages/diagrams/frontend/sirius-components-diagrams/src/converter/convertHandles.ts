@@ -10,11 +10,32 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Position } from '@xyflow/react';
-import { GQLHandleLayoutData } from '../graphql/subscription/diagramFragment.types';
+import { HandleType, Position } from '@xyflow/react';
+import { GQLEdgeAnchorLayoutData, GQLHandleLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLViewModifier } from '../graphql/subscription/nodeFragment.types';
 import { ConnectionHandle } from '../renderer/handles/ConnectionHandles.types';
+
+export const convertEdgeAnchorNodeHandles = (
+  edge: GQLEdge,
+  type: HandleType,
+  edgeAnchorLayoutData: GQLEdgeAnchorLayoutData | undefined
+): ConnectionHandle[] => {
+  return [
+    {
+      id: `handle--${type}--${edge.id}--${0}`,
+      edgeId: edge.id,
+      index: 0,
+      nodeId: edge.id,
+      position: edgeAnchorLayoutData ? edgeAnchorLayoutData.handlePosition : Position.Left,
+      XYPosition: null,
+      type: type,
+      isVirtualHandle: edge.state === GQLViewModifier.Hidden,
+      isHidden: true,
+      handleStyleTransform: null,
+    },
+  ];
+};
 
 export const convertHandles = (
   elementId: string,
