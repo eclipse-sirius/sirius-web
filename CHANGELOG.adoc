@@ -68,6 +68,8 @@
 === Deprecation warning
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [core] The method `IRepresentationEventProcessor#refresh` will be removed and it will be replaced by dedicated stateless services implementing `IRepresentationRefresher`
+- https://github.com/eclipse-sirius/sirius-web/issues/1361[#1361] [diagram] The API `deleteFromDiagram` will be removed.
+The deletion tool is now a classic tool that operates entirely in the backend.
 
 
 === Breaking changes
@@ -197,6 +199,7 @@ For example entering either `att def` or `NAD` will now find a tool named `New A
 - https://github.com/eclipse-sirius/sirius-web/issues/6416[#6416] [sirius-web] Perform the validation of the dependencies when a project is uploaded
 - https://github.com/eclipse-sirius/sirius-web/issues/6475[#6475] [diagram] Hide handles when moving an edge segment
 - https://github.com/eclipse-sirius/sirius-web/issues/6497[#6497] [diagram] Display an ellipsis decorator if multiple decorators should be displayed at the same position.
+- https://github.com/eclipse-sirius/sirius-web/issues/1361[#1361] [diagram] Remove hard-coded diagram delete tool
 
 
 == 2026.3.0
