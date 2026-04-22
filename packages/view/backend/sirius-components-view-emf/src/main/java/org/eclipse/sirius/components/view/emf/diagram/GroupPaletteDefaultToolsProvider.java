@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageCons
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
@@ -28,6 +29,7 @@ import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.api.IGroupPaletteToolsProvider;
+import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteMultipleDiagramElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.FadeElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.HideElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.UnFadeElementToolHandler;
@@ -78,7 +80,7 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
             extraTools.add(semanticDeleteTool);
         }
 
-        return  extraTools;
+        return extraTools;
     }
 
     private boolean hasDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
@@ -94,12 +96,13 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
     }
 
     private ITool createExtraSemanticDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
-        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(DeleteMultipleDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID)
                 .label(this.messageService.defaultQuickToolDeleteFromModel())
                 .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .withImpactAnalysis(false)
-                .keyBindings(List.of())
+                .withDeletionConfirmationDialog(true)
+                .keyBindings(List.of(KeyBinding.newKeyBinding().key("Delete").build()))
                 .build();
     }
 

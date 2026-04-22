@@ -23,8 +23,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.appearance.EdgeAppearanceInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.appearance.EditEdgeAppearanceInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.appearance.ResetEdgeAppearanceInput;
@@ -33,10 +33,11 @@ import org.eclipse.sirius.components.diagrams.ArrowStyle;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.EdgeType;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DeleteFromDiagramMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditEdgeAppearanceMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ResetEdgeAppearanceMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteOneDiagramElementToolHandler;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
@@ -80,7 +81,7 @@ public class UndoEdgeAppearanceControllerTests extends AbstractIntegrationTests 
     private ResetEdgeAppearanceMutationRunner resetEdgeAppearanceMutationRunner;
 
     @Autowired
-    private DeleteFromDiagramMutationRunner deleteFromDiagramMutationRunner;
+    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
 
     @Autowired
     private UndoMutationRunner undoMutationRunner;
@@ -198,11 +199,11 @@ public class UndoEdgeAppearanceControllerTests extends AbstractIntegrationTests 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(setEdgeCustomAppearance)
-                .consumeNextWith(getUpdatedAfterCustomAppearanceDiagramContentConsumer())
+                .consumeNextWith(this.getUpdatedAfterCustomAppearanceDiagramContentConsumer())
                 .then(resetEdgeCustomAppearance)
                 .consumeNextWith(updatedAfterResetCustomAppearanceDiagramContentConsumer)
                 .then(undoChanges)
-                .consumeNextWith(getUpdatedAfterCustomAppearanceDiagramContentConsumer())
+                .consumeNextWith(this.getUpdatedAfterCustomAppearanceDiagramContentConsumer())
                 .then(redoChanges)
                 .consumeNextWith(updatedAfterResetCustomAppearanceDiagramContentConsumer)
                 .thenCancel()
@@ -252,10 +253,11 @@ public class UndoEdgeAppearanceControllerTests extends AbstractIntegrationTests 
 
         var mutationInputId = UUID.randomUUID();
         Runnable deleteEdge = () -> {
-            var input = new DeleteFromDiagramInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(), List.of(siriusWebApplicationEdgeId.get()));
-            var result = this.deleteFromDiagramMutationRunner.run(input);
-            String typename = JsonPath.read(result.data(), "$.data.deleteFromDiagram.__typename");
-            assertThat(typename).isEqualTo(DeleteFromDiagramSuccessPayload.class.getSimpleName());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(),
+                    List.of(siriusWebApplicationEdgeId.get()), DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID, 0, 0, List.of());
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
         Consumer<Object> updatedAfterDeleteDiagramElementConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -276,16 +278,16 @@ public class UndoEdgeAppearanceControllerTests extends AbstractIntegrationTests 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(setEdgeCustomAppearance)
-                .consumeNextWith(getUpdatedAfterCustomAppearanceDiagramContentConsumer())
+                .consumeNextWith(this.getUpdatedAfterCustomAppearanceDiagramContentConsumer())
                 .then(deleteEdge)
                 .consumeNextWith(updatedAfterDeleteDiagramElementConsumer)
                 .then(undoChanges)
-                .consumeNextWith(getUpdatedAfterCustomAppearanceDiagramContentConsumer())
+                .consumeNextWith(this.getUpdatedAfterCustomAppearanceDiagramContentConsumer())
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
 
-    private  Consumer<Object> getUpdatedAfterCustomAppearanceDiagramContentConsumer() {
+    private Consumer<Object> getUpdatedAfterCustomAppearanceDiagramContentConsumer() {
         return assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getEdges())
                     .filteredOn(edge -> edge.getCenterLabel() != null && edge.getCenterLabel().text().equals("sirius-web-application -> sirius-web-domain"))

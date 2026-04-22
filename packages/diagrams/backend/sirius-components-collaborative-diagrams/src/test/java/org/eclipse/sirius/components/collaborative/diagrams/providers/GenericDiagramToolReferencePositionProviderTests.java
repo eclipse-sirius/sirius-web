@@ -15,14 +15,15 @@ package org.eclipse.sirius.components.collaborative.diagrams.providers;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropNodesInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.PinDiagramElementInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
 import org.eclipse.sirius.components.collaborative.diagrams.handlers.TestDiagramBuilder;
@@ -56,8 +57,8 @@ public class GenericDiagramToolReferencePositionProviderTests {
         ReconnectEdgeInput inputReconnectEdge = new ReconnectEdgeInput(UUID.randomUUID(), "", "", "", "", ReconnectEdgeKind.SOURCE, 0, 0);
         assertThat(diagramToolReferencePositionProvider.canHandle(inputReconnectEdge)).isTrue();
 
-        DeleteFromDiagramInput inputDelete = new DeleteFromDiagramInput(UUID.randomUUID(), "", "", List.of(), List.of());
-        assertThat(diagramToolReferencePositionProvider.canHandle(inputDelete)).isFalse();
+        PinDiagramElementInput inputPin = new PinDiagramElementInput(UUID.randomUUID(), "", "", Set.of(), false);
+        assertThat(diagramToolReferencePositionProvider.canHandle(inputPin)).isFalse();
     }
 
     @Test

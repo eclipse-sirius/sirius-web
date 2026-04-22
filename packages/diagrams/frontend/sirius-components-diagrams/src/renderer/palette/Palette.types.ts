@@ -62,6 +62,7 @@ export interface GQLTool extends GQLPaletteEntry {
 export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   dialogDescriptionId: string;
   withImpactAnalysis: boolean;
+  withDeletionConfirmationDialog: boolean;
   keyBindings: GQLKeyBinding[];
 }
 

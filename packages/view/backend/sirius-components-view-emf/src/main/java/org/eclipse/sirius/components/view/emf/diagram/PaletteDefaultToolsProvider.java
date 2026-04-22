@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -34,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescrip
 import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.view.emf.diagram.api.IPaletteToolsProvider;
 import org.eclipse.sirius.components.view.emf.diagram.tools.CollapseElementToolHandler;
+import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteOneDiagramElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.ExpandElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.FadeElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.HideElementToolHandler;
@@ -119,7 +121,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
 
         if (this.hasDeleteTool(diagramElementDescription)) {
             // Semantic Delete Tool (the handler is never called)
-            var semanticDeleteTool = this.createExtraSemanticDeleteTool(targetDescriptions);
+            var semanticDeleteTool = this.createExtraSemanticDeleteTool(targetDescriptions, false);
             extraTools.add(semanticDeleteTool);
         }
         return extraTools;
@@ -147,7 +149,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
 
         if (this.hasDeleteTool(diagramElementDescription)) {
             // Semantic Delete Tool (the handler is never called)
-            var semanticDeleteTool = this.createExtraSemanticDeleteTool(targetDescriptions);
+            var semanticDeleteTool = this.createExtraSemanticDeleteTool(targetDescriptions, true);
             extraTools.add(semanticDeleteTool);
         }
         return extraTools;
@@ -264,6 +266,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                         .iconURL(List.of(DiagramImageConstants.COLLAPSE_SVG))
                         .targetDescriptions(targetDescriptions)
                         .withImpactAnalysis(false)
+                        .withDeletionConfirmationDialog(false)
                         .keyBindings(List.of())
                         .build();
                 case COLLAPSED -> SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(ExpandElementToolHandler.EXPAND_ELEMENT_TOOL_ID)
@@ -271,6 +274,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                         .iconURL(List.of(DiagramImageConstants.EXPAND_SVG))
                         .targetDescriptions(targetDescriptions)
                         .withImpactAnalysis(false)
+                        .withDeletionConfirmationDialog(false)
                         .keyBindings(List.of())
                         .build();
             };
@@ -279,13 +283,18 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
         return Optional.empty();
     }
 
-    private ITool createExtraSemanticDeleteTool(List<IDiagramElementDescription> targetDescriptions) {
-        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool("semantic-delete")
+    private ITool createExtraSemanticDeleteTool(List<IDiagramElementDescription> targetDescriptions, boolean withKeyBindings) {
+        List<KeyBinding> keyBindings = List.of();
+        if (withKeyBindings) {
+            keyBindings = List.of(KeyBinding.newKeyBinding().key("Delete").build());
+        }
+        return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID)
                 .label(this.messageService.defaultQuickToolDeleteFromModel())
                 .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
                 .withImpactAnalysis(false)
-                .keyBindings(List.of())
+                .withDeletionConfirmationDialog(true)
+                .keyBindings(keyBindings)
                 .build();
     }
 
@@ -360,6 +369,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .iconURL(List.of(DiagramImageConstants.EDIT_SVG))
                 .targetDescriptions(targetDescriptions)
                 .withImpactAnalysis(false)
+                .withDeletionConfirmationDialog(false)
                 .keyBindings(List.of())
                 .build();
 
