@@ -12,10 +12,12 @@
  *******************************************************************************/
 
 import { Edge, HandleType, Node } from '@xyflow/react';
-import { GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
+import { GQLEdgeAnchorLayoutData, GQLNodeLayoutData } from '../graphql/subscription/diagramFragment.types';
 import { GQLEdge } from '../graphql/subscription/edgeFragment.types';
 import { GQLPosition } from '../graphql/subscription/nodeFragment.types';
-import { EdgeData, NodeData } from '../renderer/DiagramRenderer.types';
+import { EdgeData } from '../renderer/DiagramRenderer.types';
+import { EdgeAnchorNodeData } from '../renderer/node/EdgeAnchorNode.types';
+import { convertEdgeAnchorNodeHandles } from './convertHandles';
 
 export const getNodePositionAbsoluteFromSvgPathAndPositionRation = (
   edgePath: string,
@@ -38,9 +40,12 @@ export const createEdgeAnchorNode = (
   edge: GQLEdge,
   existingEdge: Edge<EdgeData> | null,
   type: HandleType,
-  nodeLayoutData: GQLNodeLayoutData[]
-): Node<NodeData> => {
-  const id = type === 'source' ? edge.sourceId : edge.targetId;
+  nodeLayoutData: GQLNodeLayoutData[],
+  edgeAnchorLayoutData: GQLEdgeAnchorLayoutData | undefined
+): Node<EdgeAnchorNodeData> => {
+  const id = edge.id;
+
+  const connectionHandles = convertEdgeAnchorNodeHandles(edge, type, edgeAnchorLayoutData);
 
   let position: GQLPosition = nodeLayoutData.find((nodeLayoutData) => nodeLayoutData.id === id)?.position ?? {
     x: 0,
@@ -61,7 +66,6 @@ export const createEdgeAnchorNode = (
     height: 5, // The size is fixed for this type of node
     width: 5, // The size is fixed for this type of node
     data: {
-      edgeId: edge.id,
       targetObjectId: '',
       targetObjectKind: '',
       targetObjectLabel: '',
@@ -88,7 +92,7 @@ export const createEdgeAnchorNode = (
       labelEditable: false,
       deletable: false,
       style: {},
-      connectionHandles: [],
+      connectionHandles: connectionHandles,
       isNew: false,
       resizedByUser: false,
       movedByUser: false,
@@ -104,6 +108,10 @@ export const createEdgeAnchorNode = (
       isLastNodeSelected: false,
       moving: false,
       decorators: [],
+      sourceTargetEdgeId: type === 'target' ? edge.targetId : edge.sourceId,
+      sourceTargetNodeId: type === 'target' ? edge.sourceId : edge.targetId,
+      positionRatio: edgeAnchorLayoutData ? edgeAnchorLayoutData.positionRatio : 0.5,
+      isLayouted: !!edgeAnchorLayoutData,
     },
   };
 };

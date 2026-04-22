@@ -259,7 +259,7 @@ export const useSynchronizeLayoutData = (): UseSynchronizeLayoutDataValue => {
 
       if (isLayoutedEdgeAnchorNode) {
         edgeLayout.edgeAnchorLayoutData.push({
-          edgeId: edgeAnchorNode.data.edgeId,
+          edgeId: edgeAnchorNode.data.sourceTargetEdgeId,
           positionRatio: edgeAnchorNode.data.positionRatio,
           handlePosition: Position.Left,
           type: edgeAnchorNode.id === edge.source ? 'target' : 'source',

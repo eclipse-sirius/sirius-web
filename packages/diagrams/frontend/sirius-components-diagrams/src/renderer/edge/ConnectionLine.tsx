@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import { ConnectorContext } from '../connector/ConnectorContext';
 import { ConnectorContextValue } from '../connector/ConnectorContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
+import { isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
 import { ConnectionLineState } from './ConnectionLine.types';
 import {
   getEdgeParameters,
@@ -60,16 +61,23 @@ export const ConnectionLine = memo(
     const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
     const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
     const { diagramDescription } = useDiagramDescription();
-    const { setNodes, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+    const { setNodes, getEdge, getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
     const updateNodeInternals = useUpdateNodeInternals();
     const [state, setState] = useState<ConnectionLineState>({
       previousToNodeId: toNode?.id ?? null,
     });
 
     const edgeId = fromNode.data.connectionHandles.find((handle) => handle.id === fromHandle?.id)?.edgeId;
-    const targetHandle = getEdges().find((e) => e.id === edgeId)?.targetHandle;
-    const sourceHandle = getEdges().find((e) => e.id === edgeId)?.sourceHandle;
-    const handleToUpdate = targetHandle === fromHandle.id ? sourceHandle : targetHandle;
+    const targetHandle = getEdge(edgeId || '')?.targetHandle;
+    const sourceHandle = getEdge(edgeId || '')?.sourceHandle;
+
+    const previousEdge = getEdge(edgeId || ''); // The reconnected edge
+    let previousOtherEndNodeId = previousEdge && previousEdge.source != fromNode.id ? previousEdge.source : undefined;
+    if (!previousOtherEndNodeId) {
+      previousOtherEndNodeId = previousEdge && previousEdge.target != fromNode.id ? previousEdge.target : undefined;
+    }
+    const previousOtherEndNode = getNode(previousOtherEndNodeId || ''); // The node source or target that started a reconnect
+    const handleToUpdate = targetHandle === fromHandle.id ? sourceHandle : targetHandle; // The handle that started the reconnect
 
     let updatedToY = toY;
     let updatedToX = toX;
@@ -83,23 +91,20 @@ export const ConnectionLine = memo(
       }
     }, [toNode?.id]);
 
-    // When reconnecting an edge
-    if (edgeId) {
-      const edge = getEdge(edgeId);
-      if (edge) {
-        const edgeBase = getEdge(edge.target);
-        // Snap the ConnectionLine to the border of the targeted edge
-        if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
-          const { position, handlePosition } = getNearestPointInPath(
-            updatedToX,
-            updatedToY,
-            edgeBase.data.edgePath,
-            fromNode
-          );
-          updatedToX = position.x;
-          updatedToY = position.y;
-          toPosition = handlePosition;
-        }
+    // When reconnecting an edge on edge
+    if (previousEdge && previousOtherEndNode && isEdgeAnchorNode(previousOtherEndNode)) {
+      const edgeBase = getEdge(previousOtherEndNode.data.sourceTargetEdgeId);
+      // Snap the ConnectionLine to the border of the targeted edge
+      if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
+        const { position, handlePosition } = getNearestPointInPath(
+          updatedToX,
+          updatedToY,
+          edgeBase.data.edgePath,
+          fromNode
+        );
+        updatedToX = position.x;
+        updatedToY = position.y;
+        toPosition = handlePosition;
       }
     }
 
@@ -189,42 +194,39 @@ export const ConnectionLine = memo(
       }
 
       // When reconnection to an edge
-      if (edgeId) {
-        const edge = getEdge(edgeId);
-        if (edge) {
-          const edgeBase = getEdge(edge.target);
-          if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
-            const { position, positionRatio, handlePosition } = getNearestPointInPath(
-              updatedToX,
-              updatedToY,
-              edgeBase.data.edgePath,
-              fromNode
-            );
-            setNodes((prevNodes) =>
-              prevNodes.map((prevNode) => {
-                if (prevNode.id === edgeBase.id) {
-                  const handles: ConnectionHandle[] = prevNode.data.connectionHandles.map((connectionHandle) => {
-                    return {
-                      ...connectionHandle,
-                      position: handlePosition,
-                    };
-                  });
-
+      if (previousEdge && previousOtherEndNode && isEdgeAnchorNode(previousOtherEndNode)) {
+        const edgeBase = getEdge(previousOtherEndNode.data.sourceTargetEdgeId);
+        if (edgeBase && edgeBase.data && edgeBase.data.edgePath && edgeBase.data.isHovered) {
+          const { position, positionRatio, handlePosition } = getNearestPointInPath(
+            updatedToX,
+            updatedToY,
+            edgeBase.data.edgePath,
+            fromNode
+          );
+          setNodes((prevNodes) =>
+            prevNodes.map((prevNode) => {
+              if (prevNode.id === previousOtherEndNode.id) {
+                const handles: ConnectionHandle[] = prevNode.data.connectionHandles.map((connectionHandle) => {
                   return {
-                    ...prevNode,
-                    position: position,
-                    data: {
-                      ...prevNode.data,
-                      isLayouted: true,
-                      positionRatio: positionRatio,
-                      connectionHandles: handles,
-                    },
+                    ...connectionHandle,
+                    position: handlePosition,
                   };
-                }
-                return prevNode;
-              })
-            );
-          }
+                });
+
+                return {
+                  ...prevNode,
+                  position: position,
+                  data: {
+                    ...prevNode.data,
+                    isLayouted: true,
+                    positionRatio: positionRatio,
+                    connectionHandles: handles,
+                  },
+                };
+              }
+              return prevNode;
+            })
+          );
         }
       }
 

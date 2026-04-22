@@ -92,6 +92,7 @@ Decorators also have an `iconURLExpression` and `labelExpression` to specify the
 - https://github.com/eclipse-sirius/sirius-web/issues/6410[#6410] [diagram] Add support for semantic decorators in diagrams.
 Specifiers can now use `SemanticDecoratorDescription` to define decorators that are applied on nodes representing a given domain type.
 The decorator also accepts a `preconditionExpression` to further detail when it should be displayed.
+- https://github.com/eclipse-sirius/sirius-web/issues/6412[#6412] [diagram] Support the placement of edges on edges along the same edge with individual positions.
 
 
 === Improvements
