@@ -38,6 +38,7 @@ export const getPaletteQuery = gql`
       }
       dialogDescriptionId
       withImpactAnalysis
+      withDeletionConfirmationDialog
       keyBindings {
         isCtrl
         isMeta

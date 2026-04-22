@@ -23,15 +23,16 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditRectangularNodeAppearanceInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.RectangularNodeAppearanceInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.RectangularNodeStyle;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DeleteFromDiagramMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditRectangularNodeAppearanceMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteOneDiagramElementToolHandler;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
@@ -72,7 +73,7 @@ public class UndoEditRectangularNodeAppearanceControllerTests extends AbstractIn
     private EditRectangularNodeAppearanceMutationRunner editRectangularNodeAppearanceMutationRunner;
 
     @Autowired
-    private DeleteFromDiagramMutationRunner deleteFromDiagramMutationRunner;
+    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
 
     @Autowired
     private UndoMutationRunner undoMutationRunner;
@@ -217,10 +218,11 @@ public class UndoEditRectangularNodeAppearanceControllerTests extends AbstractIn
 
         var mutationInputId = UUID.randomUUID();
         Runnable deleteNode = () -> {
-            var input = new DeleteFromDiagramInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebApplicationNodeId.get()), List.of());
-            var result = this.deleteFromDiagramMutationRunner.run(input);
-            String typename = JsonPath.read(result.data(), "$.data.deleteFromDiagram.__typename");
-            assertThat(typename).isEqualTo(DeleteFromDiagramSuccessPayload.class.getSimpleName());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(),
+                    List.of(siriusWebApplicationNodeId.get()), DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID, 0, 0, List.of());
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
         Consumer<Object> updatedAfterDeleteDiagramElementConsumer = assertRefreshedDiagramThat(diagram -> {

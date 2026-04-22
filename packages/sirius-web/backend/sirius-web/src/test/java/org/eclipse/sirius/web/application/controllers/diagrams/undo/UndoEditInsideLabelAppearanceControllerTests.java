@@ -24,18 +24,19 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditLabelAppearanceInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.LabelAppearanceInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ResetLabelAppearanceInput;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.LabelVisibility;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DeleteFromDiagramMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditLabelAppearanceMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.ResetLabelAppearanceMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteOneDiagramElementToolHandler;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
 import org.eclipse.sirius.web.application.undo.dto.UndoInput;
@@ -79,7 +80,7 @@ public class UndoEditInsideLabelAppearanceControllerTests extends AbstractIntegr
     private ResetLabelAppearanceMutationRunner resetLabelAppearanceMutationRunner;
 
     @Autowired
-    private DeleteFromDiagramMutationRunner deleteFromDiagramMutationRunner;
+    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
 
     @Autowired
     private UndoMutationRunner undoMutationRunner;
@@ -155,10 +156,11 @@ public class UndoEditInsideLabelAppearanceControllerTests extends AbstractIntegr
 
         var mutationInputId = UUID.randomUUID();
         Runnable deleteNode = () -> {
-            var input = new DeleteFromDiagramInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebApplicationNodeId.get()), List.of());
-            var result = this.deleteFromDiagramMutationRunner.run(input);
-            String typename = JsonPath.read(result.data(), "$.data.deleteFromDiagram.__typename");
-            assertThat(typename).isEqualTo(DeleteFromDiagramSuccessPayload.class.getSimpleName());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(),
+                    List.of(siriusWebApplicationNodeId.get()), DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID, 0, 0, List.of());
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
         Consumer<Object> updatedAfterDeleteDiagramElementConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -179,11 +181,11 @@ public class UndoEditInsideLabelAppearanceControllerTests extends AbstractIntegr
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(setLabelCustomisation)
-                .consumeNextWith(getUpdatedAfterAppearanceChangeConsumer())
+                .consumeNextWith(this.getUpdatedAfterAppearanceChangeConsumer())
                 .then(deleteNode)
                 .consumeNextWith(updatedAfterDeleteDiagramElementConsumer)
                 .then(undoChanges)
-                .consumeNextWith(getUpdatedAfterAppearanceChangeConsumer())
+                .consumeNextWith(this.getUpdatedAfterAppearanceChangeConsumer())
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
@@ -272,13 +274,13 @@ public class UndoEditInsideLabelAppearanceControllerTests extends AbstractIntegr
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(setLabelCustomisation)
-                .consumeNextWith(getUpdatedAfterAppearanceChangeConsumer())
+                .consumeNextWith(this.getUpdatedAfterAppearanceChangeConsumer())
                 .then(resetLabelCustomisation)
-                .consumeNextWith(getUpdateAfterResetConsumer())
+                .consumeNextWith(this.getUpdateAfterResetConsumer())
                 .then(undoChanges)
-                .consumeNextWith(getUpdatedAfterAppearanceChangeConsumer())
+                .consumeNextWith(this.getUpdatedAfterAppearanceChangeConsumer())
                 .then(redoChanges)
-                .consumeNextWith(getUpdateAfterResetConsumer())
+                .consumeNextWith(this.getUpdateAfterResetConsumer())
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

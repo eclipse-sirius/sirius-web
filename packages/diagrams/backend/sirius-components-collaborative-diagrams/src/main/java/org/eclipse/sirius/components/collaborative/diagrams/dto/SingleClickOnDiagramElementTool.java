@@ -30,6 +30,7 @@ public record SingleClickOnDiagramElementTool(
         List<IDiagramElementDescription> targetDescriptions,
         String dialogDescriptionId,
         boolean withImpactAnalysis,
+        boolean withDeletionConfirmationDialog,
         List<KeyBinding> keyBindings) implements ITool {
 
     public SingleClickOnDiagramElementTool {
@@ -65,6 +66,8 @@ public record SingleClickOnDiagramElementTool(
 
         private boolean withImpactAnalysis;
 
+        private boolean withDeletionConfirmationDialog;
+
         private List<KeyBinding> keyBindings;
 
         private Builder(String id) {
@@ -96,6 +99,11 @@ public record SingleClickOnDiagramElementTool(
             return this;
         }
 
+        public Builder withDeletionConfirmationDialog(boolean withDeletionConfirmationDialog) {
+            this.withDeletionConfirmationDialog = withDeletionConfirmationDialog;
+            return this;
+        }
+
         public Builder keyBindings(List<KeyBinding> keyBindings) {
             this.keyBindings = Objects.requireNonNull(keyBindings);
             return this;
@@ -109,6 +117,7 @@ public record SingleClickOnDiagramElementTool(
                     this.targetDescriptions,
                     this.dialogDescriptionId,
                     this.withImpactAnalysis,
+                    this.withDeletionConfirmationDialog,
                     this.keyBindings
             );
         }

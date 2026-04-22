@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-impactanalysis';
 import { useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -73,6 +73,7 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
   const { addMessages, addErrorMessage } = useMultiToast();
   const { showDialog } = useDialog();
   const { showImpactAnalysisDialog } = useImpactAnalysisDialog();
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
 
   const [invokeSingleClickOnDiagramElementTool, { loading, data, error }] = useMutation<
     GQLInvokeSingleClickOnDiagramElementToolData,
@@ -177,7 +178,13 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
         invokeTool(editingContextId, diagramId, tool, diagramElementIds, variables, x, y);
 
       let executeProcess: (variables: GQLToolVariable[]) => void = executeTool;
-      if (tool.withImpactAnalysis) {
+      if (tool.withDeletionConfirmationDialog) {
+        executeProcess = (variables: GQLToolVariable[]) => {
+          showDeletionConfirmation(() => {
+            executeTool(variables);
+          });
+        };
+      } else if (tool.withImpactAnalysis) {
         const executeToolWithImpactAnalysis = (variables: GQLToolVariable[]) => {
           setState((prevState) => ({ ...prevState, currentTool: tool, onToolExecution: () => executeTool(variables) }));
           invokeGetDiagramAnalysisReport(editingContextId, diagramId, tool.id, diagramElementIds, variables);
@@ -185,24 +192,22 @@ export const useSingleClickTool = (): UseSingleClickToolValue => {
         executeProcess = executeToolWithImpactAnalysis;
 
         if (tool.dialogDescriptionId) {
-          const executeToolWithImpactAnalysisAndDialog = () =>
+          executeProcess = () =>
             showDialog(
               tool.dialogDescriptionId,
               [{ name: 'targetObjectId', value: targetObjectId }],
               executeToolWithImpactAnalysis,
               () => {}
             );
-          executeProcess = executeToolWithImpactAnalysisAndDialog;
         }
       } else if (tool.dialogDescriptionId) {
-        const executeToolWithDialog = () =>
+        executeProcess = () =>
           showDialog(
             tool.dialogDescriptionId,
             [{ name: 'targetObjectId', value: targetObjectId }],
             executeTool,
             () => {}
           );
-        executeProcess = executeToolWithDialog;
       }
 
       executeProcess([]);
