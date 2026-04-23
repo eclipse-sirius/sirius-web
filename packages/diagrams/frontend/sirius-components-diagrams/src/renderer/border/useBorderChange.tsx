@@ -65,7 +65,7 @@ export const useBorderChange = (): UseBorderChangeValue => {
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   const transformBorderNodeChanges = useCallback(
-    (changes: NodeChange<Node<NodeData>>[], oldNodes: Node<NodeData>[]): NodeChange<Node<NodeData>>[] => {
+    (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       return changes.map((change) => {
         if (change.type === 'position' && change.position && change.dragging) {
           const nodeLookup = storeApi.getState().nodeLookup;
@@ -101,10 +101,9 @@ export const useBorderChange = (): UseBorderChangeValue => {
               }
             }
 
-            const oldMovedNode = oldNodes.find((n) => n.id === movedNode.id);
             const newPosition = findBorderNodePosition(change.position, movedNode, parentNode);
-            if (oldMovedNode && oldMovedNode.data.borderNodePosition !== newPosition) {
-              oldMovedNode.data.borderNodePosition = newPosition;
+            if (movedNode.data.borderNodePosition !== newPosition) {
+              movedNode.data.borderNodePosition = newPosition;
             }
 
             if (parentLayoutHandler?.calculateCustomNodeBorderNodePosition && parentNode) {

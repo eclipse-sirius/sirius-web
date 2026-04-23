@@ -398,6 +398,10 @@ export const useDropNodes = (): UseDropNodesValue => {
                 ...node,
                 position: finalPosition,
                 dragging: false,
+                data: {
+                  ...node.data,
+                  isDraggedNode: false,
+                },
               };
             }
             return node;
