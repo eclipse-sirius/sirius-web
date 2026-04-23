@@ -17,8 +17,9 @@ import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types
 import { getBorderNodeExtent } from '../layout/layoutBorderNodes';
 import { borderNodeOffset } from '../layout/layoutParams';
 import { ListNodeData } from '../node/ListNode.types';
-import { isResizing, isMove, isResize } from '../node/nodeChangePredicates';
+import { isResizing, isMove, isResize, isResizeFinished } from '../node/nodeChangePredicates';
 import { UseResizeChangeValue } from './useResizeChange.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 
 const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
@@ -244,5 +245,23 @@ export const useResizeChange = (): UseResizeChangeValue => {
     [getNodes]
   );
 
-  return { transformResizeListNodeChanges };
+  const applyResizeByUserState = (
+    changes: NodeChange<Node<NodeData>>[],
+    nodes: Node<NodeData, DiagramNodeType>[]
+  ): Node<NodeData, DiagramNodeType>[] => {
+    return nodes.map((node) => {
+      if (changes.filter(isResizeFinished).find((dimensionChange) => dimensionChange.id === node.id)) {
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            resizedByUser: true,
+          },
+        };
+      }
+      return node;
+    });
+  };
+
+  return { transformResizeListNodeChanges, applyResizeByUserState };
 };

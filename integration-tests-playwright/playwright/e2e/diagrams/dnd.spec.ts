@@ -33,7 +33,7 @@ test.describe('diagram - drag and drop', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test.skip('when dropping a node in a compatible target (diagram background), then a drop is triggered and the move is accepted', async ({
+  test('when dropping a node in a compatible target (diagram background), then a drop is triggered and the move is accepted', async ({
     page,
   }) => {
     let requestTriggered = false;
@@ -158,7 +158,7 @@ test.describe('diagram - drag and drop', () => {
     expect(boxShadowAfter).toBe('none');
   });
 
-  test.skip('when dropping a node in a compatible target (other node), then a drop is triggered and the move is accepted', async ({
+  test('when dropping a node in a compatible target (other node), then a drop is triggered and the move is accepted', async ({
     page,
   }) => {
     let requestTriggered = false;

@@ -17,6 +17,8 @@ export const isResizing = (change: NodeChange<Node<NodeData>>): change is NodeDi
   change.type === 'dimensions' && (change.resizing ?? false);
 export const isResize = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
   change.type === 'dimensions';
+export const isResizeFinished = (change: NodeChange<Node<NodeData>>): change is NodeDimensionChange =>
+  change.type === 'dimensions' && typeof change.resizing === 'boolean' && !change.resizing;
 export const isMoving = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>
   change.type === 'position' && typeof change.dragging === 'boolean' && change.dragging;
 export const isMove = (change: NodeChange<Node<NodeData>>): change is NodePositionChange =>

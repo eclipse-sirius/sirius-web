@@ -20,12 +20,12 @@ import {
   useStoreApi,
   XYPosition,
 } from '@xyflow/react';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { DEFAULT_HANDLE_SIZE } from '../edge/EdgeLayout';
 import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
-import { UseHandleResizedChangeState, UseHandleResizedChangeValue } from './useHandleResizedChange.types';
+import { UseHandleResizedChangeValue } from './useHandleResizedChange.types';
 
 const getHandlePosition = (
   node: InternalNode<Node<NodeData>>,
@@ -72,10 +72,14 @@ export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
   const storeApi = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = storeApi.getState();
 
-  const [state, setState] = useState<UseHandleResizedChangeState>({
+  const initialDimensionsRef = useRef<{
+    initialWidth: Map<string, number>;
+    initialHeight: Map<string, number>;
+  }>({
     initialWidth: new Map(),
     initialHeight: new Map(),
   });
+
   const applyResizeHandleChange = useCallback(
     (
       changes: NodeChange<Node<NodeData>>[],
@@ -86,21 +90,12 @@ export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
         if (isResize(change)) {
           const resizedNode = nodeLookup.get(change.id);
           if (resizedNode) {
-            const resizedNodeInitialHeight: number | undefined = state.initialHeight.get(resizedNode.id);
-            const resizedNodeInitialWidth: number | undefined = state.initialWidth.get(resizedNode.id);
+            const resizedNodeInitialHeight = initialDimensionsRef.current.initialHeight.get(resizedNode.id);
+            const resizedNodeInitialWidth = initialDimensionsRef.current.initialWidth.get(resizedNode.id);
 
             if (!resizedNodeInitialHeight && !resizedNodeInitialWidth && !!change.resizing) {
-              setState((prevState) => ({
-                ...prevState,
-                initialWidth: new Map(prevState.initialWidth).set(
-                  resizedNode.id,
-                  resizedNode.width ? resizedNode.width : 0
-                ),
-                initialHeight: new Map(prevState.initialHeight).set(
-                  resizedNode.id,
-                  resizedNode.height ? resizedNode.height : 0
-                ),
-              }));
+              initialDimensionsRef.current.initialWidth.set(resizedNode.id, resizedNode.width ?? 0);
+              initialDimensionsRef.current.initialHeight.set(resizedNode.id, resizedNode.height ?? 0);
             } else if (resizedNodeInitialHeight && resizedNodeInitialWidth && !change.resizing) {
               const coefHeight = (change.dimensions?.height ?? 0) / resizedNodeInitialHeight;
               const coefWidth = (change.dimensions?.width ?? 0) / resizedNodeInitialWidth;
@@ -123,15 +118,13 @@ export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
                 return handle;
               });
               updatedConnectionHandles.set(resizedNode.id, connectionHandles);
-              setState((prevState) => ({
-                ...prevState,
-                initialWidth: new Map(),
-                initialHeight: new Map(),
-              }));
+              initialDimensionsRef.current.initialWidth.delete(resizedNode.id);
+              initialDimensionsRef.current.initialHeight.delete(resizedNode.id);
             }
           }
         }
       });
+
       if (updatedConnectionHandles.size > 0) {
         return nodes.map((node) => {
           const updatedConnectionHandle = updatedConnectionHandles.get(node.id);
@@ -149,7 +142,7 @@ export const useHandleResizedChange = (): UseHandleResizedChangeValue => {
       }
       return nodes;
     },
-    [state.initialHeight, state.initialWidth]
+    []
   );
 
   return { applyResizeHandleChange };

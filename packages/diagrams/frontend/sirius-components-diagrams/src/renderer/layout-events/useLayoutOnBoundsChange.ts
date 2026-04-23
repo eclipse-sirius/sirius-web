@@ -63,37 +63,17 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
     return isDropOnSameParent || isDropFromDiagramToDiagram || !!draggedNode?.data.isBorderNode;
   };
 
-  const updateNodeResizeByUserState = (
-    changes: NodeChange<Node<NodeData>>[],
-    nodes: Node<NodeData, DiagramNodeType>[]
-  ): Node<NodeData, DiagramNodeType>[] => {
-    return nodes.map((node) => {
-      if (changes.filter(isResizeFinished).find((dimensionChange) => dimensionChange.id === node.id)) {
-        return {
-          ...node,
-          data: {
-            ...node.data,
-            resizedByUser: true,
-          },
-        };
-      }
-      return node;
-    });
-  };
-
   const layoutOnBoundsChange = useCallback(
     (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData, DiagramNodeType>[]): void => {
       const change = isBoundsChangeFinished(changes, getNodes());
       if (change) {
-        const updatedNodes = updateNodeResizeByUserState(changes, nodes);
-
         const diagramToLayout: RawDiagram = {
-          nodes: updatedNodes,
+          nodes,
           edges: getEdges(),
         };
 
         layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-          const updatedNodesAfterLayout = updatedNodes.map((node) => {
+          const updatedNodesAfterLayout = nodes.map((node) => {
             const existingNode = laidOutDiagram.nodes.find((laidoutNode) => laidoutNode.id === node.id);
             if (existingNode) {
               return {

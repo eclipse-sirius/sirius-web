@@ -213,7 +213,18 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
       }));
 
       setEdges(convertedDiagram.edges);
-      setNodes(convertedDiagram.nodes);
+      setNodes((previousNodes) => {
+        return convertedDiagram.nodes.map((convertedNode) => {
+          const previousNode = previousNodes.find((n) => n.id === convertedNode.id);
+          if (previousNode) {
+            convertedNode.data.isDraggedNode = previousNode.data.isDraggedNode;
+            convertedNode.data.isDragNodeSource = previousNode.data.isDragNodeSource;
+            convertedNode.data.isDropNodeTarget = previousNode.data.isDropNodeTarget;
+            convertedNode.data.isDropNodeCandidate = previousNode.data.isDropNodeCandidate;
+          }
+          return convertedNode;
+        });
+      });
     } else if (cause === 'refresh') {
       const previousDiagram: RawDiagram = {
         nodes,
@@ -339,7 +350,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { applyLastElementSelected } = useLastElementSelectedChange();
-  const { transformResizeListNodeChanges } = useResizeChange();
+  const { transformResizeListNodeChanges, applyResizeByUserState } = useResizeChange();
   const { transformMultiSelectResizeNodeChanges } = useMultiSelectResizeChange();
   const { applyHandleChange } = useHandleChange();
   const { applyResizeHandleChange } = useHandleResizedChange();
@@ -369,21 +380,32 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         });
       } else {
         resetHelperLines(changes);
-        let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
+        let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges);
         transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
         transformedNodeChanges = applyHelperLines(transformedNodeChanges);
         transformedNodeChanges = transformMultiSelectResizeNodeChanges(transformedNodeChanges);
         transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
 
         let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
-
         newNodes = applyMoveChange(transformedNodeChanges, newNodes);
         newNodes = applyHandleChange(transformedNodeChanges, newNodes);
         newNodes = applyResizeHandleChange(transformedNodeChanges, newNodes);
+        newNodes = applyResizeByUserState(transformedNodeChanges, newNodes);
 
         layoutOnBoundsChange(transformedNodeChanges, newNodes);
 
-        setNodes(newNodes);
+        setNodes((previousNodes) => {
+          return newNodes.map((newNode) => {
+            const previousNode = previousNodes.find((n) => n.id === newNode.id);
+            if (previousNode) {
+              newNode.data.isDraggedNode = previousNode.data.isDraggedNode;
+              newNode.data.isDragNodeSource = previousNode.data.isDragNodeSource;
+              newNode.data.isDropNodeTarget = previousNode.data.isDropNodeTarget;
+              newNode.data.isDropNodeCandidate = previousNode.data.isDropNodeCandidate;
+            }
+            return newNode;
+          });
+        });
       }
     },
     [layoutOnBoundsChange, getNodes, getEdges, selectedElementsIds]
