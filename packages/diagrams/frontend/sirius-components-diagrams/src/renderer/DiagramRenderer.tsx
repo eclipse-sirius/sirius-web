@@ -80,6 +80,7 @@ import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
 import { useDiagramPalette } from './palette/useDiagramPalette';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
+import { useMultiSelectResizeChange } from './resize/useMultiSelectResizeChange';
 import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useLastElementSelectedChange } from './selection/useLastElementSelectedChange';
@@ -87,7 +88,6 @@ import { useOnRightClickElement } from './selection/useOnRightClickElement';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
 import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 import { DiagramToolbar } from './toolbar/DiagramToolbar';
-import { useMultiSelectResizeChange } from './resize/useMultiSelectResizeChange';
 
 const GRID_STEP: number = 10;
 
@@ -442,6 +442,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onEdgesChange: handleEdgesChange,
     onPaneClick: () => {
       // Select the diagram itself when the user left-clicks on the background
+      store.getState().resetSelectedElements();
       setSelection({ entries: [{ id: diagramRefreshedEventPayload.diagram.id }] });
     },
     onPaneContextMenu: onPaneContextMenu,

@@ -150,7 +150,7 @@
     "@mui/icons-material": "7.3.10",
     "@mui/material": "7.3.10",
     "@mui/x-tree-view": "7.29.1",
-    "@xyflow/react": "12.6.0",
+    "@xyflow/react": "12.10.2",
     "axios": "0.21.4",
     "d3": "7.0.0",
     "elkjs": "0.11.0",

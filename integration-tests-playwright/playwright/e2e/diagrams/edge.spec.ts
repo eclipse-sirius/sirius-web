@@ -41,6 +41,9 @@ test.describe('edge', () => {
 
   test('when a bend point is moved, then the edge path is changed', async ({ page }) => {
     const playwrightEdge = new PlaywrightEdge(page);
+    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    await playwrightNode.click();
+    await playwrightNode.move({ x: 200, y: 150 });
 
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
@@ -51,7 +54,7 @@ test.describe('edge', () => {
     const box = (await lastBendingPoint.boundingBox())!;
     await lastBendingPoint.hover();
     await page.mouse.down();
-    await page.mouse.move(box.x - 40, box.y + 40, { steps: 2 });
+    await page.mouse.move(box.x - 40, box.y + 80, { steps: 2 });
     await page.mouse.up();
 
     const edgePathAfter = playwrightEdge.getEdgePath();
@@ -64,7 +67,7 @@ test.describe('edge', () => {
   }) => {
     const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
     await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 50 });
+    await playwrightNode.move({ x: 200, y: 150 });
 
     const playwrightEdge = new PlaywrightEdge(page);
 
@@ -94,7 +97,7 @@ test.describe('edge', () => {
   test('when moving a node, then custom handle are preserved', async ({ page }) => {
     const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
     await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 50 });
+    await playwrightNode.move({ x: 200, y: 150 });
 
     const playwrightEdge = new PlaywrightEdge(page);
 
@@ -145,7 +148,7 @@ test.describe('edge', () => {
     const dataSource = new PlaywrightNode(page, 'DataSource1');
     const edge = new PlaywrightEdge(page);
     await compositeProcessor.click();
-    await compositeProcessor.move({ x: 150, y: 50 });
+    await compositeProcessor.move({ x: 150, y: 150 });
 
     await expect(edge.edgeLocator).toBeAttached();
 
@@ -232,6 +235,7 @@ test.describe('edge', () => {
 
     const playwrightEdge = new PlaywrightEdge(page);
     await playwrightEdge.click();
+    await playwrightEdge.isSelected();
 
     const firstBendingPoint = page.locator(`[data-testid="bend-point-0"]`).first();
     const firstBendingPointBox = (await firstBendingPoint.boundingBox())!;
@@ -393,7 +397,7 @@ test.describe('edge', () => {
 
     const playwrightEdge = new PlaywrightEdge(page);
 
-    await playwrightEdge.edgeLocator.locator('path').first().click({ button: 'right' });
+    await playwrightEdge.edgeLocator.locator('.react-flow__edge-interaction').first().click({ button: 'right' });
     await page.getByTestId('toolSection-Appearance').click();
     await page.locator('[data-testid="toolSection-Appearance-Edge Type"]').click();
     await page.waitForSelector('.MuiMenu-paper');
