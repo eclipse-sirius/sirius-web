@@ -25,7 +25,7 @@ import { useCallback, useContext, useState } from 'react';
 import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf } from '../layout/layoutNode';
 import { horizontalHelperLinesSnapGap, verticalHelperLinesSnapGap } from '../layout/layoutParams';
-import { isResize } from '../node/nodeChangePredicates';
+import { isResizing } from '../node/nodeChangePredicates';
 import { HelperLinesContextValue } from './HelperLinesContext.types';
 import { HelperLinesContext } from './HelperLinesContext';
 import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
@@ -361,7 +361,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
         }
       } else if (isHelperLineEnabled && changes.length === 1 && changes[0]) {
         const change = changes[0];
-        if (isResize(change)) {
+        if (isResizing(change)) {
           const resizingNode = nodeLookup.get(change.id);
           if (resizingNode) {
             const helperLines: HelperLines = getHelperLinesForResize(change, resizingNode, getNodes(), nodeLookup);
@@ -377,7 +377,7 @@ export const useHelperLines = (): UseHelperLinesValue => {
       } else if (isHelperLineEnabled && changes.length === 2 && changes[0] && changes[1]) {
         const movingChange = changes[0];
         const resizingChange = changes[1];
-        if (isMove(movingChange, false) && isResize(resizingChange)) {
+        if (isMove(movingChange, false) && isResizing(resizingChange)) {
           const resizingNode = nodeLookup.get(movingChange.id);
           if (resizingNode) {
             const helperLines: HelperLines = getHelperLinesForResizeAndMove(
