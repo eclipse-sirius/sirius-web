@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ForwardedRef, forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { ImperativePanelHandle, Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { makeStyles } from 'tss-react/mui';
 import { PanelsProps, PanelState, WorkbenchPanelHandle } from './Panels.types';
@@ -239,6 +239,16 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     };
 
     const collapsedSize: number = 0;
+
+    useEffect(() => {
+      if (!leftPanelState.isOpen) {
+        leftRef.current?.collapse();
+      }
+      if (!rightPanelState.isOpen) {
+        rightRef.current?.collapse();
+      }
+    }, []);
+
     return (
       <div style={{ display: 'flex' }}>
         <Sidebar
@@ -251,7 +261,7 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
           <Panel
             id="left"
             className={classes.panel}
-            defaultSize={leftPanelState.isOpen ? leftPanelInitialSize : collapsedSize}
+            defaultSize={leftPanelInitialSize}
             collapsible
             collapsedSize={collapsedSize}
             minSize={10}
@@ -308,7 +318,7 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
           <Panel
             id="right"
             className={classes.panel}
-            defaultSize={rightPanelState.isOpen ? rightPanelInitialSize : collapsedSize}
+            defaultSize={rightPanelInitialSize}
             collapsible
             collapsedSize={collapsedSize}
             minSize={10}

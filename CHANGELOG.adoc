@@ -72,6 +72,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - https://github.com/eclipse-sirius/sirius-web/issues/6443[#6443] [selection] Fix the selection dialog confirm button label emptiness when the selection is required.
 - https://github.com/eclipse-sirius/sirius-web/issues/6441[#6441] [diagram] Prevent helper lines from staying visible after node resize
 - https://github.com/eclipse-sirius/sirius-web/issues/6437[#6437] [diagram] Prevent list node layout to be lost during node resize
+- https://github.com/eclipse-sirius/sirius-web/issues/6436[#6436] [core] Fix size of panels configured to be collapsed by default
 
 
 === New Features
