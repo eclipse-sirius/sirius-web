@@ -73,7 +73,21 @@ test.describe('diagram - growable list', () => {
     expect(growableListNodeSizeAfterHide.height).toBe(400);
     expect(growableListNodeSizeAfterHide.width).toBe(152);
   });
+
+  test('when a sub node is resize,  then growable nodes are properly layout', async ({ page }) => {
+    const growableListNode = new PlaywrightNode(page, 'Growable', 'List');
+    const growableListNodeSize = await growableListNode.getReactFlowSize();
+
+    await new PlaywrightDiagram(page).hideDebugPanel();
+
+    await growableListNode.resize({ height: 100, width: 100 });
+
+    const growableListNodeSizeAfterHide = await growableListNode.getReactFlowSize('Growable', false);
+    expect(growableListNodeSizeAfterHide.height).toBeGreaterThan(growableListNodeSize.height);
+    expect(growableListNodeSizeAfterHide.width).toBeGreaterThan(growableListNodeSize.width);
+  });
 });
+
 test.describe('diagram - growable list', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {

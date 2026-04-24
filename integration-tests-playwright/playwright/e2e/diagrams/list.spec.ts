@@ -54,7 +54,7 @@ test.describe('diagram - list', () => {
     expect(borderWidthFreeFormCompartment).toBe('0px');
   });
 
-  test('when a list node is resized, then child node width are properly updated', async ({ page }) => {
+  test('when a list node is resized horizontally, then child node width are properly updated', async ({ page }) => {
     const parentNode = new PlaywrightNode(page, 'List', 'List');
     const childNode = new PlaywrightNode(page, 'undefined', 'List');
 
@@ -66,7 +66,7 @@ test.describe('diagram - list', () => {
     await parentNode.click();
     await parentNode.resize({ height: 0, width: 50 });
 
-    const parentNodeSizeAfter = await parentNode.getReactFlowSize();
+    const parentNodeSizeAfter = await parentNode.getReactFlowSize('List', false);
     await childNode.nodeLocator.click({ position: { x: 25, y: 25 } });
     const childNodeSizeAfter = await childNode.getReactFlowSize(null, false);
 
@@ -77,6 +77,30 @@ test.describe('diagram - list', () => {
     );
     expect(parentNodeSizeAfter.width).toBeGreaterThan(parentNodeSizeBefore.width);
     expect(Math.abs(childNodeSizeAfter.width - (parentNodeSizeAfter.width - borderWidth))).toBeLessThanOrEqual(margin);
+  });
+
+  test('when a list node is resized vertically, then child node width are properly updated', async ({ page }) => {
+    const parentNode = new PlaywrightNode(page, 'List', 'List');
+    const childNode = new PlaywrightNode(page, 'undefined', 'List');
+
+    const parentNodeSizeBefore = await parentNode.getReactFlowSize();
+
+    await childNode.nodeLocator.click({ position: { x: 25, y: 25 } });
+    const childNodeSizeBefore = await childNode.getReactFlowSize(null, false);
+
+    await parentNode.click();
+    await parentNode.resize({ height: 50, width: 0 });
+
+    const parentNodeSizeAfter = await parentNode.getReactFlowSize('List', false);
+    await childNode.nodeLocator.click({ position: { x: 25, y: 25 } });
+    const childNodeSizeAfter = await childNode.getReactFlowSize(null, false);
+
+    const borderWidth: number = 2;
+    const margin: number = 2;
+    expect(Math.abs(childNodeSizeBefore.width - (parentNodeSizeBefore.width - borderWidth))).toBeLessThanOrEqual(
+      margin
+    );
+    expect(parentNodeSizeAfter.height).toBeGreaterThan(parentNodeSizeBefore.height);
   });
 
   test('when a list node is moved, then the size of the node is not updated', async ({ page }) => {

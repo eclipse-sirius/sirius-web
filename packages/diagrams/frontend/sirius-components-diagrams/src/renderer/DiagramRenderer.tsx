@@ -372,8 +372,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         let transformedNodeChanges: NodeChange<Node<NodeData>>[] = transformBorderNodeChanges(noReadOnlyChanges, nodes);
         transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
         transformedNodeChanges = applyHelperLines(transformedNodeChanges);
-        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
         transformedNodeChanges = transformMultiSelectResizeNodeChanges(transformedNodeChanges);
+        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
 
         let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
 
