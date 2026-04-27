@@ -69,6 +69,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - https://github.com/eclipse-sirius/sirius-web/issues/6387[#6387] [diagram] Set the initial position of an EdgeAnchorNode when converting the diagram
 - https://github.com/eclipse-sirius/sirius-web/issues/6155[#6155] [diagram] Prevent edge handle detachment after node resize
 - https://github.com/eclipse-sirius/sirius-web/issues/6340[#6340] [diagram] Correctly reset mouse cursor after a failed new connection
+- https://github.com/eclipse-sirius/sirius-web/issues/6443[#6443] [selection] Fix the selection dialog confirm button label emptiness when the selection is required.
 
 
 === New Features

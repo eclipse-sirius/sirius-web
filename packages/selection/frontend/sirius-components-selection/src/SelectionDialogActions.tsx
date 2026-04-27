@@ -90,6 +90,9 @@ export const SelectionDialogActions = ({
             dialogSelectionRequiredWithSelectionStatusMessage ??
             `The tool execution will continue with ${selectedTreeItemIds.length} elements`;
           confirmButtonLabel = confirmButtonLabels.selectionRequiredWithSelectionConfirmButtonLabel;
+        } else {
+          statusMessage = statusMessages.selectionRequiredWithoutSelectionStatusMessage;
+          confirmButtonLabel = confirmButtonLabels.selectionRequiredWithoutSelectionConfirmButtonLabel;
         }
       }
       setState((prevState) => ({
@@ -111,7 +114,10 @@ export const SelectionDialogActions = ({
         </Button>
         <Button
           variant="contained"
-          disabled={selectedTreeItemIds.length == 0 && selectionDialogOption !== 'NO_SELECTION'}
+          disabled={
+            (selectedTreeItemIds.length === 0 || selectedTreeItemIds[0] === '') &&
+            selectionDialogOption !== 'NO_SELECTION'
+          }
           data-testid="confirm-action"
           color="primary"
           onClick={onConfirm}>
