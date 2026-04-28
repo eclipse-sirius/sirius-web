@@ -115,6 +115,8 @@ public interface IMessageService {
 
     String failedToRename();
 
+    String unknownDependencies();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -359,6 +361,11 @@ public interface IMessageService {
 
         @Override
         public String failedToRename() {
+            return "";
+        }
+
+        @Override
+        public String unknownDependencies() {
             return "";
         }
     }

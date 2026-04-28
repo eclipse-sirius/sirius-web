@@ -272,4 +272,9 @@ public class MessageService implements IMessageService {
     public String failedToRename() {
         return this.messageSourceAccessor.getMessage("FAILED_TO_RENAME");
     }
+
+    @Override
+    public String unknownDependencies() {
+        return this.messageSourceAccessor.getMessage("UNKNOWN_DEPENDENCIES");
+    }
 }

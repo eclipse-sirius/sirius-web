@@ -104,7 +104,7 @@ public class SemanticDataProjectContentImportParticipant implements IProjectCont
                 && projectSemanticDataCreatedEvent.causedBy() instanceof SemanticDataCreatedEvent semanticDataCreatedEvent
                 && semanticDataCreatedEvent.causedBy() instanceof ProjectCreatedEvent projectCreatedEvent
                 && projectCreatedEvent.causedBy() instanceof InitializeProjectInput initializeProjectInput) {
-            var dependenciesEntry = initializeProjectInput.projectContent().manifest().get("dependencies");
+            var dependenciesEntry = initializeProjectInput.projectContent().manifest().get(ProjectZipContent.DEPENDENCIES);
             if (dependenciesEntry instanceof List<?> list) {
                 var dependencies = list.stream()
                         .filter(String.class::isInstance)

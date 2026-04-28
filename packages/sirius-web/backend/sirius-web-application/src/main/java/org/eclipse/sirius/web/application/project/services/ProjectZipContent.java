@@ -41,6 +41,8 @@ public record ProjectZipContent(
 
     public static final String LATEST_MIGRATION_PERFORMED = "latestMigrationPerformed";
 
+    public static final String DEPENDENCIES = "dependencies";
+
     public ProjectZipContent {
         Objects.requireNonNull(projectName);
         Objects.requireNonNull(files);
