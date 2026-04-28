@@ -81,7 +81,12 @@ public class TreeRenderer {
     private TreeItem renderTreeItem(VariableManager treeItemVariableManager) {
         String id = this.treeDescription.getTreeItemIdProvider().apply(treeItemVariableManager);
         String kind = this.treeDescription.getKindProvider().apply(treeItemVariableManager);
+
         StyledString label = this.treeDescription.getTreeItemLabelProvider().apply(treeItemVariableManager);
+        label = new StyledString(label.styledStringFragments().stream()
+                .filter(fragment -> !fragment.text().isEmpty())
+                .toList());
+
         boolean editable = this.treeDescription.getEditableProvider().apply(treeItemVariableManager);
         boolean deletable = this.treeDescription.getDeletableProvider().apply(treeItemVariableManager);
         boolean selectable = this.treeDescription.getSelectableProvider().apply(treeItemVariableManager);
