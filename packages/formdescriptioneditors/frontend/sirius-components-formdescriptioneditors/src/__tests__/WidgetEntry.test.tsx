@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import {
   GQLPieChart,
   GQLTextfield,
 } from '@eclipse-sirius/sirius-components-forms';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, expect, test, vi } from 'vitest';
 import { addWidgetMutation, deleteWidgetMutation, moveWidgetMutation } from '../FormDescriptionEditorEventFragment';
@@ -105,19 +106,33 @@ const emptySelection: Selection = {
 const emptySetSelection = (_: Selection) => {};
 
 const TestContextProvider = ({ mocks, formDescriptionEditor, children }) => {
+  const theme = createTheme({
+    components: {
+      MuiTooltip: {
+        defaultProps: {
+          disableFocusListener: true,
+          disableHoverListener: true,
+          disableTouchListener: true,
+        },
+      },
+    },
+  });
+
   return (
     <MockedProvider mocks={mocks}>
-      <FormDescriptionEditorContext.Provider
-        value={{
-          editingContextId: 'editingContextId',
-          representationId: 'formDescriptionEditorId',
-          formDescriptionEditor,
-          readOnly: false,
-        }}>
-        <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
-          {children}
-        </SelectionContext.Provider>
-      </FormDescriptionEditorContext.Provider>
+      <ThemeProvider theme={theme}>
+        <FormDescriptionEditorContext.Provider
+          value={{
+            editingContextId: 'editingContextId',
+            representationId: 'formDescriptionEditorId',
+            formDescriptionEditor,
+            readOnly: false,
+          }}>
+          <SelectionContext.Provider value={{ selection: emptySelection, setSelection: emptySetSelection }}>
+            {children}
+          </SelectionContext.Provider>
+        </FormDescriptionEditorContext.Provider>
+      </ThemeProvider>
     </MockedProvider>
   );
 };
