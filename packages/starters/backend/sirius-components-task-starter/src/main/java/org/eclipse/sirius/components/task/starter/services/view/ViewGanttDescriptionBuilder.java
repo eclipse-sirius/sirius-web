@@ -35,18 +35,8 @@ import org.eclipse.sirius.components.view.gantt.TaskDescription;
  *
  * @author lfasani
  */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ViewGanttDescriptionBuilder {
-
-    public static final String WORKPACKAGE_GANTT_REP_DESC_NAME = "Gantt of Workpackage Task Details";
-
-    public static final String PROJECT_GANTT_REP_DESC_NAME = "Gantt of Project Workpackages";
-
-    private static final String AQL_SELF_NAME = "aql:self.name";
-
-    private static final String AQL_SELF_DESCRIPTION = "aql:self.description";
-
-    private static final String AQL_SELF_PROGRESS = "aql:self.progress";
-
 
     public ViewGanttDescriptionBuilder() {
     }
@@ -69,7 +59,7 @@ public class ViewGanttDescriptionBuilder {
         DeleteTaskDependencyTool deleteTaskDependencyTool = this.createDeleteTaskDependencyTool();
 
         GanttDescription ganttDescription = new GanttBuilders().newGanttDescription()
-                .name(WORKPACKAGE_GANTT_REP_DESC_NAME)
+                .name("Gantt of Workpackage Task Details")
                 .domainType("peppermm::Workpackage")
                 .titleExpression("New Gantt")
                 .taskElementDescriptions(tasksDescription)
@@ -151,11 +141,11 @@ public class ViewGanttDescriptionBuilder {
         return new GanttBuilders().newTaskDescription()
                 .name("Tasks In Project")
                 .semanticCandidatesExpression("aql:self.ownedTasks")
-                .nameExpression(AQL_SELF_NAME)
-                .descriptionExpression(AQL_SELF_DESCRIPTION)
+                .nameExpression("aql:self.name")
+                .descriptionExpression("aql:self.description")
                 .startTimeExpression("aql:self.startTime")
                 .endTimeExpression("aql:self.endTime")
-                .progressExpression(AQL_SELF_PROGRESS)
+                .progressExpression("aql:self.progress")
                 .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
                 .taskDependenciesExpression("aql:self.dependencies")
                 .subTaskElementDescriptions(taskDescriptionInTask)
@@ -166,11 +156,11 @@ public class ViewGanttDescriptionBuilder {
         TaskDescription taskDescription = new GanttBuilders().newTaskDescription()
                 .name("Sub Tasks")
                 .semanticCandidatesExpression("aql:self.subTasks")
-                .nameExpression(AQL_SELF_NAME)
-                .descriptionExpression(AQL_SELF_DESCRIPTION)
+                .nameExpression("aql:self.name")
+                .descriptionExpression("aql:self.description")
                 .startTimeExpression("aql:self.startTime")
                 .endTimeExpression("aql:self.endTime")
-                .progressExpression(AQL_SELF_PROGRESS)
+                .progressExpression("aql:self.progress")
                 .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
                 .taskDependenciesExpression("aql:self.dependencies")
                 .build();
@@ -190,7 +180,7 @@ public class ViewGanttDescriptionBuilder {
         DropTaskTool dropWorkpackageTool = this.createDropWorkpackageTool();
 
         GanttDescription ganttDescription = new GanttBuilders().newGanttDescription()
-                .name(PROJECT_GANTT_REP_DESC_NAME)
+                .name("Gantt of Project Workpackages")
                 .domainType("peppermm::Project")
                 .titleExpression("New Gantt")
                 .taskElementDescriptions(tasksDescription)
@@ -208,11 +198,11 @@ public class ViewGanttDescriptionBuilder {
         return new GanttBuilders().newTaskDescription()
                 .name("Workpackages In Project")
                 .semanticCandidatesExpression("aql:self.ownedWorkpackages")
-                .nameExpression(AQL_SELF_NAME)
-                .descriptionExpression(AQL_SELF_DESCRIPTION)
+                .nameExpression("aql:self.name")
+                .descriptionExpression("aql:self.description")
                 .startTimeExpression("aql:self.startDate")
                 .endTimeExpression("aql:self.endDate")
-                .progressExpression(AQL_SELF_PROGRESS)
+                .progressExpression("aql:self.progress")
                 .computeStartEndDynamicallyExpression("aql:false")
                 .taskDependenciesExpression("")
                 .build();

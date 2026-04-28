@@ -24,10 +24,10 @@ import pepper.peppermm.provider.PepperItemProviderAdapterFactory;
  * @author lfasani
  */
 @Configuration
-public class TaskEMFConfiguration {
+public class PepperEMFConfiguration {
 
     @Bean
-    public ComposedAdapterFactory.Descriptor taskAdapterFactoryDescriptor() {
+    public ComposedAdapterFactory.Descriptor pepperAdapterFactoryDescriptor() {
         return PepperItemProviderAdapterFactory::new;
     }
 }
