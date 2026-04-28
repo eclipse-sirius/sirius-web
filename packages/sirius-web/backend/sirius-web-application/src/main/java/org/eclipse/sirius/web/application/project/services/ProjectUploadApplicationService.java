@@ -22,6 +22,8 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.web.application.project.dto.UploadProjectInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.application.project.services.api.IProjectUploadApplicationService;
+import org.eclipse.sirius.web.application.project.services.api.IProjectZipContentProvider;
+import org.eclipse.sirius.web.application.project.services.api.IProjectZipContentValidator;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.services.Failure;
@@ -41,7 +43,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProjectUploadApplicationService implements IProjectUploadApplicationService {
 
-    private final ProjectZipContentProvider projectZipContentProvider;
+    private final IProjectZipContentProvider projectZipContentProvider;
+
+    private final IProjectZipContentValidator projectZipContentValidator;
 
     private final IProjectCreationService projectCreationService;
 
@@ -51,8 +55,9 @@ public class ProjectUploadApplicationService implements IProjectUploadApplicatio
 
     private final Logger logger = LoggerFactory.getLogger(ProjectUpdateApplicationService.class);
 
-    public ProjectUploadApplicationService(ProjectZipContentProvider projectZipContentProvider, IProjectCreationService projectCreationService, IProjectMapper projectMapper, IMessageService messageService) {
+    public ProjectUploadApplicationService(IProjectZipContentProvider projectZipContentProvider, IProjectZipContentValidator projectZipContentValidator, IProjectCreationService projectCreationService, IProjectMapper projectMapper, IMessageService messageService) {
         this.projectZipContentProvider = Objects.requireNonNull(projectZipContentProvider);
+        this.projectZipContentValidator = Objects.requireNonNull(projectZipContentValidator);
         this.projectCreationService = Objects.requireNonNull(projectCreationService);
         this.projectMapper = Objects.requireNonNull(projectMapper);
         this.messageService = Objects.requireNonNull(messageService);
@@ -65,21 +70,25 @@ public class ProjectUploadApplicationService implements IProjectUploadApplicatio
         Optional<ProjectZipContent> optionalProjectZipContent = this.projectZipContentProvider.buildFromZip(input.file().getInputStream());
         if (optionalProjectZipContent.isPresent()) {
             ProjectZipContent projectZipContent = optionalProjectZipContent.get();
+            var validationResult = this.projectZipContentValidator.validate(projectZipContent);
+            if (validationResult instanceof Success<Void>) {
+                var natures = this.getNatures(projectZipContent.manifest().get(ProjectZipContent.NATURES));
+                IResult<Project> result = this.projectCreationService.createProject(new InitializeProjectInput(input.id(), input, projectZipContent), projectZipContent.projectName(), natures);
+                if (result instanceof Failure<Project>) {
+                    this.logger.atWarn()
+                            .setMessage("Project upload failed")
+                            .log();
+                } else if (result instanceof Success<Project> success) {
+                    this.logger.atInfo()
+                            .setMessage("Project {} uploaded")
+                            .addArgument(success.data().getId())
+                            .log();
 
-            var natures = this.getNatures(projectZipContent.manifest().get(ProjectZipContent.NATURES));
-            IResult<Project> result = this.projectCreationService.createProject(new InitializeProjectInput(input.id(), input, projectZipContent), projectZipContent.projectName(), natures);
-            if (result instanceof Failure<Project>) {
-                this.logger.atWarn()
-                        .setMessage("Project upload failed")
-                        .log();
-            } else if (result instanceof Success<Project> success) {
-                this.logger.atInfo()
-                        .setMessage("Project {} uploaded")
-                        .addArgument(success.data().getId())
-                        .log();
-
-                var project = success.data();
-                payload = new UploadProjectSuccessPayload(input.id(), this.projectMapper.toDTO(project));
+                    var project = success.data();
+                    payload = new UploadProjectSuccessPayload(input.id(), this.projectMapper.toDTO(project));
+                }
+            } else if (validationResult instanceof Failure<Void> failure) {
+                payload = new ErrorPayload(input.id(), failure.message());
             }
         } else {
             this.logger.atWarn()
