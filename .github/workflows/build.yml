@@ -183,10 +183,8 @@ jobs:
       - name: Publish the backend
         if: startsWith(env.GITHUB_REF, 'refs/tags/v')
         env:
-          USERNAME: ${{github.actor}}
-          PASSWORD: ${{secrets.GITHUB_TOKEN}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run: mvn -B deploy -f packages/pom.xml --settings settings.xml
+        run: mvn -B deploy -f packages/pom.xml
 
       - name: Publish the frontend packages
         if: startsWith(env.GITHUB_REF, 'refs/tags/v')
