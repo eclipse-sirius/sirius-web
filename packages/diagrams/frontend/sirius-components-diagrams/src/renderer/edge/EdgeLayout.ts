@@ -18,10 +18,10 @@ import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
 import {
-  verticalLayoutAngleMin,
-  verticalLayoutAngleMax,
-  horizontalLayoutAngleMin,
   horizontalLayoutAngleMax,
+  horizontalLayoutAngleMin,
+  verticalLayoutAngleMax,
+  verticalLayoutAngleMin,
 } from '../layout/layoutParams';
 import {
   GetEdgeParameters,
@@ -145,7 +145,7 @@ export const getHandlePositionFromNodeAndPath = (
   return position;
 };
 
-const getSegmentDirection = (edgePath: string, xyPosition: XYPosition): SegmentDirection => {
+export const getSegmentDirection = (edgePath: string, xyPosition: XYPosition): SegmentDirection => {
   const pathPoints = parse(edgePath);
   let segmentDirection: SegmentDirection = 'y';
   const { x, y } = xyPosition;
@@ -167,6 +167,15 @@ const getSegmentDirection = (edgePath: string, xyPosition: XYPosition): SegmentD
 
   return segmentDirection;
 };
+export const getMiddleOfEdgePath = (edgePath: string): XYPosition => {
+  var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  svgPath.setAttribute('d', edgePath);
+  const pathLength = svgPath.getTotalLength();
+  const points = svgPath.getPointAtLength(pathLength * 0.5);
+
+  return { x: points.x, y: points.y };
+};
+
 export const getNearestPointInPath = (
   x: number,
   y: number,

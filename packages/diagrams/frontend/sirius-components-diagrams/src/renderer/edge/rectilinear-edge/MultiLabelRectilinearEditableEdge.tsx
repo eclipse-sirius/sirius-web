@@ -17,6 +17,7 @@ import { memo, useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../../representation/useStore';
 import { useConnectorEdgeStyle } from '../../connector/useConnectorEdgeStyle';
 import { BendPoint, TemporaryMovingLine } from '../BendPoint';
+import { buildCrossingDashArray } from '../crossings/buildCrossingDashArray';
 import { DraggableEdgeLabels } from '../DraggableEdgeLabels';
 import { EdgeCreationHandle } from '../EdgeCreationHandle';
 import { multiLabelEdgeStyle } from '../MultiLabelEdge';
@@ -25,7 +26,6 @@ import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge
 import { determineSegmentAxis, getMiddlePoint, isMultipleOfTwo } from './RectilinearEdgeCalculation';
 import { useBendingPoints } from './useBendingPoints';
 import { useTemporaryLines } from './useTemporaryLines';
-import { buildCrossingDashArray } from '../crossings/buildCrossingDashArray';
 
 export const MultiLabelRectilinearEditableEdge = memo(
   ({
@@ -63,7 +63,13 @@ export const MultiLabelRectilinearEditableEdge = memo(
       setTarget({ x: targetX, y: targetY });
     }, [targetX, targetY]);
 
-    const { localBendingPoints, setLocalBendingPoints, onBendingPointDragStop, onBendingPointDrag } = useBendingPoints(
+    const {
+      localBendingPoints,
+      isBendingPointDragged,
+      setLocalBendingPoints,
+      onBendingPointDragStop,
+      onBendingPointDrag,
+    } = useBendingPoints(
       id,
       bendingPoints,
       source,
@@ -79,7 +85,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
       customEdge
     );
 
-    const { middleBendingPoints, onTemporaryLineDragStop, onTemporaryLineDrag } = useTemporaryLines(
+    const { middleBendingPoints, isSegmentDragged, onTemporaryLineDragStop, onTemporaryLineDrag } = useTemporaryLines(
       id,
       bendingPoints,
       localBendingPoints,
@@ -190,7 +196,12 @@ export const MultiLabelRectilinearEditableEdge = memo(
           markerEnd={selected ? `${markerEnd?.slice(0, markerEnd.length - 2)}--selected')` : markerEnd}
           markerStart={selected ? `${markerStart?.slice(0, markerStart.length - 2)}--selected')` : markerStart}
         />
-        {selected ? <EdgeCreationHandle edgeId={id} edgePath={edgePath}></EdgeCreationHandle> : null}
+        {selected ? (
+          <EdgeCreationHandle
+            edgeId={id}
+            edgePath={edgePath}
+            isPathDragged={isSegmentDragged || isBendingPointDragged}></EdgeCreationHandle>
+        ) : null}
         {selected &&
           localBendingPoints &&
           localBendingPoints.map((point, index) => {

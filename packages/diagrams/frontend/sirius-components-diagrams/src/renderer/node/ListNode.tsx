@@ -68,7 +68,16 @@ const useStyles = makeStyles()((_) => ({
 }));
 
 export const ListNode: NodeComponentsMap['listNode'] = memo(
-  ({ data, id, selected, dragging }: NodeProps<Node<ListNodeData>>) => {
+  ({
+    data,
+    id,
+    selected,
+    dragging,
+    positionAbsoluteX,
+    positionAbsoluteY,
+    width,
+    height,
+  }: NodeProps<Node<ListNodeData>>) => {
     const theme = useTheme();
     const { classes } = useStyles();
     const { onDrop, onDragOver } = useDrop();
@@ -118,7 +127,18 @@ export const ListNode: NodeComponentsMap['listNode'] = memo(
             </div>
             {actionsSection}
           </div>
-          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          {selected && width && height ? (
+            <ConnectionCreationHandles
+              nodeId={id}
+              nodePosition={{
+                x: positionAbsoluteX,
+                y: positionAbsoluteY,
+              }}
+              nodeWidth={width}
+              nodeHeight={height}
+              isDraggedNode={data.isDraggedNode}
+            />
+          ) : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
         </div>

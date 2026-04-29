@@ -68,7 +68,7 @@ test.describe('edge-handle', () => {
     await expect(page.locator('[data-handleid$="target"]')).toHaveCount(0);
     const playwrightNode1a = new PlaywrightNode(page, 'Entity1');
     await playwrightNode1a.click();
-    await page.getByTestId('creationhandle-left').hover();
+    await page.getByTestId('creationhandle--top').hover();
     await page.mouse.down();
     await page.mouse.move(400, 400);
     await expect(page.locator('[data-handleid$="target"]')).toHaveCount(2);

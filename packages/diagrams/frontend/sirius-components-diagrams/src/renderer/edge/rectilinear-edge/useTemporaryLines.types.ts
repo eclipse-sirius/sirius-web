@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ export interface UseTemporaryLinesValue {
   middleBendingPoints: MiddlePoint[];
   onTemporaryLineDragStop: (eventData: DraggableData, index: number) => void;
   onTemporaryLineDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
+  isSegmentDragged: boolean;
 }
 
 export interface TemporaryLinesState {

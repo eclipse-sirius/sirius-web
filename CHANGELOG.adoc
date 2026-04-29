@@ -39,11 +39,12 @@ The method `IRepresentationDeserializer#handle(...)` has been modified to `Optio
 The switch to Spring Boot 4.0 also come with a switch to Jackson 3, see the official https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md[documentation] for more details.
 Custom deserializers and migration services will probably be impacted.
 - https://github.com/eclipse-sirius/sirius-web/issues/6369[#6369] [diagram] In order to click behind the rectangle selection on a diagram, you'll need to update `ReactFlow.css` as per the `selection rectangle` section.
--https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] `moving` should be set when converting custom nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] `moving` should be set when converting custom nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/6243[#6243] [sirius-web] Add documentation in the new representation modal.
 `RepresentationDescriptionMetadata` has been renamed to `RepresentationMetadataDTO` and moved to `org.eclipse.sirius.components.collaborative.dto`.
 It now requires a `documentation` parameter.
 - https://github.com/eclipse-sirius/sirius-web/issues/6451[#6451] [tree] `ISingleClickTreeItemContextMenuEntryExecutor.canExecute` method has now more parameters: `boolean canExecute(IEditingContext editingContext, TreeDescription treeDescription, String treeItemMenuContextEntryId, ITreeInput treeInput);`
+- https://github.com/eclipse-sirius/sirius-web/issues/2928[#2928] [diagram] `ConnectionCreationHandles` now needs the node current position, width,  height and isDraggedNode props
 
 
 === Dependency update
@@ -148,7 +149,7 @@ See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6396[#6396] [diagram] The diagram palette now supports fuzzy matching when searching for tools.
 For example entering either `att def` or `NAD` will now find a tool named `New Attribute Definition`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6416[#6416] [sirius-web] Perform the validation of the dependencies when a project is uploaded
-
+- https://github.com/eclipse-sirius/sirius-web/issues/2928[#2928] [diagram] Render creation handles in a dedicated node, this ensure that the handles are always clickable event if an edge is passing in front of them.
 
 
 == 2026.3.0

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { NodeData } from '../DiagramRenderer.types';
 
-export const EDGE_ANCHOR_NODE_DEFAULT_SIZE = 20;
+import { XYPosition } from '@xyflow/react';
 
-export interface EdgeAnchorNodeCreationHandlesData extends NodeData {
-  edgeId: string;
+export interface UseHandlesValue {
+  mountNodeHandles: (nodeId: string, nodeXYPosition: XYPosition, nodeWidth: number, nodeHeight: number) => void;
+  updateNodeHandles: (nodeId: string, nodeXYPosition: XYPosition, nodeWidth: number, nodeHeight: number) => void;
+  mountEdgeHandles: (edgeId: string, edgePath: string) => void;
+  unMountHandles: () => void;
 }

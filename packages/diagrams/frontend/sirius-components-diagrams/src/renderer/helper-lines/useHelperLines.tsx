@@ -26,8 +26,8 @@ import { BorderNodePosition, EdgeData, NodeData } from '../DiagramRenderer.types
 import { getPositionAbsoluteFromNodeChange, isDescendantOf } from '../layout/layoutNode';
 import { horizontalHelperLinesSnapGap, verticalHelperLinesSnapGap } from '../layout/layoutParams';
 import { isResizing } from '../node/nodeChangePredicates';
-import { HelperLinesContextValue } from './HelperLinesContext.types';
 import { HelperLinesContext } from './HelperLinesContext';
+import { HelperLinesContextValue } from './HelperLinesContext.types';
 import { HelperLines, UseHelperLinesState, UseHelperLinesValue } from './useHelperLines.types';
 
 const isMove = (change: NodeChange<Node<NodeData>>, dragging: boolean): change is NodePositionChange =>
@@ -83,6 +83,7 @@ const getHelperLinesForMove = (
   const movingNodesHeight: number = movingNodesBounds.y2 - movingNodesBounds.y1;
   return nodes
     .filter((node) => node.type != 'edgeAnchorNode')
+    .filter((node) => node.type != 'handleNode')
     .filter((node) => !movingNodes.some((n) => n.id === node.id))
     .filter((node) => !movingNodes.some((n) => isDescendantOf(n, node, nodeLookUp)))
     .reduce<HelperLines>((helperLines, otherNode) => {
@@ -190,6 +191,7 @@ const getHelperLinesForResize = (
     };
     return nodes
       .filter((node) => node.type != 'edgeAnchorNode')
+      .filter((node) => node.type != 'handleNode')
       .filter((node) => node.id != resizingNode.id)
       .filter((node) => !isDescendantOf(resizingNode, node, nodeLookup))
       .reduce<HelperLines>((helperLines, otherNode) => {
@@ -263,6 +265,7 @@ const getHelperLinesForResizeAndMove = (
     };
     return nodes
       .filter((node) => node.type != 'edgeAnchorNode')
+      .filter((node) => node.type != 'handleNode')
       .filter((node) => node.id != resizingNode.id)
       .filter((node) => !isDescendantOf(resizingNode, node, nodeLookup))
       .reduce<HelperLines>((helperLines, otherNode) => {

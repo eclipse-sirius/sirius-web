@@ -27,13 +27,10 @@ import {
 } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { EdgeAnchorNodeCreationHandlesData } from '../node/EdgeAnchorNodeCreationHandles.types';
+import { isHandleNode, isInternalHandleNode } from '../node/HandleNode.types';
 import { ConnectorContext } from './ConnectorContext';
 import { ConnectorContextValue } from './ConnectorContext.types';
 import { UseConnectorValue } from './useConnector.types';
-
-const isEdgeAnchorNodeCreationHandles = (node: Node<NodeData>): node is Node<EdgeAnchorNodeCreationHandlesData> =>
-  node.type === 'edgeAnchorNodeCreationHandles';
 
 export const useConnector = (): UseConnectorValue => {
   const { connection, setConnection, position, setPosition, resetConnection, candidates, isConnectionInProgress } =
@@ -49,7 +46,7 @@ export const useConnector = (): UseConnectorValue => {
       if (connection.sourceHandle?.startsWith('creationhandle')) {
         const nodeSource = nodeLookup.get(connection.source);
         //  Set the edge as source when we're connecting from an EdgeAnchorNode
-        if (nodeSource && isEdgeAnchorNodeCreationHandles(nodeSource)) {
+        if (nodeSource && isHandleNode(nodeSource) && nodeSource.data.edgeId) {
           connection.source = nodeSource.data.edgeId;
         }
 
@@ -86,7 +83,7 @@ export const useConnector = (): UseConnectorValue => {
   );
 
   const onConnectEnd: OnConnectEnd = useCallback(
-    (event: MouseEvent | TouchEvent, connectionState: FinalConnectionState) => {
+    (event: MouseEvent | TouchEvent, connectionState: FinalConnectionState<InternalNode<Node>>) => {
       if (connectionState.fromHandle?.id?.startsWith('creationhandle')) {
         if ('clientX' in event && 'clientY' in event) {
           setPosition({ x: event.clientX || 0, y: event.clientY });
@@ -97,10 +94,27 @@ export const useConnector = (): UseConnectorValue => {
 
         //  Set the new connection if we're connecting to an edge
         const hoveredEdge = getEdges().find((edge) => edge.data && edge.data.isHovered);
-        if (connectionState.fromNode && !!hoveredEdge) {
+        if (
+          connectionState.fromNode &&
+          isInternalHandleNode(connectionState.fromNode) &&
+          connectionState.fromNode.data.nodeId &&
+          !!hoveredEdge
+        ) {
           setConnection({
-            source: connectionState.fromNode.id,
+            source: connectionState.fromNode.data.nodeId,
             target: hoveredEdge.id,
+            sourceHandle: null,
+            targetHandle: null,
+          });
+        } else if (
+          connectionState.fromNode &&
+          isInternalHandleNode(connectionState.fromNode) &&
+          connectionState.fromNode.data.nodeId &&
+          connectionState.toNode?.id
+        ) {
+          setConnection({
+            source: connectionState.fromNode.data.nodeId,
+            target: connectionState.toNode.id,
             sourceHandle: null,
             targetHandle: null,
           });
