@@ -37,6 +37,7 @@ import { layoutHandles } from '../renderer/layout/layoutHandles';
 import { updateHandleViewModifier } from '../renderer/layout/updateHandleViewModifier';
 import { GQLEdgeLayoutData } from '../renderer/layout/useSynchronizeLayoutData.types';
 import { EdgeAnchorNodeData } from '../renderer/node/EdgeAnchorNode.types';
+import { HandleNodeData, isHandleNode } from '../renderer/node/HandleNode.types';
 import { DiagramNodeType } from '../renderer/node/NodeTypes.types';
 import { GQLDiagramDescription } from '../representation/DiagramRepresentation.types';
 import { IConvertEngine, INodeConverter } from './ConvertEngine.types';
@@ -313,11 +314,13 @@ export const convertDiagram = (
   updateHandleFromReferencePosition(rawDiagram, state, referencePosition);
   computeBorderNodeLabelPosition(rawDiagram.nodes, rawDiagram.edges);
 
+  const currentHandleNodes: Node<HandleNodeData>[] = state.nodes.filter(isHandleNode);
+
   return {
     style: {
       background: gqlDiagram.style.background,
     },
-    nodes: rawDiagram.nodes,
+    nodes: rawDiagram.nodes.concat(currentHandleNodes),
     edges: rawDiagram.edges,
     autoLaidOut: gqlDiagram.layoutData.autoLaidOut,
   };

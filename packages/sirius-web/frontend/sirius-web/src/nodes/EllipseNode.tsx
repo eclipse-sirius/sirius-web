@@ -58,7 +58,16 @@ const ellipseNodeStyle = (
 };
 
 export const EllipseNode: NodeComponentsMap['ellipseNode'] = memo(
-  ({ data, id, selected, dragging }: NodeProps<Node<EllipseNodeData>>) => {
+  ({
+    data,
+    id,
+    selected,
+    dragging,
+    positionAbsoluteX,
+    positionAbsoluteY,
+    width,
+    height,
+  }: NodeProps<Node<EllipseNodeData>>) => {
     const theme = useTheme();
     const { onDrop, onDragOver } = useDrop();
     const { style: connectionFeedbackStyle } = useConnectorNodeStyle(id, data.nodeDescription.id);
@@ -92,7 +101,18 @@ export const EllipseNode: NodeComponentsMap['ellipseNode'] = memo(
           data-testid={`Ellipse - ${data?.insideLabel?.text}`}>
           <DecoratorContainer decorators={data.decorators}></DecoratorContainer>
           {data.insideLabel ? <Label diagramElementId={id} label={data.insideLabel} faded={data.faded} /> : null}
-          {!!selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          {!!selected && width && height ? (
+            <ConnectionCreationHandles
+              nodeId={id}
+              nodePosition={{
+                x: positionAbsoluteX,
+                y: positionAbsoluteY,
+              }}
+              nodeWidth={width}
+              nodeHeight={height}
+              isDraggedNode={data.isDraggedNode}
+            />
+          ) : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
         </div>

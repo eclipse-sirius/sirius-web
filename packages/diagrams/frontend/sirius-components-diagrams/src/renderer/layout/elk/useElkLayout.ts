@@ -17,6 +17,7 @@ import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { BorderNodePosition, EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { ConnectionHandle } from '../../handles/ConnectionHandles.types';
 import { isEdgeAnchorNode } from '../../node/EdgeAnchorNode.types';
+import { isHandleNode } from '../../node/HandleNode.types';
 import { DiagramNodeType } from '../../node/NodeTypes.types';
 import { RawDiagram } from '../layout.types';
 import { UseElkLayoutValue } from './useElkLayout.types';
@@ -261,7 +262,7 @@ export const useElkLayout = (): UseElkLayoutValue => {
     let layoutAllNodes: Node<NodeData, DiagramNodeType>[] = [];
     let layoutAllEdges: Edge<EdgeData>[] = [];
     await getELKLayout(
-      nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node)),
+      nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node) && !isHandleNode(node)),
       edges,
       layoutOptions
     ).then(({ elkNodesMap, edges: elkEdges, connectionHandlesMap }) => {

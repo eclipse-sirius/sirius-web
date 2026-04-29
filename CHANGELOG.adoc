@@ -30,6 +30,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-sirius/sirius-web/issues/6595[#6595] [diagram] `appliesToDiagramRoot` field was removed from `isSingleClickOnTwoDiagramElementsTool`.
 - https://github.com/eclipse-sirius/sirius-web/issues/1361[#1361] [diagram] The Graphql API `deleteFromDiagram` has been removed.
 - https://github.com/eclipse-sirius/sirius-web/issues/6546[#6546] [diagram] The `Palette` component and its related types are now exported from the palette package
+- https://github.com/eclipse-sirius/sirius-web/issues/2928[#2928] [diagram] `ConnectionCreationHandles` now needs the node current position, width,  height and isDraggedNode props
 
 
 === Dependency update
@@ -97,6 +98,7 @@ Downstream applications can implement `ISearchServiceDelegate` to define their o
 - https://github.com/eclipse-sirius/sirius-web/issues/6578[#6578] [test] Make test runner GraphQL queries public.
 - https://github.com/eclipse-sirius/sirius-web/issues/1361[#1361] [diagram] Remove hard-coded diagram delete tool
 - https://github.com/eclipse-sirius/sirius-web/issues/6542[#6542] [diagram] Extract the draggable feature from the palette in order to facilitate the export of the Palette component
+- https://github.com/eclipse-sirius/sirius-web/issues/2928[#2928] [diagram] Render creation handles in a dedicated node, this ensure that the handles are always clickable event if an edge is passing in front of them.
 
 
 
@@ -139,7 +141,7 @@ The method `IRepresentationDeserializer#handle(...)` has been modified to `Optio
 The switch to Spring Boot 4.0 also come with a switch to Jackson 3, see the official https://github.com/FasterXML/jackson/blob/main/jackson3/MIGRATING_TO_JACKSON_3.md[documentation] for more details.
 Custom deserializers and migration services will probably be impacted.
 - https://github.com/eclipse-sirius/sirius-web/issues/6369[#6369] [diagram] In order to click behind the rectangle selection on a diagram, you'll need to update `ReactFlow.css` as per the `selection rectangle` section.
--https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] `moving` should be set when converting custom nodes.
+- https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] `moving` should be set when converting custom nodes.
 - https://github.com/eclipse-sirius/sirius-web/issues/6243[#6243] [sirius-web] Add documentation in the new representation modal.
 `RepresentationDescriptionMetadata` has been renamed to `RepresentationMetadataDTO` and moved to `org.eclipse.sirius.components.collaborative.dto`.
 It now requires a `documentation` parameter.

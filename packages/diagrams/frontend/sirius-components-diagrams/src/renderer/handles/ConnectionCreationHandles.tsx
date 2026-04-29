@@ -10,148 +10,55 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Theme, useTheme } from '@mui/material/styles';
-import { Edge, Handle, Node, Position, useStoreApi } from '@xyflow/react';
-import React, { memo, useContext, useEffect, useState } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { ConnectorContext } from '../connector/ConnectorContext';
 import { ConnectorContextValue } from '../connector/ConnectorContext.types';
-import { useConnector } from '../connector/useConnector';
+import { useHandles } from './../connector/useHandles';
+import { ConnectionCreationHandlesProps } from './ConnectionCreationHandles.types';
 import { useConnectionCandidatesQuery } from './useConnectionCandidatesQuery';
 
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { ConnectionCreationHandlesProps, ConnectionCreationHandlesState } from './ConnectionCreationHandles.types';
-import { useRefreshTargetHandles } from './useRefreshTargetHandles';
+export const ConnectionCreationHandles = memo(
+  ({ nodeId, nodePosition, nodeWidth, nodeHeight, isDraggedNode }: ConnectionCreationHandlesProps) => {
+    const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
+    const { mountNodeHandles, updateNodeHandles, unMountHandles } = useHandles();
+    const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
 
-const connectionCreationHandleStyle = (
-  position: Position,
-  theme: Theme,
-  isHovered: Position | null,
-  isMouseDown: Position | null,
-  isEdgeAnchorNode: boolean
-): React.CSSProperties => {
-  const style: React.CSSProperties = {
-    position: 'absolute',
-    borderRadius: '0',
-    border: 'solid black',
-    borderWidth: '0 2px 2px 0',
-    display: 'inline-block',
-    padding: '2px',
-    borderColor: theme.palette.secondary.light,
-    backgroundColor: 'transparent',
-    width: isEdgeAnchorNode ? 6 : 12,
-    height: isEdgeAnchorNode ? 6 : 12,
-    zIndex: 9999,
-  };
-  switch (position) {
-    case Position.Left:
-      style.left = isEdgeAnchorNode ? '-5px' : '-15px';
-      style.transform = 'translateY(-50%) rotate(135deg)';
-      break;
-    case Position.Right:
-      style.right = isEdgeAnchorNode ? '-5px' : '-15px';
-      style.transform = 'translateY(-50%) rotate(-45deg)';
-      break;
-    case Position.Top:
-      style.top = isEdgeAnchorNode ? '-5px' : '-15px';
-      style.transform = 'translateX(-50%) rotate(-135deg)';
-      break;
-    case Position.Bottom:
-      style.bottom = isEdgeAnchorNode ? '-5px' : '-15px';
-      style.transform = 'translateX(-50%) rotate(45deg)';
-      break;
+    const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, nodeId);
+    const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
+
+    // Unmount/Mount while selected
+    useEffect(() => {
+      if (shouldRender) {
+        mountNodeHandles(nodeId, nodePosition, nodeWidth, nodeHeight);
+      }
+      return () => {
+        unMountHandles();
+      };
+    }, [shouldRender]);
+
+    // Unmount/Mount while dragging the node
+    useEffect(() => {
+      if (isDraggedNode) {
+        unMountHandles();
+      } else if (!isDraggedNode && shouldRender) {
+        mountNodeHandles(nodeId, nodePosition, nodeWidth, nodeHeight);
+      }
+    }, [isDraggedNode]);
+
+    // Update handle position if needed (for resize)
+    useEffect(() => {
+      updateNodeHandles(nodeId, nodePosition, nodeWidth, nodeHeight);
+    }, [nodePosition, nodeWidth, nodeHeight]);
+
+    // Set candidates in the context
+    useEffect(() => {
+      if (candidates !== null) {
+        setCandidates(candidates);
+      }
+    }, [candidates]);
+
+    return null;
   }
-  if (isHovered === position || isMouseDown === position) {
-    style.borderColor = theme.palette.selected;
-  }
-  return style;
-};
-
-export const ConnectionCreationHandles = memo(({ nodeId, diagramElementId }: ConnectionCreationHandlesProps) => {
-  const theme = useTheme();
-  const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isConnectionInProgress } = useConnector();
-  const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
-  const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-
-  // If diagramElementId is set then we use it for the request otherwise we use the id of the node used to place the handle
-  diagramElementId = diagramElementId || nodeId;
-
-  const [state, setState] = useState<ConnectionCreationHandlesState>({
-    isHovered: null,
-    isMouseDown: null,
-  });
-
-  const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, diagramElementId);
-  const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
-  const isEdgeAnchorNode = !!store.getState().edgeLookup.get(diagramElementId);
-
-  useRefreshTargetHandles(nodeId, shouldRender);
-
-  useEffect(() => {
-    if (candidates !== null) {
-      setCandidates(candidates);
-    }
-  }, [candidates]);
-
-  useEffect(() => {
-    if (!isConnectionInProgress) {
-      setState((prevState) => ({
-        ...prevState,
-        isMouseDown: null,
-      }));
-    }
-  }, [isConnectionInProgress]);
-
-  const handleOnMouseDown = (_event: React.MouseEvent<HTMLDivElement, MouseEvent>, position: Position) => {
-    setState((prevState) => ({
-      ...prevState,
-      isMouseDown: position,
-    }));
-  };
-
-  const handleOnMouseEnter = (position: Position) => {
-    setState((prevState) => ({
-      ...prevState,
-      isHovered: position,
-    }));
-  };
-
-  const handleOnMouseLeave = () => {
-    setState((prevState) => ({
-      ...prevState,
-      isHovered: null,
-    }));
-  };
-
-  return (
-    <>
-      {shouldRender
-        ? Object.values(Position).map((position) => {
-            return (
-              <Handle
-                id={`creationhandle--${nodeId}--${position}`}
-                type="source"
-                position={position}
-                style={connectionCreationHandleStyle(
-                  position,
-                  theme,
-                  state.isHovered,
-                  state.isMouseDown,
-                  isEdgeAnchorNode
-                )}
-                onMouseDown={(event) => handleOnMouseDown(event, position)}
-                onMouseEnter={() => handleOnMouseEnter(position)}
-                onMouseLeave={handleOnMouseLeave}
-                isConnectableStart={true}
-                isConnectableEnd={false}
-                key={position}
-                data-testid={`creationhandle-${position}`}
-              />
-            );
-          })
-        : null}
-    </>
-  );
-});
+);

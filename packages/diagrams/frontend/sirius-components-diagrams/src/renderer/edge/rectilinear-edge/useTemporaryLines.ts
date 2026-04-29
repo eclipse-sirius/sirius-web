@@ -247,5 +247,6 @@ export const useTemporaryLines = (
     onDragStart,
     onTemporaryLineDragStop,
     onTemporaryLineDrag,
+    isSegmentDragged: state.dragInProgress,
   };
 };
