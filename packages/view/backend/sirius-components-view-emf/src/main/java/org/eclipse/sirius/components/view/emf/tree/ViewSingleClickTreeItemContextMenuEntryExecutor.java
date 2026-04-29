@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -75,8 +75,19 @@ public class ViewSingleClickTreeItemContextMenuEntryExecutor implements ISingleC
     }
 
     @Override
-    public boolean canExecute(TreeDescription treeDescription, ITreeInput treeInput) {
-        return this.viewRepresentationDescriptionPredicate.test(treeDescription);
+    public boolean canExecute(IEditingContext editingContext, TreeDescription treeDescription, String treeItemMenuContextEntryId, ITreeInput treeInput) {
+        return this.viewRepresentationDescriptionPredicate.test(treeDescription) && this.viewRepresentationDescriptionSearchService
+                .findById(editingContext, treeDescription.getId())
+                .filter(org.eclipse.sirius.components.view.tree.TreeDescription.class::isInstance)
+                .map(org.eclipse.sirius.components.view.tree.TreeDescription.class::cast)
+                .map(org.eclipse.sirius.components.view.tree.TreeDescription::getContextMenuEntries)
+                .flatMap(treeItemContextMenuEntries -> treeItemContextMenuEntries
+                        .stream()
+                        .filter(SingleClickTreeItemContextMenuEntry.class::isInstance)
+                        .map(SingleClickTreeItemContextMenuEntry.class::cast)
+                        .filter(entry -> Objects.equals(treeItemMenuContextEntryId, this.idProvider.apply(entry).toString()))
+                        .findFirst())
+                .isPresent();
     }
 
     @Override
