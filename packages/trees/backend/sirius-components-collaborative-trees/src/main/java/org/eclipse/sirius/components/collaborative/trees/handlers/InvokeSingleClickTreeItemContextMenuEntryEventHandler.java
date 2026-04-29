@@ -87,7 +87,7 @@ public class InvokeSingleClickTreeItemContextMenuEntryEventHandler implements IT
                 TreeItem treeItem = optionalTreeItem.get();
 
                 var status = this.singleClickTreeItemContextMenuEntryExecutors.stream()
-                        .filter(executor -> executor.canExecute(treeDescription, treeInput))
+                        .filter(executor -> executor.canExecute(editingContext, treeDescription, input.menuEntryId(), treeInput))
                         .findFirst()
                         .map(executor -> executor.execute(editingContext, treeDescription, tree, treeItem, input.menuEntryId(), input))
                         .orElseGet(() -> new Failure(this.messageService.noSingleClickTreeItemExecutor()));

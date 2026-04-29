@@ -79,7 +79,7 @@ public class RemoveLibrarySingleClickTreeItemContextMenuEntryExecutor implements
     }
 
     @Override
-    public boolean canExecute(TreeDescription treeDescription, ITreeInput treeInput) {
+    public boolean canExecute(IEditingContext editingContext, TreeDescription treeDescription, String treeItemMenuContextEntryId, ITreeInput treeInput) {
         boolean result = false;
         if (treeInput instanceof InvokeSingleClickTreeItemContextMenuEntryInput invokeSingleClickTreeItemContextMenuEntryInput) {
             result = Objects.equals(invokeSingleClickTreeItemContextMenuEntryInput.menuEntryId(), ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY);

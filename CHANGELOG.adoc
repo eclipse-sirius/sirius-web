@@ -43,6 +43,7 @@ Custom deserializers and migration services will probably be impacted.
 - https://github.com/eclipse-sirius/sirius-web/issues/6243[#6243] [sirius-web] Add documentation in the new representation modal.
 `RepresentationDescriptionMetadata` has been renamed to `RepresentationMetadataDTO` and moved to `org.eclipse.sirius.components.collaborative.dto`.
 It now requires a `documentation` parameter.
+- https://github.com/eclipse-sirius/sirius-web/issues/6451[#6451] [tree] `ISingleClickTreeItemContextMenuEntryExecutor.canExecute` method has now more parameters: `boolean canExecute(IEditingContext editingContext, TreeDescription treeDescription, String treeItemMenuContextEntryId, ITreeInput treeInput);`
 
 
 === Dependency update
@@ -75,6 +76,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - https://github.com/eclipse-sirius/sirius-web/issues/6437[#6437] [diagram] Prevent list node layout to be lost during node resize
 - https://github.com/eclipse-sirius/sirius-web/issues/6436[#6436] [core] Fix size of panels configured to be collapsed by default
 - https://github.com/eclipse-sirius/sirius-web/issues/5983[#5983] [diagram] Prevent a valid drop candidate from randomly remaining faded
+- https://github.com/eclipse-sirius/sirius-web/issues/6451[#6451] [tree] Fix an issue where the wrong `ISingleClickTreeItemContextMenuEntryExecutor` could be selected
 
 
 === New Features
