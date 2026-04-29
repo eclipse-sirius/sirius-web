@@ -15,10 +15,10 @@ import { Node, NodeProps } from '@xyflow/react';
 import { FC } from 'react';
 import { EdgeAnchorNode } from './EdgeAnchorNode';
 import { EdgeAnchorNodeData } from './EdgeAnchorNode.types';
-import { EdgeAnchorNodeCreationHandles } from './EdgeAnchorNodeCreationHandles';
-import { EdgeAnchorNodeCreationHandlesData } from './EdgeAnchorNodeCreationHandles.types';
 import { FreeFormNode } from './FreeFormNode';
 import { FreeFormNodeData } from './FreeFormNode.types';
+import { HandleNode } from './HandleNode';
+import { HandleNodeData } from './HandleNode.types';
 import { IconLabelNode } from './IconLabelNode';
 import { IconLabelNodeData } from './IconLabelNode.types';
 import { ListNode } from './ListNode';
@@ -29,7 +29,7 @@ export const nodeTypes: NodeComponentsMap = {
   iconLabelNode: IconLabelNode,
   listNode: ListNode,
   edgeAnchorNode: EdgeAnchorNode,
-  edgeAnchorNodeCreationHandles: EdgeAnchorNodeCreationHandles,
+  handleNode: HandleNode,
 };
 
 export interface NodeDataMap {
@@ -37,7 +37,7 @@ export interface NodeDataMap {
   iconLabelNode: IconLabelNodeData;
   listNode: ListNodeData;
   edgeAnchorNode: EdgeAnchorNodeData;
-  edgeAnchorNodeCreationHandles: EdgeAnchorNodeCreationHandlesData;
+  handleNode: HandleNodeData;
 }
 export type NodeComponentsMap = {
   [K in keyof NodeDataMap]: FC<NodeProps<Node<NodeDataMap[K], K>>>;

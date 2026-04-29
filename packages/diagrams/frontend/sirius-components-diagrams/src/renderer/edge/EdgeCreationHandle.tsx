@@ -11,94 +11,47 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Edge, Node, useReactFlow, XYPosition } from '@xyflow/react';
-import { useEffect } from 'react';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import {
-  EDGE_ANCHOR_NODE_DEFAULT_SIZE,
-  EdgeAnchorNodeCreationHandlesData,
-} from '../node/EdgeAnchorNodeCreationHandles.types';
+import { useContext, useEffect } from 'react';
+import { DiagramContext } from '../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { ConnectorContext } from '../connector/ConnectorContext';
+import { ConnectorContextValue } from '../connector/ConnectorContext.types';
+import { useHandles } from '../connector/useHandles';
+import { useConnectionCandidatesQuery } from '../handles/useConnectionCandidatesQuery';
 import { EdgeCreationHandleProps } from './EdgeCreationHandle.types';
 
-const createEdgeAnchorNodeCreationHandles = (
-  edgeId: string,
-  position: XYPosition
-): Node<EdgeAnchorNodeCreationHandlesData> => {
-  return {
-    id: `edgeAnchorNodeCreationHandles-${edgeId}`,
-    type: 'edgeAnchorNodeCreationHandles',
-    position,
-    data: {
-      targetObjectId: '',
-      targetObjectKind: '',
-      targetObjectLabel: '',
-      descriptionId: '',
-      insideLabel: null,
-      outsideLabels: {},
-      faded: false,
-      pinned: false,
-      nodeDescription: {
-        id: '',
-        borderNodeDescriptionIds: [],
-        childNodeDescriptionIds: [],
-        userResizable: 'NONE',
-        keepAspectRatio: false,
-      },
-      nodeAppearanceData: {
-        customizedStyleProperties: [],
-        gqlStyle: { __typename: '', childrenLayoutStrategy: { __typename: '', kind: '' } },
-      },
-      defaultWidth: null,
-      defaultHeight: null,
-      isBorderNode: false,
-      borderNodePosition: null,
-      labelEditable: false,
-      deletable: false,
-      style: {},
-      connectionHandles: [],
-      isNew: false,
-      resizedByUser: false,
-      movedByUser: false,
-      isListChild: false,
-      isDraggedNode: false,
-      isDropNodeTarget: false,
-      isDragNodeSource: false,
-      isDropNodeCandidate: false,
-      connectionLinePositionOnNode: 'none',
-      isHovered: false,
-      edgeId: edgeId,
-      minComputedWidth: null,
-      minComputedHeight: null,
-      isLastNodeSelected: false,
-      moving: false,
-      decorators: [],
-    },
-  };
-};
+export const EdgeCreationHandle = ({ edgeId, edgePath, isPathDragged }: EdgeCreationHandleProps) => {
+  const { mountEdgeHandles, unMountHandles } = useHandles();
+  const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, edgeId);
+  const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
+  const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
 
-export const EdgeCreationHandle = ({ edgeId, edgePath }: EdgeCreationHandleProps) => {
-  const { setNodes, getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const currentEdgeAnchorNode = getNode(`edgeAnchorNodeCreationHandles-${edgeId}`);
+  // Unmount/Mount around the center of the edge while selected
   useEffect(() => {
-    if (!currentEdgeAnchorNode) {
-      var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      svgPath.setAttribute('d', edgePath);
-      const pathLength = svgPath.getTotalLength();
-      const points = svgPath.getPointAtLength(pathLength * 0.5);
-      const offSet = EDGE_ANCHOR_NODE_DEFAULT_SIZE / 2;
-
-      const nodePosition = { x: points.x - offSet, y: points.y - offSet };
-      const node = createEdgeAnchorNodeCreationHandles(edgeId, nodePosition);
-
-      setNodes((prevNodes) => prevNodes.concat(node));
+    if (shouldRender) {
+      mountEdgeHandles(edgeId, edgePath);
     }
-  }, [currentEdgeAnchorNode]);
-
-  useEffect(() => {
     return () => {
-      setNodes((prevNodes) => prevNodes.filter((node) => node.id !== `edgeAnchorNodeCreationHandles-${edgeId}`));
+      unMountHandles();
     };
-  }, [setNodes]);
+  }, [shouldRender]);
+
+  // Unmount/Mount while moving bending point or segment
+  useEffect(() => {
+    if (isPathDragged) {
+      unMountHandles();
+    } else if (!isPathDragged && shouldRender) {
+      mountEdgeHandles(edgeId, edgePath);
+    }
+  }, [isPathDragged]);
+
+  // Set candidates in the context
+  useEffect(() => {
+    if (candidates !== null) {
+      setCandidates(candidates);
+    }
+  }, [candidates]);
 
   return null;
 };

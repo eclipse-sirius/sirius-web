@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,18 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Node, XYPosition, Position, InternalNode } from '@xyflow/react';
+import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
 import { NodeData } from '../../DiagramRenderer.types';
+import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
 import {
   determineSegmentAxis,
   generateNewBendPointOnSegment,
   generateNewHandlePoint,
   isOutOfLines,
 } from './RectilinearEdgeCalculation';
-import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
-import { BendPointData, UseBendingPointsValue, BendingPointsState } from './useBendingPoints.types';
+import { BendingPointsState, BendPointData, UseBendingPointsValue } from './useBendingPoints.types';
 import { useEdgeDragStopHandler } from './useEdgeDragStopHandler';
 
 export const useBendingPoints = (
@@ -260,5 +260,6 @@ export const useBendingPoints = (
     setLocalBendingPoints,
     onBendingPointDragStop,
     onBendingPointDrag,
+    isBendingPointDragged: state.dragInProgress,
   };
 };
