@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 package org.eclipse.sirius.components.task.starter.services.view;
-
-import java.util.List;
 
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.builder.generated.gantt.GanttBuilders;
@@ -37,40 +35,32 @@ import org.eclipse.sirius.components.view.gantt.TaskDescription;
  */
 public class ViewGanttDescriptionBuilder {
 
-    public static final String WORKPACKAGE_GANTT_REP_DESC_NAME = "Gantt of Workpackage Task Details";
-
-    public static final String PROJECT_GANTT_REP_DESC_NAME = "Gantt of Project Workpackages";
-
-    private static final String AQL_SELF_NAME = "aql:self.name";
-
-    private static final String AQL_SELF_DESCRIPTION = "aql:self.description";
-
-    private static final String AQL_SELF_PROGRESS = "aql:self.progress";
+    public static final String GANTT_REP_DESC_NAME = "Gantt Representation";
 
 
     public ViewGanttDescriptionBuilder() {
     }
 
     public void addRepresentationDescription(View view) {
-        GanttDescription workpackageGanttDescription =  this.createWorkpackageGanttDescription();
-        GanttDescription projectGanttDescription =  this.createProjectGanttDescription();
+        GanttDescription ganttDescription = this.createGanttDescription();
 
-        view.getDescriptions().addAll(List.of(workpackageGanttDescription, projectGanttDescription));
+
+        view.getDescriptions().add(ganttDescription);
     }
 
-    private GanttDescription createWorkpackageGanttDescription() {
-        TaskDescription tasksDescription = this.createTaskDescriptionInWorkpackage();
+    private GanttDescription createGanttDescription() {
+        TaskDescription tasksDescription = this.createTaskDescriptionInProject();
 
         CreateTaskTool createTaskTool = this.createCreateTaskTool();
         EditTaskTool editTaskTool = this.createEditTaskTool();
-        DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool("Delete Task");
+        DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool();
         DropTaskTool dropTaskTool = this.createDropTaskTool();
         CreateTaskDependencyTool createTaskDependencyTool = this.createTaskDependencyTool();
         DeleteTaskDependencyTool deleteTaskDependencyTool = this.createDeleteTaskDependencyTool();
 
         GanttDescription ganttDescription = new GanttBuilders().newGanttDescription()
-                .name(WORKPACKAGE_GANTT_REP_DESC_NAME)
-                .domainType("peppermm::Workpackage")
+                .name(GANTT_REP_DESC_NAME)
+                .domainType("task::Project")
                 .titleExpression("New Gantt")
                 .taskElementDescriptions(tasksDescription)
                 .createTool(createTaskTool)
@@ -93,9 +83,9 @@ public class ViewGanttDescriptionBuilder {
                 .build();
     }
 
-    private DeleteTaskTool createDeleteTaskTool(String name) {
+    private DeleteTaskTool createDeleteTaskTool() {
         return new GanttBuilders().newDeleteTaskTool()
-                .name(name)
+                .name("Delete Task")
                 .body(new DeleteElementBuilder()
                         .build())
                 .build();
@@ -145,17 +135,17 @@ public class ViewGanttDescriptionBuilder {
                 .build();
     }
 
-    private TaskDescription createTaskDescriptionInWorkpackage() {
+    private TaskDescription createTaskDescriptionInProject() {
         TaskDescription taskDescriptionInTask = this.createTaskDescriptionInTask();
 
         return new GanttBuilders().newTaskDescription()
                 .name("Tasks In Project")
                 .semanticCandidatesExpression("aql:self.ownedTasks")
-                .nameExpression(AQL_SELF_NAME)
-                .descriptionExpression(AQL_SELF_DESCRIPTION)
+                .nameExpression("aql:self.name")
+                .descriptionExpression("aql:self.description")
                 .startTimeExpression("aql:self.startTime")
                 .endTimeExpression("aql:self.endTime")
-                .progressExpression(AQL_SELF_PROGRESS)
+                .progressExpression("aql:self.progress")
                 .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
                 .taskDependenciesExpression("aql:self.dependencies")
                 .subTaskElementDescriptions(taskDescriptionInTask)
@@ -166,11 +156,11 @@ public class ViewGanttDescriptionBuilder {
         TaskDescription taskDescription = new GanttBuilders().newTaskDescription()
                 .name("Sub Tasks")
                 .semanticCandidatesExpression("aql:self.subTasks")
-                .nameExpression(AQL_SELF_NAME)
-                .descriptionExpression(AQL_SELF_DESCRIPTION)
+                .nameExpression("aql:self.name")
+                .descriptionExpression("aql:self.description")
                 .startTimeExpression("aql:self.startTime")
                 .endTimeExpression("aql:self.endTime")
-                .progressExpression(AQL_SELF_PROGRESS)
+                .progressExpression("aql:self.progress")
                 .computeStartEndDynamicallyExpression("aql:self.computeStartEndDynamically")
                 .taskDependenciesExpression("aql:self.dependencies")
                 .build();
@@ -178,70 +168,5 @@ public class ViewGanttDescriptionBuilder {
         taskDescription.getReusedTaskElementDescriptions().add(taskDescription);
 
         return taskDescription;
-    }
-
-
-    private GanttDescription createProjectGanttDescription() {
-        TaskDescription tasksDescription = this.createWorkpackageDescriptionInProject();
-
-        CreateTaskTool createTaskTool = this.createCreateTaskToolForWorkpackage();
-        EditTaskTool editTaskTool = this.createEditTaskToolForWorkpackage();
-        DeleteTaskTool deleteTaskTool = this.createDeleteTaskTool("Delete Workpackage");
-        DropTaskTool dropWorkpackageTool = this.createDropWorkpackageTool();
-
-        GanttDescription ganttDescription = new GanttBuilders().newGanttDescription()
-                .name(PROJECT_GANTT_REP_DESC_NAME)
-                .domainType("peppermm::Project")
-                .titleExpression("New Gantt")
-                .taskElementDescriptions(tasksDescription)
-                .createTool(createTaskTool)
-                .editTool(editTaskTool)
-                .deleteTool(deleteTaskTool)
-                .dropTool(dropWorkpackageTool)
-                .dateRoundingExpression("1D")
-                .build();
-
-        return ganttDescription;
-    }
-
-    private TaskDescription createWorkpackageDescriptionInProject() {
-        return new GanttBuilders().newTaskDescription()
-                .name("Workpackages In Project")
-                .semanticCandidatesExpression("aql:self.ownedWorkpackages")
-                .nameExpression(AQL_SELF_NAME)
-                .descriptionExpression(AQL_SELF_DESCRIPTION)
-                .startTimeExpression("aql:self.startDate")
-                .endTimeExpression("aql:self.endDate")
-                .progressExpression(AQL_SELF_PROGRESS)
-                .computeStartEndDynamicallyExpression("aql:false")
-                .taskDependenciesExpression("")
-                .build();
-    }
-
-    private CreateTaskTool createCreateTaskToolForWorkpackage() {
-        return new GanttBuilders().newCreateTaskTool()
-                .name("Create Workpackage After")
-                .body(new ChangeContextBuilder()
-                        .expression("aql:self.createWorkpackage()")
-                        .build())
-                .build();
-    }
-
-    private EditTaskTool createEditTaskToolForWorkpackage() {
-        return new GanttBuilders().newEditTaskTool()
-                .name("Edit Workpackage")
-                .body(new ChangeContextBuilder()
-                        .expression("aql:self.editWorkpackage(newName, newDescription, newStartTime, newEndTime, newProgress)")
-                        .build())
-                .build();
-    }
-
-    private DropTaskTool createDropWorkpackageTool() {
-        return new GanttBuilders().newDropTaskTool()
-                .name("Drop Workpackage")
-                .body(new ChangeContextBuilder()
-                        .expression("aql:sourceObject.moveWorkpackageInProject(targetObject, indexInTarget)")
-                        .build())
-                .build();
     }
 }

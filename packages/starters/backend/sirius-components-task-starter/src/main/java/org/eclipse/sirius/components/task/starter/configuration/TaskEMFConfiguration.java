@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2023, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,9 @@
 package org.eclipse.sirius.components.task.starter.configuration;
 
 import org.eclipse.emf.edit.provider.ComposedAdapterFactory;
+import org.eclipse.sirius.components.task.provider.TaskItemProviderAdapterFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import pepper.peppermm.provider.PepperItemProviderAdapterFactory;
 
 /**
  * Configuration of the EMF support for task MM and representation description related to Task.
@@ -28,6 +27,6 @@ public class TaskEMFConfiguration {
 
     @Bean
     public ComposedAdapterFactory.Descriptor taskAdapterFactoryDescriptor() {
-        return PepperItemProviderAdapterFactory::new;
+        return TaskItemProviderAdapterFactory::new;
     }
 }

@@ -26,10 +26,6 @@
           <id>github-flow</id>
           <url>https://maven.pkg.github.com/ObeoNetwork/Flow-Designer</url>
         </repository>
-        <repository>
-          <id>github-pepper-mm</id>
-          <url>https://maven.pkg.github.com/ObeoNetwork/pepper-mm</url>
-        </repository>
       </repositories>
     </profile>
   </profiles>
@@ -42,11 +38,6 @@
     </server>
     <server>
       <id>github-flow</id>
-      <username>${env.USERNAME}</username>
-      <password>${env.PASSWORD}</password>
-    </server>
-    <server>
-      <id>github-pepper-mm</id>
       <username>${env.USERNAME}</username>
       <password>${env.PASSWORD}</password>
     </server>

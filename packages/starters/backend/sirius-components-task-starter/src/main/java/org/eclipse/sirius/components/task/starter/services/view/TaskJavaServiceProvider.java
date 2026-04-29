@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2023, 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,7 @@ public class TaskJavaServiceProvider implements IJavaServiceProvider {
                 })
                 .map(RepresentationDescription.class::cast)
                 .anyMatch(representationDescription -> {
-                    return representationDescription.getDomainType().contains("peppermm::");
+                    return representationDescription.getDomainType().contains("task::");
                 });
 
         if (isTaskRelatedView) {

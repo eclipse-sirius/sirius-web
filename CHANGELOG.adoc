@@ -58,7 +58,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - [releng] Switch `@mui/icons-material` to `7.3.10`
 - [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.4`
 - [releng] Switch AQL 8.1.2
-- [releng] Add a dependency to https://github.com/ObeoNetwork/pepper-mm[pepper-mm 2026.3.0]
+
 
 === Bug fixes
 
@@ -129,7 +129,6 @@ The backend now sends a `canEdit=false` capability when subscribing to such form
 - https://github.com/eclipse-sirius/sirius-web/issues/6369[#6369] [diagram] Enable clicking behind the multiple-selection rectangle
 - https://github.com/eclipse-sirius/sirius-web/issues/6300[#6300] [diagram] Make the arrange-all button remember the last layout configuration used.
 - https://github.com/eclipse-sirius/sirius-web/issues/6067[#6067] [diagram] Preserve edge path when moving both source and target
-- https://github.com/eclipse-sirius/sirius-web/issues/6403[#6403] [releng] Use pepper-mm instead of the old internal task metamodel used in the tests and task-starter
 - https://github.com/eclipse-sirius/sirius-web/issues/6428[#6428] [forms] The existing `widgetContributionExtensionPoint` frontend extension point can now be used to override the frontend implementation of a widget with a custom React component (which only needs to implement `PropertySectionComponent<GQLWidget>`).
 See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6243[#6243] [sirius-web] Add documentation in the new representation modal.

@@ -1,0 +1,11 @@
+= sirius-components-task
+
+== Goal
+
+This project provides the meta model Task.
+
+== Dependencies
+
+- EMF
+
+This project should not depend on anything else without a good reason to do so.

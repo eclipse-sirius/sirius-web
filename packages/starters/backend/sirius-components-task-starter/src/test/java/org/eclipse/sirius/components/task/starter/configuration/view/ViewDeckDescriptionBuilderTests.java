@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2024 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,10 +31,9 @@ public class ViewDeckDescriptionBuilderTests {
         View view = ViewFactory.eINSTANCE.createView();
         new ViewDeckDescriptionBuilder().addRepresentationDescriptions(view);
 
-        assertThat(view.getDescriptions()).hasSize(4);
+        assertThat(view.getDescriptions()).hasSize(3);
         assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Deck Daily Representation"));
-        assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Deck OKR on Project"));
-        assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Deck OKR on Workpackage"));
+        assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Deck OKR Representation"));
         assertThat(view.getDescriptions()).anySatisfy(desc -> assertThat(desc.getName()).isEqualTo("Deck Kanban Representation"));
     }
 

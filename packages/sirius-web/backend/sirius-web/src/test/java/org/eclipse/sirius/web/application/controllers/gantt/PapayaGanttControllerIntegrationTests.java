@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2026 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,8 @@ import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskMutationRunne
 import org.eclipse.sirius.components.gantt.tests.graphql.EditTaskMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.navigation.GanttNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.data.PepperIdentifiers;
-import org.eclipse.sirius.web.services.gantt.PepperGanttDescriptionProvider;
+import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.services.gantt.PapayaGanttDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedGanttSubscription;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
@@ -61,14 +61,14 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Integration tests of the gantt representation with a pepper model.
+ * Integration tests of the gantt representation with a papaya model.
  *
- * @author ncouvert
+ * @author sbegaudeau
  */
 @Transactional
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
-public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTests {
+public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTests {
     private static final String MISSING_GANTT = "Missing gantt";
 
     @Autowired
@@ -78,7 +78,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
     private IGivenCreatedGanttSubscription givenCreatedGanttSubscription;
 
     @Autowired
-    private PepperGanttDescriptionProvider pepperGanttDescriptionProvider;
+    private PapayaGanttDescriptionProvider papayaGanttDescriptionProvider;
 
     @Autowired
     private CreateTaskMutationRunner createTaskMutationRunner;
@@ -109,9 +109,9 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
     private Flux<Object> givenSubscriptionToGantt() {
         var input = new CreateRepresentationInput(
                 UUID.randomUUID(),
-                PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
-                this.pepperGanttDescriptionProvider.getRepresentationDescriptionId(),
-                PepperIdentifiers.WORKPACKAGE_OBJECT.toString(),
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                this.papayaGanttDescriptionProvider.getRepresentationDescriptionId(),
+                PapayaIdentifiers.SIRIUS_WEB_PLANNING_PROJECT_OBJECT.toString(),
                 "Gantt"
         );
         return this.givenCreatedGanttSubscription.createAndSubscribe(input).flux();
@@ -130,7 +130,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .ifPresentOrElse(gantt -> {
                     assertThat(gantt).isNotNull();
                     assertThat(gantt.tasks()).hasSize(2);
-                    assertThat(gantt.tasks().get(1).subTasks()).hasSize(1);
+                    assertThat(gantt.tasks().get(0).subTasks()).hasSize(3);
                 }, () -> fail(MISSING_GANTT));
 
         StepVerifier.create(flux)
@@ -148,16 +148,15 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
         var ganttId = new AtomicReference<String>();
         var taskId = new AtomicReference<String>();
         var createdTaskId = new AtomicReference<String>();
-        Consumer<Object> initialGanttContentConsumer = payload ->
-                Optional.of(payload)
+        Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
                 .filter(GanttRefreshedEventPayload.class::isInstance)
                 .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     ganttId.set(gantt.getId());
-                    assertThat(gantt.tasks().get(1).subTasks().get(0).subTasks()).hasSize(1);
+                    assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(2);
 
-                    var task = new GanttNavigator(gantt).findTaskByName("Code Development");
+                    var task = new GanttNavigator(gantt).findTaskByName("Improve some features of the deck");
                     taskId.set(task.id());
                 }, () -> fail(MISSING_GANTT));
 
@@ -165,7 +164,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable createGanttTask = () -> {
             var createGanttTaskInput = new CreateGanttTaskInput(
                     UUID.randomUUID(),
-                    PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     taskId.get()
             );
@@ -175,20 +174,19 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> createGanttTaskConsumer = payload ->
-                Optional.of(payload)
+        Consumer<Object> createGanttTaskConsumer = payload -> Optional.of(payload)
                 .filter(GanttRefreshedEventPayload.class::isInstance)
                 .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    assertThat(gantt.tasks().get(1).subTasks().get(0).subTasks()).hasSize(2);
-                    createdTaskId.set(gantt.tasks().get(1).subTasks().get(0).subTasks().get(1).id());
+                    assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks()).hasSize(3);
+                    createdTaskId.set(gantt.tasks().get(0).subTasks().get(0).subTasks().get(2).id());
                 }, () -> fail(MISSING_GANTT));
 
         Runnable editGanttTask = () -> {
-            EditGanttTaskDetailInput editGanttTaskDetailInput = new EditGanttTaskDetailInput("Edited Task", null, "2023-12-16T07:30:00Z", null, TemporalType.DATE_TIME, 0);
+            EditGanttTaskDetailInput editGanttTaskDetailInput = new EditGanttTaskDetailInput(null, null, "2023-12-15T09:00:00Z", null, TemporalType.DATE_TIME, 0);
             var editGanttTaskInput = new EditGanttTaskInput(UUID.randomUUID(),
-                    PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     createdTaskId.get(),
                     editGanttTaskDetailInput);
@@ -198,16 +196,14 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> editGanttTaskConsumer = payload ->
-                Optional.of(payload)
+        Consumer<Object> editGanttTaskConsumer = payload -> Optional.of(payload)
                 .filter(GanttRefreshedEventPayload.class::isInstance)
                 .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    assertThat(gantt.tasks().get(1).subTasks().get(0).subTasks().get(1).detail())
-                            .hasFieldOrPropertyWithValue("name", "Edited Task")
-                            .hasFieldOrPropertyWithValue("description", "")
-                            .hasFieldOrPropertyWithValue("startTime", "2023-12-16T07:30:00Z");
+                    assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks().get(2).detail())
+                            .hasFieldOrPropertyWithValue("name", "")
+                            .hasFieldOrPropertyWithValue("startTime", "2023-12-15T09:00:00Z");
                 }, () -> fail(MISSING_GANTT));
 
         StepVerifier.create(flux)
@@ -226,7 +222,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
     public void givenGanttRepresentationWhenWeDeleteTaskThenTheTaskIsNotVisibleAnymore() {
         var flux = this.givenSubscriptionToGantt();
 
-        var taskName = "Idea";
+        var taskName = "Improve some features of the deck";
 
         var ganttId = new AtomicReference<String>();
         var taskId = new AtomicReference<String>();
@@ -246,7 +242,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable deleteGanttTask = () -> {
             var deleteGanttTaskInput = new DeleteGanttTaskInput(
                     UUID.randomUUID(),
-                    PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     taskId.get()
             );
@@ -289,7 +285,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                     assertThat(gantt).isNotNull();
                     assertThat(gantt.tasks()).hasSize(2);
 
-                    var task = new GanttNavigator(gantt).findTaskByName("Development");
+                    var task = new GanttNavigator(gantt).findTaskByName("2024.3.0");
                     taskId.set(task.id());
                 }, () -> fail(MISSING_GANTT));
 
@@ -297,7 +293,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable expandTask = () -> {
             var changeTaskCollapseStateInput = new ChangeTaskCollapseStateInput(
                     UUID.randomUUID(),
-                    PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttId.get(),
                     taskId.get(),
                     true
@@ -313,7 +309,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .map(GanttRefreshedEventPayload.class::cast)
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
-                    assertThat(new GanttNavigator(gantt).findTaskByName("Development").detail().collapsed()).isTrue();
+                    assertThat(new GanttNavigator(gantt).findTaskByName("2024.3.0").detail().collapsed()).isTrue();
                 }, () -> fail(MISSING_GANTT));
 
 
@@ -348,7 +344,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
                     .findFirst().get();
             var changeColumnInput = new ChangeGanttColumnInput(
                     UUID.randomUUID(),
-                    PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttRef.get().getId(), columnToChange.id(), false, 50);
             var result = this.changeColumnMutationRunner.run(changeColumnInput);
 
@@ -386,8 +382,8 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
         var ganttRef = new AtomicReference<Gantt>();
         var sourceTaskId = new AtomicReference<String>();
         var targetTaskId = new AtomicReference<String>();
-        String taskName1 = "Development";
-        String taskName2 = "Idea";
+        String taskName1 = "Improve some features of the deck";
+        String taskName2 = "Improve some features of the gantt";
         Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
                 .filter(GanttRefreshedEventPayload.class::isInstance)
                 .map(GanttRefreshedEventPayload.class::cast)
@@ -405,7 +401,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable createDependencyRunnable = () -> {
             var createGanttTaskDependencyInput = new CreateGanttTaskDependencyInput(
                     UUID.randomUUID(),
-                    PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
             var result = this.createTaskDependencyMutationRunner.run(createGanttTaskDependencyInput);
 
@@ -425,7 +421,7 @@ public class PepperGanttControllerIntegrationTests extends AbstractIntegrationTe
         Runnable deleteDependencyRunnable = () -> {
             var deleteGanttTaskDependencyInput = new DeleteGanttTaskDependencyInput(
                     UUID.randomUUID(),
-                    PepperIdentifiers.PEPPER_EDITING_CONTEXT_ID.toString(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                     ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
             var result = this.deleteTaskDependencyMutationRunner.run(deleteGanttTaskDependencyInput);
 

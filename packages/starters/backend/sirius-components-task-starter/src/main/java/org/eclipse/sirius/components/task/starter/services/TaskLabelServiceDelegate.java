@@ -20,10 +20,9 @@ import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
 import org.eclipse.sirius.components.emf.services.api.IDefaultEMFLabelService;
 import org.eclipse.sirius.components.emf.services.api.IEMFLabelServiceDelegate;
+import org.eclipse.sirius.components.task.TaskTag;
+import org.eclipse.sirius.components.task.provider.TaskItemProviderAdapterFactory;
 import org.springframework.stereotype.Service;
-
-import pepper.peppermm.TaskTag;
-import pepper.peppermm.provider.PepperItemProviderAdapterFactory;
 
 /**
  * This class allows to override the default behavior for the labels.
@@ -46,7 +45,7 @@ public class TaskLabelServiceDelegate implements IEMFLabelServiceDelegate {
 
     @Override
     public StyledString getStyledLabel(EObject self) {
-        var adapter = new PepperItemProviderAdapterFactory().adapt(self, IItemLabelProvider.class);
+        var adapter = new TaskItemProviderAdapterFactory().adapt(self, IItemLabelProvider.class);
         if (adapter instanceof IItemLabelProvider itemLabelProvider) {
             return StyledString.of(itemLabelProvider.getText(self));
         }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2024, 2025 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,10 +13,9 @@
 package org.eclipse.sirius.components.task.starter.services;
 
 import org.eclipse.sirius.components.core.api.IEditService;
+import org.eclipse.sirius.components.task.TaskTag;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerLabelServiceDelegate;
 import org.springframework.stereotype.Service;
-
-import pepper.peppermm.TaskTag;
 
 /**
  *  This class allows to override {@link IEditService} behavior.
