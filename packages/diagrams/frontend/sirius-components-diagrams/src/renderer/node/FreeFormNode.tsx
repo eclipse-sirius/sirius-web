@@ -108,7 +108,16 @@ const computeBorderRotation = (data: FreeFormNodeData): string | undefined => {
 };
 
 export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
-  ({ data, id, selected, dragging }: NodeProps<Node<FreeFormNodeData>>) => {
+  ({
+    data,
+    id,
+    selected,
+    dragging,
+    positionAbsoluteX,
+    positionAbsoluteY,
+    width,
+    height,
+  }: NodeProps<Node<FreeFormNodeData>>) => {
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
     const { classes } = useStyles();
 
@@ -175,7 +184,18 @@ export const FreeFormNode: NodeComponentsMap['freeFormNode'] = memo(
             </div>
             {actionsSection}
           </div>
-          {selected ? <ConnectionCreationHandles nodeId={id} /> : null}
+          {selected && width && height ? (
+            <ConnectionCreationHandles
+              nodeId={id}
+              nodePosition={{
+                x: positionAbsoluteX,
+                y: positionAbsoluteY,
+              }}
+              nodeWidth={width}
+              nodeHeight={height}
+              isDraggedNode={data.isDraggedNode}
+            />
+          ) : null}
           <ConnectionTargetHandle nodeId={id} nodeDescription={data.nodeDescription} isHovered={data.isHovered} />
           <ConnectionHandles connectionHandles={data.connectionHandles} />
         </div>

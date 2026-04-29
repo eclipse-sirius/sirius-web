@@ -27,6 +27,7 @@ import { MultiLabelEdgeData } from '../edge/MultiLabelEdge.types';
 import { isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
 import { FreeFormNode } from '../node/FreeFormNode';
 import { FreeFormNodeData } from '../node/FreeFormNode.types';
+import { isHandleNode } from '../node/HandleNode.types';
 import { ListNode } from '../node/ListNode';
 import { ListNodeData } from '../node/ListNode.types';
 import { DiagramNodeType } from '../node/NodeTypes.types';
@@ -321,8 +322,10 @@ const layoutDiagram = (
   nodeLayoutHandlerContributions: INodeLayoutHandler<NodeData>[],
   autoLayout: boolean
 ) => {
-  const allVisibleNodes = diagram.nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node));
-  const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId && !isEdgeAnchorNode(node));
+  const allVisibleNodes = diagram.nodes.filter(
+    (node) => !node.hidden && !isEdgeAnchorNode(node) && !isHandleNode(node)
+  );
+  const nodesToLayout = allVisibleNodes.filter((node) => !node.parentId);
 
   const layoutEngine: ILayoutEngine = new LayoutEngine();
 
