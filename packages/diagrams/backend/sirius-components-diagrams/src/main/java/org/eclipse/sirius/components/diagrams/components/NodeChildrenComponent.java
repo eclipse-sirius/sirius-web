@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.OutsideLabel;
@@ -49,7 +50,9 @@ public class NodeChildrenComponent implements IComponent {
 
         String targetObjectId = this.props.getNodeComponentProps().getNodeDescription().getTargetObjectIdProvider().apply(this.props.getVariableManager());
         var optionalPreviousNode = this.props.getNodeComponentProps().getNodesRequestor().getByTargetObjectId(targetObjectId);
-        String nodeId = optionalPreviousNode.map(Node::getId).orElseGet(() -> this.computeNodeId(targetObjectId));
+        String nodeId = optionalPreviousNode.map(Node::getId)
+                .or(() -> this.findReparentedPreviousNodeId(targetObjectId))
+                .orElseGet(() -> this.computeNodeId(targetObjectId));
 
         nodeChildren.addAll(this.getInsideLabel(nodeId));
         nodeChildren.addAll(this.getOutsideLabel(nodeId));
@@ -168,6 +171,16 @@ public class NodeChildrenComponent implements IComponent {
         NodeDescription nodeDescription = this.props.getNodeComponentProps().getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getNodeComponentProps().getContainmentKind();
         return new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId(), containmentKind, targetObjectId);
+    }
+
+    private Optional<String> findReparentedPreviousNodeId(String targetObjectId) {
+        var nodeDescription = this.props.getNodeComponentProps().getNodeDescription();
+        return this.props.getNodeComponentProps().getVariableManager()
+                .get(DiagramComponentProps.PREVIOUS_DIAGRAM, Diagram.class)
+                .map(previousDiagram -> new DiagramElementRequestor().getAllNodes(previousDiagram, nodeDescription))
+                .stream().flatMap(List::stream)
+                .filter(node -> Objects.equals(node.getTargetObjectId(), targetObjectId))
+                .map(Node::getId).findFirst();
     }
 
     private VariableManager getDescendantNodesVariableManager() {

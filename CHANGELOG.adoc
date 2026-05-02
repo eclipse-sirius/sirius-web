@@ -43,6 +43,7 @@ Downstream projects are advised to just rely on MUI's `CssBaseline` and perform 
 - https://github.com/eclipse-sirius/sirius-web/issues/6704[#6704] [diagram] Add a translation for the warning notification that no edges are available.
 - https://github.com/eclipse-sirius/sirius-web/issues/5706[#5706] [diagram] Fix post tool selection not set correctly on diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/5369[#5369] [form] Prevent existing values from being added again when selecting a new value in a multi-valued reference widget.
+- https://github.com/eclipse-sirius/sirius-web/issues/6530[#6530] [diagram] Preserve node styles on drag to another container
 
 
 === New Features
