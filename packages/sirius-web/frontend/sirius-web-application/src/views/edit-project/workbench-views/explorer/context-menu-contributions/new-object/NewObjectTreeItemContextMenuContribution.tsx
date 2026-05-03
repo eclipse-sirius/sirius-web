@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,8 +47,7 @@ export const NewObjectTreeItemContextMenuContribution = forwardRef(
           data-testid="new-object"
           onClick={() => setState((prevState) => ({ ...prevState, isModalOpen: true }))}
           ref={ref}
-          disabled={readOnly}
-          aria-disabled>
+          disabled={readOnly}>
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>

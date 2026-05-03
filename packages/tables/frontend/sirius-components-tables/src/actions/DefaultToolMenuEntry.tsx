@@ -30,8 +30,7 @@ export const DefaultToolMenuEntry = ({
     <MenuItem
       onClick={() => invokeTool(editingContextId, representationId, tableId, entry.id)}
       data-testid={`context-menu-entry-${entry.label}`}
-      disabled={loading || readOnly}
-      aria-disabled>
+      disabled={loading || readOnly}>
       <ListItemIcon>
         {entry.iconURLs.length > 0 ? (
           <IconOverlay iconURLs={entry.iconURLs} alt={entry.label} title={entry.label} />

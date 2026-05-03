@@ -30,6 +30,7 @@
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5301[#5301] [core] Fix browser history on workbenches
+- https://github.com/eclipse-sirius/sirius-web/issues/6532[#6532] [core] Remove redundant aria-disabled attributes
 
 
 === New Features
