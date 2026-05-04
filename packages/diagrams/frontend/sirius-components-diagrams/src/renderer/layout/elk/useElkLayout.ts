@@ -11,10 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node } from '@xyflow/react';
+import { Edge, Node, Position, XYPosition } from '@xyflow/react';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
-import { EdgeData, NodeData, BorderNodePosition } from '../../DiagramRenderer.types';
+import { BorderNodePosition, EdgeData, NodeData } from '../../DiagramRenderer.types';
+import { ConnectionHandle } from '../../handles/ConnectionHandles.types';
 import { isEdgeAnchorNode } from '../../node/EdgeAnchorNode.types';
 import { RawDiagram } from '../layout.types';
 import { UseElkLayoutValue } from './useElkLayout.types';
@@ -44,6 +45,46 @@ const computeLabels = (node: Node<NodeData, string>): ElkLabel[] => {
     labels.push(elkLabel);
   }
   return labels;
+};
+
+const convertHandleAbsolutePositionToReactFlowPosition = (
+  elkHandleAbsolutePosition: XYPosition,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+): { position: Position; XYPosition: XYPosition } => {
+  const { x: handleX, y: handleY } = elkHandleAbsolutePosition;
+  const nodeLeft = x;
+  const nodeRight = x + width;
+  const nodeTop = y;
+  const nodeBottom = y + height;
+
+  const distanceToLeft = Math.abs(handleX - nodeLeft);
+  const distanceToRight = Math.abs(handleX - nodeRight);
+  const distanceToTop = Math.abs(handleY - nodeTop);
+  const distanceToBottom = Math.abs(handleY - nodeBottom);
+
+  const minDistance = Math.min(distanceToLeft, distanceToRight, distanceToTop, distanceToBottom);
+
+  let position: Position;
+  let relativeXYPosition: XYPosition;
+
+  if (minDistance === distanceToLeft) {
+    position = Position.Left;
+    relativeXYPosition = { x: 0, y: handleY - nodeTop };
+  } else if (minDistance === distanceToRight) {
+    position = Position.Right;
+    relativeXYPosition = { x: 0, y: handleY - nodeTop };
+  } else if (minDistance === distanceToTop) {
+    position = Position.Top;
+    relativeXYPosition = { x: handleX - nodeLeft, y: 0 };
+  } else {
+    position = Position.Bottom;
+    relativeXYPosition = { x: handleX - nodeLeft, y: 0 };
+  }
+
+  return { position, XYPosition: relativeXYPosition };
 };
 
 const computePortSide = (borderNodePosition: BorderNodePosition | null): string => {
@@ -92,7 +133,10 @@ const buildElkNodeChildrenAndPorts = (
 };
 
 const convertToElkGraph = (nodes: Node<NodeData>[], options: LayoutOptions): ElkNode[] => {
-  return nodes.filter((n) => !n.parentId).map((node) => buildElkNodeChildrenAndPorts(node, nodes, options));
+  return nodes
+    .filter((n) => !n.parentId)
+    .filter((n) => n.type !== 'edgeAnchorNodeCreationHandles')
+    .map((node) => buildElkNodeChildrenAndPorts(node, nodes, options));
 };
 
 export const useElkLayout = (): UseElkLayoutValue => {
@@ -120,34 +164,78 @@ export const useElkLayout = (): UseElkLayoutValue => {
     };
     try {
       const layoutGraph = await elk.layout(graph);
-      return {
-        nodes:
-          layoutGraph?.children?.map((node) => {
-            const originalNode = nodes.find((n) => n.id === node.id);
-            if (originalNode && originalNode.data.pinned) {
-              return { ...node };
+      const elkNodesMap = new Map<string, ElkNode>();
+      const connectionHandlesMap = new Map<string, ConnectionHandle[]>();
+
+      const collectNode = (node: ElkNode) => {
+        const originalNode = nodes.find((n) => n.id === node.id);
+        if (originalNode?.data.connectionHandles) {
+          const updatedHandles = originalNode.data.connectionHandles.map((handle) => {
+            const elkHandle = layoutGraph?.edges?.find((edge) => edge.id === handle.edgeId);
+            if (elkHandle && elkHandle.sections) {
+              const elkHandleAbsolutePosition: XYPosition =
+                handle.type === 'source'
+                  ? {
+                      x: elkHandle.sections.at(0)?.startPoint?.x ?? 0,
+                      y: elkHandle.sections.at(0)?.startPoint?.y ?? 0,
+                    }
+                  : {
+                      x: elkHandle.sections.at(0)?.endPoint?.x ?? 0,
+                      y: elkHandle.sections.at(0)?.endPoint?.y ?? 0,
+                    };
+              const reactFlowHandlePosition = convertHandleAbsolutePositionToReactFlowPosition(
+                elkHandleAbsolutePosition,
+                node.x ?? 0,
+                node.y ?? 0,
+                node.width ?? 0,
+                node.height ?? 0
+              );
+              return {
+                ...handle,
+                position: reactFlowHandlePosition.position,
+                XYPosition: reactFlowHandlePosition.XYPosition,
+              };
             } else {
               return {
-                ...node,
-                position: { x: node.x ?? 0, y: node.y ?? 0 },
+                ...handle,
+                position: Position.Right,
+                XYPosition: null,
               };
             }
-          }) ?? [],
-        edges: edges.map((edge) => {
-          const elkEdge = layoutGraph?.edges?.find((e) => e.id === edge.id);
-          if (elkEdge) {
-            return {
-              ...edge,
-              data: {
-                ...edge.data,
-                bendingPoints:
-                  elkEdge.sections?.flatMap((section) => section.bendPoints).filter((bendPoint) => !!bendPoint) ?? [],
-              },
-            };
-          } else {
-            return edge;
-          }
-        }),
+          });
+          connectionHandlesMap.set(node.id, updatedHandles);
+        }
+
+        const elkNode = {
+          ...node,
+          position: originalNode?.data.pinned ? originalNode.position : { x: node.x ?? 0, y: node.y ?? 0 },
+        };
+        elkNodesMap.set(node.id, elkNode);
+        if (node.children) {
+          node.children.forEach((child) => collectNode(child));
+        }
+      };
+
+      layoutGraph?.children?.forEach((rootNode: ElkNode) => collectNode(rootNode));
+
+      const processedEdges = edges.map((edge) => {
+        const elkEdge = layoutGraph?.edges?.find((e) => e.id === edge.id);
+        if (elkEdge) {
+          return {
+            ...edge,
+            data: {
+              ...edge.data,
+              bendingPoints: elkEdge.sections?.flatMap((section) => section.bendPoints).filter(Boolean) ?? [],
+            },
+          };
+        }
+        return edge;
+      });
+
+      return {
+        elkNodesMap,
+        edges: processedEdges,
+        connectionHandlesMap,
       };
     } catch (message) {
       addErrorMessage('An error occurred during the arrange all elements ');
@@ -166,20 +254,11 @@ export const useElkLayout = (): UseElkLayoutValue => {
       nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node)),
       edges,
       layoutOptions
-    ).then(({ nodes: elkNodes, edges: elkEdges }) => {
-      const elkNodesMap = new Map<string, ElkNode>();
-
-      const collectNode = (node: ElkNode) => {
-        elkNodesMap.set(node.id, node);
-        if (node.children) {
-          node.children.forEach((child) => collectNode(child));
-        }
-      };
-
-      elkNodes.forEach((rootNode: ElkNode) => collectNode(rootNode));
+    ).then(({ elkNodesMap, edges: elkEdges, connectionHandlesMap }) => {
       layoutAllNodes = nodes.map((node) => {
         const elkNode = elkNodesMap.get(node.id);
         if (elkNode) {
+          const connectionHandles: ConnectionHandle[] | undefined = connectionHandlesMap.get(node.id);
           return {
             ...node,
             position: {
@@ -188,6 +267,10 @@ export const useElkLayout = (): UseElkLayoutValue => {
             },
             width: elkNode.width,
             height: elkNode.height,
+            data: {
+              ...node.data,
+              connectionHandles: connectionHandles ?? node.data.connectionHandles,
+            },
           };
         }
         return node;
