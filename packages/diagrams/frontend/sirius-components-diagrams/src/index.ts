@@ -99,4 +99,7 @@ export type { IElementSVGExportHandler } from './renderer/toolbar/experimental-s
 export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/toolbar/experimental-svg-export/SVGExportHandlerExtensionPoints';
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
-export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
+export type {
+  GQLDiagramDescription,
+  WorkbenchDiagramRepresentationHandle,
+} from './representation/DiagramRepresentation.types';

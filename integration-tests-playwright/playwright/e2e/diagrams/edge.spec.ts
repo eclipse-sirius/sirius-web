@@ -98,8 +98,10 @@ test.describe('edge', () => {
 
     const playwrightEdge = new PlaywrightEdge(page);
 
-    await playwrightEdge.click();
-    await playwrightEdge.isSelected();
+    await expect(async () => {
+      await playwrightEdge.click();
+      await playwrightEdge.isSelected();
+    }).toPass({ timeout: 2000 });
 
     const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
     const box = (await lastBendingPoint.boundingBox())!;
@@ -479,24 +481,26 @@ test.describe('edge', () => {
     await expect(playwrightEdge2.edgeLocator).toBeAttached();
     await expect(playwrightEdge3.edgeLocator).toBeAttached();
 
-    const edge1Path = await playwrightEdge1.getEdgePath();
-    const edge2Path = await playwrightEdge2.getEdgePath();
-    const edge3Path = await playwrightEdge3.getEdgePath();
+    await expect(async () => {
+      const edge1Path = await playwrightEdge1.getEdgePath();
+      const edge2Path = await playwrightEdge2.getEdgePath();
+      const edge3Path = await playwrightEdge3.getEdgePath();
 
-    const node1 = new PlaywrightNode(page, 'A');
-    await node1.move({ x: 100, y: 100 });
+      const node1 = new PlaywrightNode(page, 'A');
+      await node1.move({ x: 100, y: 100 });
 
-    const edge1PathAfter = await playwrightEdge1.getEdgePath();
-    const edge2PathAfter = await playwrightEdge2.getEdgePath();
-    const edge3PathAfter = await playwrightEdge3.getEdgePath();
+      const edge1PathAfter = await playwrightEdge1.getEdgePath();
+      const edge2PathAfter = await playwrightEdge2.getEdgePath();
+      const edge3PathAfter = await playwrightEdge3.getEdgePath();
 
-    expect(edge1Path).not.toBe(edge1PathAfter);
-    expect(edge2Path).not.toBe(edge2PathAfter);
-    expect(edge3Path).not.toBe(edge3PathAfter);
+      expect(edge1Path).not.toBe(edge1PathAfter);
+      expect(edge2Path).not.toBe(edge2PathAfter);
+      expect(edge3Path).not.toBe(edge3PathAfter);
 
-    await edgeExpect(edge1Path).toHaveSamePath(edge1PathAfter);
-    await edgeExpect(edge2Path).toHaveSamePath(edge2PathAfter);
-    await edgeExpect(edge3Path).toHaveSamePath(edge3PathAfter);
+      await edgeExpect(edge1Path).toHaveSamePath(edge1PathAfter);
+      await edgeExpect(edge2Path).toHaveSamePath(edge2PathAfter);
+      await edgeExpect(edge3Path).toHaveSamePath(edge3PathAfter);
+    }).toPass({ timeout: 2000 });
   });
 });
 

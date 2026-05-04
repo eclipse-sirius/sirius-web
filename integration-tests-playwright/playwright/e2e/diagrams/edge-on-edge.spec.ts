@@ -110,7 +110,7 @@ test.describe('edge on edge', () => {
     page,
   }) => {
     const edges = page.locator('[data-testid^="rf__edge-"]');
-    await expect(edges).toHaveCount(2);
+    await expect(edges).toHaveCount(2, { timeout: 2000 });
 
     await expect(page.locator('.source_handle_right')).toHaveCount(1);
     await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
