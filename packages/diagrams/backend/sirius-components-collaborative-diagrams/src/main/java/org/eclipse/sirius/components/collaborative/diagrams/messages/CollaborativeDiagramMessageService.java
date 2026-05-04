@@ -106,4 +106,15 @@ public class CollaborativeDiagramMessageService implements ICollaborativeDiagram
     public String handlerNotFound() {
         return this.messageSourceAccessor.getMessage(MessageConstants.HANDLER_NOT_FOUND, new Object[] { });
     }
+
+    @Override
+    public String diagramLayoutFlow() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.DIAGRAM_LAYOUT_FLOW, new Object[] { });
+    }
+
+    @Override
+    public String diagramLayoutCompact() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.DIAGRAM_LAYOUT_COMPACT, new Object[] { });
+    }
+
 }

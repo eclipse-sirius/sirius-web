@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -25,7 +26,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useArrangeAll } from '../layout/arrange-all/useArrangeAll';
 import { useLayoutConfigurations } from '../layout/arrange-all/useLayoutConfigurations';
-import { LayoutConfiguration } from '../layout/arrange-all/useLayoutConfigurations.types';
+import { GQLLayoutConfiguration } from '../layout/arrange-all/useLayoutConfigurations.types';
 import { ArrangeAllButtonProps, ArrangeAllButtonState } from './ArrangeAllButton.types';
 
 export const ArrangeAllButton = ({ disabled }: ArrangeAllButtonProps) => {
@@ -41,7 +42,7 @@ export const ArrangeAllButton = ({ disabled }: ArrangeAllButtonProps) => {
   const { layoutConfigurations } = useLayoutConfigurations();
   const theme: Theme = useTheme();
 
-  const handleArrangeAll = (layoutConfiguration: LayoutConfiguration) => {
+  const handleArrangeAll = (layoutConfiguration: GQLLayoutConfiguration) => {
     setState((prevState) => ({
       ...prevState,
       arrangeAllMenuOpen: false,
@@ -76,26 +77,50 @@ export const ArrangeAllButton = ({ disabled }: ArrangeAllButtonProps) => {
     }
   };
 
+  const hasAutoArranged = useRef(false);
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('arrangeAll') && urlParams.get('arrangeAll') === 'true' && layoutConfigurations[0]) {
-        handleArrangeAll(layoutConfigurations[0]);
-      }
-    }, 500);
+    let timeout: number | undefined;
 
+    const urlParams = new URLSearchParams(window.location.search);
+    if (
+      urlParams.has('arrangeAll') &&
+      urlParams.get('arrangeAll') === 'true' &&
+      layoutConfigurations[0] &&
+      !hasAutoArranged.current
+    ) {
+      hasAutoArranged.current = true;
+      timeout = window.setTimeout(() => {
+        handleArrangeAll(layoutConfigurations[0]!);
+      }, 500);
+    }
     return () => clearTimeout(timeout);
-  }, []);
+  }, [layoutConfigurations]);
 
   const getMainButtonIcon = () => {
     if (state.arrangeAllInProgress) {
       return <CircularProgress size={theme.spacing(2)} data-testid="arrange-all-circular-loading" />;
     }
     if (state.lastUsedLayout) {
-      return state.lastUsedLayout.icon;
+      return (
+        <IconOverlay
+          iconURLs={state.lastUsedLayout.iconURL || []}
+          alt={state.lastUsedLayout.label}
+          customIconWidth={20}
+          customIconHeight={20}
+          customIconStyle={{ opacity: 0.54 }}
+        />
+      );
     }
     if (layoutConfigurations[0]) {
-      return layoutConfigurations[0].icon;
+      return (
+        <IconOverlay
+          iconURLs={layoutConfigurations[0].iconURL || []}
+          alt={layoutConfigurations[0].label}
+          customIconWidth={20}
+          customIconHeight={20}
+          customIconStyle={{ opacity: 0.54 }}
+        />
+      );
     }
     return <AccountTreeIcon />;
   };
@@ -130,14 +155,22 @@ export const ArrangeAllButton = ({ disabled }: ArrangeAllButtonProps) => {
           anchorEl={anchorArrangeMenuRef.current}
           onClose={onCloseMenu}
           data-testid="arrange-all-actions">
-          {layoutConfigurations.map((layoutConfiguration: LayoutConfiguration) => {
+          {layoutConfigurations.map((layoutConfiguration: GQLLayoutConfiguration) => {
             return (
               <MenuItem
                 key={layoutConfiguration.id}
                 disabled={disabled}
                 data-testid={`arrange-all-${layoutConfiguration.id}`}
                 onClick={() => handleArrangeAll(layoutConfiguration)}>
-                <ListItemIcon>{layoutConfiguration.icon}</ListItemIcon>
+                <ListItemIcon>
+                  <IconOverlay
+                    iconURLs={layoutConfiguration.iconURL || []}
+                    alt={layoutConfiguration.label}
+                    customIconWidth={20}
+                    customIconHeight={20}
+                    customIconStyle={{ opacity: 0.54 }}
+                  />
+                </ListItemIcon>
                 <ListItemText primary={layoutConfiguration.label} />
               </MenuItem>
             );

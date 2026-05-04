@@ -10,11 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { test, expect } from '@playwright/test';
-import { PlaywrightProject } from '../../helpers/PlaywrightProject';
-import { PlaywrightWorkbench } from '../../helpers/PlaywrightWorkbench';
+import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
+import { PlaywrightProject } from '../../helpers/PlaywrightProject';
+import { PlaywrightWorkbench } from '../../helpers/PlaywrightWorkbench';
 
 test.describe('diagram - auto-layout', () => {
   let projectId;
@@ -37,12 +37,14 @@ test.describe('diagram - auto-layout', () => {
     page,
   }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
+    await expect(page.getByTestId('FreeForm - Wifi').first()).toBeInViewport();
 
     const captureSubsystemNode = new PlaywrightNode(page, 'Capture_Subsystem');
-    const captureSubsystemPosition = await captureSubsystemNode.getReactFlowXYPosition();
-    expect(captureSubsystemPosition.x).toBe(12);
-    expect(captureSubsystemPosition.y).toBe(12);
+    await expect(async () => {
+      const captureSubsystemPosition = await captureSubsystemNode.getReactFlowXYPosition();
+      expect(captureSubsystemPosition.x).toBe(12);
+      expect(captureSubsystemPosition.y).toBe(12);
+    }).toPass({ timeout: 5000, intervals: [1000] });
 
     const dspNode = new PlaywrightNode(page, 'DSP');
     const dspPosition = await dspNode.getReactFlowXYPosition();
@@ -54,7 +56,14 @@ test.describe('diagram - auto-layout', () => {
 
   test('when moving a node on an auto-layout diagram, then move is reset to its default position', async ({ page }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
+    await expect(page.getByTestId('FreeForm - Wifi').first()).toBeInViewport();
+
+    const captureSubsystemNode = new PlaywrightNode(page, 'Capture_Subsystem');
+    await expect(async () => {
+      const captureSubsystemPosition = await captureSubsystemNode.getReactFlowXYPosition();
+      expect(captureSubsystemPosition.x).toBe(12);
+    }).toPass({ timeout: 5000, intervals: [1000] });
+    await page.keyboard.press('Escape');
 
     const wifiNode = new PlaywrightNode(page, 'Wifi');
     const wifiPositionBefore = await wifiNode.getDOMXYPosition();

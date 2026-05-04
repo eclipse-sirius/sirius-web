@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,16 +10,46 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { LayoutOptions } from 'elkjs/lib/elk-api';
-import React from 'react';
-
 export interface UseLayoutConfigurationsValue {
-  layoutConfigurations: LayoutConfiguration[];
+  layoutConfigurations: GQLLayoutConfiguration[];
+  loading: boolean;
 }
 
-export interface LayoutConfiguration {
+export interface GQLGetLayoutConfigurationsVariables {
+  editingContextId: string;
+  representationId: string;
+}
+
+export interface GQLGetLayoutConfigurationsData {
+  viewer: GQLViewer;
+}
+export interface GQLViewer {
+  editingContext: GQLEditingContext;
+}
+
+export interface GQLEditingContext {
+  representation: GQLRepresentationMetadata;
+}
+
+export interface GQLRepresentationMetadata {
   id: string;
   label: string;
-  icon: React.JSX.Element;
-  layoutOptions: LayoutOptions;
+  kind: string;
+  description: GQLRepresentationDescription;
+}
+
+export interface GQLRepresentationDescription {
+  id: string;
+  __typename: string;
+}
+
+export interface GQLDiagramDescription extends GQLRepresentationDescription {
+  layoutConfigurations: GQLLayoutConfiguration[];
+}
+
+export interface GQLLayoutConfiguration {
+  id: string;
+  label: string;
+  iconURL: string[];
+  layoutOptions: { [key: string]: string };
 }

@@ -136,7 +136,7 @@ See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6319[#6319] [tree] Wait for 500ms before asking for the tooltip of a tree item
 - https://github.com/eclipse-sirius/sirius-web/issues/6354[#6354] [diagram] Allow the layout use make same size to be used on nodes that don't have the same depth
 - https://github.com/eclipse-sirius/sirius-web/issues/6414[#6414] [diagram] Add e2e test for node decorators.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Move diagram layout configurations from frontend to backend
 
 
 == 2026.3.0

@@ -71,10 +71,6 @@
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
     }
   },
-  "useLayoutConfigurations": {
-    "arrangeAllLayered": "Disposition en flux",
-    "arrangeAllRectPacking": "Disposition compacte"
-  },
   "usePinDiagramElements": {
     "errors": {
       "unexpected": "Une erreur inattendue est survenue, veuillez actualiser la page"
