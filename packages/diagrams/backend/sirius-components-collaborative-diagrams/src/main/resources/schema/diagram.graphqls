@@ -388,7 +388,7 @@ type Size {
 }
 
 type Palette {
-  id: ID!
+  id: ID! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/6470")
   quickAccessTools: [Tool]!
   paletteEntries: [PaletteEntry]!
 }
