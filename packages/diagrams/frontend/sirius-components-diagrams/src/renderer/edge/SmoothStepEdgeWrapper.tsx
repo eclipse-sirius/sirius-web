@@ -116,40 +116,44 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   const threshold = 10;
-  if (!data?.bendingPoints || data.bendingPoints.length === 0) {
-    if (Math.abs(sourceX - targetX) < threshold) {
-      const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
-        (handle) => handle.id === sourceHandleId
-      );
-      const targetHandle: ConnectionHandle | undefined = (targetNode.data.connectionHandles ?? []).find(
-        (handle) => handle.id === targetHandleId
-      );
-      const middleX = (sourceX + targetX) / 2;
-      if (sourceHandle) {
-        sourceHandle.handleStyleTransform = `translateX(${middleX - sourceX}px)`;
-      }
-      if (targetHandle) {
-        targetHandle.handleStyleTransform = `translateX(${middleX - targetX}px)`;
-      }
-      sourceX = middleX;
-      targetX = middleX;
+  if (Math.abs(sourceX - targetX) < threshold) {
+    const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
+      (handle) => handle.id === sourceHandleId
+    );
+    const targetHandle: ConnectionHandle | undefined = (targetNode.data.connectionHandles ?? []).find(
+      (handle) => handle.id === targetHandleId
+    );
+    const middleX = (sourceX + targetX) / 2;
+    if (sourceHandle) {
+      sourceHandle.handleStyleTransform = `translateX(${middleX - sourceX}px)`;
     }
-    if (Math.abs(sourceY - targetY) < threshold) {
-      const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
-        (handle) => handle.id === sourceHandleId
-      );
-      const targetHandle: ConnectionHandle | undefined = (targetNode.data.connectionHandles ?? []).find(
-        (handle) => handle.id === targetHandleId
-      );
-      const middleY = (sourceY + targetY) / 2;
-      if (sourceHandle) {
-        sourceHandle.handleStyleTransform = `translateY(${middleY - sourceY}px)`;
-      }
-      if (targetHandle) {
-        targetHandle.handleStyleTransform = `translateY(${middleY - targetY}px)`;
-      }
-      sourceY = middleY;
-      targetY = middleY;
+    if (targetHandle) {
+      targetHandle.handleStyleTransform = `translateX(${middleX - targetX}px)`;
+    }
+    sourceX = middleX;
+    targetX = middleX;
+    if (data) {
+      data.bendingPoints = [];
+    }
+  }
+  if (Math.abs(sourceY - targetY) < threshold) {
+    const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
+      (handle) => handle.id === sourceHandleId
+    );
+    const targetHandle: ConnectionHandle | undefined = (targetNode.data.connectionHandles ?? []).find(
+      (handle) => handle.id === targetHandleId
+    );
+    const middleY = (sourceY + targetY) / 2;
+    if (sourceHandle) {
+      sourceHandle.handleStyleTransform = `translateY(${middleY - sourceY}px)`;
+    }
+    if (targetHandle) {
+      targetHandle.handleStyleTransform = `translateY(${middleY - targetY}px)`;
+    }
+    sourceY = middleY;
+    targetY = middleY;
+    if (data) {
+      data.bendingPoints = [];
     }
   }
 

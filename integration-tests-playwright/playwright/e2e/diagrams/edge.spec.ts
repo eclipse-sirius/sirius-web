@@ -531,21 +531,4 @@ test.describe('edge', () => {
     const edge2Path = await edge2.getEdgePath();
     expect(edge2Path?.trim()).toMatch(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
   });
-
-  test('when edges source and target are closed but have bending points, then edges path are not aligned', async ({
-    page,
-  }) => {
-    const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.select('diagramWithoutAutoAlignment');
-    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-
-    const edge1 = new PlaywrightEdge(page);
-    const edge2 = new PlaywrightEdge(page, 1);
-
-    const edge1Path = await edge1.getEdgePath();
-    expect(edge1Path?.trim()).not.toMatch(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
-
-    const edge2Path = await edge2.getEdgePath();
-    expect(edge2Path?.trim()).not.toMatch(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
-  });
 });

@@ -421,6 +421,9 @@ test.describe('diagram - label', () => {
 
   test('when dragging a center edge label, then no offset apply on the drop position', async ({ page }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await new PlaywrightDiagram(page).collapseToolbar();
+    const rootNode = new PlaywrightNode(page, 'Root', 'List');
+    await rootNode.waitForAnimationToFinish();
     const labelBoundingBox = await page.getByTestId('Label - entity2s [0..*]').boundingBox();
     await page.getByTestId('Label - entity2s [0..*]').hover({ position: { x: 10, y: 10 } });
     await page.mouse.down();

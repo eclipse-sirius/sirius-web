@@ -95,7 +95,7 @@ test.describe('diagram - drag and drop of multiple elements', () => {
     await attr2NodeBefore.controlClick();
 
     // And move them inside the 'Target' entity
-    await attr2NodeBefore.move({ x: -250, y: 0 });
+    await attr2NodeBefore.move({ x: 0, y: -350 });
 
     await page.waitForFunction(
       () => {
