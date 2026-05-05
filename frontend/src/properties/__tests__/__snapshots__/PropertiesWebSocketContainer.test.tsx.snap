@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render the form 1`] = `
+<div>
+  <div
+    class="makeStyles-idle-1"
+  >
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2"
+    >
+      No object selected 
+      complete
+    </h6>
+  </div>
+</div>
+`;
+
+exports[`should render the form 2`] = `
+<div>
+  <div
+    class="makeStyles-idle-1"
+  >
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2"
+    >
+      No object selected 
+      complete
+    </h6>
+  </div>
+</div>
+`;
+
+exports[`should render the form 3`] = `
+<div>
+  <div
+    class="makeStyles-idle-1"
+  >
+    <h6
+      class="MuiTypography-root MuiTypography-subtitle2"
+    >
+      No object selected 
+      complete
+    </h6>
+  </div>
+</div>
+`;
