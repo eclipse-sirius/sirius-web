@@ -36,6 +36,9 @@ import { AlignVerticalTopIcon } from '../../icons/AlignVerticalTopIcon';
 import { JustifyHorizontalIcon } from '../../icons/JustifyHorizontalIcon';
 import { JustifyVerticalIcon } from '../../icons/JustifyVerticalIcon';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
+import { useArrangeAll } from '../layout/arrange-all/useArrangeAll';
+import { useLayoutConfigurations } from '../layout/arrange-all/useLayoutConfigurations';
+import { LayoutConfiguration } from '../layout/arrange-all/useLayoutConfigurations.types';
 import { useArrangeIn } from '../layout/layout-tools/useArrangeIn';
 import { useDistributeElements } from '../layout/layout-tools/useDistributeElements';
 import { useDistributeNodesOnGap } from '../layout/layout-tools/useDistributeNodesOnGap';
@@ -115,6 +118,8 @@ export const GroupPaletteLayoutSection = ({
 }: PaletteExtensionSectionComponentProps) => {
   const { classes } = useStyle();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'groupPalette' });
+  const { layoutConfigurations } = useLayoutConfigurations();
+  const { arrangeAll } = useArrangeAll();
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
     onBackToMainList();
@@ -163,6 +168,18 @@ export const GroupPaletteLayoutSection = ({
           <ListItemText className={classes.sectionTitleListItemText} primary={t('layout')} />
         </ListItemButton>
       </Tooltip>
+
+      {layoutConfigurations.map((layoutConfiguration: LayoutConfiguration) => {
+        return (
+          <ListItem
+            key={layoutConfiguration.id}
+            id={layoutConfiguration.id}
+            label={layoutConfiguration.label}
+            icon={layoutConfiguration.icon}
+            onClick={() => arrangeAll(layoutConfiguration.layoutOptions, filteredNodeIds)}></ListItem>
+        );
+      })}
+      <Divider />
 
       <ListItem
         id={'align-left'}
