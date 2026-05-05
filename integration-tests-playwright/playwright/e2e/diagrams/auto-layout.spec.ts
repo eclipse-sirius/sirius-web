@@ -15,6 +15,7 @@ import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 import { PlaywrightWorkbench } from '../../helpers/PlaywrightWorkbench';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 
 test.describe('diagram - auto-layout', () => {
   let projectId;
@@ -37,6 +38,7 @@ test.describe('diagram - auto-layout', () => {
     page,
   }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await new PlaywrightDiagram(page).collapseToolbar();
     await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
 
     const captureSubsystemNode = new PlaywrightNode(page, 'Wifi');
@@ -54,11 +56,12 @@ test.describe('diagram - auto-layout', () => {
 
   test('when moving a node on an auto-layout diagram, then move is reset to its default position', async ({ page }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await new PlaywrightDiagram(page).collapseToolbar();
     await expect(page.getByTestId('FreeForm - Wifi')).toBeInViewport();
 
     const wifiNode = new PlaywrightNode(page, 'Wifi');
     const wifiPositionBefore = await wifiNode.getReactFlowXYPosition();
-    await wifiNode.move({ x: 100, y: -100 });
+    await wifiNode.move({ x: -50, y: 50 });
 
     await page.waitForFunction(
       ({ expectedX, expectedY }) => {

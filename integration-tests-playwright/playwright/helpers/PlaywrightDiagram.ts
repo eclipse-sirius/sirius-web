@@ -26,4 +26,8 @@ export class PlaywrightDiagram {
       node.style.visibility = 'hidden';
     });
   }
+
+  async collapseToolbar() {
+    await this.page.getByTestId('toolbar-collapse').click();
+  }
 }

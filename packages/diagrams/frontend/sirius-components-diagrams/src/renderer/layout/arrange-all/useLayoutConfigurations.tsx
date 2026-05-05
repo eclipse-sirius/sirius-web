@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import HubIcon from '@mui/icons-material/Hub';
 import ViewComfyIcon from '@mui/icons-material/ViewComfy';
 import { LayoutOptions } from 'elkjs/lib/elk-api';
 import { useTranslation } from 'react-i18next';
@@ -24,6 +25,7 @@ const elkLayeredOptions = (direction: string): LayoutOptions => ({
   'elk.spacing.componentComponent': '60',
   'elk.spacing.nodeNode': '80',
   'elk.direction': `${direction}`,
+  'elk.alignment': 'CENTER',
   'elk.layered.spacing.edgeNodeBetweenLayers': '80',
   'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
 });
@@ -34,6 +36,13 @@ const elkRectPackingOptions: LayoutOptions = {
   'elk.rectpacking.trybox': 'true',
   'widthApproximation.targetWidth': '1',
   'elk.contentAlignment': 'V_TOP H_CENTER',
+};
+
+const elkOrthogonalOptions: LayoutOptions = {
+  'elk.algorithm': 'sporeOverlap',
+  'elk.spacing.nodeNode': '40',
+  'elk.nodeSize.fixedGraphSize': 'true',
+  'elk.underlyingLayoutAlgorithm': 'stress',
 };
 
 export const useLayoutConfigurations = (): UseLayoutConfigurationsValue => {
@@ -52,8 +61,18 @@ export const useLayoutConfigurations = (): UseLayoutConfigurationsValue => {
     icon: <ViewComfyIcon fontSize="small" />,
     layoutOptions: elkRectPackingOptions,
   };
+  const layoutConfigurationWithSporeOverlapAlgorithm: LayoutConfiguration = {
+    id: 'elk-spore-overlap',
+    label: 'Orthogonal Layout',
+    icon: <HubIcon fontSize="small" />,
+    layoutOptions: elkOrthogonalOptions,
+  };
 
   return {
-    layoutConfigurations: [layoutConfigurationWithLayeredAlgorithm, layoutConfigurationWithRectPackingAlgorithm],
+    layoutConfigurations: [
+      layoutConfigurationWithLayeredAlgorithm,
+      layoutConfigurationWithRectPackingAlgorithm,
+      layoutConfigurationWithSporeOverlapAlgorithm,
+    ],
   };
 };

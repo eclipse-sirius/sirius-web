@@ -128,6 +128,7 @@ const buildElkNodeChildrenAndPorts = (
     layoutOptions: {
       ...options,
       'elk.port.side': `${computePortSide(node.data.borderNodePosition)}`,
+      ...(node.type === 'listNode' && { 'elk.algorithm': 'fixed', 'elk.nodeSize.fixedGraphSize': 'true' }), //In any case, we use our layout for list-type nodes
     },
   };
 };
