@@ -11,23 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteExtensionSection, PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
-import { memo, useCallback, useContext, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
+import { memo, useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
 import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
-import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramPaletteProps } from './DiagramPalette.types';
-import { GroupPaletteLayoutSection } from './GroupPaletteLayoutSection';
 import { Palette } from './Palette';
 import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
-import { ShowInSection } from './ShowInSection';
 import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
@@ -39,7 +34,6 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
   const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
   const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
   const { getNode, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
-  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPalette' });
 
   const elementId = diagramElementIds[0] ? diagramElementIds[0] : diagramId;
   const elementsIds = diagramElementIds[0] ? diagramElementIds : [diagramId];
@@ -98,45 +92,6 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
     executeTool(x, y, elementsIds, targetObjectId, handleDirectEditClick, tool);
   };
 
-  const extensionSections = useMemo(() => {
-    const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
-    if (diagramElementIds.length >= 1) {
-      sectionComponents.push(
-        <PaletteExtensionSection
-          id="appearance"
-          key="appearance"
-          title={t('appearance')}
-          component={PaletteAppearanceSection}
-          onClose={hideDiagramPalette}
-        />
-      );
-    }
-    if (diagramElementIds.length > 1) {
-      sectionComponents.push(
-        <PaletteExtensionSection
-          id="layout_section"
-          key="layout_section"
-          title={t('layout')}
-          component={GroupPaletteLayoutSection}
-          onClose={hideDiagramPalette}
-        />
-      );
-    }
-    if (diagramElementIds.length >= 1) {
-      sectionComponents.push(
-        <PaletteExtensionSection
-          id="show_in"
-          key="show_in"
-          title={t('showIn')}
-          component={ShowInSection}
-          onClose={hideDiagramPalette}
-        />
-      );
-    }
-
-    return sectionComponents;
-  }, [diagramElementIds.join('-')]);
-
   if (readOnly) {
     return null;
   }
@@ -153,7 +108,6 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
           palette={palette}
           onToolClick={onToolClick}
           onClose={hideDiagramPalette}
-          paletteToolListExtensions={extensionSections}
         />
       </div>
     </PalettePortal>

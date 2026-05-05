@@ -44,6 +44,7 @@ Custom deserializers and migration services will probably be impacted.
 `RepresentationDescriptionMetadata` has been renamed to `RepresentationMetadataDTO` and moved to `org.eclipse.sirius.components.collaborative.dto`.
 It now requires a `documentation` parameter.
 - https://github.com/eclipse-sirius/sirius-web/issues/6451[#6451] [tree] `ISingleClickTreeItemContextMenuEntryExecutor.canExecute` method has now more parameters: `boolean canExecute(IEditingContext editingContext, TreeDescription treeDescription, String treeItemMenuContextEntryId, ITreeInput treeInput);`
+- https://github.com/eclipse-sirius/sirius-web/issues/5531[#5531] [palette] The old hard-coded tool sections `Appearance`, `Layout` and `Show in` are now contributed via an extension point in the `defaultExtensionRegistry`.
 
 
 === Dependency update
@@ -146,7 +147,7 @@ See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6449[#6449] [tree] The backend tree rendering now filters out empty fragments in item's labels to reduce the amount of data transfered to the frontend.
 - https://github.com/eclipse-sirius/sirius-web/issues/6396[#6396] [diagram] The diagram palette now supports fuzzy matching when searching for tools.
 For example entering either `att def` or `NAD` will now find a tool named `New Attribute Definition`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5531[#5531] [palette] Add an extension point to contribute palette tool sections
 
 
 == 2026.3.0

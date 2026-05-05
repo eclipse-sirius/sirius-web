@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,7 +52,7 @@ const useStyle = makeStyles()((theme) => ({
 }));
 
 export const PaletteAppearanceSection = ({
-  diagramElementIds,
+  representationElementIds,
   onBackToMainList,
 }: PaletteExtensionSectionComponentProps) => {
   const { classes } = useStyle();
@@ -68,11 +68,11 @@ export const PaletteAppearanceSection = ({
   );
 
   const paletteAppearanceSectionComponents: JSX.Element[] = paletteAppearanceSectionData.data
-    .filter((data) => data.canHandle(diagramElementIds))
+    .filter((data) => data.canHandle(representationElementIds))
     .map((data) => data.component)
     .map((PaletteAppearanceSectionComponent, index) => (
       <PaletteAppearanceSectionComponent
-        diagramElementIds={diagramElementIds}
+        diagramElementIds={representationElementIds}
         key={'paletteAppearanceSectionComponents_' + index.toString()}
       />
     ));

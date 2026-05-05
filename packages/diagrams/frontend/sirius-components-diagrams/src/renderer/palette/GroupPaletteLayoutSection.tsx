@@ -111,7 +111,7 @@ const ListItem = ({ id, label, icon, onClick }: ListItemProps) => {
 
 export const GroupPaletteLayoutSection = ({
   onBackToMainList,
-  diagramElementIds,
+  representationElementIds,
 }: PaletteExtensionSectionComponentProps) => {
   const { classes } = useStyle();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'groupPalette' });
@@ -136,7 +136,7 @@ export const GroupPaletteLayoutSection = ({
   const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
-  const filteredNodeIds = diagramElementIds.filter((elementId) => {
+  const filteredNodeIds = representationElementIds.filter((elementId) => {
     const node = getNode(elementId);
     if (node) {
       const parent = getNode(node.parentId ?? '');
@@ -146,7 +146,7 @@ export const GroupPaletteLayoutSection = ({
     }
     return true;
   });
-  const refElementId = filteredNodeIds.at(diagramElementIds.length - 1);
+  const refElementId = filteredNodeIds.at(representationElementIds.length - 1);
   if (!refElementId || filteredNodeIds.length < 2) {
     return null;
   }
