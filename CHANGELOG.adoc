@@ -148,6 +148,8 @@ See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6396[#6396] [diagram] The diagram palette now supports fuzzy matching when searching for tools.
 For example entering either `att def` or `NAD` will now find a tool named `New Attribute Definition`.
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6408[#6408] [storybook] Add diagram layout testing for the storybook
+
 
 
 == 2026.3.0
