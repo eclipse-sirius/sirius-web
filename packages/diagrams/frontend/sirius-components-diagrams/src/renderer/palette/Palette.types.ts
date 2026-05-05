@@ -74,6 +74,10 @@ export interface GQLKeyBinding {
 }
 
 export interface GQLPalette {
+  /**
+   * @deprecated The `id` field is deprecated and should not be used. It will be removed in a future release.
+   * See https://github.com/eclipse-sirius/sirius-web/issues/6470 for more details.
+   */
   id: string;
   quickAccessTools: GQLTool[];
   paletteEntries: GQLPaletteEntry[];

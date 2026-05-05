@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,15 @@ import java.util.Objects;
  * A palette, contains direct tools and toolSections.
  *
  * @author frouene
+ *
+ * @technical-debt The id of the palette should be deleted since it does not provide any value. The only feature relying
+ * on it is the retrieval of the last tool invoked by the frontend. It doesn't even really need this identifier since
+ * it is only returning a piece of data sent by the frontend. This feature could use exclusively pieces of data already
+ * known to the frontend.
+ *
+ * See <a href="https://github.com/eclipse-sirius/sirius-web/issues/6470">GitHub Issue</a>
  */
-public record Palette(String id, List<ITool> quickAccessTools, List<IPaletteEntry> paletteEntries) {
+public record Palette(@Deprecated(forRemoval = true) String id, List<ITool> quickAccessTools, List<IPaletteEntry> paletteEntries) {
 
     public Palette {
         Objects.requireNonNull(id);
@@ -28,7 +35,7 @@ public record Palette(String id, List<ITool> quickAccessTools, List<IPaletteEntr
         Objects.requireNonNull(paletteEntries);
     }
 
-    public static Builder newPalette(String id) {
+    public static Builder newPalette(@Deprecated(forRemoval = true) String id) {
         return new Builder(id);
     }
 
