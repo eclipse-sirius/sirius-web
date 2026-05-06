@@ -18,10 +18,10 @@ import { BorderNodePosition, NodeData } from '../DiagramRenderer.types';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
 import { getPositionAbsoluteFromNodeChange, isDescendantOf, isSiblingOrDescendantOf } from '../layout/layoutNode';
 import {
-  verticalLayoutAngleMin,
-  verticalLayoutAngleMax,
-  horizontalLayoutAngleMin,
   horizontalLayoutAngleMax,
+  horizontalLayoutAngleMin,
+  verticalLayoutAngleMax,
+  verticalLayoutAngleMin,
 } from '../layout/layoutParams';
 import {
   GetEdgeParameters,
@@ -30,7 +30,6 @@ import {
   GetHandlePositionWithOffSet,
   GetNodeCenter,
   GetUpdatedConnectionHandlesParameters,
-  SegmentDirection,
 } from './EdgeLayout.types';
 
 export const DEFAULT_HANDLE_SIZE = 6;
@@ -124,49 +123,36 @@ const clamp = (n: number, lower: number, upper: number) => Math.max(lower, Math.
 
 export const getHandlePositionFromNodeAndPath = (
   edgePath: string,
-  xyPosition: XYPosition,
-  fromNode: InternalNode<Node<NodeData>> | Node<NodeData>
+  edgeAnchorNodeXYPosition: XYPosition,
+  otherEndNode: InternalNode<Node<NodeData>> | Node<NodeData>
 ): Position => {
-  let position: Position;
-  if (getSegmentDirection(edgePath, xyPosition) === 'x') {
-    if (fromNode.position.y > xyPosition.y) {
-      position = Position.Bottom;
-    } else {
-      position = Position.Top;
-    }
-  } else {
-    if (fromNode.position.x > xyPosition.x) {
-      position = Position.Right;
-    } else {
-      position = Position.Left;
-    }
-  }
-
-  return position;
-};
-
-const getSegmentDirection = (edgePath: string, xyPosition: XYPosition): SegmentDirection => {
   const pathPoints = parse(edgePath);
-  let segmentDirection: SegmentDirection = 'y';
-  const { x, y } = xyPosition;
+  const { x, y } = edgeAnchorNodeXYPosition;
+  // Find the segment the ghost node is on
   for (let i = 1; i < pathPoints.length; i++) {
     const p1 = pathPoints[i - 1];
     const p2 = pathPoints[i];
-    if (p1 && p2) {
-      const isVertical: boolean = p1.y === p2.y;
-      const isHorizontal: boolean = p1.x === p2.x;
-      const isOnVerticalSegment = isHorizontal && Math.round(x) === Math.round(p1.x);
-      const isOnHorizontalSegment = isVertical && Math.round(y) === Math.round(p1.y);
 
-      if (isOnVerticalSegment || isOnHorizontalSegment) {
-        return isHorizontal ? 'y' : 'x';
-      } else {
-      }
+    const isHorizontalSegment = Math.round(p1.y) === Math.round(p2.y);
+    const isVerticalSegment = Math.round(p1.x) === Math.round(p2.x);
+
+    const isOnHorizontalSegment = isHorizontalSegment && Math.round(y) === Math.round(p1.y);
+    const isOnVerticalSegment = isVerticalSegment && Math.round(x) === Math.round(p1.x);
+
+    if (isOnHorizontalSegment) {
+      const otherEndIsDown = otherEndNode.position.y > edgeAnchorNodeXYPosition.y;
+      return otherEndIsDown ? Position.Bottom : Position.Top;
+    }
+
+    if (isOnVerticalSegment) {
+      const otherEndIsRight = otherEndNode.position.x > edgeAnchorNodeXYPosition.x;
+      return otherEndIsRight ? Position.Right : Position.Left;
     }
   }
 
-  return segmentDirection;
+  return Position.Bottom;
 };
+
 export const getNearestPointInPath = (
   x: number,
   y: number,

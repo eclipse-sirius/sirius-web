@@ -106,7 +106,7 @@ test.describe('edge on edge', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when an edge is between a node and an edge, then the handle on the node is correctly placed', async ({
+  test('when 2 edges with 2 anchorNodes are rendered, then the handles on the anchorNodes are correctly placed', async ({
     page,
   }) => {
     const edges = page.locator('[data-testid^="rf__edge-"]');
@@ -121,5 +121,92 @@ test.describe('edge on edge', () => {
     await expect(page.locator('.target_handle_bottom')).toHaveCount(0);
     await expect(page.locator('.target_handle_left')).toHaveCount(2);
     await expect(page.locator('.target_handle_top')).toHaveCount(1);
+  });
+});
+
+test.describe('edge on edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeToEdgeHandles.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('edgesOnEdges');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when an edge is between a node and an anchorNode and the node is moved, then the handles are updated', async ({
+    page,
+  }) => {
+    const edges = page.locator('[data-testid^="rf__edge-"]');
+    await expect(edges).toHaveCount(2);
+
+    await expect(page.locator('.source_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.target_handle_top')).toHaveCount(2);
+
+    const playwrightNode2b = new PlaywrightNode(page, 'Entity2b');
+    const xyPosition = await playwrightNode2b.getDOMXYPosition();
+    await playwrightNode2b.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(xyPosition.x + 400, xyPosition.y + 100, { steps: 10 });
+    await expect(page.locator('.target_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.target_handle_top')).toHaveCount(1);
+    await page.mouse.up();
+    await expect(page.locator('.target_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.target_handle_top')).toHaveCount(1);
+
+    await playwrightNode2b.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(xyPosition.x, xyPosition.y, { steps: 10 });
+    await expect(page.locator('.source_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.target_handle_top')).toHaveCount(2);
+    await page.mouse.up();
+    await expect(page.locator('.source_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.target_handle_top')).toHaveCount(2);
+  });
+
+  test('when an edge is between a node and an anchorNode and the anchorNode is moved, then the handles position are updated', async ({
+    page,
+  }) => {
+    const edges = page.locator('[data-testid^="rf__edge-"]');
+    await expect(edges).toHaveCount(2);
+
+    await expect(page.locator('.source_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.target_handle_top')).toHaveCount(2);
+
+    const playwrightNode1a = new PlaywrightNode(page, 'Entity1a');
+    const xyPosition1 = await playwrightNode1a.getDOMXYPosition();
+    const playwrightNode2a = new PlaywrightNode(page, 'Entity2a');
+    const xyPosition2 = await playwrightNode2a.getDOMXYPosition();
+    await playwrightNode1a.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(xyPosition2.x, xyPosition1.y, { steps: 10 });
+    await expect(page.locator('.target_handle_top')).toHaveCount(1);
+    await expect(page.locator('.target_handle_left')).toHaveCount(1);
+    await page.mouse.up();
+    await expect(page.locator('.target_handle_top')).toHaveCount(1);
+    await expect(page.locator('.target_handle_left')).toHaveCount(1);
+
+    await playwrightNode1a.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(xyPosition1.x, xyPosition1.y, { steps: 10 });
+    await expect(page.locator('.source_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.target_handle_top')).toHaveCount(2);
+    await page.mouse.up();
+    await expect(page.locator('.source_handle_right')).toHaveCount(1);
+    await expect(page.locator('.source_handle_bottom')).toHaveCount(1);
+    await expect(page.locator('.target_handle_top')).toHaveCount(2);
   });
 });
