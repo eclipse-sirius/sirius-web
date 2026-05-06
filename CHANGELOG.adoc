@@ -77,6 +77,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - https://github.com/eclipse-sirius/sirius-web/issues/6436[#6436] [core] Fix size of panels configured to be collapsed by default
 - https://github.com/eclipse-sirius/sirius-web/issues/5983[#5983] [diagram] Prevent a valid drop candidate from randomly remaining faded
 - https://github.com/eclipse-sirius/sirius-web/issues/6451[#6451] [tree] Fix an issue where the wrong `ISingleClickTreeItemContextMenuEntryExecutor` could be selected
+- https://github.com/eclipse-sirius/sirius-web/issues/6482[#6482] [diagram] Fix an issue where the handles of an edge on edge could have the wrong position
 
 
 === New Features

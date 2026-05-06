@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
-import { NodeLookup } from '@xyflow/system';
+import { Edge, InternalNode, Node, Position, XYPosition } from '@xyflow/react';
+import { EdgeLookup, NodeLookup } from '@xyflow/system';
 import { GQLDiagramDescription } from '../../representation/DiagramRepresentation.types';
-import { NodeData } from '../DiagramRenderer.types';
+import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import {
   getEdgeParameters,
   getNodeCenter,
@@ -21,16 +21,18 @@ import {
   getUpdatedConnectionHandles,
 } from '../edge/EdgeLayout';
 import { ConnectionHandle } from '../handles/ConnectionHandles.types';
+import { getEdgeAnchorNodePosition } from '../handles/useHandleChange';
 import {
   GetUpdatedConnectionHandlesIndexByPosition,
   PopulateHandleIdToOtherHandNode,
 } from '../handles/useHandleChange.types';
+import { isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
 import { evaluateAbsolutePosition } from '../node/NodeUtils';
 import { RawDiagram } from './layout.types';
 import {
   computeBorderNodeXYPositionFromBorderNodePosition,
-  convertPositionToBorderNodePosition,
   convertBorderNodePositionToPosition,
+  convertPositionToBorderNodePosition,
   getBorderNodeParentIfExist,
 } from './layoutBorderNodes';
 
@@ -162,7 +164,8 @@ const layoutHandleIndex = (diagram: RawDiagram, nodeLookup: NodeLookup<InternalN
 const layoutHandlePosition = (
   diagram: RawDiagram,
   diagramDescription: GQLDiagramDescription,
-  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
+  edgeLookup: EdgeLookup<Edge<EdgeData>>
 ) => {
   diagram.edges
     .filter((edge) => !edge.hidden)
@@ -173,7 +176,7 @@ const layoutHandlePosition = (
       if (sourceNode && targetNode && sourceHandle && targetHandle) {
         const sourceReferenceNode = getBorderNodeParentIfExist(sourceNode, nodeLookup);
         const targetReferenceNode = getBorderNodeParentIfExist(targetNode, nodeLookup);
-        const { sourcePosition, targetPosition } = getEdgeParameters(
+        let { sourcePosition, targetPosition } = getEdgeParameters(
           sourceReferenceNode,
           targetReferenceNode,
           nodeLookup,
@@ -187,6 +190,20 @@ const layoutHandlePosition = (
         const nodeTargetConnectionHandle: ConnectionHandle | undefined = targetNode.data.connectionHandles.find(
           (connectionHandle: ConnectionHandle) => connectionHandle.id === targetHandle
         );
+
+        if (isEdgeAnchorNode(sourceNode)) {
+          const otherEndNode = nodeLookup.get(sourceNode.data.sourceTargetNodeId);
+          const baseEdge = edgeLookup.get(sourceNode.data.sourceTargetEdgeId);
+          if (otherEndNode && baseEdge) {
+            sourcePosition = getEdgeAnchorNodePosition(sourcePosition, sourceNode, baseEdge, otherEndNode);
+          }
+        } else if (isEdgeAnchorNode(targetNode)) {
+          const otherEndNode = nodeLookup.get(targetNode.data.sourceTargetNodeId);
+          const baseEdge = edgeLookup.get(targetNode.data.sourceTargetEdgeId);
+          if (otherEndNode && baseEdge) {
+            targetPosition = getEdgeAnchorNodePosition(sourcePosition, targetNode, baseEdge, otherEndNode);
+          }
+        }
 
         if (
           nodeSourceConnectionHandle?.position !== sourcePosition ||
@@ -236,6 +253,7 @@ const layoutHandlePosition = (
                     node.data = { ...node.data, connectionHandles: sourceConnectionHandles };
                   }
                 }
+
                 if (edge.target === node.id) {
                   if (node.data.isBorderNode) {
                     if (!node.data.movedByUser) {
@@ -298,9 +316,10 @@ const resetEdgePathWhenOverlapping = (diagram: RawDiagram, nodeLookup: NodeLooku
 export const layoutHandles = (
   diagram: RawDiagram,
   diagramDescription: GQLDiagramDescription,
-  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>
+  nodeLookup: NodeLookup<InternalNode<Node<NodeData>>>,
+  edgeLookup: EdgeLookup<Edge<EdgeData>>
 ) => {
   resetEdgePathWhenOverlapping(diagram, nodeLookup);
-  layoutHandlePosition(diagram, diagramDescription, nodeLookup);
+  layoutHandlePosition(diagram, diagramDescription, nodeLookup, edgeLookup);
   layoutHandleIndex(diagram, nodeLookup);
 };

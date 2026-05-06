@@ -23,8 +23,8 @@ import {
   getUpdatedConnectionHandles,
 } from '../edge/EdgeLayout';
 import {
-  convertPositionToBorderNodePosition,
   computeBorderNodeXYPositionFromBorderNodePosition,
+  convertPositionToBorderNodePosition,
   getBorderNodeParentIfExist,
 } from '../layout/layoutBorderNodes';
 import { EdgeAnchorNodeData, isEdgeAnchorNode } from '../node/EdgeAnchorNode.types';
@@ -33,7 +33,7 @@ import { DiagramNodeType } from '../node/NodeTypes.types';
 import { ConnectionHandle } from './ConnectionHandles.types';
 import { UseHandleChangeValue } from './useHandleChange.types';
 
-const getEdgeAnchorNodePosition = (
+export const getEdgeAnchorNodePosition = (
   position: Position,
   edgeAnchorNode: Node<EdgeAnchorNodeData>,
   baseEdge: Edge<EdgeData> | undefined,
@@ -127,36 +127,24 @@ export const useHandleChange = (): UseHandleChangeValue => {
               );
 
               if (isEdgeAnchorNode(sourceNode)) {
-                const baseEdge = getEdge(sourceNode.id);
+                const baseEdge = getEdge(sourceNode.data.sourceTargetEdgeId);
                 sourcePosition = getEdgeAnchorNodePosition(sourcePosition, sourceNode, baseEdge, movingNode);
               } else if (isEdgeAnchorNode(targetNode)) {
-                const baseEdge = getEdge(targetNode.id);
+                const baseEdge = getEdge(targetNode.data.sourceTargetEdgeId);
                 targetPosition = getEdgeAnchorNodePosition(targetPosition, targetNode, baseEdge, movingNode);
               }
 
-              const nodeSourceConnectionHandle: ConnectionHandle | undefined = sourceNode.data.connectionHandles.find(
-                (connectionHandle: ConnectionHandle) => connectionHandle.id === sourceHandle
-              );
-              const nodeTargetConnectionHandle: ConnectionHandle | undefined = targetNode.data.connectionHandles.find(
-                (connectionHandle: ConnectionHandle) => connectionHandle.id === targetHandle
+              const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
+                sourceNode,
+                targetNode,
+                sourcePosition,
+                targetPosition,
+                sourceHandle,
+                targetHandle
               );
 
-              if (
-                nodeSourceConnectionHandle?.position !== sourcePosition ||
-                nodeTargetConnectionHandle?.position !== targetPosition
-              ) {
-                const { sourceConnectionHandles, targetConnectionHandles } = getUpdatedConnectionHandles(
-                  sourceNode,
-                  targetNode,
-                  sourcePosition,
-                  targetPosition,
-                  sourceHandle,
-                  targetHandle
-                );
-
-                nodeId2ConnectionHandles.set(sourceNode.id, sourceConnectionHandles);
-                nodeId2ConnectionHandles.set(targetNode.id, targetConnectionHandles);
-              }
+              nodeId2ConnectionHandles.set(sourceNode.id, sourceConnectionHandles);
+              nodeId2ConnectionHandles.set(targetNode.id, targetConnectionHandles);
             }
           });
         }

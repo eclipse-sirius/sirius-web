@@ -309,7 +309,7 @@ export const convertDiagram = (
   updateHandleViewModifier(rawDiagram.nodes, state);
   computeBorderNodeExtents(rawDiagram.nodes);
   computeBorderNodePositions(rawDiagram.nodes);
-  layoutHandles(rawDiagram, diagramDescription, nodeLookUp);
+  layoutHandles(rawDiagram, diagramDescription, nodeLookUp, state.edgeLookup);
   updateHandleFromReferencePosition(rawDiagram, state, referencePosition);
   computeBorderNodeLabelPosition(rawDiagram.nodes, rawDiagram.edges);
 
