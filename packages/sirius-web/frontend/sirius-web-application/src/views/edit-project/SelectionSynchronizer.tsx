@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,16 +20,19 @@ export const SelectionSynchronizer = ({ children }: SelectionSynchronizerProps) 
   const [_urlSearchParams, setUrlSearchParams] = useSearchParams();
 
   useEffect(() => {
-    setUrlSearchParams((urlSearchParams: URLSearchParams) => {
-      if (selection.entries.length > 0) {
-        urlSearchParams.set('selection', selectionToSearchParamsValue(selection));
-      } else {
-        if (urlSearchParams.has('selection')) {
-          urlSearchParams.delete('selection');
+    setUrlSearchParams(
+      (urlSearchParams: URLSearchParams) => {
+        if (selection.entries.length > 0) {
+          urlSearchParams.set('selection', selectionToSearchParamsValue(selection));
+        } else {
+          if (urlSearchParams.has('selection')) {
+            urlSearchParams.delete('selection');
+          }
         }
-      }
-      return urlSearchParams;
-    });
+        return urlSearchParams;
+      },
+      { replace: true }
+    );
   }, [selection]);
 
   return children;
