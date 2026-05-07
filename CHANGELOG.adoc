@@ -79,6 +79,7 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - https://github.com/eclipse-sirius/sirius-web/issues/6451[#6451] [tree] Fix an issue where the wrong `ISingleClickTreeItemContextMenuEntryExecutor` could be selected
 - https://github.com/eclipse-sirius/sirius-web/issues/6482[#6482] [diagram] Fix an issue where the handles of an edge on edge could have the wrong position
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6474[#6474] Move tooltip on explorer items to avoid clicking on it during explorer navigation.
 
 === New Features
 
