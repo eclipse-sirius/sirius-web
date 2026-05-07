@@ -57,6 +57,7 @@ export const TemporaryMovingLine = ({
   direction,
   segmentLength,
   index,
+  onDragStart,
   onDrag,
   onDragStop,
 }: TemporaryMovingLineProps) => {
@@ -89,6 +90,7 @@ export const TemporaryMovingLine = ({
       positionOffset={{ x: offsetX, y: offsetY }}
       scale={zoom}
       axis={direction === 'x' ? 'y' : 'x'}
+      onStart={onDragStart}
       onDrag={(_e, eventData: DraggableData) => onDrag(eventData, index, direction)}
       onStop={(_e, eventData: DraggableData) => onDragStop(eventData, index)}
       nodeRef={nodeRef as unknown as RefObject<HTMLElement>}>

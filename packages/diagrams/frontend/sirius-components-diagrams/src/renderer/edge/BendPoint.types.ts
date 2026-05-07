@@ -28,6 +28,7 @@ export interface TemporaryMovingLineProps {
   direction: 'x' | 'y';
   segmentLength: number;
   index: number;
+  onDragStart: () => void;
   onDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
   onDragStop: (eventData: DraggableData, index: number) => void;
 }
