@@ -29,7 +29,7 @@
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5301[#5301] [core] Fix browser history on workbenches
 
 
 === New Features
