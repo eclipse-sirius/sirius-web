@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import {
 } from './RectilinearEdgeCalculation';
 import { BendPointData, LocalBendingPointsSetter } from './useBendingPoints.types';
 import { useEdgeDragStopHandler } from './useEdgeDragStopHandler';
-import { MiddlePoint, UseTemporaryLinesValue, TemporaryLinesState } from './useTemporaryLines.types';
+import { MiddlePoint, TemporaryLinesState, UseTemporaryLinesValue } from './useTemporaryLines.types';
 
 export const useTemporaryLines = (
   edgeId: string,
@@ -219,5 +219,6 @@ export const useTemporaryLines = (
     middleBendingPoints,
     onTemporaryLineDragStop,
     onTemporaryLineDrag,
+    isSegmentDragged: state.dragInProgress,
   };
 };
