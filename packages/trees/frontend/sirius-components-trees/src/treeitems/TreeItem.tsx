@@ -338,7 +338,23 @@ export const TreeItem = ({
             }}
             data-testid={dataTestid}>
             <div className={`${classes.content} ${item.selectable ? '' : classes.nonSelectable}`}>
-              <Tooltip open={tooltip?.length > 0 && state.partHovered === 'item'} title={tooltip}>
+              <Tooltip
+                open={tooltip?.length > 0 && state.partHovered === 'item'}
+                title={tooltip}
+                placement="top-start"
+                disableInteractive
+                slotProps={{
+                  popper: {
+                    modifiers: [
+                      {
+                        name: 'offset',
+                        options: {
+                          offset: [32, -8],
+                        },
+                      },
+                    ],
+                  },
+                }}>
                 <div
                   className={`${classes.imageAndLabel} ${
                     item.selectable ? classes.imageAndLabelSelectable : ''
