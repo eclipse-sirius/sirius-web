@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { useEffect } from 'react';
-import { generatePath, useNavigate, useSearchParams } from 'react-router-dom';
+import { generatePath, To, useNavigate, useSearchParams } from 'react-router-dom';
 
 const PROJECT_ID_SEPARATOR = '@';
 
@@ -40,14 +40,11 @@ export const useSynchronizeSelectionAndURL = (
     }
 
     if (!skip && pathname) {
+      let target: To = pathname;
       if (urlSearchParams !== null && urlSearchParams.size > 0) {
-        navigate({
-          pathname: pathname,
-          search: `?${urlSearchParams}`,
-        });
-      } else {
-        navigate(pathname);
+        target = { pathname, search: `?${urlSearchParams}` };
       }
+      navigate(target, { replace: !representationId });
     }
   }, [projectId, selectedRepresentationId, representationId, skip, urlSearchParams]);
 };
