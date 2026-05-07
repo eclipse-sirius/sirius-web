@@ -17,6 +17,7 @@ import { memo, useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../../representation/useStore';
 import { useConnectorEdgeStyle } from '../../connector/useConnectorEdgeStyle';
 import { BendPoint, TemporaryMovingLine } from '../BendPoint';
+import { buildCrossingDashArray } from '../crossings/buildCrossingDashArray';
 import { DraggableEdgeLabels } from '../DraggableEdgeLabels';
 import { EdgeCreationHandle } from '../EdgeCreationHandle';
 import { multiLabelEdgeStyle } from '../MultiLabelEdge';
@@ -25,7 +26,6 @@ import { MultiLabelEditableEdgeProps } from './MultiLabelRectilinearEditableEdge
 import { determineSegmentAxis, getMiddlePoint, isMultipleOfTwo } from './RectilinearEdgeCalculation';
 import { useBendingPoints } from './useBendingPoints';
 import { useTemporaryLines } from './useTemporaryLines';
-import { buildCrossingDashArray } from '../crossings/buildCrossingDashArray';
 
 export const MultiLabelRectilinearEditableEdge = memo(
   ({
@@ -79,7 +79,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
       customEdge
     );
 
-    const { middleBendingPoints, onTemporaryLineDragStop, onTemporaryLineDrag } = useTemporaryLines(
+    const { middleBendingPoints, onTemporaryLineDragStop, onTemporaryLineDrag, onDragStart } = useTemporaryLines(
       id,
       bendingPoints,
       localBendingPoints,
@@ -220,6 +220,7 @@ export const MultiLabelRectilinearEditableEdge = memo(
               direction={point.direction}
               segmentLength={point.segmentLength}
               index={index}
+              onDragStart={onDragStart}
               onDrag={onTemporaryLineDrag}
               onDragStop={onTemporaryLineDragStop}
             />

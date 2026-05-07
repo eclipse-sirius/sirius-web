@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,6 +13,7 @@
 import { InternalNode, Node, Position, XYPosition } from '@xyflow/react';
 import { useEffect, useState } from 'react';
 import { DraggableData } from 'react-draggable';
+import { useStore } from '../../../representation/useStore';
 import { NodeData } from '../../DiagramRenderer.types';
 import { XYPositionSetter } from './MultiLabelRectilinearEditableEdge.types';
 import {
@@ -24,7 +25,7 @@ import {
 } from './RectilinearEdgeCalculation';
 import { BendPointData, LocalBendingPointsSetter } from './useBendingPoints.types';
 import { useEdgeDragStopHandler } from './useEdgeDragStopHandler';
-import { MiddlePoint, UseTemporaryLinesValue, TemporaryLinesState } from './useTemporaryLines.types';
+import { MiddlePoint, TemporaryLinesState, UseTemporaryLinesValue } from './useTemporaryLines.types';
 
 export const useTemporaryLines = (
   edgeId: string,
@@ -43,6 +44,7 @@ export const useTemporaryLines = (
   setTarget: XYPositionSetter
 ): UseTemporaryLinesValue => {
   const { handleDragStop } = useEdgeDragStopHandler();
+  const { setNodes } = useStore();
 
   const [middleBendingPoints, setMiddleBendingPoints] = useState<MiddlePoint[]>([]);
 
@@ -51,6 +53,31 @@ export const useTemporaryLines = (
     isTargetSegment: false,
     dragInProgress: false,
   });
+
+  const onDragStart = () => {
+    setNodes((previousNodes) =>
+      previousNodes.map((previousNode) => {
+        if (previousNode.id === sourceNode.id || previousNode.id === targetNode.id) {
+          return {
+            ...previousNode,
+            data: {
+              ...previousNode.data,
+              connectionHandles: previousNode.data.connectionHandles.map((handle) => {
+                if (handle.edgeId === edgeId) {
+                  return {
+                    ...handle,
+                    isHidden: true,
+                  };
+                }
+                return handle;
+              }),
+            },
+          };
+        }
+        return previousNode;
+      })
+    );
+  };
 
   const onTemporaryLineDragStop = (_eventData: DraggableData, _index: number) => {
     handleDragStop(
@@ -217,6 +244,7 @@ export const useTemporaryLines = (
 
   return {
     middleBendingPoints,
+    onDragStart,
     onTemporaryLineDragStop,
     onTemporaryLineDrag,
   };
