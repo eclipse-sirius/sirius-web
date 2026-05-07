@@ -59,6 +59,10 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - [releng] Switch `@mui/icons-material` to `7.3.10`
 - [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.4`
 - [releng] Switch AQL 8.1.2
+- [releng] Switch to https://github.com/bvaughn/react-resizable-panels/releases/tag/4.6.2[React Resizable Panels 4.6.2].
+This switch enables us to use other units such as `px` or `rem` instead of `%` to specify panels' size.
+It also enables us to disable panel resize for a better control when needed.
+
 
 
 === Bug fixes
@@ -148,6 +152,7 @@ See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6396[#6396] [diagram] The diagram palette now supports fuzzy matching when searching for tools.
 For example entering either `att def` or `NAD` will now find a tool named `New Attribute Definition`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6416[#6416] [sirius-web] Perform the validation of the dependencies when a project is uploaded
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [sirius-web] Add collapsible view in workbench panels, merge view header and toolbar inside the same bar.
 
 
 
