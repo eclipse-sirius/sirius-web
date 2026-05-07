@@ -177,7 +177,9 @@ test.describe('appearance', () => {
     await page.getByTestId('toolSection-Appearance').click();
     await page.locator('[data-testid="toolSection-Appearance-Hide"]').click();
     await playwrightNode.closePalette();
-    await expect(label.labelLocator).not.toBeVisible();
+    await expect(
+      page.locator('[data-testid="Label - DataSource1"]:not(#hidden-node-container *):not(#hidden-label-container *)')
+    ).not.toBeVisible();
   });
 
   test('change rectangular node appearance', async ({ page }) => {

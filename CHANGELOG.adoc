@@ -146,7 +146,7 @@ See ADR-230 for the details.
 - https://github.com/eclipse-sirius/sirius-web/issues/6449[#6449] [tree] The backend tree rendering now filters out empty fragments in item's labels to reduce the amount of data transfered to the frontend.
 - https://github.com/eclipse-sirius/sirius-web/issues/6396[#6396] [diagram] The diagram palette now supports fuzzy matching when searching for tools.
 For example entering either `att def` or `NAD` will now find a tool named `New Attribute Definition`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Move diagram layout configurations from frontend to backend
 
 
 == 2026.3.0

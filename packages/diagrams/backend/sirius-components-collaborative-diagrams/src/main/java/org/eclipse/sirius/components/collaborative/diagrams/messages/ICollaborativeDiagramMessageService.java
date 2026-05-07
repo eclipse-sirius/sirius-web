@@ -49,6 +49,10 @@ public interface ICollaborativeDiagramMessageService {
 
     String handlerNotFound();
 
+    String diagramLayoutFlow();
+
+    String diagramLayoutCompact();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -128,6 +132,16 @@ public interface ICollaborativeDiagramMessageService {
 
         @Override
         public String handlerNotFound() {
+            return "";
+        }
+
+        @Override
+        public String diagramLayoutFlow() {
+            return "";
+        }
+
+        @Override
+        public String diagramLayoutCompact() {
             return "";
         }
     }

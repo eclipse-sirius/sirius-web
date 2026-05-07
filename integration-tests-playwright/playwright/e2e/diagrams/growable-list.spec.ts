@@ -123,7 +123,9 @@ test.describe('diagram - growable list', () => {
 
     await comp3Node.openPalette();
     await page.getByTestId('tool-Hide').click();
-    await expect(page.locator(`[data-testid="FreeForm - ListWithSubNodes"]`)).toHaveCount(3);
+    await expect(page.locator('[data-testid="FreeForm - ListWithSubNodes"]:not(#hidden-node-container *)')).toHaveCount(
+      3
+    );
 
     const comp1Node = new PlaywrightNode(page, 'ListWithSubNodes', 'FreeForm', 0);
     const comp2Node = new PlaywrightNode(page, 'ListWithSubNodes', 'FreeForm', 1);

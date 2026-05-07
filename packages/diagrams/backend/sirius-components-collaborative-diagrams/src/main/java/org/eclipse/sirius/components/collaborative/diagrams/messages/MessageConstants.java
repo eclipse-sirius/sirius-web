@@ -49,6 +49,10 @@ public final class MessageConstants {
 
     public static final String HANDLER_NOT_FOUND = "HANDLER_NOT_FOUND";
 
+    public static final String DIAGRAM_LAYOUT_FLOW = "DIAGRAM_LAYOUT_FLOW";
+
+    public static final String DIAGRAM_LAYOUT_COMPACT = "DIAGRAM_LAYOUT_COMPACT";
+
     private MessageConstants() {
         // Prevent instantiation
     }

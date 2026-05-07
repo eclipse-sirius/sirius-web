@@ -71,10 +71,6 @@
       "unexpected": "An unexpected error has occurred, please refresh the page"
     }
   },
-  "useLayoutConfigurations": {
-    "arrangeAllLayered": "Flow Layout",
-    "arrangeAllRectPacking": "Compact Layout"
-  },
   "usePinDiagramElements": {
     "errors": {
       "unexpected": "An unexpected error has occurred, please refresh the page"

@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
-import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 
 test.describe('diagram - list', () => {
   let projectId;
@@ -39,9 +39,11 @@ test.describe('diagram - list', () => {
 
   test('when a list node is display, then the proper separator are present', async ({ page }) => {
     // Compartment list
-    const borderWidthListCompartment = await page.getByTestId('List - undefined').evaluate((el) => {
-      return el.style.borderWidth;
-    });
+    const borderWidthListCompartment = await page
+      .locator('[data-testid="List - undefined"]:not(#hidden-node-container *)')
+      .evaluate((el) => {
+        return el.style.borderWidth;
+      });
     expect(borderWidthListCompartment).toBe('0px 0px 1px');
 
     // Compartment freeform
