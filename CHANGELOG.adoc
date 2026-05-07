@@ -272,6 +272,7 @@ The key bindings that can be triggered at a given time are computed from the pal
 For example, the tools contained in a given `NodeDescription` can only be triggered via key bindings if the selected diagram element is a node with the given `NodeDescription`.
 The key bindings are visible in the palette next to the tool name.
 A key binding needs to contain at least one of `Control`, `Alt`, or `Meta` to be executed by the frontend.
+For the moment, it is recommended not to use key combinations which can conflict with existing browser actions (e.g. avoid using _Ctrl-d_ for a diagram tool, as it is a standard in most browsers to create a new bookmark).
 - https://github.com/eclipse-sirius/sirius-web/issues/3488[#3488] [diagram] Restore auto-layout support for diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/5062[#5062] [sirius-web] Add new "views explorer" view
 - https://github.com/eclipse-sirius/sirius-web/issues/5982[#5982] [tree] Add the ability to trigger context menu entries using key bindings.
@@ -2427,6 +2428,7 @@ The ids used to create a subscription is also changed, refer to [ADR-159] for mo
 - https://github.com/eclipse-sirius/sirius-web/issues/3934[#3934] [diagram] Remove helper lines when moving pinned elements
 - https://github.com/eclipse-sirius/sirius-web/issues/3907[#3907] [diagram] Fix bad state update in handleNodesChange
 - https://github.com/eclipse-sirius/sirius-web/issues/4079[#4079] [sirius-web] Fix a warning in the console when closing the project's context menu
+- https://github.com/eclipse-sirius/sirius-web/issues/6492[#6492] [sirius-web] Only execute the Explorer's Duplicate object action when invoked from the Explorer view
 
 === New Features
 
