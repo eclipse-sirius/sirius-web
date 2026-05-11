@@ -103,24 +103,33 @@ export const SelectionDialogActions = ({
     }
   }, [loading, selectedTreeItemIds, selectionDialogOption, dialogSelectionRequiredWithSelectionStatusMessage]);
 
+  const isConfirmDisabled =
+    (selectedTreeItemIds.length === 0 || selectedTreeItemIds[0] === '') && selectionDialogOption !== 'NO_SELECTION';
+
   return (
     <DialogActions sx={() => ({ display: 'flex', alignItems: 'center', justifyContent: 'space-between' })}>
       <Typography variant="body1" color="textSecondary" data-testid="status-message">
         {state.statusMessage}
       </Typography>
       <Box sx={(theme) => ({ display: 'flex', gap: theme.spacing(1) })}>
-        <Button variant="outlined" onClick={onClose} data-testid="cancel-action">
+        <Button
+          variant="outlined"
+          sx={{
+            whiteSpace: 'nowrap',
+          }}
+          onClick={onClose}
+          data-testid="cancel-action">
           {t('cancel')}
         </Button>
         <Button
           variant="contained"
-          disabled={
-            (selectedTreeItemIds.length === 0 || selectedTreeItemIds[0] === '') &&
-            selectionDialogOption !== 'NO_SELECTION'
-          }
-          data-testid="confirm-action"
           color="primary"
-          onClick={onConfirm}>
+          sx={{
+            whiteSpace: 'nowrap',
+          }}
+          onClick={onConfirm}
+          disabled={isConfirmDisabled}
+          data-testid="confirm-action">
           {state.confirmButtonLabel}
         </Button>
       </Box>

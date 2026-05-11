@@ -95,7 +95,7 @@ export const SelectionDialog = ({
       open
       onClose={onClose}
       aria-labelledby="dialog-title"
-      maxWidth="md"
+      maxWidth="sm"
       fullWidth
       data-testid="selection-dialog"
       slotProps={{
