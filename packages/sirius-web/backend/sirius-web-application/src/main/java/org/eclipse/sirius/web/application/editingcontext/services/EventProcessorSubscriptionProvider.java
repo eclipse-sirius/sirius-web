@@ -31,7 +31,6 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectEditingCo
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
@@ -43,6 +42,7 @@ import reactor.core.scheduler.Scheduler;
  * @author gcoutable
  */
 @Service
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class EventProcessorSubscriptionProvider implements IEventProcessorSubscriptionProvider {
 
     private final IEditingContextEventProcessorRegistry editingContextEventProcessorRegistry;
@@ -74,9 +74,6 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
 
     @Override
     public Flux<IPayload> getSubscription(String editingContextId, String representationId, IInput input) {
-        MDC.put("editingContextId", editingContextId);
-        MDC.put("representationId", representationId);
-
         var canView = false;
         var optionalProjectId = this.projectEditingContextService.getProjectId(editingContextId);
         if (optionalProjectId.isPresent()) {
@@ -92,6 +89,8 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
             this.logger.atWarn()
                     .setMessage("Access denied to payload flux for representation {}")
                     .addArgument(representationId)
+                    .addKeyValue("editingContextId", editingContextId)
+                    .addKeyValue("representationId", representationId)
                     .log();
             return Flux.just(new ErrorPayload(input.id(), this.messageService.unauthorized()));
         }
@@ -104,15 +103,17 @@ public class EventProcessorSubscriptionProvider implements IEventProcessorSubscr
             this.logger.atInfo()
                     .setMessage("Payload flux for representation {} retrieved")
                     .addArgument(representationId)
+                    .addKeyValue("editingContextId", editingContextId)
+                    .addKeyValue("representationId", representationId)
                     .log();
         } else {
             this.logger.atWarn()
                     .setMessage("Payload flux for representation {} not found")
                     .addArgument(representationId)
+                    .addKeyValue("editingContextId", editingContextId)
+                    .addKeyValue("representationId", representationId)
                     .log();
         }
-
-        MDC.clear();
 
         return optionalPayloadFlux
                 .orElse(Flux.empty())
