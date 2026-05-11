@@ -85,6 +85,7 @@ import { useResizeChange } from './resize/useResizeChange';
 import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useLastElementSelectedChange } from './selection/useLastElementSelectedChange';
 import { useOnRightClickElement } from './selection/useOnRightClickElement';
+import { usePostToolSelection } from './selection/usePostToolSelection';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
 import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 import { DiagramToolbar } from './toolbar/DiagramToolbar';
@@ -92,7 +93,7 @@ import { DiagramToolbar } from './toolbar/DiagramToolbar';
 const GRID_STEP: number = 10;
 
 export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRendererProps) => {
-  const { readOnly, consumePostToolSelection, toolSelections } = useContext<DiagramContextValue>(DiagramContext);
+  const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { diagramDescription } = useDiagramDescription();
   const { getEdges, onEdgesChange, getNodes, setEdges, setNodes } = useStore();
   const nodes = getNodes();
@@ -122,12 +123,13 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   useInitialFitToScreen(diagramRefreshedEventPayload.diagram.nodes.length === 0);
   useResetXYFlowConnection();
+  usePostToolSelection(diagramRefreshedEventPayload);
   const { getNode } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   useEffect(() => {
-    const { id, diagram, cause, referencePosition } = diagramRefreshedEventPayload;
-    const selectionFromTool = consumePostToolSelection(id);
+    const { diagram, cause, referencePosition } = diagramRefreshedEventPayload;
+
     const convertedDiagram: Diagram = convertDiagram(
       diagram,
       referencePosition,
@@ -165,58 +167,21 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     });
     const { nodeLookup, edgeLookup } = store.getState();
     if (cause === 'layout') {
-      // Apply the new graphical selection, either from the applicable selectionFromTool, or from the previous state of the diagram
-      const semanticElementsSelected: Set<string> = new Set();
-      const shouldSelectNode = (node: Node<NodeData>) => {
-        const result =
-          !node.hidden &&
-          (selectionFromTool
-            ? selectionFromTool.entries.some(
-                (entry) =>
-                  entry.id === node.data.targetObjectId && !semanticElementsSelected.has(node.data.targetObjectId)
-              )
-            : nodeLookup.get(node.id)?.selected);
-        if (selectionFromTool && result) {
-          // If we "auto-select" a node because it matches what a previous tool invocation
-          // asked, we only select the first matching diagram element we find and ignore the rest,
-          // even if the new diagram shows the requested semantic element through multiple
-          // nodes.
-          semanticElementsSelected.add(node.data.targetObjectId);
-        }
-        return result;
-      };
-      const shouldSelectEdge = (edge: Edge<EdgeData>) => {
-        const result =
-          !edge.hidden &&
-          (selectionFromTool
-            ? selectionFromTool.entries.some(
-                (entry) =>
-                  entry.id === edge.data?.targetObjectId && !semanticElementsSelected.has(edge.data.targetObjectId)
-              )
-            : edgeLookup.get(edge.id)?.selected);
-        if (selectionFromTool && result && edge.data?.targetObjectId) {
-          semanticElementsSelected.add(edge.data.targetObjectId);
-        }
-        return result;
-      };
-      convertedDiagram.nodes = convertedDiagram.nodes.map((node) => ({
-        ...node,
-        selected: shouldSelectNode(node),
-        data: {
-          ...node.data,
-          isLastNodeSelected: !!getNode(node.id)?.data.isLastNodeSelected,
-        },
-      }));
-      convertedDiagram.edges = convertedDiagram.edges.map((edge) => ({
-        ...edge,
-        selected: shouldSelectEdge(edge),
-      }));
+      setEdges((previousEdges) => {
+        return convertedDiagram.edges.map((convertedEdge) => {
+          const previousEdge = previousEdges.find((edge) => edge.id === convertedEdge.id);
+          if (previousEdge) {
+            convertedEdge.selected = previousEdge.selected;
+          }
+          return convertedEdge;
+        });
+      });
 
-      setEdges(convertedDiagram.edges);
       setNodes((previousNodes) => {
         return convertedDiagram.nodes.map((convertedNode) => {
           const previousNode = previousNodes.find((n) => n.id === convertedNode.id);
           if (previousNode) {
+            convertedNode.selected = previousNode.selected;
             convertedNode.data.isDraggedNode = previousNode.data.isDraggedNode;
             convertedNode.data.isDragNodeSource = previousNode.data.isDragNodeSource;
             convertedNode.data.isDropNodeTarget = previousNode.data.isDropNodeTarget;
@@ -283,69 +248,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     if (convertedDiagram.style.background) {
       setBackground(String(convertedDiagram.style.background));
     }
-    if (selectionFromTool) {
-      setSelection(selectionFromTool);
-    }
-  }, [diagramRefreshedEventPayload, diagramDescription, setSelection]);
-
-  useEffect(() => {
-    if (toolSelections.has(diagramRefreshedEventPayload.id)) {
-      const { nodeLookup, edgeLookup } = store.getState();
-      const selectionFromTool = toolSelections.get(diagramRefreshedEventPayload.id);
-      // Apply the new graphical selection, either from the applicable selectionFromTool, or from the previous state of the diagram
-      const semanticElementsSelected: Set<string> = new Set();
-      const shouldSelectNode = (node: Node<NodeData>) => {
-        const result =
-          !node.hidden &&
-          (selectionFromTool
-            ? selectionFromTool.entries.some(
-                (entry) =>
-                  entry.id === node.data.targetObjectId && !semanticElementsSelected.has(node.data.targetObjectId)
-              )
-            : nodeLookup.get(node.id)?.selected);
-        if (selectionFromTool && result) {
-          // If we "auto-select" a node because it matches what a previous tool invocation
-          // asked, we only select the first matching diagram element we find and ignore the rest,
-          // even if the new diagram shows the requested semantic element through multiple
-          // nodes.
-          semanticElementsSelected.add(node.data.targetObjectId);
-        }
-        return result;
-      };
-      const shouldSelectEdge = (edge: Edge<EdgeData>) => {
-        const result =
-          !edge.hidden &&
-          (selectionFromTool
-            ? selectionFromTool.entries.some(
-                (entry) =>
-                  entry.id === edge.data?.targetObjectId && !semanticElementsSelected.has(edge.data.targetObjectId)
-              )
-            : edgeLookup.get(edge.id)?.selected);
-        if (selectionFromTool && result && edge.data?.targetObjectId) {
-          semanticElementsSelected.add(edge.data.targetObjectId);
-        }
-        return result;
-      };
-      const newNodes = getNodes().map((node) => ({
-        ...node,
-        selected: shouldSelectNode(node),
-        data: {
-          ...node.data,
-          isLastNodeSelected: !!getNode(node.id)?.data.isLastNodeSelected,
-        },
-      }));
-      const newEdges = getEdges().map((edge) => ({
-        ...edge,
-        selected: shouldSelectEdge(edge),
-      }));
-      setEdges(newEdges);
-      setNodes(newNodes);
-      toolSelections.delete(diagramRefreshedEventPayload.id);
-      if (selectionFromTool) {
-        setSelection(selectionFromTool);
-      }
-    }
-  }, [toolSelections]);
+  }, [diagramRefreshedEventPayload, diagramDescription]);
 
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
