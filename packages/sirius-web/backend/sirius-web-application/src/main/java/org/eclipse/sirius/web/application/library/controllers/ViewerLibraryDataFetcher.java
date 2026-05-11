@@ -22,7 +22,6 @@ import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
 import org.eclipse.sirius.web.application.library.services.api.ILibraryApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import graphql.schema.DataFetchingEnvironment;
 
@@ -32,6 +31,7 @@ import graphql.schema.DataFetchingEnvironment;
  * @author mcharfadi
  */
 @QueryDataFetcher(type = "Viewer", field = "library")
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ViewerLibraryDataFetcher implements IDataFetcherWithFieldCoordinates<LibraryDTO> {
 
     private static final String INPUT_ARGUMENT_NAMESPACE = "namespace";
@@ -57,10 +57,6 @@ public class ViewerLibraryDataFetcher implements IDataFetcherWithFieldCoordinate
         String name = environment.getArgument(INPUT_ARGUMENT_NAME);
         String version = environment.getArgument(INPUT_ARGUMENT_VERSION);
 
-        MDC.put("namespace", namespace);
-        MDC.put("name", name);
-        MDC.put("version", version);
-
         String libraryIdentifier = String.format("%s:%s:%s", namespace, name, version);
         var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.LIBRARY, libraryIdentifier, SiriusWebCapabilities.Library.VIEW);
         if (!hasCapability) {
@@ -69,6 +65,9 @@ public class ViewerLibraryDataFetcher implements IDataFetcherWithFieldCoordinate
                     .addArgument(namespace)
                     .addArgument(name)
                     .addArgument(version)
+                    .addKeyValue("namespace", namespace)
+                    .addKeyValue("name", name)
+                    .addKeyValue("version", version)
                     .addKeyValue("capabilityType", SiriusWebCapabilities.LIBRARY)
                     .addKeyValue("capability", SiriusWebCapabilities.Library.VIEW)
                     .log();
@@ -83,6 +82,9 @@ public class ViewerLibraryDataFetcher implements IDataFetcherWithFieldCoordinate
                     .addArgument(namespace)
                     .addArgument(name)
                     .addArgument(version)
+                    .addKeyValue("namespace", namespace)
+                    .addKeyValue("name", name)
+                    .addKeyValue("version", version)
                     .log();
         } else {
             this.logger.atWarn()
@@ -90,10 +92,11 @@ public class ViewerLibraryDataFetcher implements IDataFetcherWithFieldCoordinate
                     .addArgument(namespace)
                     .addArgument(name)
                     .addArgument(version)
+                    .addKeyValue("namespace", namespace)
+                    .addKeyValue("name", name)
+                    .addKeyValue("version", version)
                     .log();
         }
-
-        MDC.clear();
 
         return optionalLibrary.orElse(null);
     }

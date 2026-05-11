@@ -25,7 +25,6 @@ import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 
 import graphql.execution.DataFetcherResult;
 import graphql.schema.DataFetchingEnvironment;
@@ -36,6 +35,7 @@ import graphql.schema.DataFetchingEnvironment;
  * @author sbegaudeau
  */
 @QueryDataFetcher(type = "Viewer", field = "project")
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinates<DataFetcherResult<ProjectDTO>> {
 
     private static final String PROJECT_ID_ARGUMENT = "projectId";
@@ -55,13 +55,12 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
     public DataFetcherResult<ProjectDTO> get(DataFetchingEnvironment environment) throws Exception {
         String projectId = environment.getArgument(PROJECT_ID_ARGUMENT);
 
-        MDC.put("projectId", projectId);
-
         var hasCapability = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, projectId, SiriusWebCapabilities.Project.VIEW);
         if (!hasCapability) {
             this.logger.atWarn()
                     .setMessage("Access denied to project {}")
                     .addArgument(projectId)
+                    .addKeyValue("projectId", projectId)
                     .addKeyValue("capabilityType", SiriusWebCapabilities.PROJECT)
                     .addKeyValue("capability", SiriusWebCapabilities.Project.VIEW)
                     .log();
@@ -76,6 +75,7 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
             this.logger.atInfo()
                     .setMessage("Project {} retrieved")
                     .addArgument(projectId)
+                    .addKeyValue("projectId", projectId)
                     .log();
 
             Map<String, Object> localContext = new HashMap<>();
@@ -89,10 +89,9 @@ public class ViewerProjectDataFetcher implements IDataFetcherWithFieldCoordinate
             this.logger.atWarn()
                     .setMessage("Project {} not found")
                     .addArgument(projectId)
+                    .addKeyValue("projectId", projectId)
                     .log();
         }
-
-        MDC.clear();
 
         return result;
     }
