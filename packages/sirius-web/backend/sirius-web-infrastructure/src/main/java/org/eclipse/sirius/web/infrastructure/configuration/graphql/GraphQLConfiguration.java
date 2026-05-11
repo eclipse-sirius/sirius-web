@@ -13,14 +13,15 @@
 package org.eclipse.sirius.web.infrastructure.configuration.graphql;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.InstantScalarType;
 import org.eclipse.sirius.components.graphql.api.UploadScalarType;
+import org.eclipse.sirius.web.infrastructure.configuration.graphql.api.IGraphQLInstrumentationProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,7 @@ import graphql.execution.AsyncSerialExecutionStrategy;
 import graphql.execution.DataFetcherExceptionHandler;
 import graphql.execution.ExecutionStrategy;
 import graphql.execution.SubscriptionExecutionStrategy;
-import graphql.execution.instrumentation.tracing.TracingInstrumentation;
+import graphql.execution.instrumentation.ChainedInstrumentation;
 import graphql.schema.GraphQLCodeRegistry;
 import graphql.schema.GraphQLSchema;
 import graphql.schema.idl.RuntimeWiring;
@@ -64,7 +65,7 @@ public class GraphQLConfiguration {
     }
 
     @Bean
-    public GraphQL graphQL(GraphQLSchema graphQLSchema, DataFetcherExceptionHandler dataFetcherExceptionHandler, @Value("${sirius.web.graphql.tracing:false}") boolean activateTracing) {
+    public GraphQL graphQL(GraphQLSchema graphQLSchema, DataFetcherExceptionHandler dataFetcherExceptionHandler, List<IGraphQLInstrumentationProvider> graphQLInstrumentationProviders) {
         var options = SchemaPrinter.Options.defaultOptions();
         String schema = new SchemaPrinter(options).print(graphQLSchema);
 
@@ -78,17 +79,17 @@ public class GraphQLConfiguration {
         ExecutionStrategy mutationExecutionStrategy = new AsyncSerialExecutionStrategy(dataFetcherExceptionHandler);
         ExecutionStrategy subscriptionExecutionStrategy = new SubscriptionExecutionStrategy(dataFetcherExceptionHandler);
 
-        var graphQLJavaBuilder = GraphQL.newGraphQL(graphQLSchema)
+        var instrumentations = graphQLInstrumentationProviders.stream()
+                .map(IGraphQLInstrumentationProvider::getInstrumentations)
+                .flatMap(Collection::stream)
+                .toList();
+
+        return GraphQL.newGraphQL(graphQLSchema)
                 .queryExecutionStrategy(queryExecutionStrategy)
                 .mutationExecutionStrategy(mutationExecutionStrategy)
-                .subscriptionExecutionStrategy(subscriptionExecutionStrategy);
-
-        if (activateTracing) {
-            var tracingOptions = TracingInstrumentation.Options.newOptions().includeTrivialDataFetchers(false);
-            graphQLJavaBuilder.instrumentation(new TracingInstrumentation(tracingOptions));
-        }
-
-        return graphQLJavaBuilder.build();
+                .subscriptionExecutionStrategy(subscriptionExecutionStrategy)
+                .instrumentation(new ChainedInstrumentation(instrumentations))
+                .build();
     }
 
     @Bean

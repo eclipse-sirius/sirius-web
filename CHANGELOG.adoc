@@ -40,6 +40,7 @@
 === Improvements
 
 - [releng] Fix the diagram image server Dockerfile
+- https://github.com/eclipse-sirius/sirius-web/issues/6521[#6521] [sirius-web] Add the ability to contribute additional GraphQL instrumentations
 
 
 
