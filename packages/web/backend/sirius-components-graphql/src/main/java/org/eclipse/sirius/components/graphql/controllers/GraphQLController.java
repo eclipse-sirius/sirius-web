@@ -126,14 +126,12 @@ public class GraphQLController {
         this.objectMapper = Objects.requireNonNull(objectMapper);
         this.graphQL = Objects.requireNonNull(graphQL);
 
-        // @formatter:off
         this.graphQLRequestTimer = Timer.builder(METRIC_NAME)
                 .tag(KIND, "request")
                 .register(meterRegistry);
         this.graphQLUploadTimer = Timer.builder(METRIC_NAME)
                 .tag(KIND, "upload")
                 .register(meterRegistry);
-        // @formatter:on
     }
 
     @PostMapping
@@ -142,13 +140,11 @@ public class GraphQLController {
         Map<String, Object> variables = Optional.ofNullable(graphQLPayload.getVariables()).orElse(Map.of());
         String operationName = graphQLPayload.getOperationName();
 
-        // @formatter:off
         ExecutionInput executionInput = ExecutionInput.newExecutionInput()
                 .query(query)
                 .variables(variables)
                 .operationName(operationName)
                 .build();
-        // @formatter:on
 
         long start = System.currentTimeMillis();
         ExecutionResult executionResult = this.graphQL.execute(executionInput);
