@@ -39,8 +39,8 @@ import org.eclipse.sirius.web.data.TestIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
-import org.eclipse.sirius.web.tests.graphql.DeleteProjectMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.CreateProjectExecutor;
+import org.eclipse.sirius.web.tests.graphql.DeleteProjectExecutor;
 import org.eclipse.sirius.web.tests.graphql.RenameProjectMutationRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.Assertions;
@@ -49,6 +49,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -85,10 +86,10 @@ public class ProjectControllerWithDemoProfileIntegrationTests extends AbstractIn
     private int port;
 
     @Autowired
-    private CreateProjectMutationRunner createProjectMutationRunner;
+    private CreateProjectExecutor createProjectExecutor;
 
     @Autowired
-    private DeleteProjectMutationRunner deleteProjectMutationRunner;
+    private DeleteProjectExecutor deleteProjectExecutor;
 
     @Autowired
     private IProjectRepository projectRepository;
@@ -107,29 +108,17 @@ public class ProjectControllerWithDemoProfileIntegrationTests extends AbstractIn
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given the demo profile, when a mutation to create a project is performed, then it returns an error payload")
-    public void givenTheDemoProfileWhenAMutationToCreateAProjectIsPerformedThenItReturnsAnErrorPayload() {
+    public void givenTheDemoProfileWhenAMutationToCreateAProjectIsPerformedThenItReturnsAnErrorPayload(CapturedOutput capturedOutput) {
         var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of());
-        var result = this.createProjectMutationRunner.run(input);
-
-        String typeName = JsonPath.read(result.data(), "$.data.createProject.__typename");
-        assertThat(typeName).isEqualTo(ErrorPayload.class.getSimpleName());
-
-        String message = JsonPath.read(result.data(), "$.data.createProject.message");
-        assertThat(message).isEqualTo(this.messageService.unauthorized());
+        this.createProjectExecutor.execute(input, capturedOutput).isCapabilityError();
     }
 
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given the demo profile, when a mutation to delete a project is performed, then it returns an error payload")
-    public void givenTheDemoProfileWhenAMutationToDeleteAProjectIsPerformedThenItReturnsAnErrorPayload() {
+    public void givenTheDemoProfileWhenAMutationToDeleteAProjectIsPerformedThenItReturnsAnErrorPayload(CapturedOutput capturedOutput) {
         var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.SYSML_SAMPLE_PROJECT);
-        var result = this.deleteProjectMutationRunner.run(input);
-
-        String typeName = JsonPath.read(result.data(), "$.data.deleteProject.__typename");
-        assertThat(typeName).isEqualTo(ErrorPayload.class.getSimpleName());
-
-        String message = JsonPath.read(result.data(), "$.data.deleteProject.message");
-        assertThat(message).isEqualTo(this.messageService.unauthorized());
+        this.deleteProjectExecutor.execute(input, capturedOutput).isCapabilityError();
 
         var project = this.projectRepository.findById(TestIdentifiers.SYSML_SAMPLE_PROJECT);
         assertThat(project).isPresent();

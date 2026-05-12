@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,6 @@ import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateContext;
 import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
@@ -32,7 +31,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.Project
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.papaya.projecttemplates.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
+import org.eclipse.sirius.web.tests.graphql.CreateProjectExecutor;
 import org.eclipse.sirius.web.tests.graphql.ProjectTemplatesQueryRunner;
 import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,8 +39,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
-import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -60,7 +59,7 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     private ProjectTemplatesQueryRunner projectTemplatesQueryRunner;
 
     @Autowired
-    private CreateProjectMutationRunner createProjectMutationRunner;
+    private CreateProjectExecutor createProjectExecutor;
 
     @Autowired
     private IEditingContextSearchService editingContextSearchService;
@@ -130,18 +129,11 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given a project to create from a template, when the mutation is performed, then the project is created")
-    public void givenProjectToCreateFromTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
+    public void givenProjectToCreateFromTemplateWhenMutationIsPerformedThenTheProjectIsCreated(CapturedOutput capturedOutput) {
         var input = new CreateProjectInput(UUID.randomUUID(), "Studio", StudioProjectTemplateProvider.STUDIO_TEMPLATE_ID, List.of());
-        var result = this.createProjectMutationRunner.run(input);
-
-        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
-        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
-
-        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
-        assertThat(projectId).isNotBlank();
+        var projectId = this.createProjectExecutor.execute(input, capturedOutput)
+                .isSuccess()
+                .getProjectId();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
                 .map(ProjectSemanticData::getSemanticData)
@@ -161,18 +153,11 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
     @Test
     @GivenSiriusWebServer
     @DisplayName("Given the papaya project template, when the mutation is performed, then the project is created")
-    public void givenPapayaProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated() {
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-
+    public void givenPapayaProjectTemplateWhenMutationIsPerformedThenTheProjectIsCreated(CapturedOutput capturedOutput) {
         var input = new CreateProjectInput(UUID.randomUUID(), "Papaya - Performance", PapayaProjectTemplateProvider.BENCHMARK_PROJECT_TEMPLATE_ID, List.of());
-        var result = this.createProjectMutationRunner.run(input);
-
-        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
-        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
-
-        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
-        assertThat(projectId).isNotBlank();
+        var projectId = this.createProjectExecutor.execute(input, capturedOutput)
+                .isSuccess()
+                .getProjectId();
 
         var optionalEditingContext = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
                 .map(ProjectSemanticData::getSemanticData)

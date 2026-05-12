@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,34 +22,18 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.ErrorPayload;
-import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectInput;
-import org.eclipse.sirius.web.application.project.dto.CreateProjectSuccessPayload;
-import org.eclipse.sirius.web.application.project.dto.DeleteProjectInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectEventInput;
 import org.eclipse.sirius.web.application.project.dto.ProjectRenamedEventPayload;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectInput;
 import org.eclipse.sirius.web.application.project.dto.RenameProjectSuccessPayload;
-import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateProvider;
-import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.data.StudioIdentifiers;
 import org.eclipse.sirius.web.data.TestIdentifiers;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectCreatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.project.events.ProjectDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
-import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataDeletedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataDeletedEvent;
-import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
-import org.eclipse.sirius.web.tests.graphql.CreateProjectMutationRunner;
-import org.eclipse.sirius.web.tests.graphql.DeleteProjectMutationRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectEventSubscriptionRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.ProjectsQueryRunner;
@@ -61,7 +45,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.ScrollPosition;
-import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.test.context.transaction.TestTransaction;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -85,13 +68,7 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
     private ProjectsQueryRunner projectsQueryRunner;
 
     @Autowired
-    private CreateProjectMutationRunner createProjectMutationRunner;
-
-    @Autowired
     private RenameProjectMutationRunner renameProjectMutationRunner;
-
-    @Autowired
-    private DeleteProjectMutationRunner deleteProjectMutationRunner;
 
     @Autowired
     private ProjectEventSubscriptionRunner projectEventSubscriptionRunner;
@@ -337,31 +314,6 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given a valid project to create, when the mutation is performed, then the project is created")
-    public void givenValidProjectToCreateWhenMutationIsPerformedThenProjectIsCreated() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of());
-        var result = this.createProjectMutationRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
-        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
-
-        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
-
-        var optionalProject = this.projectSearchService.findById(projectId);
-        assertThat(optionalProject).isPresent();
-        optionalProject.ifPresent(project -> assertThat(project.getName()).isEqualTo(input.name()));
-
-        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(3);
-        var event = this.domainEventCollector.getDomainEvents().get(0);
-        assertThat(event).isInstanceOf(ProjectCreatedEvent.class);
-    }
-
-    @Test
-    @GivenSiriusWebServer
     @DisplayName("Given a valid input, when a forward findAll is performed, then the returned window contains the projects after the input project")
     public void givenAValidInputWhenAForwardFindallIsPerformedThenTheReturnedWindowContainsTheProjectsAfterTheInputProject() {
         var keyset = ScrollPosition.forward(Map.of("id", TestIdentifiers.ECORE_SAMPLE_PROJECT));
@@ -399,90 +351,6 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
         var window = this.projectSearchService.findAll(ScrollPosition.keyset(), 0, Map.of());
         assertThat(window).isNotNull();
         assertThat(window.size()).isZero();
-    }
-
-    @Test
-    @GivenSiriusWebServer
-    @DisplayName("Given a valid project to create, when the mutation is performed, then the semantic data are created")
-    public void givenValidProjectToCreateWhenMutationIsPerformedThenTheSemanticDataAreCreated() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of());
-        var result = this.createProjectMutationRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        assertThat(this.domainEventCollector.getDomainEvents()).hasSize(3);
-        var event = this.domainEventCollector.getDomainEvents().get(0);
-        assertThat(event).isInstanceOf(ProjectCreatedEvent.class);
-
-        String typename = JsonPath.read(result.data(), "$.data.createProject.__typename");
-        assertThat(typename).isEqualTo(CreateProjectSuccessPayload.class.getSimpleName());
-
-        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
-
-        var exists = this.projectSearchService.existsById(projectId);
-        assertThat(exists).isTrue();
-    }
-
-    @Test
-    @GivenSiriusWebServer
-    @DisplayName("Given a project to create with libraries, when mutation is performed, then the libraries are present")
-    public void givenProjectToCreateWithLibrariesWhenMutationIsPerformedThenTheLibrariesArePresent() {
-        var input = new CreateProjectInput(UUID.randomUUID(), "New Project", BlankProjectTemplateProvider.BLANK_PROJECT_TEMPLATE_ID, List.of(PapayaIdentifiers.PAPAYA_JAVA_LIBRARY_ID.toString()));
-        var result = this.createProjectMutationRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        List<Class<?>> expectedEvent = List.of(CreateProjectInput.class, SemanticDataCreatedEvent.class, SemanticDataUpdatedEvent.class);
-        assertThat(this.domainEventCollector.getDomainEvents()).hasSizeGreaterThan(0);
-        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(event -> expectedEvent.contains(event.getClass()));
-
-        String projectId = JsonPath.read(result.data(), "$.data.createProject.project.id");
-        var projectDependencies = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
-                .map(ProjectSemanticData::getSemanticData)
-                .map(AggregateReference::getId)
-                .flatMap(this.semanticDataSearchService::findById)
-                .stream()
-                .flatMap(semanticData -> semanticData.getDependencies().stream())
-                .map(SemanticDataDependency::dependencySemanticDataId)
-                .map(AggregateReference::getId)
-                .toList();
-        assertThat(projectDependencies).anyMatch(PapayaIdentifiers.PAPAYA_LIBRARY_EDITING_CONTEXT_ID::equals);
-    }
-
-    @Test
-    @GivenSiriusWebServer
-    @DisplayName("Given an existing project to delete, when the mutation is performed, then the project is deleted")
-    public void givenExistingProjectToDeleteWhenMutationIsPerformedThenProjectIsDeleted() {
-        assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isTrue();
-
-        var optionalSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(TestIdentifiers.UML_SAMPLE_PROJECT))
-                .map(ProjectSemanticData::getSemanticData)
-                .map(AggregateReference::getId)
-                .flatMap(this.semanticDataSearchService::findById);
-
-        assertThat(optionalSemanticData).isPresent();
-        var semanticData = optionalSemanticData.get();
-
-        var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.UML_SAMPLE_PROJECT);
-        var result = this.deleteProjectMutationRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        String typename = JsonPath.read(result.data(), "$.data.deleteProject.__typename");
-        assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
-
-        assertThat(this.projectSearchService.existsById(TestIdentifiers.UML_SAMPLE_PROJECT)).isFalse();
-        assertThat(this.semanticDataSearchService.findById(semanticData.getId())).isEmpty();
-
-        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(ProjectDeletedEvent.class::isInstance);
-        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(ProjectSemanticDataDeletedEvent.class::isInstance);
-        assertThat(this.domainEventCollector.getDomainEvents()).anyMatch(SemanticDataDeletedEvent.class::isInstance);
     }
 
     @Test
@@ -544,23 +412,6 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
 
     @Test
     @GivenSiriusWebServer
-    @DisplayName("Given an invalid project to delete, when the mutation is performed, then an error is returned")
-    public void givenAnInvalidProjectToDeleteWhenMutationIsPerformedThenErrorIsReturned() {
-        var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.INVALID_PROJECT);
-        var result = this.deleteProjectMutationRunner.run(input);
-
-        TestTransaction.flagForCommit();
-        TestTransaction.end();
-        TestTransaction.start();
-
-        String typename = JsonPath.read(result.data(), "$.data.deleteProject.__typename");
-        assertThat(typename).isEqualTo(ErrorPayload.class.getSimpleName());
-
-        assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
-    }
-
-    @Test
-    @GivenSiriusWebServer
     @DisplayName("Given a project, when the project is renamed, then a project event is emitted")
     public void givenProjectWhenTheProjectIsRenamedThenProjectEventIsEmitted() {
         var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
@@ -588,27 +439,4 @@ public class ProjectControllerIntegrationTests extends AbstractIntegrationTests 
                 .verify(Duration.ofSeconds(5));
     }
 
-    @Test
-    @GivenSiriusWebServer
-    @DisplayName("Given a project, when the project is deleted, then the project event is completed")
-    public void givenProjectWhenTheProjectIsDeletedThenTheProjectEventIsCompleted() {
-        var projectEventInput = new ProjectEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
-        var flux = this.projectEventSubscriptionRunner.run(projectEventInput).flux();
-
-        var input = new DeleteProjectInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_PROJECT);
-        Runnable deleteProjectTask = () -> {
-            var result = this.deleteProjectMutationRunner.run(input);
-            String typename = JsonPath.read(result.data(), "$.data.deleteProject.__typename");
-            assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
-
-            TestTransaction.flagForCommit();
-            TestTransaction.end();
-            TestTransaction.start();
-        };
-
-        StepVerifier.create(flux)
-                .then(deleteProjectTask)
-                .expectComplete()
-                .verify(Duration.ofSeconds(5));
-    }
 }
