@@ -55,6 +55,8 @@ public final class StylesFactory {
 
     private static final String DEFAULT_TRANSPARENT_COLOR = "transparent";
 
+    private static final String DEFAULT_BACKGROUND_COLOR = "white";
+
     private final List<INodeStyleProvider> nodeStyleProviders;
 
     private final ILabelService labelService;
@@ -132,7 +134,7 @@ public final class StylesFactory {
                         .filter(FixedColor.class::isInstance)
                         .map(FixedColor.class::cast)
                         .map(FixedColor::getValue)
-                        .orElse(DEFAULT_TRANSPARENT_COLOR))
+                        .orElse(DEFAULT_BACKGROUND_COLOR))
                 .build();
     }
 
@@ -141,7 +143,6 @@ public final class StylesFactory {
         switch (this.getNodeType(nodeStyle)) {
             case NodeType.NODE_ICON_LABEL:
                 result = IconLabelNodeStyle.newIconLabelNodeStyle()
-                        .background("transparent")
                         .childrenLayoutStrategy(childrenLayoutStrategy)
                         .background(DEFAULT_TRANSPARENT_COLOR)
                         .build();

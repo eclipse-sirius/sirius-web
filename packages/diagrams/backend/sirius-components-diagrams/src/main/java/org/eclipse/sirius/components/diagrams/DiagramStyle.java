@@ -46,7 +46,7 @@ public final class DiagramStyle {
     @SuppressWarnings("checkstyle:HiddenField")
     public static final class Builder {
 
-        private String background = "transparent";
+        private String background = "white";
 
         public Builder background(String background) {
             this.background = Objects.requireNonNull(background);

@@ -79,8 +79,9 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - https://github.com/eclipse-sirius/sirius-web/issues/6451[#6451] [tree] Fix an issue where the wrong `ISingleClickTreeItemContextMenuEntryExecutor` could be selected
 - https://github.com/eclipse-sirius/sirius-web/issues/6482[#6482] [diagram] Fix an issue where the handles of an edge on edge could have the wrong position
 - https://github.com/eclipse-sirius/sirius-web/issues/6481[#6481] [core] Fix renaming in the views panel where the text field was not displaying the current value.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6476[#6476] [diagram] Prevent the background color from always being black in full-screen mode
 - https://github.com/eclipse-sirius/sirius-web/issues/6474[#6474] Move tooltip on explorer items to avoid clicking on it during explorer navigation.
+
 
 === New Features
 
@@ -99,6 +100,7 @@ Specifiers can now use `SemanticDecoratorDescription` to define decorators that 
 The decorator also accepts a `preconditionExpression` to further detail when it should be displayed.
 - https://github.com/eclipse-sirius/sirius-web/issues/6412[#6412] [diagram] Support the placement of edges on edges along the same edge with individual positions.
 - https://github.com/eclipse-sirius/sirius-web/issues/6469[#6469] [diagram] Add orthogonal layout configuration
+
 
 === Improvements
 
