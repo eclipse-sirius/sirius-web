@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,8 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.widget.reference.ReferenceValue;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -54,6 +56,8 @@ public class RemoveReferenceValueEventHandler implements IFormEventHandler {
     private final Counter counter;
 
     private final IFormQueryService formQueryService;
+
+    private final Logger logger = LoggerFactory.getLogger(RemoveReferenceValueEventHandler.class);
 
     public RemoveReferenceValueEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, MeterRegistry meterRegistry) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
@@ -97,9 +101,23 @@ public class RemoveReferenceValueEventHandler implements IFormEventHandler {
                         .orElse(new Failure(""));
             }
             if (status instanceof Success success) {
+                this.logger.atInfo()
+                        .setMessage("Value removed from the reference widget")
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .addKeyValue("representationId", input.representationId())
+                        .addKeyValue("widgetId", input.referenceWidgetId())
+                        .log();
+
                 changeDescription = new ChangeDescription(success.getChangeKind(), formInput.representationId(), formInput, success.getParameters());
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
             } else if (status instanceof Failure failure) {
+                this.logger.atWarn()
+                        .setMessage("Removal of the value in the reference widget failed")
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .addKeyValue("representationId", input.representationId())
+                        .addKeyValue("widgetId", input.referenceWidgetId())
+                        .log();
+
                 payload = new ErrorPayload(formInput.id(), failure.getMessages());
             }
         }

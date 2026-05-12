@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,8 @@ import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.I
 import org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api.IProjectImageUpdateService;
 import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.Success;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author sbegaudeau
  */
 @Service
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class ProjectImageApplicationService implements IProjectImageApplicationService {
 
     private final IProjectImageSearchService projectImageSearchService;
@@ -56,7 +59,10 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
 
     private final IProjectImageMapper projectImageMapper;
 
-    public ProjectImageApplicationService(IProjectImageSearchService projectImageSearchService, IProjectImageCreationService projectImageCreationService, IProjectImageUpdateService projectImageUpdateService, IProjectImageDeletionService projectImageDeletionService, IProjectImageMapper projectImageMapper) {
+    private final Logger logger = LoggerFactory.getLogger(ProjectImageApplicationService.class);
+
+    public ProjectImageApplicationService(IProjectImageSearchService projectImageSearchService, IProjectImageCreationService projectImageCreationService,
+            IProjectImageUpdateService projectImageUpdateService, IProjectImageDeletionService projectImageDeletionService, IProjectImageMapper projectImageMapper) {
         this.projectImageSearchService = Objects.requireNonNull(projectImageSearchService);
         this.projectImageCreationService = Objects.requireNonNull(projectImageCreationService);
         this.projectImageUpdateService = Objects.requireNonNull(projectImageUpdateService);
@@ -83,8 +89,20 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
 
         IPayload payload = null;
         if (result instanceof Failure<ProjectImage> failure) {
+            this.logger.atWarn()
+                    .setMessage("Image upload failed")
+                    .addKeyValue("projectId", input.projectId())
+                    .log();
+
             payload = new ErrorPayload(input.id(), failure.message());
         } else if (result instanceof Success<ProjectImage> success) {
+            this.logger.atInfo()
+                    .setMessage("Image {} uploaded")
+                    .addArgument(success.data().getId())
+                    .addKeyValue("projectId", input.projectId())
+                    .addKeyValue("imageId", success.data().getId())
+                    .log();
+
             payload = new UploadImageSuccessPayload(input.id(), success.data().getId());
         }
         return payload;
@@ -97,8 +115,20 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {
+            this.logger.atWarn()
+                    .setMessage("Rename of the image {} failed")
+                    .addArgument(input.imageId())
+                    .addKeyValue("imageId", input.imageId())
+                    .log();
+
             payload = new ErrorPayload(input.id(), failure.message());
         } else if (result instanceof Success<Void>) {
+            this.logger.atInfo()
+                    .setMessage("Image {} renamed")
+                    .addArgument(input.imageId())
+                    .addKeyValue("imageId", input.imageId())
+                    .log();
+
             payload = new SuccessPayload(input.id());
         }
         return payload;
@@ -111,8 +141,20 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
 
         IPayload payload = null;
         if (result instanceof Failure<Void> failure) {
+            this.logger.atWarn()
+                    .setMessage("Deletion of the image {} failed")
+                    .addArgument(input.imageId())
+                    .addKeyValue("imageId", input.imageId())
+                    .log();
+
             payload = new ErrorPayload(input.id(), failure.message());
         } else if (result instanceof Success<Void>) {
+            this.logger.atInfo()
+                    .setMessage("Image {} deleted")
+                    .addArgument(input.imageId())
+                    .addKeyValue("imageId", input.imageId())
+                    .log();
+
             payload = new SuccessPayload(input.id());
         }
         return payload;

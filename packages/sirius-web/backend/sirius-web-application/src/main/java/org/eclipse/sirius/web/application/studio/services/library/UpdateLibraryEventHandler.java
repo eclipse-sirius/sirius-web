@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,8 @@ import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.web.application.library.dto.UpdateLibraryInput;
 import org.eclipse.sirius.web.application.studio.services.library.api.IUpdateLibraryExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -49,6 +51,8 @@ public class UpdateLibraryEventHandler implements IEditingContextEventHandler {
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
+
+    private final Logger logger = LoggerFactory.getLogger(UpdateLibraryEventHandler.class);
 
     public UpdateLibraryEventHandler(IUpdateLibraryExecutor updateLibraryExecutor, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
         this.updateLibraryExecutor = Objects.requireNonNull(updateLibraryExecutor);
@@ -74,9 +78,19 @@ public class UpdateLibraryEventHandler implements IEditingContextEventHandler {
         if (input instanceof UpdateLibraryInput updateLibraryInput) {
             IStatus result = this.updateLibraryExecutor.updateLibrary(updateLibraryInput, editingContext, updateLibraryInput.libraryId());
             if (result instanceof Success success) {
+                this.logger.atInfo()
+                        .setMessage("Library updated")
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .log();
+
                 changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 payload = new SuccessPayload(input.id(), success.getMessages());
             } else if (result instanceof Failure failure) {
+                this.logger.atWarn()
+                        .setMessage("Update of the library failed")
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .log();
+
                 payload = new ErrorPayload(input.id(), failure.getMessages());
             }
         }

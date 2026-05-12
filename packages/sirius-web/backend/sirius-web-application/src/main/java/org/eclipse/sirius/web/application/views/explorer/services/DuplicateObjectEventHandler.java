@@ -36,6 +36,8 @@ import org.eclipse.sirius.web.application.views.explorer.dto.DuplicateObjectSucc
 import org.eclipse.sirius.web.application.views.explorer.services.api.DuplicationSettings;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IObjectDuplicator;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -60,6 +62,8 @@ public class DuplicateObjectEventHandler implements IEditingContextEventHandler 
     private final IMessageService messageService;
 
     private final Counter counter;
+
+    private final Logger logger = LoggerFactory.getLogger(DuplicateObjectEventHandler.class);
 
     public DuplicateObjectEventHandler(IObjectSearchService objectSearchService, IObjectDuplicator objectDuplicator, IMessageService messageService, MeterRegistry meterRegistry) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
@@ -87,9 +91,23 @@ public class DuplicateObjectEventHandler implements IEditingContextEventHandler 
                     settings);
 
             if (duplicationResult instanceof Success success) {
+                this.logger.atInfo()
+                        .setMessage("Object {} duplicated")
+                        .addArgument(duplicateObjectInput.objectId())
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .addKeyValue("objectId", duplicateObjectInput.objectId())
+                        .log();
+
                 payload = new DuplicateObjectSuccessPayload(input.id(), success.getParameters().get(NEW_OBJECT), success.getMessages());
                 changeDescription = new ChangeDescription(success.getChangeKind(), editingContext.getId(), input);
             } else if (duplicationResult instanceof Failure failure) {
+                this.logger.atWarn()
+                        .setMessage("Duplication of the object {} failed")
+                        .addArgument(duplicateObjectInput.objectId())
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .addKeyValue("objectId", duplicateObjectInput.objectId())
+                        .log();
+
                 payload = new ErrorPayload(input.id(), failure.getMessages());
             }
         }
