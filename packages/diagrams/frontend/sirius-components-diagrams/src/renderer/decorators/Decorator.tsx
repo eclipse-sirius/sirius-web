@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
+import MoreHoriz from '@mui/icons-material/MoreHoriz';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
@@ -76,9 +77,7 @@ export const Decorator = ({ position, decorators }: DecoratorProps) => {
 
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
 
-  const firstDecorator: GQLNodeDecorator | undefined = decorators.at(0);
-
-  if (firstDecorator) {
+  if (decorators.length > 0) {
     const tooltipContent = (
       <>
         {decorators.map((decorator) => (
@@ -90,13 +89,19 @@ export const Decorator = ({ position, decorators }: DecoratorProps) => {
       </>
     );
 
+    const firstDecorator: GQLNodeDecorator = decorators.at(0)!;
+    let decoratorIcon = <img alt={firstDecorator.label} src={httpOrigin + firstDecorator.iconURL} />;
+    if (decorators.length > 1) {
+      // Use a dedicated icon if there are more than exactly one decorator to display.
+      decoratorIcon = <MoreHoriz />;
+    }
+
     return (
       <div className={classes[position.toLowerCase()]} data-testid={'Decorator - ' + position.toLowerCase()}>
-        <Tooltip title={tooltipContent}>
-          <img alt={firstDecorator.label} src={httpOrigin + firstDecorator.iconURL} />
-        </Tooltip>
+        <Tooltip title={tooltipContent}>{decoratorIcon}</Tooltip>
       </div>
     );
   }
+
   return null;
 };
