@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -77,7 +77,6 @@ export const EditProjectView = () => {
   useEffect(() => {
     if (data) {
       const { project } = data.viewer;
-
       let representation: RepresentationMetadata | null = null;
       if (project?.currentEditingContext.representation) {
         representation = {
@@ -87,12 +86,17 @@ export const EditProjectView = () => {
           iconURLs: project.currentEditingContext.representation.iconURLs,
           description: project.currentEditingContext.representation.description,
         };
+        setState((prevState) => ({
+          ...prevState,
+          project: project,
+          representation: representation,
+        }));
+      } else {
+        setState((prevState) => ({
+          ...prevState,
+          project: project,
+        }));
       }
-      setState((prevState) => ({
-        ...prevState,
-        project: project,
-        representation: representation,
-      }));
     }
   }, [data]);
 
