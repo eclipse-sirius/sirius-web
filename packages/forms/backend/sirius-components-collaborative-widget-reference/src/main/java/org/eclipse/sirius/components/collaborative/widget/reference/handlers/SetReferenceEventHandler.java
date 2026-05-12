@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,8 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.widget.reference.ReferenceWidget;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -54,6 +56,8 @@ public class SetReferenceEventHandler implements IFormEventHandler {
     private final IFormQueryService formQueryService;
 
     private final IObjectSearchService objectSearchService;
+
+    private final Logger logger = LoggerFactory.getLogger(SetReferenceEventHandler.class);
 
     public SetReferenceEventHandler(IFormQueryService formQueryService, IReferenceMessageService messageService, IObjectSearchService objectSearchService, MeterRegistry meterRegistry) {
         this.formQueryService = Objects.requireNonNull(formQueryService);
@@ -97,9 +101,23 @@ public class SetReferenceEventHandler implements IFormEventHandler {
                 }
             }
             if (status instanceof Success success) {
+                this.logger.atInfo()
+                        .setMessage("New value of the reference widget set")
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .addKeyValue("representationId", input.representationId())
+                        .addKeyValue("widgetId", input.referenceWidgetId())
+                        .log();
+
                 changeDescription = new ChangeDescription(success.getChangeKind(), formInput.representationId(), formInput, success.getParameters());
                 payload = new SuccessPayload(formInput.id(), success.getMessages());
             } else if (status instanceof Failure failure) {
+                this.logger.atWarn()
+                        .setMessage("Edition of the reference widget failed")
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .addKeyValue("representationId", input.representationId())
+                        .addKeyValue("widgetId", input.referenceWidgetId())
+                        .log();
+
                 payload = new ErrorPayload(formInput.id(), failure.getMessages());
             }
         }

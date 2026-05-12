@@ -43,6 +43,8 @@ import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -71,6 +73,8 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
     private final boolean reuseActiveResourceSet;
 
     private final Counter counter;
+
+    private final Logger logger = LoggerFactory.getLogger(UploadDocumentEventHandler.class);
 
     public UploadDocumentEventHandler(IIdentityService identityService, IEditingContextSearchService editingContextSearchService, List<IUploadDocumentReportProvider> uploadDocumentReportProviders, IMessageService messageService,
                                       IUploadFileLoader uploadDocumentLoader, MeterRegistry meterRegistry, @Value("${sirius.web.upload.reuseActiveResourceSet:true}") boolean reuseActiveResourceSet) {
@@ -122,12 +126,24 @@ public class UploadDocumentEventHandler implements IEditingContextEventHandler {
                     var id = optionalId.get();
                     var name = optionalName.get();
 
+                    this.logger.atInfo()
+                            .setMessage("Document {} uploaded")
+                            .addArgument(id)
+                            .addKeyValue("editingContextId", editingContext.getId())
+                            .addKeyValue("documentId", id)
+                            .log();
+
                     String report = this.getReport(success.data());
                     payload = new UploadDocumentSuccessPayload(input.id(), new DocumentDTO(id, name, ExplorerDescriptionProvider.DOCUMENT_KIND), report, success.data().idMapping());
                     changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, editingContext.getId(), input);
                 }
 
             } else if (result instanceof Failure<UploadedResource> failure) {
+                this.logger.atWarn()
+                        .setMessage("Upload of the document failed")
+                        .addKeyValue("editingContextId", editingContext.getId())
+                        .log();
+
                 payload = new ErrorPayload(input.id(), failure.message());
             }
         }
