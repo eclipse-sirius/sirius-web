@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,11 +13,12 @@
 
 import { Dimensions, Node, XYPosition } from '@xyflow/react';
 import { NodeData } from '../DiagramRenderer.types';
+import { DiagramNodeType } from '../node/NodeTypes.types';
 import { defaultHeight, defaultWidth } from './layoutParams';
 
 export const computePreviousPosition = (
-  previousNode: Node<NodeData, string> | undefined,
-  node: Node<NodeData, string>
+  previousNode: Node<NodeData, DiagramNodeType> | undefined,
+  node: Node<NodeData, DiagramNodeType>
 ): XYPosition | null => {
   let previousPosition: XYPosition | null = null;
   if (node.data.isNew) {
@@ -50,8 +51,8 @@ export const computePreviousPosition = (
 };
 
 export const computePreviousSize = (
-  previousNode: Node<NodeData, string> | undefined,
-  node: Node<NodeData, string>
+  previousNode: Node<NodeData, DiagramNodeType> | undefined,
+  node: Node<NodeData, DiagramNodeType>
 ): Dimensions => {
   let previousDimensions: Dimensions;
   const nodeDefaultHeight: number = node.data.defaultHeight ?? defaultHeight;

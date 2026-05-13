@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,11 +11,5 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { NodeProps } from '@xyflow/react';
-import { ComponentType } from 'react';
-
-export type DiagramNodeType = string;
-
-export type DiagramNodeTypes = {
-  [key in DiagramNodeType]: ComponentType<NodeProps>;
-};
+//The node type can be undefined in xyflow as per the documentation no type field is the same as type: "default"
+export type DiagramNodeType = string | undefined;

@@ -17,10 +17,11 @@ import ELK, { ElkLabel, ElkNode } from 'elkjs/lib/elk.bundled';
 import { BorderNodePosition, EdgeData, NodeData } from '../../DiagramRenderer.types';
 import { ConnectionHandle } from '../../handles/ConnectionHandles.types';
 import { isEdgeAnchorNode } from '../../node/EdgeAnchorNode.types';
+import { DiagramNodeType } from '../../node/NodeTypes.types';
 import { RawDiagram } from '../layout.types';
 import { UseElkLayoutValue } from './useElkLayout.types';
 
-const computeLabels = (node: Node<NodeData, string>): ElkLabel[] => {
+const computeLabels = (node: Node<NodeData, DiagramNodeType>): ElkLabel[] => {
   const labels: ElkLabel[] = [];
   if (node && node.data.insideLabel) {
     const elkLabel: ElkLabel = {
@@ -245,11 +246,11 @@ export const useElkLayout = (): UseElkLayoutValue => {
   };
 
   const applyElkOnDiagram = async (
-    nodes: Node<NodeData, string>[],
+    nodes: Node<NodeData, DiagramNodeType>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
   ): Promise<RawDiagram> => {
-    let layoutAllNodes: Node<NodeData, string>[] = [];
+    let layoutAllNodes: Node<NodeData, DiagramNodeType>[] = [];
     let layoutAllEdges: Edge<EdgeData>[] = [];
     await getELKLayout(
       nodes.filter((node) => !node.hidden && !isEdgeAnchorNode(node)),
@@ -282,7 +283,7 @@ export const useElkLayout = (): UseElkLayoutValue => {
   };
 
   const elkLayout = async (
-    nodes: Node<NodeData, string>[],
+    nodes: Node<NodeData, DiagramNodeType>[],
     edges: Edge<EdgeData>[],
     layoutOptions: LayoutOptions
   ): Promise<RawDiagram> => {
