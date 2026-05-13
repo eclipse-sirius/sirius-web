@@ -121,6 +121,8 @@ Note this version requires at least Java 21 for the build environment (Sirius We
 - https://github.com/eclipse-sirius/sirius-web/issues/5983[#5983] [diagram] Prevent a valid drop candidate from randomly remaining faded
 - https://github.com/eclipse-sirius/sirius-web/issues/6451[#6451] [tree] Fix an issue where the wrong `ISingleClickTreeItemContextMenuEntryExecutor` could be selected
 - https://github.com/eclipse-sirius/sirius-web/issues/6482[#6482] [diagram] Fix an issue where the handles of an edge on edge could have the wrong position
+- https://github.com/eclipse-sirius/sirius-web/issues/6479[#6479] [diagram] Prevent the application to crash displaying deleted representation by being more strict on Typescript typings.
+Also fix the resulting infinite React rendering.
 
 
 === New Features
