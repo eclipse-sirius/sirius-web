@@ -12,9 +12,9 @@
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
+import { PlaywrightLabel } from '../../helpers/PlaywrightLabel';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
-import { PlaywrightLabel } from '../../helpers/PlaywrightLabel';
 
 test.describe('diagram - node creation', () => {
   let projectId;
@@ -60,6 +60,8 @@ test.describe('diagram - node creation', () => {
     await parentLabel.labelContentLocator.click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').click();
+    //Check the newly created element is the only one selected
+    await expect(page.getByTestId('nodePanelInfos')).toHaveCount(1);
     const entity4FirstNode = new PlaywrightNode(page, 'Entity4');
 
     const reactFlowXYPositionEntity4First = await entity4FirstNode.getReactFlowXYPosition();
@@ -76,6 +78,7 @@ test.describe('diagram - node creation', () => {
     await parentLabel.labelContentLocator.click({ button: 'right', position: { x: 1, y: 1 } }); // we use the label to click on the parent
     await expect(page.getByTestId('Palette')).toBeAttached();
     await page.getByTestId('tool-createEntity4').first().click();
+    //Check the newly created element is the only one selected
     const entity4SecondNode = new PlaywrightNode(page, 'Entity4', 'FreeForm', 1);
     await entity4SecondNode.waitForAnimationToFinish();
     const reactFlowXYPositionEntity4Second = await entity4SecondNode.getReactFlowXYPosition('Entity4', false);
