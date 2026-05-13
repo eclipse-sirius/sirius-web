@@ -1,0 +1,55 @@
+{
+  "viewer": {
+    "editingContext": {
+      "representation": {
+        "description": {
+          "id": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d59c3558-31d3-387d-a720-098370b677fb",
+          "nodeDescriptions": [
+            {
+              "id": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba",
+              "userResizable": "BOTH",
+              "keepAspectRatio": false,
+              "childNodeDescriptionIds": [
+                "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=2aeee83f-2f8c-3348-9cb8-2829343542ee"
+              ],
+              "borderNodeDescriptionIds": [],
+              "__typename": "NodeDescription"
+            },
+            {
+              "id": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=2aeee83f-2f8c-3348-9cb8-2829343542ee",
+              "userResizable": "BOTH",
+              "keepAspectRatio": false,
+              "childNodeDescriptionIds": [],
+              "borderNodeDescriptionIds": [],
+              "__typename": "NodeDescription"
+            }
+          ],
+          "toolbar": {
+            "expandedByDefault": true,
+            "__typename": "DiagramToolbar"
+          },
+          "childNodeDescriptionIds": [
+            "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba"
+          ],
+          "dropNodeCompatibility": [
+            {
+              "droppedNodeDescriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=2aeee83f-2f8c-3348-9cb8-2829343542ee",
+              "droppableOnDiagram": true,
+              "droppableOnNodeTypes": [
+                "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba"
+              ],
+              "__typename": "DropNodeCompatibilityEntry"
+            }
+          ],
+          "debug": false,
+          "arrangeLayoutDirection": "DOWN",
+          "autoLayout": false,
+          "__typename": "DiagramDescription"
+        },
+        "__typename": "RepresentationMetadata"
+      },
+      "__typename": "EditingContext"
+    },
+    "__typename": "Viewer"
+  }
+}

@@ -10,44 +10,53 @@
  * Contributors:
  * Obeo - initial API and implementation
  *******************************************************************************/
-import { createRequire } from "module";
-import { dirname, join, resolve } from "path";
-import { fileURLToPath } from "url";
-import { mergeConfig } from "vite";
+import { createRequire } from 'module';
+import { dirname, join, resolve } from 'path';
+import { fileURLToPath } from 'url';
+import { mergeConfig } from 'vite';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 
 function getAbsolutePath(value) {
-  return dirname(require.resolve(join(value, "package.json")));
+  return dirname(require.resolve(join(value, 'package.json')));
 }
 
 const config = {
-  stories: ["../src/**/*.mdx", "../src/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
+  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
-    getAbsolutePath("@storybook/addon-vitest"),
-    getAbsolutePath("@storybook/addon-a11y"),
-    getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath('@storybook/addon-vitest'),
+    getAbsolutePath('@storybook/addon-a11y'),
+    getAbsolutePath('@storybook/addon-docs'),
   ],
   framework: {
-    name: getAbsolutePath("@storybook/react-vite"),
+    name: getAbsolutePath('@storybook/react-vite'),
     options: {},
   },
   typescript: {
-    reactDocgen: "react-docgen-native",
+    reactDocgen: 'react-docgen-native',
   },
   async viteFinal(config) {
     return mergeConfig(config, {
       server: {
         fs: {
-          allow: [resolve(__dirname, "../../../")],
+          allow: [resolve(__dirname, '../../../')],
         },
       },
       optimizeDeps: {
-        include: ["@eclipse-sirius/sirius-web-application"],
+        include: ['@eclipse-sirius/sirius-web-application', '@apollo/client', 'graphql'],
       },
       define: {
-        "process.env": {},
+        'process.env': {},
+      },
+      resolve: {
+        alias: [
+          {
+            find: /^graphql$/,
+            replacement: require.resolve('graphql'),
+          },
+        ],
+        dedupe: ['graphql', '@apollo/client'],
       },
     });
   },

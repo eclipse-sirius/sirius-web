@@ -1,0 +1,654 @@
+{
+  "id": "17432397-d4f7-4e62-9a2b-d592d7ce08ca",
+  "kind": "siriusComponents://representation?type=Diagram",
+  "targetObjectId": "5992389f-65e0-4109-a16e-c96bb0d6daa9",
+  "descriptionId": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d59c3558-31d3-387d-a720-098370b677fb",
+  "nodes": [
+    {
+      "id": "86f592e3-6846-3835-b18f-f3381ce8dc9f",
+      "type": "node:rectangle",
+      "targetObjectId": "15147e24-94d1-4481-83cd-694981650467",
+      "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+      "targetObjectLabel": "Noeud 1-1",
+      "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba",
+      "borderNode": false,
+      "initialBorderNodePosition": "NONE",
+      "modifiers": [],
+      "state": "Normal",
+      "collapsingState": "EXPANDED",
+      "insideLabel": {
+        "id": "9100bc49-7252-3660-96fc-c649696dd892",
+        "text": "Noeud 1-1",
+        "insideLabelLocation": "TOP_CENTER",
+        "style": {
+          "color": "rgb(0, 0, 0)",
+          "fontSize": 14,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": ["/icons/full/obj16/Entity.svg"],
+          "background": "transparent",
+          "borderColor": "black",
+          "borderSize": 0,
+          "borderRadius": 3,
+          "borderStyle": "Solid",
+          "maxWidth": null,
+          "visibility": "visible"
+        },
+        "isHeader": true,
+        "headerSeparatorDisplayMode": "IF_CHILDREN",
+        "overflowStrategy": "NONE",
+        "textAlign": "LEFT",
+        "customizedStyleProperties": []
+      },
+      "outsideLabels": [],
+      "style": {
+        "background": "rgb(250, 250, 250)",
+        "borderColor": "rgb(251, 184, 0)",
+        "borderSize": 3,
+        "borderRadius": 8,
+        "borderStyle": "Solid",
+        "childrenLayoutStrategy": {
+          "areChildNodesDraggable": true,
+          "topGap": 0,
+          "bottomGap": 0,
+          "growableNodeIds": [],
+          "kind": "List"
+        }
+      },
+      "borderNodes": [],
+      "childNodes": [],
+      "defaultWidth": null,
+      "defaultHeight": null,
+      "labelEditable": true,
+      "deletable": true,
+      "pinned": false,
+      "customizedStyleProperties": [],
+      "decorators": []
+    },
+    {
+      "id": "20f84d37-743f-3a5c-988c-4c67e8031d7c",
+      "type": "node:rectangle",
+      "targetObjectId": "a820968f-e5de-412a-a65e-2be1e226d2c7",
+      "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+      "targetObjectLabel": "Noeud 2-1",
+      "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba",
+      "borderNode": false,
+      "initialBorderNodePosition": "NONE",
+      "modifiers": [],
+      "state": "Normal",
+      "collapsingState": "EXPANDED",
+      "insideLabel": {
+        "id": "93455220-e8b5-3c98-9a08-fc74487d87ba",
+        "text": "Noeud 2-1",
+        "insideLabelLocation": "TOP_CENTER",
+        "style": {
+          "color": "rgb(0, 0, 0)",
+          "fontSize": 14,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": ["/icons/full/obj16/Entity.svg"],
+          "background": "transparent",
+          "borderColor": "black",
+          "borderSize": 0,
+          "borderRadius": 3,
+          "borderStyle": "Solid",
+          "maxWidth": null,
+          "visibility": "visible"
+        },
+        "isHeader": true,
+        "headerSeparatorDisplayMode": "IF_CHILDREN",
+        "overflowStrategy": "NONE",
+        "textAlign": "LEFT",
+        "customizedStyleProperties": []
+      },
+      "outsideLabels": [],
+      "style": {
+        "background": "rgb(250, 250, 250)",
+        "borderColor": "rgb(251, 184, 0)",
+        "borderSize": 3,
+        "borderRadius": 8,
+        "borderStyle": "Solid",
+        "childrenLayoutStrategy": {
+          "areChildNodesDraggable": true,
+          "topGap": 0,
+          "bottomGap": 0,
+          "growableNodeIds": [],
+          "kind": "List"
+        }
+      },
+      "borderNodes": [],
+      "childNodes": [],
+      "defaultWidth": null,
+      "defaultHeight": null,
+      "labelEditable": true,
+      "deletable": true,
+      "pinned": false,
+      "customizedStyleProperties": [],
+      "decorators": []
+    },
+    {
+      "id": "6416ace6-a015-3f1c-98c1-333101c2060e",
+      "type": "node:rectangle",
+      "targetObjectId": "93fc3c12-b028-407d-a70a-23d10897ee61",
+      "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+      "targetObjectLabel": "Noeud 2-2",
+      "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba",
+      "borderNode": false,
+      "initialBorderNodePosition": "NONE",
+      "modifiers": [],
+      "state": "Normal",
+      "collapsingState": "EXPANDED",
+      "insideLabel": {
+        "id": "54e42938-bfb0-3f16-bda0-4ba6b5e4986e",
+        "text": "Noeud 2-2",
+        "insideLabelLocation": "TOP_CENTER",
+        "style": {
+          "color": "rgb(0, 0, 0)",
+          "fontSize": 14,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": ["/icons/full/obj16/Entity.svg"],
+          "background": "transparent",
+          "borderColor": "black",
+          "borderSize": 0,
+          "borderRadius": 3,
+          "borderStyle": "Solid",
+          "maxWidth": null,
+          "visibility": "visible"
+        },
+        "isHeader": true,
+        "headerSeparatorDisplayMode": "IF_CHILDREN",
+        "overflowStrategy": "NONE",
+        "textAlign": "LEFT",
+        "customizedStyleProperties": []
+      },
+      "outsideLabels": [],
+      "style": {
+        "background": "rgb(250, 250, 250)",
+        "borderColor": "rgb(251, 184, 0)",
+        "borderSize": 3,
+        "borderRadius": 8,
+        "borderStyle": "Solid",
+        "childrenLayoutStrategy": {
+          "areChildNodesDraggable": true,
+          "topGap": 0,
+          "bottomGap": 0,
+          "growableNodeIds": [],
+          "kind": "List"
+        }
+      },
+      "borderNodes": [],
+      "childNodes": [],
+      "defaultWidth": null,
+      "defaultHeight": null,
+      "labelEditable": true,
+      "deletable": true,
+      "pinned": false,
+      "customizedStyleProperties": [],
+      "decorators": []
+    },
+    {
+      "id": "d4683d3a-3eaf-33c8-bbd6-abd437a4b259",
+      "type": "node:rectangle",
+      "targetObjectId": "feb15593-1c8b-433f-abba-e166705e3405",
+      "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+      "targetObjectLabel": "Noeud 3-1",
+      "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba",
+      "borderNode": false,
+      "initialBorderNodePosition": "NONE",
+      "modifiers": [],
+      "state": "Normal",
+      "collapsingState": "EXPANDED",
+      "insideLabel": {
+        "id": "4b9cf1d2-bdeb-3450-bfde-346fae29d765",
+        "text": "Noeud 3-1",
+        "insideLabelLocation": "TOP_CENTER",
+        "style": {
+          "color": "rgb(0, 0, 0)",
+          "fontSize": 14,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": ["/icons/full/obj16/Entity.svg"],
+          "background": "transparent",
+          "borderColor": "black",
+          "borderSize": 0,
+          "borderRadius": 3,
+          "borderStyle": "Solid",
+          "maxWidth": null,
+          "visibility": "visible"
+        },
+        "isHeader": true,
+        "headerSeparatorDisplayMode": "IF_CHILDREN",
+        "overflowStrategy": "NONE",
+        "textAlign": "LEFT",
+        "customizedStyleProperties": []
+      },
+      "outsideLabels": [],
+      "style": {
+        "background": "rgb(250, 250, 250)",
+        "borderColor": "rgb(251, 184, 0)",
+        "borderSize": 3,
+        "borderRadius": 8,
+        "borderStyle": "Solid",
+        "childrenLayoutStrategy": {
+          "areChildNodesDraggable": true,
+          "topGap": 0,
+          "bottomGap": 0,
+          "growableNodeIds": [],
+          "kind": "List"
+        }
+      },
+      "borderNodes": [],
+      "childNodes": [],
+      "defaultWidth": null,
+      "defaultHeight": null,
+      "labelEditable": true,
+      "deletable": true,
+      "pinned": false,
+      "customizedStyleProperties": [],
+      "decorators": []
+    },
+    {
+      "id": "2bf3ecec-d232-3b36-95b6-32453b8983e7",
+      "type": "node:rectangle",
+      "targetObjectId": "e8ea79a2-9955-4987-aa45-8f2a0f228985",
+      "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Entity",
+      "targetObjectLabel": "Noeud 3-2",
+      "descriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=bcb8a632-cfd5-372c-a1ad-985545d347ba",
+      "borderNode": false,
+      "initialBorderNodePosition": "NONE",
+      "modifiers": [],
+      "state": "Normal",
+      "collapsingState": "EXPANDED",
+      "insideLabel": {
+        "id": "68afff60-f917-3657-9b9a-740f5a6884c8",
+        "text": "Noeud 3-2",
+        "insideLabelLocation": "TOP_CENTER",
+        "style": {
+          "color": "rgb(0, 0, 0)",
+          "fontSize": 14,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": ["/icons/full/obj16/Entity.svg"],
+          "background": "transparent",
+          "borderColor": "black",
+          "borderSize": 0,
+          "borderRadius": 3,
+          "borderStyle": "Solid",
+          "maxWidth": null,
+          "visibility": "visible"
+        },
+        "isHeader": true,
+        "headerSeparatorDisplayMode": "IF_CHILDREN",
+        "overflowStrategy": "NONE",
+        "textAlign": "LEFT",
+        "customizedStyleProperties": []
+      },
+      "outsideLabels": [],
+      "style": {
+        "background": "rgb(250, 250, 250)",
+        "borderColor": "rgb(251, 184, 0)",
+        "borderSize": 3,
+        "borderRadius": 8,
+        "borderStyle": "Solid",
+        "childrenLayoutStrategy": {
+          "areChildNodesDraggable": true,
+          "topGap": 0,
+          "bottomGap": 0,
+          "growableNodeIds": [],
+          "kind": "List"
+        }
+      },
+      "borderNodes": [],
+      "childNodes": [],
+      "defaultWidth": null,
+      "defaultHeight": null,
+      "labelEditable": true,
+      "deletable": true,
+      "pinned": false,
+      "customizedStyleProperties": [],
+      "decorators": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "f09b9f90-b6ae-309d-abe6-afd04c4cb157",
+      "type": "edge:straight",
+      "targetObjectId": "3dda8cea-305b-4dde-91a2-58efe320b922",
+      "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Relation",
+      "targetObjectLabel": "Relation",
+      "descriptionId": "siriusComponents://edgeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d3c1af57-d18b-33ac-9fd1-d5aed8ae9e35",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "525b6dad-d47d-37c8-b2ae-34cbb0f68ab6",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "rgb(0, 0, 0)",
+          "fontSize": 14,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": [],
+          "background": "transparent",
+          "borderColor": "black",
+          "borderSize": 0,
+          "borderRadius": 3,
+          "borderStyle": "Solid",
+          "maxWidth": null,
+          "visibility": "visible"
+        },
+        "customizedStyleProperties": []
+      },
+      "endLabel": null,
+      "sourceId": "86f592e3-6846-3835-b18f-f3381ce8dc9f",
+      "targetId": "20f84d37-743f-3a5c-988c-4c67e8031d7c",
+      "modifiers": [],
+      "state": "Normal",
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "rgb(0, 0, 0)",
+        "edgeType": "Manhattan"
+      },
+      "centerLabelEditable": true,
+      "deletable": true,
+      "customizedStyleProperties": []
+    },
+    {
+      "id": "09bcb41e-0ebf-37f8-8bd5-be5e265a1887",
+      "type": "edge:straight",
+      "targetObjectId": "7b07f097-bb2f-41ee-988b-cc8e2d22fa7e",
+      "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Relation",
+      "targetObjectLabel": "Relation",
+      "descriptionId": "siriusComponents://edgeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d3c1af57-d18b-33ac-9fd1-d5aed8ae9e35",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "a1ff490b-4626-35b0-95e0-2070fcee46bf",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "rgb(0, 0, 0)",
+          "fontSize": 14,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": [],
+          "background": "transparent",
+          "borderColor": "black",
+          "borderSize": 0,
+          "borderRadius": 3,
+          "borderStyle": "Solid",
+          "maxWidth": null,
+          "visibility": "visible"
+        },
+        "customizedStyleProperties": []
+      },
+      "endLabel": null,
+      "sourceId": "86f592e3-6846-3835-b18f-f3381ce8dc9f",
+      "targetId": "6416ace6-a015-3f1c-98c1-333101c2060e",
+      "modifiers": [],
+      "state": "Normal",
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "rgb(0, 0, 0)",
+        "edgeType": "Manhattan"
+      },
+      "centerLabelEditable": true,
+      "deletable": true,
+      "customizedStyleProperties": []
+    },
+    {
+      "id": "eeba411c-3398-3b49-b296-ba4b66d2a710",
+      "type": "edge:straight",
+      "targetObjectId": "a702cb87-2385-4898-aa58-ae695bd5d83c",
+      "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Relation",
+      "targetObjectLabel": "Relation",
+      "descriptionId": "siriusComponents://edgeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d3c1af57-d18b-33ac-9fd1-d5aed8ae9e35",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "a18a6080-1d56-362a-a640-1e88b1181d7f",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "rgb(0, 0, 0)",
+          "fontSize": 14,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": [],
+          "background": "transparent",
+          "borderColor": "black",
+          "borderSize": 0,
+          "borderRadius": 3,
+          "borderStyle": "Solid",
+          "maxWidth": null,
+          "visibility": "visible"
+        },
+        "customizedStyleProperties": []
+      },
+      "endLabel": null,
+      "sourceId": "20f84d37-743f-3a5c-988c-4c67e8031d7c",
+      "targetId": "d4683d3a-3eaf-33c8-bbd6-abd437a4b259",
+      "modifiers": [],
+      "state": "Normal",
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "rgb(0, 0, 0)",
+        "edgeType": "Manhattan"
+      },
+      "centerLabelEditable": true,
+      "deletable": true,
+      "customizedStyleProperties": []
+    },
+    {
+      "id": "bd11d049-9dd4-379b-bda5-55942b6883b0",
+      "type": "edge:straight",
+      "targetObjectId": "dc877ff2-4ed6-42c3-b95a-d6ceb2a75fa6",
+      "targetObjectKind": "siriusComponents://semantic?domain=domain&entity=Relation",
+      "targetObjectLabel": "Relation",
+      "descriptionId": "siriusComponents://edgeDescription?sourceKind=view&sourceId=c5857f07-7382-3215-8c53-b690ca983655&sourceElementId=d3c1af57-d18b-33ac-9fd1-d5aed8ae9e35",
+      "beginLabel": null,
+      "centerLabel": {
+        "id": "50203d2c-b899-3d25-8532-695e3fd76ef5",
+        "type": "label:edge-center",
+        "text": "",
+        "style": {
+          "color": "rgb(0, 0, 0)",
+          "fontSize": 14,
+          "bold": false,
+          "italic": false,
+          "underline": false,
+          "strikeThrough": false,
+          "iconURL": [],
+          "background": "transparent",
+          "borderColor": "black",
+          "borderSize": 0,
+          "borderRadius": 3,
+          "borderStyle": "Solid",
+          "maxWidth": null,
+          "visibility": "visible"
+        },
+        "customizedStyleProperties": []
+      },
+      "endLabel": null,
+      "sourceId": "20f84d37-743f-3a5c-988c-4c67e8031d7c",
+      "targetId": "2bf3ecec-d232-3b36-95b6-32453b8983e7",
+      "modifiers": [],
+      "state": "Normal",
+      "style": {
+        "size": 1,
+        "lineStyle": "Solid",
+        "sourceArrow": "None",
+        "targetArrow": "InputArrow",
+        "color": "rgb(0, 0, 0)",
+        "edgeType": "Manhattan"
+      },
+      "centerLabelEditable": true,
+      "deletable": true,
+      "customizedStyleProperties": []
+    }
+  ],
+  "layoutData": {
+    "nodeLayoutData": {
+      "20f84d37-743f-3a5c-988c-4c67e8031d7c": {
+        "id": "20f84d37-743f-3a5c-988c-4c67e8031d7c",
+        "position": { "x": 127.9666748046875, "y": 336.1000061035156 },
+        "size": { "width": 150.0, "height": 70.0 },
+        "resizedByUser": false,
+        "movedByUser": true,
+        "handleLayoutData": [],
+        "minComputedSize": { "width": 127.96666564941407, "height": 38.049993896484374 }
+      },
+      "6416ace6-a015-3f1c-98c1-333101c2060e": {
+        "id": "6416ace6-a015-3f1c-98c1-333101c2060e",
+        "position": { "x": 346.9666748046875, "y": 336.1000061035156 },
+        "size": { "width": 150.0, "height": 70.0 },
+        "resizedByUser": false,
+        "movedByUser": true,
+        "handleLayoutData": [],
+        "minComputedSize": { "width": 127.96666564941407, "height": 38.049993896484374 }
+      },
+      "86f592e3-6846-3835-b18f-f3381ce8dc9f": {
+        "id": "86f592e3-6846-3835-b18f-f3381ce8dc9f",
+        "position": { "x": 207.9666748046875, "y": 182.10000610351562 },
+        "size": { "width": 150.0, "height": 70.0 },
+        "resizedByUser": false,
+        "movedByUser": false,
+        "handleLayoutData": [],
+        "minComputedSize": { "width": 127.96666564941407, "height": 38.049993896484374 }
+      },
+      "2bf3ecec-d232-3b36-95b6-32453b8983e7": {
+        "id": "2bf3ecec-d232-3b36-95b6-32453b8983e7",
+        "position": { "x": 238.9666748046875, "y": 528.1000061035156 },
+        "size": { "width": 150.0, "height": 70.0 },
+        "resizedByUser": false,
+        "movedByUser": true,
+        "handleLayoutData": [],
+        "minComputedSize": { "width": 127.96666564941407, "height": 38.049993896484374 }
+      },
+      "d4683d3a-3eaf-33c8-bbd6-abd437a4b259": {
+        "id": "d4683d3a-3eaf-33c8-bbd6-abd437a4b259",
+        "position": { "x": 32.9666748046875, "y": 518.1000061035156 },
+        "size": { "width": 150.0, "height": 70.0 },
+        "resizedByUser": false,
+        "movedByUser": true,
+        "handleLayoutData": [],
+        "minComputedSize": { "width": 127.96666564941407, "height": 38.049993896484374 }
+      }
+    },
+    "edgeLayoutData": {
+      "bd11d049-9dd4-379b-bda5-55942b6883b0": {
+        "id": "bd11d049-9dd4-379b-bda5-55942b6883b0",
+        "bendingPoints": [],
+        "relativePositionBendingPoints": [],
+        "edgeAnchorLayoutData": []
+      },
+      "f09b9f90-b6ae-309d-abe6-afd04c4cb157": {
+        "id": "f09b9f90-b6ae-309d-abe6-afd04c4cb157",
+        "bendingPoints": [],
+        "relativePositionBendingPoints": [],
+        "edgeAnchorLayoutData": []
+      },
+      "09bcb41e-0ebf-37f8-8bd5-be5e265a1887": {
+        "id": "09bcb41e-0ebf-37f8-8bd5-be5e265a1887",
+        "bendingPoints": [],
+        "relativePositionBendingPoints": [],
+        "edgeAnchorLayoutData": []
+      },
+      "eeba411c-3398-3b49-b296-ba4b66d2a710": {
+        "id": "eeba411c-3398-3b49-b296-ba4b66d2a710",
+        "bendingPoints": [],
+        "relativePositionBendingPoints": [],
+        "edgeAnchorLayoutData": []
+      }
+    },
+    "labelLayoutData": {
+      "a18a6080-1d56-362a-a640-1e88b1181d7f": {
+        "id": "a18a6080-1d56-362a-a640-1e88b1181d7f",
+        "position": { "x": 0.0, "y": 0.0 },
+        "size": { "width": 0.0, "height": 0.0 },
+        "resizedByUser": false,
+        "movedByUser": false
+      },
+      "68afff60-f917-3657-9b9a-740f5a6884c8": {
+        "id": "68afff60-f917-3657-9b9a-740f5a6884c8",
+        "position": { "x": 0.0, "y": 0.0 },
+        "size": { "width": 122.56666564941406, "height": 32.649993896484375 },
+        "resizedByUser": false,
+        "movedByUser": false
+      },
+      "54e42938-bfb0-3f16-bda0-4ba6b5e4986e": {
+        "id": "54e42938-bfb0-3f16-bda0-4ba6b5e4986e",
+        "position": { "x": 0.0, "y": 0.0 },
+        "size": { "width": 122.56666564941406, "height": 32.649993896484375 },
+        "resizedByUser": false,
+        "movedByUser": false
+      },
+      "525b6dad-d47d-37c8-b2ae-34cbb0f68ab6": {
+        "id": "525b6dad-d47d-37c8-b2ae-34cbb0f68ab6",
+        "position": { "x": 0.0, "y": 0.0 },
+        "size": { "width": 0.0, "height": 0.0 },
+        "resizedByUser": false,
+        "movedByUser": false
+      },
+      "93455220-e8b5-3c98-9a08-fc74487d87ba": {
+        "id": "93455220-e8b5-3c98-9a08-fc74487d87ba",
+        "position": { "x": 0.0, "y": 0.0 },
+        "size": { "width": 122.56666564941406, "height": 32.649993896484375 },
+        "resizedByUser": false,
+        "movedByUser": false
+      },
+      "a1ff490b-4626-35b0-95e0-2070fcee46bf": {
+        "id": "a1ff490b-4626-35b0-95e0-2070fcee46bf",
+        "position": { "x": 0.0, "y": 0.0 },
+        "size": { "width": 0.0, "height": 0.0 },
+        "resizedByUser": false,
+        "movedByUser": false
+      },
+      "9100bc49-7252-3660-96fc-c649696dd892": {
+        "id": "9100bc49-7252-3660-96fc-c649696dd892",
+        "position": { "x": 0.0, "y": 0.0 },
+        "size": { "width": 122.56666564941406, "height": 32.649993896484375 },
+        "resizedByUser": false,
+        "movedByUser": false
+      },
+      "50203d2c-b899-3d25-8532-695e3fd76ef5": {
+        "id": "50203d2c-b899-3d25-8532-695e3fd76ef5",
+        "position": { "x": 0.0, "y": 0.0 },
+        "size": { "width": 0.0, "height": 0.0 },
+        "resizedByUser": false,
+        "movedByUser": false
+      },
+      "4b9cf1d2-bdeb-3450-bfde-346fae29d765": {
+        "id": "4b9cf1d2-bdeb-3450-bfde-346fae29d765",
+        "position": { "x": 0.0, "y": 0.0 },
+        "size": { "width": 122.56666564941406, "height": 32.649993896484375 },
+        "resizedByUser": false,
+        "movedByUser": false
+      }
+    }
+  },
+  "style": { "background": "transparent" }
+}
