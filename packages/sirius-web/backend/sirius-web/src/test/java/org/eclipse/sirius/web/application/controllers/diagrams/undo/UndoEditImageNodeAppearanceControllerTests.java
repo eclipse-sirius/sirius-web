@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,16 +24,17 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.collaborative.diagrams.ImageNodeAppearanceHandler;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.EditImageNodeAppearanceInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ImageNodeAppearanceInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.ImageNodeStyle;
 import org.eclipse.sirius.components.diagrams.LineStyle;
-import org.eclipse.sirius.components.diagrams.tests.graphql.DeleteFromDiagramMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.EditImageNodeAppearanceMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteOneDiagramElementToolHandler;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.diagram.services.EllipseNodeAppearanceHandler;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
@@ -75,7 +76,7 @@ public class UndoEditImageNodeAppearanceControllerTests extends AbstractIntegrat
     private EditImageNodeAppearanceMutationRunner editImageNodeAppearanceMutationRunner;
 
     @Autowired
-    private DeleteFromDiagramMutationRunner deleteFromDiagramMutationRunner;
+    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
 
     @Autowired
     private ImageNodeDiagramDescriptionProvider diagramDescriptionProvider;
@@ -205,10 +206,11 @@ public class UndoEditImageNodeAppearanceControllerTests extends AbstractIntegrat
 
         var mutationInputId = UUID.randomUUID();
         Runnable deleteNode = () -> {
-            var input = new DeleteFromDiagramInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(siriusWebApplicationNodeId.get()), List.of());
-            var result = this.deleteFromDiagramMutationRunner.run(input);
-            String typename = JsonPath.read(result.data(), "$.data.deleteFromDiagram.__typename");
-            assertThat(typename).isEqualTo(DeleteFromDiagramSuccessPayload.class.getSimpleName());
+            var input = new InvokeSingleClickOnDiagramElementToolInput(mutationInputId, PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(),
+                    List.of(siriusWebApplicationNodeId.get()), DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID, 0, 0, List.of());
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
         };
 
         Runnable setInitialNodeCustomAppearance = () -> {

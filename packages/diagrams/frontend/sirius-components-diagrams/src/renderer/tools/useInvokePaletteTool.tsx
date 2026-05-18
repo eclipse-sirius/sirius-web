@@ -11,39 +11,26 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
-import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useAdjustSize } from '../adjust-size/useAdjustSize';
-import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useEditableEdgePath } from '../edge/useEditableEdgePath';
 import { useHandlesLayout } from '../handles/useHandlesLayout';
 import { useLabelResetPosition } from '../move/useLabelResetPosition';
 import { GQLTool } from '../palette/Palette.types';
 import { useLabelResetSize } from '../resize/useLabelResetSize';
-import { useDelete } from './useDelete';
 import { UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
 import { useSingleClickTool } from './useSingleClickTool';
 
 export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
-  const { nodeLookup, edgeLookup } = useStoreApi<Node<NodeData>, Edge<EdgeData>>().getState();
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { removeOutsideLabelLayoutData } = useLabelResetPosition();
   const { removeLabelSizeLayoutData } = useLabelResetSize();
   const { removeNodeHandleLayoutData } = useHandlesLayout();
   const { removeEdgeLayoutData } = useEditableEdgePath();
   const { invokeSingleClickTool } = useSingleClickTool();
-  const { deleteDiagramElements } = useDelete();
   const { adjustSize } = useAdjustSize();
-  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
-
-  const invokeDelete = (diagramElementIds: string[]) => {
-    const nodeIds = diagramElementIds.filter((id) => nodeLookup.has(id) && !!nodeLookup.get(id));
-    const edgeIds = diagramElementIds.filter((id) => edgeLookup.has(id) && !!edgeLookup.get(id));
-    deleteDiagramElements(editingContextId, diagramId, nodeIds, edgeIds);
-  };
 
   const invokeTool = (
     x: number,
@@ -56,11 +43,6 @@ export const useInvokePaletteTool = (): UseInvokePaletteToolValue => {
     switch (tool.id) {
       case 'edit':
         onDirectEditClick();
-        break;
-      case 'semantic-delete':
-        showDeletionConfirmation(() => {
-          invokeDelete(diagramElementIds);
-        });
         break;
       case 'reset-outside-label-position':
         if (diagramElementIds.length === 1 && diagramElementIds[0]) {

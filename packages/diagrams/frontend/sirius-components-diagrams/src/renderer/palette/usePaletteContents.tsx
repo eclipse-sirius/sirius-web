@@ -39,6 +39,7 @@ export const getPaletteQuery = gql`
       appliesToDiagramRoot
       dialogDescriptionId
       withImpactAnalysis
+      withDeletionConfirmationDialog
       keyBindings {
         isCtrl
         isMeta
