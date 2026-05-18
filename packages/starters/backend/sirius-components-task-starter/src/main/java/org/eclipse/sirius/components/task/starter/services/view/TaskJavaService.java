@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import java.util.stream.StreamSupport;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.gantt.StartOrEnd;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
 import org.eclipse.sirius.components.task.AbstractTask;
@@ -91,6 +92,25 @@ public class TaskJavaService {
             task.setEndTime(Instant.ofEpochMilli(epochSecondStartTime + 3600 * 4));
 
             project.getOwnedTasks().add(task);
+        }
+    }
+
+    public List<Task> getDependencies(EObject eObject, String sourceStartOrEnd, String targetStartOrEnd) {
+        if (eObject instanceof AbstractTask task) {
+            if (sourceStartOrEnd.equals("END") && targetStartOrEnd.equals("START")) {
+                return task.getDependencies();
+            }
+        }
+        return List.of();
+    }
+
+    public void createDependencyLink(EObject target, EObject source, StartOrEnd sourceStartOrEnd, StartOrEnd targetStartOrEnd) {
+        if (target instanceof Task targetTask && source instanceof Task sourceTask) {
+            if (sourceStartOrEnd.equals(StartOrEnd.END) && targetStartOrEnd.equals(StartOrEnd.START)) {
+                targetTask.getDependencies().add(sourceTask);
+            } else {
+                this.feedbackMessageService.addFeedbackMessage(new Message("Forbidden dependency creation. This model only accept END-START dependencies", MessageLevel.ERROR));
+            }
         }
     }
 

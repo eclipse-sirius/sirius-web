@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.papaya.ContainingLink;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
+import org.eclipse.sirius.components.papaya.DependencyLink;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
@@ -826,6 +827,13 @@ public class PapayaSwitch<T> extends Switch<T> {
             case PapayaPackage.PUBLICATION: {
                 Publication publication = (Publication) theEObject;
                 T result = this.casePublication(publication);
+                if (result == null)
+                    result = this.defaultCase(theEObject);
+                return result;
+            }
+            case PapayaPackage.DEPENDENCY_LINK: {
+                DependencyLink dependencyLink = (DependencyLink) theEObject;
+                T result = this.caseDependencyLink(dependencyLink);
                 if (result == null)
                     result = this.defaultCase(theEObject);
                 return result;
@@ -1679,6 +1687,21 @@ public class PapayaSwitch<T> extends Switch<T> {
      * @generated
      */
     public T casePublication(Publication object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Dependency Link</em>'. <!-- begin-user-doc
+     * --> This implementation returns null; returning a non-null result will terminate the switch. <!-- end-user-doc
+     * -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Dependency Link</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseDependencyLink(DependencyLink object) {
         return null;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { Column, Task, TaskOrEmpty, ViewMode } from '@ObeoNetwork/gantt-task-react';
 import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLColumn, GQLGanttDateRounding } from '../graphql/subscription/GanttSubscription.types';
+import { GQLColumn, GQLGanttDateRounding, StartOrEnd } from '../graphql/subscription/GanttSubscription.types';
 
 export enum TaskListColumnEnum {
   NAME = 'NAME',
@@ -40,7 +40,12 @@ export interface GanttProps {
   onDeleteTask: (tasks: readonly TaskOrEmpty[]) => void;
   onExpandCollapse: (task: Task) => void;
   onDropTask: (droppedTask: TaskOrEmpty, targetTask: TaskOrEmpty | undefined, dropIndex: number) => void;
-  onCreateTaskDependency: (sourceTaskId: string, targetTaskId: string) => void;
+  onCreateTaskDependency: (
+    sourceTaskId: string,
+    targetTaskId: string,
+    sourceStartOrEnd: StartOrEnd,
+    targetStartOrEnd: StartOrEnd
+  ) => void;
   onDeleteTaskDependency: (sourceTaskId: string, targetTaskId: string) => void;
   onChangeTaskCollapseState: (taskId: string, collapsed: boolean) => void;
   onChangeColumn: (columnId: string, displayed: boolean, width: number) => void;

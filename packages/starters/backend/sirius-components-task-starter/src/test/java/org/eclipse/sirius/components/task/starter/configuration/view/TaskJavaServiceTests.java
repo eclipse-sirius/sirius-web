@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.List;
 
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
+import org.eclipse.sirius.components.gantt.StartOrEnd;
 import org.eclipse.sirius.components.task.AbstractTask;
 import org.eclipse.sirius.components.task.Company;
 import org.eclipse.sirius.components.task.Project;
@@ -141,5 +142,32 @@ public class TaskJavaServiceTests {
         service.moveTaskInTag(codeDev, 1, review.getTags().get(0));
         assertThat(developmentTask.getSubTasks().indexOf(codeDev)).isEqualTo(1);
         assertThat(developmentTask.getSubTasks().indexOf(review)).isEqualTo(0);
+    }
+
+    @Test
+    public void createDependencyLink() {
+        Task source = TaskFactory.eINSTANCE.createTask();
+        Task target = TaskFactory.eINSTANCE.createTask();
+
+        var service = new TaskJavaService(new IFeedbackMessageService.NoOp());
+        service.createDependencyLink(target, source, StartOrEnd.END, StartOrEnd.START);
+        assertThat(target.getDependencies().contains(source));
+
+        service.createDependencyLink(source, target, StartOrEnd.START, StartOrEnd.START);
+        assertThat(!source.getDependencies().contains(source));
+    }
+
+    @Test
+    public void getDependencies() {
+        Task source = TaskFactory.eINSTANCE.createTask();
+        Task target = TaskFactory.eINSTANCE.createTask();
+
+        target.getDependencies().add(source);
+        var service = new TaskJavaService(new IFeedbackMessageService.NoOp());
+        var dependencies = service.getDependencies(target, StartOrEnd.END.toString(), StartOrEnd.START.toString());
+        assertThat(dependencies.contains(source));
+
+        var emptyDependencies = service.getDependencies(target, StartOrEnd.START.toString(), StartOrEnd.START.toString());
+        assertThat(emptyDependencies).isEmpty();
     }
 }
