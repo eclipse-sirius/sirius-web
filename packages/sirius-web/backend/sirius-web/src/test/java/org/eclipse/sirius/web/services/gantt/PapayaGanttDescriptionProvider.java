@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,9 +28,6 @@ import org.eclipse.sirius.components.view.builder.generated.gantt.GanttBuilders;
 import org.eclipse.sirius.components.view.builder.generated.gantt.GanttDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ChangeContextBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.CreateInstanceBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.DeleteElementBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.SetValueBuilder;
-import org.eclipse.sirius.components.view.builder.generated.view.UnsetValueBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.emf.gantt.IGanttIdProvider;
@@ -55,6 +52,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Conditional(OnStudioTests.class)
 public class PapayaGanttDescriptionProvider implements IEditingContextProcessor {
+
+    private static final String AQL_SELF_DEPENDENCIES = "aql:self.dependencies->select(dep | dep.sourceKind.toString() = sourceStartOrEnd.toString())->select(dep | dep.targetKind.toString() = targetStartOrEnd.toString())->collect(dep | dep.source)";
 
     private final IGanttIdProvider ganttIdProvider;
 
@@ -105,7 +104,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         this.ganttDescription = new GanttDescriptionBuilder()
                 .name("Gantt")
                 .titleExpression("aql:'Gantt'")
-                .domainType("papaya:Project")
+                .domainType("papaya::Project")
                 .taskElementDescriptions(this.createTaskDescriptionInProject())
                 .createTool(createTaskTool)
                 .editTool(editTaskTool)
@@ -141,7 +140,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
                 .startTimeExpression("aql:self.startDate")
                 .endTimeExpression("aql:self.endDate")
                 .progressExpression("aql:self.progress")
-                .taskDependenciesExpression("aql:self.dependencies")
+                .taskDependenciesExpression(AQL_SELF_DEPENDENCIES)
                 .computeStartEndDynamicallyExpression("aql:true")
                 .build();
 
@@ -153,7 +152,8 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
     private DeleteTaskTool createDeleteTaskTool() {
         return new GanttBuilders().newDeleteTaskTool()
                 .name("Delete Task")
-                .body(new DeleteElementBuilder()
+                .body(new ChangeContextBuilder()
+                        .expression("aql:self.deleteTask()")
                         .build())
                 .build();
     }
@@ -212,11 +212,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         return new GanttBuilders().newCreateTaskDependencyTool()
                 .name("Create Task Dependency")
                 .body(new ChangeContextBuilder()
-                        .expression("aql:targetObject")
-                        .children(new SetValueBuilder()
-                                .featureName("dependencies")
-                                .valueExpression("aql:sourceObject")
-                                .build())
+                        .expression("aql:targetObject.createDependencyLink(sourceObject, sourceStartOrEnd, targetStartOrEnd)")
                         .build())
                 .build();
     }
@@ -225,11 +221,7 @@ public class PapayaGanttDescriptionProvider implements IEditingContextProcessor 
         return new GanttBuilders().newDeleteTaskDependencyTool()
                 .name("Delete Task Dependency")
                 .body(new ChangeContextBuilder()
-                        .expression("aql:targetObject")
-                        .children(new UnsetValueBuilder()
-                                .featureName("dependencies")
-                                .elementExpression("aql:sourceObject")
-                                .build())
+                        .expression("aql:targetObject.deleteDependencyLink(sourceObject)")
                         .build())
                 .build();
     }

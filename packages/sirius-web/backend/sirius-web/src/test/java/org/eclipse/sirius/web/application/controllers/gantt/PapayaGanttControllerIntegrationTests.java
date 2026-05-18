@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,9 @@ import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTa
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskDetailInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.gantt.DependencyLink;
 import org.eclipse.sirius.components.gantt.Gantt;
+import org.eclipse.sirius.components.gantt.StartOrEnd;
 import org.eclipse.sirius.components.gantt.TemporalType;
 import org.eclipse.sirius.components.gantt.tests.graphql.ChangeColumnMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.ChangeTaskCollapseStateMutationRunner;
@@ -131,6 +133,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                     assertThat(gantt).isNotNull();
                     assertThat(gantt.tasks()).hasSize(2);
                     assertThat(gantt.tasks().get(0).subTasks()).hasSize(3);
+                    assertThat(gantt.tasks().get(0).subTasks().get(0).subTasks().get(0).detail().progress()).isEqualTo(40);
                 }, () -> fail(MISSING_GANTT));
 
         StepVerifier.create(flux)
@@ -393,7 +396,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                     var task = new GanttNavigator(gantt).findTaskByName(taskName1);
                     sourceTaskId.set(task.id());
                     task = new GanttNavigator(gantt).findTaskByName(taskName2);
-                    assertThat(task.taskDependencyIds()).isEmpty();
+                    assertThat(task.dependencyLinks()).isEmpty();
                     targetTaskId.set(task.id());
                 }, () -> fail(MISSING_GANTT));
 
@@ -402,7 +405,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
             var createGanttTaskDependencyInput = new CreateGanttTaskDependencyInput(
                     UUID.randomUUID(),
                     PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get());
+                    ganttRef.get().getId(), sourceTaskId.get(), targetTaskId.get(), StartOrEnd.START, StartOrEnd.END);
             var result = this.createTaskDependencyMutationRunner.run(createGanttTaskDependencyInput);
 
             String typename = JsonPath.read(result.data(), "$.data.createGanttTaskDependency.__typename");
@@ -415,7 +418,13 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     var task = new GanttNavigator(gantt).findTaskByName(taskName2);
-                    assertThat(task.taskDependencyIds()).contains(sourceTaskId.get());
+                    var isPresent = false;
+                    for (DependencyLink dependencyLink : task.dependencyLinks()) {
+                        if (dependencyLink.sourceDependencyId().equals(sourceTaskId.get())) {
+                            isPresent = true;
+                        }
+                    }
+                    assertThat(isPresent).isEqualTo(true);
                 }, () -> fail(MISSING_GANTT));
         
         Runnable deleteDependencyRunnable = () -> {
@@ -435,7 +444,7 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .map(GanttRefreshedEventPayload::gantt)
                 .ifPresentOrElse(gantt -> {
                     var task = new GanttNavigator(gantt).findTaskByName(taskName2);
-                    assertThat(task.taskDependencyIds()).isEmpty();
+                    assertThat(task.dependencyLinks()).isEmpty();
                 }, () -> fail(MISSING_GANTT));
 
         StepVerifier.create(flux)

@@ -44,6 +44,7 @@ Custom deserializers and migration services will probably be impacted.
 `RepresentationDescriptionMetadata` has been renamed to `RepresentationMetadataDTO` and moved to `org.eclipse.sirius.components.collaborative.dto`.
 It now requires a `documentation` parameter.
 - https://github.com/eclipse-sirius/sirius-web/issues/6451[#6451] [tree] `ISingleClickTreeItemContextMenuEntryExecutor.canExecute` method has now more parameters: `boolean canExecute(IEditingContext editingContext, TreeDescription treeDescription, String treeItemMenuContextEntryId, ITreeInput treeInput);`
+- https://github.com/eclipse-sirius/sirius-web/issues/6400[#6400] [gantt] Add a new `dependencyLink` concept to improve dependency management in Gantt. The Gantt descriptions have been changed.
 
 
 === Dependency update
@@ -154,6 +155,8 @@ For example entering either `att def` or `NAD` will now find a tool named `New A
 - https://github.com/eclipse-sirius/sirius-web/issues/6416[#6416] [sirius-web] Perform the validation of the dependencies when a project is uploaded
 - https://github.com/eclipse-sirius/sirius-web/issues/6475[#6475] [diagram] Hide handles when moving an edge segment
 - https://github.com/eclipse-sirius/sirius-web/issues/6497[#6497] [diagram] Display an ellipsis decorator if multiple decorators should be displayed at the same position.
+- https://github.com/eclipse-sirius/sirius-web/issues/6400[#6400] [gantt] Introduce the concept of dependencyLink, which may be used to extends dependency management for the Gantt tasks
+
 
 
 == 2026.3.0

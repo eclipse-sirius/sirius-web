@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -1235,12 +1235,20 @@ public interface PapayaPackage extends EPackage {
     int TASK__DEPENDENCIES = NAMED_ELEMENT_FEATURE_COUNT + 7;
 
     /**
+     * The feature id for the '<em><b>Progress</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TASK__PROGRESS = NAMED_ELEMENT_FEATURE_COUNT + 8;
+
+    /**
      * The number of structural features of the '<em>Task</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int TASK_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 8;
+    int TASK_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 9;
 
     /**
      * The number of operations of the '<em>Task</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4687,6 +4695,65 @@ public interface PapayaPackage extends EPackage {
     int PUBLICATION_OPERATION_COUNT = 0;
 
     /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.impl.DependencyLinkImpl <em>Dependency
+     * Link</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.impl.DependencyLinkImpl
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getDependencyLink()
+     * @generated
+     */
+    int DEPENDENCY_LINK = 59;
+
+    /**
+     * The feature id for the '<em><b>Target Kind</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DEPENDENCY_LINK__TARGET_KIND = 0;
+
+    /**
+     * The feature id for the '<em><b>Source Kind</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DEPENDENCY_LINK__SOURCE_KIND = 1;
+
+    /**
+     * The feature id for the '<em><b>Source</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DEPENDENCY_LINK__SOURCE = 2;
+
+    /**
+     * The feature id for the '<em><b>Duration</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DEPENDENCY_LINK__DURATION = 3;
+
+    /**
+     * The number of structural features of the '<em>Dependency Link</em>' class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DEPENDENCY_LINK_FEATURE_COUNT = 4;
+
+    /**
+     * The number of operations of the '<em>Dependency Link</em>' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int DEPENDENCY_LINK_OPERATION_COUNT = 0;
+
+    /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Priority <em>Priority</em>}' enum. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -4694,7 +4761,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getPriority()
      * @generated
      */
-    int PRIORITY = 59;
+    int PRIORITY = 60;
 
     /**
      * The meta object id for the '{@link org.eclipse.sirius.components.papaya.Visibility <em>Visibility</em>}' enum.
@@ -4704,7 +4771,17 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getVisibility()
      * @generated
      */
-    int VISIBILITY = 60;
+    int VISIBILITY = 61;
+
+    /**
+     * The meta object id for the '{@link org.eclipse.sirius.components.papaya.StartOrEnd <em>Start Or End</em>}' enum.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.eclipse.sirius.components.papaya.StartOrEnd
+     * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getStartOrEnd()
+     * @generated
+     */
+    int START_OR_END = 62;
 
     /**
      * The meta object id for the '<em>Instant</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -4713,7 +4790,7 @@ public interface PapayaPackage extends EPackage {
      * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getInstant()
      * @generated
      */
-    int INSTANT = 61;
+    int INSTANT = 63;
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.ModelElement <em>Model
@@ -5263,15 +5340,27 @@ public interface PapayaPackage extends EPackage {
     EAttribute getTask_Done();
 
     /**
-     * Returns the meta object for the reference list '{@link org.eclipse.sirius.components.papaya.Task#getDependencies
-     * <em>Dependencies</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the meta object for the containment reference list
+     * '{@link org.eclipse.sirius.components.papaya.Task#getDependencies <em>Dependencies</em>}'. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference list '<em>Dependencies</em>'.
+     * @return the meta object for the containment reference list '<em>Dependencies</em>'.
      * @see org.eclipse.sirius.components.papaya.Task#getDependencies()
      * @see #getTask()
      * @generated
      */
     EReference getTask_Dependencies();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.Task#getProgress
+     * <em>Progress</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Progress</em>'.
+     * @see org.eclipse.sirius.components.papaya.Task#getProgress()
+     * @see #getTask()
+     * @generated
+     */
+    EAttribute getTask_Progress();
 
     /**
      * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.Contribution
@@ -6614,6 +6703,62 @@ public interface PapayaPackage extends EPackage {
     EReference getPublication_Message();
 
     /**
+     * Returns the meta object for class '{@link org.eclipse.sirius.components.papaya.DependencyLink <em>Dependency
+     * Link</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Dependency Link</em>'.
+     * @see org.eclipse.sirius.components.papaya.DependencyLink
+     * @generated
+     */
+    EClass getDependencyLink();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.papaya.DependencyLink#getTargetKind <em>Target Kind</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Target Kind</em>'.
+     * @see org.eclipse.sirius.components.papaya.DependencyLink#getTargetKind()
+     * @see #getDependencyLink()
+     * @generated
+     */
+    EAttribute getDependencyLink_TargetKind();
+
+    /**
+     * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.papaya.DependencyLink#getSourceKind <em>Source Kind</em>}'. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Source Kind</em>'.
+     * @see org.eclipse.sirius.components.papaya.DependencyLink#getSourceKind()
+     * @see #getDependencyLink()
+     * @generated
+     */
+    EAttribute getDependencyLink_SourceKind();
+
+    /**
+     * Returns the meta object for the reference '{@link org.eclipse.sirius.components.papaya.DependencyLink#getSource
+     * <em>Source</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Source</em>'.
+     * @see org.eclipse.sirius.components.papaya.DependencyLink#getSource()
+     * @see #getDependencyLink()
+     * @generated
+     */
+    EReference getDependencyLink_Source();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.eclipse.sirius.components.papaya.DependencyLink#getDuration
+     * <em>Duration</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Duration</em>'.
+     * @see org.eclipse.sirius.components.papaya.DependencyLink#getDuration()
+     * @see #getDependencyLink()
+     * @generated
+     */
+    EAttribute getDependencyLink_Duration();
+
+    /**
      * Returns the meta object for enum '{@link org.eclipse.sirius.components.papaya.Priority <em>Priority</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
@@ -6632,6 +6777,16 @@ public interface PapayaPackage extends EPackage {
      * @generated
      */
     EEnum getVisibility();
+
+    /**
+     * Returns the meta object for enum '{@link org.eclipse.sirius.components.papaya.StartOrEnd <em>Start Or End</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for enum '<em>Start Or End</em>'.
+     * @see org.eclipse.sirius.components.papaya.StartOrEnd
+     * @generated
+     */
+    EEnum getStartOrEnd();
 
     /**
      * Returns the meta object for data type '{@link java.time.Instant <em>Instant</em>}'. <!-- begin-user-doc --> <!--
@@ -7103,12 +7258,20 @@ public interface PapayaPackage extends EPackage {
         EAttribute TASK__DONE = eINSTANCE.getTask_Done();
 
         /**
-         * The meta object literal for the '<em><b>Dependencies</b></em>' reference list feature. <!-- begin-user-doc
-         * --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Dependencies</b></em>' containment reference list feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
         EReference TASK__DEPENDENCIES = eINSTANCE.getTask_Dependencies();
+
+        /**
+         * The meta object literal for the '<em><b>Progress</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute TASK__PROGRESS = eINSTANCE.getTask_Progress();
 
         /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.ContributionImpl
@@ -8161,6 +8324,48 @@ public interface PapayaPackage extends EPackage {
         EReference PUBLICATION__MESSAGE = eINSTANCE.getPublication_Message();
 
         /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.impl.DependencyLinkImpl
+         * <em>Dependency Link</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.impl.DependencyLinkImpl
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getDependencyLink()
+         * @generated
+         */
+        EClass DEPENDENCY_LINK = eINSTANCE.getDependencyLink();
+
+        /**
+         * The meta object literal for the '<em><b>Target Kind</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DEPENDENCY_LINK__TARGET_KIND = eINSTANCE.getDependencyLink_TargetKind();
+
+        /**
+         * The meta object literal for the '<em><b>Source Kind</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DEPENDENCY_LINK__SOURCE_KIND = eINSTANCE.getDependencyLink_SourceKind();
+
+        /**
+         * The meta object literal for the '<em><b>Source</b></em>' reference feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EReference DEPENDENCY_LINK__SOURCE = eINSTANCE.getDependencyLink_Source();
+
+        /**
+         * The meta object literal for the '<em><b>Duration</b></em>' attribute feature. <!-- begin-user-doc --> <!--
+         * end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute DEPENDENCY_LINK__DURATION = eINSTANCE.getDependencyLink_Duration();
+
+        /**
          * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.Priority <em>Priority</em>}'
          * enum. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
@@ -8179,6 +8384,16 @@ public interface PapayaPackage extends EPackage {
          * @generated
          */
         EEnum VISIBILITY = eINSTANCE.getVisibility();
+
+        /**
+         * The meta object literal for the '{@link org.eclipse.sirius.components.papaya.StartOrEnd <em>Start Or
+         * End</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.eclipse.sirius.components.papaya.StartOrEnd
+         * @see org.eclipse.sirius.components.papaya.impl.PapayaPackageImpl#getStartOrEnd()
+         * @generated
+         */
+        EEnum START_OR_END = eINSTANCE.getStartOrEnd();
 
         /**
          * The meta object literal for the '<em>Instant</em>' data type. <!-- begin-user-doc --> <!-- end-user-doc -->

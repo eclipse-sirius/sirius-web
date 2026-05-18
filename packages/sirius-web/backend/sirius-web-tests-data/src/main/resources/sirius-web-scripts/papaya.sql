@@ -406,7 +406,8 @@ INSERT INTO document (
                      "data":{
                        "name":"Support card drag and drop",
                        "startDate":"2023-12-11T09:00:00z",
-                       "endDate":"2023-12-13T09:00:00z"
+                       "endDate":"2023-12-13T09:00:00z",
+                       "progress":"40"
                      }
                    },
                    {

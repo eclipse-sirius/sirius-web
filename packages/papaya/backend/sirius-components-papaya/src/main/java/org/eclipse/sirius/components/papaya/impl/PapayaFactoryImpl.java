@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.papaya.ContainingLink;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
+import org.eclipse.sirius.components.papaya.DependencyLink;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
@@ -62,6 +63,7 @@ import org.eclipse.sirius.components.papaya.ReferencingLink;
 import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.Service;
+import org.eclipse.sirius.components.papaya.StartOrEnd;
 import org.eclipse.sirius.components.papaya.Subscription;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
@@ -208,6 +210,8 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
                 return this.createSubscription();
             case PapayaPackage.PUBLICATION:
                 return this.createPublication();
+            case PapayaPackage.DEPENDENCY_LINK:
+                return this.createDependencyLink();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -225,6 +229,8 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
                 return this.createPriorityFromString(eDataType, initialValue);
             case PapayaPackage.VISIBILITY:
                 return this.createVisibilityFromString(eDataType, initialValue);
+            case PapayaPackage.START_OR_END:
+                return this.createStartOrEndFromString(eDataType, initialValue);
             case PapayaPackage.INSTANT:
                 return this.createInstantFromString(eDataType, initialValue);
             default:
@@ -244,6 +250,8 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
                 return this.convertPriorityToString(eDataType, instanceValue);
             case PapayaPackage.VISIBILITY:
                 return this.convertVisibilityToString(eDataType, instanceValue);
+            case PapayaPackage.START_OR_END:
+                return this.convertStartOrEndToString(eDataType, instanceValue);
             case PapayaPackage.INSTANT:
                 return this.convertInstantToString(eDataType, instanceValue);
             default:
@@ -762,6 +770,17 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
      *
      * @generated
      */
+    @Override
+    public DependencyLink createDependencyLink() {
+        DependencyLinkImpl dependencyLink = new DependencyLinkImpl();
+        return dependencyLink;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     public Priority createPriorityFromString(EDataType eDataType, String initialValue) {
         Priority result = Priority.get(initialValue);
         if (result == null)
@@ -796,6 +815,27 @@ public class PapayaFactoryImpl extends EFactoryImpl implements PapayaFactory {
      * @generated
      */
     public String convertVisibilityToString(EDataType eDataType, Object instanceValue) {
+        return instanceValue == null ? null : instanceValue.toString();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public StartOrEnd createStartOrEndFromString(EDataType eDataType, String initialValue) {
+        StartOrEnd result = StartOrEnd.get(initialValue);
+        if (result == null)
+            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+        return result;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public String convertStartOrEndToString(EDataType eDataType, Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 

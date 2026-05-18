@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@ import org.eclipse.sirius.components.papaya.provider.spec.ContainingLinkItemProv
 import org.eclipse.sirius.components.papaya.provider.spec.ContributionItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ControllerItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.DataTypeItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.DependencyLinkItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.DomainItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EnumItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EnumLiteralItemProviderSpec;
@@ -173,7 +174,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.ReferencingLink}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createReferencingLinkAdapter() {
@@ -196,7 +197,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.ContainingLink}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createContainingLinkAdapter() {
@@ -266,7 +267,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalCapability}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createOperationalCapabilityAdapter() {
@@ -289,7 +290,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalEntity}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createOperationalEntityAdapter() {
@@ -312,7 +313,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalActor}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createOperationalActorAdapter() {
@@ -335,7 +336,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalProcess}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createOperationalProcessAdapter() {
@@ -358,7 +359,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalActivity}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createOperationalActivityAdapter() {
@@ -382,7 +383,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.OperationalInteraction}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createOperationalInteractionAdapter() {
@@ -1199,6 +1200,29 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.DependencyLink}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DependencyLinkItemProvider dependencyLinkItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.DependencyLink}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createDependencyLinkAdapter() {
+        if (this.dependencyLinkItemProvider == null) {
+            this.dependencyLinkItemProvider = new DependencyLinkItemProviderSpec(this);
+        }
+
+        return this.dependencyLinkItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1419,6 +1443,8 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
             this.subscriptionItemProvider.dispose();
         if (this.publicationItemProvider != null)
             this.publicationItemProvider.dispose();
+        if (this.dependencyLinkItemProvider != null)
+            this.dependencyLinkItemProvider.dispose();
     }
 
 }

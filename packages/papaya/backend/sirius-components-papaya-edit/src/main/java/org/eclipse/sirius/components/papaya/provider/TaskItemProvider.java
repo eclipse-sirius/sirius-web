@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,7 @@ public class TaskItemProvider extends NamedElementItemProvider {
             this.addEndDatePropertyDescriptor(object);
             this.addDonePropertyDescriptor(object);
             this.addDependenciesPropertyDescriptor(object);
+            this.addProgressPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -139,6 +140,17 @@ public class TaskItemProvider extends NamedElementItemProvider {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_Task_dependencies_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Task_dependencies_feature", "_UI_Task_type"),
                 PapayaPackage.Literals.TASK__DEPENDENCIES, true, false, true, null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Progress feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addProgressPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_Task_progress_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_Task_progress_feature", "_UI_Task_type"), PapayaPackage.Literals.TASK__PROGRESS,
+                true, false, false, ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -235,6 +247,7 @@ public class TaskItemProvider extends NamedElementItemProvider {
             case PapayaPackage.TASK__START_DATE:
             case PapayaPackage.TASK__END_DATE:
             case PapayaPackage.TASK__DONE:
+            case PapayaPackage.TASK__PROGRESS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;
             case PapayaPackage.TASK__TASKS:

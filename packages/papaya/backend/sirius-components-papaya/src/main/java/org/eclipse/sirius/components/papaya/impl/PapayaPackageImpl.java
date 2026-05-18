@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.papaya.impl;
 
+import static org.eclipse.sirius.components.papaya.PapayaPackage.CLASS;
+import static org.eclipse.sirius.components.papaya.PapayaPackage.CONTAINER;
+
 import java.time.Instant;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -37,6 +40,7 @@ import org.eclipse.sirius.components.papaya.ContainingLink;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
+import org.eclipse.sirius.components.papaya.DependencyLink;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
@@ -72,6 +76,7 @@ import org.eclipse.sirius.components.papaya.ReferencingLink;
 import org.eclipse.sirius.components.papaya.Repository;
 import org.eclipse.sirius.components.papaya.RequiredService;
 import org.eclipse.sirius.components.papaya.Service;
+import org.eclipse.sirius.components.papaya.StartOrEnd;
 import org.eclipse.sirius.components.papaya.Subscription;
 import org.eclipse.sirius.components.papaya.Tag;
 import org.eclipse.sirius.components.papaya.Task;
@@ -504,6 +509,13 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      *
      * @generated
      */
+    private EClass dependencyLinkEClass = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
     private EEnum priorityEEnum = null;
 
     /**
@@ -512,6 +524,13 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     private EEnum visibilityEEnum = null;
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    private EEnum startOrEndEEnum = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1089,6 +1108,16 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
     @Override
     public EReference getTask_Dependencies() {
         return (EReference) this.taskEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getTask_Progress() {
+        return (EAttribute) this.taskEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -2307,6 +2336,56 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
      * @generated
      */
     @Override
+    public EClass getDependencyLink() {
+        return this.dependencyLinkEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDependencyLink_TargetKind() {
+        return (EAttribute) this.dependencyLinkEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDependencyLink_SourceKind() {
+        return (EAttribute) this.dependencyLinkEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EReference getDependencyLink_Source() {
+        return (EReference) this.dependencyLinkEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getDependencyLink_Duration() {
+        return (EAttribute) this.dependencyLinkEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EEnum getPriority() {
         return this.priorityEEnum;
     }
@@ -2319,6 +2398,16 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
     @Override
     public EEnum getVisibility() {
         return this.visibilityEEnum;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EEnum getStartOrEnd() {
+        return this.startOrEndEEnum;
     }
 
     /**
@@ -2428,6 +2517,7 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.createEAttribute(this.taskEClass, TASK__END_DATE);
         this.createEAttribute(this.taskEClass, TASK__DONE);
         this.createEReference(this.taskEClass, TASK__DEPENDENCIES);
+        this.createEAttribute(this.taskEClass, TASK__PROGRESS);
 
         this.contributionEClass = this.createEClass(CONTRIBUTION);
         this.createEReference(this.contributionEClass, CONTRIBUTION__RELATED_TASKS);
@@ -2591,9 +2681,16 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.createEReference(this.publicationEClass, PUBLICATION__CHANNEL);
         this.createEReference(this.publicationEClass, PUBLICATION__MESSAGE);
 
+        this.dependencyLinkEClass = this.createEClass(DEPENDENCY_LINK);
+        this.createEAttribute(this.dependencyLinkEClass, DEPENDENCY_LINK__TARGET_KIND);
+        this.createEAttribute(this.dependencyLinkEClass, DEPENDENCY_LINK__SOURCE_KIND);
+        this.createEReference(this.dependencyLinkEClass, DEPENDENCY_LINK__SOURCE);
+        this.createEAttribute(this.dependencyLinkEClass, DEPENDENCY_LINK__DURATION);
+
         // Create enums
         this.priorityEEnum = this.createEEnum(PRIORITY);
         this.visibilityEEnum = this.createEEnum(VISIBILITY);
+        this.startOrEndEEnum = this.createEEnum(START_OR_END);
 
         // Create data types
         this.instantEDataType = this.createEDataType(INSTANT);
@@ -2802,8 +2899,10 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
                 IS_ORDERED);
         this.initEAttribute(this.getTask_Done(), this.ecorePackage.getEBoolean(), "done", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getTask_Dependencies(), this.getTask(), null, "dependencies", null, 0, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getTask_Dependencies(), this.getDependencyLink(), null, "dependencies", null, 0, -1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+                !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTask_Progress(), this.ecorePackage.getEInt(), "progress", null, 0, 1, Task.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.contributionEClass, Contribution.class, "Contribution", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getContribution_RelatedTasks(), this.getTask(), null, "relatedTasks", null, 0, -1, Contribution.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
@@ -3047,6 +3146,16 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.initEReference(this.getPublication_Message(), this.getMessage(), this.getMessage_EmittedBy(), "message", null, 0, 1, Publication.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
                 !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
+        this.initEClass(this.dependencyLinkEClass, DependencyLink.class, "DependencyLink", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDependencyLink_TargetKind(), this.getStartOrEnd(), "targetKind", null, 0, 1, DependencyLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDependencyLink_SourceKind(), this.getStartOrEnd(), "sourceKind", null, 0, 1, DependencyLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getDependencyLink_Source(), this.getTask(), null, "source", null, 0, 1, DependencyLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getDependencyLink_Duration(), this.ecorePackage.getEInt(), "duration", null, 0, 1, DependencyLink.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
+                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
         // Initialize enums and add enum literals
         this.initEEnum(this.priorityEEnum, Priority.class, "Priority");
         this.addEEnumLiteral(this.priorityEEnum, Priority.P1);
@@ -3060,6 +3169,10 @@ public class PapayaPackageImpl extends EPackageImpl implements PapayaPackage {
         this.addEEnumLiteral(this.visibilityEEnum, Visibility.PROTECTED);
         this.addEEnumLiteral(this.visibilityEEnum, Visibility.PACKAGE);
         this.addEEnumLiteral(this.visibilityEEnum, Visibility.PRIVATE);
+
+        this.initEEnum(this.startOrEndEEnum, StartOrEnd.class, "StartOrEnd");
+        this.addEEnumLiteral(this.startOrEndEEnum, StartOrEnd.START);
+        this.addEEnumLiteral(this.startOrEndEEnum, StartOrEnd.END);
 
         // Initialize data types
         this.initEDataType(this.instantEDataType, Instant.class, "Instant", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);

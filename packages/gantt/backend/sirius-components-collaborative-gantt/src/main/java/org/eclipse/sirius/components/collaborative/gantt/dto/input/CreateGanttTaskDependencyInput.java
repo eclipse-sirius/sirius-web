@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,18 +16,21 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.collaborative.gantt.api.IGanttInput;
+import org.eclipse.sirius.components.gantt.StartOrEnd;
 
 /**
  * The input of the "Create task dependency" mutation.
  *
  * @author lfasani
  */
-public record CreateGanttTaskDependencyInput(UUID id, String editingContextId, String representationId, String sourceTaskId, String targetTaskId) implements IGanttInput {
+public record CreateGanttTaskDependencyInput(UUID id, String editingContextId, String representationId, String sourceTaskId, String targetTaskId, StartOrEnd targetStartOrEnd, StartOrEnd sourceStartOrEnd) implements IGanttInput {
     public CreateGanttTaskDependencyInput {
         Objects.requireNonNull(id);
         Objects.requireNonNull(editingContextId);
         Objects.requireNonNull(representationId);
         Objects.requireNonNull(sourceTaskId);
         Objects.requireNonNull(targetTaskId);
+        Objects.requireNonNull(sourceStartOrEnd);
+        Objects.requireNonNull(targetStartOrEnd);
     }
 }

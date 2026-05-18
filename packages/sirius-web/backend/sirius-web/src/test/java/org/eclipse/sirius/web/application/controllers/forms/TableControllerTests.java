@@ -130,7 +130,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
             assertThat(lineNavigator.textfieldCellByColumnId(tableNavigator.column("Name").getId())).hasValue("Improve some features of the deck");
             assertThat(checkboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId())).hasValue(false);
             assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P1");
-            assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId())).hasValues(List.of());
+            assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Targets").getId())).hasValues(List.of());
 
         });
 
@@ -192,7 +192,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
             assertThat(typename).isEqualTo(SuccessPayload.class.getSimpleName());
         };
 
-        Consumer<Object> editDependenciesConsumer = this.getEditDependenciesConsumer(tableId, checkboxCellId);
+        Consumer<Object> editDependenciesConsumer = this.getEditTargetsConsumer(tableId, checkboxCellId);
 
         Runnable editIsDoneCheckboxCell = () -> {
             var input = new EditCheckboxCellInput(UUID.randomUUID(), PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), formId.get(), tableId.get(), checkboxCellId.get(), true);
@@ -356,7 +356,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
         });
     }
 
-    private Consumer<Object> getEditDependenciesConsumer(AtomicReference<String> tableId, AtomicReference<UUID> checkboxCellId) {
+    private Consumer<Object> getEditTargetsConsumer(AtomicReference<String> tableId, AtomicReference<UUID> checkboxCellId) {
         return assertRefreshedFormThat(form -> {
             var table = this.getTable(form);
             tableId.set(table.getId());
@@ -366,7 +366,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
             LineCheckboxCellNavigator lineCheckboxCellNavigator = new LineCheckboxCellNavigator(line);
             checkboxCellId.set(lineCheckboxCellNavigator.checkboxCellByColumnId(tableNavigator.column("Done").getId()).getId());
 
-            assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies")
+            assertThat(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Targets")
                     .getId())).hasValues(List.of("e6e8f081-27f5-40e3-a8ab-1e6f0f13df12", "e1c5bd66-54c2-45f1-ae3a-99d3f039affd"));
 
         });
@@ -379,7 +379,7 @@ public class TableControllerTests extends AbstractIntegrationTests {
             TableNavigator tableNavigator = new TableNavigator(table);
             Line line = table.getLines().get(0);
             LineNavigator lineNavigator = new LineNavigator(line);
-            multiSelectCellId.set(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Dependencies").getId()).getId());
+            multiSelectCellId.set(lineNavigator.multiSelectCellByColumnId(tableNavigator.column("Targets").getId()).getId());
 
             assertThat(lineNavigator.selectCellByColumnId(tableNavigator.column("Priority").getId())).hasValue("P2");
 
