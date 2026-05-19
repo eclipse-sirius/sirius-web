@@ -71,6 +71,12 @@ export const NodePanelInfos = ({ title, node }: NodePanelInfosProps) => {
           <ListItemText classes={{ root: classes.listItemText }} primary={`Node id : ${node?.id}`} />
         </ListItem>
         <ListItem classes={{ root: classes.listItem }}>
+          <ListItemText
+            classes={{ root: classes.listItemText }}
+            primary={`Node description id : ${node?.data.descriptionId}`}
+          />
+        </ListItem>
+        <ListItem classes={{ root: classes.listItem }}>
           <ListItemText classes={{ root: classes.listItemText }} primary={`Height : ${node?.height}`} />
         </ListItem>
         <ListItem classes={{ root: classes.listItem }}>
