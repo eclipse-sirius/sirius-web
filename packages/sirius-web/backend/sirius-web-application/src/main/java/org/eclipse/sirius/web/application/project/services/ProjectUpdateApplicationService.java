@@ -65,7 +65,7 @@ public class ProjectUpdateApplicationService implements IProjectUpdateApplicatio
                         .addKeyValue("projectId", input.projectId())
                         .log();
 
-                yield  new RenameProjectSuccessPayload(input.id());
+                yield new RenameProjectSuccessPayload(input.id());
             }
         };
     }
