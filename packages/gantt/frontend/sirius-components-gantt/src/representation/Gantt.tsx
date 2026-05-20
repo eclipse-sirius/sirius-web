@@ -275,7 +275,8 @@ export const Gantt = ({
         onProgressChange={onEditTask}
         onDelete={onDeleteTask}
         onDoubleClick={(task) => onChangeTaskCollapseState(task.id, !task.hideChildren)}
-        onClick={handleSelection}
+        onTaskClick={handleSelection}
+        onTaskContextMenu={handleSelection}
         roundDate={(date: Date, _: ViewMode, dateExtremity: DateExtremity, action: BarMoveAction) =>
           roundDate(date, dateExtremity, action, dateRounding)
         }
