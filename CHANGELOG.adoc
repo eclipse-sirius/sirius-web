@@ -19,12 +19,12 @@
 
 === Breaking changes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6055[#6055] [releng] Sirius Web now requires **Java 21** or later to build *and* to run.
 
 
 === Dependency update
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6055[#6055] [releng] As of version 2026.7.0, Sirius Web now requires **Java 21** or later.
 
 
 === Bug fixes
@@ -41,6 +41,9 @@
 
 - [releng] Fix the diagram image server Dockerfile
 - https://github.com/eclipse-sirius/sirius-web/issues/6521[#6521] [sirius-web] Add the ability to contribute additional GraphQL instrumentations
+- https://github.com/eclipse-sirius/sirius-web/issues/6055[#6055] [test] Update an `ArchUnit` test to consider an empty list of fields.
+In Java 17, the Java compiler was always generating a private synthetic field for inner classes.
+In Java 18+ this synthetic field is not automatically generated anymore if it is not necessary, as a result some `ArchUnit` tests on fields could encounter an empty list of fields now which would trigger a test failure.
 
 
 

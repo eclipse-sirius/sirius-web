@@ -42,7 +42,7 @@ To build the components in this repository on your own, you will need the follow
 
 * Git, and a GitHub account
 * To build the backend components:
-** https://adoptium.net/temurin/releases/[Java 17]
+** https://adoptium.net/temurin/releases/[Java 21]
 ** https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/[Apache Maven 3.6.3]
 ** https://www.docker.com/[Docker] must be installed and running for some of the backend components tests to run.
 * To build the frontend components:

@@ -6,7 +6,7 @@
     modelPluginID="sirius-components-widget-table-view" modelName="TableWidget" editPluginClass="org.eclipse.sirius.components.view.widget.tablewidget.provider.TableWidgetEditPlugin"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" codeFormatting="true"
     commentFormatting="true" testsDirectory="" importerID="org.eclipse.emf.importer.ecore"
-    bundleManifest="false" complianceLevel="17.0" copyrightFields="false" editPluginID="sirius-components-widget-table-view-edit"
+    bundleManifest="false" complianceLevel="21.0" copyrightFields="false" editPluginID="sirius-components-widget-table-view-edit"
     usedGenPackages="../../../../../sirius-components-view-form/src/main/resources/model/form.genmodel#//form ../../../../../sirius-components-view/src/main/resources/model/view.genmodel#//view ../../../../../sirius-components-view-table/src/main/resources/model/table.genmodel#//table"
     operationReflection="true" importOrganizing="true" cleanup="true">
   <foreignModel>tablewidget.ecore</foreignModel>
