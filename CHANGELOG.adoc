@@ -41,11 +41,15 @@ The font weights used in the default MUI theme can be found here[https://mui.com
 - https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [releng] Switch to React Resizable Panels 4.11.2.
 This switch enables us to use other units such as `px` or `rem` instead of `%` to specify panels' size.
 It also enables us to disable panel resize for a better control when needed.
+- [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.6`
+
+
 
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5301[#5301] [core] Fix browser history on workbenches
 - https://github.com/eclipse-sirius/sirius-web/issues/6557[#6557] [sirius-web] The workbench now respects the order of the left and right views provided in the `WorkbenchConfiguration`.
+
 
 
 === New Features
