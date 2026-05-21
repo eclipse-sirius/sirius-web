@@ -19,7 +19,7 @@
 
 === Breaking changes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/1361[#1361] [diagram] The Graphql API `deleteFromDiagram` has been removed.
 
 
 === Dependency update
@@ -40,7 +40,7 @@
 === Improvements
 
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/1361[#1361] [diagram] Remove hard-coded diagram delete tool
 
 
 == 2026.5.0

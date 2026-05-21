@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,7 @@ test.describe('delete node without delete tool', () => {
       if (
         request.url().includes('api/graphql') &&
         request.method() === 'POST' &&
-        JSON.parse(request.postData()).operationName === 'deleteFromDiagram'
+        JSON.parse(request.postData()!).operationName === 'invokeSingleClickOnDiagramElementTool'
       ) {
         requestTriggered = true;
       }

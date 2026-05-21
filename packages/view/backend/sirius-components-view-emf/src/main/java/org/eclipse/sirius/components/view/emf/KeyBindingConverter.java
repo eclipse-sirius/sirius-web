@@ -27,7 +27,7 @@ public class KeyBindingConverter implements IKeyBindingConverter {
 
     @Override
     public Optional<KeyBinding> createKeyBinding(org.eclipse.sirius.components.view.KeyBinding viewKeyBinding) {
-        if (!viewKeyBinding.isAlt() && !viewKeyBinding.isCtrl() && !viewKeyBinding.isMeta()) {
+        if (!viewKeyBinding.isAlt() && !viewKeyBinding.isCtrl() && !viewKeyBinding.isMeta() && !viewKeyBinding.getKey().equals("Delete")) {
             return Optional.empty();
         }
         return Optional.of(KeyBinding.newKeyBinding()

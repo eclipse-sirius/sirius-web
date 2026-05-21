@@ -41,11 +41,11 @@ public class NodeToolConverter implements INodeToolConverter {
 
     private final IDiagramIdProvider diagramIdProvider;
 
-    private final IKeyBindingConverter keyBindingkeyBindingConverter;
+    private final IKeyBindingConverter keyBindingConverter;
 
-    public NodeToolConverter(IDiagramIdProvider diagramIdProvider, IKeyBindingConverter keyBindingkeyBindingConverter) {
+    public NodeToolConverter(IDiagramIdProvider diagramIdProvider, IKeyBindingConverter keyBindingConverter) {
         this.diagramIdProvider = Objects.requireNonNull(diagramIdProvider);
-        this.keyBindingkeyBindingConverter = Objects.requireNonNull(keyBindingkeyBindingConverter);
+        this.keyBindingConverter = Objects.requireNonNull(keyBindingConverter);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class NodeToolConverter implements INodeToolConverter {
         }
 
         List<KeyBinding> keyBindings = viewNodeTool.getKeyBindings().stream()
-                .map(this.keyBindingkeyBindingConverter::createKeyBinding)
+                .map(this.keyBindingConverter::createKeyBinding)
                 .flatMap(Optional::stream)
                 .toList();
 

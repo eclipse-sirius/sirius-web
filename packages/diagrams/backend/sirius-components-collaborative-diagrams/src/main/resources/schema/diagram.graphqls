@@ -425,6 +425,7 @@ type SingleClickOnDiagramElementTool implements Tool {
   dialogDescriptionId: String
   targetDescriptions: [DiagramElementDescription!]!
   withImpactAnalysis: Boolean!
+  withDeletionConfirmationDialog: Boolean!
   keyBindings: [KeyBinding!]!
 }
 
@@ -524,7 +525,6 @@ enum SynchronizationPolicy {
 
 extend type Mutation {
   arrangeAll(input: ArrangeAllInput!): ArrangeAllPayload!
-  deleteFromDiagram(input: DeleteFromDiagramInput!): DeleteFromDiagramPayload!
   editLabel(input: EditLabelInput!): EditLabelPayload!
   invokeSingleClickOnDiagramElementTool(input: InvokeSingleClickOnDiagramElementToolInput!): InvokeSingleClickOnDiagramElementToolPayload!
   invokeSingleClickOnTwoDiagramElementsTool(input: InvokeSingleClickOnTwoDiagramElementsToolInput!): InvokeSingleClickOnTwoDiagramElementsToolPayload!
@@ -556,22 +556,6 @@ input ArrangeAllInput {
 }
 
 union ArrangeAllPayload = SuccessPayload | ErrorPayload
-
-input DeleteFromDiagramInput {
-  id: ID!
-  editingContextId: ID!
-  representationId: ID!
-  nodeIds: [ID!]!
-  edgeIds: [ID!]!
-}
-
-union DeleteFromDiagramPayload = ErrorPayload | DeleteFromDiagramSuccessPayload
-
-type DeleteFromDiagramSuccessPayload {
-  id: ID!
-  diagram: Diagram!
-  messages: [Message]!
-}
 
 input EditLabelInput {
   id: ID!
