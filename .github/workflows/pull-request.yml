@@ -118,3 +118,8 @@ jobs:
         env:
           GITHUB_EVENT: ${{ toJSON(github.event) }}
         run: node scripts/check-extension-points.js
+
+      - name: Check the size of the pull request
+        working-directory: scripts
+        run: java PullRequestSizeChecker.java ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+
