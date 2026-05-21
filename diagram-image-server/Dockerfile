@@ -42,6 +42,7 @@ RUN apt update && \
       libxss1 \
       libxtst6 \
       lsb-release \
+      unzip \
       wget \
       xdg-utils && \
     rm -rf /var/lib/apt/lists/*
@@ -51,7 +52,7 @@ USER exporter
 WORKDIR /home/exporter
 
 COPY package.json package-lock.json index.mjs .
-RUN npx @puppeteer/browsers install chrome@138 && \
+RUN npx @puppeteer/browsers install chrome@148 && \
     npm ci
 
 EXPOSE 3000/tcp

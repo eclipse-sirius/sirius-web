@@ -39,7 +39,7 @@
 
 === Improvements
 
-
+- [releng] Fix the diagram image server Dockerfile
 
 
 
