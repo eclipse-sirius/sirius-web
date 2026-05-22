@@ -1,0 +1,63 @@
+:author: Nicolas Couvert
+:date: 2026-05-26
+:status: proposed
+:consulted: Florian Rouene
+:informed: Florian Rouene
+:deciders: Stéphane Begaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6527
+
+= ADR-232 - Add support for custom holidays in Gantt
+
+== Context and Problem Statement
+
+Non-working days are hardcoded in Sirius-Web. 
+They are computed in a frontend function and limited to Saturdays and Sundays. 
+However, additional days off may apply depending on the location and are currently not taken into account (see : https://github.com/ObeoNetwork/pepper/issues/12).
+
+== Decision Drivers
+
+- User Experience: Avoid introducing complex interface for end users.
+- Compatibility: Provide a simple and optional solution (i.e: no changes for users if not implemented).
+- Performance: Solution should not degrade rendering performance.
+- Customization: Solution should be configurable so that each application can set customized days off.
+
+== Considered Options
+
+In all cases, two new providers should be introduced in the Gantt Description: 
+
+- A non-working days provider: provides the list of dates considered as non-working days.
+- A recurring non-working days provider: provides the list of non-working days recurring every week.
+
+=== First Option: Dedicated query for non-working days
+
+Introduce a new query method to get non-working days in the frontend using the `useQuery` Hook. 
+The query should return two lists, one for each new providers: 
+
+- A list of non-working dates: specific dates that will be considered non-working days.
+- A list of recurring non-working dates, which will be calculated as present each week.
+
+=== Second Option: Persist holiday configuration in subscriptions
+
+Store the holiday configuration directly in subscriptions so that all data is persisted.
+
+Requires: 
+
+- Modifying Gantt model in the backend
+- Adding a dedicated Holiday class/structure 
+
+== Decision Outcome
+
+To support custom holidays in Gantt, we decided to add a dedicated query to retrieve custom non-working days.
+Holidays do not need to be persisted, as they are configuration data rather than business data.
+Persisting it would unnecessarily increase storage usage, especially for a large range of holidays.
+
+== Consequences
+
+=== Advantages
+
+- No persitence of the holidays in the database.
+- Simpler implementation
+
+=== Drawbacks
+
+- Introduces an additional GraphQL query during the Gantt initialization.
