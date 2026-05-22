@@ -1,0 +1,60 @@
+:author: Nicolas Couvert
+:date: 2026-05-26
+:status: proposed
+:consulted: Florian Rouene
+:informed: Florian Rouene
+:deciders: Stéphane Begaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6527
+
+= ADR-235 - Add support for custom non-working days in Gantt
+
+== Context and Problem Statement
+
+Non-working days are hardcoded in Sirius-Web. 
+They are computed in a frontend function and limited to Saturdays and Sundays. 
+However, additional days off may apply depending on the location and are currently not taken into account (see : https://github.com/ObeoNetwork/pepper/issues/12).
+
+
+== Decision Drivers
+
+- User Experience: Avoid introducing complex interface for end users.
+- Compatibility: Provide a simple and optional solution (i.e: no changes for users if not implemented).
+- Performance: Solution should not degrade rendering performance.
+- Customization: Solution should be configurable so that each application can set customized days off.
+
+
+== Considered Options
+
+In all cases, a new expression must be introduced in the Gantt Description to provide the list of dates considered as non-working days.
+The backend will thus become the source of truth for the non-working days, and the frontend will query it to compute the Gantt chart.
+
+
+=== First Option: Use a dedicated query for non-working days
+
+Introduce a new query method to get non-working days in the frontend using the `useQuery` Hook. 
+The query should return the list of non-working days in a week.
+
+
+=== Second Option: Provide non-working days in the subscription
+
+Provide the non-working days in the subscription so that all data can be retrieved directly from the subscription.
+
+
+== Decision Outcome
+
+To support custom holidays in Gantt, we decided to add a dedicated query to retrieve custom non-working days.
+Non-working days do not need to be persisted or refreshed anytime some semantic data changes right now so using the subscription to retrieve them would be overkill.
+We would constantly transmit the non-working days which would be a waste of bandwidth.
+
+
+== Consequences
+
+=== Advantages
+
+- No persitence of the non-working dats in the database.
+- Simpler implementation
+
+
+=== Drawbacks
+
+- Introduces an additional GraphQL query during the Gantt initialization.
