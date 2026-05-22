@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.papaya.ContainingLink;
 import org.eclipse.sirius.components.papaya.Contribution;
 import org.eclipse.sirius.components.papaya.Controller;
 import org.eclipse.sirius.components.papaya.DataType;
+import org.eclipse.sirius.components.papaya.DependencyLink;
 import org.eclipse.sirius.components.papaya.Domain;
 import org.eclipse.sirius.components.papaya.EnumLiteral;
 import org.eclipse.sirius.components.papaya.Event;
@@ -417,6 +418,11 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter casePublication(Publication object) {
             return PapayaAdapterFactory.this.createPublicationAdapter();
+        }
+
+        @Override
+        public Adapter caseDependencyLink(DependencyLink object) {
+            return PapayaAdapterFactory.this.createDependencyLinkAdapter();
         }
 
         @Override
@@ -1237,6 +1243,20 @@ public class PapayaAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createPublicationAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.eclipse.sirius.components.papaya.DependencyLink
+     * <em>Dependency Link</em>}'. <!-- begin-user-doc --> This default implementation returns null so that we can
+     * easily ignore cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.eclipse.sirius.components.papaya.DependencyLink
+     * @generated
+     */
+    public Adapter createDependencyLinkAdapter() {
         return null;
     }
 

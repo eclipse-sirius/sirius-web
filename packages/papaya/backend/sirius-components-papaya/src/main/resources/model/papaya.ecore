@@ -77,7 +77,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endDate" eType="#//Instant"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="done" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
-        eType="#//Task"/>
+        eType="#//DependencyLink" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="progress" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="Priority">
     <eLiterals name="P1" value="1"/>
@@ -317,5 +318,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="channel" eType="#//Channel"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="message" eType="#//Message"
         eOpposite="#//Message/emittedBy"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DependencyLink">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetKind" eType="#//StartOrEnd"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceKind" eType="#//StartOrEnd"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" eType="#//Task"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="StartOrEnd">
+    <eLiterals name="Start" literal="START"/>
+    <eLiterals name="End" value="1" literal="END"/>
   </eClassifiers>
 </ecore:EPackage>

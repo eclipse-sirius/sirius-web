@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -56,6 +56,11 @@ public record GanttDescription(String id, String label, Function<VariableManager
     public static final String TARGET_TASK_OR_GANTT = "targetTaskOrGantt";
 
     public static final String TARGET_DROP_INDEX = "indexInTarget";
+
+    public static final String SOURCE_START_OR_END = "sourceStartOrEnd";
+
+    public static final String TARGET_START_OR_END = "targetStartOrEnd";
+
 
     public GanttDescription {
         Objects.requireNonNull(id);

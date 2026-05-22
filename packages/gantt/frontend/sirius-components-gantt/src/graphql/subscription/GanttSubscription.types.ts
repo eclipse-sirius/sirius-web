@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -66,8 +66,17 @@ export interface GQLTask {
   detail: GQLTaskDetail;
   style: GQLTaskStyle;
   subTasks: GQLTask[];
-  taskDependencyIds: string[];
+  dependencyLinks: GQLDependency[];
 }
+
+export type StartOrEnd = 'START' | 'END';
+
+export interface GQLDependency {
+  source: StartOrEnd;
+  target: StartOrEnd;
+  sourceDependencyId: string;
+}
+
 export interface GQLColumn {
   id: string;
   displayed: boolean;

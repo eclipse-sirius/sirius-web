@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.sirius.components.papaya.DependencyLink;
 import org.eclipse.sirius.components.papaya.ModelElement;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.papaya.Priority;
@@ -43,6 +44,7 @@ import org.eclipse.sirius.components.papaya.Task;
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getEndDate <em>End Date</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#isDone <em>Done</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getDependencies <em>Dependencies</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.impl.TaskImpl#getProgress <em>Progress</em>}</li>
  * </ul>
  *
  * @generated
@@ -169,14 +171,34 @@ public class TaskImpl extends NamedElementImpl implements Task {
     protected boolean done = DONE_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}' reference list. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getDependencies() <em>Dependencies</em>}' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @see #getDependencies()
      * @generated
      * @ordered
      */
-    protected EList<Task> dependencies;
+    protected EList<DependencyLink> dependencies;
+
+    /**
+     * The default value of the '{@link #getProgress() <em>Progress</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getProgress()
+     * @generated
+     * @ordered
+     */
+    protected static final int PROGRESS_EDEFAULT = 0;
+
+    /**
+     * The cached value of the '{@link #getProgress() <em>Progress</em>}' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @see #getProgress()
+     * @generated
+     * @ordered
+     */
+    protected int progress = PROGRESS_EDEFAULT;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -344,11 +366,34 @@ public class TaskImpl extends NamedElementImpl implements Task {
      * @generated
      */
     @Override
-    public EList<Task> getDependencies() {
+    public EList<DependencyLink> getDependencies() {
         if (this.dependencies == null) {
-            this.dependencies = new EObjectResolvingEList<>(Task.class, this, PapayaPackage.TASK__DEPENDENCIES);
+            this.dependencies = new EObjectContainmentEList<>(DependencyLink.class, this, PapayaPackage.TASK__DEPENDENCIES);
         }
         return this.dependencies;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public int getProgress() {
+        return this.progress;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setProgress(int newProgress) {
+        int oldProgress = this.progress;
+        this.progress = newProgress;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.TASK__PROGRESS, oldProgress, this.progress));
     }
 
     /**
@@ -361,6 +406,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
         switch (featureID) {
             case PapayaPackage.TASK__TASKS:
                 return ((InternalEList<?>) this.getTasks()).basicRemove(otherEnd, msgs);
+            case PapayaPackage.TASK__DEPENDENCIES:
+                return ((InternalEList<?>) this.getDependencies()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -389,6 +436,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
                 return this.isDone();
             case PapayaPackage.TASK__DEPENDENCIES:
                 return this.getDependencies();
+            case PapayaPackage.TASK__PROGRESS:
+                return this.getProgress();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -427,7 +476,10 @@ public class TaskImpl extends NamedElementImpl implements Task {
                 return;
             case PapayaPackage.TASK__DEPENDENCIES:
                 this.getDependencies().clear();
-                this.getDependencies().addAll((Collection<? extends Task>) newValue);
+                this.getDependencies().addAll((Collection<? extends DependencyLink>) newValue);
+                return;
+            case PapayaPackage.TASK__PROGRESS:
+                this.setProgress((Integer) newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -465,6 +517,9 @@ public class TaskImpl extends NamedElementImpl implements Task {
             case PapayaPackage.TASK__DEPENDENCIES:
                 this.getDependencies().clear();
                 return;
+            case PapayaPackage.TASK__PROGRESS:
+                this.setProgress(PROGRESS_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -493,6 +548,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
                 return this.done != DONE_EDEFAULT;
             case PapayaPackage.TASK__DEPENDENCIES:
                 return this.dependencies != null && !this.dependencies.isEmpty();
+            case PapayaPackage.TASK__PROGRESS:
+                return this.progress != PROGRESS_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
@@ -518,6 +575,8 @@ public class TaskImpl extends NamedElementImpl implements Task {
         result.append(this.endDate);
         result.append(", done: ");
         result.append(this.done);
+        result.append(", progress: ");
+        result.append(this.progress);
         result.append(')');
         return result.toString();
     }
