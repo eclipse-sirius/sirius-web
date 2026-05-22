@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,10 +47,10 @@ import org.eclipse.sirius.components.papaya.provider.spec.ComponentExchangeItemP
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ComponentPortItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ConstructorItemProviderSpec;
-import org.eclipse.sirius.components.papaya.provider.spec.ContainingLinkItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ContributionItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ControllerItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.DataTypeItemProviderSpec;
+import org.eclipse.sirius.components.papaya.provider.spec.DependencyLinkItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.DomainItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EnumItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.EnumLiteralItemProviderSpec;
@@ -60,12 +60,6 @@ import org.eclipse.sirius.components.papaya.provider.spec.GenericTypeItemProvide
 import org.eclipse.sirius.components.papaya.provider.spec.InterfaceItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.IterationItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.OperationItemProviderSpec;
-import org.eclipse.sirius.components.papaya.provider.spec.OperationalActivityItemProviderSpec;
-import org.eclipse.sirius.components.papaya.provider.spec.OperationalActorItemProviderSpec;
-import org.eclipse.sirius.components.papaya.provider.spec.OperationalCapabilityItemProviderSpec;
-import org.eclipse.sirius.components.papaya.provider.spec.OperationalEntityItemProviderSpec;
-import org.eclipse.sirius.components.papaya.provider.spec.OperationalInteractionItemProviderSpec;
-import org.eclipse.sirius.components.papaya.provider.spec.OperationalProcessItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.PackageItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ParameterItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ProjectItemProviderSpec;
@@ -74,7 +68,6 @@ import org.eclipse.sirius.components.papaya.provider.spec.PublicationItemProvide
 import org.eclipse.sirius.components.papaya.provider.spec.QueryItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RecordComponentItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RecordItemProviderSpec;
-import org.eclipse.sirius.components.papaya.provider.spec.ReferencingLinkItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RepositoryItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.RequiredServiceItemProviderSpec;
 import org.eclipse.sirius.components.papaya.provider.spec.ServiceItemProviderSpec;
@@ -178,7 +171,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     @Override
     public Adapter createReferencingLinkAdapter() {
         if (this.referencingLinkItemProvider == null) {
-            this.referencingLinkItemProvider = new ReferencingLinkItemProviderSpec(this);
+            this.referencingLinkItemProvider = new ReferencingLinkItemProvider(this);
         }
 
         return this.referencingLinkItemProvider;
@@ -201,7 +194,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     @Override
     public Adapter createContainingLinkAdapter() {
         if (this.containingLinkItemProvider == null) {
-            this.containingLinkItemProvider = new ContainingLinkItemProviderSpec(this);
+            this.containingLinkItemProvider = new ContainingLinkItemProvider(this);
         }
 
         return this.containingLinkItemProvider;
@@ -271,7 +264,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     @Override
     public Adapter createOperationalCapabilityAdapter() {
         if (this.operationalCapabilityItemProvider == null) {
-            this.operationalCapabilityItemProvider = new OperationalCapabilityItemProviderSpec(this);
+            this.operationalCapabilityItemProvider = new OperationalCapabilityItemProvider(this);
         }
 
         return this.operationalCapabilityItemProvider;
@@ -294,7 +287,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     @Override
     public Adapter createOperationalEntityAdapter() {
         if (this.operationalEntityItemProvider == null) {
-            this.operationalEntityItemProvider = new OperationalEntityItemProviderSpec(this);
+            this.operationalEntityItemProvider = new OperationalEntityItemProvider(this);
         }
 
         return this.operationalEntityItemProvider;
@@ -317,7 +310,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     @Override
     public Adapter createOperationalActorAdapter() {
         if (this.operationalActorItemProvider == null) {
-            this.operationalActorItemProvider = new OperationalActorItemProviderSpec(this);
+            this.operationalActorItemProvider = new OperationalActorItemProvider(this);
         }
 
         return this.operationalActorItemProvider;
@@ -340,7 +333,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     @Override
     public Adapter createOperationalProcessAdapter() {
         if (this.operationalProcessItemProvider == null) {
-            this.operationalProcessItemProvider = new OperationalProcessItemProviderSpec(this);
+            this.operationalProcessItemProvider = new OperationalProcessItemProvider(this);
         }
 
         return this.operationalProcessItemProvider;
@@ -363,7 +356,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     @Override
     public Adapter createOperationalActivityAdapter() {
         if (this.operationalActivityItemProvider == null) {
-            this.operationalActivityItemProvider = new OperationalActivityItemProviderSpec(this);
+            this.operationalActivityItemProvider = new OperationalActivityItemProvider(this);
         }
 
         return this.operationalActivityItemProvider;
@@ -387,7 +380,7 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     @Override
     public Adapter createOperationalInteractionAdapter() {
         if (this.operationalInteractionItemProvider == null) {
-            this.operationalInteractionItemProvider = new OperationalInteractionItemProviderSpec(this);
+            this.operationalInteractionItemProvider = new OperationalInteractionItemProvider(this);
         }
 
         return this.operationalInteractionItemProvider;
@@ -1199,6 +1192,29 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
     }
 
     /**
+     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.papaya.DependencyLink}
+     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected DependencyLinkItemProvider dependencyLinkItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.papaya.DependencyLink}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createDependencyLinkAdapter() {
+        if (this.dependencyLinkItemProvider == null) {
+            this.dependencyLinkItemProvider = new DependencyLinkItemProviderSpec(this);
+        }
+
+        return this.dependencyLinkItemProvider;
+    }
+
+    /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -1419,6 +1435,8 @@ public class PapayaItemProviderAdapterFactory extends PapayaAdapterFactory imple
             this.subscriptionItemProvider.dispose();
         if (this.publicationItemProvider != null)
             this.publicationItemProvider.dispose();
+        if (this.dependencyLinkItemProvider != null)
+            this.dependencyLinkItemProvider.dispose();
     }
 
 }

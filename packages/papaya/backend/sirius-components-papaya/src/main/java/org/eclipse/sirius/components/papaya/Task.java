@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.emf.common.util.EList;
  * <li>{@link org.eclipse.sirius.components.papaya.Task#getEndDate <em>End Date</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Task#isDone <em>Done</em>}</li>
  * <li>{@link org.eclipse.sirius.components.papaya.Task#getDependencies <em>Dependencies</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.papaya.Task#getProgress <em>Progress</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTask()
@@ -174,14 +175,36 @@ public interface Task extends NamedElement, FolderElement {
     void setDone(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Dependencies</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Task}. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the value of the '<em><b>Dependencies</b></em>' containment reference list. The list contents are of type
+     * {@link org.eclipse.sirius.components.papaya.DependencyLink}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the value of the '<em>Dependencies</em>' reference list.
+     * @return the value of the '<em>Dependencies</em>' containment reference list.
      * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTask_Dependencies()
+     * @model containment="true"
+     * @generated
+     */
+    EList<DependencyLink> getDependencies();
+
+    /**
+     * Returns the value of the '<em><b>Progress</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Progress</em>' attribute.
+     * @see #setProgress(int)
+     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTask_Progress()
      * @model
      * @generated
      */
-    EList<Task> getDependencies();
+    int getProgress();
+
+    /**
+     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.Task#getProgress <em>Progress</em>}'
+     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Progress</em>' attribute.
+     * @see #getProgress()
+     * @generated
+     */
+    void setProgress(int value);
 
 } // Task
