@@ -300,6 +300,30 @@ test.describe('diagram - label', () => {
     await expect(page.getByTestId('Reset labels sizes - Tool')).not.toBeAttached();
   });
 
+  test('when the reset label size tool is triggered on an edge on edge, then label size is reset', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('diagramWithLabelResized');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const label = new PlaywrightLabel(page, 'edgeOnEdgeLabel');
+    const labelContentBoxBefore = await label.labelContentLocator.boundingBox();
+
+    const edge = new PlaywrightEdge(page, 3);
+    await edge.openPalette();
+    await expect(page.getByTestId('Reset labels sizes - Tool')).toBeAttached();
+    await page.getByTestId('Reset labels sizes - Tool').click();
+
+    const labelContentBoxAfter = await label.labelContentLocator.boundingBox();
+
+    expect(labelContentBoxAfter?.height).not.toBe(labelContentBoxBefore?.height);
+    expect(labelContentBoxAfter?.width).not.toBe(labelContentBoxBefore?.width);
+
+    await edge.openPalette();
+    await expect(page.getByTestId('Reset labels sizes - Tool')).not.toBeAttached();
+  });
+
   test('when a label is hidden, then no anchors are visible', async ({ page }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
     await playwrightExplorer.expand('diagramWithLabelResized');
@@ -346,6 +370,52 @@ test.describe('diagram - label', () => {
     const labelBoxAfter = await page.getByTestId('Label - Moved').boundingBox();
     expect(labelBoxAfter?.x).toEqual(labelBoxBefore?.x);
     expect(labelBoxAfter?.y).toEqual(labelBoxBefore?.y);
+  });
+
+  test('when the reset label position tool is triggered on an edge, then label position is reset', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('diagramWithLabelResized');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const label = new PlaywrightLabel(page, 'Moved');
+    const labelBoxBefore = await label.labelContentLocator.boundingBox();
+
+    const edge = new PlaywrightEdge(page, 1);
+    await edge.openPalette();
+    await expect(page.getByTestId('Reset outside labels positions - Tool')).toBeAttached();
+    await page.getByTestId('Reset outside labels positions - Tool').click();
+
+    const labelBoxAfter = await label.labelContentLocator.boundingBox();
+    expect(labelBoxAfter?.x).not.toEqual(labelBoxBefore?.x);
+    expect(labelBoxAfter?.y).not.toEqual(labelBoxBefore?.y);
+
+    await edge.openPalette();
+    await expect(page.getByTestId('Reset outside labels positions - Tool')).not.toBeAttached();
+  });
+
+  test('when the reset label position tool is triggered on an edge on edge, then label position is reset', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('diagramWithLabelResized');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const label = new PlaywrightLabel(page, 'edgeOnEdgeLabel');
+    const labelBoxBefore = await label.labelContentLocator.boundingBox();
+
+    const edge = new PlaywrightEdge(page, 3);
+    await edge.openPalette();
+    await expect(page.getByTestId('Reset outside labels positions - Tool')).toBeAttached();
+    await page.getByTestId('Reset outside labels positions - Tool').click();
+
+    const labelBoxAfter = await label.labelContentLocator.boundingBox();
+    expect(labelBoxAfter?.x).not.toEqual(labelBoxBefore?.x);
+    expect(labelBoxAfter?.y).not.toEqual(labelBoxBefore?.y);
+
+    await edge.openPalette();
+    await expect(page.getByTestId('Reset outside labels positions - Tool')).not.toBeAttached();
   });
 });
 

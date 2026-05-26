@@ -80,13 +80,13 @@ export const useLabelResetPosition = (): UseLabelResetPositionValue => {
   );
 
   const removeOutsideLabelLayoutData = (diagramElementId: string) => {
-    const node = nodeLookup.get(diagramElementId);
-    if (node) {
-      removeNodeLabelLayoutData(diagramElementId);
+    const edge = edgeLookup.get(diagramElementId);
+    if (edge) {
+      removeEdgeLabelLayoutData(diagramElementId);
     } else {
-      const edge = edgeLookup.get(diagramElementId);
-      if (edge) {
-        removeEdgeLabelLayoutData(diagramElementId);
+      const node = nodeLookup.get(diagramElementId);
+      if (node) {
+        removeNodeLabelLayoutData(diagramElementId);
       }
     }
   };
