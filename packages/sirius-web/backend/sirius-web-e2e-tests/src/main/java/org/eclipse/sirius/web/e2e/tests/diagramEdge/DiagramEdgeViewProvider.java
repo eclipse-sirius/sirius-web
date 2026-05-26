@@ -86,11 +86,11 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
         var nodeDescription2 = this.getNodeDescription(colorProvider, "Entity2");
 
         var edgeDescription1 = this.getEdgeDescriptionWithLabel(colorProvider, "E1toE2A", nodeDescription1, nodeDescription2);
-        var edgeDescription2 = this.getEdgeDescription(colorProvider, "E1toE2B", nodeDescription1, nodeDescription2);
-        var edgeDescription3 = this.getEdgeDescription(colorProvider, "EdgeToE2", edgeDescription1, nodeDescription2);
+        var edgeDescription2 = this.getEdgeDescription(colorProvider, "E1toE2B", nodeDescription1, nodeDescription2, "");
+        var edgeDescription3 = this.getEdgeDescription(colorProvider, "EdgeToE2", edgeDescription1, nodeDescription2, "");
 
-        var edgeDescription4 = this.getEdgeDescription(colorProvider, "E2ToEdge1A", nodeDescription2, edgeDescription1);
-        var edgeDescription5 = this.getEdgeDescription(colorProvider, "E2ToEdge1B", nodeDescription2, edgeDescription1);
+        var edgeDescription4 = this.getEdgeDescription(colorProvider, "E2ToEdge1A", nodeDescription2, edgeDescription1, "edgeOnEdgeLabel");
+        var edgeDescription5 = this.getEdgeDescription(colorProvider, "E2ToEdge1B", nodeDescription2, edgeDescription1, "");
 
         nodeDescription1.setPalette(new DiagramBuilders().newNodePalette()
                 .nodeTools(new DiagramBuilders().newNodeTool()
@@ -204,7 +204,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .build();
     }
 
-    private EdgeDescription getEdgeDescription(IColorProvider colorProvider, String entityName, DiagramElementDescription sourceDescription, DiagramElementDescription targetDescription) {
+    private EdgeDescription getEdgeDescription(IColorProvider colorProvider, String entityName, DiagramElementDescription sourceDescription, DiagramElementDescription targetDescription, String centerLabel) {
         var deleteTool = new DeleteToolBuilder()
                 .name("Delete")
                 .body(
@@ -221,7 +221,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                 .domainType(DiagramEdgeDomainProvider.DOMAIN_NAME + "::" + entityName)
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
-                .centerLabelExpression("")
+                .centerLabelExpression(centerLabel)
                 .sourceExpression("aql:self.source")
                 .sourceDescriptions(sourceDescription)
                 .targetExpression("aql:self.target")
