@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
-import { XYPosition } from '@xyflow/react';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;
@@ -34,8 +33,6 @@ export interface GQLToolVariable {
 export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
 export interface PaletteProps {
-  x: number;
-  y: number;
   palette: GQLPalette;
   diagramElementIds: string[];
   onToolClick: (tool: GQLTool) => void;
@@ -45,7 +42,6 @@ export interface PaletteProps {
 
 export interface PaletteState {
   searchToolValue: string;
-  controlledPosition: XYPosition;
 }
 
 export interface PaletteStyleProps {
