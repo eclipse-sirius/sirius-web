@@ -10,69 +10,91 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import HubIcon from '@mui/icons-material/Hub';
-import ViewComfyIcon from '@mui/icons-material/ViewComfy';
-import { LayoutOptions } from 'elkjs/lib/elk-api';
-import { useTranslation } from 'react-i18next';
-import { useDiagramDescription } from '../../../contexts/useDiagramDescription';
-import { LayoutConfiguration, UseLayoutConfigurationsValue } from './useLayoutConfigurations.types';
+import { gql, useQuery } from '@apollo/client';
+import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useContext, useEffect } from 'react';
+import { DiagramContext } from '../../../contexts/DiagramContext';
+import { DiagramContextValue } from '../../../contexts/DiagramContext.types';
+import {
+  GQLDiagramDescription,
+  GQLGetLayoutConfigurationsData,
+  GQLGetLayoutConfigurationsVariables,
+  GQLLayoutConfiguration,
+  GQLRepresentationDescription,
+  UseLayoutConfigurationsValue,
+} from './useLayoutConfigurations.types';
 
-const elkLayeredOptions = (direction: string): LayoutOptions => ({
-  'elk.algorithm': 'layered',
-  'elk.layered.spacing.nodeNodeBetweenLayers': '80',
-  'elk.layered.layering.strategy': 'NETWORK_SIMPLEX',
-  'elk.spacing.componentComponent': '60',
-  'elk.spacing.nodeNode': '80',
-  'elk.direction': `${direction}`,
-  'elk.alignment': 'CENTER',
-  'elk.layered.spacing.edgeNodeBetweenLayers': '80',
-  'elk.layered.nodePlacement.strategy': 'NETWORK_SIMPLEX',
-});
+const getLayoutOptionsQuery = gql`
+  query getLayoutOptions($editingContextId: ID!, $representationId: ID!) {
+    viewer {
+      editingContext(editingContextId: $editingContextId) {
+        representation(representationId: $representationId) {
+          description {
+            ... on DiagramDescription {
+              layoutConfigurations {
+                id
+                label
+                iconURL
+                layoutOptions {
+                  key
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
-const elkRectPackingOptions: LayoutOptions = {
-  'elk.algorithm': 'rectpacking',
-  'elk.spacing.nodeNode': '50',
-  'elk.rectpacking.trybox': 'true',
-  'widthApproximation.targetWidth': '1',
-  'elk.contentAlignment': 'V_TOP H_CENTER',
-};
-
-const elkOrthogonalOptions: LayoutOptions = {
-  'elk.algorithm': 'sporeOverlap',
-  'elk.spacing.nodeNode': '40',
-  'elk.nodeSize.fixedGraphSize': 'true',
-  'elk.underlyingLayoutAlgorithm': 'stress',
-};
+const isDiagramDescription = (
+  representationDescription: GQLRepresentationDescription
+): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
 
 export const useLayoutConfigurations = (): UseLayoutConfigurationsValue => {
-  const { diagramDescription } = useDiagramDescription();
-  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'useLayoutConfigurations' });
+  const { addErrorMessage } = useMultiToast();
+  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
 
-  const layoutConfigurationWithLayeredAlgorithm: LayoutConfiguration = {
-    id: 'elk-layered',
-    label: t('arrangeAllLayered'),
-    icon: <AccountTreeIcon fontSize="small" />,
-    layoutOptions: elkLayeredOptions(diagramDescription.arrangeLayoutDirection),
-  };
-  const layoutConfigurationWithRectPackingAlgorithm: LayoutConfiguration = {
-    id: 'elk-rect-packing',
-    label: t('arrangeAllRectPacking'),
-    icon: <ViewComfyIcon fontSize="small" />,
-    layoutOptions: elkRectPackingOptions,
-  };
-  const layoutConfigurationWithSporeOverlapAlgorithm: LayoutConfiguration = {
-    id: 'elk-spore-overlap',
-    label: 'Orthogonal Layout',
-    icon: <HubIcon fontSize="small" />,
-    layoutOptions: elkOrthogonalOptions,
-  };
+  const { data, error, loading } = useQuery<GQLGetLayoutConfigurationsData, GQLGetLayoutConfigurationsVariables>(
+    getLayoutOptionsQuery,
+    {
+      variables: {
+        editingContextId,
+        representationId: diagramId,
+      },
+    }
+  );
+
+  useEffect(() => {
+    if (error) {
+      addErrorMessage('An unexpected error has occurred while retrieving this configuration');
+    }
+  }, [error]);
+
+  const description: GQLRepresentationDescription | undefined = data?.viewer.editingContext.representation.description;
+  const layoutData: GQLLayoutConfiguration[] | null =
+    description && isDiagramDescription(description) ? description.layoutConfigurations : null;
+
+  const layoutConfigurations =
+    layoutData?.map((layout): GQLLayoutConfiguration => {
+      const optionsObject: { [key: string]: string } = {};
+
+      if (layout.layoutOptions && Array.isArray(layout.layoutOptions)) {
+        layout.layoutOptions.forEach((opt: { key: string; value: string }) => {
+          optionsObject[opt.key] = opt.value;
+        });
+      }
+      return {
+        id: layout.id,
+        label: layout.label,
+        iconURL: layout.iconURL,
+        layoutOptions: optionsObject,
+      };
+    }) ?? null;
 
   return {
-    layoutConfigurations: [
-      layoutConfigurationWithLayeredAlgorithm,
-      layoutConfigurationWithRectPackingAlgorithm,
-      layoutConfigurationWithSporeOverlapAlgorithm,
-    ],
+    layoutConfigurations,
+    loading,
   };
 };

@@ -96,7 +96,12 @@ export const useLayout = (): UseLayoutValue => {
         hiddenContainer: hiddenContainer,
         root: root,
       }));
-    } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
+    } else if (
+      state.currentStep === 'LAYOUT' &&
+      state.hiddenContainer &&
+      state.diagramToLayout &&
+      layoutConfigurations
+    ) {
       prepareLayoutLabels(state.previousDiagram, state.diagramToLayout);
       if (
         layoutConfigurations[0] &&
@@ -160,7 +165,13 @@ export const useLayout = (): UseLayoutValue => {
       state.onLaidoutDiagram(state.laidoutDiagram);
       setState(() => initialState);
     }
-  }, [state.currentStep, state.hiddenContainer, state.referencePosition, state.layoutDirection]);
+  }, [
+    state.currentStep,
+    state.hiddenContainer,
+    state.referencePosition,
+    state.layoutDirection,
+    layoutConfigurations?.map((configuration) => configuration.id).join(),
+  ]);
 
   return {
     layout: layoutDiagram,

@@ -197,7 +197,11 @@ test.describe('diagram - label', () => {
     await expect(entity2OutsideLabel.labelLocator).toBeAttached();
     await entity2Node.nodeLocator.click({ position: { x: 50, y: 10 } });
     await expect(page.locator('.react-resizable-handle')).toHaveCount(1);
-    const contentBoxBefore = await page.getByTestId('Label content - entity2-outside-label').boundingBox();
+    const contentBoxBefore = await page
+      .locator(
+        '[data-testid="Label content - entity2-outside-label"]:not(#hidden-node-container *):not(#hidden-label-container *)'
+      )
+      .boundingBox();
     const box = await page.locator('.react-resizable-handle').boundingBox();
 
     expect(box).not.toBeNull();
@@ -338,14 +342,20 @@ test.describe('diagram - label', () => {
     await playwrightExplorer.select('diagram');
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
-    await page.getByTestId('Label - Moved').click();
-    const labelBoxBefore = await page.getByTestId('Label - Moved').boundingBox();
+    await page
+      .locator('[data-testid="Label - Moved"]:not(#hidden-node-container *):not(#hidden-label-container *)')
+      .click();
+    const labelBoxBefore = await page
+      .locator('[data-testid="Label - Moved"]:not(#hidden-node-container *):not(#hidden-label-container *)')
+      .boundingBox();
     const labelResizer = page.locator('.react-resizable-handle');
     await labelResizer.first().hover();
     await page.mouse.down();
     await page.mouse.move(20, 20);
     await page.mouse.up();
-    const labelBoxAfter = await page.getByTestId('Label - Moved').boundingBox();
+    const labelBoxAfter = await page
+      .locator('[data-testid="Label - Moved"]:not(#hidden-node-container *):not(#hidden-label-container *)')
+      .boundingBox();
     expect(labelBoxAfter?.x).toEqual(labelBoxBefore?.x);
     expect(labelBoxAfter?.y).toEqual(labelBoxBefore?.y);
   });
@@ -424,15 +434,19 @@ test.describe('diagram - label', () => {
     await new PlaywrightDiagram(page).collapseToolbar();
     const rootNode = new PlaywrightNode(page, 'Root', 'List');
     await rootNode.waitForAnimationToFinish();
-    const labelBoundingBox = await page.getByTestId('Label - entity2s [0..*]').boundingBox();
-    await page.getByTestId('Label - entity2s [0..*]').hover({ position: { x: 10, y: 10 } });
+    const labelBoundingBox = await page
+      .locator('[data-testid="Label - entity2s [0..*]"]:not(#hidden-node-container *):not(#hidden-label-container *)')
+      .boundingBox();
+    await page
+      .locator('[data-testid="Label - entity2s [0..*]"]:not(#hidden-node-container *):not(#hidden-label-container *)')
+      .hover({ position: { x: 10, y: 10 } });
     await page.mouse.down();
     await page.mouse.move((labelBoundingBox?.x ?? 0) + 100, (labelBoundingBox?.y ?? 0) + 100);
     await page.mouse.up();
 
     await page.waitForFunction(
       ({ expectedX, expectedY }) => {
-        const label = document.querySelector(`[data-testid="Label - entity2s [0..*]"]`);
+        const label = document.querySelector('[data-testid="rf__wrapper"] [data-testid="Label - entity2s [0..*]"]');
         if (!label) {
           return false;
         }

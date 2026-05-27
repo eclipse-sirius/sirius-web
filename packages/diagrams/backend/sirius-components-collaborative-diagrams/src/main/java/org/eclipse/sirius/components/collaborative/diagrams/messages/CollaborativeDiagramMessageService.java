@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -68,16 +68,6 @@ public class CollaborativeDiagramMessageService implements ICollaborativeDiagram
     }
 
     @Override
-    public String deleteEdgeFailed(String id) {
-        return this.messageSourceAccessor.getMessage(MessageConstants.DELETE_EGDE_FAILED, new Object[] { id });
-    }
-
-    @Override
-    public String deleteNodeFailed(String id) {
-        return this.messageSourceAccessor.getMessage(MessageConstants.DELETE_NODE_FAILED, new Object[] { id });
-    }
-
-    @Override
     public String deleteFailed() {
         return this.messageSourceAccessor.getMessage(MessageConstants.DELETE_FAILED);
     }
@@ -106,4 +96,20 @@ public class CollaborativeDiagramMessageService implements ICollaborativeDiagram
     public String handlerNotFound() {
         return this.messageSourceAccessor.getMessage(MessageConstants.HANDLER_NOT_FOUND, new Object[] { });
     }
+
+    @Override
+    public String diagramLayoutFlow() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.DIAGRAM_LAYOUT_FLOW, new Object[] { });
+    }
+
+    @Override
+    public String diagramLayoutCompact() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.DIAGRAM_LAYOUT_COMPACT, new Object[] { });
+    }
+
+    @Override
+    public String diagramLayoutOrthogonal() {
+        return this.messageSourceAccessor.getMessage(MessageConstants.DIAGRAM_LAYOUT_ORTHOGONAL, new Object[] { });
+    }
+
 }
