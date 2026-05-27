@@ -1,0 +1,90 @@
+{
+  "id": "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38",
+  "nodeDescriptions": [
+    {
+      "id": "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=278b2d48-7f82-39b5-81d4-d036b8e6af54",
+      "userResizable": "NONE",
+      "keepAspectRatio": true,
+      "childNodeDescriptionIds": [],
+      "borderNodeDescriptionIds": [],
+      "__typename": "NodeDescription"
+    },
+    {
+      "id": "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=d25f3cf7-9ccf-3947-9e1b-03933f469fd2",
+      "userResizable": "NONE",
+      "keepAspectRatio": true,
+      "childNodeDescriptionIds": [],
+      "borderNodeDescriptionIds": [],
+      "__typename": "NodeDescription"
+    },
+    {
+      "id": "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=905e147a-ec06-3f2c-8128-9fe8ee998619",
+      "userResizable": "NONE",
+      "keepAspectRatio": true,
+      "childNodeDescriptionIds": [],
+      "borderNodeDescriptionIds": [],
+      "__typename": "NodeDescription"
+    },
+    {
+      "id": "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=4db7fccf-c76f-3c65-bbad-e1f7f82953f9",
+      "userResizable": "BOTH",
+      "keepAspectRatio": false,
+      "childNodeDescriptionIds": [
+        "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=d25f3cf7-9ccf-3947-9e1b-03933f469fd2",
+        "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=905e147a-ec06-3f2c-8128-9fe8ee998619",
+        "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=278b2d48-7f82-39b5-81d4-d036b8e6af54"
+      ],
+      "borderNodeDescriptionIds": [
+        "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=22de1f7b-867b-35bb-9b0e-e4843cecce9c",
+        "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=482681e3-051e-3678-9b09-551da0ea5205"
+      ],
+      "__typename": "NodeDescription"
+    },
+    {
+      "id": "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=22de1f7b-867b-35bb-9b0e-e4843cecce9c",
+      "userResizable": "NONE",
+      "keepAspectRatio": true,
+      "childNodeDescriptionIds": [],
+      "borderNodeDescriptionIds": [],
+      "__typename": "NodeDescription"
+    },
+    {
+      "id": "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=482681e3-051e-3678-9b09-551da0ea5205",
+      "userResizable": "NONE",
+      "keepAspectRatio": true,
+      "childNodeDescriptionIds": [],
+      "borderNodeDescriptionIds": [],
+      "__typename": "NodeDescription"
+    }
+  ],
+  "toolbar": { "expandedByDefault": true, "__typename": "DiagramToolbar" },
+  "childNodeDescriptionIds": [
+    "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=278b2d48-7f82-39b5-81d4-d036b8e6af54",
+    "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=d25f3cf7-9ccf-3947-9e1b-03933f469fd2",
+    "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=905e147a-ec06-3f2c-8128-9fe8ee998619",
+    "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=4db7fccf-c76f-3c65-bbad-e1f7f82953f9"
+  ],
+  "dropNodeCompatibility": [
+    {
+      "droppedNodeDescriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=d25f3cf7-9ccf-3947-9e1b-03933f469fd2",
+      "droppableOnDiagram": false,
+      "droppableOnNodeTypes": [
+        "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=4db7fccf-c76f-3c65-bbad-e1f7f82953f9"
+      ],
+      "__typename": "DropNodeCompatibilityEntry"
+    },
+    {
+      "droppedNodeDescriptionId": "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=278b2d48-7f82-39b5-81d4-d036b8e6af54",
+      "droppableOnDiagram": false,
+      "droppableOnNodeTypes": [
+        "siriusComponents://nodeDescription?sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=4db7fccf-c76f-3c65-bbad-e1f7f82953f9"
+      ],
+      "__typename": "DropNodeCompatibilityEntry"
+    }
+  ],
+  "debug": false,
+  "arrangeLayoutDirection": "UNDEFINED",
+  "layoutOption": "NONE",
+  "minimapVisible": false,
+  "__typename": "DiagramDescription"
+}

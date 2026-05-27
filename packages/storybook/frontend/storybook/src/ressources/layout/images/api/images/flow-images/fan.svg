@@ -1,0 +1,30 @@
+<svg id="Layer_1_fan" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 92.7 92.7">
+  <title>icon</title>
+  <g>
+    <circle cx="46.4" cy="46.4" r="45" style="fill: #fff;stroke: #002b3c;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2px"/>
+    <circle cx="46.4" cy="46.4" r="9" style="fill: #48c1c2;stroke: #002b3c;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2px"/>
+    <path d="M28.4,46.4V45.2l-16.1,13a36.3,36.3,0,0,0,6.2,11L37.4,62A18.1,18.1,0,0,1,28.4,46.4Zm36-.9v.9a18.3,18.3,0,0,1-9,15.6l18.9,7.2a38.2,38.2,0,0,0,6-10.8Zm-18-17.1a16.9,16.9,0,0,1,9.7,2.8L52.5,11a30.8,30.8,0,0,0-12.1,0L36.5,31.4A17.2,17.2,0,0,1,46.4,28.4Z" style="fill: #fff;stroke: #002b3c;stroke-linecap: round;stroke-linejoin: round;stroke-width: 2px"/>
+  </g>
+  
+  <style>
+    /* <![CDATA[ */
+    #Layer_1_fan g {      
+      animation-name: rotate-fan;
+      animation-iteration-count: infinite;
+      animation-duration: 4s;
+      animation-timing-function: linear;
+      position: relative;
+      transform-origin: center;
+    }
+    @keyframes rotate-fan {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+}
+    /* ]]> */
+  </style>
+
+</svg>
