@@ -17,6 +17,7 @@ import { useContext, useEffect } from 'react';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { isSingleClickOnDiagramElementTool } from './Palette';
 import { GQLPalette } from './Palette.types';
 import {
   GQLDiagramDescription,
@@ -101,7 +102,15 @@ export const usePaletteContents = (diagramElementIds: string[], skip: boolean): 
 
   const description: GQLRepresentationDescription | undefined =
     paletteData?.viewer.editingContext.representation.description;
-  const palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
+  let palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
+
+  //Temporary fix until the backend return one palette for SingleClickOnDiagramElementTool and another for SingleClickOnTwoDiagramElementTool
+  if (palette) {
+    palette = {
+      ...palette,
+      paletteEntries: palette.paletteEntries.filter(isSingleClickOnDiagramElementTool),
+    };
+  }
 
   useEffect(() => {
     if (paletteError) {
