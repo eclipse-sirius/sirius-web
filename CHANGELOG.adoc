@@ -11,6 +11,7 @@
 
 - [ADR-231] Add support for decorating events with metadata
 - [ADR-232] Add support for GitHub Flavored Markdown rendering
+- [ADR-233] Use the diagram palette for tree based representations
 
 
 === Deprecation warning
