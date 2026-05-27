@@ -12,7 +12,6 @@
  *******************************************************************************/
 
 import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
-import { XYPosition } from '@xyflow/react';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;
@@ -45,7 +44,6 @@ export interface PaletteProps {
 
 export interface PaletteState {
   searchToolValue: string;
-  controlledPosition: XYPosition;
 }
 
 export interface PaletteStyleProps {
