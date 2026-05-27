@@ -77,6 +77,8 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
     refWorkbenchHandle: ForwardedRef<WorkbenchHandle | null>
   ) => {
     const { classes } = useWorkbenchStyles();
+    console.log('---------------- initial representation selected ------------------');
+    console.log(initialRepresentationSelected);
     const [state, setState] = useState<WorkbenchState>({
       id: crypto.randomUUID(),
       displayedRepresentationMetadata: initialRepresentationSelected,
@@ -85,6 +87,8 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
 
     const { data: synchronizeWithSelectionData } = useSynchronizeRepresentationWithSelection(editingContextId);
     useEffect(() => {
+      console.log('toto');
+      console.log(synchronizeWithSelectionData);
       const selectedRepresentationMetadata: GQLRepresentationMetadata[] =
         synchronizeWithSelectionData?.viewer.editingContext.representations.edges.map((edge) => edge.node) ?? [];
       if (
@@ -240,6 +244,8 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
         state.displayedRepresentationMetadata &&
         state.displayedRepresentationMetadata.id !== initialRepresentationSelected?.id
       ) {
+        console.log('we force a representation selection because the one displayed is different from the initial one');
+        debugger;
         onRepresentationSelected(state.displayedRepresentationMetadata);
       } else if (state.displayedRepresentationMetadata === null && initialRepresentationSelected) {
         onRepresentationSelected(null);
@@ -273,6 +279,7 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
 
     const { setSelection } = useSelection();
     const onRepresentationClick = (representation: RepresentationMetadata) => {
+      // onRepresentationSelected(representation);
       setSelection({ entries: [{ id: representation.id }] });
     };
 

@@ -31,6 +31,9 @@ export const useSynchronizeSelectionAndURL = (
     const projectIdToRedirect = name ? projectId + PROJECT_ID_SEPARATOR + name : projectId;
     let pathname: string | null = null;
     if (selectedRepresentationId && selectedRepresentationId !== representationId && selectedProjectId === projectId) {
+      console.log('update the representation in the url because the representation has changed');
+      console.log(`representationId: ${representationId}, selectedRepresentationId: ${selectedRepresentationId}`);
+
       pathname = generatePath('/projects/:projectId/edit/:representationId', {
         projectId: projectIdToRedirect,
         representationId: selectedRepresentationId,
@@ -44,6 +47,8 @@ export const useSynchronizeSelectionAndURL = (
       if (urlSearchParams !== null && urlSearchParams.size > 0) {
         target = { pathname, search: `?${urlSearchParams}` };
       }
+      debugger;
+      console.log('update the URL, force the application to reload');
       navigate(target, { replace: !representationId });
     }
   }, [projectId, selectedRepresentationId, representationId, skip, urlSearchParams]);

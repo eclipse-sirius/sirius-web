@@ -45,18 +45,23 @@ export interface GQLDiagramDescriptionData {
 }
 
 export interface GQLViewer {
-  editingContext: GQLEditingContext;
+  editingContext: GQLEditingContext | null;
 }
 
 export interface GQLEditingContext {
-  representation: GQLRepresentation;
+  representation: GQLRepresentationMetadata | null;
 }
 
-export interface GQLRepresentation {
-  description: GQLDiagramDescription;
+export interface GQLRepresentationMetadata {
+  description: GQLRepresentationDescription;
 }
 
-export interface GQLDiagramDescription {
+export interface GQLRepresentationDescription {
+  __typename: string;
+  id: string;
+}
+
+export interface GQLDiagramDescription extends GQLRepresentationDescription {
   id: string;
   nodeDescriptions: GQLNodeDescription[];
   toolbar?: GQLDiagramToolbar;

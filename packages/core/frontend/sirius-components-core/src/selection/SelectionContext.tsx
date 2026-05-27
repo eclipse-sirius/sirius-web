@@ -32,6 +32,7 @@ export const SelectionContextProvider = ({ initialSelection, children }: Selecti
   });
 
   const setSelection = useCallback((selection: Selection) => {
+    debugger;
     setState((prevState) => ({ ...prevState, selection }));
   }, []);
 

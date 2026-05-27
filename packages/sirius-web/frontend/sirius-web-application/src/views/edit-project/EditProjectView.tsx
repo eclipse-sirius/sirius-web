@@ -88,6 +88,9 @@ export const EditProjectView = () => {
           description: project.currentEditingContext.representation.description,
         };
       }
+      console.log('update representation from representationID retrieved from the URL');
+      console.log(representation);
+      debugger;
       setState((prevState) => ({
         ...prevState,
         project: project,
@@ -97,6 +100,10 @@ export const EditProjectView = () => {
   }, [data]);
 
   const onRepresentationSelected = (representationMetadata: RepresentationMetadata) => {
+    console.log(`on representation selected`);
+    console.log(representationMetadata);
+    debugger;
+    representationMetadata;
     setState((prevState) => ({
       ...prevState,
       representation: representationMetadata,

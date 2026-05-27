@@ -16,6 +16,7 @@ import { DiagramDescriptionContextValue } from './DiagramDescriptionContext.type
 
 const defaultValue: DiagramDescriptionContextValue = {
   diagramDescription: {
+    __typename: 'DiagramDescription',
     id: '',
     nodeDescriptions: [],
     dropNodeCompatibility: [],

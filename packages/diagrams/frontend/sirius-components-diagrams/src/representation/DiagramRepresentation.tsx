@@ -37,6 +37,7 @@ import {
   GQLDiagramDescription,
   GQLDiagramDescriptionData,
   GQLDiagramDescriptionVariables,
+  GQLRepresentationDescription,
 } from './DiagramRepresentation.types';
 import { DiagramSubscriptionProvider } from './DiagramSubscriptionProvider';
 
@@ -103,6 +104,11 @@ const ApplySelectionWrapper = forwardRef(
   }
 );
 
+const isDiagramDescription = (
+  representationDescription: GQLRepresentationDescription | undefined
+): representationDescription is GQLDiagramDescription => {
+  return representationDescription?.__typename === 'DiagramDescription';
+};
 export const DiagramRepresentation = memo(
   forwardRef<WorkbenchMainRepresentationHandle, RepresentationComponentProps>(
     (
@@ -152,7 +158,7 @@ export const DiagramRepresentation = memo(
         if (!diagramDescriptionLoading) {
           setState((prevState) => ({
             ...prevState,
-            diagramDescription: diagramDescriptionData?.viewer.editingContext.representation.description,
+            diagramDescription: diagramDescriptionData?.viewer.editingContext?.representation?.description,
           }));
         }
         if (diagramDescriptionError) {
@@ -161,8 +167,10 @@ export const DiagramRepresentation = memo(
         }
       }, [diagramDescriptionLoading, diagramDescriptionData, diagramDescriptionError]);
 
-      const diagramDescription: GQLDiagramDescription | undefined =
-        diagramDescriptionData?.viewer.editingContext.representation.description;
+      let diagramDescription: GQLDiagramDescription | null = null;
+      if (isDiagramDescription(diagramDescriptionData?.viewer.editingContext?.representation?.description)) {
+        diagramDescription = diagramDescriptionData.viewer.editingContext.representation.description;
+      }
 
       if (state.message) {
         return <div>{state.message}</div>;
