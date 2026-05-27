@@ -23,8 +23,8 @@ import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext'
 import { DiagramToolExecutorContextValue } from '../tools/DiagramToolExecutorContext.types';
 import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection';
 import { DiagramPaletteProps } from './DiagramPalette.types';
+import { DraggablePalette } from './DraggablePalette';
 import { GroupPaletteLayoutSection } from './GroupPaletteLayoutSection';
-import { Palette } from './Palette';
 import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
 import { ShowInSection } from './ShowInSection';
@@ -146,7 +146,7 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
   return palette && shouldRender ? (
     <PalettePortal>
       <div onKeyDown={onKeyDown}>
-        <Palette
+        <DraggablePalette
           x={paletteX}
           y={paletteY}
           diagramElementIds={diagramElementIds.length > 0 ? diagramElementIds : [diagramId]}

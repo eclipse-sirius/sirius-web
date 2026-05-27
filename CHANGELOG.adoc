@@ -92,6 +92,7 @@ In Java 18+ this synthetic field is not automatically generated anymore if it is
 Downstream applications can implement `ISearchServiceDelegate` to define their own searching strategy.
 - https://github.com/eclipse-sirius/sirius-web/issues/6578[#6578] [test] Make test runner GraphQL queries public.
 - https://github.com/eclipse-sirius/sirius-web/issues/1361[#1361] [diagram] Remove hard-coded diagram delete tool
+- https://github.com/eclipse-sirius/sirius-web/issues/6542[#6542] [diagram] Extract the draggable feature from the palette in order to facilitate the export of the Palette component
 
 
 
