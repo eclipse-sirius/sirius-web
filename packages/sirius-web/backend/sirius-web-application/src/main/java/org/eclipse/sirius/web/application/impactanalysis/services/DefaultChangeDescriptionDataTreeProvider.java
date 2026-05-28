@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -186,8 +186,7 @@ public class DefaultChangeDescriptionDataTreeProvider implements IDefaultChangeD
     private List<DataTreeNode> getObjectChangeDataTreeNode(Object object, Object parent, ChangeDescription changeDescription, List<String> allImpactObjectIds) {
         List<DataTreeNode> result = new ArrayList<>();
         String objectId = this.getId(object);
-        if (this.isFeatureChange(object)
-                || allImpactObjectIds.contains(objectId)) {
+        if (this.isFeatureChange(object) || allImpactObjectIds.contains(objectId)) {
             result.add(new DataTreeNode(objectId, this.getId(parent), this.getStyledLabel(object), this.getIconURLs(object), this.getEndIconsURL(object, changeDescription)));
             List<Object> children = this.getChildren(object, changeDescription);
             for (Object child : children) {
@@ -216,41 +215,30 @@ public class DefaultChangeDescriptionDataTreeProvider implements IDefaultChangeD
     }
 
     private List<String> getIconURLs(Object object) {
-        List<String> result = List.of();
-        if (this.isFeatureChange(object)) {
-            if (object instanceof FeatureAddition featureAddition) {
-                result = this.labelService.getImagePaths(featureAddition.newValue());
-            } else if (object instanceof FeatureDeletion featureDeletion) {
-                result = this.labelService.getImagePaths(featureDeletion.oldValue());
-            } else if (object instanceof FeatureModification featureModification) {
-                result = this.labelService.getImagePaths(featureModification.newValue());
-            }
-        } else {
-            result = this.labelService.getImagePaths(object);
-        }
-        return result;
+        return switch (object) {
+            case FeatureAddition(var source, var feature, var newValue) -> this.labelService.getImagePaths(newValue);
+            case FeatureDeletion(var source, var feature, var oldValue) -> this.labelService.getImagePaths(oldValue);
+            case FeatureModification(var source, var feature, var oldValue, var newValue) -> this.labelService.getImagePaths(newValue);
+            default -> this.labelService.getImagePaths(object);
+        };
     }
 
     private StyledString getStyledLabel(Object object) {
-        final StyledString result;
-        if (this.isFeatureChange(object)) {
-            String label = "";
-            if (object instanceof FeatureAddition featureAddition) {
-                label = featureAddition.feature() + FEATURE_SEPARATOR + this.getFeatureObjectLabel(featureAddition.newValue());
-                result = this.getAdditionStyledString(label);
-            } else if (object instanceof FeatureDeletion featureDeletion) {
-                label = featureDeletion.feature() + FEATURE_SEPARATOR + this.getFeatureObjectLabel(featureDeletion.oldValue());
-                result = this.getDeletionStyledString(label);
-            } else if (object instanceof FeatureModification featureModification) {
-                label = featureModification.feature() + FEATURE_SEPARATOR + this.getFeatureObjectLabel(featureModification.oldValue()) + " -> " + this.getFeatureObjectLabel(featureModification.newValue());
-                result = this.getModificationStyledString(label);
-            } else {
-                result = this.getStyledString("", "#000000");
+        return switch (object) {
+            case FeatureAddition(var source, var feature, var newValue) -> {
+                var label = feature + FEATURE_SEPARATOR + this.getFeatureObjectLabel(newValue);
+                yield this.getAdditionStyledString(label);
             }
-        } else {
-            result = this.labelService.getStyledLabel(object);
-        }
-        return result;
+            case FeatureDeletion(var source, var feature, var oldValue) -> {
+                var label = feature + FEATURE_SEPARATOR + this.getFeatureObjectLabel(oldValue);
+                yield this.getDeletionStyledString(label);
+            }
+            case FeatureModification(var source, var feature, var oldValue, var newValue) -> {
+                var label = feature + FEATURE_SEPARATOR + this.getFeatureObjectLabel(oldValue) + " -> " + this.getFeatureObjectLabel(newValue);
+                yield this.getModificationStyledString(label);
+            }
+            default -> this.labelService.getStyledLabel(object);
+        };
     }
 
     private StyledString getAdditionStyledString(String label) {
@@ -285,17 +273,12 @@ public class DefaultChangeDescriptionDataTreeProvider implements IDefaultChangeD
     }
 
     private List<List<String>> getEndIconsURL(Object object, ChangeDescription changeDescription) {
-        List<List<String>> result = new ArrayList<>();
-        if (object instanceof FeatureAddition featureAddition) {
-            result = this.getAdditionEndIconsURLs();
-        } else if (object instanceof FeatureDeletion featureDeletion) {
-            result = this.getDeletionEndIconsURLs();
-        } else if (object instanceof FeatureModification featureModification) {
-            result = this.getModificationEndIconsURLs();
-        } else if (changeDescription.getObjectChanges().keySet().contains(object)) {
-            result.add(List.of("/impact-analysis/ChangeMarker.svg"));
-        }
-        return result;
+        return switch (object) {
+            case FeatureAddition featureAddition -> this.getAdditionEndIconsURLs();
+            case FeatureDeletion featureDeletion -> this.getDeletionEndIconsURLs();
+            case FeatureModification featureModification -> this.getModificationEndIconsURLs();
+            default -> List.of(List.of("/impact-analysis/ChangeMarker.svg"));
+        };
     }
 
     private List<List<String>> getAdditionEndIconsURLs() {
@@ -382,13 +365,11 @@ public class DefaultChangeDescriptionDataTreeProvider implements IDefaultChangeD
     }
 
     private List<Object> getChildrenForSingleValuedFeatureChange(EObject changedEObject, FeatureChange featureChange) {
-        List<Object> children = List.of();
-        if (featureChange.getFeature() instanceof EReference) {
-            children = this.getChildrenForSingleValuedEReferenceChange(changedEObject, featureChange);
-        } else if (featureChange.getFeature() instanceof EAttribute) {
-            children = this.getChildrenForSingleValuedEAttributeChange(changedEObject, featureChange);
-        }
-        return children;
+        return switch (featureChange.getFeature()) {
+            case EReference eReference -> this.getChildrenForSingleValuedEReferenceChange(changedEObject, featureChange);
+            case EAttribute eAttribute -> this.getChildrenForSingleValuedEAttributeChange(changedEObject, featureChange);
+            default -> List.of();
+        };
     }
 
     private List<Object> getChildrenForSingleValuedEReferenceChange(EObject changedEObject, FeatureChange featureChange) {

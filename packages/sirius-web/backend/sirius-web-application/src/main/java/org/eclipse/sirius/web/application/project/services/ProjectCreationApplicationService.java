@@ -77,22 +77,25 @@ public class ProjectCreationApplicationService implements IProjectCreationApplic
                     .map(ProjectTemplateNature::id)
                     .toList();
             var result = this.projectCreationService.createProject(input, input.name(), natures);
-            if (result instanceof Failure<Project> failure) {
-                this.logger.atWarn()
-                        .setMessage("Project creation failed")
-                        .addKeyValue("projectTemplateId", projectTemplate.id())
-                        .log();
+            payload = switch (result) {
+                case Failure<Project>(var message) -> {
+                    this.logger.atWarn()
+                            .setMessage("Project creation failed")
+                            .addKeyValue("projectTemplateId", projectTemplate.id())
+                            .log();
 
-                payload = new ErrorPayload(input.id(), failure.message());
-            } else if (result instanceof Success<Project> success) {
-                this.logger.atInfo()
-                        .setMessage("Project {} created")
-                        .addArgument(success.data().getId())
-                        .addKeyValue("projectTemplateId", projectTemplate.id())
-                        .log();
+                    yield new ErrorPayload(input.id(), message);
+                }
+                case Success<Project>(var data) -> {
+                    this.logger.atInfo()
+                            .setMessage("Project {} created")
+                            .addArgument(data.getId())
+                            .addKeyValue("projectTemplateId", projectTemplate.id())
+                            .log();
 
-                payload = new CreateProjectSuccessPayload(input.id(), this.projectMapper.toDTO(success.data()));
-            }
+                    yield new CreateProjectSuccessPayload(input.id(), this.projectMapper.toDTO(data));
+                }
+            };
         } else {
             this.logger.atWarn()
                     .setMessage("Project creation failed because the project template {} is missing")

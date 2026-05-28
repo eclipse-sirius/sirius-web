@@ -87,25 +87,26 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
     public IPayload uploadImage(UploadImageInput input) {
         var result = this.projectImageCreationService.createProjectImage(input, input.projectId(), input.label(), input.file().getName(), input.file().getInputStream());
 
-        IPayload payload = null;
-        if (result instanceof Failure<ProjectImage> failure) {
-            this.logger.atWarn()
-                    .setMessage("Image upload failed")
-                    .addKeyValue("projectId", input.projectId())
-                    .log();
+        return switch (result) {
+            case Failure<ProjectImage>(var message) -> {
+                this.logger.atWarn()
+                        .setMessage("Image upload failed")
+                        .addKeyValue("projectId", input.projectId())
+                        .log();
 
-            payload = new ErrorPayload(input.id(), failure.message());
-        } else if (result instanceof Success<ProjectImage> success) {
-            this.logger.atInfo()
-                    .setMessage("Image {} uploaded")
-                    .addArgument(success.data().getId())
-                    .addKeyValue("projectId", input.projectId())
-                    .addKeyValue("imageId", success.data().getId())
-                    .log();
+                yield new ErrorPayload(input.id(), message);
+            }
+            case Success<ProjectImage>(var data) -> {
+                this.logger.atInfo()
+                        .setMessage("Image {} uploaded")
+                        .addArgument(data.getId())
+                        .addKeyValue("projectId", input.projectId())
+                        .addKeyValue("imageId", data.getId())
+                        .log();
 
-            payload = new UploadImageSuccessPayload(input.id(), success.data().getId());
-        }
-        return payload;
+                yield new UploadImageSuccessPayload(input.id(), data.getId());
+            }
+        };
     }
 
     @Override
@@ -113,25 +114,26 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
     public IPayload renameImage(RenameImageInput input) {
         var result = this.projectImageUpdateService.renameProjectImage(input, input.imageId(), input.newLabel());
 
-        IPayload payload = null;
-        if (result instanceof Failure<Void> failure) {
-            this.logger.atWarn()
-                    .setMessage("Rename of the image {} failed")
-                    .addArgument(input.imageId())
-                    .addKeyValue("imageId", input.imageId())
-                    .log();
+        return switch (result) {
+            case Failure<Void>(var message) -> {
+                this.logger.atWarn()
+                        .setMessage("Rename of the image {} failed")
+                        .addArgument(input.imageId())
+                        .addKeyValue("imageId", input.imageId())
+                        .log();
 
-            payload = new ErrorPayload(input.id(), failure.message());
-        } else if (result instanceof Success<Void>) {
-            this.logger.atInfo()
-                    .setMessage("Image {} renamed")
-                    .addArgument(input.imageId())
-                    .addKeyValue("imageId", input.imageId())
-                    .log();
+                yield new ErrorPayload(input.id(), message);
+            }
+            case Success<Void> success -> {
+                this.logger.atInfo()
+                        .setMessage("Image {} renamed")
+                        .addArgument(input.imageId())
+                        .addKeyValue("imageId", input.imageId())
+                        .log();
 
-            payload = new SuccessPayload(input.id());
-        }
-        return payload;
+                yield new SuccessPayload(input.id());
+            }
+        };
     }
 
     @Override
@@ -139,24 +141,25 @@ public class ProjectImageApplicationService implements IProjectImageApplicationS
     public IPayload deleteImage(DeleteImageInput input) {
         var result = this.projectImageDeletionService.deleteProjectImage(input, input.imageId());
 
-        IPayload payload = null;
-        if (result instanceof Failure<Void> failure) {
-            this.logger.atWarn()
-                    .setMessage("Deletion of the image {} failed")
-                    .addArgument(input.imageId())
-                    .addKeyValue("imageId", input.imageId())
-                    .log();
+        return switch (result) {
+            case Failure<Void>(var message) -> {
+                this.logger.atWarn()
+                        .setMessage("Deletion of the image {} failed")
+                        .addArgument(input.imageId())
+                        .addKeyValue("imageId", input.imageId())
+                        .log();
 
-            payload = new ErrorPayload(input.id(), failure.message());
-        } else if (result instanceof Success<Void>) {
-            this.logger.atInfo()
-                    .setMessage("Image {} deleted")
-                    .addArgument(input.imageId())
-                    .addKeyValue("imageId", input.imageId())
-                    .log();
+                yield new ErrorPayload(input.id(), message);
+            }
+            case Success<Void> success -> {
+                this.logger.atInfo()
+                        .setMessage("Image {} deleted")
+                        .addArgument(input.imageId())
+                        .addKeyValue("imageId", input.imageId())
+                        .log();
 
-            payload = new SuccessPayload(input.id());
-        }
-        return payload;
+                yield new SuccessPayload(input.id());
+            }
+        };
     }
 }
