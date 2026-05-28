@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -267,6 +267,17 @@ export const Workbench = forwardRef<WorkbenchHandle | null, WorkbenchProps>(
         workbenchViewRightSideContributions.push(workbenchViewContribution);
       }
     }
+    // Sort the panels according to the backend-supplied order
+    workbenchViewLeftSideContributions.sort((contrib1, contrib2) => {
+      const position1: number = leftPanelConfiguration?.views?.findIndex((view) => view.id === contrib1.id) || 0;
+      const position2: number = leftPanelConfiguration?.views?.findIndex((view) => view.id === contrib2.id) || 0;
+      return position1 - position2;
+    });
+    workbenchViewRightSideContributions.sort((contrib1, contrib2) => {
+      const position1: number = rightPanelConfiguration?.views?.findIndex((view) => view.id === contrib1.id) || 0;
+      const position2: number = rightPanelConfiguration?.views?.findIndex((view) => view.id === contrib2.id) || 0;
+      return position1 - position2;
+    });
 
     const { Component: MainComponent } = useComponent(workbenchMainAreaExtensionPoint);
     let main = <MainComponent editingContextId={editingContextId} readOnly={readOnly} />;
