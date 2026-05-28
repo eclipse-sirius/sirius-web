@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { ImperativePanelHandle, Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
+import { ForwardedRef, forwardRef, Fragment, useImperativeHandle, useRef, useState } from 'react';
+import { Group, Panel, Separator, usePanelRef } from 'react-resizable-panels';
 import { makeStyles } from 'tss-react/mui';
 import { PanelsProps, PanelState, WorkbenchPanelHandle } from './Panels.types';
 import { Sidebar } from './Sidebar';
@@ -100,8 +100,8 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     const { classes } = usePanelStyles();
     const leftWorkbenchViewRef = useRef<Map<string, WorkbenchViewHandle>>(new Map());
     const rightWorkbenchViewRef = useRef<Map<string, WorkbenchViewHandle>>(new Map());
-    const leftRef = useRef<ImperativePanelHandle>(null);
-    const rightRef = useRef<ImperativePanelHandle>(null);
+    const leftRef = usePanelRef();
+    const rightRef = usePanelRef();
     const [leftPanelState, setLeftPanelState] = useState<PanelState>(leftInitialState);
     const [rightPanelState, setRightPanelState] = useState<PanelState>(rightInitialState);
 
@@ -173,7 +173,7 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     const handleLeftContributionClicked = (id: string) => {
       if (leftRef.current) {
         if (leftPanelState.selectedContributionIds.includes(id)) {
-          if (leftRef.current.isExpanded() && leftPanelState.selectedContributionIds.length === 1) {
+          if (!leftRef.current.isCollapsed() && leftPanelState.selectedContributionIds.length === 1) {
             leftRef.current.collapse();
           }
         } else {
@@ -203,7 +203,7 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     const handleRightContributionClicked = (id: string) => {
       if (rightRef.current) {
         if (rightPanelState.selectedContributionIds.includes(id)) {
-          if (rightRef.current.isExpanded() && rightPanelState.selectedContributionIds.length === 1) {
+          if (!rightRef.current.isCollapsed() && rightPanelState.selectedContributionIds.length === 1) {
             rightRef.current.collapse();
           }
         } else {
@@ -231,23 +231,14 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
     };
 
     const toggleLeftPanel = (isOpen: boolean) => {
-      setLeftPanelState((prevState) => ({ ...prevState, isOpen }));
+      setLeftPanelState((prevState) => (prevState.isOpen === isOpen ? prevState : { ...prevState, isOpen }));
     };
 
     const toggleRightPanel = (isOpen: boolean) => {
-      setRightPanelState((prevState) => ({ ...prevState, isOpen }));
+      setRightPanelState((prevState) => (prevState.isOpen === isOpen ? prevState : { ...prevState, isOpen }));
     };
 
-    const collapsedSize: number = 0;
-
-    useEffect(() => {
-      if (!leftPanelState.isOpen) {
-        leftRef.current?.collapse();
-      }
-      if (!rightPanelState.isOpen) {
-        rightRef.current?.collapse();
-      }
-    }, []);
+    const collapsedSize: string = '0%';
 
     return (
       <div style={{ display: 'flex' }}>
@@ -257,27 +248,29 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
           selectedContributionIds={leftPanelState.selectedContributionIds}
           onContributionClick={handleLeftContributionClicked}
         />
-        <PanelGroup direction="horizontal">
+        <Group orientation="horizontal" resizeTargetMinimumSize={{ coarse: 15, fine: 5 }}>
           <Panel
             id="left"
             className={classes.panel}
-            defaultSize={leftPanelInitialSize}
+            defaultSize={`${leftPanelInitialSize}%`}
             collapsible
             collapsedSize={collapsedSize}
-            minSize={10}
-            onExpand={() => toggleLeftPanel(true)}
-            onCollapse={() => toggleLeftPanel(false)}
-            ref={leftRef}>
+            minSize="10%"
+            onResize={(_panelSize, _id, prevPanelSize) => {
+              if (prevPanelSize === undefined) {
+                if (!leftInitialState.isOpen) {
+                  leftRef.current?.collapse();
+                }
+              } else {
+                toggleLeftPanel(!(leftRef.current?.isCollapsed() ?? false));
+              }
+            }}
+            panelRef={leftRef}>
             {leftPanelState.isOpen ? (
-              <PanelGroup direction="vertical">
+              <Group orientation="vertical" resizeTargetMinimumSize={{ coarse: 15, fine: 5 }}>
                 {leftSelectedContributions.map((leftContribution, index) => (
-                  <>
-                    <Panel
-                      id={leftContribution.id}
-                      key={leftContribution.id}
-                      order={index}
-                      className={classes.panel}
-                      minSize={10}>
+                  <Fragment key={leftContribution.id}>
+                    <Panel id={`view-${leftContribution.id}`} className={classes.panel} minSize="10%">
                       <WorkbenchPart
                         editingContextId={editingContextId}
                         readOnly={readOnly}
@@ -299,42 +292,40 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
                       />
                     </Panel>
                     {index < leftSelectedContributions.length - 1 ? (
-                      <PanelResizeHandle
-                        key={`left-resizer-${leftContribution.id}`}
-                        className={classes.horizontalResizer}
-                        data-testid="view-resizer"
-                      />
+                      <Separator className={classes.horizontalResizer} data-testid="view-resizer" />
                     ) : null}
-                  </>
+                  </Fragment>
                 ))}
-              </PanelGroup>
+              </Group>
             ) : null}
           </Panel>
-          <PanelResizeHandle className={classes.verticalResizer} data-testid="left-resizer" />
-          <Panel id="mainArea" minSize={30}>
+          <Separator className={classes.verticalResizer} data-testid="left-resizer" />
+          <Panel id="mainArea" minSize="30%">
             <div className={classes.mainArea}>{mainArea}</div>
           </Panel>
-          <PanelResizeHandle className={classes.verticalResizer} data-testid="right-resizer" />
+          <Separator className={classes.verticalResizer} data-testid="right-resizer" />
           <Panel
             id="right"
             className={classes.panel}
-            defaultSize={rightPanelInitialSize}
+            defaultSize={`${rightPanelInitialSize}%`}
             collapsible
             collapsedSize={collapsedSize}
-            minSize={10}
-            onExpand={() => toggleRightPanel(true)}
-            onCollapse={() => toggleRightPanel(false)}
-            ref={rightRef}>
+            minSize="10%"
+            onResize={(_panelSize, _id, prevPanelSize) => {
+              if (prevPanelSize === undefined) {
+                if (!rightInitialState.isOpen) {
+                  rightRef.current?.collapse();
+                }
+              } else {
+                toggleRightPanel(!(rightRef.current?.isCollapsed() ?? false));
+              }
+            }}
+            panelRef={rightRef}>
             {rightPanelState.isOpen ? (
-              <PanelGroup direction="vertical">
+              <Group orientation="vertical" resizeTargetMinimumSize={{ coarse: 15, fine: 5 }}>
                 {rightSelectedContributions.map((rightContribution, index) => (
-                  <>
-                    <Panel
-                      id={rightContribution.id}
-                      key={rightContribution.id}
-                      order={index}
-                      className={classes.panel}
-                      minSize={10}>
+                  <Fragment key={rightContribution.id}>
+                    <Panel id={`view-${rightContribution.id}`} className={classes.panel} minSize="10%">
                       <WorkbenchPart
                         editingContextId={editingContextId}
                         readOnly={readOnly}
@@ -356,18 +347,14 @@ export const Panels = forwardRef<WorkbenchPanelsHandle | null, PanelsProps>(
                       />
                     </Panel>
                     {index < rightSelectedContributions.length - 1 ? (
-                      <PanelResizeHandle
-                        key={`right-resizer-${rightContribution.id}`}
-                        className={classes.horizontalResizer}
-                        data-testid="view-resizer"
-                      />
+                      <Separator className={classes.horizontalResizer} data-testid="view-resizer" />
                     ) : null}
-                  </>
+                  </Fragment>
                 ))}
-              </PanelGroup>
+              </Group>
             ) : null}
           </Panel>
-        </PanelGroup>
+        </Group>
         <Sidebar
           contributions={rightContributions}
           side="right"

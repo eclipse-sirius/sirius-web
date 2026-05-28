@@ -23,11 +23,6 @@ import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 test.describe('diagram - label', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    await page.addInitScript(() => {
-      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
-      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
-    });
-
     const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
     projectId = project.projectId;
     await page.goto(`/projects/${projectId}/edit`);
@@ -36,7 +31,7 @@ test.describe('diagram - label', () => {
     await explorer.expand('Flow');
     await explorer.expand('NewSystem');
     const representationItem = await explorer.getTreeItemLabel('Topography');
-    representationItem.click();
+    await representationItem.click();
   });
 
   test.afterEach(async ({ request }) => {
@@ -44,6 +39,7 @@ test.describe('diagram - label', () => {
   });
 
   test('when a node with an outside label is selected, then the label is highlighted', async ({ page }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const dataSourceNode = new PlaywrightNode(page, 'DataSource1');
     await dataSourceNode.click();
 
@@ -65,6 +61,7 @@ test.describe('diagram - label', () => {
   });
 
   test('when a node with an empty label is selected, then the label is not highlighted', async ({ page }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const dataSourceNode = new PlaywrightNode(page, 'DataSource1');
     await dataSourceNode.click();
 
@@ -93,6 +90,7 @@ test.describe('diagram - label', () => {
   });
 
   test('moving an outside node label by click', async ({ page }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const dataSourceLabel = new PlaywrightNodeLabel(page, 'DataSource1');
     await dataSourceLabel.click();
 

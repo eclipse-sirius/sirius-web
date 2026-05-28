@@ -119,7 +119,7 @@ export const ArrangeAllButton = ({ disabled }: ArrangeAllButtonProps) => {
             onClick={handleMenuToggle}
             data-testid="arrange-all-menu-toggle"
             disabled={disabled || state.arrangeAllInProgress}
-            style={{ marginLeft: -theme.spacing(1), padding: theme.spacing(0.5) }}>
+            style={{ marginLeft: `-${theme.spacing(1)}`, padding: theme.spacing(0.5) }}>
             <KeyboardArrowDownIcon />
           </IconButton>
         </div>
