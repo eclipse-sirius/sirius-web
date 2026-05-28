@@ -48,24 +48,25 @@ public class ProjectUpdateApplicationService implements IProjectUpdateApplicatio
     public IPayload renameProject(RenameProjectInput input) {
         var result = this.projectUpdateService.renameProject(input, input.projectId(), input.newName());
 
-        IPayload payload = null;
-        if (result instanceof Failure<Void> failure) {
-            this.logger.atWarn()
-                    .setMessage("Rename of project {} failed")
-                    .addArgument(input.projectId())
-                    .addKeyValue("projectId", input.projectId())
-                    .log();
+        return switch (result) {
+            case Failure<Void>(var message) -> {
+                this.logger.atWarn()
+                        .setMessage("Rename of project {} failed")
+                        .addArgument(input.projectId())
+                        .addKeyValue("projectId", input.projectId())
+                        .log();
 
-            payload = new ErrorPayload(input.id(), failure.message());
-        } else if (result instanceof Success<Void>) {
-            this.logger.atInfo()
-                    .setMessage("Project {} renamed")
-                    .addArgument(input.projectId())
-                    .addKeyValue("projectId", input.projectId())
-                    .log();
+                yield new ErrorPayload(input.id(), message);
+            }
+            case Success<Void> success -> {
+                this.logger.atInfo()
+                        .setMessage("Project {} renamed")
+                        .addArgument(input.projectId())
+                        .addKeyValue("projectId", input.projectId())
+                        .log();
 
-            payload = new RenameProjectSuccessPayload(input.id());
-        }
-        return payload;
+                yield  new RenameProjectSuccessPayload(input.id());
+            }
+        };
     }
 }

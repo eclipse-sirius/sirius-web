@@ -48,24 +48,25 @@ public class ProjectDeletionApplicationService implements IProjectDeletionApplic
     public IPayload deleteProject(DeleteProjectInput input) {
         var result = this.projectDeletionService.deleteProject(input, input.projectId());
 
-        IPayload payload = null;
-        if (result instanceof Failure<Void> failure) {
-            this.logger.atWarn()
-                    .setMessage("Deletion of project {} failed")
-                    .addArgument(input.projectId())
-                    .addKeyValue("projectId", input.projectId())
-                    .log();
+        return switch (result) {
+            case Failure<Void>(var message) -> {
+                this.logger.atWarn()
+                        .setMessage("Deletion of project {} failed")
+                        .addArgument(input.projectId())
+                        .addKeyValue("projectId", input.projectId())
+                        .log();
 
-            payload = new ErrorPayload(input.id(), failure.message());
-        } else if (result instanceof Success<Void>) {
-            this.logger.atInfo()
-                    .setMessage("Project {} deleted")
-                    .addArgument(input.projectId())
-                    .addKeyValue("projectId", input.projectId())
-                    .log();
+                yield new ErrorPayload(input.id(), message);
+            }
+            case Success<Void> success -> {
+                this.logger.atInfo()
+                        .setMessage("Project {} deleted")
+                        .addArgument(input.projectId())
+                        .addKeyValue("projectId", input.projectId())
+                        .log();
 
-            payload = new SuccessPayload(input.id());
-        }
-        return payload;
+                yield new SuccessPayload(input.id());
+            }
+        };
     }
 }
