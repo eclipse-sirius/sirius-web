@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLTool, GQLToolVariable } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -20,7 +21,6 @@ import { DiagramDialogVariable } from '../../dialog/DialogContextExtensionPoints
 import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { isCursorNearCenterOfTheNode } from '../edge/EdgeLayout';
-import { GQLTool, GQLToolVariable } from '../palette/Palette.types';
 import { useConnector } from './useConnector';
 import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
 import {

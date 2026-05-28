@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,29 +12,21 @@
  *******************************************************************************/
 
 import { useContext } from 'react';
-import { DiagramPaletteContext } from './contexts/DiagramPaletteContext';
-import { DiagramPaletteContextValue } from './contexts/DiagramPaletteContext.types';
-import { UseDiagramPaletteValue } from './useDiagramPalette.types';
+import { PaletteContext } from './contexts/PaletteContext';
+import { PaletteContextValue } from './contexts/PaletteContext.types';
+import { usePaletteValue } from './usePalette.types';
 
-export const useDiagramPalette = (): UseDiagramPaletteValue => {
-  const {
-    x,
-    y,
-    isOpened,
-    diagramElementIds,
-    hideDiagramPalette,
-    showDiagramPalette,
-    getLastToolInvoked,
-    setLastToolInvoked,
-  } = useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
+export const usePalette = (): usePaletteValue => {
+  const { x, y, isOpened, representationElementIds, hidePalette, showPalette, getLastToolInvoked, setLastToolInvoked } =
+    useContext<PaletteContextValue>(PaletteContext);
 
   return {
     x,
     y,
     isOpened,
-    diagramElementIds,
-    hideDiagramPalette,
-    showDiagramPalette,
+    representationElementIds,
+    hidePalette,
+    showPalette,
     getLastToolInvoked,
     setLastToolInvoked,
   };

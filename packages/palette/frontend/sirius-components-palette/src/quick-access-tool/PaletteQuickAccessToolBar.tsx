@@ -35,7 +35,7 @@ const useStyle = makeStyles()((theme: Theme) => ({
 }));
 
 export const PaletteQuickAccessToolBar = ({
-  diagramElementIds,
+  representationElementIds,
   quickAccessTools,
   onToolClick,
 }: PaletteQuickAccessToolBarProps) => {
@@ -54,7 +54,7 @@ export const PaletteQuickAccessToolBar = ({
     .forEach((PaletteToolComponent, index) =>
       quickAccessToolComponents.push(
         <PaletteToolComponent
-          representationElementIds={diagramElementIds}
+          representationElementIds={representationElementIds}
           key={'paletteToolComponents_' + index.toString()}
         />
       )

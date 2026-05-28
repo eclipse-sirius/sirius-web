@@ -80,6 +80,7 @@ In Java 18+ this synthetic field is not automatically generated anymore if it is
 - https://github.com/eclipse-sirius/sirius-web/issues/6529[#6529] [diagram] Use the diagram representation name for exported image filenames
 - https://github.com/eclipse-sirius/sirius-web/issues/6123[#6123] [diagram] Improve `PaletteToolList` in order to preparer for the contribution of tool sections with extensions point.
 - https://github.com/eclipse-sirius/sirius-web/issues/6542[#6542] [diagram] Extract the draggable feature from the palette in order to facilitate the export of the Palette component
+- https://github.com/eclipse-sirius/sirius-web/issues/6546[#6546] [diagram] The `Palette` component and its related types are now exported from the palette package
 
 
 

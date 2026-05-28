@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,36 +14,36 @@
 import React, { useCallback, useState } from 'react';
 import { GQLTool } from '../Palette.types';
 import {
-  DiagramPaletteContextProviderProps,
-  DiagramPaletteContextProviderState,
-  DiagramPaletteContextValue,
+  PaletteContextProviderProps,
+  PaletteContextProviderState,
+  PaletteContextValue,
   PaletteWithLastTool,
-} from './DiagramPaletteContext.types';
+} from './PaletteContext.types';
 
-const defaultValue: DiagramPaletteContextValue = {
+const defaultValue: PaletteContextValue = {
   x: null,
   y: null,
   isOpened: false,
-  diagramElementIds: [],
-  hideDiagramPalette: () => {},
-  showDiagramPalette: () => {},
+  representationElementIds: [],
+  hidePalette: () => {},
+  showPalette: () => {},
   getLastToolInvoked: () => null,
   setLastToolInvoked: () => {},
 };
 
-export const DiagramPaletteContext = React.createContext<DiagramPaletteContextValue>(defaultValue);
+export const PaletteContext = React.createContext<PaletteContextValue>(defaultValue);
 
-export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContextProviderProps) => {
-  const [state, setState] = useState<DiagramPaletteContextProviderState>({
+export const PaletteContextProvider = ({ children }: PaletteContextProviderProps) => {
+  const [state, setState] = useState<PaletteContextProviderState>({
     x: null,
     y: null,
     isOpened: false,
-    diagramElementIds: [],
+    representationElementIds: [],
     lastToolsInvoked: [],
   });
 
-  const showPalette = useCallback((x: number, y: number, diagramElementIds: string[]) => {
-    setState((prevState) => ({ ...prevState, x, y, isOpened: true, diagramElementIds }));
+  const showPalette = useCallback((x: number, y: number, representationElementIds: string[]) => {
+    setState((prevState) => ({ ...prevState, x, y, isOpened: true, representationElementIds }));
   }, []);
 
   const hidePalette = useCallback(() => {
@@ -71,18 +71,18 @@ export const DiagramPaletteContextProvider = ({ children }: DiagramPaletteContex
   };
 
   return (
-    <DiagramPaletteContext.Provider
+    <PaletteContext.Provider
       value={{
         x: state.x,
         y: state.y,
         isOpened: state.isOpened,
-        diagramElementIds: state.diagramElementIds,
-        showDiagramPalette: showPalette,
-        hideDiagramPalette: hidePalette,
+        representationElementIds: state.representationElementIds,
+        showPalette: showPalette,
+        hidePalette: hidePalette,
         getLastToolInvoked,
         setLastToolInvoked,
       }}>
       {children}
-    </DiagramPaletteContext.Provider>
+    </PaletteContext.Provider>
   );
 };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useStoreApi, XYPosition } from '@xyflow/react';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { useDiagramPalette } from '../palette/useDiagramPalette';
 import { UseOnRightClickElementValue } from './useOnRightClickElement.types';
 
 const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DOMRect | undefined): XYPosition => {
@@ -25,7 +25,7 @@ const computePalettePosition = (event: MouseEvent | React.MouseEvent, bounds: DO
 
 export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRightClickElementValue => {
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
-  const { showDiagramPalette } = useDiagramPalette();
+  const { showPalette } = usePalette();
 
   const openPalette = useCallback((event: React.MouseEvent<Element, MouseEvent> | MouseEvent, elements: string[]) => {
     const { domNode } = store.getState();
@@ -34,7 +34,7 @@ export const useOnRightClickElement = (selectedElementsIds: string[]): UseOnRigh
     const palettePosition = computePalettePosition(event, domElement);
     if (!event.altKey && !event.ctrlKey) {
       event.preventDefault();
-      showDiagramPalette(palettePosition.x, palettePosition.y, elements);
+      showPalette(palettePosition.x, palettePosition.y, elements);
     }
   }, []);
 

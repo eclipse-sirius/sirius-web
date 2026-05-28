@@ -11,12 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  PaletteQuickAccessToolBar,
-  PaletteSearchField,
-  PaletteSearchResult,
-  PaletteToolSection,
-} from '@eclipse-sirius/sirius-components-palette';
 import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Box from '@mui/material/Box';
@@ -37,7 +31,11 @@ import {
   PaletteProps,
   PaletteState,
 } from './Palette.types';
-import { useDiagramPalette } from './useDiagramPalette';
+import { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
+import { PaletteSearchField } from './search/PaletteSearchField';
+import { PaletteSearchResult } from './search/PaletteSearchResult';
+import { PaletteToolSection } from './tool-section/PaletteToolSection';
+import { usePalette } from './usePalette';
 
 export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
   tool.__typename === 'SingleClickOnDiagramElementTool';
@@ -54,7 +52,7 @@ const paletteWidth = 200;
 export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTMLAttributes<HTMLDivElement>>(
   (
     {
-      diagramElementIds,
+      representationElementIds,
       onClose,
       onToolClick,
       palette,
@@ -74,7 +72,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
       searchToolValue: '',
     });
 
-    const { setLastToolInvoked, getLastToolInvoked } = useDiagramPalette();
+    const { setLastToolInvoked, getLastToolInvoked } = usePalette();
 
     const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
 
@@ -139,7 +137,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
             </Box>
             <Divider />
             <PaletteQuickAccessToolBar
-              diagramElementIds={diagramElementIds}
+              representationElementIds={representationElementIds}
               onToolClick={handleToolClick}
               quickAccessTools={palette.quickAccessTools}
             />
@@ -157,7 +155,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
                 lastToolInvoked={lastToolInvoked}
-                representationElementIds={diagramElementIds}
+                representationElementIds={representationElementIds}
                 extensionSections={paletteToolListExtensions}
               />
             )}

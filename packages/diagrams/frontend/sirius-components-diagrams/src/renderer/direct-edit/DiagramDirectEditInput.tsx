@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,13 @@
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { useDiagramPalette } from '../palette/useDiagramPalette';
 import {
   DiagramDirectEditInputProps,
   DiagramDirectEditInputState,
@@ -85,7 +85,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
   const editionFinished = useRef<boolean>(false);
 
   const { addErrorMessage, addMessages } = useMultiToast();
-  const { hideDiagramPalette } = useDiagramPalette();
+  const { hidePalette } = usePalette();
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
   const textInput = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
@@ -102,7 +102,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
 
   useEffect(() => {
     // When opening the direct edit, close the current palette
-    hideDiagramPalette();
+    hidePalette();
   }, []);
 
   const [renameElement, { data: editLabelData, error: editLabelError }] = useMutation<
