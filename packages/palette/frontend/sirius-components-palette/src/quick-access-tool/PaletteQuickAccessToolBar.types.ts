@@ -14,7 +14,7 @@
 import { GQLTool } from '../Palette.types';
 
 export interface PaletteQuickAccessToolBarProps {
-  diagramElementIds: string[];
+  representationElementIds: string[];
   quickAccessTools: GQLTool[];
   onToolClick: (tool: GQLTool) => void;
 }

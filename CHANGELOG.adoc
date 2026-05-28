@@ -29,6 +29,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-sirius/sirius-web/issues/6587[#6587] [diagram] Added `IEditingContext` parameter to `IPaletteToolsProvider` methods
 - https://github.com/eclipse-sirius/sirius-web/issues/6595[#6595] [diagram] `appliesToDiagramRoot` field was removed from `isSingleClickOnTwoDiagramElementsTool`.
 - https://github.com/eclipse-sirius/sirius-web/issues/1361[#1361] [diagram] The Graphql API `deleteFromDiagram` has been removed.
+- https://github.com/eclipse-sirius/sirius-web/issues/6546[#6546] [diagram] The `Palette` component and its related types are now exported from the palette package
 
 
 === Dependency update

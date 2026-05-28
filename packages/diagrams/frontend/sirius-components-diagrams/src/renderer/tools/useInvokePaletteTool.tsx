@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import { useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
@@ -18,7 +19,6 @@ import { useAdjustSize } from '../adjust-size/useAdjustSize';
 import { useEditableEdgePath } from '../edge/useEditableEdgePath';
 import { useHandlesLayout } from '../handles/useHandlesLayout';
 import { useLabelResetPosition } from '../move/useLabelResetPosition';
-import { GQLTool } from '../palette/Palette.types';
 import { useLabelResetSize } from '../resize/useLabelResetSize';
 import { UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
 import { useSingleClickTool } from './useSingleClickTool';
