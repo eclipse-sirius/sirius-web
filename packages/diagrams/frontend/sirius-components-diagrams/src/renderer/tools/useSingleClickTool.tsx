@@ -13,13 +13,13 @@
 import { gql, useMutation } from '@apollo/client';
 import { GQLErrorPayload, useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-impactanalysis';
+import { GQLSingleClickOnDiagramElementTool, GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import { useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDialog } from '../../dialog/useDialog';
 import { useInvokeImpactAnalysis } from '../palette/impact-analysis/useDiagramImpactAnalysis';
 import { GQLInvokeImpactAnalysisToolVariables } from '../palette/impact-analysis/useDiagramImpactAnalysis.types';
-import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../palette/Palette.types';
 import {
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,

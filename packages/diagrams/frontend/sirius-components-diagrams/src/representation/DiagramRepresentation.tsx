@@ -18,6 +18,7 @@ import {
   useMultiToast,
   WorkbenchMainRepresentationHandle,
 } from '@eclipse-sirius/sirius-components-core';
+import { PaletteContextProvider } from '@eclipse-sirius/sirius-components-palette';
 import { ReactFlowProvider } from '@xyflow/react';
 import { ForwardedRef, forwardRef, memo, useEffect, useImperativeHandle, useState } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
@@ -30,7 +31,6 @@ import { DropNodeContextProvider } from '../renderer/dropNode/DropNodeContext';
 import { MarkerDefinitions } from '../renderer/edge/MarkerDefinitions';
 import { FullscreenContextProvider } from '../renderer/fullscreen/FullscreenContext';
 import { NodeContextProvider } from '../renderer/node/NodeContext';
-import { DiagramPaletteContextProvider } from '../renderer/palette/contexts/DiagramPaletteContext';
 import { useApplySelection } from '../renderer/selection/useApplySelection';
 import {
   DiagramRepresentationState,
@@ -175,7 +175,7 @@ export const DiagramRepresentation = memo(
       return (
         <ReactFlowProvider>
           <DiagramDirectEditContextProvider>
-            <DiagramPaletteContextProvider>
+            <PaletteContextProvider>
               <ConnectorContextProvider>
                 <DropNodeContextProvider>
                   <NodeContextProvider>
@@ -208,7 +208,7 @@ export const DiagramRepresentation = memo(
                   </NodeContextProvider>
                 </DropNodeContextProvider>
               </ConnectorContextProvider>
-            </DiagramPaletteContextProvider>
+            </PaletteContextProvider>
           </DiagramDirectEditContextProvider>
         </ReactFlowProvider>
       );

@@ -11,7 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteExtensionSection, PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  GQLTool,
+  PaletteExtensionSection,
+  PaletteExtensionSectionProps,
+  usePalette,
+} from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { memo, useCallback, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,24 +30,22 @@ import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection'
 import { DiagramPaletteProps } from './DiagramPalette.types';
 import { DraggablePalette } from './DraggablePalette';
 import { GroupPaletteLayoutSection } from './GroupPaletteLayoutSection';
-import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
 import { ShowInSection } from './ShowInSection';
-import { useDiagramPalette } from './useDiagramPalette';
 import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
 
 export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
-  const { isOpened, x: paletteX, y: paletteY, diagramElementIds, hideDiagramPalette } = useDiagramPalette();
+  const { isOpened, x: paletteX, y: paletteY, representationElementIds, hidePalette } = usePalette();
   const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
   const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
   const { x: viewportX, y: viewportY, zoom: viewportZoom } = useViewport();
   const { getNode, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPalette' });
 
-  const elementId = diagramElementIds[0] ? diagramElementIds[0] : diagramId;
-  const elementsIds = diagramElementIds[0] ? diagramElementIds : [diagramId];
+  const elementId = representationElementIds[0] ? representationElementIds[0] : diagramId;
+  const elementsIds = representationElementIds[0] ? representationElementIds : [diagramId];
   let { palette }: UsePaletteContentValue = usePaletteContents(elementsIds, false);
 
   const onKeyDown = useCallback(
@@ -50,17 +53,17 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
       const { key } = event;
       if (isOpened && key === 'Escape') {
         event.stopPropagation();
-        hideDiagramPalette();
+        hidePalette();
       }
     },
-    [hideDiagramPalette, isOpened]
+    [hidePalette, isOpened]
   );
 
   const handleDirectEditClick = useCallback(() => {
     let currentlyEditedLabelId: string | null = null;
     let isLabelEditable = false;
-    if (diagramElementIds.length === 1 && diagramElementIds[0]) {
-      const node = getNode(diagramElementIds[0]);
+    if (representationElementIds.length === 1 && representationElementIds[0]) {
+      const node = getNode(representationElementIds[0]);
       if (node) {
         if (node.data.insideLabel) {
           currentlyEditedLabelId = node.data.insideLabel.id;
@@ -69,7 +72,7 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
         }
         isLabelEditable = node.data.labelEditable;
       } else {
-        const edge = getEdge(diagramElementIds[0]);
+        const edge = getEdge(representationElementIds[0]);
         if (edge && edge.data && edge.data.label) {
           currentlyEditedLabelId = edge.data.label.id;
           isLabelEditable = edge.data.centerLabelEditable;
@@ -79,13 +82,13 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
         setCurrentlyEditedLabelId('palette', currentlyEditedLabelId, null);
       }
     }
-  }, [diagramElementIds]);
+  }, [representationElementIds]);
 
   const targetObjectId =
     elementId === diagramId
       ? diagramTargetObjectId
-      : getNode(diagramElementIds[0] || '')?.data.targetObjectId ||
-        getEdge(diagramElementIds[0] || '')?.data?.targetObjectId ||
+      : getNode(representationElementIds[0] || '')?.data.targetObjectId ||
+        getEdge(representationElementIds[0] || '')?.data?.targetObjectId ||
         diagramTargetObjectId;
 
   const onToolClick = (tool: GQLTool) => {
@@ -100,42 +103,42 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
 
   const extensionSections = useMemo(() => {
     const sectionComponents: React.ReactElement<PaletteExtensionSectionProps>[] = [];
-    if (diagramElementIds.length >= 1) {
+    if (representationElementIds.length >= 1) {
       sectionComponents.push(
         <PaletteExtensionSection
           id="appearance"
           key="appearance"
           title={t('appearance')}
           component={PaletteAppearanceSection}
-          onClose={hideDiagramPalette}
+          onClose={hidePalette}
         />
       );
     }
-    if (diagramElementIds.length > 1) {
+    if (representationElementIds.length > 1) {
       sectionComponents.push(
         <PaletteExtensionSection
           id="layout_section"
           key="layout_section"
           title={t('layout')}
           component={GroupPaletteLayoutSection}
-          onClose={hideDiagramPalette}
+          onClose={hidePalette}
         />
       );
     }
-    if (diagramElementIds.length >= 1) {
+    if (representationElementIds.length >= 1) {
       sectionComponents.push(
         <PaletteExtensionSection
           id="show_in"
           key="show_in"
           title={t('showIn')}
           component={ShowInSection}
-          onClose={hideDiagramPalette}
+          onClose={hidePalette}
         />
       );
     }
 
     return sectionComponents;
-  }, [diagramElementIds.join('-')]);
+  }, [representationElementIds.join('-')]);
 
   if (readOnly) {
     return null;
@@ -149,10 +152,10 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
         <DraggablePalette
           x={paletteX}
           y={paletteY}
-          diagramElementIds={diagramElementIds.length > 0 ? diagramElementIds : [diagramId]}
+          representationElementIds={representationElementIds.length > 0 ? representationElementIds : [diagramId]}
           palette={palette}
           onToolClick={onToolClick}
-          onClose={hideDiagramPalette}
+          onClose={hidePalette}
           paletteToolListExtensions={extensionSections}
         />
       </div>

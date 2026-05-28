@@ -10,9 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
+import { GQLPalette, GQLTool, PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 import { XYPosition } from '@xyflow/react';
-import { GQLPalette, GQLTool } from './Palette.types';
 
 export interface DraggablePaletteState {
   controlledPosition: XYPosition;
@@ -22,7 +21,7 @@ export interface DraggablePaletteProps {
   x: number;
   y: number;
   palette: GQLPalette;
-  diagramElementIds: string[];
+  representationElementIds: string[];
   onToolClick: (tool: GQLTool) => void;
   onClose: () => void;
   paletteToolListExtensions: React.ReactElement<PaletteExtensionSectionProps>[];

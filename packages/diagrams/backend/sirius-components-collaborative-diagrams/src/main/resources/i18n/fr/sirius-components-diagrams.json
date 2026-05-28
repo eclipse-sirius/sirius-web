@@ -99,9 +99,6 @@
   "diagramSubscriptionProvider": {
     "representationNotAvailable": "La représentation n'est plus disponible"
   },
-  "palette": {
-    "close": "Fermer"
-  },
   "diagramPalette": {
     "appearance": "Apparence",
     "layout": "Disposition",

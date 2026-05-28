@@ -2,5 +2,8 @@
   "paletteSearchField": {
     "placeholder": "Search Tool",
     "clear": "Clear"
+  },
+  "palette": {
+    "close": "Close"
   }
 }

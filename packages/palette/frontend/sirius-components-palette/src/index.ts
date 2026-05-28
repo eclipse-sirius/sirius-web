@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+export { PaletteContext, PaletteContextProvider } from './contexts/PaletteContext';
 export type { PaletteQuickToolComponentProps } from './extensions/PaletteQuickToolContribution.types';
 export { paletteQuickToolExtensionPoint } from './extensions/PaletteQuickToolExtensionPoints';
 export type {
@@ -23,6 +24,16 @@ export type {
   PaletteToolOverriddenContributionProps,
 } from './extensions/PaletteToolOverrideContribution.types';
 export { paletteToolOverrideExtensionPoint } from './extensions/PaletteToolOverrideExtensionPoints';
+export { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection, Palette } from './Palette';
+export type {
+  GQLPalette,
+  GQLPaletteDivider,
+  GQLSingleClickOnDiagramElementTool,
+  GQLTool,
+  GQLToolSection,
+  GQLToolVariable,
+  PaletteProps,
+} from './Palette.types';
 export { PaletteExtensionSection } from './PaletteExtensionSection';
 export type {
   PaletteExtensionSectionComponentProps,
@@ -36,3 +47,4 @@ export { ToolListItem } from './tool-list-item/ToolListItem';
 export { PaletteToolSection } from './tool-section/PaletteToolSection';
 export { ToolSectionEntry } from './tool-section/ToolSectionEntry';
 export { ToolSectionHeader } from './tool-section/ToolSectionHeader';
+export { usePalette } from './usePalette';
