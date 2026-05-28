@@ -144,6 +144,7 @@ Specifiers can now use `SemanticDecoratorDescription` to define decorators that 
 The decorator also accepts a `preconditionExpression` to further detail when it should be displayed.
 - https://github.com/eclipse-sirius/sirius-web/issues/6412[#6412] [diagram] Support the placement of edges on edges along the same edge with individual positions.
 - https://github.com/eclipse-sirius/sirius-web/issues/6469[#6469] [diagram] Add orthogonal layout configuration
+- https://github.com/eclipse-sirius/sirius-web/issues/6241[#6241] [storybook] Add storybook for sirius components testing
 
 
 === Improvements
