@@ -36,7 +36,9 @@ This could massively change the appearance of Sirius Web depending on the machin
 The situation is now clear, our theme is using `Roboto` so we are loading `Roboto` and everybody should see Sirius Web the same way.
 In the case of Sirius Web, we now have import declarations such as `import '@fontsource/roboto/300.css';` for the `300`, `400`, `500` and `700` font weights in our `index.tsx` given that our MUI theme is using Roboto with those specific font weights.
 The font weights used in the default MUI theme can be found here[https://mui.com/material-ui/customization/default-theme].
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [releng] Switch to React Resizable Panels 4.11.2.
+This switch enables us to use other units such as `px` or `rem` instead of `%` to specify panels' size.
+It also enables us to disable panel resize for a better control when needed.
 
 === Bug fixes
 

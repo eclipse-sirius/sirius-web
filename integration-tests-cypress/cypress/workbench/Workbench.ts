@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -51,10 +51,6 @@ export class Workbench {
     cy.getByTestId(`sidebar-${side}`).findByTestId(`viewselector-${viewTitle}`).should('exist').click();
   }
 
-  private capitalize(val: string) {
-    return val.charAt(0).toUpperCase() + val.slice(1);
-  }
-
   public isIconHighlighted(side: WorkbenchSide, viewTitle: string, selected: boolean = true) {
     cy.getByTestId(`sidebar-${side}`)
       .findByTestId(`viewselector-${viewTitle}`)
@@ -72,11 +68,9 @@ export class Workbench {
 
   public checkPanelState(side: WorkbenchSide, state: PanelState) {
     if (state === 'expanded') {
-      cy.get(`#${side}`).should(($panel) => {
-        expect($panel).attr('data-panel-size').not.equal('0.0');
-      });
+      cy.get(`#${side}`).invoke('outerWidth').should('be.greaterThan', 0);
     } else {
-      cy.get(`#${side}`).should('have.attr', 'data-panel-size', '0.0');
+      cy.get(`#${side}`).invoke('outerWidth').should('equal', 0);
     }
   }
 
@@ -90,5 +84,9 @@ export class Workbench {
         cy.getByTestId(`representation-tab-${expectedRepresentationEditor.representationLabel}`).should('exist');
       });
     }
+  }
+
+  private capitalize(val: string) {
+    return val.charAt(0).toUpperCase() + val.slice(1);
   }
 }

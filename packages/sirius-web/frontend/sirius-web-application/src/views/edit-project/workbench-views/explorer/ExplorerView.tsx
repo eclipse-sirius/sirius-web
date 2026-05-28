@@ -170,7 +170,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
           }),
         }));
       }
-    }, [loading, treeFilters]);
+    }, [loading, treeFilters.map((treeFilter) => treeFilter.id).join()]);
 
     const treeElement = useRef<HTMLDivElement>(null);
     useEffect(() => {
