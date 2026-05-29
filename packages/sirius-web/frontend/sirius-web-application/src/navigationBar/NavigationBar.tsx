@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -73,13 +73,13 @@ export const NavigationBar = ({ children }: NavigationBarProps) => {
           <div className={classes.left}>
             <NavigationBarIcon />
             {leftContributions.map(({ Component: LeftContribution }, index) => (
-              <LeftContribution key={index} />
+              <LeftContribution key={index} children={children} />
             ))}
           </div>
           <CenterContribution children={children} />
           <div className={classes.right}>
             {rightContributions.map(({ Component: RightContribution }, index) => (
-              <RightContribution key={index} />
+              <RightContribution key={index} children={children} />
             ))}
             <NavigationBarMenu />
           </div>

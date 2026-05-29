@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,10 @@ export interface NavigationBarProps {
 
 export interface NavigationBarIconProps {}
 
-export interface NavigationBarLeftContributionProps {}
+export interface NavigationBarLeftContributionProps {
+  children?: ReactNode;
+}
 
-export interface NavigationBarRightContributionProps {}
+export interface NavigationBarRightContributionProps {
+  children?: ReactNode;
+}

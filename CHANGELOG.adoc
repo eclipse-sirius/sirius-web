@@ -56,7 +56,7 @@ The font weights used in the default MUI theme can be found here[https://mui.com
 In Java 17, the Java compiler was always generating a private synthetic field for inner classes.
 In Java 18+ this synthetic field is not automatically generated anymore if it is not necessary, as a result some `ArchUnit` tests on fields could encounter an empty list of fields now which would trigger a test failure.
 - https://github.com/eclipse-sirius/sirius-web/issues/6215[#6215] [diagram] When a tool opens a selection dialog to ask for input, the tree displayed in the dialog is now expanded to reveal the element on which the tool was invoked to provide better context.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6559[#6559] [workbench] Add `children` prop support for navigation bar contributions
 
 
 == 2026.5.0
