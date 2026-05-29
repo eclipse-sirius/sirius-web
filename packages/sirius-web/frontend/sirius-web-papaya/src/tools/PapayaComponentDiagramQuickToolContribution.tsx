@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2026 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,33 +16,26 @@ import RadarIcon from '@mui/icons-material/Radar';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import { Theme } from '@mui/material/styles';
 import { Fragment, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
-const useStyle = makeStyles()(() => ({
-  listItemText: {
-    '& .MuiListItemText-primary': {
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-    },
-  },
-  listItemButton: {
-    paddingTop: 0,
-    paddingBottom: 0,
+const useToolStyle = makeStyles()((theme: Theme) => ({
+  tool: {
+    minWidth: theme.spacing(3),
+    minHeight: theme.spacing(3),
+    color: theme.palette.text.primary,
+    padding: 0,
   },
 }));
 
 type Modal = 'dialog';
-export const PapayaComponentDiagramToolContribution = () => {
+export const PapayaComponentDiagramQuickToolContribution = ({}) => {
   const { project } = useCurrentProject();
   const [modal, setModal] = useState<Modal | null>(null);
-  const { classes } = useStyle();
+  const { classes } = useToolStyle();
   const { x, y } = useDiagramPalette();
-
   const onClose = () => {
     setModal(null);
   };
@@ -65,15 +58,16 @@ export const PapayaComponentDiagramToolContribution = () => {
   if (project.natures.filter((nature) => nature.name === 'siriusComponents://nature?kind=papaya').length > 0) {
     return (
       <Fragment key="coordinates-modal-contribution">
-        <Tooltip key={'tooltip_'} title={'coordinates'} placement="right">
-          <ListItemButton
-            onClick={() => setModal('dialog')}
-            data-testid="coordinates-tool"
-            className={classes.listItemButton}>
-            <RadarIcon sx={{ fontSize: 16, marginRight: 2 }} />
-            <ListItemText primary={'Coordinates'} className={classes.listItemText} />
-          </ListItemButton>
-        </Tooltip>
+        <IconButton
+          className={classes.tool}
+          size="small"
+          color="inherit"
+          aria-label="Coordinates"
+          title="Coordinates"
+          onClick={() => setModal('dialog')}
+          data-testid="coordinates-quickTool">
+          <RadarIcon sx={{ fontSize: 16 }} />
+        </IconButton>
         {modalElement}
       </Fragment>
     );

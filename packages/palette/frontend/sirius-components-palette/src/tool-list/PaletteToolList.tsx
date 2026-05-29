@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -20,6 +21,8 @@ import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
+import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
@@ -85,7 +88,7 @@ export const PaletteToolList = ({
   palette,
   onToolClick,
   onBackToMainList,
-  diagramElementIds,
+  representationElementIds,
   onClose,
   lastToolInvoked,
   children,
@@ -111,6 +114,8 @@ export const PaletteToolList = ({
     setState((prevState) => ({ ...prevState, toolSection: null, extensionSection: null }));
     onBackToMainList();
   };
+
+  const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
 
   const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
@@ -140,6 +145,15 @@ export const PaletteToolList = ({
     }
     return [];
   });
+
+  paletteToolData.data
+    .filter((contributedTool) => !contributedTool.sectionId)
+    .forEach((contributedTool) => {
+      const ContributedComponent = contributedTool.component;
+      listItemsRendered.push(
+        <ContributedComponent representationElementIds={representationElementIds}></ContributedComponent>
+      );
+    });
 
   children.forEach((extensionSection) => {
     const extensionSectionId = extensionSection.props.id;
@@ -181,6 +195,7 @@ export const PaletteToolList = ({
             <div className={classes.toolList}>
               <PaletteToolSectionList
                 toolSection={entry}
+                representationElementIds={representationElementIds}
                 onToolClick={onToolClick}
                 onBackToMainList={handleBackToMainList}
               />
@@ -202,7 +217,7 @@ export const PaletteToolList = ({
               <div className={classes.toolList}>
                 <SectionComponent
                   onBackToMainList={handleBackToMainList}
-                  diagramElementIds={diagramElementIds}
+                  diagramElementIds={representationElementIds}
                   onClose={onClose}
                 />
               </div>
