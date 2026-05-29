@@ -76,6 +76,7 @@ In Java 18+ this synthetic field is not automatically generated anymore if it is
 - https://github.com/eclipse-sirius/sirius-web/issues/6400[#6400] [gantt] Introduce the concept of dependencyLink, which may be used to extends dependency management for the Gantt tasks
 - https://github.com/eclipse-sirius/sirius-web/issues/6516[#6516] [releng] The Sirius Web build now generates and publishes SBOMs on https://sbom.eclipse.org/projects/9654724d-97bf-4f9b-84be-d8ea7884f73e[the Eclipse Foundation's DependencyTrack instance].
 - https://github.com/eclipse-sirius/sirius-web/issues/6529[#6529] [diagram] Use the diagram representation name for exported image filenames
+- https://github.com/eclipse-sirius/sirius-web/issues/6123[#6123] [diagram] Improve `PaletteToolList` in order to preparer for the contribution of tool sections with extensions point.
 
 
 == 2026.5.0
