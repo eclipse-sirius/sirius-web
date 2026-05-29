@@ -19,6 +19,8 @@ import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
 import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
+import { PaletteToolSectionContributionProps } from '../extensions/PaletteToolSectionContribution.types';
+import { paletteToolSectionExtensionPoint } from '../extensions/PaletteToolSectionExtensionPoints';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
@@ -156,6 +158,22 @@ export const PaletteToolSection = ({
       );
     });
 
+  // Tools section contributions
+  const paletteToolSectionData: DataExtension<PaletteToolSectionContributionProps[]> = useData(
+    paletteToolSectionExtensionPoint
+  );
+  paletteToolSectionData.data
+    .filter((toolSectionContribution) => state.currentSectionId === toolSectionContribution.sectionId)
+    .filter((toolSectionContribution) => toolSectionContribution.canHandle(representationElementIds))
+    .forEach((toolSectionContribution) => {
+      listItemsRendered.push(
+        <ToolSectionEntry
+          id={toolSectionContribution.id}
+          label={toolSectionContribution.label}
+          onNavigate={navigateTo}></ToolSectionEntry>
+      );
+    });
+
   //Extension section
   if (state.currentSectionId === undefined) {
     extensionSections.forEach((extensionSection) => {
@@ -196,6 +214,10 @@ export const PaletteToolSection = ({
   const currentSection: GQLToolSection | undefined = palette.paletteEntries
     .filter(isToolSection)
     .find((entry) => entry.id === state.currentSectionId);
+  const currentContributedSection: PaletteToolSectionContributionProps | undefined = paletteToolSectionData.data.find(
+    (toolSectionContribution) => state.currentSectionId === toolSectionContribution.sectionId
+  );
+  const sectionLabel = currentSection?.label || currentContributedSection?.label || '';
 
   return (
     <Box className={classes.container}>
@@ -210,8 +232,8 @@ export const PaletteToolSection = ({
           unmountOnExit>
           <Box>
             <List className={classes.toolList} component="nav">
-              {!!currentSection ? (
-                <ToolSectionHeader title={currentSection.label} navigateBack={navigateBack}></ToolSectionHeader>
+              {!!sectionLabel ? (
+                <ToolSectionHeader title={sectionLabel} navigateBack={navigateBack}></ToolSectionHeader>
               ) : null}
               {listItemsRendered}
             </List>

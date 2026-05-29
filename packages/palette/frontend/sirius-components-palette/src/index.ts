@@ -21,6 +21,8 @@ export type {
   PaletteToolContributionProps,
 } from './extensions/PaletteToolContribution.types';
 export { paletteToolExtensionPoint } from './extensions/PaletteToolExtensionPoints';
+export type { PaletteToolSectionContributionProps } from './extensions/PaletteToolSectionContribution.types';
+export { paletteToolSectionExtensionPoint } from './extensions/PaletteToolSectionExtensionPoints';
 export { PaletteExtensionSection } from './PaletteExtensionSection';
 export type {
   PaletteExtensionSectionComponentProps,

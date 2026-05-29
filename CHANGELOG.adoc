@@ -37,6 +37,7 @@ This changes improve the palette section reusability and make the frontend capab
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6552[#6552] [diagram] Add `DiagramPaletteToolExtensionPoints` to contribute tools on a palette, you can contribute tools on a specific tool section, contributing a tool with an id that match a tool from the backend will override the backend tool.
+- https://github.com/eclipse-sirius/sirius-web/issues/6555[#6555] [diagram] Add `DiagramPaletteToolSectionExtensionPoints` to contribute tools sections on a palette.
 
 
 === Improvements
