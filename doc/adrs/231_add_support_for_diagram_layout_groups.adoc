@@ -1,0 +1,73 @@
+:author: Orlann Cailleau
+:date: 2026-05-28
+:status: proposed
+:consulted: Florian Rouëné, Stéphane Bégaudeau, Axel Richard
+:informed: Florian Rouëné, Stéphane Bégaudeau, Axel Richard
+:deciders: Florian Rouëné, Stéphane Bégaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6560
+
+= ADR-231 - Add support for Diagram Layout Groups
+
+== Context and Problem Statement
+
+Auto-layouting complex diagrams containing a large number of nodes and edges can be inefficient and visually unsatisfactory when performed globally in a single operation. 
+To improve the layout quality, we need to arrange nodes by distinct "groups" (grouped by types, connectivity, or specific dependencies).
+
+The problem is to determine where and how this grouping logic should be computed and executed within the Sirius Web architecture, ensuring extensibility for downstream projects while maintaining a responsive user interface.
+
+
+== Decision Drivers
+
+- Extensibility: Downstream projects must be able to contribute their own custom grouping algorithms based on their specific semantic.
+- Performance & Responsiveness: The UI should not be blocked for an extended period during heavy layout computations.
+- Architectural Consistency: The solution must adhere to the existing architecture of Sirius Web.
+
+== Considered Options
+
+=== Option 1: Backend Group Computation with Frontend Orchestration
+
+In this approach, the backend exposes a new GraphQL query (`layoutGroups`) on the `DiagramDescription`. The backend resolves this query using a DataFetcher and an Event Handler that delegates the computation to an extensible list of `ILayoutGroupsProvider` Java interfaces. 
+The frontend fetches these groups via a lazy query, and then iterates over the returned list to call the existing `arrangeAll` mutation sequentially for each group.
+
+=== Option 2: Frontend Group Computation
+
+The frontend reads the currently displayed nodes and edges, computes the groups using JavaScript/TypeScript algorithms, and then applies the layout.
+While this avoids an extra network call, the frontend lacks the full semantic EMF model and relies only on graphical data. Furthermore, extending this logic would require downstream projects to write complex TypeScript extensions instead of using their existing Java domain knowledge.
+
+=== Option 3: Backend Execution (Single Mutation)
+
+Create a new mutation `layoutByGroups` where the backend calculates the groups AND directly computes the new layout positions for all elements in a single transaction.
+While this reduces network round-trips, it creates a massive blocking transaction, duplicates the core layout engine logic, and prevents the frontend from displaying progressive visual feedback during the operation.
+
+
+== Decision Outcome
+
+In the context of arranging complex diagrams, we decided for Option 1 (Backend Group Computation with Frontend Orchestration) to achieve high extensibility and UI responsiveness, accepting the multiple GraphQL calls.
+
+This option is the only one that meets the extensibility advantages. By using the `ILayoutGroupsProvider` interface, downstream developers can easily inject custom grouping logic in Java. The frontend remains simple, acting only as an orchestrator that leverages the existing `arrangeAll`.
+
+
+== Consequences
+
+=== Advantages
+
+- Highly Extensible: Adopters can easily add new `ILayoutGroupsProvider` beans in Spring to support new diagram types.
+- Responsive UI: The frontend can handle the loading state properly and update the UI incrementally if needed.
+- Clean Architecture: the group calculation is a Query, the layout application is a Command/Mutation.
+- Reusability: The existing `arrangeAll` mutation is reused without modification.
+
+=== Drawbacks
+
+- Network Overhead: While fetching the groups is optimized (a single GraphQL Query returns the full list), applying the layout from the frontend requires executing the `arrangeAll` mutation N times (once for each group). If a diagram is split into many groups, this could introduce slight network latency compared to a single backend transaction.
+
+== More Information
+
+=== Implementation
+
+The implementation requires:
+- Add `layoutGroups: [LayoutGroup!]!` to `DiagramDescription`.
+- Create `LayoutGroup`, `GetLayoutGroupsInput`, and `GetLayoutGroupsSuccessPayload`.
+- Implement `DiagramDescriptionLayoutGroupsDataFetcher` to bridge GraphQL with the `IEditingContextDispatcher`, and `GetLayoutGroupsEventHandler` to process the query.
+- Introduce the `ILayoutGroupsProvider` interface.
+- Provide a default implementation of `ILayoutGroupsProvider` that groups nodes based on their type and edges types.
+- Implement `useLayoutGroups` hook with Apollo's `useLazyQuery` and update the `ArrangeAllButton` to fetch groups and iterate over them using `async/await`.

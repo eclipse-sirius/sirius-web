@@ -9,7 +9,7 @@
 
 === Architectural decision records
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6560
 
 
 === Deprecation warning
