@@ -81,7 +81,7 @@
     "svg-path-parser": "1.1.0",
     "tss-react": "4.9.16",
     "typescript": "5.4.5",
-    "vite": "8.0.13",
+    "vite": "8.0.14",
     "vitest": "3.2.4"
   }
 }
