@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -20,6 +21,8 @@ import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
+import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
@@ -85,7 +88,7 @@ export const PaletteToolList = ({
   palette,
   onToolClick,
   onBackToMainList,
-  diagramElementIds,
+  representationElementIds,
   onClose,
   lastToolInvoked,
   children,
@@ -112,17 +115,27 @@ export const PaletteToolList = ({
     onBackToMainList();
   };
 
+  const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
+
   const listItemsRendered = palette.paletteEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
-      return (
-        <ToolListItem
-          onToolClick={onToolClick}
-          tool={paletteEntry}
-          disabled={false}
-          key={'toolItem_' + paletteEntry.id}
-          data-testid={`paletteEntry-${paletteEntry.label}`}
-        />
-      );
+      const overriddenTool = paletteToolData.data
+        .filter((contributedTool) => !contributedTool.sectionId)
+        .find((contributedTool) => contributedTool.id === paletteEntry.id);
+      if (!overriddenTool) {
+        return (
+          <ToolListItem
+            onToolClick={onToolClick}
+            tool={paletteEntry}
+            disabled={false}
+            key={'toolItem_' + paletteEntry.id}
+            data-testid={`paletteEntry-${paletteEntry.label}`}
+          />
+        );
+      } else if (overriddenTool && overriddenTool.canHandle(representationElementIds)) {
+        const OverriddenComponent = overriddenTool.component;
+        return <OverriddenComponent representationElementIds={representationElementIds}></OverriddenComponent>;
+      }
     } else if (isToolSection(paletteEntry) && paletteEntry.tools.length > 0) {
       return (
         <Tooltip key={'tooltip_' + paletteEntry.id} title={paletteEntry.label} placement="right">
@@ -140,6 +153,16 @@ export const PaletteToolList = ({
     }
     return [];
   });
+
+  paletteToolData.data
+    .filter((contributedTool) => !contributedTool.sectionId)
+    .filter((contributedTool) => !palette.paletteEntries.find((entry) => entry.id === contributedTool.id))
+    .forEach((contributedTool) => {
+      const OverriddenComponent = contributedTool.component;
+      listItemsRendered.push(
+        <OverriddenComponent representationElementIds={representationElementIds}></OverriddenComponent>
+      );
+    });
 
   children.forEach((extensionSection) => {
     const extensionSectionId = extensionSection.props.id;
@@ -181,6 +204,7 @@ export const PaletteToolList = ({
             <div className={classes.toolList}>
               <PaletteToolSectionList
                 toolSection={entry}
+                representationElementIds={representationElementIds}
                 onToolClick={onToolClick}
                 onBackToMainList={handleBackToMainList}
               />
@@ -202,7 +226,7 @@ export const PaletteToolList = ({
               <div className={classes.toolList}>
                 <SectionComponent
                   onBackToMainList={handleBackToMainList}
-                  diagramElementIds={diagramElementIds}
+                  diagramElementIds={representationElementIds}
                   onClose={onClose}
                 />
               </div>

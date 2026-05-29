@@ -34,7 +34,7 @@
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6552[#6552] [diagram] Add `DiagramPaletteToolExtensionPoints` to contribute tools on a palette, you can contribute tools on a specific tool section, contributing a tool with an id that match a tool from the backend will override the backend tool.
 
 
 === Improvements

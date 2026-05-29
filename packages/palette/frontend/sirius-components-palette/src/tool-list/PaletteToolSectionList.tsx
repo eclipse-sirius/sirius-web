@@ -10,12 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
+import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
+import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
 import { isSingleClickOnDiagramElementTool } from '../Palette';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { PaletteToolSectionListProps } from './PaletteToolSectionList.types';
@@ -50,13 +53,50 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainList }: PaletteToolSectionListProps) => {
+export const PaletteToolSectionList = ({
+  toolSection,
+  representationElementIds,
+  onToolClick,
+  onBackToMainList,
+}: PaletteToolSectionListProps) => {
   const { classes } = useStyle();
 
   const handleBackToMainListClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>): void => {
     event.stopPropagation();
     onBackToMainList();
   };
+
+  const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
+
+  const listItemsRendered = toolSection.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => {
+    const overriddenTool = paletteToolData.data
+      .filter((contributedTool) => contributedTool.sectionId === toolSection.id)
+      .find((contributedTool) => contributedTool.id === tool.id);
+    if (!overriddenTool) {
+      return <ToolListItem onToolClick={onToolClick} tool={tool} disabled={false} key={tool.id} />;
+    } else if (overriddenTool && overriddenTool.canHandle(representationElementIds)) {
+      const OverriddenComponent = overriddenTool.component;
+      return (
+        <OverriddenComponent
+          representationElementIds={representationElementIds}
+          key={overriddenTool.id}></OverriddenComponent>
+      );
+    } else {
+      return null;
+    }
+  });
+
+  paletteToolData.data
+    .filter((contributedTool) => contributedTool.sectionId === toolSection.id)
+    .filter((contributedTool) => !toolSection.tools.find((tool) => tool.id === contributedTool.id))
+    .forEach((contributedTool) => {
+      const OverriddenComponent = contributedTool.component;
+      listItemsRendered.push(
+        <OverriddenComponent
+          representationElementIds={representationElementIds}
+          key={contributedTool.id}></OverriddenComponent>
+      );
+    });
 
   return (
     <List className={classes.toolList} component="nav">
@@ -70,9 +110,7 @@ export const PaletteToolSectionList = ({ toolSection, onToolClick, onBackToMainL
           <ListItemText className={classes.sectionTitleListItemText} primary={toolSection.label} />
         </ListItemButton>
       </Tooltip>
-      {toolSection.tools.filter(isSingleClickOnDiagramElementTool).map((tool) => (
-        <ToolListItem onToolClick={onToolClick} tool={tool} disabled={false} key={tool.id} />
-      ))}
+      {listItemsRendered}
     </List>
   );
 };

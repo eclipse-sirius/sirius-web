@@ -34,7 +34,7 @@ const useToolStyle = makeStyles()((theme: Theme) => ({
 }));
 
 type Modal = 'dialog';
-export const PapayaComponentLabelDetailToolContribution = ({
+export const PapayaComponentLabelDetailQuickToolContribution = ({
   representationElementIds,
 }: PaletteQuickToolContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);

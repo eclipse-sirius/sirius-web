@@ -35,7 +35,9 @@ import {
 } from '@eclipse-sirius/sirius-components-omnibox';
 import {
   PaletteQuickToolContributionProps,
+  PaletteToolContributionProps,
   paletteQuickToolExtensionPoint,
+  paletteToolExtensionPoint,
 } from '@eclipse-sirius/sirius-components-palette';
 import {
   NavigationBarProps,
@@ -50,10 +52,9 @@ import Typography from '@mui/material/Typography';
 import { Edge, Node, ReactFlowProps, useStoreApi } from '@xyflow/react';
 import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformationPanel';
 import { PapayaComponentLabelDetailNodeActionContribution } from './nodeactions/PapayaComponentLabelDetailNodeActionContribution';
+import { PapayaComponentDiagramQuickToolContribution } from './tools/PapayaComponentDiagramQuickToolContribution';
 import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
-import { PapayaComponentLabelDetailToolContribution } from './tools/PapayaComponentLabelDetailToolContribution';
 import { PapayaView } from './workbenchviews/PapayaView';
-
 const papayaExtensionRegistry = new ExtensionRegistry();
 
 const PapayaProjectNavbarSubtitle = ({ children }: NavigationBarProps) => {
@@ -102,7 +103,8 @@ const papayaDiagramToolbarExtension: DataExtension<Array<ReactFlowPropsCustomize
   data: [reactFlowPropsCustomizer],
 };
 papayaExtensionRegistry.putData(diagramRendererReactFlowPropsCustomizerExtensionPoint, papayaDiagramToolbarExtension);
-const diagramPaletteToolContributions: PaletteQuickToolContributionProps[] = [
+
+const diagramPaletteQuickToolContributions: PaletteQuickToolContributionProps[] = [
   {
     canHandle: (representationElementIds: string[]) => {
       const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
@@ -113,7 +115,7 @@ const diagramPaletteToolContributions: PaletteQuickToolContributionProps[] = [
           ?.data.targetObjectKind.startsWith('siriusComponents://semantic?domain=papaya&entity=Component')
       );
     },
-    component: PapayaComponentLabelDetailToolContribution,
+    component: PapayaComponentDiagramQuickToolContribution,
   },
   {
     canHandle: (representationElementIds: string[]) => {
@@ -125,14 +127,33 @@ const diagramPaletteToolContributions: PaletteQuickToolContributionProps[] = [
           store.getState().edgeLookup.get(representationElementIds[0]))
       );
     },
-    component: PapayaComponentDiagramToolContribution,
+    component: PapayaComponentDiagramQuickToolContribution,
   },
 ];
 papayaExtensionRegistry.putData<PaletteQuickToolContributionProps[]>(paletteQuickToolExtensionPoint, {
   identifier: `papaya_${paletteQuickToolExtensionPoint.identifier}`,
-  data: diagramPaletteToolContributions,
+  data: diagramPaletteQuickToolContributions,
 });
 
+const diagramPaletteToolContributions: PaletteToolContributionProps[] = [
+  {
+    canHandle: (representationElementIds: string[]) => {
+      const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
+      return !(
+        representationElementIds.length === 1 &&
+        representationElementIds[0] &&
+        (store.getState().nodeLookup.get(representationElementIds[0]) ||
+          store.getState().edgeLookup.get(representationElementIds[0]))
+      );
+    },
+    component: PapayaComponentDiagramToolContribution,
+    id: 'PapayaComponentDiagramToolContribution',
+  },
+];
+papayaExtensionRegistry.putData<PaletteToolContributionProps[]>(paletteToolExtensionPoint, {
+  identifier: `papaya_${paletteToolExtensionPoint.identifier}`,
+  data: diagramPaletteToolContributions,
+});
 /*******************************************************************************
  *
  * Omnibox command overrides
