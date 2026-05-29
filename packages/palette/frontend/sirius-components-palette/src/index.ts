@@ -31,5 +31,6 @@ export { Tool } from './quick-access-tool/Tool';
 export { PaletteSearchField } from './search/PaletteSearchField';
 export { PaletteSearchResult } from './search/PaletteSearchResult';
 export { ToolListItem } from './tool-list-item/ToolListItem';
-export { PaletteToolList } from './tool-list/PaletteToolList';
-export { PaletteToolSectionList } from './tool-list/PaletteToolSectionList';
+export { PaletteToolSection } from './tool-section/PaletteToolSection';
+export { ToolSectionEntry } from './tool-section/ToolSectionEntry';
+export { ToolSectionHeader } from './tool-section/ToolSectionHeader';

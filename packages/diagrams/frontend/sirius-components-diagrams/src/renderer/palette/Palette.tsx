@@ -15,7 +15,7 @@ import {
   PaletteQuickAccessToolBar,
   PaletteSearchField,
   PaletteSearchResult,
-  PaletteToolList,
+  PaletteToolSection,
 } from '@eclipse-sirius/sirius-components-palette';
 import CloseIcon from '@mui/icons-material/Close';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
@@ -196,15 +196,15 @@ export const Palette = ({
                 onToolClick={handleToolClick}
               />
             ) : (
-              <PaletteToolList
+              <PaletteToolSection
                 palette={palette}
                 onToolClick={handleToolClick}
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
                 lastToolInvoked={lastToolInvoked}
-                representationElementIds={diagramElementIds}>
-                {paletteToolListExtensions}
-              </PaletteToolList>
+                representationElementIds={diagramElementIds}
+                extensionSections={paletteToolListExtensions}
+              />
             )}
           </Box>
         </ClickAwayListener>

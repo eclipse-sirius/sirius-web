@@ -20,6 +20,8 @@
 === Breaking changes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6126[#6126] [diagram] `DiagramPaletteToolExtensionPoints` has been removed, use `PaletteQuickToolExtensionPoints` instead that supports multiple elements.
+- https://github.com/eclipse-sirius/sirius-web/issues/6123[#6123] [diagram] `PaletteToolList` & `PaletteToolSectionList` are no longer exported, `PaletteToolSection`, `ToolSectionEntry` & `ToolSectionHeader` are now exported.
+This changes improve the palette section reusability and make the frontend capable of handling nested tool sections.
 
 
 === Dependency update
