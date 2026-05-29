@@ -76,7 +76,7 @@
     "react-i18next": "16.2.3",
     "typescript": "5.4.5",
     "tss-react": "4.9.16",
-    "vite": "8.0.13",
+    "vite": "8.0.14",
     "vitest": "3.2.4"
   }
 }
