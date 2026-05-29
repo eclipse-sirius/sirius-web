@@ -39,7 +39,16 @@ test.describe('diagram - tool', () => {
     await expect(page.getByTestId('selection-dialog')).toBeAttached();
   });
 
-  test('When a custom tool is contribute to a diagram, then it should be available in the palette', async ({
+  test('When a custom quick tool is contribute to a palette, then it should be available in the palette', async ({
+    page,
+  }) => {
+    new PlaywrightExplorer(page).createRepresentation('Component', 'Component Diagram', 'diagram');
+    await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 100, y: 100 } });
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await expect(page.getByTestId('coordinates-quickTool')).toBeAttached();
+  });
+
+  test('When a custom tool is contribute to a palette, then it should be available in the palette', async ({
     page,
   }) => {
     new PlaywrightExplorer(page).createRepresentation('Component', 'Component Diagram', 'diagram');

@@ -13,6 +13,11 @@
 
 export type { PaletteQuickToolComponentProps } from './extensions/PaletteQuickToolContribution.types';
 export { paletteQuickToolExtensionPoint } from './extensions/PaletteQuickToolExtensionPoints';
+export type {
+  PaletteToolContributionComponentProps,
+  PaletteToolContributionProps,
+} from './extensions/PaletteToolContribution.types';
+export { paletteToolExtensionPoint } from './extensions/PaletteToolExtensionPoints';
 export { PaletteExtensionSection } from './PaletteExtensionSection';
 export type {
   PaletteExtensionSectionComponentProps,

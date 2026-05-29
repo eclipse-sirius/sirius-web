@@ -202,7 +202,7 @@ export const Palette = ({
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
                 lastToolInvoked={lastToolInvoked}
-                diagramElementIds={diagramElementIds}>
+                representationElementIds={diagramElementIds}>
                 {paletteToolListExtensions}
               </PaletteToolList>
             )}
