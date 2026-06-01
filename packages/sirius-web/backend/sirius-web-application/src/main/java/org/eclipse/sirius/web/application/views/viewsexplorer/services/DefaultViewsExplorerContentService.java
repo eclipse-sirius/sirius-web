@@ -13,6 +13,7 @@
 
 package org.eclipse.sirius.web.application.views.viewsexplorer.services;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,7 +42,8 @@ public class DefaultViewsExplorerContentService implements IDefaultViewsExplorer
     }
 
     @Override
-    public List<RepresentationKind> getContents(IEditingContext editingContext, List<RepresentationMetadata> representationMetadata, Map<String, IRepresentationDescription> representationDescriptions) {
+    public List<RepresentationKind> getContents(IEditingContext editingContext, List<RepresentationMetadata> representationMetadata,
+            Map<String, IRepresentationDescription> representationDescriptions) {
         var descriptionTypes = this.groupByDescriptionType(representationMetadata, representationDescriptions);
         return this.groupByKind(descriptionTypes);
     }
@@ -49,22 +51,35 @@ public class DefaultViewsExplorerContentService implements IDefaultViewsExplorer
     private List<RepresentationDescriptionType> groupByDescriptionType(List<RepresentationMetadata> allMetadata, Map<String, IRepresentationDescription> allDescriptions) {
         return allMetadata.stream()
                 .collect(Collectors.groupingBy(RepresentationMetadata::getDescriptionId))
-                .entrySet().stream()
-                .map(entry -> Optional.ofNullable(allDescriptions.get(entry.getKey()))
-                        .map(representationDescription -> new RepresentationDescriptionType(entry.getKey(), representationDescription, entry.getValue())))
+                .entrySet()
+                .stream()
+                .map(entry -> this.toRepresentationDescriptionType(allDescriptions, entry))
                 .flatMap(Optional::stream)
+                .sorted(Comparator.comparing(descType -> descType.description().getLabel()))
                 .toList();
+    }
+
+    private Optional<RepresentationDescriptionType> toRepresentationDescriptionType(Map<String, IRepresentationDescription> allDescriptions, Map.Entry<String, List<RepresentationMetadata>> entry) {
+        return Optional.ofNullable(allDescriptions.get(entry.getKey()))
+                .map(representationDescription -> {
+                    var allRepresentationMetadata = entry.getValue().stream()
+                            .sorted(Comparator.comparing(RepresentationMetadata::getLabel))
+                            .toList();
+                    return new RepresentationDescriptionType(entry.getKey(), representationDescription, allRepresentationMetadata);
+                });
     }
 
     private List<RepresentationKind> groupByKind(List<RepresentationDescriptionType> descriptionTypes) {
         return descriptionTypes.stream()
                 .collect(Collectors.groupingBy(descType -> descType.representationsMetadata().get(0).getKind()))
-                .entrySet().stream()
+                .entrySet()
+                .stream()
                 .map(entry -> {
                     var kindId = entry.getKey();
                     var kindName = this.urlParser.getParameterValues(kindId).get("type").get(0);
                     return new RepresentationKind(kindId, kindName, entry.getValue());
                 })
+                .sorted(Comparator.comparing(RepresentationKind::name))
                 .toList();
     }
 }
