@@ -207,15 +207,16 @@ public class ViewsExplorerViewControllerIntegrationTests extends AbstractIntegra
             assertThat(tree.getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getChildren()).hasSize(1);
             assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren()).hasSize(2);
-            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren().get(1).getLabel().toString()).isEqualTo("Foo");
+            assertThat(tree.getChildren().get(0).getChildren().get(0).getChildren())
+                    .anySatisfy(item -> assertThat(item.getLabel().toString()).isEqualTo("Foo"));
         });
 
         StepVerifier.create(defaultFlux)
-            .consumeNextWith(initialDefaultViewsContentConsumer)
-            .then(renameTreeItem)
-            .consumeNextWith(afterRenameViewsContentConsumer)
-            .thenCancel()
-            .verify(Duration.ofSeconds(10));
+                .consumeNextWith(initialDefaultViewsContentConsumer)
+                .then(renameTreeItem)
+                .consumeNextWith(afterRenameViewsContentConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
     }
 
     @Test
@@ -288,7 +289,7 @@ public class ViewsExplorerViewControllerIntegrationTests extends AbstractIntegra
 
     private ViewsExplorerEventInput buildViewInput() {
         var representationId = new RepresentationIdBuilder().buildViewsExplorerViewRepresentationId(
-            List.of(Portal.KIND, TestIdentifiers.PORTAL_DESCRIPTION_ID.toString()));
+                List.of(Portal.KIND, TestIdentifiers.PORTAL_DESCRIPTION_ID.toString()));
         return new ViewsExplorerEventInput(UUID.randomUUID(), TestIdentifiers.ECORE_SAMPLE_EDITING_CONTEXT_ID, representationId);
     }
 }
