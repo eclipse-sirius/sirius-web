@@ -13,6 +13,7 @@
 
 import ImageIcon from '@mui/icons-material/Image';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import CircularProgress from '@mui/material/CircularProgress';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
@@ -22,27 +23,30 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip from '@mui/material/Tooltip';
 import { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDiagramMetadata } from '../../representation/useDiagramMetadata';
 import { useExperimentalSvgExport } from './experimental-svg-export/useExperimentalSvgExport';
 import { useExportToImage } from './useExportToImage';
-
-const downloadImage = (dataUrl: string, fileName: string) => {
-  const a: HTMLAnchorElement = document.createElement('a');
-  a.setAttribute('download', fileName);
-  a.setAttribute('href', dataUrl);
-  a.click();
-};
 
 export const ExportImageButton = () => {
   const [exportImageMenuOpen, setExportImageMenuOpen] = useState<boolean>(false);
   const anchorExportImageMenuRef = useRef<HTMLButtonElement | null>(null);
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'exportImageButton' });
+  const { exportToSVG, exportToPNG } = useExportToImage();
+  const { experimentalExportToSvg: protoExportToSvg } = useExperimentalSvgExport();
+  const { data, loading } = useDiagramMetadata(!exportImageMenuOpen);
 
   const handleExportImageMenuToggle = () => setExportImageMenuOpen((prevState) => !prevState);
   const onCloseExportImageMenu = () => setExportImageMenuOpen(false);
 
-  const { exportToSVG, exportToPNG } = useExportToImage();
-  const { experimentalExportToSvg: protoExportToSvg } = useExperimentalSvgExport();
+  const downloadImage = (dataUrl: string, extension: string) => {
+    const diagramLabel = data?.viewer.editingContext?.representation?.label || 'diagram';
+    const fileName = `${diagramLabel.replace(/\s+/g, '_')}${extension}`;
 
-  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'exportImageButton' });
+    const a: HTMLAnchorElement = document.createElement('a');
+    a.setAttribute('download', fileName);
+    a.setAttribute('href', dataUrl);
+    a.click();
+  };
 
   const ref = useCallback((node: HTMLDivElement | null) => {
     if (node) {
@@ -97,34 +101,37 @@ export const ExportImageButton = () => {
           data-testid="export-diagram-to-image-menu"
           onClose={onCloseExportImageMenu}>
           <MenuItem
-            onClick={() =>
+            onClick={() => {
               exportToSVG((dataUrl: string) => {
-                downloadImage(dataUrl, 'diagram.svg');
+                downloadImage(dataUrl, '.svg');
                 onCloseExportImageMenu();
-              })
-            }
-            data-testid="export-diagram-to-svg">
-            <ListItemText primary="SVG" />
+              });
+            }}
+            data-testid="export-diagram-to-svg"
+            disabled={loading}>
+            {loading ? <CircularProgress size={20} /> : <ListItemText primary="SVG" />}
           </MenuItem>
           <MenuItem
-            onClick={() =>
+            onClick={() => {
               exportToPNG((dataUrl: string) => {
-                downloadImage(dataUrl, 'diagram.png');
+                downloadImage(dataUrl, '.png');
                 onCloseExportImageMenu();
-              })
-            }
-            data-testid="export-diagram-to-png">
-            <ListItemText primary="PNG" />
+              });
+            }}
+            data-testid="export-diagram-to-png"
+            disabled={loading}>
+            {loading ? <CircularProgress size={20} /> : <ListItemText primary="PNG" />}
           </MenuItem>
           <MenuItem
             data-testid="experimental-export-diagram-to-svg"
-            onClick={() =>
+            onClick={() => {
               protoExportToSvg((dataUrl: string) => {
-                downloadImage(dataUrl, 'diagram.svg');
+                downloadImage(dataUrl, '.svg');
                 onCloseExportImageMenu();
-              })
-            }>
-            <ListItemText primary={`SVG (${t('experimentalFeature')})`} />
+              });
+            }}
+            disabled={loading}>
+            {loading ? <CircularProgress size={20} /> : <ListItemText primary={`SVG (${t('experimentalFeature')})`} />}
           </MenuItem>
         </Menu>
       ) : null}
