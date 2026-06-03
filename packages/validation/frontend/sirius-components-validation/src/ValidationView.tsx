@@ -124,8 +124,8 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
           }
           acc.push(
             <Box key={diagnostic.id} className={classes.diagnostic}>
-              {diagnostic.fixable ? <MoreHorizIcon data-testid="diagnostic-fixable-icon" fontSize="small" /> : null}
               <Typography>{diagnostic.message}</Typography>
+              {diagnostic.fixable ? <MoreHorizIcon data-testid="diagnostic-fixable-icon" fontSize="small" /> : null}
             </Box>
           );
           return acc;

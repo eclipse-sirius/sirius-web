@@ -31,7 +31,7 @@ public final class ValidationDiagnostic {
 
     private String message;
 
-    private Boolean fixable;
+    private boolean fixable;
 
     private ValidationDiagnostic() {
         // Prevent instantiation
@@ -49,7 +49,7 @@ public final class ValidationDiagnostic {
         return this.message;
     }
 
-    public Boolean getFixable() {
+    public boolean isFixable() {
         return this.fixable;
     }
 
@@ -71,7 +71,7 @@ public final class ValidationDiagnostic {
 
         private String message;
 
-        private Boolean fixable;
+        private boolean fixable;
 
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -87,8 +87,8 @@ public final class ValidationDiagnostic {
             return this;
         }
 
-        public Builder fixable(Boolean fixable) {
-            this.fixable = Objects.requireNonNull(fixable);
+        public Builder fixable(boolean fixable) {
+            this.fixable = fixable;
             return this;
         }
 
@@ -97,7 +97,7 @@ public final class ValidationDiagnostic {
             diagnostic.id = Objects.requireNonNull(this.id);
             diagnostic.kind = Objects.requireNonNull(this.kind);
             diagnostic.message = Objects.requireNonNull(this.message);
-            diagnostic.fixable = Objects.requireNonNull(this.fixable);
+            diagnostic.fixable = this.fixable;
             return diagnostic;
         }
     }

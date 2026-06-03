@@ -34,7 +34,7 @@ public final class DiagnosticElementProps implements IProps {
 
     private String message;
 
-    private Boolean fixable;
+    private boolean fixable;
 
     private DiagnosticElementProps() {
         // Prevent instantiation
@@ -52,7 +52,7 @@ public final class DiagnosticElementProps implements IProps {
         return this.message;
     }
 
-    public Boolean getFixable() {
+    public boolean isFixable() {
         return this.fixable;
     }
 
@@ -80,7 +80,7 @@ public final class DiagnosticElementProps implements IProps {
 
         private String message;
 
-        private Boolean fixable;
+        private boolean fixable;
 
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -96,8 +96,8 @@ public final class DiagnosticElementProps implements IProps {
             return this;
         }
 
-        public Builder fixable(Boolean fixable) {
-            this.fixable = Objects.requireNonNull(fixable);
+        public Builder fixable(boolean fixable) {
+            this.fixable = fixable;
             return this;
         }
 
@@ -106,7 +106,7 @@ public final class DiagnosticElementProps implements IProps {
             diagnosticElementProps.id = Objects.requireNonNull(this.id);
             diagnosticElementProps.kind = Objects.requireNonNull(this.kind);
             diagnosticElementProps.message = Objects.requireNonNull(this.message);
-            diagnosticElementProps.fixable = Objects.requireNonNull(this.fixable);
+            diagnosticElementProps.fixable = this.fixable;
             return diagnosticElementProps;
         }
     }

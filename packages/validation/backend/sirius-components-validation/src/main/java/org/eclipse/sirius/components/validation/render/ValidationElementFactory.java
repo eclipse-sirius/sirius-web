@@ -58,7 +58,7 @@ public class ValidationElementFactory implements IElementFactory {
         return ValidationDiagnostic.newValidationDiagnostic(props.getId())
                 .kind(props.getKind())
                 .message(props.getMessage())
-                .fixable(props.getFixable())
+                .fixable(props.isFixable())
                 .build();
     }
 
