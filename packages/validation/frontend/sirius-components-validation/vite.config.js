@@ -15,6 +15,9 @@ export default defineConfig(() => {
         fileName: (format) => `sirius-components-validation.${format}.js`,
       },
     },
+    test: {
+      environment: 'jsdom',
+    },
   };
   return configuration;
 });

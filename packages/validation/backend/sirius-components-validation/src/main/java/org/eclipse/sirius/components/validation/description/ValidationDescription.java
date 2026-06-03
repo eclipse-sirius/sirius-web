@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,8 @@ public final class ValidationDescription implements IRepresentationDescription {
 
     private Function<Object, String> messageProvider;
 
+    private Predicate<Object> fixablePredicate;
+
     private Function<VariableManager, List<String>> iconURLsProvider;
 
     private ValidationDescription() {
@@ -82,6 +84,10 @@ public final class ValidationDescription implements IRepresentationDescription {
         return this.messageProvider;
     }
 
+    public Predicate<Object> getFixablePredicate() {
+        return this.fixablePredicate;
+    }
+
     public Function<VariableManager, List<String>> getIconURLsProvider() {
         return this.iconURLsProvider;
     }
@@ -116,6 +122,8 @@ public final class ValidationDescription implements IRepresentationDescription {
         private Function<Object, String> kindProvider;
 
         private Function<Object, String> messageProvider;
+
+        private Predicate<Object> fixablePredicate;
 
         private Function<VariableManager, List<String>> iconURLsProvider;
 
@@ -153,6 +161,11 @@ public final class ValidationDescription implements IRepresentationDescription {
             return this;
         }
 
+        public Builder fixablePredicate(Predicate<Object> fixablePredicate) {
+            this.fixablePredicate = Objects.requireNonNull(fixablePredicate);
+            return this;
+        }
+
         public Builder iconURLsProvider(Function<VariableManager, List<String>> iconURLsProvider) {
             this.iconURLsProvider =  Objects.requireNonNull(iconURLsProvider);
             return this;
@@ -167,6 +180,7 @@ public final class ValidationDescription implements IRepresentationDescription {
             validationDescription.diagnosticsProvider = Objects.requireNonNull(this.diagnosticsProvider);
             validationDescription.kindProvider = Objects.requireNonNull(this.kindProvider);
             validationDescription.messageProvider = Objects.requireNonNull(this.messageProvider);
+            validationDescription.fixablePredicate = Objects.requireNonNull(this.fixablePredicate);
             validationDescription.iconURLsProvider = Objects.requireNonNull(this.iconURLsProvider);
             return validationDescription;
         }

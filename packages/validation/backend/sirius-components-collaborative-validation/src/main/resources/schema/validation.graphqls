@@ -18,10 +18,17 @@ type ValidationRefreshedEventPayload {
 type Validation implements Representation {
   id: ID!
   metadata: RepresentationMetadata!
-  diagnostics: [Diagnostic!]!
+  diagnostics: [ValidationDiagnostic!]!
 }
 
 type ValidationDescription implements RepresentationDescription {
   id: ID!
   label: String!
+}
+
+type ValidationDiagnostic {
+  id: ID!
+  kind: String!
+  message: String!
+  fixable: Boolean!
 }

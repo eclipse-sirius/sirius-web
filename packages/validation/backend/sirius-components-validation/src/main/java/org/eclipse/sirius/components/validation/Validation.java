@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ public final class Validation implements IRepresentation {
 
     private String targetObjectId;
 
-    private List<Diagnostic> diagnostics;
+    private List<ValidationDiagnostic> diagnostics;
 
     private Validation() {
         // Prevent instantiation
@@ -64,7 +64,7 @@ public final class Validation implements IRepresentation {
         return this.targetObjectId;
     }
 
-    public List<Diagnostic> getDiagnostics() {
+    public List<ValidationDiagnostic> getDiagnostics() {
         return this.diagnostics;
     }
 
@@ -94,7 +94,7 @@ public final class Validation implements IRepresentation {
 
         private String targetObjectId;
 
-        private List<Diagnostic> diagnostics;
+        private List<ValidationDiagnostic> diagnostics;
 
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
@@ -110,7 +110,7 @@ public final class Validation implements IRepresentation {
             return this;
         }
 
-        public Builder diagnostics(List<Diagnostic> diagnostics) {
+        public Builder diagnostics(List<ValidationDiagnostic> diagnostics) {
             this.diagnostics = diagnostics;
             return this;
         }

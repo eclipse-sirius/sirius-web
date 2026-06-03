@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,8 +16,8 @@ import java.util.List;
 
 import org.eclipse.sirius.components.representations.IElementFactory;
 import org.eclipse.sirius.components.representations.IProps;
-import org.eclipse.sirius.components.validation.Diagnostic;
 import org.eclipse.sirius.components.validation.Validation;
+import org.eclipse.sirius.components.validation.ValidationDiagnostic;
 import org.eclipse.sirius.components.validation.elements.DiagnosticElementProps;
 import org.eclipse.sirius.components.validation.elements.ValidationElementProps;
 
@@ -42,9 +42,9 @@ public class ValidationElementFactory implements IElementFactory {
     }
 
     private Validation instantiateValidation(ValidationElementProps props, List<Object> children) {
-        List<Diagnostic> diagnostics = children.stream()
-                .filter(Diagnostic.class::isInstance)
-                .map(Diagnostic.class::cast)
+        List<ValidationDiagnostic> diagnostics = children.stream()
+                .filter(ValidationDiagnostic.class::isInstance)
+                .map(ValidationDiagnostic.class::cast)
                 .toList();
 
         return Validation.newValidation(props.getId())
@@ -54,10 +54,11 @@ public class ValidationElementFactory implements IElementFactory {
                 .build();
     }
 
-    private Diagnostic instantiateDiagnostic(DiagnosticElementProps props, List<Object> children) {
-        return Diagnostic.newDiagnostic(props.getId())
+    private ValidationDiagnostic instantiateDiagnostic(DiagnosticElementProps props, List<Object> children) {
+        return ValidationDiagnostic.newValidationDiagnostic(props.getId())
                 .kind(props.getKind())
                 .message(props.getMessage())
+                .fixable(props.getFixable())
                 .build();
     }
 

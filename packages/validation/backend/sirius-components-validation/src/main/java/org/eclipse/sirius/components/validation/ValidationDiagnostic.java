@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.annotations.Immutable;
  * @author gcoutable
  */
 @Immutable
-public final class Diagnostic {
+public final class ValidationDiagnostic {
 
     private UUID id;
 
@@ -31,7 +31,9 @@ public final class Diagnostic {
 
     private String message;
 
-    private Diagnostic() {
+    private Boolean fixable;
+
+    private ValidationDiagnostic() {
         // Prevent instantiation
     }
 
@@ -47,12 +49,16 @@ public final class Diagnostic {
         return this.message;
     }
 
-    public static Builder newDiagnostic(UUID id) {
+    public Boolean getFixable() {
+        return this.fixable;
+    }
+
+    public static Builder newValidationDiagnostic(UUID id) {
         return new Builder(id);
     }
 
     /**
-     * The builder used to create a new diagnostic.
+     * The builder used to create a new validation diagnostic.
      *
      * @author gcoutable
      */
@@ -64,6 +70,8 @@ public final class Diagnostic {
         private String kind;
 
         private String message;
+
+        private Boolean fixable;
 
         public Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
@@ -79,11 +87,17 @@ public final class Diagnostic {
             return this;
         }
 
-        public Diagnostic build() {
-            Diagnostic diagnostic = new Diagnostic();
+        public Builder fixable(Boolean fixable) {
+            this.fixable = Objects.requireNonNull(fixable);
+            return this;
+        }
+
+        public ValidationDiagnostic build() {
+            ValidationDiagnostic diagnostic = new ValidationDiagnostic();
             diagnostic.id = Objects.requireNonNull(this.id);
             diagnostic.kind = Objects.requireNonNull(this.kind);
             diagnostic.message = Objects.requireNonNull(this.message);
+            diagnostic.fixable = Objects.requireNonNull(this.fixable);
             return diagnostic;
         }
     }
