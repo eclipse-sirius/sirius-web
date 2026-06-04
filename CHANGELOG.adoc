@@ -24,6 +24,7 @@
 - https://github.com/eclipse-sirius/sirius-web/issues/6126[#6126] [diagram] The extension point `diagramPalette#tool` has been removed in favor of `palette#quickTool`. This new extension point now supports quick tools formultiple elements selected at once.
 - The `variables.css` file, which used to define custom colors an typography settings has been removed.
 It has long been unused by Sirius Web itself (since the transition to MUI).
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Each view displayed in the left or right side panel is now responsible from its own title bar.
 
 
 === Dependency update
@@ -80,7 +81,7 @@ In Java 18+ this synthetic field is not automatically generated anymore if it is
 - https://github.com/eclipse-sirius/sirius-web/issues/6516[#6516] [releng] The Sirius Web build now generates and publishes SBOMs on https://sbom.eclipse.org/projects/9654724d-97bf-4f9b-84be-d8ea7884f73e[the Eclipse Foundation's DependencyTrack instance].
 - https://github.com/eclipse-sirius/sirius-web/issues/6529[#6529] [diagram] Use the diagram representation name for exported image filenames
 - https://github.com/eclipse-sirius/sirius-web/issues/6123[#6123] [diagram] Improve `PaletteToolList` in order to preparer for the contribution of tool sections with extensions point.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [sirius-web] Move responsibility of view headers directly inside the view component instead of `WorkbenchPart`.
 
 
 == 2026.5.0

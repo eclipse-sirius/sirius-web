@@ -28,6 +28,7 @@ import {
   ListPropertySection,
   TreePropertySection,
 } from '@eclipse-sirius/sirius-components-forms';
+import Filter from '@mui/icons-material/Filter';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
@@ -203,10 +204,30 @@ export const RelatedViewsView = forwardRef<WorkbenchViewHandle, WorkbenchViewCom
     }
 
     return (
-      <div className={classes.view}>
-        <div className={classes.toolbar}>{toolbar}</div>
-        <div className={classes.content}>{contents}</div>
-      </div>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Related Views">
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            flexDirection: 'row',
+            borderBottomWidth: '1px',
+            borderBottomStyle: 'solid',
+            borderBottomColor: theme.palette.divider,
+          })}>
+          <Filter sx={(theme) => ({ margin: theme.spacing(1) })} />
+          <Typography
+            sx={(theme) => ({
+              marginTop: theme.spacing(1),
+              marginRight: theme.spacing(1),
+              marginBottom: theme.spacing(1),
+            })}>
+            Related Views
+          </Typography>
+        </Box>
+        <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
+          <div className={classes.toolbar}>{toolbar}</div>
+          <div className={classes.content}>{contents}</div>
+        </Box>
+      </Box>
     );
   }
 );

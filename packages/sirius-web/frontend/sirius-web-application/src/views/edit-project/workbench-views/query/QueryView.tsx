@@ -19,6 +19,7 @@ import {
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -171,10 +172,30 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
       </Box>
     );
     return (
-      <div className={classes.view}>
-        <div className={classes.toolbar}>{toolbar}</div>
-        <div className={classes.content}>{contents}</div>
-      </div>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Query">
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            flexDirection: 'row',
+            borderBottomWidth: '1px',
+            borderBottomStyle: 'solid',
+            borderBottomColor: theme.palette.divider,
+          })}>
+          <PlayArrowIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
+          <Typography
+            sx={(theme) => ({
+              marginTop: theme.spacing(1),
+              marginRight: theme.spacing(1),
+              marginBottom: theme.spacing(1),
+            })}>
+            Query
+          </Typography>
+        </Box>
+        <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
+          <div className={classes.toolbar}>{toolbar}</div>
+          <div className={classes.content}>{contents}</div>
+        </Box>
+      </Box>
     );
   }
 );

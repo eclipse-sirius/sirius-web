@@ -23,7 +23,7 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { ForwardedRef, forwardRef, useImperativeHandle } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchQueryInputProps } from './SearchQueryInput.types';
 import { SearchQuery } from './useSearch.types';
@@ -32,6 +32,11 @@ import { EMPTY_QUERY, useSearchQuery } from './useSearchQuery';
 export const SearchQueryInput = forwardRef<SearchQuery, SearchQueryInputProps>(
   ({ editingContextId, initialQuery, onLaunchSearch }: SearchQueryInputProps, ref: ForwardedRef<SearchQuery>) => {
     const { searchQuery, onSearchQueryChange } = useSearchQuery(editingContextId, initialQuery);
+
+    const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+      inputRef.current?.focus({ preventScroll: true });
+    }, []);
 
     useImperativeHandle(
       ref,
@@ -89,7 +94,7 @@ export const SearchQueryInput = forwardRef<SearchQuery, SearchQueryInputProps>(
             variant="outlined"
             size="small"
             fullWidth
-            autoFocus
+            inputRef={inputRef}
             placeholder={t('launchSearchPlaceholder')}
             slotProps={{
               input: {

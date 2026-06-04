@@ -11,6 +11,9 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { WorkbenchViewComponentProps, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import SearchIcon from '@mui/icons-material/Search';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, RefObject, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { SearchQueryInput } from './SearchQueryInput';
@@ -23,7 +26,7 @@ import { useSearchViewHandle } from './useSearchViewHandle';
 const useSearchViewStyles = makeStyles()((theme) => ({
   view: {
     display: 'grid',
-    gridTemplateRows: 'min-content min-content 1fr', // input, separator, results
+    gridTemplateRows: `min-content min-content minmax(${theme.spacing(16)}, 1fr)`,
     gridTemplateColumns: '1fr',
     overflow: 'auto',
   },
@@ -66,24 +69,44 @@ export const SearchView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponent
     const initialQuery: SearchQuery | null = initialSearchViewConfiguration?.searchQuery || null;
 
     return (
-      <div className={classes.view} data-representation-kind="search-view">
-        <SearchQueryInput
-          editingContextId={editingContextId}
-          initialQuery={initialQuery}
-          onLaunchSearch={(newQuery) => {
-            setState((prevState) => ({ ...prevState, query: newQuery }));
-            launchSearch(editingContextId, newQuery);
-          }}
-          ref={searchQueryRef}
-        />
-        <div className={classes.separator} />
-        <SearchResults
-          loading={loading}
-          query={state.query}
-          result={state.result}
-          timestamp={state.resultsReceivedTimestamp}
-        />
-      </div>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Search">
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            flexDirection: 'row',
+            borderBottomWidth: '1px',
+            borderBottomStyle: 'solid',
+            borderBottomColor: theme.palette.divider,
+          })}>
+          <SearchIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
+          <Typography
+            sx={(theme) => ({
+              marginTop: theme.spacing(1),
+              marginRight: theme.spacing(1),
+              marginBottom: theme.spacing(1),
+            })}>
+            Search
+          </Typography>
+        </Box>
+        <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }} data-representation-kind="search-view">
+          <SearchQueryInput
+            editingContextId={editingContextId}
+            initialQuery={initialQuery}
+            onLaunchSearch={(newQuery) => {
+              setState((prevState) => ({ ...prevState, query: newQuery }));
+              launchSearch(editingContextId, newQuery);
+            }}
+            ref={searchQueryRef}
+          />
+          <div className={classes.separator} />
+          <SearchResults
+            loading={loading}
+            query={state.query}
+            result={state.result}
+            timestamp={state.resultsReceivedTimestamp}
+          />
+        </Box>
+      </Box>
     );
   }
 );
