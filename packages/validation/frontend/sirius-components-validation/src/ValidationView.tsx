@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo and others.
+ * Copyright (c) 2022, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,11 @@
  *******************************************************************************/
 import { WorkbenchViewComponentProps, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import WarningIcon from '@mui/icons-material/Warning';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 
@@ -90,11 +92,12 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
     const categories: Category[] = [];
     const processedValidation: Validation = { categories };
 
-    let noDiagnostic: ReactNode = (
+    const noDiagnostic: ReactNode = (
       <div className={classes.idle}>
         <Typography variant="subtitle2">{t('noDiagnostic')}</Typography>
       </div>
     );
+    let content: ReactNode = noDiagnostic;
 
     if (state.validationPayload && !complete) {
       state.validationPayload.diagnostics.forEach((diagnostic) => {
@@ -133,12 +136,32 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
       });
 
       if (accordions.length > 0) {
-        return <div className={classes.root}>{accordions}</div>;
-      } else {
-        return noDiagnostic;
+        content = <div className={classes.root}>{accordions}</div>;
       }
-    } else {
-      return noDiagnostic;
     }
+
+    return (
+      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Validation">
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            flexDirection: 'row',
+            borderBottomWidth: '1px',
+            borderBottomStyle: 'solid',
+            borderBottomColor: theme.palette.divider,
+          })}>
+          <WarningIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
+          <Typography
+            sx={(theme) => ({
+              marginTop: theme.spacing(1),
+              marginRight: theme.spacing(1),
+              marginBottom: theme.spacing(1),
+            })}>
+            Validation
+          </Typography>
+        </Box>
+        <Box sx={{ flexGrow: 1, minHeight: 0, overflow: 'auto' }}>{content}</Box>
+      </Box>
+    );
   }
 );

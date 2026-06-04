@@ -29,6 +29,8 @@ import {
   useTreePath,
   useTreeSelection,
 } from '@eclipse-sirius/sirius-components-trees';
+import Filter from '@mui/icons-material/Filter';
+import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React, { ForwardedRef, forwardRef, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -224,70 +226,88 @@ export const ViewsExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCo
       );
     }
 
-    if (!state.tree) {
-      return (
-        <div className={classes.treeView} ref={treeElement}>
-          <RepresentationLoadingIndicator />
-        </div>
-      );
-    }
-
     return (
-      <div className={classes.treeView} ref={treeElement}>
-        <TreeToolBar
-          editingContextId={editingContextId}
-          readOnly={readOnly}
-          onRevealSelection={revealSelection}
-          treeFilters={[]}
-          onTreeFilterMenuItemClick={() => {}}
-          onFilter={() => {
-            setState((prevState) => {
-              return !prevState.filterBar
-                ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
-                : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-            });
-          }}
-          treeToolBarContributionComponents={[]}>
-          <></>
-        </TreeToolBar>
-        {filterBar}
-        {state.tree.children.length === 0 ? (
-          <div className={classes.idle}>
-            <Typography variant="subtitle2">{t('noRepresentation')}</Typography>
-          </div>
-        ) : (
-          <div className={classes.treeContent}>
-            <TreeView
-              editingContextId={editingContextId}
-              readOnly={readOnly}
-              tree={state.tree}
-              textToHighlight={state.filterBarText}
-              textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-              onExpandedElementChange={onExpandedElementChange}
-              expanded={state.expanded}
-              maxDepth={state.maxDepth}
-              treeItemActionRender={(props) => {
-                if (
-                  props.item.kind === 'siriusWeb://representationKind' ||
-                  props.item.kind === 'siriusWeb://representationDescriptionType'
-                ) {
-                  return null;
-                } else {
-                  return <TreeItemAction {...props} />;
-                }
-              }}
-              onTreeItemClick={onTreeItemClick}
-              selectTreeItems={(selectedTreeItemIds: string[]) =>
-                setState((prevState) => {
-                  return { ...prevState, selectedTreeItemIds };
-                })
-              }
-              selectedTreeItemIds={state.selectedTreeItemIds}
-              data-testid="viewsexplorer://"
-            />
-          </div>
-        )}
-      </div>
+      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Views">
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            flexDirection: 'row',
+            borderBottomWidth: '1px',
+            borderBottomStyle: 'solid',
+            borderBottomColor: theme.palette.divider,
+          })}>
+          <Filter sx={(theme) => ({ margin: theme.spacing(1) })} />
+          <Typography
+            sx={(theme) => ({
+              marginTop: theme.spacing(1),
+              marginRight: theme.spacing(1),
+              marginBottom: theme.spacing(1),
+            })}>
+            Views
+          </Typography>
+        </Box>
+        <Box className={classes.treeView} sx={{ flexGrow: 1, minHeight: 0 }} ref={treeElement}>
+          {!state.tree ? (
+            <RepresentationLoadingIndicator />
+          ) : (
+            <>
+              <TreeToolBar
+                editingContextId={editingContextId}
+                readOnly={readOnly}
+                onRevealSelection={revealSelection}
+                treeFilters={[]}
+                onTreeFilterMenuItemClick={() => {}}
+                onFilter={() => {
+                  setState((prevState) => {
+                    return !prevState.filterBar
+                      ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
+                      : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+                  });
+                }}
+                treeToolBarContributionComponents={[]}>
+                <></>
+              </TreeToolBar>
+              {filterBar}
+              {state.tree.children.length === 0 ? (
+                <div className={classes.idle}>
+                  <Typography variant="subtitle2">{t('noRepresentation')}</Typography>
+                </div>
+              ) : (
+                <div className={classes.treeContent}>
+                  <TreeView
+                    editingContextId={editingContextId}
+                    readOnly={readOnly}
+                    tree={state.tree}
+                    textToHighlight={state.filterBarText}
+                    textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+                    onExpandedElementChange={onExpandedElementChange}
+                    expanded={state.expanded}
+                    maxDepth={state.maxDepth}
+                    treeItemActionRender={(props) => {
+                      if (
+                        props.item.kind === 'siriusWeb://representationKind' ||
+                        props.item.kind === 'siriusWeb://representationDescriptionType'
+                      ) {
+                        return null;
+                      } else {
+                        return <TreeItemAction {...props} />;
+                      }
+                    }}
+                    onTreeItemClick={onTreeItemClick}
+                    selectTreeItems={(selectedTreeItemIds: string[]) =>
+                      setState((prevState) => {
+                        return { ...prevState, selectedTreeItemIds };
+                      })
+                    }
+                    selectedTreeItemIds={state.selectedTreeItemIds}
+                    data-testid="viewsexplorer://"
+                  />
+                </div>
+              )}
+            </>
+          )}
+        </Box>
+      </Box>
     );
   }
 );
