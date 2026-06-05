@@ -31,11 +31,11 @@ public class ProjectsOmniboxCommandSearchService implements IProjectsOmniboxComm
 
     private final List<IProjectsOmniboxCommandProvider> projectsOmniboxCommandProviders;
 
-    private final List<IOmniboxCommandOrderer> omniboxCommandOrderers;
+    private final IOmniboxCommandOrderer omniboxCommandOrderer;
 
-    public ProjectsOmniboxCommandSearchService(List<IProjectsOmniboxCommandProvider> projectsOmniboxCommandProviders, List<IOmniboxCommandOrderer> omniboxCommandOrderers) {
+    public ProjectsOmniboxCommandSearchService(List<IProjectsOmniboxCommandProvider> projectsOmniboxCommandProviders, IOmniboxCommandOrderer omniboxCommandOrderer) {
         this.projectsOmniboxCommandProviders = Objects.requireNonNull(projectsOmniboxCommandProviders);
-        this.omniboxCommandOrderers = Objects.requireNonNull(omniboxCommandOrderers);
+        this.omniboxCommandOrderer = Objects.requireNonNull(omniboxCommandOrderer);
     }
 
     @Override
@@ -45,9 +45,7 @@ public class ProjectsOmniboxCommandSearchService implements IProjectsOmniboxComm
                 .filter(command -> command.label().toLowerCase().contains(query.toLowerCase()))
                 .toList();
 
-        for (var orderer: this.omniboxCommandOrderers) {
-            omniboxCommands = orderer.order(omniboxCommands);
-        }
+        this.omniboxCommandOrderer.order(omniboxCommands);
 
         return omniboxCommands;
     }
