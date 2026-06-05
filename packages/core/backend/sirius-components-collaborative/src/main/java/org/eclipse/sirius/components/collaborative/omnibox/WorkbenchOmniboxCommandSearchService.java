@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,11 +31,11 @@ public class WorkbenchOmniboxCommandSearchService implements IWorkbenchOmniboxCo
 
     private final List<IWorkbenchOmniboxCommandProvider> workbenchOmniboxCommandProviders;
 
-    private final List<IOmniboxCommandOrderer> omniboxCommandOrderers;
+    private final IOmniboxCommandOrderer omniboxCommandOrderer;
 
-    public WorkbenchOmniboxCommandSearchService(List<IWorkbenchOmniboxCommandProvider> workbenchOmniboxCommandProviders, List<IOmniboxCommandOrderer> omniboxCommandOrderers) {
+    public WorkbenchOmniboxCommandSearchService(List<IWorkbenchOmniboxCommandProvider> workbenchOmniboxCommandProviders, IOmniboxCommandOrderer omniboxCommandOrderer) {
         this.workbenchOmniboxCommandProviders = Objects.requireNonNull(workbenchOmniboxCommandProviders);
-        this.omniboxCommandOrderers = Objects.requireNonNull(omniboxCommandOrderers);
+        this.omniboxCommandOrderer = Objects.requireNonNull(omniboxCommandOrderer);
     }
 
     @Override
@@ -45,9 +45,7 @@ public class WorkbenchOmniboxCommandSearchService implements IWorkbenchOmniboxCo
                 .filter(command -> command.label().toLowerCase().contains(query.toLowerCase()))
                 .toList();
 
-        for (var orderer: this.omniboxCommandOrderers) {
-            omniboxCommands = orderer.order(omniboxCommands);
-        }
+        this.omniboxCommandOrderer.order(omniboxCommands);
 
         return omniboxCommands;
     }

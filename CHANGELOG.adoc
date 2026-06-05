@@ -31,6 +31,9 @@ Downstream projects are advised to just rely on MUI's `CssBaseline` and perform 
 As such a new dependency is required to run Sirius Web, the package `sirius-components-markdown` which mainly depends on Lexical npm packages.
 Downstream projects using this sirius-components-markdown package will thus have to depend on `lexical`, `@lexical/code-core`, `@lexical/extension`, `@lexical/link`, `@lexical/list`, `@lexical/markdown`, `@lexical/react`, `@lexical/rich-text`, `@lexical/selection` and `@lexical/utils` in version `0.42.0` for now.
 The package `@lexical/code` is not used anymore.
+- https://github.com/eclipse-sirius/sirius-web/issues/6461[#6461] [core] If you have an implementation of `IOmniboxCommandOrderer`, it should now implements
+`IOmniboxCommandOrdererDelegate` instead.
+If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation of `IDefaultOmniboxCommandOrderer` that is part of sirius-components will be used.
 
 
 === Dependency update
@@ -69,6 +72,8 @@ One can now simply run `npm run format` to format the frontend code or `npm run 
 - https://github.com/eclipse-sirius/sirius-web/issues/6695[#6695] [project] Expose previous project name in 'ProjectNameUpdatedEvent'
 - https://github.com/eclipse-sirius/sirius-web/issues/6635[#6635] [sirius-web] Add a dedicated package for markdown edition and rendering.
 This package can thus be eaily reused by those who want to integrate markdown rendering the their Sirius Web based applications.
+- https://github.com/eclipse-sirius/sirius-web/issues/6461[#6461] [core] Make `IOmniboxCommandOrderer` extensible by downstream applications.
+Downstream applications can implement `IOmniboxCommandOrdererDelegate` to define their own ordering strategy.
 
 
 
