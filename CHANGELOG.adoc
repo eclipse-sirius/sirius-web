@@ -82,6 +82,9 @@ In Java 18+ this synthetic field is not automatically generated anymore if it is
 - https://github.com/eclipse-sirius/sirius-web/issues/6529[#6529] [diagram] Use the diagram representation name for exported image filenames
 - https://github.com/eclipse-sirius/sirius-web/issues/6123[#6123] [diagram] Improve `PaletteToolList` in order to preparer for the contribution of tool sections with extensions point.
 - https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [sirius-web] Move responsibility of view headers directly inside the view component instead of `WorkbenchPart`.
+- https://github.com/eclipse-sirius/sirius-web/issues/5892[#5892] [sirius-web] Make `ISearchService` extensible by downstream applications.
+Downstream applications can implement `ISearchServiceDelegate` to define their own searching strategy.
+
 
 
 == 2026.5.0

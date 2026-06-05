@@ -29,25 +29,25 @@ import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
 import org.eclipse.sirius.web.application.views.search.dto.SearchQuery;
-import org.eclipse.sirius.web.application.views.search.services.api.ISearchService;
+import org.eclipse.sirius.web.application.views.search.services.api.IDefaultSearchService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
- * Service use to search for elements inside an editing context based on a user-supplied query.
+ * The default implementation that searches for elements inside an editing context based on a user-supplied query.
  *
  * @author pcdavid
  */
 @Service
-public class SearchService implements ISearchService {
+public class DefaultSearchService implements IDefaultSearchService {
     private static final int MAX_RESULT_SIZE = 1000_000;
 
-    private final Logger logger = LoggerFactory.getLogger(SearchService.class);
+    private final Logger logger = LoggerFactory.getLogger(DefaultSearchService.class);
 
     private final ILabelService labelService;
 
-    public SearchService(ILabelService labelService) {
+    public DefaultSearchService(ILabelService labelService) {
         this.labelService = Objects.requireNonNull(labelService);
     }
 
