@@ -192,6 +192,21 @@ export const MultiLabelRectilinearEditableEdge = memo(
         />
         {selected ? <EdgeCreationHandle edgeId={id} edgePath={edgePath}></EdgeCreationHandle> : null}
         {selected &&
+          middleBendingPoints &&
+          middleBendingPoints.map((point, index) => (
+            <TemporaryMovingLine
+              key={index}
+              x={point.x}
+              y={point.y}
+              direction={point.direction}
+              segmentLength={point.segmentLength}
+              index={index}
+              onDragStart={onDragStart}
+              onDrag={onTemporaryLineDrag}
+              onDragStop={onTemporaryLineDragStop}
+            />
+          ))}
+        {selected &&
           localBendingPoints &&
           localBendingPoints.map((point, index) => {
             const reorderBendPoint = [...localBendingPoints].sort((a, b) => a.pathOrder - b.pathOrder);
@@ -210,21 +225,6 @@ export const MultiLabelRectilinearEditableEdge = memo(
               />
             );
           })}
-        {selected &&
-          middleBendingPoints &&
-          middleBendingPoints.map((point, index) => (
-            <TemporaryMovingLine
-              key={index}
-              x={point.x}
-              y={point.y}
-              direction={point.direction}
-              segmentLength={point.segmentLength}
-              index={index}
-              onDragStart={onDragStart}
-              onDrag={onTemporaryLineDrag}
-              onDragStop={onTemporaryLineDragStop}
-            />
-          ))}
         {data ? (
           <DraggableEdgeLabels
             id={id}
