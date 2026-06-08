@@ -97,12 +97,11 @@ export const DocumentTreeItemContextMenuContribution = forwardRef(
           component="a"
           href={`${httpOrigin}/api/editingcontexts/${editingContextId}/documents/${item.id}`}
           type="application/octet-stream"
-          data-testid="download"
-          aria-disabled>
+          data-testid="download">
           <ListItemIcon>
             <GetAppIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Download" aria-disabled />
+          <ListItemText primary="Download" />
         </MenuItem>
       </Fragment>
     )

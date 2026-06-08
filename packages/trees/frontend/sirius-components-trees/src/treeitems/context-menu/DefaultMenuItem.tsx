@@ -33,8 +33,7 @@ export const DefaultMenuItem = ({ editingContextId, treeId, item, entry, readOnl
     <MenuItem
       onClick={() => invokeContextMenuEntry(editingContextId, treeId, item.id, entry, onClick)}
       data-testid={`context-menu-entry-${entry.label}`}
-      disabled={readOnly}
-      aria-disabled>
+      disabled={readOnly}>
       <ListItemIcon>
         {entry.iconURL.length > 0 ? (
           <IconOverlay iconURLs={entry.iconURL} alt={entry.label} title={entry.label} />

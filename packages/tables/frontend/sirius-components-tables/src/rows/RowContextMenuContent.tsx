@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -130,8 +130,7 @@ export const RowContextMenuContent = ({
             key={entry.id}
             onClick={(_) => handleClickContextMenuEntry(entry)}
             data-testid={`context-menu-entry-${entry.label}`}
-            disabled={readOnly}
-            aria-disabled>
+            disabled={readOnly}>
             <ListItemIcon>
               {entry.iconURLs.length > 0 ? (
                 <IconOverlay iconURLs={entry.iconURLs} alt={entry.label} title={entry.label} />

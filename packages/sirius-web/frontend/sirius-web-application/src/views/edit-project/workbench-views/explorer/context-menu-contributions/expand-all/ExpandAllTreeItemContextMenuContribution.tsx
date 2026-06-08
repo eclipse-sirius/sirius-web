@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,8 @@ import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import { useTranslation } from 'react-i18next';
 import { Fragment, forwardRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const ExpandAllTreeItemContextMenuContribution = forwardRef(
   (
@@ -63,8 +63,7 @@ export const ExpandAllTreeItemContextMenuContribution = forwardRef(
           onClick={() => {
             onExpandAll(item);
           }}
-          ref={ref}
-          aria-disabled>
+          ref={ref}>
           <ListItemIcon>
             <UnfoldMore fontSize="small" />
           </ListItemIcon>
