@@ -34,7 +34,6 @@ import '@fontsource/roboto/700.css';
 import './portals.css';
 import './ReactFlow.css';
 import './reset.css';
-import './variables.css';
 
 if (process.env.NODE_ENV !== 'production') {
   loadDevMessages();
