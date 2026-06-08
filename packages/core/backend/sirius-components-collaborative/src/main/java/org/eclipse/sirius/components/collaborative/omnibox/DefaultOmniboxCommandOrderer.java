@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,17 +17,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.eclipse.sirius.components.collaborative.omnibox.api.IOmniboxCommandOrderer;
+import org.eclipse.sirius.components.collaborative.omnibox.api.IDefaultOmniboxCommandOrderer;
 import org.eclipse.sirius.components.collaborative.omnibox.dto.OmniboxCommand;
 import org.springframework.stereotype.Service;
 
 /**
- * Sorts the omnibox commands in Sirius Web.
+ * The default implementation that sorts omnibox commands.
  *
  * @author gdaniel
  */
 @Service
-public class OmniboxCommandOrderer implements IOmniboxCommandOrderer {
+public class DefaultOmniboxCommandOrderer implements IDefaultOmniboxCommandOrderer {
 
     @Override
     public List<OmniboxCommand> order(List<OmniboxCommand> omniboxCommands) {
