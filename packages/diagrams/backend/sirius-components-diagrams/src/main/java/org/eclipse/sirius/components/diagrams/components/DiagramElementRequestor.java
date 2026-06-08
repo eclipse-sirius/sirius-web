@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2023 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.diagrams.components;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -50,6 +51,27 @@ public class DiagramElementRequestor implements IDiagramElementRequestor {
                 .filter(node -> Objects.equals(node.getDescriptionId(), nodeDescription.getId()))
                 .toList();
         // @formatter:on
+    }
+
+    @Override
+    public List<Node> getAllNodes(Diagram diagram, NodeDescription nodeDescription) {
+        List<Node> allNodes = new ArrayList<>();
+        for (Node rootNode : diagram.getNodes()) {
+            this.collectMatching(rootNode, nodeDescription, allNodes);
+        }
+        return allNodes;
+    }
+
+    private void collectMatching(Node node, NodeDescription nodeDescription, List<Node> sink) {
+        if (Objects.equals(node.getDescriptionId(), nodeDescription.getId())) {
+            sink.add(node);
+        }
+        for (Node child : node.getChildNodes()) {
+            this.collectMatching(child, nodeDescription, sink);
+        }
+        for (Node borderNode : node.getBorderNodes()) {
+            this.collectMatching(borderNode, nodeDescription, sink);
+        }
     }
 
     @Override

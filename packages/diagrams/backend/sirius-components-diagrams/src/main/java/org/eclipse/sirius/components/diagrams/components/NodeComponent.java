@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.diagrams.CollapsingState;
+import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.INodeStyle;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.NodeDecorator;
@@ -98,7 +99,8 @@ public class NodeComponent implements IComponent {
             nodeVariableManager.put(VariableManager.SELF, semanticElement);
 
             String targetObjectId = nodeDescription.getTargetObjectIdProvider().apply(nodeVariableManager);
-            var optionalPreviousNode = nodesRequestor.getByTargetObjectId(targetObjectId);
+            var optionalPreviousNode = nodesRequestor.getByTargetObjectId(targetObjectId)
+                    .or(() -> this.findReparentedPreviousNode(targetObjectId));
 
             if (this.shouldRender(targetObjectId, optionalPreviousNode, nodeVariableManager)) {
                 Element nodeElement = this.doRender(nodeVariableManager, targetObjectId, optionalPreviousNode, diagramEvents);
@@ -358,6 +360,16 @@ public class NodeComponent implements IComponent {
         NodeDescription nodeDescription = this.props.getNodeDescription();
         NodeContainmentKind containmentKind = this.props.getContainmentKind();
         return new NodeIdProvider().getNodeId(parentElementId, nodeDescription.getId(), containmentKind, targetObjectId);
+    }
+
+    private Optional<Node> findReparentedPreviousNode(String targetObjectId) {
+        var nodeDescription = this.props.getNodeDescription();
+        return this.props.getVariableManager()
+                .get(DiagramComponentProps.PREVIOUS_DIAGRAM, Diagram.class)
+                .map(previousDiagram -> new DiagramElementRequestor().getAllNodes(previousDiagram, nodeDescription))
+                .stream().flatMap(List::stream)
+                .filter(node -> Objects.equals(node.getTargetObjectId(), targetObjectId))
+                .findFirst();
     }
 
     private String computeNodeDecoratorId(String nodeId, IDecoratorDescription decoratorDescription, NodeDecoratorPosition position) {

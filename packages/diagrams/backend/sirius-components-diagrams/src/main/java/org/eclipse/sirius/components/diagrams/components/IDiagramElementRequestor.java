@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2020 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,8 @@ public interface IDiagramElementRequestor {
     List<Node> getBorderNodes(Node node, NodeDescription nodeDescription);
 
     List<Node> getChildNodes(Node node, NodeDescription nodeDescription);
+
+    List<Node> getAllNodes(Diagram diagram, NodeDescription nodeDescription);
 
     List<Edge> getEdges(Diagram diagram, EdgeDescription edgeDescription);
 }
