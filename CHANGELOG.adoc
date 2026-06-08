@@ -41,6 +41,7 @@ The font weights used in the default MUI theme can be found here[https://mui.com
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5301[#5301] [core] Fix browser history on workbenches
+- https://github.com/eclipse-sirius/sirius-web/issues/5706[#5706] [diagram] Fix post tool selection not set correctly on diagrams
 
 
 === New Features
