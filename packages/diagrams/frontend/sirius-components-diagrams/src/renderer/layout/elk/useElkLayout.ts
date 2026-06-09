@@ -157,6 +157,14 @@ export const useElkLayout = (): UseElkLayoutValue => {
         .filter(
           (edge) => nodes.some((node) => node.id === edge.source) && nodes.some((node) => node.id === edge.target)
         )
+        .filter(
+          (edge) =>
+            !nodes.some(
+              (node) =>
+                (node.id === edge.source && node.parentId === edge.target) ||
+                (node.id === edge.target && node.parentId === edge.source)
+            )
+        )
         .map((edge) => ({
           id: edge.id,
           sources: [edge.source],

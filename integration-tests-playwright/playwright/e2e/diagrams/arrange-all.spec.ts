@@ -115,3 +115,47 @@ test.describe('diagram - arrange all', () => {
     await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 }); // no error
   });
 });
+
+test.describe('diagram - arrange all', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectArrangeAllWithEdgeParentChild.zip');
+    await expect(page.locator('[data-testid^="explorer://"]')).toBeAttached();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when a arrange all is triggered on a diagram with an edge between a parent and its child, then the layout is applied without error', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('diagramParentToChild');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.getByTestId('arrange-all-main-button').click();
+
+    await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 }); // no error
+  });
+
+  test('when a arrange all is triggered on a diagram with an edge between a child and its parent, then the layout is applied without error', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('diagramChildToParent');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.getByTestId('arrange-all-main-button').click();
+
+    await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 }); // no error
+  });
+});
