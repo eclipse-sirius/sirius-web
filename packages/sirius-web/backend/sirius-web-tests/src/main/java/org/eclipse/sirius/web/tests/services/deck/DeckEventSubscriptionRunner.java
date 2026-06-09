@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import graphql.execution.DataFetcherResult;
 @Service
 public class DeckEventSubscriptionRunner implements ISubscriptionRunner<DeckEventInput> {
 
-    private static final String DECK_EVENT_SUBSCRIPTION = """
+    public static final String DECK_EVENT_SUBSCRIPTION = """
             subscription deckEvent($input: DeckEventInput!) {
               deckEvent(input: $input) {
                 __typename

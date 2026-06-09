@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RepresentationDescriptionsQueryRunner implements IQueryRunner {
 
-    private static final String ALL_REPRESENTATION_DESCRIPTIONS_QUERY = """
+    public static final String ALL_REPRESENTATION_DESCRIPTIONS_QUERY = """
             query getAllRepresentationMetadata($editingContextId: ID!, $objectId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {

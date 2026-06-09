@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PaletteQueryRunner implements IQueryRunner {
 
-    private static final String PALETTE_QUERY = """
+    public static final String PALETTE_QUERY = """
             query getPalette($editingContextId: ID!, $representationId: ID!, $diagramElementIds: [ID!]) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {

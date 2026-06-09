@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChangeColumnSortMutationRunner implements IMutationRunner<ChangeColumnSortInput> {
 
-    private static final String CHANGE_COLUMN_SORT_MUTATION = """
+    public static final String CHANGE_COLUMN_SORT_MUTATION = """
             mutation changeColumnSort($input: ChangeColumnSortInput!) {
                 changeColumnSort(input: $input) {
                   __typename

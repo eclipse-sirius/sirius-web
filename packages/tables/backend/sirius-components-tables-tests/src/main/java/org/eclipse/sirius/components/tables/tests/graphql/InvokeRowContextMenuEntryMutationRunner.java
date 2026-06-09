@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class InvokeRowContextMenuEntryMutationRunner implements IMutationRunner<InvokeRowContextMenuEntryInput> {
 
-    private static final String INVOKE_ROW_CONTEXT_MENU_ENTRY_MUTATION = """
+    public static final String INVOKE_ROW_CONTEXT_MENU_ENTRY_MUTATION = """
             mutation invokeRowContextMenuEntry($input: InvokeRowContextMenuEntryInput!) {
               invokeRowContextMenuEntry(input: $input) {
                 __typename

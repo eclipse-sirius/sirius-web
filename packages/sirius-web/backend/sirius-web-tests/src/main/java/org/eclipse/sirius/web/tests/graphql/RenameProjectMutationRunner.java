@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RenameProjectMutationRunner implements IMutationRunner<RenameProjectInput> {
 
-    private static final String RENAME_PROJECT_MUTATION = """
+    public static final String RENAME_PROJECT_MUTATION = """
             mutation renameProject($input: RenameProjectInput!) {
               renameProject(input: $input) {
                 __typename

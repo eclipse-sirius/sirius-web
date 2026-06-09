@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import graphql.execution.DataFetcherResult;
 @Service
 public class TableEventSubscriptionRunner implements ISubscriptionRunner<TableEventInput> {
 
-    private static final String TABLE_EVENT_SUBSCRIPTION = """
+    public static final String TABLE_EVENT_SUBSCRIPTION = """
             subscription tableEvent($input: TableEventInput!) {
               tableEvent(input: $input) {
                 __typename

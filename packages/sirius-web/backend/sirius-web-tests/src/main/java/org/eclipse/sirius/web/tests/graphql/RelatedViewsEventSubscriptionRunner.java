@@ -30,7 +30,7 @@ import graphql.execution.DataFetcherResult;
 @Service
 public class RelatedViewsEventSubscriptionRunner implements ISubscriptionRunner<RelatedViewsEventInput> {
 
-    private static final String REPRESENTATIONS_EVENT_SUBSCRIPTION = """
+    public static final String REPRESENTATIONS_EVENT_SUBSCRIPTION = """
             subscription relatedViewsEvent($input: RelatedViewsEventInput!) {
               relatedViewsEvent(input: $input) {
                 __typename

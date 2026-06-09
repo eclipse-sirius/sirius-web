@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SelectionDialogDescriptionQueryRunner implements IQueryRunner {
 
-    private static final String GET_SELECTION_DIALOG_DESCRIPTION = """
+    public static final String GET_SELECTION_DIALOG_DESCRIPTION = """
             query getSelectionDialogDescription($editingContextId: ID!, $representationId: ID!, $variables: [SelectionDialogVariable!]!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {

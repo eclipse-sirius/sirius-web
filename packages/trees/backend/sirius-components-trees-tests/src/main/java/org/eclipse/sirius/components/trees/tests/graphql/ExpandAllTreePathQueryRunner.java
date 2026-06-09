@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExpandAllTreePathQueryRunner implements IQueryRunner {
 
-    private static final String EXPAND_ALL_TREE_PATH_QUERY = """
+    public static final String EXPAND_ALL_TREE_PATH_QUERY = """
             query getExpandAllTreePath($editingContextId: ID!, $treeId: ID!, $treeItemId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {

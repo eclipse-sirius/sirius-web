@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TreeItemTooltipQueryRunner implements IQueryRunner {
 
-    private static final String TREE_ITEM_TOOLTIP_QUERY = """
+    public static final String TREE_ITEM_TOOLTIP_QUERY = """
             query getTreeItemTooltip($editingContextId: ID!, $representationId: ID!, $treeItemId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {

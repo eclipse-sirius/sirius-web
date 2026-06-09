@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TreeItemContextMenuQueryRunner implements IQueryRunner {
 
-    private static final String TREE_ITEM_CONTEXT_MENU_QUERY = """
+    public static final String TREE_ITEM_CONTEXT_MENU_QUERY = """
             query getAllContextMenuActions($editingContextId: ID!, $representationId: ID!, $treeItemId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {

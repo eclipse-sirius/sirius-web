@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReferenceValueOptionsQueryRunner implements IQueryRunner {
 
-    private static final String REFERENCE_VALUE_OPTIONS_QUERY = """
+    public static final String REFERENCE_VALUE_OPTIONS_QUERY = """
             query getReferenceValueOptions($editingContextId: ID!, $representationId: ID!, $referenceWidgetId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {

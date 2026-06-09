@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MinimapVisibleQueryRunner implements IQueryRunner {
 
-    private static final String TOOLBAR_QUERY = """
+    public static final String TOOLBAR_QUERY = """
             query getToolbar($editingContextId: ID!, $representationId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {
