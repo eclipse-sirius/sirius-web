@@ -42,7 +42,13 @@ The font weights used in the default MUI theme can be found here[https://mui.com
 This switch enables us to use other units such as `px` or `rem` instead of `%` to specify panels' size.
 It also enables us to disable panel resize for a better control when needed.
 - [releng] Switch `@ObeoNetwork/gantt-task-react` to `0.6.6`
-
+- [releng] Switch to EMFJson 2.5.4
+- [releng] Switch to https://download.eclipse.org/modeling/emf/emf/builds/release/2.46.0/index.html[Eclipse EMF 2.46.0]
+* `org.eclipse.emf.common` from `2.31.0` to `2.45.0`
+* `org.eclipse.emf.ecore` from `2.37.0` to `2.42.0`
+* `org.eclipse.emf.edit` from `2.22.0` to `2.23.0`
+* `org.eclipse.emf.ecore.xmi` from `2.38.0` to `2.40.0`
+* `org.eclipse.emf.codegen.ecore` from `2.39.0` to `2.46.0`
 
 === Bug fixes
 
