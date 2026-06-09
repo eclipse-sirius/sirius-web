@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo and others.
+ * Copyright (c) 2022, 2025, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { WorkbenchViewComponentProps, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Box from '@mui/material/Box';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -37,6 +39,11 @@ const useValidationViewStyle = makeStyles()((theme) => ({
   heading: {
     flexBasis: '33.33%',
     flexShrink: 0,
+  },
+  diagnostic: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: theme.spacing(1),
   },
   secondaryHeading: {
     color: theme.palette.text.secondary,
@@ -107,7 +114,7 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
           categories.push(category);
         }
 
-        category.diagnostics.push({ id: diagnostic.id, message: diagnostic.message });
+        category.diagnostics.push({ id: diagnostic.id, message: diagnostic.message, fixable: diagnostic.fixable });
       });
 
       const accordions = processedValidation.categories.map((category) => {
@@ -115,7 +122,12 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
           if (index > 0) {
             acc.push(<Divider key={`Divider-${diagnostic.id}`} className={classes.divider} />);
           }
-          acc.push(<Typography key={diagnostic.id}>{diagnostic.message}</Typography>);
+          acc.push(
+            <Box key={diagnostic.id} className={classes.diagnostic}>
+              <Typography>{diagnostic.message}</Typography>
+              {diagnostic.fixable ? <MoreHorizIcon data-testid="diagnostic-fixable-icon" fontSize="small" /> : null}
+            </Box>
+          );
           return acc;
         }, []);
 

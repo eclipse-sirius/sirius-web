@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,7 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
                 .diagnosticsProvider(this::getDiagnosticsProvider)
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
+                .fixablePredicate(this::fixablePredicate)
                 .iconURLsProvider(variableManager -> List.of())
                 .build();
     }
@@ -83,5 +84,9 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
                 .map(Diagnostic.class::cast)
                 .map(Diagnostic::getMessage)
                 .orElse("");
+    }
+
+    private boolean fixablePredicate(Object object) {
+        return true;
     }
 }

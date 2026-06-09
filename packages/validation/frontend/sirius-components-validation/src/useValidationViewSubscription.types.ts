@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,13 +46,14 @@ export interface GQLValidationRefreshedEventPayload extends GQLValidationEventPa
 
 export interface GQLValidation {
   id: string;
-  diagnostics: GQLDiagnostic[];
+  diagnostics: GQLValidationDiagnostic[];
 }
 
-export interface GQLDiagnostic {
+export interface GQLValidationDiagnostic {
   id: string;
   kind: string;
   message: string;
+  fixable: boolean;
 }
 
 export interface Validation {
@@ -66,4 +67,5 @@ export interface Category {
 export interface Diagnostic {
   id: string;
   message: string;
+  fixable: boolean;
 }

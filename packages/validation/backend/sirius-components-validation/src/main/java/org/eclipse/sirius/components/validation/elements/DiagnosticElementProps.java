@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,8 @@ public final class DiagnosticElementProps implements IProps {
 
     private String message;
 
+    private boolean fixable;
+
     private DiagnosticElementProps() {
         // Prevent instantiation
     }
@@ -48,6 +50,10 @@ public final class DiagnosticElementProps implements IProps {
 
     public String getMessage() {
         return this.message;
+    }
+
+    public boolean isFixable() {
+        return this.fixable;
     }
 
     public static Builder newDiagnosticElementProps(UUID id) {
@@ -74,6 +80,8 @@ public final class DiagnosticElementProps implements IProps {
 
         private String message;
 
+        private boolean fixable;
+
         private Builder(UUID id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -88,11 +96,17 @@ public final class DiagnosticElementProps implements IProps {
             return this;
         }
 
+        public Builder fixable(boolean fixable) {
+            this.fixable = fixable;
+            return this;
+        }
+
         public DiagnosticElementProps build() {
             DiagnosticElementProps diagnosticElementProps = new DiagnosticElementProps();
             diagnosticElementProps.id = Objects.requireNonNull(this.id);
             diagnosticElementProps.kind = Objects.requireNonNull(this.kind);
             diagnosticElementProps.message = Objects.requireNonNull(this.message);
+            diagnosticElementProps.fixable = this.fixable;
             return diagnosticElementProps;
         }
     }
