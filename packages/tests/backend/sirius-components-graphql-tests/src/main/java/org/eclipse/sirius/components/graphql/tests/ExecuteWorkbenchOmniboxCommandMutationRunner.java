@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExecuteWorkbenchOmniboxCommandMutationRunner implements IMutationRunner<ExecuteWorkbenchOmniboxCommandInput> {
 
-    private static final String EXECUTE_WORKBENCH_OMNIBOX_COMMAND = """
+    public static final String EXECUTE_WORKBENCH_OMNIBOX_COMMAND = """
             mutation executeWorkbenchOmniboxCommand($input: ExecuteWorkbenchOmniboxCommandInput!) {
               executeWorkbenchOmniboxCommand(input: $input) {
                 __typename

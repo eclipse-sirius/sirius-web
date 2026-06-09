@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ChangeTableColumnVisibilityMutationRunner implements IMutationRunner<ChangeTableColumnVisibilityInput> {
 
-    private static final String CHANGE_COLUMN_VISIBILITY_MUTATION = """
+    public static final String CHANGE_COLUMN_VISIBILITY_MUTATION = """
                 mutation changeTableColumnVisibility($input: ChangeTableColumnVisibilityInput!) {
                   changeTableColumnVisibility(input: $input) {
                     __typename

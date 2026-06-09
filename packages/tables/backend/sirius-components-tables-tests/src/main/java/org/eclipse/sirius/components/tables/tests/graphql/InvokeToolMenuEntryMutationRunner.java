@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class InvokeToolMenuEntryMutationRunner implements IMutationRunner<InvokeToolMenuEntryInput> {
 
-    private static final String INVOKE_TOOL_MENU_ENTRY_MUTATION = """
+    public static final String INVOKE_TOOL_MENU_ENTRY_MUTATION = """
             mutation invokeToolMenuEntry($input: InvokeToolMenuEntryInput!) {
               invokeToolMenuEntry(input: $input) {
                 __typename

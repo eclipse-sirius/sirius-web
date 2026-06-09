@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ToolMenuEntriesQueryRunner implements IQueryRunner {
 
-    private static final String TOOL_MENU_ENTRIES_QUERY = """
+    public static final String TOOL_MENU_ENTRIES_QUERY = """
               query getAllToolMenuEntries($editingContextId: ID!, $representationId: ID!, $tableId: ID!) {
                 viewer {
                   editingContext(editingContextId: $editingContextId) {

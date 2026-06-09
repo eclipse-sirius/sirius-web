@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ import graphql.execution.DataFetcherResult;
 @Service
 public class ValidationEventSubscriptionRunner implements ISubscriptionRunner<ValidationEventInput> {
 
-    private static final String VALIDATION_EVENT_SUBSCRIPTION = """
+    public static final String VALIDATION_EVENT_SUBSCRIPTION = """
             subscription validationEvent($input: ValidationEventInput!) {
               validationEvent(input: $input) {
                 __typename

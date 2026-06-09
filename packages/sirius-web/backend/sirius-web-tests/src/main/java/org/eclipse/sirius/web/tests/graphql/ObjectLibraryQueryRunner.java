@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ObjectLibraryQueryRunner implements IQueryRunner {
 
-    private static final String OBJECT_LIBRARY_QUERY = """
+    public static final String OBJECT_LIBRARY_QUERY = """
             query getObjectLibrary($editingContextId: ID!, $objectId: ID!) {
               viewer {
                 editingContext(editingContextId: $editingContextId) {
