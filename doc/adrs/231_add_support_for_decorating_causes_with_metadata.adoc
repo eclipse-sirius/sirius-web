@@ -1,0 +1,165 @@
+:author: Gwendal Daniel
+:date: 2026-06-10
+:status: proposed
+:consulted: Stéphane Bégaudeau
+:informed: Stéphane Bégaudeau
+:deciders: Stéphane Bégaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6583
+
+= ADR-231 - Add support for decorating causes with metadata
+
+== Context and Problem Statement
+
+Causality chains are an important part of Sirius Web's design: some services react to an `ICause` (such as `IDomainEvent` or `IInput`) to perform operations, which may re-emit other `ICause`s, creating a causality chain.
+
+At each point in a causality chain, there are services that can use the cause to:
+
+- Extract relevant information (e.g. load an object from its ID, retrieve a tool from a view model, etc)
+- Perform an operation (e.g. execute the tool on the loaded object)
+- (Indirectly) emit another event (e.g. by creating/updating an entity in the database)
+
+This pattern is quite common in (but not limited to) event handlers, which extract information from their input to perform an operation.
+However, this information is currently lost once the operation is completed.
+As a result, downstream services working with an `ICause` need to re-extract the information if they also need it, which may be a performance bottleneck, but more importantly, may not always be a feasible task (e.g. if the operation deleted an element).
+
+We want to provide a mechanism that allows to integrate richer information in the causality chain, potentially at any point in the chain.
+
+
+== Decision Drivers
+
+- Event causality: the selected solution should be integrated in the causality chain of existing events.
+For example: a `SemanticDataUpdatedEvent` should give access to the metadata through the `causedBy()` methods.
+- Extensibility: while the selected solution could be minimal (e.g. only provide a label as metadata), it should be possible to extend it in the future to provide additional metadata derived from the actual base input.
+- Compatibility: the solution should keep existing causality chain checks working, and clearly document the API breaks for downstream applications.
+
+
+== Considered Options
+
+=== Add a generic `DecoratedCause` with a label
+
+We will add a new record, to decorate an existing cause:
+
+[source, java]
+----
+public record DecoratedCause(
+    String label,
+    ICause causedBy
+) implements ICause {
+
+    public UUID id() {
+        return causedBy.id();
+    }
+
+}
+----
+
+The ID of the `DecoratedCause` is the same as the ID of the cause it decorates. 
+This eases the integration, especially regarding correlation IDs between inputs and payloads.
+
+Having a label as metadata is a known use case for this feature, so making it easily accessible will streamline the integration in downstream code.
+
+Pros:
+
+The integration is simple, and each handler has all the information easily accessible to produce the label.
+
+Cons:
+
+The responsibility of creating the label is pushed to the handlers, which looks strange, since the label is not used by the handler in any way.
+
+
+=== Add a generic `DecoratedCause` with a Map of metadata
+
+We will add a similar record, but with a `Map<String, Object>` cause to let each handler store the metadata they have access to.
+
+This record will be used in all the places where additional metadata needs to be attached to an existing input.
+It will be the responsibility of downstream code to manipulate the metadata and perform whatever action it needs to perform (extract a label, produce logs, etc).
+
+NOTE: this implementation can extend the label implementation, to provide easy-to-access information for known use cases as well as raw metadata for unknown use cases.
+
+Pros:
+
+The implementation is simple, and does not make any assumption on how the data will be used.
+
+Cons:
+
+A generic map is hard to manipulate for downstream code.
+For example, it may be hard to produce a label from a decorated cause in a generic way, since the implementation will depend on the actual metadata available when computing the label.
+
+
+=== Add cause-specific decorators with explicit parameters
+
+For each cause we want to decorate, we will create a new record type with strongly typed parameters for the metadata.
+For example, we will create the following record to decorate an `InvokeSingleClickOnDiagramElementToolInput`:
+
+[source, java]
+----
+public record InvokeSingleClickOnDiagramElementToolMetadata(
+        IDiagramElement diagramElement,
+        ITool tool,
+        InvokeSingleClickOnDiagramElementToolInput causedBy
+) implements ICause {
+
+    public UUID id() {
+        return causedBy.id();
+    }
+
+}
+----
+
+Pros:
+
+This solution removes the need for a generic map, and makes decorated cause easy to use in downstream code (each cause explicitly indicates what metadata it contains).
+
+Cons:
+
+This solution requires more implementation work, since we need to create a new record for each input we want to decorate.
+
+
+=== Additional considerations
+
+The `ChangeDescription` API currently provides a `getInput()` method, which returns the input that triggered the change.
+Adding `DecoratedCause` in the causality chain implies to change the API of `ChangeDescription` to accept `ICause` as parameter instead of `IInput`, and replace the `getInput()` method with `getCause()`. 
+
+Since causality chains will potentially integrate decorated causes in various positions, we will provide a new service to ease causality checks.
+
+[source, java]
+----
+public interface ICausalityChainVisitor {
+
+    <T extends ICause> Optional<T> findFirstCauseOfType(ICause cause, Class<T> type);
+}
+----
+
+This service will be used in places where causality checks are needed, making them more robust in case a service somewhere adds a `DecoratedCause` to the chain.
+
+This includes code consuming `ChangeDescription` (e.g. DiagramXXXChangeRecorder that checks the cause of a change description and reacts to it), but also `@TransactionalEventListener` reacting to events caused by specific `ICause`.
+
+
+== Decision Outcome
+
+The first option offers the best cost/benefit ratio at the moment: we have a single known use case (display a label representing an operation), which can be easily handled by a dedicated field at the decorator level.
+
+If, in the future, we want to support other use cases, we can either opt for option 2 and add a generic map, or we can refactor the `DecoratedCause` instances to couple them to the actual input they decorate.
+
+
+== Consequences
+
+=== Advantages
+
+- We can quickly move with a first version of the feature that do not require a lot of effort to implement, while keeping our options open for future use cases.
+
+
+=== Drawbacks
+
+- We will have a `DecoratedCause#label` field that is not well encapsulated, since it is set by an object that doesn't really need it.
+- The `ChangeDescription` API is less clear since it provides a method to access the original input `getInput()` as well as a method to access the (decorated) cause `getCause()`.
+
+
+== More Information
+
+=== Implementation
+
+We will first implement the new decorator to wrap `InvokeSingleClickOnDiagramElementInput` and compute an human-readable label from an executed diagram tool.
+This initial implementation will validate and test the feature.
+
+We can add later additional decorators if needed.
