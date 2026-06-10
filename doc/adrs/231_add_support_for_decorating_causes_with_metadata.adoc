@@ -1,0 +1,146 @@
+:author: Gwendal Daniel
+:date: 2026-06-10
+:status: proposed
+:consulted: Stéphane Bégaudeau
+:informed: Stéphane Bégaudeau
+:deciders: Stéphane Bégaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6583
+
+= ADR-231 - Add support for decorating causes with metadata
+
+== Context and Problem Statement
+
+Sirius Web handlers often compute contextual information while handling an input.
+For example, a diagram tool handler may retrieve the diagram elements, the semantic elements, and the tool used to perform the operation.
+
+This information is currently lost once the handler emits a `ChangeDescription`, because the change description only carries the original `IInput`.
+As a result, downstream listeners reacting to domain events such as `SemanticDataUpdatedEvent` can only inspect the original input, even if richer metadata was already available when the change was performed.
+
+We want to have a way to pass this contextual information to downstream code.
+
+
+== Decision Drivers
+
+- Event causality: the selected solution should be integrated in the causality chain of existing events.
+For example: a `SemanticDataUpdatedEvent` should give access to the metadata through the `causedBy()` methods.
+- Extensibility: while the selected solution could be minimal (e.g. only provide a label as metadata), it should be possible to extend it in the future to provide additional metadata derived from the actual base input.
+- Compatibility: the solution should keep existing causality chain checks working, and clearly document the API breaks for downstream applications.
+
+
+== Considered Options
+
+=== Add a generic `DecoratedCause` with a label
+
+We will add a new record, to decorate an existing cause:
+
+[source, java]
+----
+public record DecoratedCause implements ICause (
+        UUID id,
+        String label,
+        ICause causedBy
+);
+----
+
+Having a label as metadata is a known use case for this feature, so making it easily accessible will streamline the integration in downstream code.
+
+Pros:
+
+The integration is simple, and each handler has all the information easily accessible to produce the label.
+
+Cons:
+
+The responsibility of creating the label is pushed to the handlers, which looks strange, since the label is not used by the handler in any way.
+
+=== Add a generic `DecoratedCause` with a Map of metadata
+
+We will add a similar record, but with a `Map<String, Object>` cause to let each handler store the metadata they have access to.
+
+This record will be used in all the places where additional metadata needs to be attached to an existing input.
+It will be the responsibility of downstream code to manipulate the metadata and perform whatever action it needs to perform (extract a label, produce logs, etc).
+
+NOTE: this implementation can extend the label implementation, to provide easy-to-access information for known use cases as well as raw metadata for unknown use cases.
+
+Pros:
+
+The implementation is simple, and does not make any assumption on how the data will be used.
+
+Cons:
+
+A generic map is hard to manipulate for downstream code.
+For example, it may be hard to produce a label from a decorated cause in a generic way, since the implementation will depend on the actual metadata available when computing the label.
+
+=== Add cause-specific decorators with explicit parameters
+
+For each cause we want to decorate, we will create a new record type with strongly typed parameters for the metadata.
+For example, we will create the following record to decorate an `InvokeSingleClickOnDiagramElementToolInput`:
+
+[source, java]
+----
+public record InvokeSingleClickOnDiagramElementToolMetadata implements ICause (
+        UUID id,
+        IDiagramElement diagramElement,
+        ITool tool,
+        // ...
+);
+----
+
+Pros:
+
+This solution removes the need for a generic map, and makes decorated cause easy to use in downstream code (each cause explicitly indicates what metadata it contains).
+
+Cons:
+
+This solution requires more implementation work, since we need to create a new record for each input we want to decorate.
+
+=== Additional considerations
+
+All the options above will require to change the signature of `ChangeDescription` to take an `ICause` as parameter instead of an `IInput`.
+We will keep the existing API of `ChangeDescription` to ensure it remains compatible with existing code, and extend it to let downstream listener access the actual metadata:
+
+[source, java]
+----
+public class ChangeDescription {
+
+    public ChangeDescription(String kind, String sourceId, ICause cause) {
+        // ...
+    }
+
+    public IInput getInput() {
+        // return the first input in the cause chain (this may be the cause of a decorated event)
+    }
+
+    public ICause getCause() {
+        // return the cause of the change description (can be an input or a decorated event).
+    }
+
+}
+----
+
+We will update the code that rely on `ChangeDescription.getInput()` where relevant.
+For example, `EditingContextSaver#postAccept` will call `IEditingContextPersistenceService#persist` with the full `ICause`, while `TreeEventProcessor#refresh` will continue to return `TreeRefreshedEventPayload` with the original input id, and not the decorator id.
+
+== Decision Outcome
+
+The first option offers the best cost/benefit ratio at the moment: we have a single known use case (display a label representing an operation), which can be easily handled by a dedicated field at the decorator level.
+
+If, in the future, we want to support other use cases, we can either opt for option 2 and add a generic map, or we can refactor the `DecoratedEvent` instances to couple them to the actual input they decorate.
+
+== Consequences
+
+=== Advantages
+
+- We can quickly move with a first version of the feature that do not require a lot of effort to implement, while keeping our options open for future use cases.
+
+
+=== Drawbacks
+
+- We will have a `DecoratedEvent#label` field that is not well encapsulated, since it is set by an object that doesn't really need it.
+- The `ChangeDescription` API is less clear since it provides a method to access the original input `getInput()` as well as a method to access the (decorated) cause `getCause()`.
+
+== More Information
+
+=== Implementation
+
+We will first implement the new decorator on a small set of inputs to validate and test the feature.
+We can add later additional decorators if needed.
