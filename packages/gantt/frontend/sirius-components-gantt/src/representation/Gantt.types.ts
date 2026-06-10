@@ -30,6 +30,7 @@ export interface GanttState {
 }
 
 export interface GanttProps {
+  editingContextId: string;
   representationId: string;
   tasks: TaskOrEmpty[];
   gqlColumns: GQLColumn[];

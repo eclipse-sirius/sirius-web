@@ -2,6 +2,15 @@ extend type Subscription {
   ganttEvent(input: GanttEventInput!): GanttEventPayload!
 }
 
+extend type EditingContext {
+  getNonWorkingDays(representationId: ID!): GanttNonWorkingDays
+}
+
+type GanttNonWorkingDays {
+  holidays: [String!]!
+  weekends: [String!]!
+}
+
 input GanttEventInput {
   id: ID!
   editingContextId: ID!

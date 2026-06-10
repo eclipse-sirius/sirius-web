@@ -33,15 +33,24 @@ import { Selection } from '@eclipse-sirius/sirius-components-core';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Theme, useTheme } from '@mui/material/styles';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import {
   GQLGanttDateRoundingTimeUnit,
   SelectableTask,
   StartOrEnd,
 } from '../graphql/subscription/GanttSubscription.types';
-import { checkIsHoliday, getDisplayedColumns, getSelectedColumns, roundDate } from '../helper/helper';
+import {
+  checkIsHoliday,
+  getDisplayedColumns,
+  getSelectedColumns,
+  roundDate,
+  setHolidays as setHolidaysHelper,
+  setWeekends as setWeekendsHelper,
+} from '../helper/helper';
 import { getTaskContextualPalette, getTaskDependencyContextualPalette } from '../palette/ContextualPalette';
+import { useGetNonWorkingDays } from '../graphql/query/useGetNonWorkingDays';
+import { UseGetNonWorkingDaysProps, UseGetNonWorkingDaysValue } from '../graphql/query/useGetNonWorkingDays.types';
 import { Toolbar } from '../toolbar/Toolbar';
 import { GanttProps, GanttState, TaskListColumnEnum } from './Gantt.types';
 
@@ -62,6 +71,7 @@ const useGanttStyle = makeStyles()((theme) => ({
 }));
 
 export const Gantt = ({
+  editingContextId,
   representationId,
   tasks,
   gqlColumns,
@@ -252,6 +262,24 @@ export const Gantt = ({
     value: gqlDateRounding.value,
     timeUnit: getTimeUnit(gqlDateRounding.timeUnit),
   };
+
+  const ganttIds: UseGetNonWorkingDaysProps = {
+    editingContextId: editingContextId,
+    ganttDescriptionId: representationId,
+  };
+
+  const nonWorkingDays: UseGetNonWorkingDaysValue = useGetNonWorkingDays(ganttIds);
+  const holidays = useMemo(() => new Set(nonWorkingDays.holidays), [nonWorkingDays.holidays]);
+  const weekends = useMemo(() => new Set(nonWorkingDays.weekends), [nonWorkingDays.weekends]);
+
+  const loading: boolean = nonWorkingDays.loading;
+
+  useEffect(() => {
+    if (!loading && nonWorkingDays) {
+      setHolidaysHelper(holidays);
+      setWeekendsHelper(weekends);
+    }
+  }, [loading, holidays, weekends]);
 
   return (
     <div ref={ganttContainerRef} className={ganttClasses.ganttContainer} data-testid={`gantt-representation`}>
