@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.fail;
 import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -33,6 +35,7 @@ import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTa
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.DeleteGanttTaskInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskDetailInput;
 import org.eclipse.sirius.components.collaborative.gantt.dto.input.EditGanttTaskInput;
+import org.eclipse.sirius.components.collaborative.gantt.dto.input.GetNonWorkingDaysInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.gantt.DependencyLink;
 import org.eclipse.sirius.components.gantt.Gantt;
@@ -45,6 +48,7 @@ import org.eclipse.sirius.components.gantt.tests.graphql.CreateTaskMutationRunne
 import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskDependencyMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.DeleteTaskMutationRunner;
 import org.eclipse.sirius.components.gantt.tests.graphql.EditTaskMutationRunner;
+import org.eclipse.sirius.components.gantt.tests.graphql.GetNonWorkingDaysQueryRunner;
 import org.eclipse.sirius.components.gantt.tests.navigation.GanttNavigator;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
@@ -102,6 +106,9 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
 
     @Autowired
     private DeleteTaskDependencyMutationRunner deleteTaskDependencyMutationRunner;
+
+    @Autowired
+    private GetNonWorkingDaysQueryRunner getNonWorkingDaysQueryRunner;
 
     @BeforeEach
     public void beforeEach() {
@@ -453,6 +460,42 @@ public class PapayaGanttControllerIntegrationTests extends AbstractIntegrationTe
                 .consumeNextWith(checkDependencyConsumer)
                 .then(deleteDependencyRunnable)
                 .consumeNextWith(checkDependencyAfterDeleteConsumer)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a gantt representation, when the get non-working days query is performed, then it succeeds")
+    public void givenGanttRepresentationWhenGetNonWorkingDaysQueryIsPerformedThenItSucceeds() {
+        var flux = this.givenSubscriptionToGantt();
+
+        var ganttRef = new AtomicReference<Gantt>();
+        Consumer<Object> initialGanttContentConsumer = payload -> Optional.of(payload)
+                .filter(GanttRefreshedEventPayload.class::isInstance)
+                .map(GanttRefreshedEventPayload.class::cast)
+                .map(GanttRefreshedEventPayload::gantt)
+                .ifPresentOrElse(gantt -> {
+                    ganttRef.set(gantt);
+                    assertThat(gantt).isNotNull();
+                }, () -> fail(MISSING_GANTT));
+
+
+        Runnable getNonWorkingDays = () -> {
+            var nonWorkingDaysInput = new GetNonWorkingDaysInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    ganttRef.get().getId());
+            var result = this.getNonWorkingDaysQueryRunner.run(nonWorkingDaysInput);
+
+            LinkedHashMap<String, List<String>> data = JsonPath.read(result.data(), "$.data.viewer.editingContext.getNonWorkingDays");
+            assertThat(data.get("weekends")).isEqualTo(List.of("Saturday", "Sunday"));
+            assertThat(data.get("holidays")).isEqualTo(List.of());
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialGanttContentConsumer)
+                .then(getNonWorkingDays)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

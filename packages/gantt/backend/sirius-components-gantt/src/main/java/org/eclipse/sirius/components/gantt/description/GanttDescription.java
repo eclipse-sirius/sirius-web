@@ -33,7 +33,8 @@ public record GanttDescription(String id, String label, Function<VariableManager
         Function<VariableManager, String> targetObjectIdProvider, Predicate<VariableManager> canCreatePredicate, List<TaskDescription> taskDescriptions, Consumer<VariableManager> createTaskProvider,
         Consumer<VariableManager> editTaskProvider, Consumer<VariableManager> deleteTaskProvider, Consumer<VariableManager> dropTaskProvider, Consumer<VariableManager> createTaskDependencyProvider,
         Consumer<VariableManager> deleteTaskDependencyProvider, Function<VariableManager, String> dateRoundingProvider,
-        Function<VariableManager, List<String>> iconURLsProvider) implements IRepresentationDescription {
+        Function<VariableManager, List<String>> iconURLsProvider, Function<VariableManager, List<String>> holidaysProvider,
+        Function<VariableManager, List<String>> weekendsProvider) implements IRepresentationDescription {
 
     public static final String LABEL = "label";
 
@@ -141,6 +142,10 @@ public record GanttDescription(String id, String label, Function<VariableManager
 
         private Function<VariableManager, List<String>> iconURLsProvider;
 
+        private Function<VariableManager, List<String>> holidaysProvider;
+
+        private Function<VariableManager, List<String>> weekendsProvider;
+
         private Builder(String id) {
             this.id = Objects.requireNonNull(id);
         }
@@ -215,10 +220,20 @@ public record GanttDescription(String id, String label, Function<VariableManager
             return this;
         }
 
+        public Builder holidaysProvider(Function<VariableManager, List<String>> holidaysProvider) {
+            this.holidaysProvider = Objects.requireNonNull(holidaysProvider);
+            return this;
+        }
+
+        public Builder weekendsProvider(Function<VariableManager, List<String>> weekendsProvider) {
+            this.weekendsProvider = Objects.requireNonNull(weekendsProvider);
+            return this;
+        }
+
         public GanttDescription build() {
             return new GanttDescription(this.id, this.label, this.idProvider, this.labelProvider, this.targetObjectIdProvider, this.canCreatePredicate,
                     this.taskDescriptions, this.createTaskProvider, this.editTaskProvider, this.deleteTaskProvider, this.dropTaskProvider, this.createTaskDependencyProvider,
-                    this.deleteTaskDependencyProvider, this.dateRoundingProvider, this.iconURLsProvider);
+                    this.deleteTaskDependencyProvider, this.dateRoundingProvider, this.iconURLsProvider, this.holidaysProvider, this.weekendsProvider);
         }
     }
 }
