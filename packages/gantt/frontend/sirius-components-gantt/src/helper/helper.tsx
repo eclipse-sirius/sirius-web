@@ -303,18 +303,71 @@ export const roundDate = (
   return newdate;
 };
 
+const simpleFormatDate = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
+
+let holidays: Set<string> = new Set();
+
+export const setHolidays = (value: Set<string>) => {
+  holidays = value;
+};
+
+const daysToNumber = (day: string): number => {
+  switch (day) {
+    case 'Monday':
+      return 1;
+    case 'Tuesday':
+      return 2;
+    case 'Wednesday':
+      return 3;
+    case 'Thursday':
+      return 4;
+    case 'Friday':
+      return 5;
+    case 'Saturday':
+      return 6;
+    case 'Sunday':
+      return 0;
+    default:
+      throw new Error(`Unknown day: ${day}`);
+  }
+};
+
+let weekends: Set<number> = new Set();
+
+export const setWeekends = (days: Set<string>) => {
+  for (const day of days) {
+    weekends.add(daysToNumber(day));
+  }
+};
+
 export const checkIsHoliday = (date: Date, _, __, dateExtremity: DateExtremity) => {
   let isHoliday = false;
 
-  const day = date.getDay();
-  const isMondayStart = date.getDay() == 1 && date.getHours() == 0 && date.getMinutes() == 0;
-  const isStaturdayStart = date.getDay() == 6 && date.getHours() == 0 && date.getMinutes() == 0;
+  const isNonWorkingDay = (currentDate: Date): boolean => {
+    return holidays.has(simpleFormatDate(currentDate)) || weekends.has(currentDate.getDay());
+  };
+
+  const isWorkingDay = !isNonWorkingDay(date);
+  const previousDate = new Date(date);
+  previousDate.setDate(previousDate.getDate() - 1);
+  const isPreviousWorkingDay = !isNonWorkingDay(previousDate);
+  const isDayStart = date.getHours() == 0 && date.getMinutes() == 0;
   if (dateExtremity == 'startOfTask') {
-    //Monday 00:00 is excluded from WE
-    isHoliday = day == 6 || (day == 0 && !isMondayStart);
+    isHoliday = !isWorkingDay;
   } else if (dateExtremity == 'endOfTask') {
-    //Saturday 00:00 is included from WE
-    isHoliday = (day == 6 && !isStaturdayStart) || day == 0 || isMondayStart;
+    const cond1 = !isWorkingDay && isPreviousWorkingDay && !isDayStart;
+
+    const cond2 = !isWorkingDay && !isPreviousWorkingDay;
+
+    const cond3 = isWorkingDay && !isPreviousWorkingDay && isDayStart;
+
+    isHoliday = cond1 || cond2 || cond3;
   }
 
   return isHoliday;
