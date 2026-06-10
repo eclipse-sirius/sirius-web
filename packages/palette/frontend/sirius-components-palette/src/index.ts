@@ -18,6 +18,11 @@ export type {
   PaletteToolContributionProps,
 } from './extensions/PaletteToolContribution.types';
 export { paletteToolExtensionPoint } from './extensions/PaletteToolExtensionPoints';
+export type {
+  PaletteToolOverriddenContributionComponentProps,
+  PaletteToolOverriddenContributionProps,
+} from './extensions/PaletteToolOverrideContribution.types';
+export { paletteToolOverrideExtensionPoint } from './extensions/PaletteToolOverrideExtensionPoints';
 export { PaletteExtensionSection } from './PaletteExtensionSection';
 export type {
   PaletteExtensionSectionComponentProps,

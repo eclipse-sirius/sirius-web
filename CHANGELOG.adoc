@@ -63,6 +63,7 @@ It also enables us to disable panel resize for a better control when needed.
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6552[#6552] [diagram] Add `paletteToolExtensionPoint` to contribute tools on a palette, you can contribute tools on a specific tool section.
+- https://github.com/eclipse-sirius/sirius-web/issues/6576[#6576] [diagram] Add `paletteToolOverrideExtensionPoint` to override tools retrieved from the backend.
 
 
 === Improvements

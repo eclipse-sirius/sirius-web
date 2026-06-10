@@ -19,6 +19,8 @@ import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
 import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
+import { PaletteToolOverriddenContributionProps } from '../extensions/PaletteToolOverrideContribution.types';
+import { paletteToolOverrideExtensionPoint } from '../extensions/PaletteToolOverrideExtensionPoints';
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
@@ -106,6 +108,9 @@ export const PaletteToolSection = ({
   };
 
   const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
+  const paletteToolOverriddenData: DataExtension<PaletteToolOverriddenContributionProps[]> = useData(
+    paletteToolOverrideExtensionPoint
+  );
 
   let currentEntries: GQLPaletteEntry[] =
     state.currentSectionId === undefined
@@ -117,15 +122,27 @@ export const PaletteToolSection = ({
   // Backend tools/tools section/dividers
   const listItemsRendered: JSX.Element[] = currentEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
-      return (
-        <ToolListItem
-          onToolClick={onToolClick}
-          tool={paletteEntry}
-          disabled={false}
-          key={'toolItem_' + paletteEntry.id}
-          data-testid={`paletteEntry-${paletteEntry.label}`}
-        />
+      const overriddenTool = paletteToolOverriddenData.data.find((contributedTool) =>
+        contributedTool.canHandle(paletteEntry)
       );
+      if (!overriddenTool) {
+        return (
+          <ToolListItem
+            onToolClick={onToolClick}
+            tool={paletteEntry}
+            disabled={false}
+            key={'toolItem_' + paletteEntry.id}
+            data-testid={`paletteEntry-${paletteEntry.label}`}
+          />
+        );
+      } else {
+        const OverriddenComponent = overriddenTool.component;
+        return (
+          <OverriddenComponent
+            representationElementIds={representationElementIds}
+            tool={paletteEntry}></OverriddenComponent>
+        );
+      }
     } else if (isToolSection(paletteEntry) && paletteEntry.tools.length > 0) {
       return (
         <ToolSectionEntry id={paletteEntry.id} label={paletteEntry.label} onNavigate={navigateTo}></ToolSectionEntry>
