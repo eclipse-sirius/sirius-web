@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
+import org.eclipse.sirius.components.view.builder.generated.diagram.NodeToolBuilder;
 import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.builder.providers.INodeDescriptionProvider;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
@@ -94,7 +95,8 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
         return new DiagramBuilders().newNodePalette()
                 .nodeTools(
                         new ImportDependenciesNodeToolProvider().create(cache),
-                        new ImportAllDependenciesNodeToolProvider().create(cache)
+                        new ImportAllDependenciesNodeToolProvider().create(cache),
+                        new NodeToolBuilder().name("Papaya_Details").build() // overridden frontend
                 )
                 .build();
     }

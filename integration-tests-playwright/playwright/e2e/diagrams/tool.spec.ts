@@ -56,6 +56,18 @@ test.describe('diagram - tool', () => {
     await expect(page.getByTestId('Palette')).toBeAttached();
     await expect(page.getByTestId('coordinates-tool')).toBeAttached();
   });
+
+  test('When a custom tool is overriding a backend tool from the palette, then it should be available in the palette', async ({
+    page,
+  }) => {
+    new PlaywrightExplorer(page).createRepresentation('Component', 'Component Diagram', 'diagram');
+    await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 100, y: 100 } });
+    await expect(page.getByTestId('Palette')).toBeAttached();
+    await page.getByTestId('Palette').getByTestId('tool-New component').click();
+    const playwrightNode = new PlaywrightNode(page, 'Component');
+    await playwrightNode.openPalette();
+    await expect(page.getByTestId('Palette').getByTestId('overridden_tool_detail')).toBeAttached();
+  });
 });
 
 test.describe('diagram - tool key bindings', () => {

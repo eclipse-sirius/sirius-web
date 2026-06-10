@@ -36,8 +36,10 @@ import {
 import {
   PaletteQuickToolComponentProps,
   PaletteToolContributionProps,
+  PaletteToolOverriddenContributionProps,
   paletteQuickToolExtensionPoint,
   paletteToolExtensionPoint,
+  paletteToolOverrideExtensionPoint,
 } from '@eclipse-sirius/sirius-components-palette';
 import {
   NavigationBarProps,
@@ -54,6 +56,7 @@ import { PapayaDiagramInformationPanel } from './diagrams/PapayaDiagramInformati
 import { PapayaComponentLabelDetailNodeActionContribution } from './nodeactions/PapayaComponentLabelDetailNodeActionContribution';
 import { PapayaComponentDiagramQuickToolContribution } from './tools/PapayaComponentDiagramQuickToolContribution';
 import { PapayaComponentDiagramToolContribution } from './tools/PapayaComponentDiagramToolContribution';
+import { PapayaComponentDiagramToolOverriddenContribution } from './tools/PapayaComponentDiagramToolOverriddenContribution';
 import { PapayaComponentLabelDetailQuickToolContribution } from './tools/PapayaComponentLabelDetailQuickToolContribution';
 import { PapayaView } from './workbenchviews/PapayaView';
 
@@ -128,6 +131,17 @@ const diagramPaletteToolContributions: PaletteToolContributionProps[] = [
 papayaExtensionRegistry.putData<PaletteToolContributionProps[]>(paletteToolExtensionPoint, {
   identifier: `papaya_${paletteToolExtensionPoint.identifier}`,
   data: diagramPaletteToolContributions,
+});
+
+const diagramPaletteToolOverriddenContributions: PaletteToolOverriddenContributionProps[] = [
+  {
+    component: PapayaComponentDiagramToolOverriddenContribution,
+    canHandle: (tool) => tool.label === 'Papaya_Details',
+  },
+];
+papayaExtensionRegistry.putData<PaletteToolOverriddenContributionProps[]>(paletteToolOverrideExtensionPoint, {
+  identifier: `papaya_${paletteToolOverrideExtensionPoint.identifier}`,
+  data: diagramPaletteToolOverriddenContributions,
 });
 
 /*******************************************************************************
