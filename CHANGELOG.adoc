@@ -34,6 +34,8 @@ Downstream projects are advised to just rely on MUI's `CssBaseline` and perform 
 - [releng] Remove usage of the development dependency `rollup-plugin-peer-deps-external` in favor of native Vite based solution
 - [releng] Update the version of `turbo` used for the frontend from 2.4.4 to 2.10.5.
 - [releng] Update `vite` from 8.0.14 to 8.1.5.
+- [releng] Switch to https://github.com/spring-projects/spring-boot/releases/tag/v4.1.0[Spring Boot 4.1.0]
+
 
 === Bug fixes
 
