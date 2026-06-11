@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 
 /**
  * Common interface for services providing extra tools to the palette.
@@ -25,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
  */
 public interface IPaletteToolsProvider {
 
-    List<ToolSection> createExtraToolSections(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement);
+    List<ToolSection> createExtraToolSections(IEditingContext editingContext, DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement);
 
-    List<ITool> createQuickAccessTools(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement);
+    List<ITool> createQuickAccessTools(IEditingContext editingContext, DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement);
 }
