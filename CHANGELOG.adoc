@@ -61,7 +61,7 @@ It also enables us to disable panel resize for a better control when needed.
 - https://github.com/eclipse-sirius/sirius-web/issues/5301[#5301] [core] Fix browser history on workbenches
 - https://github.com/eclipse-sirius/sirius-web/issues/6557[#6557] [sirius-web] The workbench now respects the order of the left and right views provided in the `WorkbenchConfiguration`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6528[#6528] [diagram] Restore reset label position and size functionality for edge-on-edge labels
-
+- [releng] Update the versions of Express, Puppeteer and Chrome to more recent compatible ones in the `diagram-image-server` application.
 
 === New Features
 
