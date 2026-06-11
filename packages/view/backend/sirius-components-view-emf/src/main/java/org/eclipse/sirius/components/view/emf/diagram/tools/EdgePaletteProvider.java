@@ -81,11 +81,11 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
             var optionalEdgeDescription = this.viewDiagramDescriptionSearchService.findViewEdgeDescriptionById(editingContext, edgeDescription.getId());
             if (optionalEdgeDescription.isPresent()) {
                 List<ToolSection> extraToolSections = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(diagramContext, edgeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(editingContext, diagramContext, edgeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(extraToolSections::add);
 
                 List<ITool> quickAccessTools = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(diagramContext, edgeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(editingContext, diagramContext, edgeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(quickAccessTools::add);
                 org.eclipse.sirius.components.view.diagram.EdgeDescription viewEdgeDescription = optionalEdgeDescription.get();
 

@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageCons
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -57,7 +58,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
     }
 
     @Override
-    public List<ToolSection> createExtraToolSections(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement) {
+    public List<ToolSection> createExtraToolSections(IEditingContext editingContext, DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement) {
         List<ToolSection> extraToolSections = new ArrayList<>();
 
         if (diagramElementDescription instanceof NodeDescription || diagramElementDescription instanceof EdgeDescription) {
@@ -73,7 +74,7 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
     }
 
     @Override
-    public List<ITool> createQuickAccessTools(DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement) {
+    public List<ITool> createQuickAccessTools(IEditingContext editingContext, DiagramContext diagramContext, Object diagramElementDescription, Object diagramElement) {
         List<ITool> extraTools = new ArrayList<>();
         List<IDiagramElementDescription> targetDescriptions = new ArrayList<>();
         if (diagramElementDescription instanceof NodeDescription nodeDescription) {

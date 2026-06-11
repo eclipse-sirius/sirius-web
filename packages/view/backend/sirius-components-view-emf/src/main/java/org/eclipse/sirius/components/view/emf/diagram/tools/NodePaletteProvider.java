@@ -80,11 +80,11 @@ public class NodePaletteProvider implements INodePaletteProvider {
 
             if (optionalNodeDescription.isPresent()) {
                 List<ToolSection> extraToolSections = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(diagramContext, nodeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(editingContext, diagramContext, nodeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(extraToolSections::add);
 
                 List<ITool> quickAccessTools = new ArrayList<>();
-                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(diagramContext, nodeDescription, diagramElement)).flatMap(List::stream)
+                this.paletteToolsProviders.stream().map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(editingContext, diagramContext, nodeDescription, diagramElement)).flatMap(List::stream)
                         .forEach(quickAccessTools::add);
 
                 org.eclipse.sirius.components.view.diagram.NodeDescription viewNodeDescription = optionalNodeDescription.get();
