@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-import { PaletteQuickToolComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { PaletteQuickToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette/dist/extensions/PaletteQuickToolContribution.types';
 import Slideshow from '@mui/icons-material/Slideshow';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -42,7 +42,7 @@ type Modal = 'dialog';
 
 export const PapayaComponentDiagramToolOverriddenContribution = ({
   representationElementIds,
-}: PaletteQuickToolComponentProps) => {
+}: PaletteQuickToolContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { classes } = useStyle();

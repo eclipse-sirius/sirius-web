@@ -36,6 +36,7 @@ export interface PaletteProps {
   x: number;
   y: number;
   palette: GQLPalette;
+  representationDescriptionId: string;
   representationElementIds: string[];
   onToolClick: (tool: GQLTool) => void;
   onClose: () => void;

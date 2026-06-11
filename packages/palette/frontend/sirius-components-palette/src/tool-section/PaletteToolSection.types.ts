@@ -19,6 +19,7 @@ export interface PaletteToolSectionProps {
   palette: GQLPalette;
   onBackToMainList: () => void;
   onClose: () => void;
+  representationDescriptionId: string;
   representationElementIds: string[];
   lastToolInvoked: GQLTool | null;
   extensionSections: React.ReactElement<PaletteExtensionSectionProps>[];

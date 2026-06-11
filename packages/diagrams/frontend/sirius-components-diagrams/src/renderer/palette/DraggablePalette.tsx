@@ -23,6 +23,7 @@ export const DraggablePalette = ({
   y: paletteY,
   representationElementIds,
   palette,
+  representationDescriptionId,
   onToolClick,
   onClose,
   paletteToolListExtensions,
@@ -89,6 +90,7 @@ export const DraggablePalette = ({
         ref={nodeRef}
         x={paletteX}
         y={paletteY}
+        representationDescriptionId={representationDescriptionId}
         representationElementIds={representationElementIds}
         palette={palette}
         onToolClick={handleToolClick}

@@ -12,7 +12,10 @@
  *******************************************************************************/
 
 export { PaletteContext, PaletteContextProvider } from './contexts/PaletteContext';
-export type { PaletteQuickToolComponentProps } from './extensions/PaletteQuickToolContribution.types';
+export type {
+  PaletteQuickToolContributionComponentProps,
+  PaletteQuickToolContributionProps,
+} from './extensions/PaletteQuickToolContribution.types';
 export { paletteQuickToolExtensionPoint } from './extensions/PaletteQuickToolExtensionPoints';
 export type {
   PaletteToolContributionComponentProps,

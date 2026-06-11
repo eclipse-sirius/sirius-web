@@ -79,11 +79,12 @@ const findToolsInToolSection = (section: GQLToolSection, currentSectionId: strin
  */
 export const PaletteToolSection = ({
   palette,
+  representationDescriptionId,
+  representationElementIds,
+  lastToolInvoked,
   onToolClick,
   onBackToMainList,
-  representationElementIds,
   onClose,
-  lastToolInvoked,
   extensionSections,
 }: PaletteToolSectionProps) => {
   const [state, setState] = useState<PaletteToolSectionStateValue>(defaultStateValue);
@@ -123,7 +124,7 @@ export const PaletteToolSection = ({
   const listItemsRendered: JSX.Element[] = currentEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
     if (isSingleClickOnDiagramElementTool(paletteEntry)) {
       const overriddenTool = paletteToolOverriddenData.data.find((contributedTool) =>
-        contributedTool.canHandle(paletteEntry)
+        contributedTool.canHandle(representationDescriptionId, paletteEntry)
       );
       if (!overriddenTool) {
         return (
@@ -155,6 +156,7 @@ export const PaletteToolSection = ({
 
   // Tools contributions
   paletteToolData.data
+    .filter((contributedTool) => contributedTool.canHandle(representationDescriptionId))
     .filter((contributedTool) => contributedTool.sectionId === state.currentSectionId)
     .forEach((contributedTool) => {
       const ContributedComponent = contributedTool.component;

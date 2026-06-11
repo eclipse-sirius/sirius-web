@@ -22,6 +22,7 @@ import { memo, useCallback, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useDiagramDirectEdit } from '../direct-edit/useDiagramDirectEdit';
 import { DiagramToolExecutorContext } from '../tools/DiagramToolExecutorContext';
@@ -37,6 +38,7 @@ import { UsePaletteContentValue } from './usePaletteContents.types';
 
 export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
+  const { diagramDescription } = useDiagramDescription();
   const { isOpened, x: paletteX, y: paletteY, representationElementIds, hidePalette } = usePalette();
   const { executeTool } = useContext<DiagramToolExecutorContextValue>(DiagramToolExecutorContext);
   const { setCurrentlyEditedLabelId, currentlyEditedLabelId } = useDiagramDirectEdit();
@@ -157,6 +159,7 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
           onToolClick={onToolClick}
           onClose={hidePalette}
           paletteToolListExtensions={extensionSections}
+          representationDescriptionId={diagramDescription.id}
         />
       </div>
     </PalettePortal>

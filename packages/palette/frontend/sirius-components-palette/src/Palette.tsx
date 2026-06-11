@@ -57,6 +57,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
       onToolClick,
       palette,
       paletteToolListExtensions,
+      representationDescriptionId,
       x: paletteX,
       y: paletteY,
       ...remainingProps
@@ -137,6 +138,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
             </Box>
             <Divider />
             <PaletteQuickAccessToolBar
+              representationDescriptionId={representationDescriptionId}
               representationElementIds={representationElementIds}
               onToolClick={handleToolClick}
               quickAccessTools={palette.quickAccessTools}
@@ -157,6 +159,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
                 lastToolInvoked={lastToolInvoked}
                 representationElementIds={representationElementIds}
                 extensionSections={paletteToolListExtensions}
+                representationDescriptionId={representationDescriptionId}
               />
             )}
           </Box>
