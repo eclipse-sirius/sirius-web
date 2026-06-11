@@ -11,8 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLKeyBinding } from '@eclipse-sirius/sirius-components-core';
-import { PaletteExtensionSectionProps } from './PaletteExtensionSection.types';
+import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;
@@ -36,11 +35,15 @@ export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 export interface PaletteProps {
   x: number;
   y: number;
-  diagramElementId: string;
-  targetObjectId: string;
-  onDirectEditClick: () => void;
+  palette: GQLPalette;
+  representationElementIds: string[];
+  onToolClick: (tool: GQLTool) => void;
   onClose: () => void;
-  children: React.ReactElement<PaletteExtensionSectionProps>[];
+  paletteToolListExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
+}
+
+export interface PaletteState {
+  searchToolValue: string;
 }
 
 export interface PaletteStyleProps {
@@ -61,7 +64,18 @@ export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   keyBindings: GQLKeyBinding[];
 }
 
+export interface GQLKeyBinding {
+  isCtrl: boolean;
+  isMeta: boolean;
+  isAlt: boolean;
+  key: string;
+}
+
 export interface GQLPalette {
+  /**
+   * @deprecated The `id` field is deprecated and should not be used. It will be removed in a future release.
+   * See https://github.com/eclipse-sirius/sirius-web/issues/6470 for more details.
+   */
   id: string;
   quickAccessTools: GQLTool[];
   paletteEntries: GQLPaletteEntry[];

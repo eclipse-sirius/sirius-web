@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { useDeletionConfirmationDialog } from '@eclipse-sirius/sirius-components-core';
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import { useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
@@ -21,7 +22,6 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useEditableEdgePath } from '../edge/useEditableEdgePath';
 import { useHandlesLayout } from '../handles/useHandlesLayout';
 import { useLabelResetPosition } from '../move/useLabelResetPosition';
-import { GQLTool } from '../palette/Palette.types';
 import { useLabelResetSize } from '../resize/useLabelResetSize';
 import { useDelete } from './useDelete';
 import { UseInvokePaletteToolValue } from './useInvokePaletteTool.types';
