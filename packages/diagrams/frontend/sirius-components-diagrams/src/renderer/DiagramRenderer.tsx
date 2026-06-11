@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { useData, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import {
   Background,
   BackgroundVariant,
@@ -78,7 +79,6 @@ import { MiniMapContextValue } from './mini-map/MiniMapContext.types';
 import { useMoveChange } from './move/useMoveChange';
 import { useNodeType } from './node/useNodeType';
 import { DiagramPalette } from './palette/DiagramPalette';
-import { useDiagramPalette } from './palette/useDiagramPalette';
 import { useReconnectEdge } from './reconnect-edge/useReconnectEdge';
 import { useMultiSelectResizeChange } from './resize/useMultiSelectResizeChange';
 import { useResizeChange } from './resize/useResizeChange';
@@ -440,7 +440,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
 
   const { nodesDraggable } = useNodesDraggable();
 
-  const { isOpened } = useDiagramPalette();
+  const { isOpened } = usePalette();
 
   const { onEdgeContextMenu, onNodeContextMenu, onPaneContextMenu, onSelectionContextMenu } =
     useOnRightClickElement(selectedElementsIds);

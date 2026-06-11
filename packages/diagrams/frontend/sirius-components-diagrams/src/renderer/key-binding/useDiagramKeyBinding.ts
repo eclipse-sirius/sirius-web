@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MousePosition, useMousePosition, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { isSingleClickOnDiagramElementTool, isToolSection } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useReactFlow, useStoreApi, useViewport, Viewport, XYPosition } from '@xyflow/react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { isSingleClickOnDiagramElementTool, isToolSection } from '../palette/Palette';
 import { GQLPalette, GQLSingleClickOnDiagramElementTool } from '../palette/Palette.types';
 import { usePaletteContents } from '../palette/usePaletteContents';
 import { useSingleClickTool } from '../tools/useSingleClickTool';

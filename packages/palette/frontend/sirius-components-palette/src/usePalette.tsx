@@ -12,29 +12,21 @@
  *******************************************************************************/
 
 import { useContext } from 'react';
-import { DiagramPaletteContext } from './contexts/DiagramPaletteContext';
-import { DiagramPaletteContextValue } from './contexts/DiagramPaletteContext.types';
-import { UseDiagramPaletteValue } from './useDiagramPalette.types';
+import { PaletteContext } from './contexts/PaletteContext';
+import { PaletteContextValue } from './contexts/PaletteContext.types';
+import { UsePaletteValue } from './usePalette.types';
 
-export const useDiagramPalette = (): UseDiagramPaletteValue => {
-  const {
-    x,
-    y,
-    isOpened,
-    diagramElementIds,
-    hideDiagramPalette,
-    showDiagramPalette,
-    getLastToolInvoked,
-    setLastToolInvoked,
-  } = useContext<DiagramPaletteContextValue>(DiagramPaletteContext);
+export const usePalette = (): UsePaletteValue => {
+  const { x, y, isOpened, representationElementIds, hidePalette, showPalette, getLastToolInvoked, setLastToolInvoked } =
+    useContext<PaletteContextValue>(PaletteContext);
 
   return {
     x,
     y,
     isOpened,
-    diagramElementIds,
-    hideDiagramPalette,
-    showDiagramPalette,
+    representationElementIds,
+    hidePalette,
+    showPalette,
     getLastToolInvoked,
     setLastToolInvoked,
   };

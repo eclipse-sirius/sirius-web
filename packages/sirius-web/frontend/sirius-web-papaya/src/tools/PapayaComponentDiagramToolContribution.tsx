@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { useDiagramPalette } from '@eclipse-sirius/sirius-components-diagrams';
+import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import { useCurrentProject } from '@eclipse-sirius/sirius-web-application';
 import RadarIcon from '@mui/icons-material/Radar';
 import Dialog from '@mui/material/Dialog';
@@ -41,7 +41,7 @@ export const PapayaComponentDiagramToolContribution = () => {
   const { project } = useCurrentProject();
   const [modal, setModal] = useState<Modal | null>(null);
   const { classes } = useStyle();
-  const { x, y } = useDiagramPalette();
+  const { x, y } = usePalette();
 
   const onClose = () => {
     setModal(null);

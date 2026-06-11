@@ -11,18 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Palette } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useStoreApi } from '@xyflow/react';
 import React, { useEffect, useState } from 'react';
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition';
 import { DraggablePaletteState } from './DraggablePalette.types';
-import { Palette } from './Palette';
 import { GQLTool, PaletteProps } from './Palette.types';
 export const DraggablePalette = ({
   x: paletteX,
   y: paletteY,
-  diagramElementIds,
+  representationElementIds,
   palette,
   onToolClick,
   onClose,
@@ -90,7 +90,7 @@ export const DraggablePalette = ({
         ref={nodeRef}
         x={paletteX}
         y={paletteY}
-        diagramElementIds={diagramElementIds}
+        representationElementIds={representationElementIds}
         palette={palette}
         onToolClick={handleToolClick}
         onClose={onClose}
