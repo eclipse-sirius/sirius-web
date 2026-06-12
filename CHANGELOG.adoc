@@ -26,6 +26,7 @@
 It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Each view displayed in the left or right side panel is now responsible from its own title bar.
 - https://github.com/eclipse-sirius/sirius-web/issues/6587[#6587] [diagram] Added `IEditingContext` parameter to `IPaletteToolsProvider` methods
+- https://github.com/eclipse-sirius/sirius-web/issues/6595[#6595] [diagram] `appliesToDiagramRoot` field was removed from `isSingleClickOnTwoDiagramElementsTool`.
 
 
 === Dependency update

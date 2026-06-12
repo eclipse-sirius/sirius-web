@@ -91,13 +91,13 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
 
                 toolFinder.findQuickAccessNodeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                         .forEach(quickAccessTools::add);
 
                 List<IPaletteEntry> paletteEntries = new ArrayList<>();
                 toolFinder.findNodeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                         .forEach(paletteEntries::add);
                 toolFinder.findEdgeTools(viewEdgeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
@@ -143,7 +143,7 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
                 .iconURL(List.of())
                 .tools(toolSection.getNodeTools().stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                         .toList())
                 .build();
     }

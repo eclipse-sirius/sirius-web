@@ -68,7 +68,6 @@ public class PaletteQueryRunner implements IQueryRunner {
                 targetDescriptions {
                   id
                 }
-                appliesToDiagramRoot
                 dialogDescriptionId
                 keyBindings {
                     isCtrl

@@ -166,12 +166,12 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
         if (viewDiagramDescription.getGroupPalette() != null) {
             viewDiagramDescription.getGroupPalette().getNodeTools().stream()
                     .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
-                    .map(nodeTool -> this.nodeToolConverter.createNodeTool(interpreter, nodeTool, false, variableManager))
+                    .map(nodeTool -> this.nodeToolConverter.createNodeTool(interpreter, nodeTool, variableManager))
                     .forEach(paletteEntries::add);
 
             viewDiagramDescription.getGroupPalette().getQuickAccessTools().stream()
                     .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
-                    .map(nodeTool -> this.nodeToolConverter.createNodeTool(interpreter, nodeTool, false, variableManager))
+                    .map(nodeTool -> this.nodeToolConverter.createNodeTool(interpreter, nodeTool, variableManager))
                     .forEach(quickAccessTools::add);
 
             viewDiagramDescription.getGroupPalette().getToolSections().stream()
@@ -197,7 +197,7 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
 
         var tools = new ArrayList<ITool>(toolSection.getNodeTools().stream()
                 .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
+                .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                 .toList());
 
         return org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection.newToolSection(toolSelectionId)
