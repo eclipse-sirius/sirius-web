@@ -17,6 +17,7 @@ export interface UseTemporaryLinesValue {
   onDragStart: () => void;
   onTemporaryLineDragStop: (eventData: DraggableData, index: number) => void;
   onTemporaryLineDrag: (eventData: DraggableData, index: number, direction: 'x' | 'y') => void;
+  isSegmentDragged: boolean;
 }
 
 export interface TemporaryLinesState {

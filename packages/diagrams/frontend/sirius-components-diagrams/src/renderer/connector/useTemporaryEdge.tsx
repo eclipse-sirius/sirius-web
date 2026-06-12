@@ -46,9 +46,9 @@ export const useTemporaryEdge = (): UseTemporaryEdgeValue => {
 
       const edge: Edge<EdgeData> = {
         id: 'temp',
-        source: sourceNode.id,
+        source: `handleNode_${sourceDiagramElementId}_${sourcePosition}`,
         target: targetNode.id,
-        sourceHandle: `creationhandle--${sourceNode.id}--${sourcePosition}`,
+        sourceHandle: `creationhandle--${sourceDiagramElementId}--${sourcePosition}`,
         targetHandle: `handle--${targetNode.id}--temp--${targetPosition}`,
         type: 'smoothstep',
         animated: true,

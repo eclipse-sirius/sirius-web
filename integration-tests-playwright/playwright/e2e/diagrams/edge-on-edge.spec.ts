@@ -51,13 +51,13 @@ test.describe('edge on edge', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test.skip('when we create several type of edges, they are all rendered correctly', async ({ page }) => {
+  test('when we create several type of edges, they are all rendered correctly', async ({ page }) => {
     const edges = page.locator('[data-testid^="rf__edge-"]');
     await expect(edges).toHaveCount(0);
     //Create node to node
     const playwrightNode1a = new PlaywrightNode(page, 'Entity1a');
     await playwrightNode1a.click();
-    await page.getByTestId('creationhandle-right').hover();
+    await page.getByTestId('creationhandle--right').hover();
     await page.mouse.down();
     const playwrightNode2a = new PlaywrightNode(page, 'Entity2a');
     await playwrightNode2a.nodeLocator.hover({ position: { x: 10, y: 10 } });
@@ -66,9 +66,7 @@ test.describe('edge on edge', () => {
     await page.getByTestId('connectorContextualMenu-E1toE2A').click();
     await expect(edges).toHaveCount(1);
     //Create edge to node
-    const edgeAnchorNode = page.locator('[data-testid^="rf__node-edgeAnchorNodeCreationHandles"]');
-    await expect(edgeAnchorNode).toHaveCount(1);
-    await page.getByTestId('creationhandle-bottom').hover();
+    await page.getByTestId('creationhandle--bottom').hover();
     await page.mouse.down();
     const playwrightNode2b = new PlaywrightNode(page, 'Entity2b');
     await playwrightNode2b.nodeLocator.hover({ position: { x: 10, y: 10 } });
@@ -77,7 +75,7 @@ test.describe('edge on edge', () => {
     await expect(edges).toHaveCount(2);
     //Create node to edge
     await playwrightNode2b.click();
-    await page.getByTestId('creationhandle-bottom').hover();
+    await page.getByTestId('creationhandle--bottom').hover();
     await page.mouse.down();
     const playwrightEdge = new PlaywrightEdge(page);
     await playwrightEdge.edgeLocator
@@ -87,6 +85,34 @@ test.describe('edge on edge', () => {
     await page.mouse.up();
     await page.getByTestId('connectorContextualMenu-E2ToEdge1A').click();
     await expect(edges).toHaveCount(3);
+  });
+
+  test('when we create several type of edges from an handle that is in front on an edge, they are all rendered correctly', async ({
+    page,
+  }) => {
+    const edges = page.locator('[data-testid^="rf__edge-"]');
+    await expect(edges).toHaveCount(0);
+    //Create node to node 1
+    const playwrightNode1a = new PlaywrightNode(page, 'Entity1a');
+    await playwrightNode1a.click();
+    await page.getByTestId('creationhandle--right').hover();
+    await page.mouse.down();
+    const playwrightNode2a = new PlaywrightNode(page, 'Entity2a');
+    await playwrightNode2a.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await playwrightNode2a.nodeLocator.hover({ position: { x: 50, y: 50 } });
+    await page.mouse.up();
+    await page.getByTestId('connectorContextualMenu-E1toE2A').click();
+    await expect(edges).toHaveCount(1);
+
+    //Create node to node 2
+    await playwrightNode1a.click();
+    await page.getByTestId('creationhandle--right').hover();
+    await page.mouse.down();
+    await playwrightNode2a.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await playwrightNode2a.nodeLocator.hover({ position: { x: 50, y: 50 } });
+    await page.mouse.up();
+    await page.getByTestId('connectorContextualMenu-E1toE2B').click();
+    await expect(edges).toHaveCount(2);
   });
 });
 

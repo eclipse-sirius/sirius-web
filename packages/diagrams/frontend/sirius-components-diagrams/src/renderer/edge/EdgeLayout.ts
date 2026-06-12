@@ -30,6 +30,7 @@ import {
   GetHandlePositionWithOffSet,
   GetNodeCenter,
   GetUpdatedConnectionHandlesParameters,
+  SegmentDirection,
 } from './EdgeLayout.types';
 
 export const DEFAULT_HANDLE_SIZE = 6;
@@ -151,6 +152,38 @@ export const getHandlePositionFromNodeAndPath = (
   }
 
   return Position.Bottom;
+};
+
+export const getMiddleOfEdgePath = (edgePath: string): XYPosition => {
+  var svgPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+  svgPath.setAttribute('d', edgePath);
+  const pathLength = svgPath.getTotalLength();
+  const points = svgPath.getPointAtLength(pathLength * 0.5);
+
+  return { x: points.x, y: points.y };
+};
+
+export const getSegmentDirection = (edgePath: string, xyPosition: XYPosition): SegmentDirection => {
+  const pathPoints = parse(edgePath);
+  let segmentDirection: SegmentDirection = 'y';
+  const { x, y } = xyPosition;
+  for (let i = 1; i < pathPoints.length; i++) {
+    const p1 = pathPoints[i - 1];
+    const p2 = pathPoints[i];
+    if (p1 && p2) {
+      const isVertical: boolean = p1.y === p2.y;
+      const isHorizontal: boolean = p1.x === p2.x;
+      const isOnVerticalSegment = isHorizontal && Math.round(x) === Math.round(p1.x);
+      const isOnHorizontalSegment = isVertical && Math.round(y) === Math.round(p1.y);
+
+      if (isOnVerticalSegment || isOnHorizontalSegment) {
+        return isHorizontal ? 'y' : 'x';
+      } else {
+      }
+    }
+  }
+
+  return segmentDirection;
 };
 
 export const getNearestPointInPath = (
