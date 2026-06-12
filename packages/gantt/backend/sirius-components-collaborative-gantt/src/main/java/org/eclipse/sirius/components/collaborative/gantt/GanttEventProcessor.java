@@ -128,7 +128,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
             this.ganttContext.update(refreshedGanttRepresentation);
 
             if (refreshedGanttRepresentation != null) {
-                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedGanttRepresentation);
+                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, refreshedGanttRepresentation);
                 this.logger.atTrace()
                         .setMessage("Gantt refreshed: {}")
                         .addArgument(ganttId)

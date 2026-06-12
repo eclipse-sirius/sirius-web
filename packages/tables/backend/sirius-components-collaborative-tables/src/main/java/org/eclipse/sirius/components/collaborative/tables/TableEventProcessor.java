@@ -153,7 +153,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
             this.tableContext.reset();
             this.tableContext.update(table);
             if (table != null) {
-                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.tableCreationParameters.getEditingContext(), table);
+                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.tableCreationParameters.getEditingContext(), table);
                 this.logger.atTrace()
                         .setMessage("Table refreshed: {}")
                         .addArgument(table.getId())

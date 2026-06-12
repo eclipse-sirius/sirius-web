@@ -84,7 +84,7 @@ public class HierarchyRefresher implements IRepresentationRefresher {
                     var object = optionalObject.get();
 
                     var refreshedHierarchy = this.hierarchyCreationService.create(editingContext, hierarchyDescription, object, new HierarchyContext(existingHierarchy));
-                    this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), editingContext, refreshedHierarchy);
+                    this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), editingContext, refreshedHierarchy);
                     hierarchyEventProcessor.update(changeDescription.getInput(), refreshedHierarchy);
                 }
             } else if (this.isReloadRefresh(changeDescription, existingHierarchy)) {

@@ -172,7 +172,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         if (this.shouldRefresh(changeDescription)) {
             this.diagramEventConsumers.forEach(consumer -> consumer.accept(this.editingContext, this.diagramContext.diagram(), this.diagramContext.diagramEvents(), this.diagramContext.viewDeletionRequests(), this.diagramContext.viewCreationRequests(), changeDescription));
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-            this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedDiagram);
+            this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, refreshedDiagram);
 
             if (refreshedDiagram != null) {
                 this.logger.atTrace()

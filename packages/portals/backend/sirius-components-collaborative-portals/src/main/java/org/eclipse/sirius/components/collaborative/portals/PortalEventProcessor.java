@@ -105,10 +105,10 @@ public class PortalEventProcessor implements IPortalEventProcessor {
         }
     }
 
-    private void updatePortal(IInput input, Portal newPortal) {
+    private void updatePortal(ChangeDescription changeDescription, Portal newPortal) {
         this.currentPortal = newPortal;
-        this.representationPersistenceStrategy.applyPersistenceStrategy(input, this.editingContext, this.currentPortal);
-        this.emitNewPortal(input);
+        this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, this.currentPortal);
+        this.emitNewPortal(changeDescription.getInput());
     }
 
     @Override
@@ -121,7 +121,7 @@ public class PortalEventProcessor implements IPortalEventProcessor {
                     .orElse("");
             if (portalServices.referencesRepresentation(this.currentPortal, deletedRepresentationId)) {
                 var newPortal = portalServices.removeRepresentation(this.currentPortal, deletedRepresentationId);
-                this.updatePortal(changeDescription.getInput(), newPortal);
+                this.updatePortal(changeDescription, newPortal);
             }
         } else if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_RENAMING)) {
             // Re-send the portal to all subscribers if one of the embedded representations has been renamed.
@@ -136,10 +136,10 @@ public class PortalEventProcessor implements IPortalEventProcessor {
         } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.currentPortal.getId())) {
             Optional<Portal> reloadedPortal = this.representationSearchService.findById(this.editingContext, this.currentPortal.getId(), Portal.class);
             if (reloadedPortal.isPresent()) {
-                this.updatePortal(changeDescription.getInput(), reloadedPortal.get());
+                this.updatePortal(changeDescription, reloadedPortal.get());
             }
         } else if (changeDescription.getSourceId().equals(this.currentPortal.getId()) && changeDescription.getParameters().get(IPortalEventHandler.NEXT_PORTAL_PARAMETER) instanceof Portal nextPortal) {
-            this.updatePortal(changeDescription.getInput(), nextPortal);
+            this.updatePortal(changeDescription, nextPortal);
         }
     }
 
