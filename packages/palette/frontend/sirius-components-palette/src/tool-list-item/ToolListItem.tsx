@@ -17,7 +17,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
-import { isSingleClickOnDiagramElementTool } from '../Palette';
+import { isTool } from '../Palette';
 import { GQLTool } from '../Palette.types';
 import { ToolListItemProps } from './ToolListItem.types';
 
@@ -70,7 +70,7 @@ export const ToolListItem = ({ tool, disabled, onToolClick }: ToolListItemProps)
           <IconOverlay iconURLs={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
         </ListItemIcon>
         <ListItemText primary={tool.label} className={classes.listItemText} />
-        {isSingleClickOnDiagramElementTool(tool) && tool.keyBindings[0] ? (
+        {isTool(tool) && tool.keyBindings[0] ? (
           <KeyBinding keyBinding={tool.keyBindings[0]} data-testid={`key-binding-${tool.label}`} />
         ) : null}
       </ListItemButton>

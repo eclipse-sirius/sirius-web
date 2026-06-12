@@ -15,6 +15,7 @@ import { gql, useQuery } from '@apollo/client';
 import { useContext, useEffect } from 'react';
 
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
@@ -22,7 +23,6 @@ import {
   GetConnectorToolsVariables,
   GQLDiagramDescription,
   GQLRepresentationDescription,
-  GQLTool,
   UseConnectorPaletteContentValue,
 } from './useConnectorPaletteContents.types';
 

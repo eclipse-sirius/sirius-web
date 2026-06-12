@@ -71,6 +71,7 @@ public class EdgeToolConverter implements IEdgeToolConverter {
                 .label(viewEdgeTool.getName())
                 .iconURL(iconURLs)
                 .candidates(candidates)
+                .keyBindings(List.of())
                 .dialogDescriptionId(dialogDescriptionId)
                 .build();
     }

@@ -31,13 +31,6 @@ export interface GetConnectorToolsVariables {
   targetDiagramElementId: string;
 }
 
-export interface GQLTool {
-  id: string;
-  label: string;
-  iconURL: string[];
-  __typename: string;
-}
-
 export interface GQLToolVariable {
   name: string;
   value: string;

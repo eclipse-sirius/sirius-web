@@ -12,9 +12,15 @@
  *******************************************************************************/
 
 import {
+  GQLPaletteDivider,
+  GQLPaletteEntry,
+  GQLTool,
+  GQLToolSection,
+  PaletteProps,
   PaletteQuickAccessToolBar,
   PaletteSearchField,
   PaletteSearchResult,
+  PaletteState,
   PaletteToolSection,
 } from '@eclipse-sirius/sirius-components-palette';
 import CloseIcon from '@mui/icons-material/Close';
@@ -32,15 +38,7 @@ import Draggable, { DraggableData } from 'react-draggable';
 import { useTranslation } from 'react-i18next';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition';
-import {
-  GQLPaletteDivider,
-  GQLPaletteEntry,
-  GQLSingleClickOnDiagramElementTool,
-  GQLTool,
-  GQLToolSection,
-  PaletteProps,
-  PaletteState,
-} from './Palette.types';
+import { GQLSingleClickOnDiagramElementTool } from './Palette.types';
 import { useDiagramPalette } from './useDiagramPalette';
 
 export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>

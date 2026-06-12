@@ -177,6 +177,7 @@ public class GetConnectorToolsEventHandlerTests {
                         .candidates(List.of(candidates))
                         .label(CONNECTOR_TOOL_LABEL)
                         .iconURL(List.of())
+                        .keyBindings(List.of())
                         .build();
                 return List.of(connectorTool);
             }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
 import java.util.List;
 
+import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
+
 /**
  * Interface implemented by all tools.
  *
@@ -21,7 +23,15 @@ import java.util.List;
  */
 public interface ITool extends IPaletteEntry {
 
+    String id();
+
     String label();
 
     List<String> iconURL();
+
+    String dialogDescriptionId();
+
+    boolean withImpactAnalysis();
+
+    List<KeyBinding> keyBindings();
 }

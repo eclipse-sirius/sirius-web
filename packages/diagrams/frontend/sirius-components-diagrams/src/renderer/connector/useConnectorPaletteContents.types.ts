@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
+
 export interface GetConnectorToolsVariables {
   editingContextId: string;
   representationId: string;
@@ -45,11 +47,4 @@ export interface GQLRepresentationDescription {
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
   connectorTools: GQLTool[];
-}
-
-export interface GQLTool {
-  id: string;
-  label: string;
-  iconURL: string[];
-  __typename: string;
 }

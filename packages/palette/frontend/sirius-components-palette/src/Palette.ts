@@ -11,16 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  GQLPaletteDivider,
-  GQLPaletteEntry,
-  GQLSingleClickOnDiagramElementTool,
-  GQLTool,
-  GQLToolSection,
-} from './Palette.types';
-
-export const isSingleClickOnDiagramElementTool = (tool: GQLPaletteEntry): tool is GQLSingleClickOnDiagramElementTool =>
-  tool.__typename === 'SingleClickOnDiagramElementTool';
+import { GQLPaletteDivider, GQLPaletteEntry, GQLTool, GQLToolSection } from './Palette.types';
 
 export const isToolSection = (entry: GQLPaletteEntry): entry is GQLToolSection => entry.__typename === 'ToolSection';
 

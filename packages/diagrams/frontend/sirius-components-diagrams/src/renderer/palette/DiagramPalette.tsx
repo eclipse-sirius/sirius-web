@@ -11,7 +11,11 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { PaletteExtensionSection, PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  GQLTool,
+  PaletteExtensionSection,
+  PaletteExtensionSectionProps,
+} from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useReactFlow, useViewport } from '@xyflow/react';
 import { memo, useCallback, useContext, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +29,6 @@ import { PaletteAppearanceSection } from './appearance/PaletteAppearanceSection'
 import { DiagramPaletteProps } from './DiagramPalette.types';
 import { GroupPaletteLayoutSection } from './GroupPaletteLayoutSection';
 import { Palette } from './Palette';
-import { GQLTool } from './Palette.types';
 import { PalettePortal } from './PalettePortal';
 import { ShowInSection } from './ShowInSection';
 import { useDiagramPalette } from './useDiagramPalette';

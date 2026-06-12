@@ -15,9 +15,10 @@ import { gql, useQuery } from '@apollo/client';
 import { useContext, useEffect } from 'react';
 
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLPalette, GQLPaletteEntry } from '@eclipse-sirius/sirius-components-palette';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { GQLPalette } from './Palette.types';
+import { GQLSingleClickOnTwoDiagramElementsTool } from '../connector/useConnector.types';
 import {
   GQLDiagramDescription,
   GQLGetToolSectionsData,
@@ -32,17 +33,17 @@ export const getPaletteQuery = gql`
     id
     label
     iconURL
+    dialogDescriptionId
+    withImpactAnalysis
+    keyBindings {
+      isCtrl
+      isMeta
+      isAlt
+      key
+    }
     ... on SingleClickOnDiagramElementTool {
       targetDescriptions {
         id
-      }
-      dialogDescriptionId
-      withImpactAnalysis
-      keyBindings {
-        isCtrl
-        isMeta
-        isAlt
-        key
       }
     }
   }
@@ -77,6 +78,10 @@ export const getPaletteQuery = gql`
   }
 `;
 
+const isSingleClickOnTwoDiagramElementsTool = (
+  entry: GQLPaletteEntry
+): entry is GQLSingleClickOnTwoDiagramElementsTool => entry.__typename === 'SingleClickOnTwoDiagramElementsTool';
+
 const isDiagramDescription = (
   representationDescription: GQLRepresentationDescription
 ): representationDescription is GQLDiagramDescription => representationDescription.__typename === 'DiagramDescription';
@@ -100,13 +105,21 @@ export const usePaletteContents = (diagramElementIds: string[], skip: boolean): 
 
   const description: GQLRepresentationDescription | undefined =
     paletteData?.viewer.editingContext.representation.description;
-  const palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
+  let palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
 
   useEffect(() => {
     if (paletteError) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
   }, [paletteError]);
+
+  //Filter isSingleClickOnTwoDiagramElementsTool until the backend return one palette for SingleClickOnDiagramElementTool and another for SingleClickOnTwoDiagramElementTool
+  if (palette) {
+    palette = {
+      ...palette,
+      paletteEntries: palette.paletteEntries.filter((entry) => !isSingleClickOnTwoDiagramElementsTool(entry)),
+    };
+  }
 
   return { palette, loading };
 };

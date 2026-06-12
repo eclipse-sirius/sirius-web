@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { IconOverlay, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -19,7 +20,7 @@ import Typography from '@mui/material/Typography';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { memo, useEffect } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { ConnectorContextualMenuProps, GQLTool } from './ConnectorContextualMenu.types';
+import { ConnectorContextualMenuProps } from './ConnectorContextualMenu.types';
 import { useConnector } from './useConnector';
 import { useConnectorPaletteContents } from './useConnectorPaletteContents';
 import { useSingleClickOnTwoDiagramElementTool } from './useSingleClickOnTwoDiagramElementTool';
