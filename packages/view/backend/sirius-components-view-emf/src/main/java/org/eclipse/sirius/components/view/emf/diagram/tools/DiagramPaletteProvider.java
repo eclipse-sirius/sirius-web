@@ -65,7 +65,7 @@ public class DiagramPaletteProvider implements IDiagramPaletteProvider {
             List<IPaletteEntry> paletteEntries = new ArrayList<>();
             toolFinder.findNodeTools(viewDiagramDescription).stream()
                     .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                    .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, true, variableManager))
+                    .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                     .forEach(paletteEntries::add);
 
             toolFinder.findToolSections(viewDiagramDescription).stream()
@@ -75,7 +75,7 @@ public class DiagramPaletteProvider implements IDiagramPaletteProvider {
             List<ITool> quickAccessTools = new ArrayList<>();
             toolFinder.findQuickAccessDiagramTools(viewDiagramDescription).stream()
                     .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                    .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, true, variableManager))
+                    .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                     .forEach(quickAccessTools::add);
 
             diagramPalette = Palette.newPalette(diagramPaletteId)
@@ -108,7 +108,7 @@ public class DiagramPaletteProvider implements IDiagramPaletteProvider {
                 .iconURL(List.of())
                 .tools(toolSection.getNodeTools().stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, true, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                         .toList())
                 .build();
     }

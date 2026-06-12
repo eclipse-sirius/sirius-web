@@ -49,7 +49,7 @@ public class NodeToolConverter implements INodeToolConverter {
     }
 
     @Override
-    public ITool createNodeTool(AQLInterpreter interpreter, NodeTool viewNodeTool, boolean appliesToDiagramRoot, VariableManager variableManager) {
+    public ITool createNodeTool(AQLInterpreter interpreter, NodeTool viewNodeTool, VariableManager variableManager) {
         String toolId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(viewNodeTool).toString().getBytes()).toString();
         List<String> iconURLs = this.getIconURLs(viewNodeTool, interpreter, variableManager);
         String dialogDescriptionId = "";
@@ -67,7 +67,6 @@ public class NodeToolConverter implements INodeToolConverter {
                 .iconURL(iconURLs)
                 .dialogDescriptionId(dialogDescriptionId)
                 .targetDescriptions(List.of())
-                .appliesToDiagramRoot(appliesToDiagramRoot)
                 .withImpactAnalysis(viewNodeTool.isWithImpactAnalysis())
                 .keyBindings(keyBindings)
                 .build();

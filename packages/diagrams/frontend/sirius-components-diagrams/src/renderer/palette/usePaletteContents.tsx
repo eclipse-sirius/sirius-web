@@ -36,7 +36,6 @@ export const getPaletteQuery = gql`
       targetDescriptions {
         id
       }
-      appliesToDiagramRoot
       dialogDescriptionId
       withImpactAnalysis
       keyBindings {

@@ -421,7 +421,6 @@ type SingleClickOnDiagramElementTool implements Tool {
   id: ID!
   label: String!
   iconURL: [String!]!
-  appliesToDiagramRoot: Boolean!
   dialogDescriptionId: String
   targetDescriptions: [DiagramElementDescription!]!
   withImpactAnalysis: Boolean!

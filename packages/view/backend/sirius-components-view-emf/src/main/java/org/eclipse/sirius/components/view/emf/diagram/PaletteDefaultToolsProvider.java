@@ -158,7 +158,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .label(this.messageService.defaultQuickToolAdjustSize())
                 .iconURL(List.of(DiagramImageConstants.ADJUST_SIZE))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -210,7 +209,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .label(this.messageService.defaultQuickToolResetOutsideLabelPosition())
                 .iconURL(List.of(DiagramImageConstants.RESET_LABEL_POSITION))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -220,7 +218,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .label(this.messageService.defaultQuickToolResetLabelSize())
                 .iconURL(List.of(DiagramImageConstants.RESET_LABEL_SIZE))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -235,7 +232,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .label(this.messageService.defaultQuickToolResetBendingPoints())
                 .iconURL(List.of(DiagramImageConstants.RESET_BENDING_POINTS))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -256,7 +252,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .label(this.messageService.defaultQuickToolResetHandlesPosition())
                 .iconURL(List.of(DiagramImageConstants.RESET_HANDLES))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -268,7 +263,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                         .label(this.messageService.defaultQuickToolCollapse())
                         .iconURL(List.of(DiagramImageConstants.COLLAPSE_SVG))
                         .targetDescriptions(targetDescriptions)
-                        .appliesToDiagramRoot(false)
                         .withImpactAnalysis(false)
                         .keyBindings(List.of())
                         .build();
@@ -276,7 +270,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                         .label(this.messageService.defaultQuickToolExpand())
                         .iconURL(List.of(DiagramImageConstants.EXPAND_SVG))
                         .targetDescriptions(targetDescriptions)
-                        .appliesToDiagramRoot(false)
                         .withImpactAnalysis(false)
                         .keyBindings(List.of())
                         .build();
@@ -291,7 +284,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .label(this.messageService.defaultQuickToolDeleteFromModel())
                 .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .withImpactAnalysis(false)
                 .keyBindings(List.of())
                 .build();
@@ -316,7 +308,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .label(label)
                 .iconURL(List.of(DiagramImageConstants.FADE_SVG))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -328,7 +319,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .label(this.messageService.defaultQuickToolHide())
                 .iconURL(List.of(DiagramImageConstants.HIDE_SVG))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -339,7 +329,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                     .label(this.messageService.defaultQuickToolUnPin())
                     .iconURL(List.of(DiagramImageConstants.UNPIN_SVG))
                     .targetDescriptions(targetDescriptions)
-                    .appliesToDiagramRoot(false)
                     .keyBindings(List.of())
                     .build();
         } else {
@@ -347,7 +336,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                     .label(this.messageService.defaultQuickToolPin())
                     .iconURL(List.of(DiagramImageConstants.PIN_SVG))
                     .targetDescriptions(targetDescriptions)
-                    .appliesToDiagramRoot(false)
                     .keyBindings(List.of())
                     .build();
         }
@@ -371,7 +359,6 @@ public class PaletteDefaultToolsProvider implements IPaletteToolsProvider {
                 .label(this.messageService.defaultQuickToolEdit())
                 .iconURL(List.of(DiagramImageConstants.EDIT_SVG))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .withImpactAnalysis(false)
                 .keyBindings(List.of())
                 .build();
