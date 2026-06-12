@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,13 +13,14 @@
 import { gql, useMutation } from '@apollo/client';
 import { GQLErrorPayload, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-impactanalysis';
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 import { useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { useDialog } from '../../dialog/useDialog';
 import { useInvokeImpactAnalysis } from '../palette/impact-analysis/useDiagramImpactAnalysis';
 import { GQLInvokeImpactAnalysisToolVariables } from '../palette/impact-analysis/useDiagramImpactAnalysis.types';
-import { GQLSingleClickOnDiagramElementTool, GQLTool } from '../palette/Palette.types';
+import { GQLSingleClickOnDiagramElementTool } from '../palette/Palette.types';
 import {
   GQLInvokeSingleClickOnDiagramElementToolData,
   GQLInvokeSingleClickOnDiagramElementToolInput,

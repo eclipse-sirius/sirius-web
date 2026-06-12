@@ -11,26 +11,23 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { MousePosition, useMousePosition, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLPalette } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useReactFlow, useStoreApi, useViewport, Viewport, XYPosition } from '@xyflow/react';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { isSingleClickOnDiagramElementTool, isToolSection } from '../palette/Palette';
-import { GQLPalette, GQLSingleClickOnDiagramElementTool } from '../palette/Palette.types';
+import { isTool, isToolSection } from '../palette/Palette';
+import { GQLSingleClickOnDiagramElementTool } from '../palette/Palette.types';
 import { usePaletteContents } from '../palette/usePaletteContents';
 import { useSingleClickTool } from '../tools/useSingleClickTool';
 import { UseDiagramKeyBindingState, UseDiagramKeyBindingValue } from './useDiagramKeyBinding.types';
 
 const getAllPaletteTools = (palette: GQLPalette) => {
   return palette.quickAccessTools
-    .filter(isSingleClickOnDiagramElementTool)
-    .concat(palette.paletteEntries.filter(isSingleClickOnDiagramElementTool))
-    .concat(
-      palette.paletteEntries
-        .filter(isToolSection)
-        .flatMap((section) => section.tools.filter(isSingleClickOnDiagramElementTool))
-    );
+    .filter(isTool)
+    .concat(palette.paletteEntries.filter(isTool))
+    .concat(palette.paletteEntries.filter(isToolSection).flatMap((section) => section.tools.filter(isTool)));
 };
 
 const computeCursorPosition = (

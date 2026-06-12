@@ -415,13 +415,15 @@ interface Tool {
   id: ID!
   label: String!
   iconURL: [String!]!
+  dialogDescriptionId: String
+  withImpactAnalysis: Boolean!
+  keyBindings: [KeyBinding!]!
 }
 
 type SingleClickOnDiagramElementTool implements Tool {
   id: ID!
   label: String!
   iconURL: [String!]!
-  appliesToDiagramRoot: Boolean!
   dialogDescriptionId: String
   targetDescriptions: [DiagramElementDescription!]!
   withImpactAnalysis: Boolean!
@@ -433,6 +435,8 @@ type SingleClickOnTwoDiagramElementsTool implements Tool {
   label: String!
   iconURL: [String!]!
   dialogDescriptionId: String
+  withImpactAnalysis: Boolean!
+  keyBindings: [KeyBinding!]!
   candidates: [SingleClickOnTwoDiagramElementsCandidate]!
 }
 

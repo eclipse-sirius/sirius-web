@@ -23,6 +23,17 @@ export type {
   PaletteToolOverriddenContributionProps,
 } from './extensions/PaletteToolOverrideContribution.types';
 export { paletteToolOverrideExtensionPoint } from './extensions/PaletteToolOverrideExtensionPoints';
+export type {
+  ContextualPaletteStyleProps,
+  GQLPalette,
+  GQLPaletteDivider,
+  GQLPaletteEntry,
+  GQLTool,
+  GQLToolSection,
+  PaletteProps,
+  PaletteState,
+  PaletteStyleProps,
+} from './Palette.types';
 export { PaletteExtensionSection } from './PaletteExtensionSection';
 export type {
   PaletteExtensionSectionComponentProps,

@@ -98,7 +98,6 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .label(this.messageService.defaultQuickToolDeleteFromModel())
                 .iconURL(List.of(DiagramImageConstants.SEMANTIC_DELETE_SVG))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .withImpactAnalysis(false)
                 .keyBindings(List.of())
                 .build();
@@ -119,7 +118,6 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .label(this.messageService.defaultQuickToolFade())
                 .iconURL(List.of(DiagramImageConstants.FADE_SVG))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -129,7 +127,6 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .label(this.messageService.defaultQuickToolUnFade())
                 .iconURL(List.of(DiagramImageConstants.FADE_SVG))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -141,7 +138,6 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .label(this.messageService.defaultQuickToolHide())
                 .iconURL(List.of(DiagramImageConstants.HIDE_SVG))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }
@@ -151,7 +147,6 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .label(this.messageService.defaultQuickToolAdjustSize())
                 .iconURL(List.of(DiagramImageConstants.ADJUST_SIZE))
                 .targetDescriptions(targetDescriptions)
-                .appliesToDiagramRoot(false)
                 .keyBindings(List.of())
                 .build();
     }

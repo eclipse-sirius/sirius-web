@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLErrorPayload } from '@eclipse-sirius/sirius-components-core';
-import { GQLTool, GQLToolVariable } from '../palette/Palette.types';
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
 
 export interface UseSingleClickOnTwoDiagramElementToolValue {
   invokeConnectorTool: (
@@ -70,3 +70,11 @@ export interface GQLInvokeSingleClickOnTwoDiagramElementsToolSuccessPayload {
   newSelection: GQLWorkbenchSelection;
   __typename: string;
 }
+
+export interface GQLToolVariable {
+  name: string;
+  value: string;
+  type: GQLToolVariableType;
+}
+
+export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';

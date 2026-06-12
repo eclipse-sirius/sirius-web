@@ -91,13 +91,13 @@ public class NodePaletteProvider implements INodePaletteProvider {
 
                 toolFinder.findQuickAccessNodeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                         .forEach(quickAccessTools::add);
 
                 var paletteEntries = new ArrayList<IPaletteEntry>();
                 toolFinder.findNodeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
+                        .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                         .forEach(paletteEntries::add);
                 toolFinder.findEdgeTools(viewNodeDescription).stream()
                         .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
@@ -141,7 +141,7 @@ public class NodePaletteProvider implements INodePaletteProvider {
         var tools = new ArrayList<ITool>();
         tools.addAll(toolSection.getNodeTools().stream()
                 .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))
-                .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, false, variableManager))
+                .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                 .toList());
         tools.addAll(toolSection.getEdgeTools().stream()
                 .filter(tool -> this.checkPrecondition(tool, variableManager, interpreter))

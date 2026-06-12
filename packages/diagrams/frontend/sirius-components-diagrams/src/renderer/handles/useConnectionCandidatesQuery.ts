@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo and others.
+ * Copyright (c) 2023, 2026 Obeo and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { gql, useQuery } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLPaletteEntry, GQLToolSection } from '@eclipse-sirius/sirius-components-palette';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { useEffect, useMemo } from 'react';
 import {
@@ -19,10 +20,8 @@ import {
   GQLGetToolSectionsData,
   GQLGetToolSectionsVariables,
   GQLNodeDescription,
-  GQLPaletteEntry,
   GQLRepresentationDescription,
   GQLSingleClickOnTwoDiagramElementsTool,
-  GQLToolSection,
 } from '../connector/useConnector.types';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 

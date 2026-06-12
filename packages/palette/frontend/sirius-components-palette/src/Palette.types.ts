@@ -18,53 +18,47 @@ export interface ContextualPaletteStyleProps {
   toolCount: number;
 }
 
-export interface GQLTool {
-  id: string;
-  label: string;
-  iconURL: string[];
-  __typename: string;
-}
-
-export interface GQLToolVariable {
-  name: string;
-  value: string;
-  type: GQLToolVariableType;
-}
-
-export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
-
 export interface PaletteProps {
   x: number;
   y: number;
-  diagramElementId: string;
-  targetObjectId: string;
-  onDirectEditClick: () => void;
+  palette: GQLPalette;
+  diagramElementIds: string[];
+  onToolClick: (tool: GQLTool) => void;
   onClose: () => void;
-  children: React.ReactElement<PaletteExtensionSectionProps>[];
+  paletteToolListExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 
+export interface PaletteState {
+  searchToolValue: string;
+  controlledPosition: XYPosition;
+}
+
+export interface XYPosition {
+  x: number;
+  y: number;
+}
 export interface PaletteStyleProps {
   paletteWidth: string;
   paletteHeight: string;
 }
 
-export interface GQLTool extends GQLPaletteEntry {
-  label: string;
-  iconURL: string[];
-  __typename: string;
-}
-
-export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
-  appliesToDiagramRoot: boolean;
-  dialogDescriptionId: string;
-  withImpactAnalysis: boolean;
-  keyBindings: GQLKeyBinding[];
-}
-
 export interface GQLPalette {
+  /**
+   * @deprecated The `id` field is deprecated and should not be used. It will be removed in a future release.
+   * See https://github.com/eclipse-sirius/sirius-web/issues/6470 for more details.
+   */
   id: string;
   quickAccessTools: GQLTool[];
   paletteEntries: GQLPaletteEntry[];
+}
+
+export interface GQLTool extends GQLPaletteEntry {
+  label: string;
+  iconURL: string[];
+  dialogDescriptionId: string;
+  withImpactAnalysis: boolean;
+  keyBindings: GQLKeyBinding[];
+  __typename: string;
 }
 
 export interface GQLPaletteEntry {

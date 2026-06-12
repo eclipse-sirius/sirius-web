@@ -23,5 +23,5 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
  * @author sbegaudeau
  */
 public interface INodeToolConverter {
-    ITool createNodeTool(AQLInterpreter interpreter, NodeTool viewNodeTool, boolean appliesToDiagramRoot, VariableManager variableManager);
+    ITool createNodeTool(AQLInterpreter interpreter, NodeTool viewNodeTool, VariableManager variableManager);
 }
