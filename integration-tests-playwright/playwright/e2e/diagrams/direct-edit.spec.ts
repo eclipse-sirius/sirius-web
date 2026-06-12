@@ -110,4 +110,13 @@ test.describe('diagram - direct edit', () => {
     await expect(page.getByTestId('name-edit')).not.toBeAttached();
     await expect(page.getByTestId('Label - 10')).toBeAttached();
   });
+
+  test('when direct edit is triggered, then the direct edit component background is white', async ({ page }) => {
+    const playwrightNode = new PlaywrightNode(page, 'DataSource1');
+    await playwrightNode.openPalette();
+    await page.getByTestId('Palette').getByTestId('Edit - Tool').click();
+    await expect(page.getByTestId('Palette')).toBeHidden();
+    await expect(page.getByTestId('name-edit')).toBeAttached();
+    await expect(page.getByTestId('name-edit')).toHaveCSS('background-color', 'rgb(255, 255, 255)');
+  });
 });
