@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -208,7 +208,7 @@ export const DiagramDirectEditInput = ({ labelId, editingKey, width, onClose }: 
         onBlur={onBlur}
         autoFocus
         spellCheck={false}
-        sx={{ width: width }}
+        sx={(theme) => ({ width: width, backgroundColor: theme.palette.common.white })}
         data-testid="name-edit"
         className="nodrag"
       />
