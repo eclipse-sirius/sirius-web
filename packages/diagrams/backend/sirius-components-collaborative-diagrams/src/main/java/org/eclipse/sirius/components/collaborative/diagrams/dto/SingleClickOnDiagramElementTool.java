@@ -29,7 +29,6 @@ public record SingleClickOnDiagramElementTool(
         List<String> iconURL,
         List<IDiagramElementDescription> targetDescriptions,
         String dialogDescriptionId,
-        boolean appliesToDiagramRoot,
         boolean withImpactAnalysis,
         List<KeyBinding> keyBindings) implements ITool {
 
@@ -64,8 +63,6 @@ public record SingleClickOnDiagramElementTool(
 
         private String dialogDescriptionId;
 
-        private boolean appliesToDiagramRoot;
-
         private boolean withImpactAnalysis;
 
         private List<KeyBinding> keyBindings;
@@ -86,11 +83,6 @@ public record SingleClickOnDiagramElementTool(
 
         public Builder targetDescriptions(List<IDiagramElementDescription> targetDescriptions) {
             this.targetDescriptions = Objects.requireNonNull(targetDescriptions);
-            return this;
-        }
-
-        public Builder appliesToDiagramRoot(boolean appliesToDiagramRoot) {
-            this.appliesToDiagramRoot = appliesToDiagramRoot;
             return this;
         }
 
@@ -116,7 +108,6 @@ public record SingleClickOnDiagramElementTool(
                     this.iconURL,
                     this.targetDescriptions,
                     this.dialogDescriptionId,
-                    this.appliesToDiagramRoot,
                     this.withImpactAnalysis,
                     this.keyBindings
             );
