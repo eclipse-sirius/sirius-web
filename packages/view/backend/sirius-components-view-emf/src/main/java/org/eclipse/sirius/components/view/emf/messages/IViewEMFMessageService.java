@@ -82,6 +82,10 @@ public interface IViewEMFMessageService {
 
     String defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel();
 
+    String usedToolOnTargetLabel();
+
+    String usedToolUnknownTargetLabel();
+
     /**
      * Implementation which does nothing, used for mocks in unit tests.
      *
@@ -109,6 +113,7 @@ public interface IViewEMFMessageService {
             return "";
         }
 
+        @Override
         public String defaultQuickToolAdjustSize() {
             return "";
         }
@@ -240,6 +245,16 @@ public interface IViewEMFMessageService {
 
         @Override
         public String defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel() {
+            return "";
+        }
+
+        @Override
+        public String usedToolOnTargetLabel() {
+            return "";
+        }
+
+        @Override
+        public String usedToolUnknownTargetLabel() {
             return "";
         }
     }

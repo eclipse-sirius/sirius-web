@@ -26,7 +26,8 @@
 It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Each view displayed in the left or right side panel is now responsible from its own title bar.
 - https://github.com/eclipse-sirius/sirius-web/issues/6587[#6587] [diagram] Added `IEditingContext` parameter to `IPaletteToolsProvider` methods
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6583[#6583] [core] Causality chains starting from `InvokeSingleClickOnDiagramElementToolInput` now contain an additional `DecoratedCause` caused by the original input.
+Existing code following this pattern: `if (myEvent.causedBy() instanceof InvokeSingleClickOnDiagramElementToolInput)` needs to navigate one step further in the causality chain to perform the same check. 
 
 === Dependency update
 
@@ -69,6 +70,12 @@ It also enables us to disable panel resize for a better control when needed.
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6552[#6552] [diagram] Add `paletteToolExtensionPoint` to contribute tools on a palette, you can contribute tools on a specific tool section.
 - https://github.com/eclipse-sirius/sirius-web/issues/6576[#6576] [diagram] Add `paletteToolOverrideExtensionPoint` to override tools retrieved from the backend.
+- https://github.com/eclipse-sirius/sirius-web/issues/6583[#6583] [core] Add the ability to decorate causes with metadata.
+The `DecoratedCause` record can now be used to wrap an existing cause and provide a label with additional information on what happened while processing the event.
+An initial implementation has been done for `InvokeSingleClickOnDiagramElementToolInput`, providing a label containing the name of the executed tool, the label of the selected node(s)/edge(s), as well as the name of their descriptions.
+The resulting label looks like "Used 'Create Component' on the Component Diagram business architecture".
+`ChangeDescription` has been updated to accept an `ICause` as parameter instead of just `IInput`.
+This feature allows to share information that is easy to collect at one point (e.g. in the tool handler) and hard to retrieve down the event chain (e.g. in an event listener reacting to the handler's change, where only the `toolId` and `diagramElementIds` are available).
 
 
 === Improvements

@@ -15,22 +15,30 @@ package org.eclipse.sirius.web.application.controllers.diagrams;
 import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 import static org.eclipse.sirius.components.diagrams.tests.assertions.DiagramAssertions.assertThat;
 
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.assertj.core.api.Assertions;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.events.DecoratedCause;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.services.TestChangeDescriptionConsumer;
 import org.eclipse.sirius.web.services.diagrams.ModelOperationDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
@@ -65,11 +73,18 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
     private InvokeSingleClickOnDiagramElementToolExecutor invokeSingleClickOnDiagramElementToolExecutor;
 
     @Autowired
+    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
+
+    @Autowired
     private ModelOperationDiagramDescriptionProvider modelOperationDiagramDescriptionProvider;
+
+    @Autowired
+    private TestChangeDescriptionConsumer testChangeDescriptionConsumer;
 
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
+        this.testChangeDescriptionConsumer.reset();
     }
 
     private Flux<Object> givenSubscriptionToModelOperationDiagram() {
@@ -201,6 +216,59 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(createNode)
                 .consumeNextWith(updatedDiagramContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram, when a tool is executed, then an event decorator is produced")
+    public void givenDiagramWhenToolIsExecutedThenAnEventDecoratorIsProduced() {
+        var flux = this.givenSubscriptionToModelOperationDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var inputReference = new AtomicReference<InvokeSingleClickOnDiagramElementToolInput>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+        });
+
+        Runnable createNode = () -> {
+            var input = new InvokeSingleClickOnDiagramElementToolInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    List.of(diagramId.get()),
+                    this.modelOperationDiagramDescriptionProvider.getCreateNodeToolId(),
+                    0,
+                    0,
+                    List.of()
+            );
+            inputReference.set(input);
+
+            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
+            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
+        };
+
+        Runnable checkDecoratedCause = () -> {
+            var changeDescription = this.testChangeDescriptionConsumer.getAcceptChangeDescription();
+
+            Assertions.assertThat(changeDescription).isNotNull();
+            Assertions.assertThat(changeDescription.getInput()).isEqualTo(inputReference.get());
+            Assertions.assertThat(changeDescription.getCause()).isInstanceOf(DecoratedCause.class);
+            var decoratedCause = (DecoratedCause) changeDescription.getCause();
+            // Ensure the input ID is not reused by the decorator.
+            Assertions.assertThat(decoratedCause.id()).isNotEqualTo(inputReference.get().id());
+            Assertions.assertThat(decoratedCause.label()).isEqualTo("Used \"Create Component\" on the Diagram ModelOperationDiagram");
+            Assertions.assertThat(decoratedCause.causedBy()).isEqualTo(inputReference.get());
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNode)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram -> Assertions.assertThat(diagram).isNotNull()))
+                .then(checkDecoratedCause)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

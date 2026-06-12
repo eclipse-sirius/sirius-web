@@ -126,7 +126,7 @@ public class DeckEventProcessor implements IDeckEventProcessor {
             Deck refreshedDeckRepresentation = this.deckCreationService.refresh(this.editingContext, this.deckContext).orElse(null);
             this.deckContext = new DeckContext(refreshedDeckRepresentation, new ArrayList<>());
             if (refreshedDeckRepresentation != null) {
-                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedDeckRepresentation);
+                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, refreshedDeckRepresentation);
                 this.logger.atTrace()
                         .setMessage("Deck refreshed: {}")
                         .addArgument(refreshedDeckRepresentation.getId())
