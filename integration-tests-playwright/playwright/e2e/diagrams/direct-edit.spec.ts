@@ -99,7 +99,7 @@ test.describe('diagram - direct edit', () => {
   });
 
   test('when opening the palette on an edge, then we can use direct edit with the quicktool', async ({ page }) => {
-    await expect(page.getByTestId('Label - 6')).toBeAttached();
+    await expect(page.locator('[data-testid="Label - 6"]:not(#hidden-label-container *)')).toBeAttached();
     const playwrightEdge = new PlaywrightEdge(page);
     await playwrightEdge.openPalette();
     await page.getByTestId('Palette').getByTestId('Edit - Tool').click();
@@ -108,6 +108,6 @@ test.describe('diagram - direct edit', () => {
     await page.keyboard.type('10');
     await page.keyboard.press('Enter');
     await expect(page.getByTestId('name-edit')).not.toBeAttached();
-    await expect(page.getByTestId('Label - 10')).toBeAttached();
+    await expect(page.locator('[data-testid="Label - 10"]:not(#hidden-label-container *)')).toBeAttached();
   });
 });

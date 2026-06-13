@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,10 +27,6 @@ public interface ICollaborativeDiagramMessageService {
 
     String nodeNotFound(String id);
 
-    String deleteEdgeFailed(String id);
-
-    String deleteNodeFailed(String id);
-
     String deleteFailed();
 
     String semanticObjectNotFound(String id);
@@ -48,6 +44,12 @@ public interface ICollaborativeDiagramMessageService {
     String diagramElementNotFound(String id);
 
     String handlerNotFound();
+
+    String diagramLayoutFlow();
+
+    String diagramLayoutCompact();
+
+    String diagramLayoutOrthogonal();
 
     /**
      * Implementation which does nothing, used for mocks in unit tests.
@@ -73,16 +75,6 @@ public interface ICollaborativeDiagramMessageService {
 
         @Override
         public String nodeNotFound(String id) {
-            return "";
-        }
-
-        @Override
-        public String deleteEdgeFailed(String id) {
-            return "";
-        }
-
-        @Override
-        public String deleteNodeFailed(String id) {
             return "";
         }
 
@@ -128,6 +120,21 @@ public interface ICollaborativeDiagramMessageService {
 
         @Override
         public String handlerNotFound() {
+            return "";
+        }
+
+        @Override
+        public String diagramLayoutFlow() {
+            return "";
+        }
+
+        @Override
+        public String diagramLayoutCompact() {
+            return "";
+        }
+
+        @Override
+        public String diagramLayoutOrthogonal() {
             return "";
         }
     }

@@ -47,9 +47,8 @@ test.describe('edge-label', () => {
     const edgePath = await playwrightEdge.getEdgePath();
     await page.waitForFunction(
       ({ edgePath }) => {
-        const label =
-          document.querySelector(`[data-testid="Label - 6"]`)?.parentElement?.parentElement?.parentElement
-            ?.parentElement; // get the div with the transform style
+        const label = document.querySelector('[data-testid="rf__wrapper"] [data-testid="Label - 6"]')?.parentElement
+          ?.parentElement?.parentElement?.parentElement; // get the div with the transform style
         if (!label || !edgePath) {
           return false;
         }
