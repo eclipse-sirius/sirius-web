@@ -114,6 +114,28 @@ test.describe('diagram - arrange all', () => {
 
     await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 }); // no error
   });
+
+  test('when a arrange all is triggered on selected nodes and used from the groups palette option', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('arrange-direction');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const firstSelectedNodes = new PlaywrightNode(page, 'target');
+    const secondSelectedNodes = new PlaywrightNode(page, 'BNS');
+
+    await firstSelectedNodes.click();
+    await secondSelectedNodes.controlClick();
+    await secondSelectedNodes.openPalette();
+
+    await page.getByTestId('toolSection-Layout').click();
+    await page.getByTestId('tool-Flow Layout').click();
+
+    await expect(page.locator('#notistack-snackbar')).not.toBeAttached({ timeout: 2000 });
+  });
 });
 
 test.describe('diagram - arrange all', () => {
