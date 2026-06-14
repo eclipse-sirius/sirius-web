@@ -9,6 +9,7 @@
 
 === Architectural decision records
 
+- [ADR-231] Add support for custom holidays in Gantt
 
 
 
