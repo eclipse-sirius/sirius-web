@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
-import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeDescription;
@@ -42,15 +41,12 @@ public class ViewDiagramDescriptionSearchService implements IViewDiagramDescript
 
     private final IIdentityService identityService;
 
-    private final IObjectSearchService objectSearchService;
-
     private final IURLParser urlParser;
 
     private final IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService;
 
-    public ViewDiagramDescriptionSearchService(IIdentityService identityService, IObjectSearchService objectSearchService, IURLParser urlParser, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
+    public ViewDiagramDescriptionSearchService(IIdentityService identityService, IURLParser urlParser, IViewRepresentationDescriptionSearchService viewRepresentationDescriptionSearchService) {
         this.identityService = Objects.requireNonNull(identityService);
-        this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewRepresentationDescriptionSearchService = Objects.requireNonNull(viewRepresentationDescriptionSearchService);
     }
