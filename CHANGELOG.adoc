@@ -9,7 +9,7 @@
 
 === Architectural decision records
 
-
+- [ADR-231] Use the diagram palette for tree based representations
 
 
 === Deprecation warning
