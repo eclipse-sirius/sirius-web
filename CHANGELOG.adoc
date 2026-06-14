@@ -9,6 +9,7 @@
 
 === Architectural decision records
 
+- [ADR-231] Add support for decorating events with metadata
 
 
 
