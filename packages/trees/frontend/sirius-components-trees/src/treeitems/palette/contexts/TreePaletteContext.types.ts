@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,26 +11,18 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLTreeItem } from '../../views/TreeView.types';
+import { GQLTreeItem } from '../../../views/TreeView.types';
 
-export interface ContextualPaletteStyleProps {
-  toolCount: number;
-}
-
-export interface TreeItemPaletteProps {
+export interface TreePaletteContextValue {
   editingContextId: string;
   treeId: string;
-  treeItem: GQLTreeItem;
+  expanded: string[];
+  item: GQLTreeItem | null;
   readOnly: boolean;
   selectedTreeItems: string[];
-  expanded: string[];
-  selectTreeItems: (selectedTreeItems: string[]) => void;
+  selectTreeItems: (selectedTreeItemIds: string[]) => void;
   onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void;
-  expandItem: () => void;
   onDirectEditClick: () => void;
+  expandItem: () => void;
   onClose: () => void;
-}
-
-export interface TreeItemPaletteState {
-  searchToolValue: string;
 }

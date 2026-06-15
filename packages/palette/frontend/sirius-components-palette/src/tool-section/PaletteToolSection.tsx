@@ -21,7 +21,7 @@ import { PaletteToolContributionProps } from '../extensions/PaletteToolContribut
 import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
 import { PaletteToolOverriddenContributionProps } from '../extensions/PaletteToolOverrideContribution.types';
 import { paletteToolOverrideExtensionPoint } from '../extensions/PaletteToolOverrideExtensionPoints';
-import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
+import { isPaletteDivider, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
 import { PaletteToolSectionProps, PaletteToolSectionStateValue } from './PaletteToolSection.types';
@@ -122,10 +122,11 @@ export const PaletteToolSection = ({
 
   // Backend tools/tools section/dividers
   const listItemsRendered: JSX.Element[] = currentEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
-    if (isSingleClickOnDiagramElementTool(paletteEntry)) {
+    if (isTool(paletteEntry)) {
       const overriddenTool = paletteToolOverriddenData.data.find((contributedTool) =>
         contributedTool.canHandle(representationDescriptionId, paletteEntry)
       );
+
       if (!overriddenTool) {
         return (
           <ToolListItem

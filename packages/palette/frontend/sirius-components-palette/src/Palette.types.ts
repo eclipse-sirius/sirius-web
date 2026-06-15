@@ -65,6 +65,15 @@ export interface GQLSingleClickOnDiagramElementTool extends GQLTool {
   keyBindings: GQLKeyBinding[];
 }
 
+export interface GQLTreeItemContextMenuEntry extends GQLTool {
+  __typename: string;
+  id: string;
+  label: string;
+  iconURL: string[];
+  withImpactAnalysis: boolean;
+  keyBindings: GQLKeyBinding[];
+}
+
 export interface GQLKeyBinding {
   isCtrl: boolean;
   isMeta: boolean;

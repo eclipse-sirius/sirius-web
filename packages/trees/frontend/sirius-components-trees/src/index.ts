@@ -22,6 +22,8 @@ export * from './treeitems/context-menu/TreeItemContextMenuEntryExtensionPoints'
 export * from './treeitems/context-menu/TreeItemContextMenuEntryExtensionPoints.types';
 export { type GQLTreeItemContextMenuEntry } from './treeitems/context-menu/useContextMenuEntries.types';
 export * from './treeitems/filterTreeItem';
+export { TreePaletteContext } from './treeitems/palette/contexts/TreePaletteContext';
+export type { TreePaletteContextValue } from './treeitems/palette/contexts/TreePaletteContext.types';
 export * from './treeitems/TreeItemAction';
 export * from './treeitems/TreeItemAction.types';
 export * from './trees/FilterBar';
@@ -33,6 +35,7 @@ export * from './views/TreeFiltersMenu';
 export * from './views/TreeFiltersMenu.types';
 export * from './views/TreeView';
 export * from './views/TreeView.types';
+export type { GQLTreeItem } from './views/TreeView.types';
 export * from './views/TreeViewExtensionPoints';
 export * from './views/useExpandAllTreePath';
 export * from './views/useExpandAllTreePath.types';

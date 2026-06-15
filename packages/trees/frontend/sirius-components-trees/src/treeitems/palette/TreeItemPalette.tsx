@@ -11,38 +11,98 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { Palette } from '@eclipse-sirius/sirius-components-palette';
-import React from 'react';
-import { DEFAULT_TOOL_LIST_ITEMS } from './toolListItems/DefaultToolListItems';
-import { GQLPalette, GQLTool, PaletteProps } from './TreeItemPalette.types';
-import { useInvokePaletteTool } from './useInvokePaletteTool';
+import {
+  GQLPalette,
+  GQLTool,
+  Palette,
+  PaletteExtensionSection,
+  usePalette,
+} from '@eclipse-sirius/sirius-components-palette';
+import { useTranslation } from 'react-i18next';
+import { useContextMenuEntries } from '../context-menu/useContextMenuEntries';
+import { GQLTreeItemContextMenuEntry } from '../context-menu/useContextMenuEntries.types';
+import { useInvokeContextMenuEntry } from '../context-menu/useInvokeContextMenuEntry';
+import { ShowInSection } from './ShowInSection';
+import { TreeItemPaletteProps } from './TreeItemPalette.types';
+import { TreePaletteContext } from './contexts/TreePaletteContext';
 
-const palette: GQLPalette = {
-  id: '',
-  quickAccessTools: [],
-  paletteEntries: DEFAULT_TOOL_LIST_ITEMS,
-};
+const isTreeItemContextMenuEntry = (tool: GQLTool): tool is GQLTreeItemContextMenuEntry =>
+  tool.__typename === 'TreeItemContextMenuEntry';
 
-export const TreeItemPalette = ({ editingContextId, treeId, treeItem, onDirectEditClick }: PaletteProps) => {
-  const nodeRef = React.useRef<HTMLDivElement>(null);
+export const TreeItemPalette = ({
+  editingContextId,
+  treeId,
+  treeItem,
+  readOnly,
+  selectedTreeItems,
+  expanded,
+  onDirectEditClick,
+  onExpandedElementChange,
+  selectTreeItems,
+  expandItem,
+  onClose,
+}: TreeItemPaletteProps) => {
+  const { loading, contextMenuEntries } = useContextMenuEntries(editingContextId, treeId, treeItem.id, false);
+  const { invokeContextMenuEntry } = useInvokeContextMenuEntry();
+  const { hidePalette } = usePalette();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramPalette' });
 
-  const { invokeTool } = useInvokePaletteTool();
+  if (loading) {
+    return null;
+  }
 
   const handleToolClick = (tool: GQLTool) => {
-    invokeTool(editingContextId, treeId, treeItem, onDirectEditClick, tool);
+    if (isTreeItemContextMenuEntry(tool)) {
+      invokeContextMenuEntry(editingContextId, treeId, treeItem.id, tool, () => {});
+    }
   };
 
+  const handleOnClose = () => {
+    hidePalette();
+    onClose();
+  };
+
+  const palette: GQLPalette = {
+    id: treeItem.id,
+    quickAccessTools: [],
+    paletteEntries: contextMenuEntries,
+  };
+
+  const paletteToolListExtensions = [
+    <PaletteExtensionSection
+      id="show_in"
+      key="show_in"
+      title={t('showIn')}
+      component={ShowInSection}
+      onClose={hidePalette}
+    />,
+  ];
+
   return (
-    <Palette
-      ref={nodeRef}
-      x={0}
-      y={0}
-      representationDescriptionId=""
-      representationElementIds={[treeItem.id]}
-      palette={palette}
-      onToolClick={handleToolClick}
-      onClose={() => {}}
-      paletteToolListExtensions={[]}
-    />
+    <TreePaletteContext.Provider
+      value={{
+        editingContextId: editingContextId,
+        item: treeItem,
+        treeId: treeId,
+        readOnly: readOnly,
+        selectedTreeItems: selectedTreeItems,
+        expanded: expanded,
+        onDirectEditClick: onDirectEditClick,
+        selectTreeItems: selectTreeItems,
+        onExpandedElementChange: onExpandedElementChange,
+        expandItem: expandItem,
+        onClose: onClose,
+      }}>
+      <Palette
+        palette={palette}
+        onToolClick={handleToolClick}
+        onClose={handleOnClose}
+        representationElementIds={[treeItem.id]}
+        representationDescriptionId={'explorer_'}
+        x={0}
+        y={0}
+        paletteToolListExtensions={paletteToolListExtensions}
+      />
+    </TreePaletteContext.Provider>
   );
 };

@@ -79,8 +79,14 @@ export const TreeItemContextMenu = ({
           editingContextId={editingContextId}
           treeId={treeId}
           treeItem={item}
+          expanded={expanded}
+          readOnly={readOnly}
+          selectedTreeItems={selectedTreeItemIds}
+          onExpandedElementChange={onExpandedElementChange}
+          selectTreeItems={selectTreeItems}
           onDirectEditClick={enterEditingMode}
-          onClose={onClose}></TreeItemPalette>
+          onClose={onClose}
+          expandItem={expandItem}></TreeItemPalette>
       </Popper>
     );
   }
@@ -126,6 +132,7 @@ export const TreeItemContextMenu = ({
               item={item}
               entry={entry}
               readOnly={readOnly}
+              selectedTreeItemIds={selectedTreeItemIds}
               selectTreeItems={selectTreeItems}
               onClose={onClose}
               onExpandedElementChange={onExpandedElementChange}
@@ -134,7 +141,6 @@ export const TreeItemContextMenu = ({
               treeId={treeId}
               expanded={expanded}
               maxDepth={maxDepth}
-              selectedTreeItemIds={selectedTreeItemIds}
             />
           ));
         } else {
