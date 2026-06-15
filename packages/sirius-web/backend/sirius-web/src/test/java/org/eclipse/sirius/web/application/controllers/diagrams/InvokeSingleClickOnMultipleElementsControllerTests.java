@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,14 +25,15 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolSuccessPayload;
+import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
-import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.events.DecoratedCause;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.services.TestChangeDescriptionConsumer;
 import org.eclipse.sirius.web.services.diagrams.GroupPaletteDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
@@ -67,14 +68,18 @@ public class InvokeSingleClickOnMultipleElementsControllerTests extends Abstract
     private PaletteQueryRunner paletteQueryRunner;
 
     @Autowired
-    private InvokeSingleClickOnDiagramElementToolMutationRunner invokeSingleClickOnDiagramElementToolMutationRunner;
+    private InvokeSingleClickOnDiagramElementToolExecutor invokeSingleClickOnDiagramElementToolExecutor;
 
     @Autowired
     private GroupPaletteDiagramDescriptionProvider groupPaletteDiagramDescriptionProvider;
 
+    @Autowired
+    private TestChangeDescriptionConsumer testChangeDescriptionConsumer;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
+        this.testChangeDescriptionConsumer.reset();
     }
 
     private Flux<Object> givenSubscriptionToLifeCycleDiagram() {
@@ -148,23 +153,8 @@ public class InvokeSingleClickOnMultipleElementsControllerTests extends Abstract
             componentIds.add(siriusWebInfrastructureId);
         });
 
-        Runnable executeTool = () -> {
-            String toolId = this.groupPaletteDiagramDescriptionProvider.getEditToolId();
-            var input = new InvokeSingleClickOnDiagramElementToolInput(
-                    UUID.randomUUID(),
-                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
-                    diagramId.get(),
-                    componentIds,
-                    toolId,
-                    0,
-                    0,
-                    List.of()
-            );
-            var result = this.invokeSingleClickOnDiagramElementToolMutationRunner.run(input);
-
-            String typename = JsonPath.read(result.data(), "$.data.invokeSingleClickOnDiagramElementTool.__typename");
-            assertThat(typename).isEqualTo(InvokeSingleClickOnDiagramElementToolSuccessPayload.class.getSimpleName());
-        };
+        Runnable executeTool = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), componentIds, this.groupPaletteDiagramDescriptionProvider.getEditToolId(), 0, 0, List.of())
+                .isSuccess();
 
         Consumer<Object> updatedDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain Suffix");
@@ -180,4 +170,44 @@ public class InvokeSingleClickOnMultipleElementsControllerTests extends Abstract
                 .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with some nodes, when we execute a tool on a group of nodes, then an event decorator is produced")
+    public void givenDiagramWithSomeNodesWhenWeExecuteToolOnGroupOfNodesThenAnEventDecoratorIsProduced() {
+        var flux = this.givenSubscriptionToLifeCycleDiagram();
+        var diagramId = new AtomicReference<String>();
+        var componentIds = new ArrayList<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+
+            var siriusWebDomainId = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode().getId();
+            var siriusWebApplicationId = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode().getId();
+            var siriusWebInfrastructureId = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode().getId();
+
+            componentIds.add(siriusWebDomainId);
+            componentIds.add(siriusWebApplicationId);
+            componentIds.add(siriusWebInfrastructureId);
+        });
+
+        Runnable executeTool = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), componentIds, this.groupPaletteDiagramDescriptionProvider.getEditToolId(), 0, 0, List.of())
+                .isSuccess();
+
+        Runnable checkDecoratedCause = () -> {
+            var changeDescription = this.testChangeDescriptionConsumer.getAcceptChangeDescription();
+
+            Assertions.assertThat(changeDescription).isNotNull();
+            Assertions.assertThat(changeDescription.getCause()).isInstanceOf(DecoratedCause.class);
+            var decoratedCause = (DecoratedCause) changeDescription.getCause();
+            Assertions.assertThat(decoratedCause.label()).isEqualTo("Used \"Edit labels\" on the Component sirius-web-domain, Component sirius-web-application, Component sirius-web-infrastructure");
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(executeTool)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram -> Assertions.assertThat(diagram).isNotNull()))
+                .then(checkDecoratedCause)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 }

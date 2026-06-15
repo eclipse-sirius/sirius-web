@@ -130,6 +130,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-sirius/sirius-web/issues/6591[#6591] [diagram] added `representationKind` to `canHandle` methods of the `Palette` frontend extensions points, exported `DIAGRAM_REPRESENTATION_KIND` variable from the diagram package, `paletteQuickToolExtensionPoint` is now a `DataExtensionPoint` with a `canHandle` method
 - https://github.com/eclipse-sirius/sirius-web/issues/6751[#6751] [core] Existing code inspecting causes (via `cause.causedBy()`) should now rely on
 `ICausalityChainVisitor#findFirstCauseOfType`, which allows to navigate causality chains in a generic way.
+- https://github.com/eclipse-sirius/sirius-web/issues/6583[#6583] [core] Causality chains starting from `InvokeSingleClickOnDiagramElementToolInput` now contain an additional `DecoratedCause` caused by the original input.
 
 
 === Dependency update
@@ -198,6 +199,11 @@ The documentation can be built using `./doc/generate-local.bash`
 Use the configuration property `sirius.web.tree.new-palette.enabled` to temporary switch back to the old context menu.
 This configuration property will be removed soon once the migration to the palette will be completed.
 - https://github.com/eclipse-sirius/sirius-web/issues/6751[#6751] [core] Introduce `ICausalityChainVisitor` to navigate causality chains
+- https://github.com/eclipse-sirius/sirius-web/issues/6583[#6583] [core] Add the ability to decorate causes with metadata.
+The `DecoratedCause` record can now be used to wrap an existing cause and provide a label with additional information on what happened while processing the event.
+An initial implementation has been done for `InvokeSingleClickOnDiagramElementToolInput`, providing a label containing the name of the executed tool, the label of the selected node(s)/edge(s), as well as the name of their descriptions.
+The resulting label looks like "Used 'Create Component' on the Component Diagram business architecture".
+This feature allows to share information that is easy to collect at one point (e.g. in the tool handler) and hard to retrieve down the event chain (e.g. in an event listener reacting to the handler's change, where only the `toolId` and `diagramElementIds` are available).
 
 
 === Improvements
