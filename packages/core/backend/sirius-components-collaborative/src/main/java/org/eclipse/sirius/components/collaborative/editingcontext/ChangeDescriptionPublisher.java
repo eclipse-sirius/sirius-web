@@ -22,8 +22,8 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.dto.RepresentationRenamedEventPayload;
 import org.eclipse.sirius.components.collaborative.editingcontext.api.IChangeDescriptionConsumer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.events.ICause;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -44,8 +44,8 @@ public class ChangeDescriptionPublisher implements IChangeDescriptionConsumer {
     @Override
     public void preAccept(Sinks.Many<IPayload> payloadSink, Sinks.Many<Boolean> canBeDisposedSink, IEditingContext editingContext, ChangeDescription changeDescription) {
         if (payloadSink.currentSubscriberCount() > 0) {
-            IInput input = changeDescription.getInput();
-            UUID correlationId = input.id();
+            ICause cause = changeDescription.getCause();
+            UUID correlationId = cause.id();
 
             if (ChangeKind.REPRESENTATION_RENAMING.equals(changeDescription.getKind()) && !changeDescription.getParameters().isEmpty()) {
                 Map<String, Object> parameters = changeDescription.getParameters();

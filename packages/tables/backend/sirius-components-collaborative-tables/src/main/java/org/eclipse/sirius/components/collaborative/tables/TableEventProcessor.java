@@ -153,14 +153,14 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
             this.tableContext.reset();
             this.tableContext.update(table);
             if (table != null) {
-                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.tableCreationParameters.getEditingContext(), table);
+                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.tableCreationParameters.getEditingContext(), table);
                 this.logger.atTrace()
                         .setMessage("Table refreshed: {}")
                         .addArgument(table.getId())
                         .log();
             }
             if (this.sink.currentSubscriberCount() > 0) {
-                EmitResult emitResult = this.sink.tryEmitNext(new TableRefreshedEventPayload(changeDescription.getInput().id(), table));
+                EmitResult emitResult = this.sink.tryEmitNext(new TableRefreshedEventPayload(changeDescription.getCause().id(), table));
                 if (emitResult.isFailure()) {
                     this.logger.atWarn()
                             .setMessage("An error has occurred while emitting a TableRefreshedEventPayload: {}")
@@ -177,7 +177,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                         .filter(String.class::isInstance)
                         .map(String.class::cast)
                         .ifPresent(newGlobalFilter -> {
-                            EmitResult emitResult = this.sink.tryEmitNext(new TableGlobalFilterValuePayload(changeDescription.getInput().id(), newGlobalFilter));
+                            EmitResult emitResult = this.sink.tryEmitNext(new TableGlobalFilterValuePayload(changeDescription.getCause().id(), newGlobalFilter));
                             if (emitResult.isFailure()) {
                                 this.logger.atWarn()
                                         .setMessage("An error has occurred while emitting a TableGlobalFilterValuePayload: {}")
@@ -192,7 +192,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                         .filter(List.class::isInstance)
                         .map(List.class::cast)
                         .ifPresent(newColumnFilters -> {
-                            EmitResult emitResult = this.sink.tryEmitNext(new TableColumnFilterPayload(changeDescription.getInput().id(), newColumnFilters));
+                            EmitResult emitResult = this.sink.tryEmitNext(new TableColumnFilterPayload(changeDescription.getCause().id(), newColumnFilters));
                             if (emitResult.isFailure()) {
                                 this.logger.atWarn()
                                         .setMessage("An error has occurred while emitting a TableColumnFilterPayload: {}")
@@ -207,7 +207,7 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
                         .filter(List.class::isInstance)
                         .map(List.class::cast)
                         .ifPresent(newColumnSort -> {
-                            EmitResult emitResult = this.sink.tryEmitNext(new TableColumnSortPayload(changeDescription.getInput().id(), newColumnSort));
+                            EmitResult emitResult = this.sink.tryEmitNext(new TableColumnSortPayload(changeDescription.getCause().id(), newColumnSort));
                             if (emitResult.isFailure()) {
                                 this.logger.atWarn()
                                         .setMessage("An error has occurred while emitting a TableColumnSortPayload: {}")

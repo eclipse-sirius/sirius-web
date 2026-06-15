@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventCon
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DeleteFromDiagramInput;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
+import org.eclipse.sirius.components.core.api.ICausalityChainVisitor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -64,16 +65,23 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
 
     private final List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders;
 
-    public DeleteFromDiagramChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders, IEdgeAppearanceChangeUndoRecorder edgeAppearanceChangeUndoRecorder, List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders) {
+    private final ICausalityChainVisitor causalityChainVisitor;
+
+    public DeleteFromDiagramChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders,
+            IEdgeAppearanceChangeUndoRecorder edgeAppearanceChangeUndoRecorder, List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders,
+            ICausalityChainVisitor causalityChainVisitor) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.nodeAppearanceChangeUndoRecorders = Objects.requireNonNull(nodeAppearanceChangeUndoRecorders);
         this.edgeAppearanceChangeUndoRecorder = Objects.requireNonNull(edgeAppearanceChangeUndoRecorder);
         this.labelAppearanceChangeUndoRecorders = Objects.requireNonNull(labelAppearanceChangeUndoRecorders);
+        this.causalityChainVisitor = Objects.requireNonNull(causalityChainVisitor);
     }
 
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
-        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof DeleteFromDiagramInput deleteFromDiagramInput) {
+        Optional<DeleteFromDiagramInput> optionalDeleteFromDiagramInputCause = this.causalityChainVisitor.findFirstCauseOfType(changeDescription.getCause(), DeleteFromDiagramInput.class);
+        if (editingContext instanceof EditingContext siriusEditingContext && optionalDeleteFromDiagramInputCause.isPresent()) {
+            DeleteFromDiagramInput deleteFromDiagramInput = optionalDeleteFromDiagramInputCause.get();
             List<IAppearanceChange> undoAppearanceChanges = new ArrayList<>();
             List<IRepresentationChange> representationChanges = new ArrayList<>();
 

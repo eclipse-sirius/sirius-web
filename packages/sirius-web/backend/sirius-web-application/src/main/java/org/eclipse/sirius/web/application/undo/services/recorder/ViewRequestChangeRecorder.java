@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventCon
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
+import org.eclipse.sirius.components.core.api.ICausalityChainVisitor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -61,14 +62,21 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
 
     private final List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders;
 
-    public ViewRequestChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders) {
+    private final ICausalityChainVisitor causalityChainVisitor;
+
+    public ViewRequestChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders,
+            ICausalityChainVisitor causalityChainVisitor) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.nodeAppearanceChangeUndoRecorders = Objects.requireNonNull(nodeAppearanceChangeUndoRecorders);
+        this.causalityChainVisitor = Objects.requireNonNull(causalityChainVisitor);
+
     }
 
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
-        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof IDiagramInput diagramInput) {
+        Optional<IDiagramInput> optionalDiagramInputCause = this.causalityChainVisitor.findFirstCauseOfType(changeDescription.getCause(), IDiagramInput.class);
+        if (editingContext instanceof EditingContext siriusEditingContext && optionalDiagramInputCause.isPresent()) {
+            IDiagramInput diagramInput = optionalDiagramInputCause.get();
             List<ViewCreationRequest> undoViewCreationRequests = new ArrayList<>();
             List<ViewDeletionRequest> undoViewDeletionRequests = new ArrayList<>();
             List<ViewCreationRequest> redoViewCreationRequests = new ArrayList<>(viewCreationRequests);
@@ -118,7 +126,6 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                         var diagramHideElementChange = new DiagramHideElementChange(diagramInput.id(), diagramInput.representationId(), Set.of(previousNode.getId()), true, false);
                         representationChanges.add(diagramHideElementChange);
                     }
-
                     var previousNodeLayoutData = previousDiagram.getLayoutData().nodeLayoutData();
                     if (previousNodeLayoutData.containsKey(previousNode.getId())) {
                         var undoPositionEvent = new DiagramNodeLayoutEvent(previousNode.getId(), previousNodeLayoutData.get(previousNode.getId()));
@@ -142,7 +149,6 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                                     representationChanges.addAll(diagramLabelLayoutChange);
                                 }
                             });
-
                 }
                 var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(diagramInput.id(), diagramInput.representationId(), undoAppearanceChanges, List.of());
                 representationChanges.add(diagramNodeAppearanceChange);

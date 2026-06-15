@@ -53,6 +53,7 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
         return this.messageSourceAccessor.getMessage("CORE_PROPERTIES");
     }
 
+    @Override
     public String defaultQuickToolAdjustSize() {
         return this.messageSourceAccessor.getMessage("ADJUST_SIZE");
     }
@@ -185,5 +186,15 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
     @Override
     public String defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel() {
         return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_SELECTION_REQUIRED_WITHOUT_SELECTION_CONFIRM_BUTTON_LABEL");
+    }
+
+    @Override
+    public String usedToolOnTargetLabel() {
+        return this.messageSourceAccessor.getMessage("USED_TOOL_ON_TARGET_LABEL");
+    }
+
+    @Override
+    public String usedToolUnknownTargetLabel() {
+        return this.messageSourceAccessor.getMessage("USED_TOOL_UNKNOWN_TARGET_LABEL");
     }
 }

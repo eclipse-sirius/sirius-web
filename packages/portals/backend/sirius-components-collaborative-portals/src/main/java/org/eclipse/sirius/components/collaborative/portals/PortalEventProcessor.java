@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
@@ -105,10 +106,10 @@ public class PortalEventProcessor implements IPortalEventProcessor {
         }
     }
 
-    private void updatePortal(IInput input, Portal newPortal) {
+    private void updatePortal(ChangeDescription changeDescription, Portal newPortal) {
         this.currentPortal = newPortal;
-        this.representationPersistenceStrategy.applyPersistenceStrategy(input, this.editingContext, this.currentPortal);
-        this.emitNewPortal(input);
+        this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, this.currentPortal);
+        this.emitNewPortal(changeDescription.getCause());
     }
 
     @Override
@@ -121,7 +122,7 @@ public class PortalEventProcessor implements IPortalEventProcessor {
                     .orElse("");
             if (portalServices.referencesRepresentation(this.currentPortal, deletedRepresentationId)) {
                 var newPortal = portalServices.removeRepresentation(this.currentPortal, deletedRepresentationId);
-                this.updatePortal(changeDescription.getInput(), newPortal);
+                this.updatePortal(changeDescription, newPortal);
             }
         } else if (changeDescription.getKind().equals(ChangeKind.REPRESENTATION_RENAMING)) {
             // Re-send the portal to all subscribers if one of the embedded representations has been renamed.
@@ -131,21 +132,21 @@ public class PortalEventProcessor implements IPortalEventProcessor {
                     .map(String.class::cast)
                     .orElse("");
             if (renamedRepresentationId.equals(this.currentPortal.getId()) || portalServices.referencesRepresentation(this.currentPortal, renamedRepresentationId)) {
-                this.emitNewPortal(changeDescription.getInput());
+                this.emitNewPortal(changeDescription.getCause());
             }
         } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.currentPortal.getId())) {
             Optional<Portal> reloadedPortal = this.representationSearchService.findById(this.editingContext, this.currentPortal.getId(), Portal.class);
             if (reloadedPortal.isPresent()) {
-                this.updatePortal(changeDescription.getInput(), reloadedPortal.get());
+                this.updatePortal(changeDescription, reloadedPortal.get());
             }
         } else if (changeDescription.getSourceId().equals(this.currentPortal.getId()) && changeDescription.getParameters().get(IPortalEventHandler.NEXT_PORTAL_PARAMETER) instanceof Portal nextPortal) {
-            this.updatePortal(changeDescription.getInput(), nextPortal);
+            this.updatePortal(changeDescription, nextPortal);
         }
     }
 
-    private void emitNewPortal(IInput input) {
+    private void emitNewPortal(ICause cause) {
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new PortalRefreshedEventPayload(input.id(), this.currentPortal));
+            EmitResult emitResult = this.sink.tryEmitNext(new PortalRefreshedEventPayload(cause.id(), this.currentPortal));
             if (emitResult.isFailure()) {
                 this.logger.atWarn()
                         .setMessage("An error has occurred while emitting a PortalRefreshedEventPayload: {}")
