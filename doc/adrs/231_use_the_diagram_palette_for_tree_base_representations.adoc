@@ -1,0 +1,96 @@
+:author: Charfadi Michaël
+:date: 20226-05-27
+:status: proposed
+:consulted: 
+:informed: 
+:deciders: Stéphane Bégaudeau
+:pitch: 
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/5418
+
+= ADR-231 - Use the diagram palette for tree based representations
+
+== Context and Problem Statement
+
+We have a complex component palette to render and execute tools on diagram elements.
+
+This component can render tools declared in a view dsl and tools contributed with frontend extensions points.
+
+We want to homogenize our UI and reuse this component to render tools on a tree based representation.
+
+
+== Decision Drivers
+
+- Compatibility: All existing features used to contribute tools in a tree based representation must still work to render tools in the palette component or existing palette extension points should offer the same features as the ones used in a tree based representation.
+- Reusability: The palette component should be exported in a dedicated package without dependencies on the diagram package.
+
+
+== Considered Options
+
+=== Groundwork
+
+The existing palette component must not have dependencies to the diagram package.
+
+- The draggable feature must be extracted to a parent component `DraggablePalette` in order to not have to rely on the xyflow viewport, moreover we're not planning to drag the palette rendered in a tree based representation right now (https://github.com/eclipse-sirius/sirius-web/issues/6542[issue]).
+- The `diagramPaletteToolExtensionPoint` must be modified in order to expose a `representationElementId` instead ot the xyflow `diagramElement` itself (https://github.com/eclipse-sirius/sirius-web/issues/6126[issue]). 
+
+=== First Option
+
+We will convert each `GQLTreeItemContextMenuEntry` retrieved from the backend to a `GQLTool` this will allow use to pass a custom `GQLPalette` to the palette.
+
+We will also add a `TreeToolExecutorContext` to execute tools .
+
+We will export a `useTreePalette()` hook that would expose some variables specific to a tree based representation like the selected `GQLTreeItem`.
+
+We will add a `paletteToolExtensionPoint` to render tools (first version will only render tools on the main section).
+
+
+=== Second Option
+
+We migrate existing contributions to be contributed with the `PaletteExtensionSection` (deprecated).
+
+We still convert tools retrieved from the backend to `GQLTool` and add `TreeToolExecutorContext` to execute them.
+
+
+=== Third Option
+
+We change the backend to send a `GQLPalette` instead of a `GQLTreeItemContextMenuEntry[]` and we add a proper extension point to the palette to render tools and tools section.
+
+
+== Decision Outcome
+
+The third option is the ideal solution long term as it would align the behavior of the palette between several representations and offer a single data structure to work with.
+
+We will opt for the first solution as it would allow us to have more control over the migration process and also reduce development time significantly since only the frontend will be impacted at first.
+
+We also opted for a similar process when migrating the https://github.com/eclipse-sirius/sirius-web/issues/6540[connector tools] to the palette where only the frontend was modified and the backend queries will follow afterwards.
+
+
+== Consequences
+
+=== Advantages
+
+- Less development time.
+- Offer the same features as before.
+
+
+=== Drawbacks
+
+- Not a common data structure for the palette queries.
+- Current context menu entries contributed with extension point would have to use the palette extension point to be rendered.
+
+
+== More Information
+
+=== Implementation
+
+- Groundwork should be done first
+- We'll add a temporary capability to enable the feature as it is being developed
+
+
+=== Decision Details
+
+
+
+=== References
+
+- https://github.com/eclipse-sirius/sirius-web/issues/6540[Use the palette to render connector tools]
