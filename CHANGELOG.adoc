@@ -34,6 +34,7 @@ The package `@lexical/code` is not used anymore.
 - https://github.com/eclipse-sirius/sirius-web/issues/6461[#6461] [core] If you have an implementation of `IOmniboxCommandOrderer`, it should now implements
 `IOmniboxCommandOrdererDelegate` instead.
 If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation of `IDefaultOmniboxCommandOrderer` that is part of sirius-components will be used.
+- https://github.com/eclipse-sirius/sirius-web/issues/6736[#6736] [core] `ChangeDescription#getInput(): IInput` has been modified to `ChangeDescription#getCause(): ICause`.
 
 
 === Dependency update
@@ -76,6 +77,8 @@ This package can thus be easily reused by those who want to integrate Markdown r
 Downstream applications can implement `IOmniboxCommandOrdererDelegate` to define their own ordering strategy.
 - https://github.com/eclipse-sirius/sirius-web/issues/6726[#6726] [releng] Start extracting the manual code annotated with '@generated NOT' from generated code into a spec package.
 - https://github.com/eclipse-sirius/sirius-web/issues/6538[#6538] [diagram] Align the lifecycle of the connector tool popup and the palette
+- https://github.com/eclipse-sirius/sirius-web/issues/6736[#6736] [core] Update `ChangeDescription` to accept an `ICause` as parameter instead of just `IInput`.
+This will allow us to reuse the change description to propagate more information.
 
 
 

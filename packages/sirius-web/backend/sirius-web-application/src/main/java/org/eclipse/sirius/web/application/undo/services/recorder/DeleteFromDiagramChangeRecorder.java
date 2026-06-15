@@ -76,7 +76,7 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
 
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
-        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof InvokeSingleClickOnDiagramElementToolInput invokeSingleClickOnDiagramElementToolInput && (invokeSingleClickOnDiagramElementToolInput.toolId()
+        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getCause() instanceof InvokeSingleClickOnDiagramElementToolInput invokeSingleClickOnDiagramElementToolInput && (invokeSingleClickOnDiagramElementToolInput.toolId()
                 .equals(DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID) || invokeSingleClickOnDiagramElementToolInput.toolId()
                 .equals(DeleteMultipleDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID))) {
             List<IAppearanceChange> undoAppearanceChanges = new ArrayList<>();

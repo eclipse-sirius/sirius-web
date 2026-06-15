@@ -61,7 +61,7 @@ public class EditingContextEventProcessorCleaner implements IChangeDescriptionCo
         this.disposeDeletedRepresentations(canBeDisposedSink, editingContext, changeDescription);
         this.disposeDanglingRepresentations(canBeDisposedSink, editingContext);
 
-        this.danglingRepresentationDeletionService.deleteDanglingRepresentations(changeDescription.getInput(), editingContext);
+        this.danglingRepresentationDeletionService.deleteDanglingRepresentations(changeDescription.getCause(), editingContext);
     }
 
     private void disposeDeletedRepresentations(Sinks.Many<Boolean> canBeDisposedSink, IEditingContext editingContext, ChangeDescription changeDescription) {

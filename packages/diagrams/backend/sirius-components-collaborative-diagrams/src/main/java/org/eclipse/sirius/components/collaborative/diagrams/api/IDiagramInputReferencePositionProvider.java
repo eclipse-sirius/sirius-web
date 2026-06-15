@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.api;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
-import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.events.ICause;
 
 /**
  * Provides diagram input reference position for a diagram.
@@ -23,7 +23,7 @@ import org.eclipse.sirius.components.core.api.IInput;
  */
 public interface IDiagramInputReferencePositionProvider {
 
-    boolean canHandle(IInput diagramInput);
+    boolean canHandle(ICause cause);
 
-    ReferencePosition getReferencePosition(IInput diagramInput, DiagramContext diagramContext);
+    ReferencePosition getReferencePosition(ICause cause, DiagramContext diagramContext);
 }

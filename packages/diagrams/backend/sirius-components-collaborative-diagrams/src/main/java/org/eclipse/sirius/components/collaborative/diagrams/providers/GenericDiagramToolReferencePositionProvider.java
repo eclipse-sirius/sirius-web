@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInp
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
+import org.eclipse.sirius.components.events.ICause;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,24 +46,23 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
     );
 
     @Override
-    public boolean canHandle(IInput input) {
-        return HANDLED_INPUT_TYPES.stream().anyMatch(type -> type.isInstance(input));
-
+    public boolean canHandle(ICause cause) {
+        return HANDLED_INPUT_TYPES.stream().anyMatch(type -> type.isInstance(cause));
     }
 
     @Override
-    public ReferencePosition getReferencePosition(IInput diagramInput, DiagramContext diagramContext) {
+    public ReferencePosition getReferencePosition(ICause cause, DiagramContext diagramContext) {
         ReferencePosition referencePosition = null;
 
-        if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
+        if (cause instanceof InvokeSingleClickOnDiagramElementToolInput input) {
             referencePosition = this.handleInvokeSingleClickOnDiagramElement(input, diagramContext);
-        } else if (diagramInput instanceof DropNodesInput input) {
+        } else if (cause instanceof DropNodesInput input) {
             referencePosition = this.handleDropNodes(input);
-        } else if (diagramInput instanceof DropOnDiagramInput input) {
+        } else if (cause instanceof DropOnDiagramInput input) {
             referencePosition = this.handleDropOnDiagram(input, diagramContext);
-        } else if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
+        } else if (cause instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
             referencePosition = this.handleInvokeSingleClickOnTwoDiagramElements(input);
-        } else if (diagramInput instanceof ReconnectEdgeInput input) {
+        } else if (cause instanceof ReconnectEdgeInput input) {
             referencePosition = this.handleReconnectEdge(input);
         }
 

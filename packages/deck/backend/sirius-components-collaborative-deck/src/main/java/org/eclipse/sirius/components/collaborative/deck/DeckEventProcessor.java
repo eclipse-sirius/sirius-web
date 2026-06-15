@@ -126,18 +126,18 @@ public class DeckEventProcessor implements IDeckEventProcessor {
             Deck refreshedDeckRepresentation = this.deckCreationService.refresh(this.editingContext, this.deckContext).orElse(null);
             this.deckContext = new DeckContext(refreshedDeckRepresentation, new ArrayList<>());
             if (refreshedDeckRepresentation != null) {
-                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedDeckRepresentation);
+                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, refreshedDeckRepresentation);
                 this.logger.atTrace()
                         .setMessage("Deck refreshed: {}")
                         .addArgument(refreshedDeckRepresentation.getId())
                         .log();
             }
-            this.deckEventFlux.deckRefreshed(changeDescription.getInput(), this.deckContext.deck());
+            this.deckEventFlux.deckRefreshed(changeDescription.getCause(), this.deckContext.deck());
         } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.deckContext.deck().getId())) {
             Optional<Deck> optionalReloadedDeck = this.representationSearchService.findById(this.editingContext, this.deckContext.deck().getId(), Deck.class);
             if (optionalReloadedDeck.isPresent()) {
                 this.deckContext = new DeckContext(optionalReloadedDeck.get(), new ArrayList<>());
-                this.deckEventFlux.deckRefreshed(changeDescription.getInput(), this.deckContext.deck());
+                this.deckEventFlux.deckRefreshed(changeDescription.getCause(), this.deckContext.deck());
             }
         }
     }

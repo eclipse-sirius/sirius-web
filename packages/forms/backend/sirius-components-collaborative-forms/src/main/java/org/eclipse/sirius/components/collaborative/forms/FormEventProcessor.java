@@ -254,7 +254,7 @@ public class FormEventProcessor implements IFormEventProcessor {
 
     private void emitNewForm(ChangeDescription changeDescription) {
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getInput().id(), this.currentForm.get()));
+            EmitResult emitResult = this.sink.tryEmitNext(new FormRefreshedEventPayload(changeDescription.getCause().id(), this.currentForm.get()));
             if (emitResult.isFailure()) {
                 this.logger.atWarn()
                         .setMessage("An error has occurred while emitting a FormRefreshedEventPayload: {}")
