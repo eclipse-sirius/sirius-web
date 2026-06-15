@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.eclipse.sirius.components.view.diagram.Tool;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IPostExecutionToolCustomizer;
+import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolExecutionLabelProvider;
 import org.eclipse.sirius.components.view.emf.diagram.tools.api.IToolExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.IOperationExecutor;
 import org.eclipse.sirius.components.view.emf.operations.api.OperationExecutionStatus;
@@ -46,23 +47,32 @@ public class ToolExecutor implements IToolExecutor {
 
     public static final String NAMED_INSTANCES = "NAMED_INSTANCES";
 
+    public static final String TOOL_EXECUTION_LABEL = "toolExecutionLabel";
+
     private final IIdentityService identityService;
 
     private final IOperationExecutor operationExecutor;
+
+    private final IToolExecutionLabelProvider toolLabelProvider;
 
     private final List<IPostExecutionToolCustomizer> handlerPostExecutionProviders;
 
     private final IFeedbackMessageService feedbackMessageService;
 
-    public ToolExecutor(IIdentityService identityService, IOperationExecutor operationExecutor, List<IPostExecutionToolCustomizer> handlerPostExecutionProviders, IFeedbackMessageService feedbackMessageService) {
+    public ToolExecutor(IIdentityService identityService, IOperationExecutor operationExecutor, IToolExecutionLabelProvider toolLabelProvider,
+            List<IPostExecutionToolCustomizer> handlerPostExecutionProviders,
+            IFeedbackMessageService feedbackMessageService) {
         this.identityService = Objects.requireNonNull(identityService);
         this.operationExecutor = Objects.requireNonNull(operationExecutor);
+        this.toolLabelProvider = Objects.requireNonNull(toolLabelProvider);
         this.handlerPostExecutionProviders = Objects.requireNonNull(handlerPostExecutionProviders);
         this.feedbackMessageService = Objects.requireNonNull(feedbackMessageService);
     }
 
     @Override
     public IStatus executeTool(Tool tool, AQLInterpreter interpreter, VariableManager variableManager) {
+        // Compute the label before executing the operation to ensure the executed operation has no impact on the computed label (e.g. when renaming an element)
+        String toolLabel = this.toolLabelProvider.getLabel(tool, variableManager);
         var result = this.operationExecutor.execute(interpreter, variableManager, tool.getBody());
 
         List<Message> feedbackStackedMessages = new ArrayList<>(this.feedbackMessageService.getFeedbackMessages());
@@ -80,7 +90,8 @@ public class ToolExecutor implements IToolExecutor {
                 .toList();
         Map<String, Object> parameters = Map.of(
                 Success.NEW_SELECTION, new WorkbenchSelection(selectionEntries),
-                NAMED_INSTANCES, result.newInstances()
+                NAMED_INSTANCES, result.newInstances(),
+                TOOL_EXECUTION_LABEL, toolLabel
         );
 
         IStatus status = new Success("", parameters, this.feedbackMessageService.getFeedbackMessages());

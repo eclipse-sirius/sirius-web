@@ -21,16 +21,19 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.assertj.core.api.Assertions;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariableType;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.events.DecoratedCause;
 import org.eclipse.sirius.components.representations.WorkbenchSelection;
 import org.eclipse.sirius.components.representations.WorkbenchSelectionEntry;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.services.TestChangeDescriptionConsumer;
 import org.eclipse.sirius.web.services.diagrams.ModelOperationDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
@@ -67,9 +70,13 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
     @Autowired
     private ModelOperationDiagramDescriptionProvider modelOperationDiagramDescriptionProvider;
 
+    @Autowired
+    private TestChangeDescriptionConsumer testChangeDescriptionConsumer;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
+        this.testChangeDescriptionConsumer.reset();
     }
 
     private Flux<Object> givenSubscriptionToModelOperationDiagram() {
@@ -181,8 +188,8 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
         Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
             diagramId.set(diagram.getId());
             assertThat(diagram.getNodes())
-                .anyMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
-                .noneMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
+                    .anyMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
+                    .noneMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
         });
 
         Runnable createNode = () -> {
@@ -193,14 +200,47 @@ public class ModelOperationDiagramControllerTests extends AbstractIntegrationTes
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
             assertThat(diagram.getNodes())
-                .noneMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
-                .anyMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
+                    .noneMatch(node -> node.getInsideLabel().getText().equals("sirius-web-domain"))
+                    .anyMatch(node -> node.getInsideLabel().getText().equals("componentRenamedAfterSelectedElement"));
         });
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(createNode)
                 .consumeNextWith(updatedDiagramContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram, when a tool is executed, then an event decorator is produced")
+    public void givenDiagramWhenToolIsExecutedThenAnEventDecoratorIsProduced() {
+        var flux = this.givenSubscriptionToModelOperationDiagram();
+
+        var diagramId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+        });
+
+        Runnable createNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(diagramId.get()), this.modelOperationDiagramDescriptionProvider.getCreateNodeToolId(), 0, 0, List.of())
+                .isSuccess();
+
+        Runnable checkDecoratedCause = () -> {
+            var changeDescription = this.testChangeDescriptionConsumer.getAcceptChangeDescription();
+
+            Assertions.assertThat(changeDescription).isNotNull();
+            Assertions.assertThat(changeDescription.getCause()).isInstanceOf(DecoratedCause.class);
+            var decoratedCause = (DecoratedCause) changeDescription.getCause();
+            Assertions.assertThat(decoratedCause.label()).isEqualTo("Used \"Create Component\" on the ModelOperationDiagram");
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNode)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram -> Assertions.assertThat(diagram).isNotNull()))
+                .then(checkDecoratedCause)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

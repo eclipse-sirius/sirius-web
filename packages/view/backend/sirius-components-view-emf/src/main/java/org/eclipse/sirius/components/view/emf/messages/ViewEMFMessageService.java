@@ -187,4 +187,14 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
     public String defaultSelectionDialogSelectionRequiredWithoutSelectionConfirmButtonLabel() {
         return this.messageSourceAccessor.getMessage("DEFAULT_SELECTION_DIALOG_SELECTION_REQUIRED_WITHOUT_SELECTION_CONFIRM_BUTTON_LABEL");
     }
+
+    @Override
+    public String usedToolOnTargetLabel() {
+        return this.messageSourceAccessor.getMessage("USED_TOOL_ON_TARGET_LABEL");
+    }
+
+    @Override
+    public String usedToolUnknownTargetLabel() {
+        return this.messageSourceAccessor.getMessage("USED_TOOL_UNKNOWN_TARGET_LABEL");
+    }
 }
