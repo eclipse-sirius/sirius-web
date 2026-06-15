@@ -27,10 +27,12 @@ import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteExecutor;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
+import org.eclipse.sirius.components.events.DecoratedCause;
 import org.eclipse.sirius.components.view.emf.diagram.tools.PinElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.UnPinElementToolHandler;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
+import org.eclipse.sirius.web.services.TestChangeDescriptionConsumer;
 import org.eclipse.sirius.web.services.diagrams.GroupPaletteDiagramDescriptionProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
@@ -72,11 +74,15 @@ public class InvokeSingleClickOnMultipleElementsControllerTests extends Abstract
     private GroupPaletteDiagramDescriptionProvider groupPaletteDiagramDescriptionProvider;
 
     @Autowired
+    private TestChangeDescriptionConsumer testChangeDescriptionConsumer;
+
+    @Autowired
     private UndoExecutor undoExecutor;
 
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
+        this.testChangeDescriptionConsumer.reset();
     }
 
     private Flux<Object> givenSubscriptionToLifeCycleDiagram() {
@@ -316,4 +322,44 @@ public class InvokeSingleClickOnMultipleElementsControllerTests extends Abstract
                 .verify(Duration.ofSeconds(10));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with some nodes, when we execute a tool on a group of nodes, then an event decorator is produced")
+    public void givenDiagramWithSomeNodesWhenWeExecuteToolOnGroupOfNodesThenAnEventDecoratorIsProduced() {
+        var flux = this.givenSubscriptionToLifeCycleDiagram();
+        var diagramId = new AtomicReference<String>();
+        var componentIds = new ArrayList<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+
+            var siriusWebDomainId = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode().getId();
+            var siriusWebApplicationId = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-application").getNode().getId();
+            var siriusWebInfrastructureId = new DiagramNavigator(diagram).nodeWithLabel("sirius-web-infrastructure").getNode().getId();
+
+            componentIds.add(siriusWebDomainId);
+            componentIds.add(siriusWebApplicationId);
+            componentIds.add(siriusWebInfrastructureId);
+        });
+
+        Runnable executeTool = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), componentIds, this.groupPaletteDiagramDescriptionProvider.getEditToolId(), 0, 0, List.of())
+                .isSuccess();
+
+        Runnable checkDecoratedCause = () -> {
+            var changeDescription = this.testChangeDescriptionConsumer.getAcceptChangeDescription();
+
+            assertThat(changeDescription).isNotNull();
+            assertThat(changeDescription.getCause()).isInstanceOf(DecoratedCause.class);
+            var decoratedCause = (DecoratedCause) changeDescription.getCause();
+            assertThat(decoratedCause.label()).isEqualTo("Used \"Edit labels\" on the sirius-web-domain, sirius-web-application, sirius-web-infrastructure");
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(executeTool)
+                .consumeNextWith(assertRefreshedDiagramThat(diagram -> assertThat(diagram).isNotNull()))
+                .then(checkDecoratedCause)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
 }
