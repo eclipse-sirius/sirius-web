@@ -128,7 +128,7 @@ public class GanttEventProcessor implements IGanttEventProcessor {
             this.ganttContext.update(refreshedGanttRepresentation);
 
             if (refreshedGanttRepresentation != null) {
-                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedGanttRepresentation);
+                this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, refreshedGanttRepresentation);
                 this.logger.atTrace()
                         .setMessage("Gantt refreshed: {}")
                         .addArgument(ganttId)
@@ -140,12 +140,12 @@ public class GanttEventProcessor implements IGanttEventProcessor {
                         .log();
             }
 
-            this.ganttEventFlux.ganttRefreshed(changeDescription.getInput(), this.ganttContext.getGantt());
+            this.ganttEventFlux.ganttRefreshed(changeDescription.getCause(), this.ganttContext.getGantt());
         } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.ganttContext.getGantt().getId())) {
             Optional<Gantt> reloadedGantt = this.representationSearchService.findById(this.editingContext, this.ganttContext.getGantt().getId(), Gantt.class);
             if (reloadedGantt.isPresent()) {
                 this.ganttContext.update(reloadedGantt.get());
-                this.ganttEventFlux.ganttRefreshed(changeDescription.getInput(), this.ganttContext.getGantt());
+                this.ganttEventFlux.ganttRefreshed(changeDescription.getCause(), this.ganttContext.getGantt());
             }
         }
     }

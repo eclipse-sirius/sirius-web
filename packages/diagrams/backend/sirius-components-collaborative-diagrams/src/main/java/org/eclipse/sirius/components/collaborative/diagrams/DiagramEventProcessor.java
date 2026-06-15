@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.core.api.IRepresentationInput;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,7 +173,7 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
         if (this.shouldRefresh(changeDescription)) {
             this.diagramEventConsumers.forEach(consumer -> consumer.accept(this.editingContext, this.diagramContext.diagram(), this.diagramContext.diagramEvents(), this.diagramContext.viewDeletionRequests(), this.diagramContext.viewCreationRequests(), changeDescription));
             Diagram refreshedDiagram = this.diagramCreationService.refresh(this.editingContext, this.diagramContext).orElse(null);
-            this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getInput(), this.editingContext, refreshedDiagram);
+            this.representationPersistenceStrategy.applyPersistenceStrategy(changeDescription.getCause(), this.editingContext, refreshedDiagram);
 
             if (refreshedDiagram != null) {
                 this.logger.atTrace()
@@ -182,29 +183,29 @@ public class DiagramEventProcessor implements IDiagramEventProcessor {
             }
 
             this.diagramContext = new DiagramContext(refreshedDiagram);
-            this.currentRevisionId = changeDescription.getInput().id();
+            this.currentRevisionId = changeDescription.getCause().id();
             this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_REFRESH;
 
-            ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
-            this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), refreshedDiagram, DiagramRefreshedEventPayload.CAUSE_REFRESH, referencePosition);
+            ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getCause());
+            this.diagramEventFlux.diagramRefreshed(changeDescription.getCause().id(), refreshedDiagram, DiagramRefreshedEventPayload.CAUSE_REFRESH, referencePosition);
         } else if (changeDescription.getKind().equals(ChangeKind.RELOAD_REPRESENTATION) && changeDescription.getSourceId().equals(this.diagramContext.diagram().getId())) {
             Optional<Diagram> optionalReloadedDiagram = this.representationSearchService.findById(this.editingContext, this.diagramContext.diagram().getId(), Diagram.class);
             if (optionalReloadedDiagram.isPresent()) {
                 var reloadedDiagram = optionalReloadedDiagram.get();
                 this.diagramContext = new DiagramContext(reloadedDiagram);
-                this.currentRevisionId = changeDescription.getInput().id();
+                this.currentRevisionId = changeDescription.getCause().id();
                 this.currentRevisionCause = DiagramRefreshedEventPayload.CAUSE_LAYOUT;
-                ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getInput());
-                this.diagramEventFlux.diagramRefreshed(changeDescription.getInput().id(), reloadedDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
+                ReferencePosition referencePosition = this.getReferencePosition(changeDescription.getCause());
+                this.diagramEventFlux.diagramRefreshed(changeDescription.getCause().id(), reloadedDiagram, DiagramRefreshedEventPayload.CAUSE_LAYOUT, referencePosition);
             }
         }
     }
 
-    private ReferencePosition getReferencePosition(IInput diagramInput) {
+    private ReferencePosition getReferencePosition(ICause cause) {
         return this.diagramInputReferencePositionProviders.stream()
-                .filter(handler -> handler.canHandle(diagramInput))
+                .filter(handler -> handler.canHandle(cause))
                 .findFirst()
-                .map(provider -> provider.getReferencePosition(diagramInput, this.diagramContext))
+                .map(provider -> provider.getReferencePosition(cause, this.diagramContext))
                 .orElse(null);
     }
 

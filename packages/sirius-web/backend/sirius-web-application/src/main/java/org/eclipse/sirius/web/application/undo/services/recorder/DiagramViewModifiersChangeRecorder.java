@@ -51,7 +51,7 @@ public class DiagramViewModifiersChangeRecorder implements IDiagramEventConsumer
 
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
-        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof IDiagramInput diagramInput) {
+        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getCause() instanceof IDiagramInput diagramInput) {
             List<IRepresentationChange> representationChanges = new ArrayList<>();
 
             diagramEvents.stream()

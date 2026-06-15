@@ -130,7 +130,7 @@ public class ValidationEventProcessor implements IValidationEventProcessor {
 
             this.validationContext.update(validation);
             if (this.sink.currentSubscriberCount() > 0) {
-                EmitResult emitResult = this.sink.tryEmitNext(new ValidationRefreshedEventPayload(changeDescription.getInput().id(), validation));
+                EmitResult emitResult = this.sink.tryEmitNext(new ValidationRefreshedEventPayload(changeDescription.getCause().id(), validation));
                 if (emitResult.isFailure()) {
                     this.logger.atWarn()
                             .setMessage("An error has occurred while emitting a ValidationRefreshedEventPayload: {}")

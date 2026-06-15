@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.gantt.dto.GanttRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +45,10 @@ public class GanttEventFlux {
         this.currentGantt = Objects.requireNonNull(currentGantt);
     }
 
-    public void ganttRefreshed(IInput input, Gantt newGantt) {
+    public void ganttRefreshed(ICause cause, Gantt newGantt) {
         this.currentGantt = newGantt;
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new GanttRefreshedEventPayload(input.id(), this.currentGantt));
+            EmitResult emitResult = this.sink.tryEmitNext(new GanttRefreshedEventPayload(cause.id(), this.currentGantt));
             if (emitResult.isFailure()) {
                 this.logger.atWarn()
                         .setMessage("An error has occurred while emitting a GanttRefreshedEventPayload: {}")

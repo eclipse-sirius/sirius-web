@@ -53,6 +53,7 @@ public class ViewEMFMessageService implements IViewEMFMessageService {
         return this.messageSourceAccessor.getMessage("CORE_PROPERTIES");
     }
 
+    @Override
     public String defaultQuickToolAdjustSize() {
         return this.messageSourceAccessor.getMessage("ADJUST_SIZE");
     }

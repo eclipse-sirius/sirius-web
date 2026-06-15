@@ -68,7 +68,7 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
 
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
-        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof IDiagramInput diagramInput) {
+        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getCause() instanceof IDiagramInput diagramInput) {
             List<ViewCreationRequest> undoViewCreationRequests = new ArrayList<>();
             List<ViewDeletionRequest> undoViewDeletionRequests = new ArrayList<>();
             List<ViewCreationRequest> redoViewCreationRequests = new ArrayList<>(viewCreationRequests);
@@ -118,7 +118,6 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                         var diagramHideElementChange = new DiagramHideElementChange(diagramInput.id(), diagramInput.representationId(), Set.of(previousNode.getId()), true, false);
                         representationChanges.add(diagramHideElementChange);
                     }
-
                     var previousNodeLayoutData = previousDiagram.getLayoutData().nodeLayoutData();
                     if (previousNodeLayoutData.containsKey(previousNode.getId())) {
                         var undoPositionEvent = new DiagramNodeLayoutEvent(previousNode.getId(), previousNodeLayoutData.get(previousNode.getId()));
@@ -142,7 +141,6 @@ public class ViewRequestChangeRecorder implements IDiagramEventConsumer {
                                     representationChanges.addAll(diagramLabelLayoutChange);
                                 }
                             });
-
                 }
                 var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(diagramInput.id(), diagramInput.representationId(), undoAppearanceChanges, List.of());
                 representationChanges.add(diagramNodeAppearanceChange);

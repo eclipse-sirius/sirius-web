@@ -52,7 +52,7 @@ public class DiagramLayoutChangeRecorder implements IDiagramEventConsumer {
 
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
-        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof LayoutDiagramInput layoutDiagramInput) {
+        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getCause() instanceof LayoutDiagramInput layoutDiagramInput) {
             List<IRepresentationChange> representationChanges = new ArrayList<>();
             List<DiagramNodeLayoutEvent> undoNodeLayoutEvents = new ArrayList<>();
             List<DiagramNodeLayoutEvent> redoNodeLayoutEvents = new ArrayList<>();

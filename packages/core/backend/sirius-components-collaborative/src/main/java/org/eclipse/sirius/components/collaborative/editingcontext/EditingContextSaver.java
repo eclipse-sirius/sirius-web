@@ -42,7 +42,7 @@ public class EditingContextSaver implements IChangeDescriptionConsumer {
     @Override
     public void postAccept(Sinks.Many<IPayload> payloadSink, Sinks.Many<Boolean> canBeDisposedSink, IEditingContext editingContext, ChangeDescription changeDescription) {
         if (ChangeKind.SEMANTIC_CHANGE.equals(changeDescription.getKind())) {
-            this.editingContextPersistenceService.persist(changeDescription.getInput(), editingContext);
+            this.editingContextPersistenceService.persist(changeDescription.getCause(), editingContext);
         }
     }
 }

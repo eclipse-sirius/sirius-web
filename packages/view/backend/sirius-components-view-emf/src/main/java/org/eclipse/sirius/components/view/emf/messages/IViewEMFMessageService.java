@@ -109,6 +109,7 @@ public interface IViewEMFMessageService {
             return "";
         }
 
+        @Override
         public String defaultQuickToolAdjustSize() {
             return "";
         }

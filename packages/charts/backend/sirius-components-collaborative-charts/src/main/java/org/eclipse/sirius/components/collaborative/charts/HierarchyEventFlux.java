@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.charts.hierarchy.Hierarchy;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.events.ICause;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,10 +44,10 @@ public class HierarchyEventFlux {
         this.currentHierarchy = Objects.requireNonNull(currentHierarchy);
     }
 
-    public void hierarchyRefreshed(IInput input, Hierarchy newHierarchy) {
+    public void hierarchyRefreshed(ICause cause, Hierarchy newHierarchy) {
         this.currentHierarchy = newHierarchy;
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new HierarchyRefreshedEventPayload(input.id(), this.currentHierarchy));
+            EmitResult emitResult = this.sink.tryEmitNext(new HierarchyRefreshedEventPayload(cause.id(), this.currentHierarchy));
             if (emitResult.isFailure()) {
                 this.logger.atWarn()
                         .setMessage("An error has occurred while emitting a HierarchyRefreshedEventPayload: {}")
