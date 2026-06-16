@@ -148,3 +148,51 @@ test.describe('diagram', () => {
     );
   });
 });
+
+test.describe('diagram', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await page.addInitScript(() => {
+      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
+      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
+    });
+
+    const project = await new PlaywrightProject(request).createProject('simple-node', 'blank-project');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramNode.xml');
+    await playwrightExplorer.expand('diagramNode.xml');
+    await playwrightExplorer.createRepresentation('Root', 'diagramNode - node', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test("when there is a element describe with a rectangular node, then ReactFlow's internal dimensions are identical to those of the DOM", async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const rectangularNode = new PlaywrightNode(page, 'Node');
+    const reactFlowSize = await rectangularNode.getReactFlowSize();
+    const domSize = await rectangularNode.nodeStyleLocator.boundingBox();
+    expect(reactFlowSize.width).toBe(domSize?.width);
+    expect(reactFlowSize.height).toBe(domSize?.height);
+  });
+
+  test("when there is a element describe with a iconLabel node, then ReactFlow's internal dimensions are identical to those of the DOM", async ({
+    page,
+  }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    const rectangularNode = new PlaywrightNode(page, 'Node', 'IconLabel');
+    const reactFlowSize = await rectangularNode.getReactFlowSize();
+    const domSize = await rectangularNode.nodeStyleLocator.boundingBox();
+    expect(reactFlowSize.width).toBe(domSize?.width);
+    expect(reactFlowSize.height).toBe(domSize?.height);
+  });
+});

@@ -101,7 +101,6 @@ export const prepareLayoutArea = (
       const element: JSX.Element = createElement('div', {
         id: `${node.data.insideLabel.id}-label`,
         key: `${node.data.insideLabel.id}-label`,
-        role: 'button', // role applied by react flow
         style: {
           maxWidth: node.data.insideLabel?.overflowStrategy === 'NONE' ? undefined : insideLabelConstraintWidth,
         },
@@ -122,7 +121,6 @@ export const prepareLayoutArea = (
       const element: JSX.Element = createElement('div', {
         id: `${outsideLabel.id}-label`,
         key: `${outsideLabel.id}-label`,
-        role: 'button', // role applied by react flow
         style: { maxWidth: outsideLabel.overflowStrategy === 'NONE' ? undefined : node.width },
         children,
       });
@@ -142,7 +140,6 @@ export const prepareLayoutArea = (
       const element: JSX.Element = createElement('div', {
         id: `${edge.data.label.id}-label`,
         key: `${edge.data.label.id}-label`,
-        role: 'button',
         children,
       });
       labelElements.push(element);
@@ -159,7 +156,6 @@ export const prepareLayoutArea = (
       const element: JSX.Element = createElement('div', {
         id: `${edge.data.beginLabel.id}-label`,
         key: `${edge.data.beginLabel.id}-label`,
-        role: 'button',
         children,
       });
       labelElements.push(element);
@@ -176,7 +172,6 @@ export const prepareLayoutArea = (
       const element: JSX.Element = createElement('div', {
         id: `${edge.data.endLabel.id}-label`,
         key: `${edge.data.endLabel.id}-label`,
-        role: 'button',
         children,
       });
       labelElements.push(element);

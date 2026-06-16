@@ -50,8 +50,8 @@ test.describe('diagram - auto-layout', () => {
     const dspPosition = await dspNode.getReactFlowXYPosition();
     expect(dspPosition.x).toBeLessThanOrEqual(124);
     expect(dspPosition.x).toBeGreaterThanOrEqual(120);
-    expect(dspPosition.y).toBeLessThanOrEqual(36);
-    expect(dspPosition.y).toBeGreaterThanOrEqual(32);
+    expect(dspPosition.y).toBeLessThanOrEqual(38);
+    expect(dspPosition.y).toBeGreaterThanOrEqual(34);
   });
 
   test('when moving a node on an auto-layout diagram, then move is reset to its default position', async ({ page }) => {

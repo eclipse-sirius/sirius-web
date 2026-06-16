@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<diagramnode:Root xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagramnode="domain://diagramNode">
+	<entity1s name="Node" />
+</diagramnode:Root>
