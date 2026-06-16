@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.collaborative.deck.dto.DeckRefreshedEventPa
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.deck.Deck;
+import org.eclipse.sirius.components.events.ICause;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,10 +45,10 @@ public class DeckEventFlux {
         this.currentDeck = Objects.requireNonNull(currentDeck);
     }
 
-    public void deckRefreshed(IInput input, Deck newDeck) {
+    public void deckRefreshed(ICause cause, Deck newDeck) {
         this.currentDeck = newDeck;
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new DeckRefreshedEventPayload(input.id(), this.currentDeck));
+            EmitResult emitResult = this.sink.tryEmitNext(new DeckRefreshedEventPayload(cause.id(), this.currentDeck));
             if (emitResult.isFailure()) {
                 this.logger.atWarn()
                         .setMessage("An error has occurred while emitting a DeckRefreshedEventPayload: {}")

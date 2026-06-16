@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.ISubscriptionManager;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.IRepresentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,9 +56,9 @@ public class HierarchyEventProcessor implements IHierarchyEventProcessor {
     }
 
     @Override
-    public void update(IInput input, Hierarchy hierarchy) {
+    public void update(ICause cause, Hierarchy hierarchy) {
         this.hierarchyContext = new HierarchyContext(hierarchy);
-        this.hierarchyEventFlux.hierarchyRefreshed(input, hierarchy);
+        this.hierarchyEventFlux.hierarchyRefreshed(cause, hierarchy);
     }
 
     @Override

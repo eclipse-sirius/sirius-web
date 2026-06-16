@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2022 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IInput;
+import org.eclipse.sirius.components.events.ICause;
 
 /**
  * The change description is used to express the changes that have been performed in response to an input in the
@@ -32,7 +33,7 @@ public class ChangeDescription {
 
     private final String sourceId;
 
-    private final IInput input;
+    private final ICause cause;
 
     private final Map<String, Object> parameters;
 
@@ -41,9 +42,17 @@ public class ChangeDescription {
     }
 
     public ChangeDescription(String kind, String sourceId, IInput input, Map<String, Object> parameters) {
+        this(kind, sourceId, (ICause) input, parameters);
+    }
+
+    public ChangeDescription(String kind, String sourceId, ICause cause) {
+        this(kind, sourceId, cause, new HashMap<>());
+    }
+
+    public ChangeDescription(String kind, String sourceId, ICause cause, Map<String, Object> parameters) {
         this.kind = Objects.requireNonNull(kind);
         this.sourceId = Objects.requireNonNull(sourceId);
-        this.input = Objects.requireNonNull(input);
+        this.cause = Objects.requireNonNull(cause);
         this.parameters = Objects.requireNonNull(parameters);
     }
 
@@ -55,8 +64,8 @@ public class ChangeDescription {
         return this.sourceId;
     }
 
-    public IInput getInput() {
-        return this.input;
+    public ICause getCause() {
+        return this.cause;
     }
 
     public Map<String, Object> getParameters() {

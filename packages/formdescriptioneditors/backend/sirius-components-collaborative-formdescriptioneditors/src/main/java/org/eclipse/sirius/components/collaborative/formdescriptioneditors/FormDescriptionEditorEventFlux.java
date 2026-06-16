@@ -17,6 +17,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.formdescriptioneditors.dto.FormDescriptionEditorRefreshedEventPayload;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,10 +45,10 @@ public class FormDescriptionEditorEventFlux {
         this.currentFormDescriptionEditor = Objects.requireNonNull(currentFormDescriptionEditor);
     }
 
-    public void formDescriptionEditorRefreshed(IInput input, FormDescriptionEditor newFormDescriptionEditor) {
+    public void formDescriptionEditorRefreshed(ICause cause, FormDescriptionEditor newFormDescriptionEditor) {
         this.currentFormDescriptionEditor = newFormDescriptionEditor;
         if (this.sink.currentSubscriberCount() > 0) {
-            EmitResult emitResult = this.sink.tryEmitNext(new FormDescriptionEditorRefreshedEventPayload(input.id(), this.currentFormDescriptionEditor));
+            EmitResult emitResult = this.sink.tryEmitNext(new FormDescriptionEditorRefreshedEventPayload(cause.id(), this.currentFormDescriptionEditor));
             if (emitResult.isFailure()) {
                 this.logger.atWarn()
                         .setMessage("An error has occurred while emitting a FormDescriptionEditorRefreshedEventPayload: {}")

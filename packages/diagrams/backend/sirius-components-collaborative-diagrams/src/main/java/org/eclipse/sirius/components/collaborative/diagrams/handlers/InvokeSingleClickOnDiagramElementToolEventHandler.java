@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,8 @@ import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
 import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
+import org.eclipse.sirius.components.events.DecoratedCause;
+import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -57,6 +59,8 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
     public static final String VIEW_DELETION_REQUESTS = "viewDeletionRequests";
 
     public static final String DIAGRAM_EVENTS = "diagramEvents";
+
+    public static final String TOOL_EXECUTION_LABEL = "toolExecutionLabel";
 
     private final ICollaborativeDiagramMessageService messageService;
 
@@ -122,8 +126,14 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
                 if (diagramEventsParameter instanceof List<?> diagramEvents && diagramEvents.stream().allMatch(IDiagramEvent.class::isInstance)) {
                     diagramContext.diagramEvents().addAll((Collection<? extends IDiagramEvent>) diagramEvents);
                 }
+                Object toolExecutionLabelParameter = success.getParameters().get(TOOL_EXECUTION_LABEL);
+                if (toolExecutionLabelParameter instanceof String toolExecutionLabel) {
+                    ICause decoratedCause = new DecoratedCause(toolExecutionLabel, input);
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), decoratedCause);
+                } else {
+                    changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), input);
+                }
                 payload = new InvokeSingleClickOnDiagramElementToolSuccessPayload(diagramInput.id(), newSelection, success.getMessages());
-                changeDescription = new ChangeDescription(ChangeKind.SEMANTIC_CHANGE, diagramInput.representationId(), diagramInput);
             } else if (status instanceof Failure failure) {
                 payload = new ErrorPayload(diagramInput.id(), failure.getMessages());
             }
@@ -132,5 +142,4 @@ public class InvokeSingleClickOnDiagramElementToolEventHandler implements IDiagr
         payloadSink.tryEmitValue(payload);
         changeDescriptionSink.tryEmitNext(changeDescription);
     }
-
 }

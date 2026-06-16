@@ -13,6 +13,8 @@
 package org.eclipse.sirius.components.collaborative.diagrams.providers;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
@@ -23,8 +25,10 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClic
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnTwoDiagramElementsToolInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
+import org.eclipse.sirius.components.core.api.ICausalityChainVisitor;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
+import org.eclipse.sirius.components.events.ICause;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,26 +48,37 @@ public class GenericDiagramToolReferencePositionProvider implements IDiagramInpu
             ReconnectEdgeInput.class
     );
 
-    @Override
-    public boolean canHandle(IInput input) {
-        return HANDLED_INPUT_TYPES.stream().anyMatch(type -> type.isInstance(input));
+    private final ICausalityChainVisitor causalityChainVisitor;
 
+    public GenericDiagramToolReferencePositionProvider(ICausalityChainVisitor causalityChainVisitor) {
+        this.causalityChainVisitor = Objects.requireNonNull(causalityChainVisitor);
     }
 
     @Override
-    public ReferencePosition getReferencePosition(IInput diagramInput, DiagramContext diagramContext) {
+    public boolean canHandle(ICause cause) {
+        return this.causalityChainVisitor.findFirstCauseOfType(cause, IInput.class)
+                .map(input -> HANDLED_INPUT_TYPES.stream().anyMatch(type -> type.isInstance(input)))
+                .orElse(false);
+    }
+
+    @Override
+    public ReferencePosition getReferencePosition(ICause cause, DiagramContext diagramContext) {
         ReferencePosition referencePosition = null;
 
-        if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
-            referencePosition = this.handleInvokeSingleClickOnDiagramElement(input, diagramContext);
-        } else if (diagramInput instanceof DropNodesInput input) {
-            referencePosition = this.handleDropNodes(input);
-        } else if (diagramInput instanceof DropOnDiagramInput input) {
-            referencePosition = this.handleDropOnDiagram(input, diagramContext);
-        } else if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
-            referencePosition = this.handleInvokeSingleClickOnTwoDiagramElements(input);
-        } else if (diagramInput instanceof ReconnectEdgeInput input) {
-            referencePosition = this.handleReconnectEdge(input);
+        Optional<IInput> optionalInput = this.causalityChainVisitor.findFirstCauseOfType(cause, IInput.class);
+        if (optionalInput.isPresent()) {
+            IInput diagramInput = optionalInput.get();
+            if (diagramInput instanceof InvokeSingleClickOnDiagramElementToolInput input) {
+                referencePosition = this.handleInvokeSingleClickOnDiagramElement(input, diagramContext);
+            } else if (diagramInput instanceof DropNodesInput input) {
+                referencePosition = this.handleDropNodes(input);
+            } else if (diagramInput instanceof DropOnDiagramInput input) {
+                referencePosition = this.handleDropOnDiagram(input, diagramContext);
+            } else if (diagramInput instanceof InvokeSingleClickOnTwoDiagramElementsToolInput input) {
+                referencePosition = this.handleInvokeSingleClickOnTwoDiagramElements(input);
+            } else if (diagramInput instanceof ReconnectEdgeInput input) {
+                referencePosition = this.handleReconnectEdge(input);
+            }
         }
 
         return referencePosition;

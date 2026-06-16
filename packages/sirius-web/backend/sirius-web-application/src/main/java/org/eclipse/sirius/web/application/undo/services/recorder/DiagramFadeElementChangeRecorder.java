@@ -14,11 +14,14 @@ package org.eclipse.sirius.web.application.undo.services.recorder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
+import org.eclipse.sirius.components.core.api.ICausalityChainVisitor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -37,9 +40,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class DiagramFadeElementChangeRecorder implements IDiagramEventConsumer {
 
+    private final ICausalityChainVisitor causalityChainVisitor;
+
+    public DiagramFadeElementChangeRecorder(ICausalityChainVisitor causalityChainVisitor) {
+        this.causalityChainVisitor = Objects.requireNonNull(causalityChainVisitor);
+    }
+
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
-        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof IDiagramInput diagramInput) {
+        Optional<IDiagramInput> optionalDiagramInputCause = this.causalityChainVisitor.findFirstCauseOfType(changeDescription.getCause(), IDiagramInput.class);
+        if (editingContext instanceof EditingContext siriusEditingContext && optionalDiagramInputCause.isPresent()) {
+            IDiagramInput diagramInput = optionalDiagramInputCause.get();
             List<IRepresentationChange> representationChanges = new ArrayList<>();
 
             diagramEvents.stream()

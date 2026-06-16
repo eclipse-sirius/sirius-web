@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.api;
+package org.eclipse.sirius.components.core.api;
 
-import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
+import java.util.Optional;
+
 import org.eclipse.sirius.components.events.ICause;
 
 /**
- * Provides diagram input reference position for a diagram.
+ * Provides helper methods to manipulate causality chains.
  *
- * @author frouene
+ * @author gdaniel
  */
-public interface IDiagramInputReferencePositionProvider {
+public interface ICausalityChainVisitor {
 
-    boolean canHandle(ICause cause);
-
-    ReferencePosition getReferencePosition(ICause diagramInput, DiagramContext diagramContext);
+    <T extends ICause> Optional<T> findFirstCauseOfType(ICause cause, Class<T> type);
 }

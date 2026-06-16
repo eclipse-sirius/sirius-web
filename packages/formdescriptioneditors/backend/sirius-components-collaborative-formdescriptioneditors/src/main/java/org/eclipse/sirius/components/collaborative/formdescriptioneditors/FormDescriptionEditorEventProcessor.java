@@ -140,7 +140,7 @@ public class FormDescriptionEditorEventProcessor implements IFormDescriptionEdit
                         .log();
 
                 this.formDescriptionEditorContext.update(refreshedFormDescriptionEditor);
-                this.formDescriptionEditorEventFlux.formDescriptionEditorRefreshed(changeDescription.getInput(), refreshedFormDescriptionEditor);
+                this.formDescriptionEditorEventFlux.formDescriptionEditorRefreshed(changeDescription.getCause(), refreshedFormDescriptionEditor);
             }
         }
     }

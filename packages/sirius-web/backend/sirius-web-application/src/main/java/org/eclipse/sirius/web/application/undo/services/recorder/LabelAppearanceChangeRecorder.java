@@ -23,6 +23,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventCon
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
+import org.eclipse.sirius.components.core.api.ICausalityChainVisitor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.ViewCreationRequest;
@@ -48,14 +49,20 @@ public class LabelAppearanceChangeRecorder implements IDiagramEventConsumer {
 
     private final List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders;
 
-    public LabelAppearanceChangeRecorder(IDiagramQueryService diagramQueryService, List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders) {
+    private final ICausalityChainVisitor causalityChainVisitor;
+
+    public LabelAppearanceChangeRecorder(IDiagramQueryService diagramQueryService, List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders,
+            ICausalityChainVisitor causalityChainVisitor) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.labelAppearanceChangeUndoRecorders = Objects.requireNonNull(labelAppearanceChangeUndoRecorders);
+        this.causalityChainVisitor = Objects.requireNonNull(causalityChainVisitor);
     }
 
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
-        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getInput() instanceof IDiagramInput diagramInput) {
+        Optional<IDiagramInput> optionalDiagramInputCause = this.causalityChainVisitor.findFirstCauseOfType(changeDescription.getCause(), IDiagramInput.class);
+        if (editingContext instanceof EditingContext siriusEditingContext && optionalDiagramInputCause.isPresent()) {
+            IDiagramInput diagramInput = optionalDiagramInputCause.get();
             List<IRepresentationChange> representationChanges = new ArrayList<>();
             var editAppearanceChanges = diagramEvents.stream()
                     .filter(EditAppearanceEvent.class::isInstance)
