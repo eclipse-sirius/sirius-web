@@ -701,7 +701,7 @@ The only difference is that this new marker has a second range of two dots after
 Downstream applications can now implement `IUndoRedoIgnoreInputPredicate` to ignore additional inputs from the `UndoRedoRecorder`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6027[#6027] [diagram] Improve visual feedback when dragging a node to show which targets are compatible/valid/invalid for a drop
 - https://github.com/eclipse-sirius/sirius-web/issues/6113[#6113] [core] Allow the customization of the workbench configuration
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Move diagram layout configurations from frontend to backend
 
 
 == 2025.12.0

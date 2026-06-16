@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { expect, test, Page } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
@@ -269,8 +269,8 @@ test.describe('diagram - drag and drop of multiple elements', () => {
 
     await page.waitForFunction(
       () => {
-        const targetNode = document.querySelector(`[data-testid="FreeForm - Target"]`);
-        const sourceNode = document.querySelector(`[data-testid="FreeForm - Source"]`);
+        const targetNode = document.querySelector('[data-testid="rf__wrapper"] [data-testid="FreeForm - Target"]');
+        const sourceNode = document.querySelector('[data-testid="rf__wrapper"] [data-testid="FreeForm - Source"]');
         return (
           targetNode &&
           window.getComputedStyle(targetNode).getPropertyValue('box-shadow')?.length > 0 &&
