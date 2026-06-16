@@ -66,6 +66,7 @@ It also enables us to disable panel resize for a better control when needed.
 - https://github.com/eclipse-sirius/sirius-web/issues/6528[#6528] [diagram] Restore reset label position and size functionality for edge-on-edge labels
 - [releng] Update the versions of Express, Puppeteer and Chrome to more recent compatible ones in the `diagram-image-server` application.
 - https://github.com/eclipse-sirius/sirius-web/issues/6574[#6574] [diagram] Prevent arrange all action from failing when an edge exists between a parent node and its child.
+- https://github.com/eclipse-sirius/sirius-web/issues/6599[#6599] [diagram] Remove role `button` on the nodes computed during internal layout.
 
 
 === New Features

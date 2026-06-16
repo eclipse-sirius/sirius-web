@@ -46,11 +46,11 @@ test.describe('diagram - growable list', () => {
     const list2NodeSize = await list2Node.getReactFlowSize('List 2');
     const list3NodeSize = await list3Node.getReactFlowSize('List 3');
 
-    expect(list1NodeSize.height).toBeGreaterThanOrEqual(173);
-    expect(list1NodeSize.height).toBeLessThanOrEqual(174);
+    expect(list1NodeSize.height).toBeGreaterThanOrEqual(177);
+    expect(list1NodeSize.height).toBeLessThanOrEqual(178);
     expect(list2NodeSize.height).toBe(70);
-    expect(list3NodeSize.height).toBeGreaterThanOrEqual(146);
-    expect(list3NodeSize.height).toBeLessThanOrEqual(147);
+    expect(list3NodeSize.height).toBeGreaterThanOrEqual(144);
+    expect(list3NodeSize.height).toBeLessThanOrEqual(145);
 
     expect(list1NodeSize.width).toBe(150);
     expect(list2NodeSize.width).toBe(150);
@@ -60,8 +60,8 @@ test.describe('diagram - growable list', () => {
   test('when a sub node is hide, then the parent node is resized', async ({ page }) => {
     const growableListNode = new PlaywrightNode(page, 'Growable', 'List');
     const growableListNodeSize = await growableListNode.getReactFlowSize();
-    expect(growableListNodeSize.height).toBeGreaterThanOrEqual(425);
-    expect(growableListNodeSize.height).toBeLessThanOrEqual(426.5);
+    expect(growableListNodeSize.height).toBeGreaterThanOrEqual(431);
+    expect(growableListNodeSize.height).toBeLessThanOrEqual(432.5);
     expect(growableListNodeSize.width).toBe(152);
 
     const list2Node = new PlaywrightNode(page, 'Growable', 'FreeForm', 2);
