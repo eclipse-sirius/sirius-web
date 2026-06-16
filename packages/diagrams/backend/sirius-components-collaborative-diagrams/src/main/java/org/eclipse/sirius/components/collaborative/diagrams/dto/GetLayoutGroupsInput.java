@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLLayoutConfiguration } from '../layout/arrange-all/useLayoutConfigurations.types';
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-export interface ArrangeAllButtonProps {
-  disabled: boolean;
-}
+import java.util.UUID;
 
-export interface ArrangeAllButtonState {
-  arrangeAllInProgress: boolean;
-  arrangeAllMenuOpen: boolean;
-  lastUsedLayout: GQLLayoutConfiguration | null;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+
+/**
+ * The input for the layout groups query.
+ *
+ * @author ocailleau
+ */
+public record GetLayoutGroupsInput(UUID id, String editingContextId, String representationId) implements IDiagramInput {
 }

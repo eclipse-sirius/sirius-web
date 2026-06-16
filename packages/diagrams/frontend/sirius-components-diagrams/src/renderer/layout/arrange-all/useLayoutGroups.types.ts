@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,19 +10,22 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface UseLayoutConfigurationsValue {
-  layoutConfigurations: GQLLayoutConfiguration[] | null;
-  loading: boolean;
+
+import { GQLLayoutConfiguration } from './useLayoutConfigurations.types';
+
+export interface UseLayoutGroupsValue {
+  loadLayoutGroups: () => Promise<GQLLayoutGroup[]>;
 }
 
-export interface GQLGetLayoutConfigurationsVariables {
+export interface GQLGetLayoutGroupsVariables {
   editingContextId: string;
   representationId: string;
 }
 
-export interface GQLGetLayoutConfigurationsData {
+export interface GQLGetLayoutGroupsData {
   viewer: GQLViewer;
 }
+
 export interface GQLViewer {
   editingContext: GQLEditingContext;
 }
@@ -33,8 +36,6 @@ export interface GQLEditingContext {
 
 export interface GQLRepresentationMetadata {
   id: string;
-  label: string;
-  kind: string;
   description: GQLRepresentationDescription;
 }
 
@@ -44,12 +45,11 @@ export interface GQLRepresentationDescription {
 }
 
 export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  layoutConfigurations: GQLLayoutConfiguration[];
+  layoutGroups: GQLLayoutGroup[];
 }
 
-export interface GQLLayoutConfiguration {
+export interface GQLLayoutGroup {
   id: string;
-  label: string;
-  iconURL: string[];
-  layoutOptions: { [key: string]: string };
+  nodeIds: string[];
+  layoutConfiguration?: GQLLayoutConfiguration;
 }

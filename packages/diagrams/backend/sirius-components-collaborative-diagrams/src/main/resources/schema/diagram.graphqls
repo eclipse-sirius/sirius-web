@@ -452,6 +452,8 @@ type DiagramDescription implements RepresentationDescription {
   toolbar: DiagramToolbar
   palette(diagramElementIds: [ID!]): Palette!
   actions(diagramElementId: ID!): [Action!]!
+  layoutConfigurations: [LayoutConfiguration!]!
+  layoutGroups: [LayoutGroup!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
@@ -502,6 +504,24 @@ type Action {
   id: ID!
   tooltip: String!
   iconURLs: [String!]!
+}
+
+type LayoutConfiguration {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  layoutOptions: [LayoutOptionEntry!]!
+}
+
+type LayoutOptionEntry {
+  key: String!
+  value: String!
+}
+
+type LayoutGroup {
+  id: ID!
+  nodeIds: [ID!]!
+  layoutConfiguration: LayoutConfiguration!
 }
 
 type ManageVisibilityAction {
