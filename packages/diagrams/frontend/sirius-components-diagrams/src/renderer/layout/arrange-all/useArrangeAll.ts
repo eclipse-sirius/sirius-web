@@ -19,6 +19,8 @@ import { RawDiagram } from '../layout.types';
 import { useLayout } from '../useLayout';
 import { useSynchronizeLayoutData } from '../useSynchronizeLayoutData';
 import { UseArrangeAllValue } from './useArrangeAll.types';
+import { useArrangeOnGroups } from './useArrangeOnGroups';
+import { GQLLayoutGroup } from './useLayoutGroups.types';
 
 export const useArrangeAll = (): UseArrangeAllValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
@@ -27,26 +29,34 @@ export const useArrangeAll = (): UseArrangeAllValue => {
   const { fitView } = useFitView();
   const { elkLayout } = useElkLayout();
 
-  const arrangeAll = async (layoutOptions: LayoutOptions): Promise<void> => {
-    await elkLayout(getNodes(), getEdges(), layoutOptions).then(async (laidOutDiagramWithElk: RawDiagram) => {
-      const diagramToLayout: RawDiagram = {
-        nodes: laidOutDiagramWithElk.nodes,
-        edges: laidOutDiagramWithElk.edges,
-      };
-      const layoutPromise = new Promise<void>((resolve) => {
-        layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
-          setNodes(laidOutDiagram.nodes);
-          setEdges(laidOutDiagram.edges);
-          const finalDiagram: RawDiagram = {
-            nodes: laidOutDiagram.nodes,
-            edges: laidOutDiagram.edges,
-          };
-          fitView({ duration: 200, nodes: laidOutDiagram.nodes });
-          synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'ACTIVATE');
-          resolve();
-        });
+  const arrangeAll = async (layoutOptions: LayoutOptions, groups?: GQLLayoutGroup[]): Promise<void> => {
+    let finalNodes = getNodes();
+    let finalEdges = getEdges();
+    if (groups && groups.length > 0) {
+      const diagramGroup = await useArrangeOnGroups(finalNodes, finalEdges, groups, layoutOptions, elkLayout);
+      finalNodes = diagramGroup.nodes;
+      finalEdges = diagramGroup.edges;
+    } else {
+      const laidOutDiagramWithElk = await elkLayout(finalNodes, getEdges(), layoutOptions);
+      finalNodes = laidOutDiagramWithElk.nodes;
+      finalEdges = laidOutDiagramWithElk.edges;
+    }
+    const diagramToLayout: RawDiagram = {
+      nodes: finalNodes,
+      edges: finalEdges,
+    };
+    await new Promise<void>((resolve) => {
+      layout(diagramToLayout, diagramToLayout, null, 'UNDEFINED', (laidOutDiagram) => {
+        setNodes(laidOutDiagram.nodes);
+        setEdges(laidOutDiagram.edges);
+        const finalDiagram: RawDiagram = {
+          nodes: laidOutDiagram.nodes,
+          edges: laidOutDiagram.edges,
+        };
+        fitView({ duration: 200, nodes: laidOutDiagram.nodes });
+        synchronizeLayoutData(crypto.randomUUID(), 'layout', finalDiagram, 'ACTIVATE');
+        resolve();
       });
-      await layoutPromise;
     });
   };
 

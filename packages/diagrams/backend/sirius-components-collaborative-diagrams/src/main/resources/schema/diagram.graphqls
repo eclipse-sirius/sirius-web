@@ -453,6 +453,7 @@ type DiagramDescription implements RepresentationDescription {
   palette(diagramElementIds: [ID!]): Palette!
   actions(diagramElementId: ID!): [Action!]!
   layoutConfigurations: [LayoutConfiguration!]!
+  layoutGroups: [LayoutGroup!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
@@ -515,6 +516,12 @@ type LayoutConfiguration {
 type LayoutOptionEntry {
   key: String!
   value: String!
+}
+
+type LayoutGroup {
+  id: ID!
+  nodeIds: [ID!]!
+  layoutConfiguration: LayoutConfiguration!
 }
 
 type ManageVisibilityAction {

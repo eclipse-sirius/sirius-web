@@ -9,7 +9,7 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
- ******************************************************************************/
+ *******************************************************************************/
 package org.eclipse.sirius.web.application.studio.services;
 
 import java.util.List;

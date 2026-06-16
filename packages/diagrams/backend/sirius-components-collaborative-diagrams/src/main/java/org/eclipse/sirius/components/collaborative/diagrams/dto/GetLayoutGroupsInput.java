@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { LayoutOptions } from 'elkjs/lib/elk-api';
-import { GQLLayoutGroup } from './useLayoutGroups.types';
+package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
-export interface UseArrangeAllValue {
-  arrangeAll: (layoutOptions: LayoutOptions, groups?: GQLLayoutGroup[]) => Promise<void>;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+
+/**
+ * The input for the layout groups query.
+ *
+ * @author ocailleau
+ */
+public record GetLayoutGroupsInput(UUID id, String editingContextId, String representationId) implements IDiagramInput {
 }
