@@ -30,9 +30,6 @@ export interface ExplorerSubscriptionProviderState {
   filterBarText: string | null;
   filterBarTreeFiltering: boolean;
   treeFilters: TreeFilter[];
-  activeTreeDescriptionId: string | null;
-  expanded: { [key: string]: string[] };
-  maxDepth: { [key: string]: number };
   tree: GQLTree | null;
   selectedTreeItemIds: string[];
   selectionPivotTreeItemId: string | null;
