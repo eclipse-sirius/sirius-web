@@ -63,12 +63,13 @@ export { ConnectionTargetHandle } from './renderer/handles/ConnectionTargetHandl
 export { useRefreshConnectionHandles } from './renderer/handles/useRefreshConnectionHandles';
 export { Label } from './renderer/Label';
 export { computePreviousPosition, computePreviousSize } from './renderer/layout/bounds';
-export type { ForcedDimensions } from './renderer/layout/layout.types';
+export type { ForcedDimensions, RawDiagram } from './renderer/layout/layout.types';
 export * from './renderer/layout/layoutBorderNodes';
 export type { ILayoutEngine, INodeLayoutHandler } from './renderer/layout/LayoutEngine.types';
 export * from './renderer/layout/layoutNode';
 export { defaultHeight, defaultWidth } from './renderer/layout/layoutParams';
 export { useLayout } from './renderer/layout/useLayout';
+export { useSynchronizeLayoutData } from './renderer/layout/useSynchronizeLayoutData';
 export { NodeContext } from './renderer/node/NodeContext';
 export type { NodeContextValue } from './renderer/node/NodeContext.types';
 export { NodeTypeContribution } from './renderer/node/NodeTypeContribution';
