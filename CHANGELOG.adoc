@@ -71,6 +71,7 @@ It also enables us to disable panel resize for a better control when needed.
 - https://github.com/eclipse-sirius/sirius-web/issues/6599[#6599] [diagram] Remove role `button` on the nodes computed during internal layout.
 - https://github.com/eclipse-sirius/sirius-web/issues/6593[#6593] [diagram] Change direct edit background color to white instead of transparent.
 This is to make it easier to type when the area overlaps another elements.
+- https://github.com/eclipse-sirius/sirius-web/issues/6610[#6610] [diagram] Prevent edge reset when source and target nodes are vertically or horizontally aligned
 
 
 === New Features

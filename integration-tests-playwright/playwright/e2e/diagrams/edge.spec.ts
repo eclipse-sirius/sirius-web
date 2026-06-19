@@ -536,3 +536,48 @@ test.describe('edge', () => {
     expect(edge2Path?.trim()).toMatch(/^M\s?[\d.-]+\s?[\d.-]+\s?L\s?[\d.-]+\s[\d.-]+$/);
   });
 });
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeOnNodeAligned.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Domain');
+    await playwrightExplorer.expand('elgamal');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when source and target nodes are aligned, then custom is not reset', async ({ page }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('EntitySource');
+    await playwrightExplorer.select('edge');
+
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.getByTestId('diagram-reveal-selection').click();
+
+    const playwrightEdge = new PlaywrightEdge(page);
+    await playwrightEdge.isSelected();
+
+    const pathBefore = await playwrightEdge.getEdgePath();
+
+    const firstLine = page.getByTestId(`temporary-moving-line-1`);
+    const box = (await firstLine.boundingBox())!;
+    await firstLine.hover();
+    await page.mouse.down();
+    await page.mouse.move(box.x, box.y - 35, { steps: 2 });
+    await page.mouse.up();
+
+    await page.waitForTimeout(500); //Here, we're explicitly waiting for the algorithm that was incorrectly triggering the reset to finish running.
+
+    expect(await playwrightEdge.getEdgePath()).not.toBe(pathBefore);
+  });
+});

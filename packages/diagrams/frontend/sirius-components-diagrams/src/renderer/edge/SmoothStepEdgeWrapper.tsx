@@ -39,6 +39,10 @@ function roundToDecimal(num: number): number {
   return Math.round(num * 10) / 10;
 }
 
+const isVerticalPosition = (position: Position) => position === Position.Top || position === Position.Bottom;
+
+const isHorizontalPosition = (position: Position) => position === Position.Left || position === Position.Right;
+
 export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeData>>) => {
   const {
     source,
@@ -116,7 +120,11 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
   }
 
   const threshold = 10;
-  if (Math.abs(sourceX - targetX) < threshold) {
+  if (
+    Math.abs(sourceX - targetX) < threshold &&
+    isVerticalPosition(sourcePosition) &&
+    isVerticalPosition(targetPosition)
+  ) {
     const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
       (handle) => handle.id === sourceHandleId
     );
@@ -136,7 +144,11 @@ export const SmoothStepEdgeWrapper = memo((props: EdgeProps<Edge<MultiLabelEdgeD
       data.bendingPoints = [];
     }
   }
-  if (Math.abs(sourceY - targetY) < threshold) {
+  if (
+    Math.abs(sourceY - targetY) < threshold &&
+    isHorizontalPosition(sourcePosition) &&
+    isHorizontalPosition(targetPosition)
+  ) {
     const sourceHandle: ConnectionHandle | undefined = (sourceNode.data.connectionHandles ?? []).find(
       (handle) => handle.id === sourceHandleId
     );
