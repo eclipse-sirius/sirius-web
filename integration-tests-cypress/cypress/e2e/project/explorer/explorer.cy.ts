@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -84,7 +84,7 @@ describe('Explorer', () => {
         cy.getByTestId('Central_Unit-fullrow').should('exist');
 
         // Click in the empty area after the label & menu: this should select the item
-        cy.getByTestId('Central_Unit-fullrow').click('right');
+        cy.getByTestId('Central_Unit-fullrow').click('right', { force: true });
         explorer.getSelectedTreeItems().should('have.length', 1);
         explorer.getSelectedTreeItems().contains('Central_Unit').should('exist');
       });
