@@ -1,0 +1,105 @@
+/*******************************************************************************
+ * Copyright (c) 2026 Obeo.
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     Obeo - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.sirius.web.application.controllers.diagrams;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
+
+import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
+import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.studio.services.representations.api.IDomainDiagramDescriptionProvider;
+import org.eclipse.sirius.web.data.StudioIdentifiers;
+import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
+import org.eclipse.sirius.web.tests.services.api.IGivenCreatedDiagramSubscription;
+import org.eclipse.sirius.web.tests.services.api.IGivenInitialServerState;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.jayway.jsonpath.JsonPath;
+import reactor.test.StepVerifier;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+
+/**
+ * Integration tests of the palette controllers IPaletteToolsProvider API.
+ *
+ * @author mcharfadi
+ */
+@Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.test.enabled=studio" })
+public class PaletteToolProviderControllerTests extends AbstractIntegrationTests {
+
+    @Autowired
+    private IGivenInitialServerState givenInitialServerState;
+
+    @Autowired
+    private IGivenCreatedDiagramSubscription givenCreatedDiagramSubscription;
+
+    @Autowired
+    private IDomainDiagramDescriptionProvider domainDiagramDescriptionProvider;
+
+    @Autowired
+    private PaletteQueryRunner paletteQueryRunner;
+
+    @BeforeEach
+    public void beforeEach() {
+        this.givenInitialServerState.initialize();
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a domain diagram, when the palette is requested for a node element, then the relevant contributed tools are available")
+    public void givenDomainDiagramWhenPaletteIsRequestedOnNodeElementThenRelevantContributedToolsAreAvailable() {
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
+
+        var diagramId = new AtomicReference<String>();
+        var nodeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            nodeId.set(diagram.getNodes().get(0).getId());
+        });
+
+        Runnable requestPalette = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                    "representationId", diagramId.get(),
+                    "diagramElementIds", List.of(nodeId.get())
+            );
+            var result = this.paletteQueryRunner.run(variables);
+
+            List<String> paletteEntriesLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
+            assertThat(paletteEntriesLabels).containsExactly("Relation", "Containment", "Supertype", "Attributes", "Show/Hide", "Edit");
+            List<String> paletteEntriesToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
+            assertThat(paletteEntriesToolsLabels).containsExactly("Text", "Boolean", "Number", "Hide", "Hide all content", "Reset content", "extraTool", "Edit", "Delete from model");
+        };
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(requestPalette)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+}

@@ -103,6 +103,10 @@ Downstream applications can implement `ISearchServiceDelegate` to define their o
 - https://github.com/eclipse-sirius/sirius-web/issues/6542[#6542] [diagram] Extract the draggable feature from the palette in order to facilitate the export of the Palette component
 - https://github.com/eclipse-sirius/sirius-web/issues/2928[#2928] [diagram] Render creation handles in a dedicated node, this ensure that the handles are always clickable event if an edge is passing in front of them.
 - https://github.com/eclipse-sirius/sirius-web/issues/6612[#6612] [core] `index.html` can now be processed through `IIndexProcessor` before being sent to the client.
+- https://github.com/eclipse-sirius/sirius-web/issues/6605[#6605] [diagram] If multiple `IPaletteToolsProvider` to tool sections with the same `id`, all their tools are merged into a single section.
+The label and icon of the resulting tool section are the ones from the first `IPaletteToolsProvider` encountered.
+Inside the resulting section, the tools are ordered depending on the order the `IPaletteToolsProvider` are encountered.
+Added `IDiagramPaletteCustomizer` to customize all contributed tool section from `IPaletteToolsProvider`.
 
 
 
