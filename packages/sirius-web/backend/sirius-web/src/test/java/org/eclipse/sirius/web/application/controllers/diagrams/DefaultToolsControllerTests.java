@@ -138,7 +138,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(paletteEntriesLabels).containsSequence("Edit");
 
             List<String> paletteEditLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
-            assertThat(paletteEditLabels).hasSize(1);
+            assertThat(paletteEditLabels).hasSize(2);
         };
 
         StepVerifier.create(flux)
@@ -197,7 +197,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(paletteEntriesLabels).containsSequence("Edit");
 
             List<String> paletteEditLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
-            assertThat(paletteEditLabels).hasSize(1);
+            assertThat(paletteEditLabels).hasSize(2);
         };
 
         Consumer<Object> unFadedNodeDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
@@ -287,7 +287,7 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
             assertThat(paletteEntriesLabels).containsSequence("Edit");
 
             List<String> paletteEditLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
-            assertThat(paletteEditLabels).hasSize(1);
+            assertThat(paletteEditLabels).hasSize(2);
         };
 
         StepVerifier.create(flux)

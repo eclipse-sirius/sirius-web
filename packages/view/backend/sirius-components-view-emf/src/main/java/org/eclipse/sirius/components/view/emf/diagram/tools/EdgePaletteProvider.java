@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
+import org.eclipse.sirius.components.collaborative.diagrams.api.palette.IDiagramPaletteCustomizer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
@@ -58,14 +59,17 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
 
     private final List<IPaletteToolsProvider> paletteToolsProviders;
 
+    private final List<IDiagramPaletteCustomizer> diagramPaletteCustomizers;
+
     private final INodeToolConverter nodeToolConverter;
 
     private final IEdgeToolConverter edgeToolConverter;
 
-    public EdgePaletteProvider(IURLParser urlParser, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, List<IPaletteToolsProvider> paletteToolsProviders, INodeToolConverter nodeToolConverter, IEdgeToolConverter edgeToolConverter) {
+    public EdgePaletteProvider(IURLParser urlParser, IViewDiagramDescriptionSearchService viewDiagramDescriptionSearchService, List<IPaletteToolsProvider> paletteToolsProviders, List<IDiagramPaletteCustomizer> diagramPaletteCustomizers, INodeToolConverter nodeToolConverter, IEdgeToolConverter edgeToolConverter) {
         this.urlParser = Objects.requireNonNull(urlParser);
         this.viewDiagramDescriptionSearchService = Objects.requireNonNull(viewDiagramDescriptionSearchService);
         this.paletteToolsProviders = Objects.requireNonNull(paletteToolsProviders);
+        this.diagramPaletteCustomizers = Objects.requireNonNull(diagramPaletteCustomizers);
         this.nodeToolConverter = Objects.requireNonNull(nodeToolConverter);
         this.edgeToolConverter = Objects.requireNonNull(edgeToolConverter);
     }
@@ -108,6 +112,9 @@ public class EdgePaletteProvider implements IEdgePaletteProvider {
                         .forEach(paletteEntries::add);
 
                 paletteEntries.add(new PaletteDivider(UUID.randomUUID().toString()));
+                for (IDiagramPaletteCustomizer diagramPaletteCustomizer : this.diagramPaletteCustomizers) {
+                    extraToolSections = diagramPaletteCustomizer.customizeToolSections(editingContext, diagramContext, diagramDescription, diagramElement, extraToolSections);
+                }
                 paletteEntries.addAll(extraToolSections);
 
                 String edgePaletteId = "siriusComponents://edgePalette?edgeId=" + sourceElementId;
