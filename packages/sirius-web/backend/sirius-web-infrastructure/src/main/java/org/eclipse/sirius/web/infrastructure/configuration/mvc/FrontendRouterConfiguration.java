@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,12 +16,17 @@ import static org.springframework.web.servlet.function.RequestPredicates.path;
 import static org.springframework.web.servlet.function.RequestPredicates.pathExtension;
 import static org.springframework.web.servlet.function.RouterFunctions.route;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.CacheControl;
+import org.springframework.http.MediaType;
 import org.springframework.web.servlet.function.RouterFunction;
+import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 
 /**
@@ -32,7 +37,7 @@ import org.springframework.web.servlet.function.ServerResponse;
 @Configuration
 public class FrontendRouterConfiguration {
     @Bean
-    public RouterFunction<ServerResponse> redirectToIndex(List<IBackendPathPredicate> backendResourcePredicates) {
+    public RouterFunction<ServerResponse> redirectToIndex(List<IBackendPathPredicate> backendResourcePredicates, List<IIndexProcessor> indexProcessors) {
         var extensionsToIgnore = List.of("css", "html", "js", "js.map", "chunk.js", "json", "ico", "ttf", "jpg", "jpeg", "png", "svg");
 
         var singlePageApplicationPredicate = path("/api/**")
@@ -48,8 +53,25 @@ public class FrontendRouterConfiguration {
                     .GET(singlePageApplicationPredicate, request -> ServerResponse.notFound().build())
                     .build();
         }
+
         return route()
-                .resource(singlePageApplicationPredicate, index)
+                .GET(singlePageApplicationPredicate, request -> computeServerResponse(index, request, indexProcessors))
                 .build();
+    }
+
+    private ServerResponse computeServerResponse(ClassPathResource index, ServerRequest request, List<IIndexProcessor> indexProcessors) {
+        String content;
+        try (var inputStream = index.getInputStream()) {
+            content = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException exception) {
+            return ServerResponse.notFound().build();
+        }
+        for (var processor : indexProcessors) {
+            content = processor.process(request, content);
+        }
+        return ServerResponse.ok()
+                .contentType(MediaType.TEXT_HTML)
+                .cacheControl(CacheControl.noStore().mustRevalidate())
+                .body(content);
     }
 }
