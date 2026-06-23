@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-import { PaletteQuickToolComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import Slideshow from '@mui/icons-material/Slideshow';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -42,7 +42,8 @@ type Modal = 'dialog';
 
 export const PapayaComponentDiagramToolOverriddenContribution = ({
   representationElementIds,
-}: PaletteQuickToolComponentProps) => {
+  onInvoked,
+}: PaletteToolOverriddenContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { classes } = useStyle();
@@ -88,7 +89,10 @@ export const PapayaComponentDiagramToolOverriddenContribution = ({
     <Fragment key="label-detail-modal-contribution">
       <Tooltip key={'tooltip_'} title={'details'} placement="right">
         <ListItemButton
-          onClick={() => setModal('dialog')}
+          onClick={() => {
+            onInvoked();
+            setModal('dialog');
+          }}
           data-testid="overridden_tool_detail"
           className={classes.listItemButton}>
           <Slideshow sx={{ fontSize: 16, marginRight: 2 }} />

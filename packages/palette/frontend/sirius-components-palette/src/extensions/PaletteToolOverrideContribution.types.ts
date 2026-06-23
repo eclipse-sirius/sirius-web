@@ -19,4 +19,8 @@ export interface PaletteToolOverriddenContributionProps {
 export interface PaletteToolOverriddenContributionComponentProps {
   representationElementIds: string[];
   tool: GQLTool;
+  /**
+   * Callback to call once when the overridden tool is actually considered to have been invoked by the user.
+   */
+  onInvoked: () => void;
 }

@@ -24,6 +24,7 @@ import { paletteToolOverrideExtensionPoint } from '../extensions/PaletteToolOver
 import { isPaletteDivider, isSingleClickOnDiagramElementTool, isTool, isToolSection } from '../Palette';
 import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
 import { ToolListItem } from '../tool-list-item/ToolListItem';
+import { usePalette } from '../usePalette';
 import { PaletteToolSectionProps, PaletteToolSectionStateValue } from './PaletteToolSection.types';
 import { ToolSectionEntry } from './ToolSectionEntry';
 import { ToolSectionHeader } from './ToolSectionHeader';
@@ -88,6 +89,7 @@ export const PaletteToolSection = ({
 }: PaletteToolSectionProps) => {
   const [state, setState] = useState<PaletteToolSectionStateValue>(defaultStateValue);
   const { classes } = useStyle();
+  const { setLastToolInvoked } = usePalette();
 
   const navigateTo = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, sectionId: string | undefined) => {
     event.stopPropagation();
@@ -119,30 +121,33 @@ export const PaletteToolSection = ({
           .filter(isToolSection)
           .flatMap((entry) => findToolsInToolSection(entry, state.currentSectionId));
 
+  const renderSingleClickToolItem = (tool: GQLTool) => {
+    const overriddenTool = paletteToolOverriddenData.data.find((contributedTool) => contributedTool.canHandle(tool));
+    if (!overriddenTool) {
+      return (
+        <ToolListItem
+          onToolClick={onToolClick}
+          tool={tool}
+          disabled={false}
+          key={'toolItem_' + tool.id}
+          data-testid={`paletteEntry-${tool.label}`}
+        />
+      );
+    } else {
+      const OverriddenComponent = overriddenTool.component;
+      return (
+        <OverriddenComponent
+          representationElementIds={representationElementIds}
+          onInvoked={() => setLastToolInvoked(palette.id, tool)}
+          tool={tool}></OverriddenComponent>
+      );
+    }
+  };
+
   // Backend tools/tools section/dividers
   const listItemsRendered: JSX.Element[] = currentEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
-    if (isSingleClickOnDiagramElementTool(paletteEntry)) {
-      const overriddenTool = paletteToolOverriddenData.data.find((contributedTool) =>
-        contributedTool.canHandle(paletteEntry)
-      );
-      if (!overriddenTool) {
-        return (
-          <ToolListItem
-            onToolClick={onToolClick}
-            tool={paletteEntry}
-            disabled={false}
-            key={'toolItem_' + paletteEntry.id}
-            data-testid={`paletteEntry-${paletteEntry.label}`}
-          />
-        );
-      } else {
-        const OverriddenComponent = overriddenTool.component;
-        return (
-          <OverriddenComponent
-            representationElementIds={representationElementIds}
-            tool={paletteEntry}></OverriddenComponent>
-        );
-      }
+    if (isTool(paletteEntry)) {
+      return renderSingleClickToolItem(paletteEntry);
     } else if (isToolSection(paletteEntry) && paletteEntry.tools.length > 0) {
       return (
         <ToolSectionEntry id={paletteEntry.id} label={paletteEntry.label} onNavigate={navigateTo}></ToolSectionEntry>
@@ -193,7 +198,11 @@ export const PaletteToolSection = ({
   const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
   const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
     <>
-      <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} disabled={!lastToolAvailable} />
+      {isSingleClickOnDiagramElementTool(lastToolInvoked) ? (
+        renderSingleClickToolItem(lastToolInvoked)
+      ) : (
+        <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} disabled={!lastToolAvailable} />
+      )}
       <Divider />
     </>
   ) : null;
