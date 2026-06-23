@@ -65,9 +65,13 @@ jobs:
         run: |
           npm install --global @cyclonedx/cyclonedx-npm@4.2.1
 
-      - name: Generate SBOM
+      - name: Generate runtime SBOM
         run: |
-          cyclonedx-npm --output-format json --output-file bom.json
+          cyclonedx-npm --output-format json --output-file runtime-bom.json --omit dev
+
+      - name: Generate full SBOM
+        run: |
+          cyclonedx-npm --output-format json --output-file full-bom.json
 
       - name: Extract product version
         id: version
@@ -78,7 +82,7 @@ jobs:
           ref="${GITHUB_REF}"
           input="${INPUTS_VERSION}"
 
-          VERSION="$(jq -r '.metadata.component.version' < ./${{ env.PRODUCT_PATH }}/bom.json)"
+          VERSION="$(jq -r '.metadata.component.version' < ./${{ env.PRODUCT_PATH }}/full-bom.json)"
 
           if [[ "$event" == "workflow_run" ]] && [[ "$ref" == refs/heads/* ]] && [[ ! "$event_workflow_run_head_branch" =~ ^v ]]; then
             VERSION="${VERSION}@dev"
@@ -87,18 +91,24 @@ jobs:
           echo "PROJECT_VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Product version: $VERSION"
 
-      - name: Upload SBOM as artifact
+      - name: Upload runtime SBOM as artifact
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: frontend-sbom
-          path: ${{ env.PRODUCT_PATH }}/bom.json
+          name: frontend-runtime-sbom
+          path: ${{ env.PRODUCT_PATH }}/runtime-bom.json
 
-  store-sbom-data: # stores sbom and metadata in a predefined format for otterdog to pick up
+      - name: Upload full SBOM as artifact
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: frontend-full-sbom
+          path: ${{ env.PRODUCT_PATH }}/full-bom.json
+
+  store-runtime-sbom-data: # stores sbom and metadata in a predefined format for otterdog to pick up
     needs: ["generate-sbom"]
     uses: eclipse-csi/workflows/.github/workflows/store-sbom-data.yml@main
     with:
       projectName: "Sirius Web - Frontend"
       projectVersion: ${{ needs.generate-sbom.outputs.project-version }}
-      bomArtifact: "frontend-sbom"
-      bomFilename: "bom.json"
-      parentProject: "3e99db93-2a85-458f-a64a-58d66a75bfe5"
+      bomArtifact: "frontend-runtime-sbom"
+      bomFilename: "runtime-bom.json"
+      parentProject: "1b099ee7-62ee-48e1-986b-b7f0309dd344"
