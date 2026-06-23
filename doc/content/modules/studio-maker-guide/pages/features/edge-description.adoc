@@ -1,0 +1,158 @@
+= Edge Description
+
+`EdgeDescription` describes an edge and the way it is connected, styled, and labeled.
+
+== Core Properties
+
+* `name: Identifier` A unique identifier of the edge description. If the name is changed, existing edges created from this description will disappear and new edges will replace them. Existing handles, bendpoints and customizations done by the end users will be lost.
+* `description: String` Some documentation to let the studio makers understand the purpose of the edge description.
+
+
+== Rendering
+
+* `sourceDescriptions: List<DiagramElementDescription>` The list of node and edge descriptions to consider while computing the source of edges created from this description. Nodes or edges with a description in this list will be considered as potential source.
+* `targetDescriptions: List<DiagramElementDescription>` The list of node and edge descriptions to consider while computing the target of edges created from this description. Nodes or edges with a description in this list will be considered as potential targets.
+* `isDomainBasedEdge: boolean` Use `false` if the edge is used to represent a relation between model elements based on a reference or `true` if the relation itself is defined as a dedicated semantic element. For example in UML an association between two classes A and B is not represented by a reference from A to B but by an explicit `Association` model element which itself references both A and B. In this case, the edge description should be defined as a domain based edge using `Association` as its `domainType`.
+
+While rendering edges, the `cache: DiagramRenderingCache` is available in order to query the current state of the diagram being rendered.
+This cache should be used to find the nodes that will appear in the new rendering of the diagram.
+Nodes are all rendered before edges.
+
+
+=== Reference based edges
+
+Here is the algorithm used to render reference based edges:
+
+- Use the `DiagramRenderingCache` to find all the nodes in the diagram that have been created from one of the source description.
+- Use a semantic element for the edge, the target of those nodes
+- For each semantic element, retrieve the diagram element displaying them matching the `sourceDescriptions`
+- Now that we have both the `semanticEdgeSource` and `graphicalEdgeSource`, we will evaluate the `targetExpression` to find the graphical targets of the edges to create matching the `targetDescriptions`
+- Now that we have the `semanticEdgeTarget` and the `graphicalEdgeTarget`, we will evaluate the `preconditionExpression` to figure out if the edge should be rendered
+- After that, we will leverage the `synchronizationPolicy` to find out if the edge should really appear in the diagram
+- Then we will render it by computing its labels, style, modifiers
+
+The following properties are thus unused with reference based edges:
+
+- `domainType: DomainType``
+- `semanticCandidatesExpression: InterpretedExpression``
+- `sourceExpression: InterpretedExpression``
+
+Here are the properties to consider for reference based edges:
+
+* [.interpreted-expression]#targetExpression: InterpretedExpression# Used to find the target of the edges to create
+  - `self: Object`
+  - `editingContext: IEditingContext`
+  - `cache: DiagramRenderingCache`
+  - `semanticEdgeSource: Object`
+  - `graphicalEdgeSource: Element`
+  - `previousDiagram: Diagram`
+  - `diagramEvent: IDiagramEvent`
+* [.interpreted-expression]#preconditionExpression: InterpretedExpression# Used to figure out if an edge should be rendered or not
+  - `self: Object`
+  - `editingContext: IEditingContext`
+  - `cache: DiagramRenderingCache`
+  - `semanticEdgeSource: Object`
+  - `semanticEdgeTarget: Object`
+  - `graphicalEdgeSource: Element`
+  - `graphicalEdgeTarget: Element`
+  - `previousDiagram: Diagram`
+  - `diagramEvent: IDiagramEvent`
+
+
+
+=== Domain based edges
+
+Here is the algorithm used to render domain based edges:
+
+- Evaluate the `semanticCandidatesExpression` to find all the semantic elements to consider
+- Filter these results to only keep the semantic elements matching the `domainType`
+- Execute the `sourceExpression` to find the semantic elements to consider as semantic source of the edges
+- Find the diagram element used to display them matching the `sourceDescriptions`
+- Now that we have both the `semanticEdgeSource` and `graphicalEdgeSource`, we will evaluate the `targetExpression` to find the graphical targets of the edges to create matching the `targetDescriptions`
+- Now that we have the `semanticEdgeTarget` and the `graphicalEdgeTarget`, we will evaluate the `preconditionExpression` to figure out if the edge should be rendered
+- After that, we will leverage the `synchronizationPolicy` to find out if the edge should really appear in the diagram
+- Then we will render it by computing its labels, style, modifiers
+
+Here are the properties to consider for domain based edges:
+
+
+* [.interpreted-expression]#semanticCandidatesExpression: InterpretedExpression#
+  - `self: Object`
+  - `editingContext: IEditingContext`
+  - `cache: DiagramRenderingCache`
+  - `previousDiagram: Diagram`
+  - `diagramEvent: IDiagramEvent`
+* [.domain-type]#domainType: DomainType#
+* [.interpreted-expression]#sourceExpression: InterpretedExpression#
+  - `self: Object`
+  - `editingContext: IEditingContext`
+  - `cache: DiagramRenderingCache`
+  - `previousDiagram: Diagram`
+  - `diagramEvent: IDiagramEvent`
+* [.interpreted-expression]#targetExpression: InterpretedExpression# Used to find the target of the edges to create
+  - `self: Object`
+  - `editingContext: IEditingContext`
+  - `cache: DiagramRenderingCache`
+  - `semanticEdgeSource: Object`
+  - `graphicalEdgeSource: Element`
+  - `previousDiagram: Diagram`
+  - `diagramEvent: IDiagramEvent`
+* [.interpreted-expression]#preconditionExpression: InterpretedExpression# Used to figure out if an edge should be rendered or not
+  - `self: Object`
+  - `editingContext: IEditingContext`
+  - `cache: DiagramRenderingCache`
+  - `semanticEdgeSource: Object`
+  - `semanticEdgeTarget: Object`
+  - `graphicalEdgeSource: Element`
+  - `graphicalEdgeTarget: Element`
+  - `previousDiagram: Diagram`
+  - `diagramEvent: IDiagramEvent`
+* `synchronizationPolicy: SynchronizationPolicy` Used to configure how the edge created from this description will be synchronized with the semantic model. This is especially important when dealing with large models in which the `semanticCandidatesExpression` could return a very large number of elements. In order to prevent the creation of massive diagrams which are difficult to manipulate, one can use the synchronization policy to take control over the synchronization process. It can be configured to one of the following values:
+  - `SYNCHRONIZED` The edge will be automatically created when if a semantic relation is found (reference or domain based). To delete the edge, the underlying semantic relation must not be reachable anymore (most of the time, when it has been deleted for example by removing a reference between two semantic elements).
+  - `UNSYNCHRONIZED` The edge will not be automatically created when the semantic relation is found. Instead the edge will only be created if a tool explicitely asks for it. In this case, the edge can be deleted by another tool without deleting the underlying semantic relation. The edge will be automatically deleted if the underlying semantic relation is not reachable anymore.
+
+
+== Labels
+
+An edge can have multiple labels which are computed thanks to dedicated expressions:
+
+* [.interpreted-expression]#beginLabelExpression: InterpretedExpression# Used to compute the label near the source of the edge.
+  - `self: Object`
+  - `editingContext: IEditingContext`
+  - `cache: DiagramRenderingCache`
+  - `semanticEdgeSource: Object`
+  - `semanticEdgeTarget: Object`
+  - `graphicalEdgeSource: Element`
+  - `graphicalEdgeTarget: Element`
+  - `previousDiagram: Diagram`
+  - `diagramEvent: IDiagramEvent`
+* [.interpreted-expression]#centerLabelExpression: InterpretedExpression# Used to compute the label in the middle of the edge.
+  - `self: Object`
+  - `editingContext: IEditingContext`
+  - `cache: DiagramRenderingCache`
+  - `semanticEdgeSource: Object`
+  - `semanticEdgeTarget: Object`
+  - `graphicalEdgeSource: Element`
+  - `graphicalEdgeTarget: Element`
+  - `previousDiagram: Diagram`
+  - `diagramEvent: IDiagramEvent`
+* [.interpreted-expression]#endLabelExpression: InterpretedExpression# Used to compute the label near the target of the edge.
+  - `self: Object`
+  - `editingContext: IEditingContext`
+  - `cache: DiagramRenderingCache`
+  - `semanticEdgeSource: Object`
+  - `semanticEdgeTarget: Object`
+  - `graphicalEdgeSource: Element`
+  - `graphicalEdgeTarget: Element`
+  - `previousDiagram: Diagram`
+  - `diagramEvent: IDiagramEvent`
+
+
+== Styling
+
+* `style: EdgeStyle`
+* `conditionalStyles: ConditionalEdgeStyle`
+
+== Interaction
+
+* `palette: EdgePalette` Used to configure the palette of the edge. This palette is accessible thanks to a right click on an edge. It can contain tools to create new elements in the diagram or to perform actions on the edge.
