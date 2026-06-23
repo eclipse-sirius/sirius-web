@@ -7,6 +7,8 @@
 ** xref:studio-maker-guide:features/view-description.adoc[]
 ** xref:studio-maker-guide:features/deck-description.adoc[]
 ** xref:studio-maker-guide:features/diagram-description.adoc[]
+*** xref:studio-maker-guide:features/node-description.adoc[]
+*** xref:studio-maker-guide:features/edge-description.adoc[]
 ** xref:studio-maker-guide:features/form-description.adoc[]
 ** xref:studio-maker-guide:features/gantt-description.adoc[]
 ** xref:studio-maker-guide:features/table-description.adoc[]
