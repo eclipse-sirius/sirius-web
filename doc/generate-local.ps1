@@ -3,6 +3,6 @@
 $Script = $MyInvocation.MyCommand.Definition
 $ScriptPath = Split-Path $Script -Parent
 
-docker build ${ScriptPath} -t sirius-web_doc_generator:local --build-arg ANTORA_PLAYBOOK=doc/docs-site/antora-playbook.yml 
+docker build ${ScriptPath} -t sirius-web_doc_generator:local --build-arg ANTORA_PLAYBOOK=doc/docs-site/antora-playbook-local.yml
 
 docker run --rm -v "$ScriptPath\..:/usr/app:z" sirius-web_doc_generator:local
