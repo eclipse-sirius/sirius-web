@@ -33,6 +33,11 @@ When you are done, you can stop the application by hitting Ctrl-c from the termi
 
 NOTE: This way of running the application is only useful for quick testing and should not be used for actual deployments.
 
+[#documentation]
+== Documentation
+
+For further information not covered in this README, including a user manual, refer to https://eclipse-sirius.github.io/sirius-web/sirius-web/index.html[the full Sirius Web documentation].
+
 [#build]
 == Building
 
