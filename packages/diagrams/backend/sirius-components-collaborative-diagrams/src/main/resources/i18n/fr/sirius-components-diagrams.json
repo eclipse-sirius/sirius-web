@@ -73,7 +73,8 @@
   },
   "useLayoutConfigurations": {
     "arrangeAllLayered": "Disposition en flux",
-    "arrangeAllRectPacking": "Disposition compacte"
+    "arrangeAllRectPacking": "Disposition compacte",
+    "arrangeAllSporeOverlap": "Disposition orthogonale"
   },
   "usePinDiagramElements": {
     "errors": {
