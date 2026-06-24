@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { IconOverlay, splitText } from '@eclipse-sirius/sirius-components-core';
+import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -23,7 +23,8 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { isSingleClickOnDiagramElementTool, isToolSection } from '../Palette';
-import { GQLPaletteEntry, GQLSingleClickOnDiagramElementTool, GQLTool } from '../Palette.types';
+import { GQLPaletteEntry, GQLSingleClickOnDiagramElementTool } from '../Palette.types';
+import { fuzzyMatch } from './fuzzyMatch';
 import { HighlightedLabelProps, PaletteSearchResultProps } from './PaletteSearchResult.types';
 
 const convertToList = (entry: GQLPaletteEntry): GQLSingleClickOnDiagramElementTool[] => {
@@ -53,61 +54,24 @@ const useLabelStyles = makeStyles()((theme: Theme) => ({
   },
 }));
 
-const HighlightedLabel = ({ label, textToHighlight }: HighlightedLabelProps) => {
+const HighlightedLabel = ({ label, textIndicesToHighlight }: HighlightedLabelProps) => {
   const { classes } = useLabelStyles();
-  let itemLabel: JSX.Element;
-  const splitLabelWithTextToHighlight: string[] = splitText(label, textToHighlight);
-  if (
-    textToHighlight === null ||
-    textToHighlight === '' ||
-    (splitLabelWithTextToHighlight.length === 1 &&
-      splitLabelWithTextToHighlight[0]?.toLocaleLowerCase() !== label.toLocaleLowerCase())
-  ) {
-    itemLabel = <>{label}</>;
-  } else {
-    const languages: string[] = Array.from(navigator.languages);
-    itemLabel = (
-      <>
-        {splitLabelWithTextToHighlight.map((value, index) => {
-          const shouldHighlight = value.localeCompare(textToHighlight, languages, { sensitivity: 'base' }) === 0;
-          return (
-            <span
-              key={value + index}
-              data-testid={`${label}-${value}-${index}`}
-              className={shouldHighlight ? classes.highlight : ''}>
-              {value}
-            </span>
-          );
-        })}
-      </>
-    );
-  }
+  const itemLabel: JSX.Element = (
+    <>
+      {label.split('').map((value, index) => {
+        const shouldHighlight = textIndicesToHighlight.includes(index);
+        return (
+          <span
+            key={value + index}
+            data-testid={`${label}-${value}-${index}`}
+            className={shouldHighlight ? classes.highlight : ''}>
+            {value}
+          </span>
+        );
+      })}
+    </>
+  );
   return <Typography className={classes.itemText}>{itemLabel}</Typography>;
-};
-
-const fuzzyMatch = (candidate: string, searchTerm: string): boolean => {
-  if (!searchTerm) {
-    return false;
-  }
-
-  const isCaseSensitive = /^[A-Z]/.test(searchTerm);
-  const searchChars = isCaseSensitive ? searchTerm.split('') : searchTerm.toLowerCase().split('');
-
-  const candidateChars = isCaseSensitive ? candidate.split('') : candidate.toLowerCase().split('');
-
-  let searchIdx = 0;
-
-  for (let i = 0; i < candidateChars.length && searchIdx < searchChars.length; i++) {
-    if (candidateChars[i] === searchChars[searchIdx]) {
-      searchIdx++;
-    }
-  }
-
-  return searchIdx === searchChars.length;
-};
-
-const filterFromSearchValue = (tool: GQLTool, searchToolValue: string): boolean => {
-  return fuzzyMatch(tool.label, searchToolValue);
 };
 
 const useStyle = makeStyles()((theme) => ({
@@ -149,8 +113,8 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
     [palette]
   );
 
-  const filteredToolList: GQLSingleClickOnDiagramElementTool[] = toolList.filter((tool) =>
-    filterFromSearchValue(tool, searchToolValue)
+  const filteredToolList: GQLSingleClickOnDiagramElementTool[] = toolList.filter(
+    (tool) => fuzzyMatch(tool.label, searchToolValue).matches
   );
 
   useEffect(() => {
@@ -178,6 +142,7 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
   }, [selectedIndex, filteredToolList]);
 
   const convertToListItem = (tool: GQLSingleClickOnDiagramElementTool, index: number): JSX.Element | null => {
+    const matchResult = fuzzyMatch(tool.label, searchToolValue);
     return (
       <Tooltip title={tool.label} key={tool.id} placement="right">
         <ListItemButton
@@ -187,7 +152,9 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
           <ListItemIcon className={classes.listItemIcon}>
             <IconOverlay iconURLs={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
           </ListItemIcon>
-          <ListItemText primary={<HighlightedLabel label={tool.label} textToHighlight={searchToolValue} />} />
+          <ListItemText
+            primary={<HighlightedLabel label={tool.label} textIndicesToHighlight={matchResult.matchingIndices} />}
+          />
         </ListItemButton>
       </Tooltip>
     );
