@@ -53,7 +53,7 @@ export const useLayout = (): UseLayoutValue => {
   const { nodeLayoutHandlers } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const [state, setState] = useState<UseLayoutState>(initialState);
   const { elkLayout } = useElkLayout();
-  const { layoutConfigurations } = useLayoutConfigurations();
+  const { layoutConfigurations, loading: layoutConfigurationLoading } = useLayoutConfigurations();
   const { diagramDescription } = useDiagramDescription();
 
   const reactFlowInstance = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
@@ -104,13 +104,15 @@ export const useLayout = (): UseLayoutValue => {
         root: root,
       }));
     } else if (state.currentStep === 'LAYOUT' && state.hiddenContainer && state.diagramToLayout) {
+      const shouldAutoLayout =
+        diagramDescription?.layoutOption === 'AUTO_LAYOUT' ||
+        (diagramDescription?.layoutOption === 'AUTO_UNTIL_MANUAL' && state.diagramToLayout.autoLaidOut);
+      if (shouldAutoLayout && layoutConfigurationLoading) {
+        return;
+      }
       const labelMeasurer = createInsideLabelMeasurer(state.hiddenContainer);
       prepareLayoutLabels(state.previousDiagram, state.diagramToLayout);
-      if (
-        layoutConfigurations[0] &&
-        (diagramDescription?.layoutOption === 'AUTO_LAYOUT' ||
-          (diagramDescription?.layoutOption === 'AUTO_UNTIL_MANUAL' && state.diagramToLayout.autoLaidOut))
-      ) {
+      if (shouldAutoLayout && layoutConfigurations?.[0]) {
         prepareListNodeLayout(state.previousDiagram, state.diagramToLayout, labelMeasurer);
         const postLaidoutDiagram = layout(
           { nodes: state.diagramToLayout.nodes, edges: state.diagramToLayout.edges },
@@ -171,7 +173,15 @@ export const useLayout = (): UseLayoutValue => {
       state.onLaidoutDiagram(state.laidoutDiagram);
       setState(() => initialState);
     }
-  }, [state.currentStep, state.hiddenContainer, state.referencePosition, state.layoutDirection]);
+  }, [
+    state.currentStep,
+    state.hiddenContainer,
+    state.referencePosition,
+    state.layoutDirection,
+    diagramDescription?.layoutOption,
+    layoutConfigurationLoading,
+    layoutConfigurations?.map((configuration) => configuration.id).join(),
+  ]);
 
   return {
     layout: layoutDiagram,

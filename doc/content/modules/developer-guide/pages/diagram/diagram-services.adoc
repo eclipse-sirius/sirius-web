@@ -31,3 +31,37 @@ The current searched value is available from the prop `searchedValue`.
 Palette package export the function `fuzzyMatch = (candidate: string, searchTerm: string): MatchResult`.
 If there is a `searchedValue` you need to test your label with `fuzzyMatch` it in order to know if the tool is candidate.
 If there is a `searchedValue` but the attributed `matches` of `MatchResult` is false then the contributed component should not render.
+
+== Layout configurations
+
+Diagram layout configurations are contributed by the backend through `org.eclipse.sirius.components.collaborative.diagrams.api.ILayoutConfigurationProvider`.
+Register a Spring service implementing this interface to contribute configurations for a diagram:
+
+* `canHandle(IEditingContext, DiagramContext, DiagramDescription)` selects the diagrams handled by the provider.
+* `getLayoutConfigurations(IEditingContext, DiagramContext, DiagramDescription)` returns the ordered list of `LayoutConfiguration` records for those diagrams.
+
+There is no identifier deduplication, so use distinct configuration identifiers across providers.
+The first configuration is used for automatic layout and as the initial choice of the Arrange All button.
+
+Each configuration contains:
+
+[cols="1,3",options="header"]
+|===
+|Property |Description
+
+|`id`
+|A stable identifier for the configuration.
+
+|`label`
+|The label displayed in the Arrange All menu, translated by the backend.
+
+|`iconURL`
+|The list of icon URLs displayed by the frontend.
+
+|`layoutOptions`
+|A list of `LayoutOptionEntry` records containing string `key` and `value` properties.
+The frontend converts this list into the options dictionary passed to ELK.
+|===
+
+The `sirius-components-collaborative-diagrams` module registers `DefaultLayoutConfigurationProvider`, which contributes Flow Layout (`elk-layered`), Compact Layout (`elk-rect-packing`) and Orthogonal Layout (`elk-spore-overlap`), in that order.
+The Flow Layout configuration uses the diagram description's arrange layout direction.
