@@ -516,15 +516,16 @@ test.describe('diagram - label', () => {
     await new PlaywrightDiagram(page).collapseToolbar();
     const rootNode = new PlaywrightNode(page, 'Root', 'List');
     await rootNode.waitForAnimationToFinish();
-    const labelBoundingBox = await page.getByTestId('Label - entity2s [0..*]').boundingBox();
-    await page.getByTestId('Label - entity2s [0..*]').hover({ position: { x: 10, y: 10 } });
+    const label = page.getByTestId('rf__wrapper').getByTestId('Label - entity2s [0..*]');
+    const labelBoundingBox = await label.boundingBox();
+    await label.hover({ position: { x: 10, y: 10 } });
     await page.mouse.down();
     await page.mouse.move((labelBoundingBox?.x ?? 0) + 100, (labelBoundingBox?.y ?? 0) + 100);
     await page.mouse.up();
 
     await page.waitForFunction(
       ({ expectedX, expectedY }) => {
-        const label = document.querySelector(`[data-testid="Label - entity2s [0..*]"]`);
+        const label = document.querySelector(`[data-testid="rf__wrapper"] [data-testid="Label - entity2s [0..*]"]`);
         if (!label) {
           return false;
         }

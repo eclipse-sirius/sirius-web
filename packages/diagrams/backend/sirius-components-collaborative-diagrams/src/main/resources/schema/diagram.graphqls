@@ -430,6 +430,7 @@ type DiagramDescription implements RepresentationDescription {
   connectorToolCandidateDescriptionIds(diagramElementId: ID!): [ID!]!
   connectorPalette(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): ConnectorPaletteResult!
   actions(diagramElementId: ID!): [Action!]!
+  layoutConfigurations: [LayoutConfiguration!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!
@@ -485,6 +486,18 @@ type Action {
   id: ID!
   tooltip: String!
   iconURLs: [String!]!
+}
+
+type LayoutConfiguration {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  layoutOptions: [LayoutOptionEntry!]!
+}
+
+type LayoutOptionEntry {
+  key: String!
+  value: String!
 }
 
 type ManageVisibilityAction {
