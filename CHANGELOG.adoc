@@ -74,6 +74,7 @@ It also enables us to disable panel resize for a better control when needed.
 This is to make it easier to type when the area overlaps another elements.
 - https://github.com/eclipse-sirius/sirius-web/issues/6610[#6610] [diagram] Prevent edge reset when source and target nodes are vertically or horizontally aligned
 - https://github.com/eclipse-sirius/sirius-web/issues/6622[#6622] [diagram] Fix a bug when re-invoking the last tool from the shortcut in the palette when the tool is overridden using `paletteToolOverrideExtensionPoint`, the `PaletteToolOverriddenContributionComponentProps` now has a `onInvoked` prop to call in order to set the last tool used.
+- https://github.com/eclipse-sirius/sirius-web/issues/6623[#6623] [diagram] Fix highlighting of matching tool's label when using search in the palette.
 
 
 === New Features
@@ -110,6 +111,7 @@ The label and icon of the resulting tool section are the ones from the first `IP
 Inside the resulting section, the tools are ordered depending on the order the `IPaletteToolsProvider` are encountered.
 Added `IDiagramPaletteCustomizer` to customize all contributed tool section from `IPaletteToolsProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6625[#6625] [sirius-web] Make the project title more compact
+
 
 
 == 2026.5.0
