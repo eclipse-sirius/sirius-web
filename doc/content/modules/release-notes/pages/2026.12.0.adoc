@@ -15,6 +15,8 @@ Custom factories and subclasses must remove this argument from constructor calls
 This type is now used in the repository, domain services and applications services on the backend.
 The GraphQL queries and mutations have also been updated to leverage a matching GraphQL `LibraryId` scalar.
 On the frontend, the new id should be treated as an opaque string just like the previous one.
+- Diagram layout configurations are now retrieved through the new `DiagramDescription.layoutConfigurations` GraphQL field instead of being hardcoded in the frontend.
+The `sirius-components-collaborative-diagrams` module provides the default configurations, applications can implement `ILayoutConfigurationsProvider` to contribute additional configurations.
 
 
 == Bug fixes
@@ -39,6 +41,8 @@ It allows reducing the selected tree item and all its children recursively.
 
 - Support Select cells in View-based tables
 - Improve the internationalization of the style customization support with a dedicated infrastructure module
+- Applications can contribute diagram layout configurations from the backend to populate the Arrange All menu and configure automatic layout.
+Sirius Components provides Flow Layout, Compact Layout and Orthogonal Layout by default.
 
 
 == Technical details

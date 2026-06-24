@@ -38,6 +38,9 @@ These fields were temporary while reworking library identifiers, and are needed 
 `Library#id` is now typed with `LibraryId` instead of `UUID`.
 `ILibrarySearchService`, `ILibraryApplicationService`, and `ILibraryRepository` now use `LibraryId` as identifier to search for libraries.
 `ProjectTemplateRequiredLibrary` has been replaced with `LibraryId`, which requires the same parameters.
+- https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Diagram layout configurations are now retrieved through the new `DiagramDescription.layoutConfigurations: [LayoutConfiguration!]!` GraphQL field instead of being hardcoded in the frontend.
+The `sirius-components-collaborative-diagrams` module provides the default configurations, implement `ILayoutConfigurationsProvider` to contribute additional configurations.
+Each configuration exposes `id`, `label`, `iconURL` and a list of string `key`/`value` entries in `layoutOptions`.
 
 
 === Dependency update
@@ -74,7 +77,7 @@ Introduce the shared context and hook for edge geometry interactions, initializi
 - [doc] Update the pull request template to include a checklist that will be easier to request.
 - https://github.com/eclipse-sirius/sirius-web/issues/7039[#7039] [projects] Add projects style customizations infrastructure module
 - https://github.com/eclipse-sirius/sirius-web/issues/6765[#6765] [tree]  The selected explorer description and expanded items are now saved in your browser local storage and restored when you refresh the page or reopen the project.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6290[#6290] [diagram] Move diagram layout configurations from frontend to backend
 
 
 == 2026.11.0
