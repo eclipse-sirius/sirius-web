@@ -33,6 +33,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-sirius/sirius-web/issues/2928[#2928] [diagram] `ConnectionCreationHandles` now needs the node current position, width,  height and isDraggedNode props
 - https://github.com/eclipse-sirius/sirius-web/issues/6612[#6612] [core] `index.html` is not cached anymore.
 
+
 === Dependency update
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6055[#6055] [releng] As of version 2026.7.0, Sirius Web now requires **Java 21** or later.
@@ -107,7 +108,7 @@ Downstream applications can implement `ISearchServiceDelegate` to define their o
 The label and icon of the resulting tool section are the ones from the first `IPaletteToolsProvider` encountered.
 Inside the resulting section, the tools are ordered depending on the order the `IPaletteToolsProvider` are encountered.
 Added `IDiagramPaletteCustomizer` to customize all contributed tool section from `IPaletteToolsProvider`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6625[#6625] [sirius-web] Make the project title more compact
 
 
 == 2026.5.0

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,11 @@
 
 import { WorkbenchHandle } from '@eclipse-sirius/sirius-components-core';
 
-export interface EditProjectNavbarState {
-  projectName: string;
+export interface ProjectTitleProps {
+  name: string;
+  workbenchHandle: WorkbenchHandle;
 }
 
-export interface EditProjectNavbarSubtitleProps {}
-
-export interface EditProjectNavbarProps {
-  workbenchHandle: WorkbenchHandle;
+export interface ProjectTitleState {
+  anchorEl: HTMLElement | null;
 }
