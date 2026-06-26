@@ -108,6 +108,7 @@ Downstream applications can implement `ISearchServiceDelegate` to define their o
 The label and icon of the resulting tool section are the ones from the first `IPaletteToolsProvider` encountered.
 Inside the resulting section, the tools are ordered depending on the order the `IPaletteToolsProvider` are encountered.
 Added `IDiagramPaletteCustomizer` to customize all contributed tool section from `IPaletteToolsProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6408[#6408] [storybook] Add diagram layout testing for the storybook
 
 
 

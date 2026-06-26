@@ -30,10 +30,22 @@ export type {
 export { useDialog } from './dialog/useDialog';
 export type { UseDialogValue } from './dialog/useDialog.types';
 export type { GQLNodeDescription } from './graphql/query/nodeDescriptionFragment.types';
-export type { GQLDiagram, GQLHandleLayoutData, GQLNodeLayoutData } from './graphql/subscription/diagramFragment.types';
-export type { GQLEdge } from './graphql/subscription/edgeFragment.types';
+export type {
+  GQLDiagram,
+  GQLEdgeLayoutData,
+  GQLHandleLayoutData,
+  GQLNodeLayoutData,
+  GQLRepresentationMetadata,
+} from './graphql/subscription/diagramFragment.types';
+export type { GQLEdge, GQLEdgeStyle } from './graphql/subscription/edgeFragment.types';
+export type { GQLInsideLabel, GQLLabel, GQLLabelStyle } from './graphql/subscription/labelFragment.types';
 export { GQLViewModifier } from './graphql/subscription/nodeFragment.types';
-export type { GQLNode, GQLNodeDecorator, GQLNodeStyle } from './graphql/subscription/nodeFragment.types';
+export type {
+  GQLNode,
+  GQLNodeDecorator,
+  GQLNodeStyle,
+  GQLRectangularNodeStyle,
+} from './graphql/subscription/nodeFragment.types';
 export { Action, ACTION_ICON_SIZE } from './renderer/actions/Action';
 export type { ActionProps } from './renderer/actions/Action.types';
 export { ActionsContainer } from './renderer/actions/ActionsContainer';
@@ -41,6 +53,7 @@ export type { ActionsContainerProps } from './renderer/actions/ActionsContainer.
 export { diagramNodeActionOverrideContributionExtensionPoint } from './renderer/actions/DiagramNodeActionExtensionPoints';
 export type { DiagramNodeActionOverrideContribution } from './renderer/actions/DiagramNodeActionExtensionPoints.types';
 export { useActions } from './renderer/actions/useActions';
+export type { GQLAction } from './renderer/actions/useActions.types';
 export { ManageVisibilityContext } from './renderer/actions/visibility/ManageVisibilityContextProvider';
 export type { ManageVisibilityContextValue } from './renderer/actions/visibility/ManageVisibilityContextProvider.types';
 export { useConnectionLineNodeStyle } from './renderer/connector/useConnectionLineNodeStyle';
@@ -94,4 +107,7 @@ export type { IElementSVGExportHandler } from './renderer/toolbar/experimental-s
 export { svgExportIElementSVGExportHandlerExtensionPoint } from './renderer/toolbar/experimental-svg-export/SVGExportHandlerExtensionPoints';
 export type { GQLToolVariable, GQLToolVariableType } from './renderer/tools/useInvokePaletteTool.types';
 export { DiagramRepresentation } from './representation/DiagramRepresentation';
-export type { GQLDiagramDescription } from './representation/DiagramRepresentation.types';
+export type {
+  GQLDiagramDescription,
+  WorkbenchDiagramRepresentationHandle,
+} from './representation/DiagramRepresentation.types';
