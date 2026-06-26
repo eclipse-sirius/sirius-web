@@ -18,6 +18,7 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/sirius-web-application.umd.js",
       "import": "./dist/sirius-web-application.es.js"
     }
