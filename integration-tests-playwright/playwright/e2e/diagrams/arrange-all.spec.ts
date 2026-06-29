@@ -49,6 +49,26 @@ test.describe('diagram - arrange all', () => {
 
     await expect(wifiNode.nodeLocator).toBeInViewport();
   });
+
+  test('when a arrange all is triggered, then pinned nodes are not moved', async ({ page }) => {
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const wifiNode = new PlaywrightNode(page, 'Wifi');
+
+    const reactFlowXYPositionBefore = await wifiNode.getReactFlowXYPosition('Wifi');
+
+    await wifiNode.openPalette();
+    await page.getByTestId('Pin - Tool').click();
+
+    await wifiNode.openPalette();
+    await expect(page.getByTestId('Unpin - Tool')).toBeAttached();
+
+    await page.getByTestId('arrange-all-main-button').click();
+
+    const reactFlowXYPositionAfter = await wifiNode.getReactFlowXYPosition('Wifi', false);
+
+    expect(reactFlowXYPositionAfter.y).toBe(reactFlowXYPositionBefore.y);
+    expect(reactFlowXYPositionAfter.x).toBe(reactFlowXYPositionBefore.x);
+  });
 });
 
 test.describe('diagram - arrange all', () => {
