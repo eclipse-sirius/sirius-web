@@ -47,6 +47,7 @@ import { HelperLinesContextValue } from '../helper-lines/HelperLinesContext.type
 import { useHideDiagramElements } from '../hide/useHideDiagramElements';
 import { MiniMapContext } from '../mini-map/MiniMapContext';
 import { MiniMapContextValue } from '../mini-map/MiniMapContext.types';
+import { isNotUtilityNode } from '../node/NodeTypes';
 import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { SnapToGridContext } from '../snap-to-grid/SnapToGridContext';
 import { SnapToGridContextValue } from '../snap-to-grid/SnapToGridContext.types';
@@ -77,7 +78,12 @@ export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => 
   const { getNodes, getEdges, zoomIn, zoomOut } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { fitView } = useFitView();
 
-  const getAllElementsIds = () => [...getNodes().map((elem) => elem.id), ...getEdges().map((elem) => elem.id)];
+  const getAllElementsIds = () => [
+    ...getNodes()
+      .filter((node) => isNotUtilityNode(node))
+      .map((elem) => elem.id),
+    ...getEdges().map((elem) => elem.id),
+  ];
   const getSelectedNodes = () => getNodes().filter((node) => node.selected);
 
   const { fullscreen, onFullscreen } = useFullscreen();

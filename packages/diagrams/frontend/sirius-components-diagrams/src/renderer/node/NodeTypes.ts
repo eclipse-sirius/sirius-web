@@ -13,6 +13,7 @@
 
 import { Node, NodeProps } from '@xyflow/react';
 import { FC } from 'react';
+import { NodeData } from '../DiagramRenderer.types';
 import { EdgeAnchorNode } from './EdgeAnchorNode';
 import { EdgeAnchorNodeData } from './EdgeAnchorNode.types';
 import { FreeFormNode } from './FreeFormNode';
@@ -46,3 +47,6 @@ export type NodeComponentsMap = {
 export type NodePropsMap = {
   [K in keyof NodeDataMap]: NodeProps<Node<NodeDataMap[K], K>>;
 };
+
+export const isNotUtilityNode = (node: Node<NodeData>): node is Node<NodeData> =>
+  node.type !== 'edgeAnchorNode' && node.type !== 'handleNode';

@@ -77,6 +77,7 @@ This is to make it easier to type when the area overlaps another elements.
 - https://github.com/eclipse-sirius/sirius-web/issues/6622[#6622] [diagram] Fix a bug when re-invoking the last tool from the shortcut in the palette when the tool is overridden using `paletteToolOverrideExtensionPoint`, the `PaletteToolOverriddenContributionComponentProps` now has a `onInvoked` prop to call in order to set the last tool used.
 - https://github.com/eclipse-sirius/sirius-web/issues/6623[#6623] [diagram] Fix highlighting of matching tool's label when using search in the palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6652[#6652] [diagram] Fix fork representation contribution not rendering.
+- https://github.com/eclipse-sirius/sirius-web/issues/6628[#6628] [diagram] Prevent diagram tools from processing utility nodes
 
 
 === New Features
