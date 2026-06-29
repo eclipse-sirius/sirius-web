@@ -1,0 +1,141 @@
+:author: Thibault Béziers la Fosse
+:date: 2026-06-30
+:status: proposed
+:consulted: Stéphane Bégaudeau
+:informed: Stéphane Bégaudeau
+:deciders: Stéphane Bégaudeau, Mélanie Bats
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6635
+
+= ADR-232 - Add a shared Markdown renderer
+
+== Context and Problem Statement
+
+The existing rich text support introduced by ADR-079 is focused on edition in forms.
+It provides a Lexical based editor with a toolbar and form-specific behavior.
+However, future applications may want to render generated documentation, comments, explanations, descriptions or notifications using Markdown.
+This is not the same use case as rendering read-only Markdown content in application views.
+Furthermore, these future Sirius-Web use-cases might need richer Markdown rendering, i.e., Github-Flavoured Markdown (GFM).
+
+Lexical already provides Markdown support for rich Markdown, including GFM features.
+However, some features still require product-level integration work.
+For example, the Lexical playground uses a custom table Markdown transformer while relying on `isTableRowDivider` from `@lexical/markdown` since no table transformer is provided by default in `@lexical/markdown`.
+Checklists are parsed by Lexical, but their final visual rendering depends on theme classes and CSS provided by the consuming application.
+Similar Lexical issues exist for other features: code syntax highlighting, quoted blocks, etc.
+
+Implementing this directly in each consumer would duplicate Lexical configuration, Markdown transformers and CSS.
+A common component for Markdown rendering would help Sirius Web display Markdown consistently without exposing each application to the details of Lexical or Markdown styling.
+
+== Decision Drivers
+
+- Reusability: The renderer should be usable by applications built with Sirius Web, including existing form views, application-specific views, and future views added in Sirius Web.
+- Consistency: Markdown content should be rendered consistently within Sirius Web.
+- Encapsulation: Consumers should not have to know the details of Lexical configuration, Markdown transformers, or Markdown styling.
+- Separation of concerns: The renderer should not add editing behavior, form-specific behavior, nor toolbars.
+
+== Considered Options
+
+=== Dedicated Markdown package
+
+We can introduce a dedicated frontend package named `@eclipse-sirius/sirius-components-markdown`.
+
+This package will provide a read-only Markdown rendering component for Sirius Web based applications and downstream consumers.
+The component will use Lexical internally to convert Markdown into a semantic DOM.
+It will not provide editing capabilities, a toolbar, Markdown shortcuts or form-specific behavior.
+
+The public API will stay minimal.
+The first component will receive a Markdown string and render it:
+
+[source,typescript]
+----
+<MarkdownContent value={markdown} />
+----
+
+The package will own the Lexical configuration, the Markdown transformers, the read-only rendering plugins, and the visual styling required to render common Markdown constructs consistently with Sirius Web and Material UI.
+
+The package will include a table transformer based on Lexical table nodes.
+It will reuse helper services provided by `@lexical/markdown`, including `isTableRowDivider`, instead of duplicating that parsing logic.
+
+Lexical will be upgraded to `0.46.0` for the impacted Sirius frontend packages to use the current Markdown and table helper APIs consistently (that are not available in `0.42` used by Sirius-web).
+
+The package will be separate from `sirius-components-core` to avoid making Lexical a dependency of the central core package.
+It will also be separate from `sirius-components-forms` because the renderer is not specific to forms or edition anymore, even if it can be used inside form-based views.
+
+=== Add the Markdown renderer to sirius-components-core
+
+We could add the Markdown rendering component directly to `sirius-components-core`.
+
+This would make the component easy to consume, because many frontend packages and downstream applications already depend on `sirius-components-core`.
+However, it would also make Lexical a dependency of the central core package, even for applications which do not need Markdown rendering.
+
+=== Add the Markdown renderer to sirius-components-forms
+
+We could add the Markdown rendering component to `sirius-components-forms`, because this package already contains the Lexical based rich text editor.
+
+This would reuse an existing package where Lexical is already present.
+However, the renderer is not specific to forms or edition.
+It can be used in existing form views, but also in application-specific views or new views built on top of Sirius Web.
+Keeping it in `sirius-components-forms` would make the package boundary misleading for downstream consumers.
+
+=== Use an existing React Markdown renderer
+
+We could use an existing React Markdown renderer instead of building a dedicated Lexical based component (`react-markdown`, `react-gfm`).
+
+This could reduce the amount of custom rendering code in Sirius Web.
+However, such renderers usually require additional dependencies to support rich Markdown features such as GitHub-flavoured Markdown, tables, checklists, syntax extensions, sanitization, or custom component rendering.
+Those dependencies would be introduced only for rendering Markdown while Sirius Web already uses Lexical for rich text support.
+
+Using a customized Lexical based renderer should be enough for the expected rendering needs.
+It also keeps Markdown rendering aligned with the existing rich text technology used in Sirius Web.
+
+== Decision Outcome
+
+In the context of applications built on top of Sirius Web needing a consistent read-only Markdown rendering capability, facing the need to reuse the renderer outside of forms while keeping Lexical out of the central core package and avoiding additional Markdown rendering dependencies, we decided to introduce the dedicated `@eclipse-sirius/sirius-components-markdown` frontend package using a customized Lexical based renderer, accepting the cost of one additional frontend package in the monorepo.
+
+== Consequences
+
+=== Advantages
+
+Sirius Web based applications can render Markdown consistently in forms, application views and downstream-specific views.
+
+Downstream consumers can depend on a platform-level renderer instead of maintaining application-specific Markdown rendering code.
+
+Both read-only rendering and rich text edition can rely on the same transformers and conversion helpers.
+
+The renderer API can stay focused on read-only Markdown rendering without mixing form edition concerns.
+
+=== Drawbacks
+
+The new package adds a dedicated frontend package to the monorepo and introduces Lexical-related dependencies in that package.
+
+Sirius Web will need to keep Lexical versions aligned across frontend packages to avoid duplicated runtime behavior and incompatible node definitions.
+
+Supporting GitHub-flavoured Markdown rendering still requires Sirius-owned integration code for features that Lexical does not fully style or transform out of the box, notably tables and checklists.
+
+== More Information
+
+=== Implementation
+
+The new package should follow the same frontend package conventions as the existing Sirius Web frontend packages.
+
+It should export a first `MarkdownRenderer` component with a minimal public API:
+
+[source,typescript]
+----
+<MarkdownRenderer content={markdown} />
+----
+
+It should also export the shared Markdown transformers and conversion helpers used by both rendering and edition:
+
+Several steps might be necessary:
+1. Update Lexical to `0.46.0` to enable new Lexical Markdown-parsing related helpers.
+2. Create a new npm package `sirius-components-markdown` and migrate the existing Lexical support from `sirius-components-forms` to this package.
+3. Add support for GFM.
+
+The first version of the renderer should focus on rendering Markdown content, including tables, checklists and quote blocks. Code highlighting requires additional dependencies and processing, and can be added later.
+It should not provide editing capabilities.
+Lexical should be upgraded to `0.46.0` for the impacted Sirius frontend packages before implementing table support with the current Markdown helper APIs.
+
+=== References
+
+* https://github.com/facebook/lexical/blob/1803c54f0e9cffad42a145e3bcaaf5051fe7fdee/packages/lexical-playground/src/plugins/MarkdownTransformers/index.ts[Lexical playground Markdown transformers]
+* https://github.com/facebook/lexical/blob/1803c54f0e9cffad42a145e3bcaaf5051fe7fdee/packages/lexical-playground/src/themes/PlaygroundEditorTheme.ts[Lexical playground editor theme]
