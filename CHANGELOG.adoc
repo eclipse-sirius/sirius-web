@@ -84,7 +84,7 @@ This is to make it easier to type when the area overlaps another elements.
 - https://github.com/eclipse-sirius/sirius-web/issues/6576[#6576] [diagram] Add `paletteToolOverrideExtensionPoint` to override tools retrieved from the backend.
 - https://github.com/eclipse-sirius/sirius-web/issues/825[#825] [doc] Add a first version of the Sirius Web documentation.
 The documentation can be built using `./doc/generate-local.bash`
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6632[#6632] [diagram] The width of the palette has been increased from 200px to 250px.
 
 === Improvements
 
