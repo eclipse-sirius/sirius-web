@@ -219,7 +219,8 @@ export const useElkLayout = (): UseElkLayoutValue => {
 
         const elkNode = {
           ...node,
-          position: originalNode?.data.pinned ? originalNode.position : { x: node.x ?? 0, y: node.y ?? 0 },
+          x: originalNode?.data.pinned ? originalNode.position.x : node.x ?? 0,
+          y: originalNode?.data.pinned ? originalNode.position.y : node.y ?? 0,
         };
         elkNodesMap.set(node.id, elkNode);
         if (node.children) {
