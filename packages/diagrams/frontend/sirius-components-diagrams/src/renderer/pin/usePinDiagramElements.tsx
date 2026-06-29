@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -47,7 +47,7 @@ const isErrorPayload = (payload: GQLPinDiagramElementPayload): payload is GQLErr
 
 export const usePinDiagramElements = (): UsePinDiagramElements => {
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'usePinDiagramElements' });
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
   const [pinElementMutation, { data: pinDiagramElementData, error: pinDiagramElementError }] = useMutation<
@@ -62,7 +62,7 @@ export const usePinDiagramElements = (): UsePinDiagramElements => {
     if (pinDiagramElementData) {
       const { pinDiagramElement } = pinDiagramElementData;
       if (isErrorPayload(pinDiagramElement)) {
-        addErrorMessage(pinDiagramElement.message);
+        addMessages(pinDiagramElement.messages);
       }
     }
   }, [pinDiagramElementData, pinDiagramElementError]);
