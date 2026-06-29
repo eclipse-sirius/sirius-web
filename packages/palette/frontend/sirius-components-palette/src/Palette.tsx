@@ -47,7 +47,7 @@ export const isPaletteDivider = (entry: GQLPaletteDivider): entry is GQLToolSect
 
 export const isTool = (entry: GQLPaletteEntry): entry is GQLTool => !isPaletteDivider(entry) && !isToolSection(entry);
 
-const paletteWidth = 200;
+const paletteWidth = 250;
 
 /**
  * The palette component forward both the ref and props
