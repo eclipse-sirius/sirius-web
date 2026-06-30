@@ -18,11 +18,12 @@ export interface DraggablePaletteState {
 }
 
 export interface DraggablePaletteProps {
-  x: number;
-  y: number;
-  palette: GQLPalette;
+  representationKind: string;
   representationElementIds: string[];
+  palette: GQLPalette;
+  paletteToolListExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
   onToolClick: (tool: GQLTool) => void;
   onClose: () => void;
-  paletteToolListExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
+  x: number;
+  y: number;
 }

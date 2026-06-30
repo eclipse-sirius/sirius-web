@@ -32,6 +32,7 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-sirius/sirius-web/issues/6546[#6546] [diagram] The `Palette` component and its related types are now exported from the palette package
 - https://github.com/eclipse-sirius/sirius-web/issues/2928[#2928] [diagram] `ConnectionCreationHandles` now needs the node current position, width,  height and isDraggedNode props
 - https://github.com/eclipse-sirius/sirius-web/issues/6612[#6612] [core] `index.html` is not cached anymore.
+- https://github.com/eclipse-sirius/sirius-web/issues/6591[#6591] [diagram] added `representationKind` to `canHandle` methods of the `Palette` frontend extensions points, exported `DIAGRAM_REPRESENTATION_KIND` variable from the diagram package, `paletteQuickToolExtensionPoint` is now a `DataExtensionPoint` with a `canHandle` method
 
 
 === Dependency update

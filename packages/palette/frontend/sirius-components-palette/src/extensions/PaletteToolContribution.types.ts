@@ -14,6 +14,7 @@
 export interface PaletteToolContributionProps {
   id: string;
   sectionId?: string;
+  canHandle: (representationKind: string) => boolean;
   component: React.ComponentType<PaletteToolContributionComponentProps>;
 }
 

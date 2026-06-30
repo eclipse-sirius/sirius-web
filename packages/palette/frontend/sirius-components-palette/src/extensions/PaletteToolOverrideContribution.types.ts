@@ -12,7 +12,7 @@
  *******************************************************************************/
 import { GQLTool } from '../Palette.types';
 export interface PaletteToolOverriddenContributionProps {
-  canHandle: (tool: GQLTool) => boolean;
+  canHandle: (representationKind: string, tool: GQLTool) => boolean;
   component: React.ComponentType<PaletteToolOverriddenContributionComponentProps>;
 }
 

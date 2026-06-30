@@ -11,8 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ComponentExtensionPoint } from '@eclipse-sirius/sirius-components-core';
-import { PaletteQuickToolComponentProps } from './PaletteQuickToolContribution.types';
+import { DataExtensionPoint } from '@eclipse-sirius/sirius-components-core';
+import { PaletteQuickToolContributionProps } from './PaletteQuickToolContribution.types';
 
 /**
  * Extension point for palette quick tools.
@@ -22,7 +22,7 @@ import { PaletteQuickToolComponentProps } from './PaletteQuickToolContribution.t
  *
  * @since v2026.7.0
  */
-export const paletteQuickToolExtensionPoint: ComponentExtensionPoint<PaletteQuickToolComponentProps> = {
+export const paletteQuickToolExtensionPoint: DataExtensionPoint<Array<PaletteQuickToolContributionProps>> = {
   identifier: 'palette#quickTool',
-  FallbackComponent: () => null,
+  fallback: [],
 };

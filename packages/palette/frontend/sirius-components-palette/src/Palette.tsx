@@ -55,7 +55,18 @@ const paletteWidth = 200;
  * Props like className, onMouse{Down|Up}, onTouchEnd, style and transform are used by the Draggable component
  */
 export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTMLAttributes<HTMLDivElement>>(
-  ({ representationElementIds, onClose, onToolClick, palette, paletteToolListExtensions, ...remainingProps }, ref) => {
+  (
+    {
+      representationKind,
+      representationElementIds,
+      onClose,
+      onToolClick,
+      palette,
+      paletteToolListExtensions,
+      ...remainingProps
+    },
+    ref
+  ) => {
     const nodeRef = React.useRef<HTMLDivElement>(null);
     const theme: Theme = useTheme();
 
@@ -130,6 +141,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
             </Box>
             <Divider />
             <PaletteQuickAccessToolBar
+              representationKind={representationKind}
               representationElementIds={representationElementIds}
               onToolClick={handleToolClick}
               quickAccessTools={palette.quickAccessTools}
@@ -143,12 +155,13 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
               />
             ) : (
               <PaletteToolSection
+                representationKind={representationKind}
+                representationElementIds={representationElementIds}
                 palette={palette}
                 onToolClick={handleToolClick}
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
                 lastToolInvoked={lastToolInvoked}
-                representationElementIds={representationElementIds}
                 extensionSections={paletteToolListExtensions}
               />
             )}

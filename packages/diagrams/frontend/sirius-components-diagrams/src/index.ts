@@ -88,6 +88,7 @@ export { useResetNodeAppearance } from './renderer/palette/appearance/useResetNo
 export { AppearanceColorPicker } from './renderer/palette/appearance/widget/AppearanceColorPicker';
 export { AppearanceNumberTextfield } from './renderer/palette/appearance/widget/AppearanceNumberTextfield ';
 export { AppearanceSelect } from './renderer/palette/appearance/widget/AppearanceSelect';
+export { DIAGRAM_REPRESENTATION_KIND } from './renderer/palette/DiagramPalette';
 export type { DiagramToolbarActionProps } from './renderer/toolbar/DiagramToolbar.types';
 export { diagramToolbarActionExtensionPoint } from './renderer/toolbar/DiagramToolbarExtensionPoints';
 export type { IElementSVGExportHandler } from './renderer/toolbar/experimental-svg-export/SVGExportEngine.types';
