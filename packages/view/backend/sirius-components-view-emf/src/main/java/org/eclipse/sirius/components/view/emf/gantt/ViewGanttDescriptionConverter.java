@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -119,6 +119,7 @@ public class ViewGanttDescriptionConverter implements IRepresentationDescription
                 .taskDescriptions(taskDescriptions)
                 .dateRoundingProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewGanttDescription.getDateRoundingExpression()))
                 .iconURLsProvider(new ViewIconURLsProvider(interpreter, viewGanttDescription.getIconExpression()))
+                .weekendsProvider(variableManager -> List.of("Saturday", "Sunday"))
                 .build();
 
         return new ViewConverterResult(ganttDescription, null);
