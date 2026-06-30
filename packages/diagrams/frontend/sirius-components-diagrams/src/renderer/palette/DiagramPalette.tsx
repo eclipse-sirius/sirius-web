@@ -35,6 +35,8 @@ import { ShowInSection } from './ShowInSection';
 import { usePaletteContents } from './usePaletteContents';
 import { UsePaletteContentValue } from './usePaletteContents.types';
 
+export const DIAGRAM_REPRESENTATION_KIND = 'diagram';
+
 export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: DiagramPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { isOpened, x: paletteX, y: paletteY, representationElementIds, hidePalette } = usePalette();
@@ -150,13 +152,14 @@ export const DiagramPalette = memo(({ diagramId, diagramTargetObjectId }: Diagra
     <PalettePortal>
       <div onKeyDown={onKeyDown}>
         <DraggablePalette
-          x={paletteX}
-          y={paletteY}
+          representationKind={DIAGRAM_REPRESENTATION_KIND}
           representationElementIds={representationElementIds.length > 0 ? representationElementIds : [diagramId]}
           palette={palette}
           onToolClick={onToolClick}
           onClose={hidePalette}
           paletteToolListExtensions={extensionSections}
+          x={paletteX}
+          y={paletteY}
         />
       </div>
     </PalettePortal>

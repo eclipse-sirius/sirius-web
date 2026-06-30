@@ -10,6 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+export interface PaletteQuickToolContributionProps {
+  canHandle: (representationKind: string) => boolean;
+  component: React.ComponentType<PaletteQuickToolComponentProps>;
+}
+
 export interface PaletteQuickToolComponentProps {
   representationElementIds: string[];
 }

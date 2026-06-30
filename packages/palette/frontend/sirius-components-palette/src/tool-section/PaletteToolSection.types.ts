@@ -15,11 +15,12 @@ import { GQLPalette, GQLTool } from '../Palette.types';
 import { PaletteExtensionSectionProps } from '../PaletteExtensionSection.types';
 
 export interface PaletteToolSectionProps {
-  onToolClick: (tool: GQLTool) => void;
+  representationKind: string;
+  representationElementIds: string[];
   palette: GQLPalette;
+  onToolClick: (tool: GQLTool) => void;
   onBackToMainList: () => void;
   onClose: () => void;
-  representationElementIds: string[];
   lastToolInvoked: GQLTool | null;
   extensionSections: React.ReactElement<PaletteExtensionSectionProps>[];
 }

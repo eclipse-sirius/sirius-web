@@ -33,11 +33,12 @@ export interface GQLToolVariable {
 export type GQLToolVariableType = 'STRING' | 'OBJECT_ID' | 'OBJECT_ID_ARRAY';
 
 export interface PaletteProps {
-  palette: GQLPalette;
+  representationKind: string;
   representationElementIds: string[];
+  palette: GQLPalette;
+  paletteToolListExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
   onToolClick: (tool: GQLTool) => void;
   onClose: () => void;
-  paletteToolListExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
 }
 
 export interface PaletteState {

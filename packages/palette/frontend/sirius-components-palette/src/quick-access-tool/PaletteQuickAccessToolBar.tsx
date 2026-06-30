@@ -11,12 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { ComponentExtension, useComponents } from '@eclipse-sirius/sirius-components-core';
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { Theme } from '@mui/material/styles';
 import { makeStyles } from 'tss-react/mui';
-import { PaletteQuickToolComponentProps } from '../extensions/PaletteQuickToolContribution.types';
+import { PaletteQuickToolContributionProps } from '../extensions/PaletteQuickToolContribution.types';
 import { paletteQuickToolExtensionPoint } from '../extensions/PaletteQuickToolExtensionPoints';
 import { PaletteQuickAccessToolBarProps } from './PaletteQuickAccessToolBar.types';
 import { Tool } from './Tool';
@@ -35,6 +35,7 @@ const useStyle = makeStyles()((theme: Theme) => ({
 }));
 
 export const PaletteQuickAccessToolBar = ({
+  representationKind,
   representationElementIds,
   quickAccessTools,
   onToolClick,
@@ -46,19 +47,17 @@ export const PaletteQuickAccessToolBar = ({
     quickAccessToolComponents.push(<Tool tool={tool} onClick={onToolClick} key={'tool_' + tool.id} />)
   );
 
-  const paletteQuickToolComponents: ComponentExtension<PaletteQuickToolComponentProps>[] =
-    useComponents(paletteQuickToolExtensionPoint);
+  const paletteQuickToolComponents: DataExtension<PaletteQuickToolContributionProps[]> =
+    useData(paletteQuickToolExtensionPoint);
 
-  paletteQuickToolComponents
-    .map((data) => data.Component)
-    .forEach((PaletteToolComponent, index) =>
+  paletteQuickToolComponents.data
+    .filter((contributedTool) => contributedTool.canHandle(representationKind))
+    .forEach((contributedTool) => {
+      const ContributedComponent = contributedTool.component;
       quickAccessToolComponents.push(
-        <PaletteToolComponent
-          representationElementIds={representationElementIds}
-          key={'paletteToolComponents_' + index.toString()}
-        />
-      )
-    );
+        <ContributedComponent representationElementIds={representationElementIds}></ContributedComponent>
+      );
+    });
 
   return quickAccessToolComponents.length > 0 ? (
     <>

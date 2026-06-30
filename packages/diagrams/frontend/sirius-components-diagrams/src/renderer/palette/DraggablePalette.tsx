@@ -19,13 +19,14 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { useGetUpdatedModalPosition } from '../hooks/useGetUpdatedModalPosition';
 import { DraggablePaletteProps, DraggablePaletteState } from './DraggablePalette.types';
 export const DraggablePalette = ({
-  x: paletteX,
-  y: paletteY,
+  representationKind,
   representationElementIds,
   palette,
   onToolClick,
   onClose,
   paletteToolListExtensions,
+  x: paletteX,
+  y: paletteY,
 }: DraggablePaletteProps) => {
   const [state, setState] = useState<DraggablePaletteState>({
     controlledPosition: { x: paletteX, y: paletteY },
@@ -86,12 +87,13 @@ export const DraggablePalette = ({
       position={state.controlledPosition}
       onStop={onPaletteDragStop}>
       <Palette
-        ref={nodeRef}
+        representationKind={representationKind}
         representationElementIds={representationElementIds}
         palette={palette}
         onToolClick={handleToolClick}
         onClose={onClose}
         paletteToolListExtensions={paletteToolListExtensions}
+        ref={nodeRef}
       />
     </Draggable>
   );
