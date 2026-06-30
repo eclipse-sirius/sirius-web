@@ -21,6 +21,7 @@ import { Edge, Node, useReactFlow, useStoreApi, useViewport, Viewport, XYPositio
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
+import { useDiagramDescription } from '../../contexts/useDiagramDescription';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { usePaletteContents } from '../palette/usePaletteContents';
 import { useSingleClickTool } from '../tools/useSingleClickTool';
@@ -65,6 +66,7 @@ const toolHasKeyBinding = (tool: GQLSingleClickOnDiagramElementTool, event: Reac
 
 export const useDiagramKeyBinding = (diagramTargetObjectId: string): UseDiagramKeyBindingValue => {
   const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
+  const { diagramDescription } = useDiagramDescription();
   const { getNodes, getNode, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const [state, setState] = useState<UseDiagramKeyBindingState>({
     currentEvent: null,
@@ -142,6 +144,22 @@ export const useDiagramKeyBinding = (diagramTargetObjectId: string): UseDiagramK
       ) {
         return;
       }
+
+      diagramDescription.keyBindings.forEach((keyBinding) => {
+        let eventString = event.key;
+        if (event.metaKey) {
+          eventString = 'Meta+' + eventString;
+        }
+        if (event.altKey) {
+          eventString = 'Alt+' + eventString;
+        }
+        if (event.ctrlKey) {
+          eventString = 'Ctrl+' + eventString;
+        }
+        if (eventString === keyBinding) {
+          event.preventDefault();
+        }
+      });
 
       setState((prevState) => ({
         ...prevState,

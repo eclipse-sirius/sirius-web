@@ -19,6 +19,7 @@ const defaultValue: DiagramDescriptionContextValue = {
     id: '',
     nodeDescriptions: [],
     dropNodeCompatibility: [],
+    keyBindings: [],
     debug: false,
     arrangeLayoutDirection: 'RIGHT',
     layoutOption: 'NONE',
