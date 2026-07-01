@@ -13,7 +13,10 @@
 
 import { ExtensionRegistry } from '@eclipse-sirius/sirius-components-core';
 import { PaletteToolContributionProps, paletteToolExtensionPoint } from '@eclipse-sirius/sirius-components-palette';
-import { treeItemContextMenuEntryExtensionPoint } from '@eclipse-sirius/sirius-components-trees';
+import {
+  TREE_REPRESENTATION_KIND,
+  treeItemContextMenuEntryExtensionPoint,
+} from '@eclipse-sirius/sirius-components-trees';
 import { ForkToolContribution } from './contributions/ForkToolContribution';
 import { ForkTreeItemContextMenuContribution } from './contributions/ForkTreeItemContextMenuContribution';
 const forkRegistry = new ExtensionRegistry();
@@ -28,7 +31,7 @@ forkRegistry.putData<PaletteToolContributionProps[]>(paletteToolExtensionPoint, 
   data: [
     {
       id: 'fork-representation',
-      canHandle: (representationDescriptionId: string) => representationDescriptionId === 'explorer_',
+      canHandle: (representationDescriptionId: string) => representationDescriptionId === TREE_REPRESENTATION_KIND,
       component: ForkToolContribution,
     },
   ],
