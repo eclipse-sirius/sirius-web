@@ -15,7 +15,12 @@ import { gql, useQuery } from '@apollo/client';
 import { useContext, useEffect } from 'react';
 
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { GQLPalette } from '@eclipse-sirius/sirius-components-palette';
+import {
+  GQLPalette,
+  isPaletteDivider,
+  isSingleClickOnDiagramElementTool,
+  isToolSection,
+} from '@eclipse-sirius/sirius-components-palette';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
@@ -101,7 +106,19 @@ export const usePaletteContents = (diagramElementIds: string[], skip: boolean): 
 
   const description: GQLRepresentationDescription | undefined =
     paletteData?.viewer.editingContext.representation.description;
-  const palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
+  let palette: GQLPalette | null = description && isDiagramDescription(description) ? description.palette : null;
+
+  // Workaround since the same getPalette query is used for connector and node tools
+  // See https://github.com/eclipse-sirius/sirius-web/pull/5511 that will remove this filter by using a dedicated useConnectorPalette query.
+  if (palette) {
+    palette = {
+      id: palette.id,
+      paletteEntries: palette.paletteEntries.filter(
+        (entry) => isToolSection(entry) || isSingleClickOnDiagramElementTool(entry) || isPaletteDivider(entry)
+      ),
+      quickAccessTools: palette.quickAccessTools,
+    };
+  }
 
   useEffect(() => {
     if (paletteError) {
