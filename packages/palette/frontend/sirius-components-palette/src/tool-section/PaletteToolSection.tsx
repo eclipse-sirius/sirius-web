@@ -15,7 +15,7 @@ import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Slide from '@mui/material/Slide';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
 import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
@@ -91,6 +91,11 @@ export const PaletteToolSection = ({
   const [state, setState] = useState<PaletteToolSectionStateValue>(defaultStateValue);
   const { classes } = useStyle();
   const { setLastToolInvoked } = usePalette();
+  const isFirstRender = useRef<boolean>(true);
+
+  useEffect(() => {
+    isFirstRender.current = false;
+  }, []);
 
   const navigateTo = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, sectionId: string | undefined) => {
     event.stopPropagation();
@@ -223,8 +228,9 @@ export const PaletteToolSection = ({
       <Box className={classes.toolListContainer} ref={containerRef}>
         <Slide
           key={state.currentSectionId ?? 'main'}
-          direction={state.direction === 'left' ? 'left' : 'right'}
+          direction={state.direction}
           in
+          appear={!isFirstRender.current}
           container={containerRef.current}
           mountOnEnter
           unmountOnExit>
