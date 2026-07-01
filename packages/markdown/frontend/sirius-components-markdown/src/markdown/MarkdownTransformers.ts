@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,18 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import {
+  $convertFromMarkdownString,
+  $convertToMarkdownString,
+  TRANSFORMERS,
+  Transformer,
+} from "@lexical/markdown";
 
-export interface RichTextEditorProps {
-  value: string;
-  placeholder: string;
-  onBlur: (newValue: string) => void;
-  readOnly: boolean;
-}
+export const MARKDOWN_TRANSFORMERS: Transformer[] = TRANSFORMERS;
+
+export const convertFromMarkdownString = (markdown: string): void => {
+  $convertFromMarkdownString(markdown, MARKDOWN_TRANSFORMERS);
+};
+
+export const convertToMarkdownString = (): string =>
+  $convertToMarkdownString(MARKDOWN_TRANSFORMERS);

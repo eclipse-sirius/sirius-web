@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2023 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,20 +12,17 @@
  *******************************************************************************/
 import {
   $handleListInsertParagraph,
-  insertList,
+  $insertList,
+  $removeList,
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
-  removeList,
   REMOVE_LIST_COMMAND,
-} from '@lexical/list';
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { mergeRegister } from '@lexical/utils';
-import { COMMAND_PRIORITY_LOW, INSERT_PARAGRAPH_COMMAND } from 'lexical';
-import { useEffect } from 'react';
+} from "@lexical/list";
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import { mergeRegister } from "@lexical/utils";
+import { COMMAND_PRIORITY_LOW, INSERT_PARAGRAPH_COMMAND } from "lexical";
+import { useEffect } from "react";
 
-/**
- * Register the commands needed to manipulate (create/remove/indent/outdent) lists and list item nodes.
- */
 export function ListPlugin(): null {
   const [editor] = useLexicalComposerContext();
 
@@ -34,7 +31,7 @@ export function ListPlugin(): null {
       editor.registerCommand(
         INSERT_ORDERED_LIST_COMMAND,
         () => {
-          insertList(editor, 'number');
+          $insertList("number");
           return true;
         },
         COMMAND_PRIORITY_LOW
@@ -42,7 +39,7 @@ export function ListPlugin(): null {
       editor.registerCommand(
         INSERT_UNORDERED_LIST_COMMAND,
         () => {
-          insertList(editor, 'bullet');
+          $insertList("bullet");
           return true;
         },
         COMMAND_PRIORITY_LOW
@@ -50,7 +47,7 @@ export function ListPlugin(): null {
       editor.registerCommand(
         REMOVE_LIST_COMMAND,
         () => {
-          removeList(editor);
+          $removeList();
           return true;
         },
         COMMAND_PRIORITY_LOW
