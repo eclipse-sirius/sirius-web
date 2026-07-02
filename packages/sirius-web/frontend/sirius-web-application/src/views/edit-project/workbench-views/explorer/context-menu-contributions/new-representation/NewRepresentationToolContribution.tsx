@@ -23,7 +23,7 @@ import { NewRepresentationModal } from './NewRepresentationModal';
 import { NewRepresentationToolContributionState } from './NewRepresentationToolContribution.types';
 
 export const NewRepresentationToolContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const [state, setState] = useState<NewRepresentationToolContributionState>({
       isModalOpen: false,
     });
@@ -42,11 +42,16 @@ export const NewRepresentationToolContribution = forwardRef(
       onClose();
     };
 
+    const handleClick = () => {
+      onInvoked();
+      setState((prevState) => ({ ...prevState, isModalOpen: true }));
+    };
+
     return (
       <>
         <MenuItem
           key="new-representation"
-          onClick={() => setState((prevState) => ({ ...prevState, isModalOpen: true }))}
+          onClick={handleClick}
           ref={ref}
           data-testid="new-representation"
           disabled={readOnly}

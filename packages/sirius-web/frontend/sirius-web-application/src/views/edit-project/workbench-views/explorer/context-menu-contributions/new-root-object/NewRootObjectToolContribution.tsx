@@ -23,7 +23,7 @@ import { NewRootObjectModal } from './NewRootObjectModal';
 import { NewRootObjectToolContributionState } from './NewRootObjectToolContribution.types';
 
 export const NewRootObjectToolContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const [state, setState] = useState<NewRootObjectToolContributionState>({
       isModalOpen: false,
     });
@@ -42,12 +42,17 @@ export const NewRootObjectToolContribution = forwardRef(
       onClose();
     };
 
+    const handleClick = () => {
+      onInvoked();
+      setState((prevState) => ({ ...prevState, isModalOpen: true }));
+    };
+
     return (
       <>
         <MenuItem
           key="new-object"
           data-testid="new-object"
-          onClick={() => setState((prevState) => ({ ...prevState, isModalOpen: true }))}
+          onClick={handleClick}
           ref={ref}
           disabled={readOnly}
           aria-disabled>

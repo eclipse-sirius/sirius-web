@@ -23,7 +23,7 @@ import { DuplicateObjectModal } from './DuplicateObjectModal';
 import { DuplicateObjectToolContributionState } from './DuplicateObjectToolContribution.types';
 
 export const DuplicateObjectToolContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const [state, setState] = useState<DuplicateObjectToolContributionState>({
       isModalOpen: false,
     });
@@ -42,11 +42,16 @@ export const DuplicateObjectToolContribution = forwardRef(
       onClose();
     };
 
+    const handleClick = () => {
+      onInvoked();
+      setState((prevState) => ({ ...prevState, isModalOpen: true }));
+    };
+
     return (
       <>
         <MenuItem
           key="duplicate-object"
-          onClick={() => setState((prevState) => ({ ...prevState, isModalOpen: true }))}
+          onClick={handleClick}
           ref={ref}
           data-testid="duplicate-object"
           disabled={readOnly}
