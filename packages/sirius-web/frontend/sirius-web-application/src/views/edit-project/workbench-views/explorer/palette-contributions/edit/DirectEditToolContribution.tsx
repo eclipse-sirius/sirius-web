@@ -39,7 +39,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const DirectEditToolContribution = ({}: PaletteToolContributionComponentProps) => {
+export const DirectEditToolContribution = ({ onInvoked }: PaletteToolContributionComponentProps) => {
   const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'renameMenuItem' });
   const { item, readOnly, onDirectEditClick } = useContext<TreePaletteContextValue>(TreePaletteContext);
   const { classes } = useStyle();
@@ -48,12 +48,17 @@ export const DirectEditToolContribution = ({}: PaletteToolContributionComponentP
     return null;
   }
 
+  const handleClick = () => {
+    onInvoked();
+    onDirectEditClick();
+  };
+
   return (
     <Tooltip title={t('rename')} placement="right">
       <ListItemButton
         className={classes.listItemButton}
         disabled={readOnly}
-        onClick={onDirectEditClick}
+        onClick={handleClick}
         data-testid={`rename-tree-item`}>
         <ListItemIcon className={classes.listItemIcon}>
           <EditIcon />

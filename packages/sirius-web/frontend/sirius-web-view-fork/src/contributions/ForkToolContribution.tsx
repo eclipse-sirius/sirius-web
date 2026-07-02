@@ -59,7 +59,7 @@ const isSuccessPayload = (payload: CreateForkedStudioPayload): payload is Create
   payload.__typename === 'CreateProjectSuccessPayload';
 
 export const ForkToolContribution = forwardRef(
-  ({}: PaletteToolContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked }: PaletteToolContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const { editingContextId, item, readOnly } = useContext<TreePaletteContextValue>(TreePaletteContext);
 
     const [createProject, { data, error }] = useMutation<GQLCreateForkedStudioMutationData>(forkViewMutation);
@@ -111,9 +111,14 @@ export const ForkToolContribution = forwardRef(
       createProject({ variables: { input } });
     };
 
+    const handleClick = () => {
+      onInvoked();
+      handleClickOpen();
+    };
+
     return (
       <Fragment key="fork-tree-item-context-menu-contribution">
-        <MenuItem onClick={handleClickOpen} ref={ref} disabled={readOnly} key="new-fork" data-testid="fork-action">
+        <MenuItem onClick={handleClick} ref={ref} disabled={readOnly} key="new-fork" data-testid="fork-action">
           <ListItemIcon>
             <EditNoteIcon fontSize="small" />
           </ListItemIcon>

@@ -78,6 +78,8 @@ This is to make it easier to type when the area overlaps another elements.
 - https://github.com/eclipse-sirius/sirius-web/issues/6623[#6623] [diagram] Fix highlighting of matching tool's label when using search in the palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6652[#6652] [diagram] Fix fork representation contribution not rendering.
 - https://github.com/eclipse-sirius/sirius-web/issues/6628[#6628] [diagram] Prevent diagram tools from processing utility nodes
+- https://github.com/eclipse-sirius/sirius-web/issues/6657[#6657] [diagram] Fix last tool used for tree palette overridden contributions.
+- https://github.com/eclipse-sirius/sirius-web/issues/6554[#6554] [diagram] Fix last tool used for tree palette contributions.
 
 
 === New Features

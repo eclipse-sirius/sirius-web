@@ -11,17 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface PaletteToolContributionProps {
-  id: string;
-  sectionId?: string;
-  canHandle: (representationKind: string) => boolean;
-  component: React.ComponentType<PaletteToolContributionComponentProps>;
-}
+import { GQLPalette, GQLTool } from '../Palette.types';
 
-export interface PaletteToolContributionComponentProps {
-  representationElementIds: string[];
-  /**
-   * Callback to call once when the contributed tool is actually considered to have been invoked by the user.
-   */
-  onInvoked: () => void;
+export interface useToolValue {
+  getRenderedTool: (
+    palette: GQLPalette,
+    representationElementIds: string[],
+    representationKind: string,
+    onToolClick: (tool: GQLTool) => void,
+    toolId: string | null
+  ) => JSX.Element | null;
+  getRenderedGQLTool: (
+    palette: GQLPalette,
+    tool: GQLTool,
+    representationElementIds: string[],
+    representationKind: string,
+    onToolClick: (tool: GQLTool) => void
+  ) => JSX.Element;
 }

@@ -20,7 +20,7 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDelete } from './useDelete';
 
-export const DeleteToolContribution = ({}: PaletteToolContributionComponentProps) => {
+export const DeleteToolContribution = ({ onInvoked }: PaletteToolContributionComponentProps) => {
   const { handleDelete } = useDelete();
   const { editingContextId, item, treeId, readOnly } = useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -31,8 +31,14 @@ export const DeleteToolContribution = ({}: PaletteToolContributionComponentProps
   if (!item.deletable) {
     return null;
   }
+
+  const handleClick = () => {
+    onInvoked();
+    deleteTreeItem();
+  };
+
   return (
-    <MenuItem key="delete-tree-item" onClick={deleteTreeItem} data-testid="delete" disabled={readOnly} aria-disabled>
+    <MenuItem key="delete-tree-item" onClick={handleClick} data-testid="delete" disabled={readOnly} aria-disabled>
       <ListItemIcon>
         <DeleteIcon fontSize="small" />
       </ListItemIcon>
