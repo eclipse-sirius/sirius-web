@@ -19,14 +19,16 @@ import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 test.describe('edge-label', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
-    projectId = project.projectId;
-    await page.goto(`/projects/${projectId}/edit`);
-
-    const explorer = await new PlaywrightExplorer(page);
-    await explorer.expand('Flow');
-    await explorer.expand('NewSystem');
-    await explorer.select('Topography');
+    await new PlaywrightProject(request).uploadProject(page, 'projectFlowLabel.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('NewSystem');
+    await playwrightExplorer.select('Topography');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
   });
 
   test.afterEach(async ({ request }) => {
@@ -34,13 +36,7 @@ test.describe('edge-label', () => {
   });
 
   test('when an edge has a center label, then the label does not stick the edge path', async ({ page }) => {
-    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-
-    await page.getByTestId('arrange-all-menu-toggle').click();
-    await page.getByTestId('arrange-all-elk-rect-packing').click();
-
     const playwrightEdge = new PlaywrightEdge(page);
-
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
 

@@ -233,7 +233,7 @@ public class DiagramEdgeViewProvider implements IE2EViewProvider {
                         new DiagramBuilders()
                                 .newEdgeStyle()
                                 .fontSize(14)
-                                .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_BLUE))
+                                .color(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
                                 .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_TRANSPARENT))
                                 .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
                                 .borderRadius(3)

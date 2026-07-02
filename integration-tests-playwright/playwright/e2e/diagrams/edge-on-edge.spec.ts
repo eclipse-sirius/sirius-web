@@ -19,32 +19,15 @@ import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 test.describe('edge on edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProject('edge-on-edge', 'blank-project');
-    projectId = project.projectId;
-
-    await page.goto(`/projects/${projectId}/edit`);
-
+    await new PlaywrightProject(request).uploadProject(page, 'projectEdgeToEdgeCreation.zip');
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.uploadDocument('diagramEdgesOnEdges.xml');
-    await playwrightExplorer.expand('diagramEdgesOnEdges.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram');
-
-    //Hide the panels
-    await page.locator(`[data-testid="sidebar-left"] button`).first().click();
-    await page.locator(`[data-testid="sidebar-right"] button`).first().click();
-
-    //Place the nodes
-    const playwrightNode1a = new PlaywrightNode(page, 'Entity1a');
-    await playwrightNode1a.click();
-    await playwrightNode1a.move({ x: 0, y: -150 });
-
-    const playwrightNode2a = new PlaywrightNode(page, 'Entity2a');
-    await playwrightNode2a.click();
-    await playwrightNode2a.move({ x: 400, y: -150 });
-
-    const playwrightNode2b = new PlaywrightNode(page, 'Entity2b');
-    await playwrightNode2b.click();
-    await playwrightNode2b.move({ x: 0, y: 150 });
+    await playwrightExplorer.expand('edgesOnEdges');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
   });
 
   test.afterEach(async ({ request }) => {
