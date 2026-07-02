@@ -96,6 +96,7 @@ const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps
               key: 'Value from the explorer',
             };
           },
+          applySelection: null,
         };
       },
       []
@@ -142,6 +143,7 @@ const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentProps>
           getWorkbenchViewConfiguration: () => {
             return {};
           },
+          applySelection: null,
         };
       },
       []

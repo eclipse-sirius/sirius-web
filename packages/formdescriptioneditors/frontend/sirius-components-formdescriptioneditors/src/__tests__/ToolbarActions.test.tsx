@@ -34,7 +34,7 @@ import { ToolbarActions } from '../ToolbarActions';
 import { FormDescriptionEditorContext } from '../hooks/FormDescriptionEditorContext';
 import { DataTransfer } from './DataTransfer';
 
-crypto.randomUUID = vi.fn(() => '48be95fc-3422-45d3-b1f9-d590e847e9e1');
+vi.spyOn(crypto, 'randomUUID').mockReturnValue('48be95fc-3422-45d3-b1f9-d590e847e9e1');
 
 afterEach(() => {
   cleanup();
@@ -153,6 +153,8 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const group: GQLGroup = {
@@ -162,6 +164,12 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button', async () 
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction],
+    borderStyle: {
+      size: 1,
+      color: 'gray',
+      lineStyle: 'solid',
+      radius: 10,
+    },
   };
 
   const page: GQLPage = {
@@ -225,6 +233,8 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
   const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
@@ -243,6 +253,8 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const group: GQLGroup = {
@@ -252,6 +264,12 @@ test('delete the ToolbarAction from the ToolbarActions', async () => {
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction1, toolbarAction2],
+    borderStyle: {
+      size: 1,
+      color: 'gray',
+      lineStyle: 'solid',
+      radius: 10,
+    },
   };
 
   const page: GQLPage = {
@@ -317,6 +335,8 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
   const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
@@ -335,6 +355,8 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const group: GQLGroup = {
@@ -344,6 +366,12 @@ test('move the existing ToolbarAction from/into the drop area', async () => {
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction1, toolbarAction2],
+    borderStyle: {
+      size: 1,
+      color: 'gray',
+      lineStyle: 'solid',
+      radius: 10,
+    },
   };
 
   const page: GQLPage = {
@@ -411,6 +439,8 @@ test('move the existing ToolbarAction from/into the drop area located at the end
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
   const toolbarAction2: GQLToolbarAction = {
     id: 'ToolbarAction2',
@@ -429,6 +459,8 @@ test('move the existing ToolbarAction from/into the drop area located at the end
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const group: GQLGroup = {
@@ -438,6 +470,12 @@ test('move the existing ToolbarAction from/into the drop area located at the end
     label: 'group1',
     widgets: [],
     toolbarActions: [toolbarAction1, toolbarAction2],
+    borderStyle: {
+      size: 1,
+      color: 'gray',
+      lineStyle: 'solid',
+      radius: 10,
+    },
   };
 
   const page: GQLPage = {
@@ -505,6 +543,8 @@ test('add ToolbarAction by clicking on the Add Toolbar Action button for a page'
       underline: null,
       strikeThrough: null,
     },
+    hasHelpText: false,
+    readOnly: false,
   };
 
   const page: GQLPage = {
