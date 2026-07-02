@@ -107,7 +107,9 @@ test.describe('diagram - make same size', () => {
     const nodeChild = new PlaywrightNode(page, 'Controller');
 
     await nodeChild.click();
+    await nodeChild.isLastOneSelected();
     await nodeParent.controlClick();
+    await nodeParent.isLastOneSelected();
 
     const nodeParentSizeBefore = await nodeParent.getReactFlowSize('Application Concern', false);
 

@@ -126,6 +126,8 @@ test.describe('diagram - multi-resize', () => {
     const compositeProcessor1 = new PlaywrightNode(page, 'CompositeProcessor1');
     const compositeProcessor2 = new PlaywrightNode(page, 'CompositeProcessor2');
 
+    await page.getByTestId('hide-helper-lines').click();
+
     await compositeProcessor1.click();
     await compositeProcessor2.controlClick();
 
@@ -182,6 +184,8 @@ test.describe('diagram - multi-resize', () => {
   }) => {
     const compositeProcessor1 = new PlaywrightNode(page, 'CompositeProcessor1');
     const compositeProcessor2 = new PlaywrightNode(page, 'CompositeProcessor2');
+
+    await page.getByTestId('hide-helper-lines').click();
 
     await compositeProcessor1.click();
     await compositeProcessor2.controlClick();

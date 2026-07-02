@@ -88,6 +88,26 @@ test.describe('diagram - label', () => {
       { timeout: 2000 }
     );
   });
+});
+
+test.describe('diagram - label', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectFlowLabel.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('NewSystem');
+    await playwrightExplorer.select('Topography');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
 
   test('moving an outside node label by click', async ({ page }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
@@ -152,14 +172,16 @@ test.describe('diagram - label', () => {
 test.describe('diagram - label', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    const project = await new PlaywrightProject(request).createProject('diagram-resizable-label', 'blank-project');
-    projectId = project.projectId;
-
-    await page.goto(`/projects/${projectId}/edit`);
+    await new PlaywrightProject(request).uploadProject(page, 'projectResizableLabel.zip');
     const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.uploadDocument('diagramResizableLabel.xml');
-    await playwrightExplorer.expand('diagramResizableLabel.xml');
-    await playwrightExplorer.createRepresentation('Root', 'diagramEdges - simple edges', 'diagram');
+    await playwrightExplorer.expand('diagramResizableLabel');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
   });
 
   test.afterEach(async ({ request }) => {
@@ -178,7 +200,6 @@ test.describe('diagram - label', () => {
     await entity1Node.click();
     await expect(page.locator('.react-resizable-handle')).toHaveCount(1);
 
-    await entity1Node.move({ x: -100, y: -100 });
     await edge.click();
 
     await expect(page.locator('.react-resizable-handle')).toHaveCount(3);
@@ -225,6 +246,7 @@ test.describe('diagram - label', () => {
     );
   });
 });
+
 test.describe('diagram - label', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {

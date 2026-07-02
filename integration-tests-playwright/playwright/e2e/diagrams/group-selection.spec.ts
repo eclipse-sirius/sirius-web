@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,11 @@ test.describe('diagram - group selection', () => {
   test.beforeEach(async ({ page, request }) => {
     await new PlaywrightProject(request).uploadProject(page, 'projectGroupResize.zip');
     await expect(page.locator('[data-testid^="explorer://"]')).toBeAttached();
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Others...');
+    await playwrightExplorer.expand('Root');
+    await playwrightExplorer.select('diagramResize diagram');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     const url = page.url();
     const parts = url.split('/');
     const projectsIndex = parts.indexOf('projects');
@@ -31,18 +36,12 @@ test.describe('diagram - group selection', () => {
   });
 
   test('when selecting several nodes, the last one is always highlighted', async ({ page }) => {
-    const playwrightExplorer = new PlaywrightExplorer(page);
-    await playwrightExplorer.expand('Others...');
-    await playwrightExplorer.expand('Root');
-    await playwrightExplorer.select('diagramResize diagram');
-    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
-    await page.keyboard.down('ControlOrMeta');
-
     const playwrightNode1 = new PlaywrightNode(page, 'Entity1 - Resize Both');
     const playwrightNode2 = new PlaywrightNode(page, 'Entity2 - Resize None');
     const playwrightNode3 = new PlaywrightNode(page, 'Entity3 - Resize HORIZONTAL');
     const playwrightNode4 = new PlaywrightNode(page, 'Entity4 - Resize VERTICAL');
 
+    await page.keyboard.down('ControlOrMeta');
     await playwrightNode1.click();
     expect(await playwrightNode1.isLastOneSelected());
 
