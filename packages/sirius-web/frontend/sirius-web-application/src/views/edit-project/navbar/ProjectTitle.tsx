@@ -41,6 +41,7 @@ export const ProjectTitle = ({ name, workbenchHandle }: ProjectTitleProps) => {
         sx={() => ({
           display: 'flex',
           flexDirection: 'row',
+          alignItems: 'center',
         })}>
         <Typography
           variant="h6"
