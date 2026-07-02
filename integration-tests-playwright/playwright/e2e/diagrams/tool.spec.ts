@@ -88,15 +88,6 @@ test.describe('diagram - tool key bindings', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('When opening a diagram palette containing a tool with a key binding, then the key binding is visible', async ({
-    page,
-  }) => {
-    await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 100, y: 100 } });
-    await expect(page.getByTestId('tool-New entity')).toBeAttached();
-    const keyBinding = await page.getByTestId('key-binding-New entity');
-    await expect(keyBinding).toHaveText('Ctrl+e');
-  });
-
   test('When opening a node palette containing a tool with a key binding, then the key binding is visible', async ({
     page,
   }) => {
@@ -107,5 +98,33 @@ test.describe('diagram - tool key bindings', () => {
     await expect(page.getByTestId('tool-Text')).toBeAttached();
     const keyBinding = await page.getByTestId('key-binding-Text');
     await expect(keyBinding).toHaveText('Ctrl+s');
+  });
+});
+
+test.describe('diagram - tool key bindings', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('Studio', 'blank-studio-template');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit/`);
+
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('studioKeyBindingsEmpty.xml');
+    await playwrightExplorer.expand('studioKeyBindingsEmpty.xml');
+    await playwrightExplorer.createRepresentation('domain', 'Domain', 'Domain Diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('When opening a diagram palette containing a tool with a key binding, then the key binding is visible', async ({
+    page,
+  }) => {
+    await page.getByTestId('rf__wrapper').click({ button: 'right', position: { x: 100, y: 100 } });
+    await expect(page.getByTestId('tool-New entity')).toBeAttached();
+    const keyBinding = await page.getByTestId('key-binding-New entity');
+    await expect(keyBinding).toHaveText('Ctrl+e');
   });
 });

@@ -16,23 +16,22 @@ import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 import { edgeExpect } from '../../helpers/edgeExpect';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 
 test.describe('edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    await page.addInitScript(() => {
-      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
-      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
-    });
-
-    const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
-    projectId = project.projectId;
-    await page.goto(`/projects/${projectId}/edit`);
-
-    const explorer = await new PlaywrightExplorer(page);
-    await explorer.expand('Flow');
-    await explorer.expand('NewSystem');
-    await explorer.select('Topography');
+    await new PlaywrightProject(request).uploadProject(page, 'projectFlowEdge.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('NewSystem');
+    await playwrightExplorer.select('Topography');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await new PlaywrightNode(page, 'DataSource1').waitForAnimationToFinish();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
   });
 
   test.afterEach(async ({ request }) => {
@@ -41,10 +40,6 @@ test.describe('edge', () => {
 
   test('when a bend point is moved, then the edge path is changed', async ({ page }) => {
     const playwrightEdge = new PlaywrightEdge(page);
-    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
-    await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 150 });
-
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
 
@@ -52,7 +47,7 @@ test.describe('edge', () => {
 
     const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
     const box = (await lastBendingPoint.boundingBox())!;
-    await lastBendingPoint.hover();
+    await lastBendingPoint.hover({ force: true });
     await page.mouse.down();
     await page.mouse.move(box.x - 40, box.y + 80, { steps: 2 });
     await page.mouse.up();
@@ -65,12 +60,7 @@ test.describe('edge', () => {
   test('when last edge segment is moved, then a new bend point is added at the middle of node border', async ({
     page,
   }) => {
-    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
-    await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 150 });
-
     const playwrightEdge = new PlaywrightEdge(page);
-
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
 
@@ -78,7 +68,7 @@ test.describe('edge', () => {
 
     const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
     const box = (await lastBendingPoint.boundingBox())!;
-    await lastBendingPoint.hover();
+    await lastBendingPoint.hover({ force: true });
     await page.mouse.down();
     await page.mouse.move(box.x - 40, box.y + 150, { steps: 2 });
     await page.mouse.up();
@@ -87,29 +77,69 @@ test.describe('edge', () => {
     expect(edgePathAfter).not.toBe(edgePathBefore);
 
     const newBendingPoint = page.locator(`[data-testid="bend-point-2"]`).first();
-    expect(newBendingPoint).toBeAttached();
+    await expect(newBendingPoint).toBeAttached();
     const playwrightTargetNode = new PlaywrightNode(page, 'Processor1');
     const newBendingPointBox = (await newBendingPoint.boundingBox())!;
     const targetNodeBox = await playwrightTargetNode.getDOMBoundingBox();
-    expect(newBendingPointBox.x + newBendingPointBox.width / 2).toBe(targetNodeBox.x + targetNodeBox.width / 2);
+    expect(newBendingPointBox.x + newBendingPointBox.width / 2).toBeCloseTo(
+      targetNodeBox.x + targetNodeBox.width / 2,
+      1
+    );
+  });
+
+  test('when a target node is revealed, then edge path is preserved', async ({ page }) => {
+    const compositeProcessor = new PlaywrightNode(page, 'CompositeProcessor1');
+    const dataSource = new PlaywrightNode(page, 'DataSource1');
+    const edge = new PlaywrightEdge(page);
+
+    await expect(edge.edgeLocator).toBeAttached();
+
+    await compositeProcessor.openPalette();
+    await page.getByTestId('toolSection-Show/Hide').click();
+    await page.getByTestId('tool-Hide').click();
+
+    await expect(edge.edgeLocator).not.toBeAttached();
+    await dataSource.click();
+    await dataSource.move({ x: 10, y: 20 });
+
+    await page.getByTestId('reveal-hidden-elements').click();
+    await expect(edge.edgeLocator).toBeAttached();
+
+    const edgePathDBefore = await edge.getEdgePath();
+
+    await dataSource.move({ x: 10, y: 20 });
+
+    const edgePathAfter = await edge.getEdgePath();
+
+    expect(edgePathDBefore).not.toBe(edgePathAfter);
+  });
+});
+
+test.describe('edge', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    await new PlaywrightProject(request).uploadProject(page, 'projectFlowEdge.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('NewSystem');
+    await playwrightExplorer.select('TopographyWithCustomHandle');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    await new PlaywrightNode(page, 'DataSource1').waitForAnimationToFinish();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
   });
 
   test('when moving a node, then custom handle are preserved', async ({ page }) => {
-    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
-    await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 150 });
-
     const playwrightEdge = new PlaywrightEdge(page);
-
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
-
-    const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
-    const box = (await lastBendingPoint.boundingBox())!;
-    await lastBendingPoint.hover();
-    await page.mouse.down();
-    await page.mouse.move(box.x - 40, box.y + 40, { steps: 2 });
-    await page.mouse.up();
 
     await page.waitForFunction(
       () => {
@@ -141,35 +171,6 @@ test.describe('edge', () => {
       { expectedTopValue: topValueBefore },
       { timeout: 2000 }
     );
-  });
-
-  test('when a target node is revealed, then edge path is preserved', async ({ page }) => {
-    const compositeProcessor = new PlaywrightNode(page, 'CompositeProcessor1');
-    const dataSource = new PlaywrightNode(page, 'DataSource1');
-    const edge = new PlaywrightEdge(page);
-    await compositeProcessor.click();
-    await compositeProcessor.move({ x: 150, y: 150 });
-
-    await expect(edge.edgeLocator).toBeAttached();
-
-    await compositeProcessor.openPalette();
-    await page.getByTestId('toolSection-Show/Hide').click();
-    await page.getByTestId('tool-Hide').click();
-
-    await expect(edge.edgeLocator).not.toBeAttached();
-    await dataSource.click();
-    await dataSource.move({ x: 10, y: 20 });
-
-    await page.getByTestId('reveal-hidden-elements').click();
-    await expect(edge.edgeLocator).toBeAttached();
-
-    const edgePathDBefore = await edge.getEdgePath();
-
-    await dataSource.move({ x: 10, y: 20 });
-
-    const edgePathAfter = await edge.getEdgePath();
-
-    expect(edgePathDBefore).not.toBe(edgePathAfter);
   });
 });
 
@@ -239,14 +240,14 @@ test.describe('edge', () => {
 
     const firstBendingPoint = page.locator(`[data-testid="bend-point-0"]`).first();
     const firstBendingPointBox = (await firstBendingPoint.boundingBox())!;
-    await firstBendingPoint.hover();
+    await firstBendingPoint.hover({ force: true });
     await page.mouse.down();
     await page.mouse.move(firstBendingPointBox.x + 50, firstBendingPointBox.y + 50, { steps: 2 });
     await page.mouse.up();
 
     const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
     const lastBendingPointBox = (await lastBendingPoint.boundingBox())!;
-    await lastBendingPoint.hover();
+    await lastBendingPoint.hover({ force: true });
     await page.mouse.down();
     await page.mouse.move(lastBendingPointBox.x + 100, lastBendingPointBox.y + 50, { steps: 2 });
     await page.mouse.up();

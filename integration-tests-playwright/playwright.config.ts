@@ -34,7 +34,7 @@ export default defineConfig({
     baseURL: process.env.CI ? 'http://localhost:8080' : 'http://localhost:5173',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-all-retries',
+    trace: 'retain-on-failure',
     viewport: { width: 1920, height: 1080 },
   },
 
