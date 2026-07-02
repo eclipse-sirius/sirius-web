@@ -76,15 +76,15 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
       searchToolValue: '',
     });
 
-    const { setLastToolInvoked, getLastToolInvoked } = usePalette();
+    const { setLastToolInvokedId, getLastToolInvokedId } = usePalette();
 
-    const lastToolInvoked = palette ? getLastToolInvoked(palette.id) : null;
+    const lastToolInvokedId = palette ? getLastToolInvokedId(palette.id) : null;
 
     const handleToolClick = (tool: GQLTool) => {
       onClose();
       onToolClick(tool);
       if (palette) {
-        setLastToolInvoked(palette.id, tool);
+        setLastToolInvokedId(palette.id, tool.id);
       }
     };
 
@@ -161,7 +161,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
                 onToolClick={handleToolClick}
                 onBackToMainList={handleBackToMainList}
                 onClose={onClose}
-                lastToolInvoked={lastToolInvoked}
+                lastToolInvokedId={lastToolInvokedId}
                 extensionSections={paletteToolListExtensions}
               />
             )}

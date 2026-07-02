@@ -17,8 +17,16 @@ import { PaletteContextValue } from './contexts/PaletteContext.types';
 import { usePaletteValue } from './usePalette.types';
 
 export const usePalette = (): usePaletteValue => {
-  const { x, y, isOpened, representationElementIds, hidePalette, showPalette, getLastToolInvoked, setLastToolInvoked } =
-    useContext<PaletteContextValue>(PaletteContext);
+  const {
+    x,
+    y,
+    isOpened,
+    representationElementIds,
+    hidePalette,
+    showPalette,
+    getLastToolInvokedId,
+    setLastToolInvokedId,
+  } = useContext<PaletteContextValue>(PaletteContext);
 
   return {
     x,
@@ -27,7 +35,7 @@ export const usePalette = (): usePaletteValue => {
     representationElementIds,
     hidePalette,
     showPalette,
-    getLastToolInvoked,
-    setLastToolInvoked,
+    getLastToolInvokedId,
+    setLastToolInvokedId,
   };
 };

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,13 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-export interface usePaletteValue {
-  x: number | null;
-  y: number | null;
-  isOpened: boolean;
-  representationElementIds: string[];
-  hidePalette: () => void;
-  showPalette: (x: number, y: number, selectedElementsIds: string[]) => void;
-  getLastToolInvokedId: (paletteId: string) => string | null;
-  setLastToolInvokedId: (paletteId: string, toolId: string) => void;
+
+import { GQLPalette, GQLTool } from '../Palette.types';
+
+export interface useToolValue {
+  getRenderedTool: (
+    palette: GQLPalette,
+    toolId: string | null,
+    representationElementIds: string[],
+    representationKind: string,
+    asLastToolUsed: boolean,
+    onToolClick: (tool: GQLTool) => void
+  ) => JSX.Element | null;
 }

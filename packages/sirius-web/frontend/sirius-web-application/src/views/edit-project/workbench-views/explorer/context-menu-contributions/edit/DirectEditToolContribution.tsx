@@ -19,15 +19,21 @@ import MenuItem from '@mui/material/MenuItem';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const DirectEditToolContribution = ({}: PaletteToolContributionComponentProps) => {
+export const DirectEditToolContribution = ({ onInvoked }: PaletteToolContributionComponentProps) => {
   const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'renameMenuItem' });
   const { item, readOnly, onDirectEditClick } = useContext<TreePaletteContextValue>(TreePaletteContext);
 
   if (!item.editable) {
     return null;
   }
+
+  const handleClick = () => {
+    onInvoked();
+    onDirectEditClick();
+  };
+
   return (
-    <MenuItem key="rename" onClick={onDirectEditClick} data-testid="rename-tree-item" disabled={readOnly} aria-disabled>
+    <MenuItem key="rename" onClick={handleClick} data-testid="rename-tree-item" disabled={readOnly} aria-disabled>
       <ListItemIcon>
         <EditIcon fontSize="small" />
       </ListItemIcon>

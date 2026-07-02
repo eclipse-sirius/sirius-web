@@ -85,6 +85,9 @@ This is to make it easier to type when the area overlaps another elements.
 - https://github.com/eclipse-sirius/sirius-web/issues/6656[#6656] Align menu icon with the project title in the navbar.
 - https://github.com/eclipse-sirius/sirius-web/issues/6680[#6680] [sirius-web] Sort project semantic data by creation date
 - https://github.com/eclipse-sirius/sirius-web/issues/6675[#6675] [sirius-web] Fix failure when decoding fonts in production.
+- https://github.com/eclipse-sirius/sirius-web/issues/6554[#6554] [diagram] Fix last tool used for palette tools contributions
+Added `asLastToolUsed` to `PaletteToolOverriddenContributionComponentProps` & `PaletteToolContributionComponentProps`
+Added `isToolInPalette` to `PaletteToolOverriddenContributionComponentProps`, this can be use to know if a tool rendered as the last tool used should be disabled because the precondition of the tool is false (and thus it's not in the palette of that element)
 
 
 === New Features

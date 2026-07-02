@@ -20,4 +20,12 @@ export interface PaletteToolContributionProps {
 
 export interface PaletteToolContributionComponentProps {
   representationElementIds: string[];
+  /**
+   * Callback to call once when the contributed tool is actually considered to have been invoked by the user.
+   */
+  onInvoked: () => void;
+  /**
+   * True if the tool is rendered as the last tool used, false otherwise.
+   */
+  asLastToolUsed: boolean;
 }

@@ -42,6 +42,8 @@ type Modal = 'dialog';
 
 export const PapayaComponentDiagramToolOverriddenContribution = ({
   representationElementIds,
+  asLastToolUsed,
+  isToolInPalette,
   onInvoked,
 }: PaletteToolOverriddenContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
@@ -89,6 +91,7 @@ export const PapayaComponentDiagramToolOverriddenContribution = ({
     <Fragment key="label-detail-modal-contribution">
       <Tooltip key={'tooltip_'} title={'details'} placement="right">
         <ListItemButton
+          disabled={!!asLastToolUsed && !isToolInPalette}
           onClick={() => {
             onInvoked();
             setModal('dialog');
