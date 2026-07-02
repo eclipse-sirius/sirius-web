@@ -21,7 +21,7 @@ import { forwardRef, useContext, useEffect } from 'react';
 import { useDuplicateRepresentation } from '../useDuplicateRepresentation';
 
 export const DuplicateRepresentationToolContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const { setSelection } = useSelection();
     const { editingContextId, item, readOnly, onClose } = useContext<TreePaletteContextValue>(TreePaletteContext);
     const { duplicateRepresentation, duplicatedRepresentationMetadata } = useDuplicateRepresentation();
@@ -41,10 +41,16 @@ export const DuplicateRepresentationToolContribution = forwardRef(
         onClose();
       }
     }, [duplicatedRepresentationMetadata, setSelection]);
+
+    const handleClick = () => {
+      onInvoked();
+      onDuplicate();
+    };
+
     return (
       <MenuItem
         key="duplicate-representation"
-        onClick={onDuplicate}
+        onClick={handleClick}
         data-testid="duplicate-representation"
         disabled={readOnly}
         ref={ref}
