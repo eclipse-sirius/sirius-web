@@ -40,7 +40,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const DeleteToolContribution = ({}: PaletteToolContributionComponentProps) => {
+export const DeleteToolContribution = ({ onInvoked }: PaletteToolContributionComponentProps) => {
   const { handleDelete } = useDelete();
   const { editingContextId, item, treeId, readOnly } = useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -52,12 +52,18 @@ export const DeleteToolContribution = ({}: PaletteToolContributionComponentProps
   if (!item.deletable) {
     return null;
   }
+
+  const handleClick = () => {
+    onInvoked();
+    deleteTreeItem();
+  };
+
   return (
     <Tooltip title={t('delete')} placement="right">
       <ListItemButton
         className={classes.listItemButton}
         disabled={readOnly}
-        onClick={deleteTreeItem}
+        onClick={handleClick}
         data-testid={`tool-delete`}>
         <ListItemIcon className={classes.listItemIcon}>
           <DeleteIcon />
