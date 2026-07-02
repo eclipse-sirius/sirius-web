@@ -83,6 +83,7 @@ This is to make it easier to type when the area overlaps another elements.
 - https://github.com/eclipse-sirius/sirius-web/issues/6639[#6639] [diagram] Fix an issue where the palette had a sliding effect when first opened.
 - https://github.com/eclipse-sirius/sirius-web/issues/6646[#6646] [diagram] Fix an issue where connector tools where rendered on a node palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6627[#6627] [diagram] Prevent pinned nodes from moving during arrange all action
+- https://github.com/eclipse-sirius/sirius-web/issues/6656[#6656] Align menu icon with the project title in the navbar.
 
 
 === New Features
