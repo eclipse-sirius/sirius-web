@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
+import { PaletteContextProvider } from '@eclipse-sirius/sirius-components-palette';
 import { Tree } from '../trees/Tree';
 import { GQLTree, TreeConverter, TreeViewProps } from './TreeView.types';
 import { treeViewTreeConverterExtensionPoint } from './TreeViewExtensionPoints';
@@ -41,22 +42,24 @@ export const TreeView = ({
 
   return (
     <div data-testid={dataTestId}>
-      <Tree
-        editingContextId={editingContextId}
-        tree={convertedTree}
-        expanded={expanded}
-        maxDepth={maxDepth}
-        onExpandedElementChange={onExpandedElementChange}
-        readOnly={readOnly}
-        selectTreeItems={selectTreeItems}
-        markedItemIds={markedItemIds}
-        textToFilter={textToFilter}
-        textToHighlight={textToHighlight}
-        treeItemActionRender={treeItemActionRender}
-        onTreeItemClick={onTreeItemClick}
-        selectedTreeItemIds={selectedTreeItemIds}
-        useTreePalette={useTreePalette}
-      />
+      <PaletteContextProvider>
+        <Tree
+          editingContextId={editingContextId}
+          tree={convertedTree}
+          expanded={expanded}
+          maxDepth={maxDepth}
+          onExpandedElementChange={onExpandedElementChange}
+          readOnly={readOnly}
+          selectTreeItems={selectTreeItems}
+          markedItemIds={markedItemIds}
+          textToFilter={textToFilter}
+          textToHighlight={textToHighlight}
+          treeItemActionRender={treeItemActionRender}
+          onTreeItemClick={onTreeItemClick}
+          selectedTreeItemIds={selectedTreeItemIds}
+          useTreePalette={useTreePalette}
+        />
+      </PaletteContextProvider>
     </div>
   );
 };
