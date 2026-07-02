@@ -19,15 +19,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { PaletteToolContributionProps } from '../extensions/PaletteToolContribution.types';
 import { paletteToolExtensionPoint } from '../extensions/PaletteToolExtensionPoints';
-import { PaletteToolOverriddenContributionProps } from '../extensions/PaletteToolOverrideContribution.types';
-import { paletteToolOverrideExtensionPoint } from '../extensions/PaletteToolOverrideExtensionPoints';
 import { isPaletteDivider, isTool, isToolSection } from '../Palette';
-import { GQLPalette, GQLPaletteEntry, GQLTool, GQLToolSection } from '../Palette.types';
-import { ToolListItem } from '../tool-list-item/ToolListItem';
+import { GQLPaletteEntry, GQLToolSection } from '../Palette.types';
 import { usePalette } from '../usePalette';
 import { PaletteToolSectionProps, PaletteToolSectionStateValue } from './PaletteToolSection.types';
 import { ToolSectionEntry } from './ToolSectionEntry';
 import { ToolSectionHeader } from './ToolSectionHeader';
+import { useTool } from './useTool';
 
 const useStyle = makeStyles()(() => ({
   container: {
@@ -56,15 +54,6 @@ const defaultStateValue: PaletteToolSectionStateValue = {
   direction: 'left',
 };
 
-const paletteContainsTool = (palette: GQLPalette, toolId: string) => {
-  const containsTool = (tools: GQLTool[]) => tools.some((tool) => tool.id === toolId);
-  return (
-    containsTool(palette.quickAccessTools) ||
-    containsTool(palette.paletteEntries.filter(isTool)) ||
-    palette.paletteEntries.filter(isToolSection).find((section) => containsTool(section.tools))
-  );
-};
-
 const findToolsInToolSection = (section: GQLToolSection, currentSectionId: string | undefined) => {
   if (section.id === currentSectionId) {
     return section.tools;
@@ -82,16 +71,18 @@ export const PaletteToolSection = ({
   representationKind,
   representationElementIds,
   palette,
-  lastToolInvoked,
+  lastToolInvokedId,
   onToolClick,
   onBackToMainList,
   onClose,
   extensionSections,
 }: PaletteToolSectionProps) => {
   const [state, setState] = useState<PaletteToolSectionStateValue>(defaultStateValue);
-  const { classes } = useStyle();
-  const { setLastToolInvoked } = usePalette();
   const isFirstRender = useRef<boolean>(true);
+  const { classes } = useStyle();
+  const { setLastToolInvokedId } = usePalette();
+  const { getRenderedTool } = useTool();
+  const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
 
   useEffect(() => {
     isFirstRender.current = false;
@@ -115,11 +106,6 @@ export const PaletteToolSection = ({
     });
   };
 
-  const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
-  const paletteToolOverriddenData: DataExtension<PaletteToolOverriddenContributionProps[]> = useData(
-    paletteToolOverrideExtensionPoint
-  );
-
   let currentEntries: GQLPaletteEntry[] =
     state.currentSectionId === undefined
       ? palette.paletteEntries
@@ -127,35 +113,18 @@ export const PaletteToolSection = ({
           .filter(isToolSection)
           .flatMap((entry) => findToolsInToolSection(entry, state.currentSectionId));
 
-  const renderSingleClickToolItem = (tool: GQLTool) => {
-    const overriddenTool = paletteToolOverriddenData.data.find((contributedTool) =>
-      contributedTool.canHandle(representationKind, tool)
-    );
-    if (!overriddenTool) {
-      return (
-        <ToolListItem
-          onToolClick={onToolClick}
-          tool={tool}
-          disabled={false}
-          key={'toolItem_' + tool.id}
-          data-testid={`paletteEntry-${tool.label}`}
-        />
-      );
-    } else {
-      const OverriddenComponent = overriddenTool.component;
-      return (
-        <OverriddenComponent
-          representationElementIds={representationElementIds}
-          onInvoked={() => setLastToolInvoked(palette.id, tool)}
-          tool={tool}></OverriddenComponent>
-      );
-    }
-  };
-
   // Backend tools/tools section/dividers
   const listItemsRendered: JSX.Element[] = currentEntries.flatMap((paletteEntry: GQLPaletteEntry) => {
     if (isTool(paletteEntry)) {
-      return renderSingleClickToolItem(paletteEntry);
+      const renderedTool = getRenderedTool(
+        palette,
+        paletteEntry.id,
+        representationElementIds,
+        representationKind,
+        false,
+        onToolClick
+      );
+      return renderedTool ? renderedTool : <></>;
     } else if (isToolSection(paletteEntry) && paletteEntry.tools.length > 0) {
       return (
         <ToolSectionEntry id={paletteEntry.id} label={paletteEntry.label} onNavigate={navigateTo}></ToolSectionEntry>
@@ -173,7 +142,10 @@ export const PaletteToolSection = ({
     .forEach((contributedTool) => {
       const ContributedComponent = contributedTool.component;
       listItemsRendered.push(
-        <ContributedComponent representationElementIds={representationElementIds}></ContributedComponent>
+        <ContributedComponent
+          representationElementIds={representationElementIds}
+          onInvoked={() => setLastToolInvokedId(palette.id, contributedTool.id)}
+          asLastToolUsed={false}></ContributedComponent>
       );
     });
 
@@ -204,17 +176,23 @@ export const PaletteToolSection = ({
       });
   }
 
-  const lastToolAvailable = lastToolInvoked && paletteContainsTool(palette, lastToolInvoked.id);
-  const lastUsedTool: JSX.Element | null = lastToolInvoked ? (
+  const lastToolRendered: JSX.Element | null = getRenderedTool(
+    palette,
+    lastToolInvokedId,
+    representationElementIds,
+    representationKind,
+    true,
+    onToolClick
+  );
+
+  const lastUsedTool: JSX.Element = lastToolRendered ? (
     <>
-      {isTool(lastToolInvoked) ? (
-        renderSingleClickToolItem(lastToolInvoked)
-      ) : (
-        <ToolListItem onToolClick={onToolClick} tool={lastToolInvoked} disabled={!lastToolAvailable} />
-      )}
+      {getRenderedTool(palette, lastToolInvokedId, representationElementIds, representationKind, true, onToolClick)}
       <Divider />
     </>
-  ) : null;
+  ) : (
+    <></>
+  );
 
   const containerRef = React.useRef<HTMLElement>(null);
 
