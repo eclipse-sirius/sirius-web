@@ -20,19 +20,16 @@ import { edgeExpect } from '../../helpers/edgeExpect';
 test.describe('edge', () => {
   let projectId;
   test.beforeEach(async ({ page, request }) => {
-    await page.addInitScript(() => {
-      // @ts-expect-error: we use a variable in the DOM to disable `fitView` functionality for Cypress tests.
-      window.document.DEACTIVATE_FIT_VIEW_FOR_CYPRESS_TESTS = true;
-    });
-
-    const project = await new PlaywrightProject(request).createProject('Flow', 'flow-template');
-    projectId = project.projectId;
-    await page.goto(`/projects/${projectId}/edit`);
-
-    const explorer = await new PlaywrightExplorer(page);
-    await explorer.expand('Flow');
-    await explorer.expand('NewSystem');
-    await explorer.select('Topography');
+    await new PlaywrightProject(request).uploadProject(page, 'projectFlowEdge.zip');
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Flow');
+    await playwrightExplorer.expand('NewSystem');
+    await playwrightExplorer.select('Topography');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+    const url = page.url();
+    const parts = url.split('/');
+    const projectsIndex = parts.indexOf('projects');
+    projectId = parts[projectsIndex + 1];
   });
 
   test.afterEach(async ({ request }) => {
@@ -41,10 +38,6 @@ test.describe('edge', () => {
 
   test('when a bend point is moved, then the edge path is changed', async ({ page }) => {
     const playwrightEdge = new PlaywrightEdge(page);
-    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
-    await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 150 });
-
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
 
@@ -65,12 +58,7 @@ test.describe('edge', () => {
   test('when last edge segment is moved, then a new bend point is added at the middle of node border', async ({
     page,
   }) => {
-    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
-    await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 150 });
-
     const playwrightEdge = new PlaywrightEdge(page);
-
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
 
@@ -91,16 +79,14 @@ test.describe('edge', () => {
     const playwrightTargetNode = new PlaywrightNode(page, 'Processor1');
     const newBendingPointBox = (await newBendingPoint.boundingBox())!;
     const targetNodeBox = await playwrightTargetNode.getDOMBoundingBox();
-    expect(newBendingPointBox.x + newBendingPointBox.width / 2).toBe(targetNodeBox.x + targetNodeBox.width / 2);
+    expect(newBendingPointBox.x + newBendingPointBox.width / 2).toBeCloseTo(
+      targetNodeBox.x + targetNodeBox.width / 2,
+      2
+    );
   });
 
   test('when moving a node, then custom handle are preserved', async ({ page }) => {
-    const playwrightNode = new PlaywrightNode(page, 'CompositeProcessor1');
-    await playwrightNode.click();
-    await playwrightNode.move({ x: 200, y: 150 });
-
     const playwrightEdge = new PlaywrightEdge(page);
-
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
 
@@ -147,8 +133,6 @@ test.describe('edge', () => {
     const compositeProcessor = new PlaywrightNode(page, 'CompositeProcessor1');
     const dataSource = new PlaywrightNode(page, 'DataSource1');
     const edge = new PlaywrightEdge(page);
-    await compositeProcessor.click();
-    await compositeProcessor.move({ x: 150, y: 150 });
 
     await expect(edge.edgeLocator).toBeAttached();
 
