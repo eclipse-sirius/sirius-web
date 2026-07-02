@@ -13,7 +13,6 @@
 import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
 import {
   GQLGetExpandAllTreePathVariables,
-  GQLTreeItem,
   TreePaletteContext,
   TreePaletteContextValue,
   useExpandAllTreePath,
@@ -26,11 +25,12 @@ import { Fragment, forwardRef, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export const ExpandAllToolContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
     const { t } = useTranslation('sirius-web-application', { keyPrefix: 'expandAllTreeItemContextMenuContribution' });
     const { editingContextId, treeId, item, onExpandedElementChange, expanded, onClose } =
       useContext<TreePaletteContextValue>(TreePaletteContext);
+
     useEffect(() => {
       if (expandAllTreePathData && expandAllTreePathData.viewer?.editingContext?.expandAllTreePath) {
         const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } =
@@ -47,25 +47,23 @@ export const ExpandAllToolContribution = forwardRef(
       }
     }, [expandAllTreePathData]);
 
-    const onExpandAll = (treeItem: GQLTreeItem) => {
+    const onExpandAll = () => {
       const variables: GQLGetExpandAllTreePathVariables = {
         editingContextId,
         treeId,
-        treeItemId: treeItem.id,
+        treeItemId: item.id,
       };
       getExpandAllTreePath({ variables });
     };
 
+    const handleClick = () => {
+      onInvoked();
+      onExpandAll();
+    };
+
     return (
       <Fragment key="expand-all-tree-item-context-menu-contribution">
-        <MenuItem
-          key="expand-all"
-          data-testid="expand-all"
-          onClick={() => {
-            onExpandAll(item);
-          }}
-          ref={ref}
-          aria-disabled>
+        <MenuItem key="expand-all" data-testid="expand-all" onClick={handleClick} ref={ref} aria-disabled>
           <ListItemIcon>
             <UnfoldMore fontSize="small" />
           </ListItemIcon>

@@ -24,10 +24,15 @@ import { useObject } from '../useObject';
 import { UpdateLibraryModal } from './UpdateLibraryModal';
 
 export const UpdateLibraryToolContribution = forwardRef(
-  ({ tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked, tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const [dialogOpened, setDialogOpened] = useState<boolean>(false);
     const { editingContextId, item, readOnly, onClose } = useContext<TreePaletteContextValue>(TreePaletteContext);
     let fragment = null;
+
+    const handleClick = () => {
+      onInvoked();
+      setDialogOpened(true);
+    };
 
     const { data } = useObject(editingContextId, item.id);
     if (data) {
@@ -37,7 +42,7 @@ export const UpdateLibraryToolContribution = forwardRef(
           <Fragment key="update-library-tree-item-context-menu-contribution">
             <MenuItem
               key="update-library"
-              onClick={() => setDialogOpened(true)}
+              onClick={handleClick}
               data-testid="update-library"
               disabled={readOnly}
               ref={ref}
