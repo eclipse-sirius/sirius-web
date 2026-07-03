@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { PaletteExtensionSectionProps } from '@eclipse-sirius/sirius-components-palette';
+import { PaperProps } from '@mui/material/Paper';
 
 export interface ContextualPaletteStyleProps {
   toolCount: number;
@@ -39,7 +40,12 @@ export interface PaletteProps {
   paletteToolListExtensions: React.ReactElement<PaletteExtensionSectionProps>[];
   onToolClick: (tool: GQLTool) => void;
   onClose: () => void;
+  slotProps?: PaletteSlotProps;
 }
+
+export type PaletteSlotProps = {
+  paper?: PaperProps | (() => PaperProps);
+};
 
 export interface PaletteState {
   searchToolValue: string;

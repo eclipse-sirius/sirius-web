@@ -63,6 +63,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
       onToolClick,
       palette,
       paletteToolListExtensions,
+      slotProps,
       ...remainingProps
     },
     ref
@@ -98,6 +99,8 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
       }
     };
 
+    const paperProps = typeof slotProps?.paper === 'function' ? slotProps.paper() : slotProps?.paper;
+
     return (
       <Paper
         {...remainingProps}
@@ -112,6 +115,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
           zIndex: 5,
           position: 'fixed',
           width: paletteWidth,
+          ...(typeof paperProps?.sx === 'function' ? paperProps.sx(theme) : paperProps?.sx),
         }}>
         <ClickAwayListener mouseEvent="onPointerDown" onClickAway={onClose}>
           <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', maxHeight: 280 }}>
