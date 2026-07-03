@@ -180,8 +180,8 @@ test.describe('diagram', () => {
     const rectangularNode = new PlaywrightNode(page, 'Node');
     const reactFlowSize = await rectangularNode.getReactFlowSize();
     const domSize = await rectangularNode.nodeStyleLocator.boundingBox();
-    expect(reactFlowSize.width).toBe(domSize?.width);
-    expect(reactFlowSize.height).toBe(domSize?.height);
+    expect(reactFlowSize.width).toBeCloseTo(domSize?.width ?? 0, 2);
+    expect(reactFlowSize.height).toBeCloseTo(domSize?.height ?? 0, 2);
   });
 
   test("when there is a element describe with a iconLabel node, then ReactFlow's internal dimensions are identical to those of the DOM", async ({
@@ -192,7 +192,7 @@ test.describe('diagram', () => {
     const rectangularNode = new PlaywrightNode(page, 'Node', 'IconLabel');
     const reactFlowSize = await rectangularNode.getReactFlowSize();
     const domSize = await rectangularNode.nodeStyleLocator.boundingBox();
-    expect(reactFlowSize.width).toBe(domSize?.width);
-    expect(reactFlowSize.height).toBe(domSize?.height);
+    expect(reactFlowSize.width).toBeCloseTo(domSize?.width ?? 0, 2);
+    expect(reactFlowSize.height).toBeCloseTo(domSize?.height ?? 0, 2);
   });
 });

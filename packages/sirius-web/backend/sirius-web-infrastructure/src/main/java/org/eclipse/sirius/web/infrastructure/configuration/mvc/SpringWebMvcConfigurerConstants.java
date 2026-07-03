@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,12 @@ public final class SpringWebMvcConfigurerConstants {
 
     /** Pattern used to match TTF resources from the front-end. */
     public static final String TTF_PATTERN = "/**/*.ttf";
+
+    /** Pattern used to match WOFF resources from the front-end. */
+    public static final String WOFF_PATTERN = "/**/*.woff";
+
+    /** Pattern used to match WOFF2 resources from the front-end. */
+    public static final String WOFF2_PATTERN = "/**/*.woff2";
 
     /** Pattern used to match media resources from the front-end. */
     public static final String MEDIA_PATTERN = "/**/media/**";

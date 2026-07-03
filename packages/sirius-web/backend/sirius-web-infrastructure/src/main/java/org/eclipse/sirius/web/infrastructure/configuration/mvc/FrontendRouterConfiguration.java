@@ -38,7 +38,7 @@ import org.springframework.web.servlet.function.ServerResponse;
 public class FrontendRouterConfiguration {
     @Bean
     public RouterFunction<ServerResponse> redirectToIndex(List<IBackendPathPredicate> backendResourcePredicates, List<IIndexProcessor> indexProcessors) {
-        var extensionsToIgnore = List.of("css", "html", "js", "js.map", "chunk.js", "json", "ico", "ttf", "jpg", "jpeg", "png", "svg");
+        var extensionsToIgnore = List.of("css", "html", "js", "js.map", "chunk.js", "json", "ico", "ttf", "woff", "woff2", "jpg", "jpeg", "png", "svg");
 
         var singlePageApplicationPredicate = path("/api/**")
                 .or(path("/v3/api-docs/**"))

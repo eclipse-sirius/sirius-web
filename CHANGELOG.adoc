@@ -84,6 +84,7 @@ This is to make it easier to type when the area overlaps another elements.
 - https://github.com/eclipse-sirius/sirius-web/issues/6627[#6627] [diagram] Prevent pinned nodes from moving during arrange all action
 - https://github.com/eclipse-sirius/sirius-web/issues/6656[#6656] Align menu icon with the project title in the navbar.
 - https://github.com/eclipse-sirius/sirius-web/issues/6680[#6680] [sirius-web] Sort project semantic data by creation date
+- https://github.com/eclipse-sirius/sirius-web/issues/6675[#6675] [sirius-web] Fix failure when decoding fonts in production.
 
 
 === New Features

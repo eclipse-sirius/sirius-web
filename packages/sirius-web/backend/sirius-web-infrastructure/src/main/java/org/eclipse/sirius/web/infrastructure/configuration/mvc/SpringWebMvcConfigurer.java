@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -60,6 +60,8 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
                 SpringWebMvcConfigurerConstants.JSON_PATTERN,
                 SpringWebMvcConfigurerConstants.ICO_PATTERN,
                 SpringWebMvcConfigurerConstants.TTF_PATTERN,
+                SpringWebMvcConfigurerConstants.WOFF_PATTERN,
+                SpringWebMvcConfigurerConstants.WOFF2_PATTERN,
                 SpringWebMvcConfigurerConstants.MEDIA_PATTERN,
                 SpringWebMvcConfigurerConstants.JPG_PATTERN,
                 SpringWebMvcConfigurerConstants.JPEG_PATTERN,
