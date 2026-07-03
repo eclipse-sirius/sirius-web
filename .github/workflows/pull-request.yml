@@ -23,12 +23,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
 
       - name: Setup Node SDK
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22.16
           registry-url: https://npm.pkg.github.com/
@@ -54,7 +54,7 @@ jobs:
         run: node scripts/check-milestone.js
 
       - name: Retrieve PR metadata
-        uses: octokit/graphql-action@abaeca7ba4f0325d63b8de7ef943c2418d161b93
+        uses: octokit/graphql-action@ddde8ebb2493e79f390e6449c725c21663a67505 # v3.0.2
         id: pr-metadata
         with:
           query: |
