@@ -18,6 +18,7 @@ import {
   PaletteExtensionSection,
   usePalette,
 } from '@eclipse-sirius/sirius-components-palette';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useContextMenuEntries } from '../context-menu/useContextMenuEntries';
 import { GQLTreeItemContextMenuEntry } from '../context-menu/useContextMenuEntries.types';
@@ -38,6 +39,7 @@ export const TreeItemPalette = ({
   readOnly,
   selectedTreeItems,
   expanded,
+  popperInstanceRef,
   onDirectEditClick,
   onExpandedElementChange,
   selectTreeItems,
@@ -48,6 +50,26 @@ export const TreeItemPalette = ({
   const { loading, contextMenuEntries } = useContextMenuEntries(editingContextId, treeId, treeItem.id, false);
   const { invokeContextMenuEntry } = useInvokeContextMenuEntry();
   const { hidePalette } = usePalette();
+
+  const [paletteEl, setPaletteEl] = React.useState<HTMLDivElement | null>(null);
+
+  const paletteRefCallback = React.useCallback((node: HTMLDivElement | null) => {
+    setPaletteEl(node);
+  }, []);
+
+  useEffect(() => {
+    if (!paletteEl || !popperInstanceRef?.current) {
+      return;
+    }
+
+    const resizeObserver = new ResizeObserver(() => popperInstanceRef.current?.update());
+    resizeObserver.observe(paletteEl);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [paletteEl, popperInstanceRef]);
+
   if (loading) {
     return null;
   }
@@ -95,12 +117,16 @@ export const TreeItemPalette = ({
         onClose: onClose,
       }}>
       <Palette
+        ref={paletteRefCallback}
         palette={palette}
         onToolClick={handleToolClick}
         onClose={handleOnClose}
         representationElementIds={[treeItem.id]}
         representationKind={TREE_REPRESENTATION_KIND}
         paletteToolListExtensions={paletteToolListExtensions}
+        slotProps={{
+          paper: () => ({ sx: () => ({ position: 'relative' }) }),
+        }}
       />
     </TreePaletteContext.Provider>
   );

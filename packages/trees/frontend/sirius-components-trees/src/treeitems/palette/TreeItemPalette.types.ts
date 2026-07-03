@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { Instance } from '@popperjs/core';
+import { MutableRefObject } from 'react';
 import { GQLTreeItem } from '../../views/TreeView.types';
 
 export interface ContextualPaletteStyleProps {
@@ -29,6 +31,7 @@ export interface TreeItemPaletteProps {
   expandItem: () => void;
   onDirectEditClick: () => void;
   onClose: () => void;
+  popperInstanceRef: MutableRefObject<Instance | null>;
 }
 
 export interface TreeItemPaletteState {

@@ -12,8 +12,8 @@
  *******************************************************************************/
 
 import { GQLStyledString } from '@eclipse-sirius/sirius-components-core';
+import React from 'react';
 import { TreeItemActionProps } from '../treeitems/TreeItemAction.types';
-
 export interface TreeViewProps {
   editingContextId: string;
   readOnly: boolean;

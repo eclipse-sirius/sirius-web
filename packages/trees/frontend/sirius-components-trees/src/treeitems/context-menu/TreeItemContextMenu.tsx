@@ -21,7 +21,11 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Popper from '@mui/material/Popper';
+import { Instance } from '@popperjs/core';
+import { useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { TreeContext } from '../../trees/TreeContext';
+import { TreeContextValue } from '../../trees/TreeContext.types';
 import { TreeItemPalette } from '../palette/TreeItemPalette';
 import { DefaultMenuItem } from './DefaultMenuItem';
 import { DeleteMenuItem } from './DeleteMenuItem';
@@ -50,9 +54,11 @@ export const TreeItemContextMenu = ({
   enterEditingMode,
   onClose,
 }: TreeItemContextMenuProps) => {
+  const popperInstanceRef = useRef<Instance | null>(null);
   const treeItemMenuContextComponents: ComponentExtension<TreeItemContextMenuComponentProps>[] = useComponents(
     treeItemContextMenuEntryExtensionPoint
   );
+
   const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'treeItemContextMenu' });
   const { data: treeItemContextMenuOverrideContributions } = useData<TreeItemContextMenuOverrideContribution[]>(
     treeItemContextMenuEntryOverrideExtensionPoint
@@ -67,6 +73,7 @@ export const TreeItemContextMenu = ({
   const { selectionTargets } = useSelectionTargets();
 
   const { loading, contextMenuEntries } = useContextMenuEntries(editingContextId, treeId, item.id, false);
+  const { treeContainerRef } = useContext<TreeContextValue>(TreeContext);
 
   if (loading) {
     return null;
@@ -74,7 +81,31 @@ export const TreeItemContextMenu = ({
 
   if (useTreePalette) {
     return (
-      <Popper open={!!menuAnchor} anchorEl={menuAnchor} placement="right-end">
+      <Popper
+        open={!!menuAnchor}
+        anchorEl={menuAnchor}
+        placement="right-start"
+        popperRef={popperInstanceRef}
+        modifiers={[
+          {
+            name: 'preventOverflow',
+            enabled: true,
+            options: {
+              boundary: treeContainerRef ?? 'clippingParents',
+              altBoundary: true,
+              padding: 8,
+            },
+          },
+          {
+            name: 'flip',
+            enabled: true,
+            options: {
+              boundary: treeContainerRef ?? 'clippingParents',
+              altBoundary: true,
+              padding: 8,
+            },
+          },
+        ]}>
         <TreeItemPalette
           editingContextId={editingContextId}
           treeId={treeId}
@@ -87,6 +118,7 @@ export const TreeItemContextMenu = ({
           onDirectEditClick={enterEditingMode}
           onClose={onClose}
           expandItem={expandItem}
+          popperInstanceRef={popperInstanceRef}
         />
       </Popper>
     );
