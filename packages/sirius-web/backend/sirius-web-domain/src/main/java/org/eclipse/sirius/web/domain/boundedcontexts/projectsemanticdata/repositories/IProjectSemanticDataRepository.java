@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -31,24 +31,25 @@ import org.springframework.stereotype.Repository;
 public interface IProjectSemanticDataRepository extends ListPagingAndSortingRepository<ProjectSemanticData, UUID>, ListCrudRepository<ProjectSemanticData, UUID> {
 
     @Query("""
-        SELECT *
-        FROM project_semantic_data projectSemanticData
-        WHERE projectSemanticData.project_id = :projectId
-        AND projectSemanticData.name = :name
-        """)
+            SELECT *
+            FROM project_semantic_data projectSemanticData
+            WHERE projectSemanticData.project_id = :projectId
+            AND projectSemanticData.name = :name
+            """)
     Optional<ProjectSemanticData> findByProjectIdAndName(String projectId, String name);
 
     @Query("""
-        SELECT *
-        FROM project_semantic_data projectSemanticData
-        WHERE projectSemanticData.semantic_data_id = :semanticDataId
-        """)
+            SELECT *
+            FROM project_semantic_data projectSemanticData
+            WHERE projectSemanticData.semantic_data_id = :semanticDataId
+            """)
     Optional<ProjectSemanticData> findBySemanticDataId(UUID semanticDataId);
 
     @Query("""
-        SELECT *
-        FROM project_semantic_data projectSemanticData
-        WHERE projectSemanticData.project_id = :projectId
-        """)
+            SELECT *
+            FROM project_semantic_data projectSemanticData
+            WHERE projectSemanticData.project_id = :projectId
+            ORDER BY projectSemanticData.created_on
+            """)
     List<ProjectSemanticData> findAllByProjectId(String projectId);
 }
