@@ -45,6 +45,9 @@ const useTreeItemStyle = makeStyles<TreeItemStyleProps>()((theme, { depth }) => 
     },
     paddingLeft: `${24 * (depth - 1)}px`,
   },
+  treeItemFocusable: {
+    outline: 'none',
+  },
   treeItemHover: {
     backgroundColor: theme.palette.action.hover,
   },
@@ -326,6 +329,7 @@ export const TreeItem = ({
           <TreeItemArrow item={item} depth={depth} onExpand={onExpand} data-testid={`${label}-toggle`} />
           <div
             ref={refDom}
+            className={classes.treeItemFocusable}
             tabIndex={0}
             onKeyDown={onBeginEditing}
             data-treeitemid={item.id}

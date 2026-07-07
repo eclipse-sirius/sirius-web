@@ -16,7 +16,9 @@ import { TreeItemWithChildrenProps } from './TreeItemWithChildren.types';
 
 const useTreeItemWithChildrenStyle = makeStyles()((_theme) => ({
   ul: {
-    marginLeft: 0,
+    margin: 0,
+    listStyle: 'none',
+    padding: 0,
   },
 }));
 

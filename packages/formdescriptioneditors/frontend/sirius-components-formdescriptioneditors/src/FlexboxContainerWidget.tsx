@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -49,6 +49,7 @@ const useStyles = makeStyles<FlexboxContainerWidgetStyleProps>()((theme, { flexD
     borderColor: borderStyle?.color ? getCSSColor(borderStyle.color, theme) : 'gray',
     borderStyle: borderStyle?.lineStyle || 'solid',
     borderRadius: borderStyle?.radius || 0,
+    outline: 'none',
   },
   container: {
     display: 'flex',

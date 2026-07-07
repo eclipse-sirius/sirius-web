@@ -21,6 +21,9 @@ const useTreeStyle = makeStyles()((_) => ({
   ul: {
     width: 'inherit',
     minWidth: 'fit-content',
+    listStyle: 'none',
+    padding: 0,
+    margin: 0,
   },
 }));
 
