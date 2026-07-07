@@ -18,13 +18,24 @@ import { Handle, Node, NodeProps, Position } from '@xyflow/react';
 import { memo, useState } from 'react';
 import { HandleNodeData, HandleNodeState } from './HandleNode.types';
 import { NodeComponentsMap } from './NodeTypes';
+
+const nodeStyle: CSSProperties = {
+  position: 'relative',
+  width: 1,
+  height: 1,
+};
+
 const handleStyle: CSSProperties = {
   background: 'none',
   border: 'none',
   width: 0,
   height: 0,
-  fontSize: 'large',
-  position: 'relative',
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 'auto',
+  bottom: 'auto',
+  transform: 'none',
 };
 
 const iconStyle = () => {
@@ -34,14 +45,16 @@ const iconStyle = () => {
   return style;
 };
 
+const HANDLE_ICON_BUTTON_SIZE = 24;
+
 const iconButtonStyle = (theme: Theme, state: HandleNodeState, position: Position) => {
   const style: CSSProperties = {
     position: 'absolute',
-    fontSize: 'large',
-    width: '1em',
-    height: '1em',
-    top: '50%',
-    left: '50%',
+    width: HANDLE_ICON_BUTTON_SIZE,
+    height: HANDLE_ICON_BUTTON_SIZE,
+    padding: 0,
+    top: 0,
+    left: 0,
     transform: 'translate(-50%, -50%)',
     transition: 'background 0.2s ease',
     '&:hover': {
@@ -86,7 +99,7 @@ export const HandleNode: NodeComponentsMap['handleNode'] = memo(({ data }: NodeP
   };
 
   return (
-    <div style={{ width: 1, height: 1 }}>
+    <div style={nodeStyle}>
       <Handle
         id={`creationhandle--${data.nodeId || data.edgeId}--${data.position}`}
         position={data.position}
