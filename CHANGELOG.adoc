@@ -22,7 +22,11 @@
 - [releng] Frontend packages published from `packages/*/frontend/` do not provide UMD bundles anymore.
 They are now distributed as ES modules and CommonJS bundles only.
 Downstream consumers relying on the previous `.umd.js` artifacts or on direct browser script-tag usage must migrate to a bundler-based integration or consume the new CommonJS entry points instead.
-
+- [sirius-web] Remove the file `reset.css` from the Sirius Web sample project and rely entirely on MUI's `CssBaseline`.
+As a result, we have updated some of our components to deactivate at some very specific locations the default `outline` of some selected elements.
+We have also removed the `listStyle`, `margin` and `padding` of some `ul` used in specific locations.
+We should probably not rely on `ul` entirely in the future.
+Downstream projects are advised to just rely on MUI's `CssBaseline` and perform the relevant customization locally in their components instead.
 
 
 === Dependency update

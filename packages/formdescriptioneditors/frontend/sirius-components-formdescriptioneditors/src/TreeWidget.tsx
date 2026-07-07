@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,9 @@ const useStyles = makeStyles()((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  focusable: {
+    outline: 'none',
+  },
 }));
 
 export const TreeWidget = ({ widget }: TreeWidgetProps) => {
@@ -53,7 +56,12 @@ export const TreeWidget = ({ widget }: TreeWidgetProps) => {
 
   return (
     <>
-      <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
+      <div
+        className={classes.focusable}
+        onFocus={() => setSelected(true)}
+        onBlur={() => setSelected(false)}
+        ref={ref}
+        tabIndex={0}>
         <div className={classes.propertySectionLabel}>
           <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
             {widget.label}

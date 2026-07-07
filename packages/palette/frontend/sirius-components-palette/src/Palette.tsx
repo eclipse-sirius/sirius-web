@@ -114,6 +114,7 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
           borderRadius: '10px',
           zIndex: 5,
           position: 'fixed',
+          outline: 'none',
           width: paletteWidth,
           ...(typeof paperProps?.sx === 'function' ? paperProps.sx(theme) : paperProps?.sx),
         }}>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -65,6 +65,9 @@ const useStyles = makeStyles()((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  focusable: {
+    outline: 'none',
+  },
 }));
 
 const StyledToggleButtonGroup = withStyles(ToggleButtonGroup, (theme) => ({
@@ -104,7 +107,12 @@ export const RichTextWidget = ({ widget }: RichTextWidgetProps) => {
         </Typography>
         {widget.hasHelpText ? <HelpOutlineOutlined color="secondary" style={{ marginLeft: 8, fontSize: 16 }} /> : null}
       </div>
-      <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
+      <div
+        className={classes.focusable}
+        onFocus={() => setSelected(true)}
+        onBlur={() => setSelected(false)}
+        ref={ref}
+        tabIndex={0}>
         <Paper elevation={0} className={classes.paper}>
           <StyledToggleButtonGroup size="small">
             <ToggleButton

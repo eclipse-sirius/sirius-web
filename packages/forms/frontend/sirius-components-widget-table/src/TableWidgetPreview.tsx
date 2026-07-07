@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,9 @@ const useStyles = makeStyles()((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  focusable: {
+    outline: 'none',
   },
 }));
 
@@ -91,7 +94,12 @@ export const TableWidgetPreview = ({ widget }: PreviewWidgetProps) => {
 
   return (
     <>
-      <div onFocus={() => setSelected(true)} onBlur={() => setSelected(false)} ref={ref} tabIndex={0}>
+      <div
+        className={classes.focusable}
+        onFocus={() => setSelected(true)}
+        onBlur={() => setSelected(false)}
+        ref={ref}
+        tabIndex={0}>
         <div className={classes.propertySectionLabel}>
           <Typography variant="subtitle2" className={selected ? classes.selected : ''}>
             {widget.label}

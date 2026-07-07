@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -90,6 +90,7 @@ const useGroupEntryStyles = makeStyles<GroupStyleProps, 'verticalSections' | 'ad
       justifyContent: 'space-between',
       paddingLeft: theme.spacing(1),
       overflowX: 'auto',
+      outline: 'none',
     },
     verticalSections: {
       display: 'flex',
