@@ -1,35 +1,68 @@
-= 2026.7.0 (work in progress)
+= 2026.7.0
 
 == Key highlights
 
--
+* The palette experience has been improved and made more consistent.
+The _Explorer_ view can use the same palette-based interaction model as diagrams.
+* The {workbench} received several usability improvements.
+Browser history is now handled more reliably, side views keep their expected order, and the project title area is more compact.
+* Diagrams are more stable in day-to-day editing.
+Several fixes improve palette search, repeated tool invocation, arrange all, label editing, pinned nodes, edge labels, unavailable tools, and exported image filenames.
+* Dependency links in Gantt representations have been extended.
+* This release introduces the first version of the {product} documentation.
 
 
 == Breaking changes
 
--
+* {product} servers now require __Java 21__ or later.
+Administrators should update their runtime environment before upgrading.
 
 
 == Bug fixes
 
--
+* In the {workbench}, the browser back and forward buttons now behave more reliably.
+
+* The order of the left and right views is now preserved.
+
+* In diagrams:
+
+** Edge-on-edge labels can once again have their position and size reset with the dedicated tool.
+** The arrange-all action no longer fails when an edge connects a parent node to one of its children.
+** Pinned nodes are no longer moved by the arrange-all action.
+** Edges are no longer reset when their source and target nodes are vertically or horizontally aligned.
+** Direct edit text field on list items now uses a white background, making text easier to read when the text field overlaps another diagram element.
+** Palette search now correctly highlights matching tool labels.
+** Reusing the last invoked palette tool is more reliable.
+
+* Text fonts are now displayed correctly in deployed installations.
 
 
 == New features
 
--
+* The _Explorer_ view can now use the same palette as diagrams.
+This gives users a more consistent way to find and run actions from both the _Explorer_ view and diagrams.
+If the new palette does not match expectations, it is still possible to use the old one by setting the property `sirius.web.tree.new-palette.enabled` to `false`.
+
+image::explorer-palette.png[Explorer palette,450,403]
+
+* The palette width has been increased from 200px to 250px to make tool labels easier to read.
+* This release adds the first version of the {product} documentation.
+* The Sirius Web build now generates and publishes SBOMs on https://sbom.eclipse.org/projects/3e99db93-2a85-458f-a64a-58d66a75bfe5[the Eclipse Foundation's DependencyTrack instance].
 
 
 == Improvements
 
--
+* When a diagram tool opens a selection dialog, the tree now expands to reveal the element on which the tool was invoked.
+This gives users more context before confirming their selection.
 
+* In Gantt representations, new task dependency links have been added in addition to the existing End-to-Start: End-to-End, Start-to-End, Start-to-Start.
 
-== Dependency update
+image::gantt-dependency-links.png[Gantt Dependency Links,width=100%]
 
--
+* Exported diagram images now use the diagram representation name as the generated filename.
+* The project title in the navigation bar is more compact.
 
 
 == Technical details
 
-* For technical details on this {product} release (including breaking changes) please refer to {changelog-url}[changelog].
+* For technical details on this {product} release, including breaking changes, please refer to {changelog-url}[changelog].
