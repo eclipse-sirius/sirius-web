@@ -386,8 +386,16 @@ export const useResizeChange = (): UseResizeChangeValue => {
     changes: NodeChange<Node<NodeData>>[],
     nodes: Node<NodeData, DiagramNodeType>[]
   ): Node<NodeData, DiagramNodeType>[] => {
+    const resizedNodeIds = changes.filter(isResizeFinished).map((change) => change.id);
+    const resizedListIds = nodes
+      .filter((node) => resizedNodeIds.includes(node.id) && isListData(node))
+      .map((node) => node.id);
+
     return nodes.map((node) => {
-      if (changes.filter(isResizeFinished).find((dimensionChange) => dimensionChange.id === node.id)) {
+      const isResized = resizedNodeIds.includes(node.id);
+      const isChildOfResizedList = node.parentId && resizedListIds.includes(node.parentId);
+
+      if (isResized || isChildOfResizedList) {
         return {
           ...node,
           data: {
