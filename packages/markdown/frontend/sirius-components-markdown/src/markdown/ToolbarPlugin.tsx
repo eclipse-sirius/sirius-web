@@ -11,9 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  $isListItemNode,
   $isListNode,
+  INSERT_CHECK_LIST_COMMAND,
   INSERT_ORDERED_LIST_COMMAND,
   INSERT_UNORDERED_LIST_COMMAND,
+  ListItemNode,
   ListNode,
   REMOVE_LIST_COMMAND,
 } from "@lexical/list";
@@ -22,6 +25,8 @@ import { $createHeadingNode, $isHeadingNode } from "@lexical/rich-text";
 import { $setBlocksType } from "@lexical/selection";
 import { $getNearestNodeOfType, mergeRegister } from "@lexical/utils";
 import CodeIcon from "@mui/icons-material/Code";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
 import FormatItalicIcon from "@mui/icons-material/FormatItalic";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
@@ -43,6 +48,7 @@ import {
 } from "lexical";
 import { useCallback, useEffect, useState } from "react";
 import { makeStyles, withStyles } from "tss-react/mui";
+import { SET_CHECK_LIST_ITEM_CHECKED_COMMAND } from "./ListPlugin";
 import { ToolbarPluginProps } from "./MarkdownRenderer.types";
 
 const useToolbarStyles = makeStyles()((theme) => ({
@@ -83,6 +89,8 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
   const [isItalic, setIsItalic] = useState<boolean>(false);
   const [isStrikeTrough, setIsStrikeTrough] = useState<boolean>(false);
   const [isCode, setIsCode] = useState<boolean>(false);
+  const [isCheckListItemChecked, setIsCheckListItemChecked] =
+    useState<boolean>(false);
   const [blockType, setBlockType] = useState<string>("paragraph");
 
   const updateButtons = (toggled) => {
@@ -102,6 +110,12 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
     if (toggled.includes("bullet-list")) {
       setBlockType("bullet-list");
     }
+    if (toggled.includes("checked")) {
+      setIsCheckListItemChecked(true);
+    }
+    if (toggled.includes("unchecked")) {
+      setIsCheckListItemChecked(false);
+    }
   };
 
   const updateToolbar = useCallback(() => {
@@ -119,13 +133,25 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
         setIsItalic(selection.hasFormat("italic"));
         setIsStrikeTrough(selection.hasFormat("strikethrough"));
         setIsCode(selection.hasFormat("code"));
+        const listItem = $isListItemNode(anchorNode)
+          ? anchorNode
+          : $getNearestNodeOfType(anchorNode, ListItemNode);
+        if ($isListItemNode(listItem)) {
+          setIsCheckListItemChecked(listItem.getChecked() === true);
+        } else {
+          setIsCheckListItemChecked(false);
+        }
         if ($isListNode(element)) {
           const parentList = $getNearestNodeOfType(anchorNode, ListNode);
-          const type = parentList ? parentList.getTag() : element.getTag();
-          if (type === "ol") {
+          const type = parentList
+            ? parentList.getListType()
+            : element.getListType();
+          if (type === "number") {
             setBlockType("number-list");
-          } else if (type === "ul") {
+          } else if (type === "bullet") {
             setBlockType("bullet-list");
+          } else if (type === "check") {
+            setBlockType("check-list");
           } else {
             setBlockType(type);
           }
@@ -175,6 +201,9 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
   }
   if (isCode) {
     toggled.push("code");
+  }
+  if (blockType === "check-list") {
+    toggled.push(isCheckListItemChecked ? "checked" : "unchecked");
   }
 
   const { classes } = useToolbarStyles();
@@ -231,6 +260,34 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
           }}
         >
           <FormatListBulletedIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={"checked"}
+          key={"checked"}
+          onClick={() => {
+            if (blockType !== "check-list") {
+              editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
+            }
+            editor.dispatchCommand(SET_CHECK_LIST_ITEM_CHECKED_COMMAND, true);
+          }}
+        >
+          <CheckBoxIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={"unchecked"}
+          key={"unchecked"}
+          onClick={() => {
+            if (blockType !== "check-list") {
+              editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
+            }
+            editor.dispatchCommand(SET_CHECK_LIST_ITEM_CHECKED_COMMAND, false);
+          }}
+        >
+          <CheckBoxOutlineBlankIcon fontSize="small" />
         </ToggleButton>
         <ToggleButton
           classes={{ root: classes.button }}

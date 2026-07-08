@@ -167,13 +167,56 @@ const useMarkdownRendererStyles = makeStyles()((theme) => ({
     marginLeft: theme.spacing(2),
     listStyle: "circle",
   },
+  editorChecklist: {
+    padding: 0,
+    margin: 0,
+    marginLeft: theme.spacing(2),
+    listStyleType: "none",
+  },
   editorListitem: {
     margin: `${theme.spacing(2)} ${theme.spacing(8)} ${theme.spacing(
       2
     )} ${theme.spacing(8)}`,
   },
+  editorChecklistItem: {
+    position: "relative",
+    listStyleType: "none",
+    paddingLeft: theme.spacing(3),
+    "&::before": {
+      content: '""',
+      position: "absolute",
+      left: 0,
+      top: "0.25em",
+      width: "1em",
+      height: "1em",
+      border: `${theme.spacing(0.125)} solid ${theme.palette.text.secondary}`,
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: theme.palette.background.paper,
+    },
+  },
+  editorChecklistItemChecked: {
+    "&::before": {
+      borderColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.main,
+    },
+    "&::after": {
+      content: '""',
+      position: "absolute",
+      left: "0.40em",
+      top: "0.48em",
+      width: "0.25em",
+      height: "0.5em",
+      border: `solid ${theme.palette.primary.contrastText}`,
+      borderWidth: `0 ${theme.spacing(0.25)} ${theme.spacing(0.25)} 0`,
+      transform: "rotate(45deg)",
+    },
+  },
   editorNestedListitem: {
     listStyleType: "none",
+    paddingLeft: 0,
+    "&::before, &::after": {
+      display: "none",
+    },
   },
 }));
 
@@ -197,7 +240,10 @@ export const MarkdownRenderer = ({
       },
       ol: classes.editorListOl,
       ul: classes.editorListUl,
+      checklist: classes.editorChecklist,
       listitem: classes.editorListitem,
+      listitemChecked: `${classes.editorChecklistItem} ${classes.editorChecklistItemChecked}`,
+      listitemUnchecked: classes.editorChecklistItem,
     },
     text: {
       bold: classes.editorTextBold,

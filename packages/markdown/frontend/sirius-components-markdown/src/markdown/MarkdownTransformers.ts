@@ -13,11 +13,15 @@
 import {
   $convertFromMarkdownString,
   $convertToMarkdownString,
+  CHECK_LIST,
   TRANSFORMERS,
   Transformer,
 } from "@lexical/markdown";
 
-export const MARKDOWN_TRANSFORMERS: Transformer[] = TRANSFORMERS;
+export const MARKDOWN_TRANSFORMERS: Transformer[] = [
+  CHECK_LIST,
+  ...TRANSFORMERS,
+];
 
 export const convertFromMarkdownString = (markdown: string): void => {
   $convertFromMarkdownString(markdown, MARKDOWN_TRANSFORMERS);
