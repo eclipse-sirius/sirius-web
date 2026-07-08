@@ -14,7 +14,7 @@ import { CodeNode } from '@lexical/code-core';
 import { HorizontalRuleNode } from '@lexical/extension';
 import { LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
-import { $convertFromMarkdownString, $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
+import { $convertFromMarkdownString, $convertToMarkdownString } from '@lexical/markdown';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
@@ -26,14 +26,15 @@ import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { $setSelection, TextNode } from 'lexical';
 import { FocusEvent, useCallback, useEffect } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { CLOSE_LINK_EDITOR_COMMAND, LinkEditorPlugin } from './LinkEditorPlugin';
 import { ListPlugin } from './ListPlugin';
+import { markdownTransformers } from './MarkdownTransformers';
 import {
   ContentEditableProps,
   MarkdownRendererProps,
   OnBlurPluginProps,
   UpdateValuePluginProps,
 } from './MarkdownRenderer.types';
-import { CLOSE_LINK_EDITOR_COMMAND, LinkEditorPlugin } from './LinkEditorPlugin';
 import { ToolbarPlugin } from './ToolbarPlugin';
 
 const ContentEditable = ({ readOnly }: ContentEditableProps): React.JSX.Element => {
@@ -51,7 +52,7 @@ const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): React.JSX.
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
     editor.update(() => {
-      $convertFromMarkdownString(markdownText, TRANSFORMERS);
+      $convertFromMarkdownString(markdownText, markdownTransformers);
       $setSelection(null);
     });
     editor.dispatchCommand(CLOSE_LINK_EDITOR_COMMAND, undefined);
@@ -69,7 +70,7 @@ const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): React.JSX.Elemen
         if (!event.currentTarget.contains(event.relatedTarget) && !focusMovedToLinkEditor) {
           editor.dispatchCommand(CLOSE_LINK_EDITOR_COMMAND, undefined);
           editor.getEditorState().read(() => {
-            const markdown = $convertToMarkdownString(TRANSFORMERS);
+            const markdown = $convertToMarkdownString(markdownTransformers);
             onBlur(markdown);
           });
         }
@@ -166,11 +167,54 @@ const useMarkdownRendererStyles = makeStyles()((theme) => ({
     marginLeft: theme.spacing(2),
     listStyle: 'circle',
   },
+  editorChecklist: {
+    padding: 0,
+    margin: 0,
+    marginLeft: theme.spacing(2),
+    listStyleType: 'none',
+  },
   editorListitem: {
-    margin: `${theme.spacing(2)} ${theme.spacing(8)} ${theme.spacing(2)} ${theme.spacing(8)}`,
+    margin: `${theme.spacing(1)} ${theme.spacing(2)} ${theme.spacing(1)} ${theme.spacing(2)}`,
+  },
+  editorChecklistItem: {
+    position: 'relative',
+    listStyleType: 'none',
+    paddingLeft: theme.spacing(3),
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      left: 0,
+      top: '0.25em',
+      width: '1em',
+      height: '1em',
+      border: `${theme.spacing(0.125)} solid ${theme.palette.text.secondary}`,
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: theme.palette.background.paper,
+    },
+  },
+  editorChecklistItemChecked: {
+    '&::before': {
+      borderColor: theme.palette.primary.main,
+      backgroundColor: theme.palette.primary.main,
+    },
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      left: '0.40em',
+      top: '0.48em',
+      width: '0.25em',
+      height: '0.5em',
+      border: `solid ${theme.palette.primary.contrastText}`,
+      borderWidth: `0 ${theme.spacing(0.25)} ${theme.spacing(0.25)} 0`,
+      transform: 'rotate(45deg)',
+    },
   },
   editorNestedListitem: {
     listStyleType: 'none',
+    paddingLeft: 0,
+    '&::before, &::after': {
+      display: 'none',
+    },
   },
 }));
 
@@ -189,7 +233,10 @@ export const MarkdownRenderer = ({ value, placeholder, readOnly, onBlur }: Markd
       },
       ol: classes.editorListOl,
       ul: classes.editorListUl,
+      checklist: classes.editorChecklist,
       listitem: classes.editorListitem,
+      listitemChecked: `${classes.editorChecklistItem} ${classes.editorChecklistItemChecked}`,
+      listitemUnchecked: classes.editorChecklistItem,
     },
     text: {
       bold: classes.editorTextBold,
@@ -212,7 +259,7 @@ export const MarkdownRenderer = ({ value, placeholder, readOnly, onBlur }: Markd
         <UpdateValuePlugin markdownText={value} />
         {!readOnly ? <ToolbarPlugin readOnly={readOnly} /> : null}
         <div className={classes.editorContainer}>
-          <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+          <MarkdownShortcutPlugin transformers={markdownTransformers} />
           <LinkPlugin />
           {!readOnly ? <LinkEditorPlugin /> : null}
           <ListPlugin />
