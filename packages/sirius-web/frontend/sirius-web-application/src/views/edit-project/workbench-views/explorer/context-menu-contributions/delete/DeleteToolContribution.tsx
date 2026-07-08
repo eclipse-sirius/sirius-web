@@ -10,7 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { PaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  fuzzyMatch,
+  HighlightedLabel,
+  PaletteToolContributionComponentProps,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,7 +24,7 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDelete } from './useDelete';
 
-export const DeleteToolContribution = ({ onInvoked }: PaletteToolContributionComponentProps) => {
+export const DeleteToolContribution = ({ onInvoked, searchedValue }: PaletteToolContributionComponentProps) => {
   const { handleDelete } = useDelete();
   const { editingContextId, item, treeId, readOnly } = useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -37,12 +41,21 @@ export const DeleteToolContribution = ({ onInvoked }: PaletteToolContributionCom
     deleteTreeItem();
   };
 
+  const matchResult = searchedValue ? fuzzyMatch(t('delete'), searchedValue) : null;
+  if (!!searchedValue && !matchResult?.matches) {
+    return null;
+  }
+
   return (
     <MenuItem key="delete-tree-item" onClick={handleClick} data-testid="delete" disabled={readOnly}>
       <ListItemIcon>
         <DeleteIcon fontSize="small" />
       </ListItemIcon>
-      <ListItemText primary={t('delete')} />
+      {matchResult ? (
+        <HighlightedLabel label={t('delete')} textIndicesToHighlight={matchResult.matchingIndices} />
+      ) : (
+        <ListItemText primary={t('delete')} />
+      )}
     </MenuItem>
   );
 };

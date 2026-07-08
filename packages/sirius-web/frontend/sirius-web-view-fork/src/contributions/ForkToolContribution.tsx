@@ -12,7 +12,11 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { PaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  fuzzyMatch,
+  HighlightedLabel,
+  PaletteToolContributionComponentProps,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import Button from '@mui/material/Button';
@@ -52,6 +56,8 @@ const forkViewMutation = gql`
   }
 `;
 
+const toolLabel = 'Fork View Model';
+
 const isErrorPayload = (payload: CreateForkedStudioPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
@@ -59,7 +65,7 @@ const isSuccessPayload = (payload: CreateForkedStudioPayload): payload is Create
   payload.__typename === 'CreateProjectSuccessPayload';
 
 export const ForkToolContribution = forwardRef(
-  ({ onInvoked }: PaletteToolContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked, searchedValue }: PaletteToolContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const { editingContextId, item, readOnly } = useContext<TreePaletteContextValue>(TreePaletteContext);
 
     const [createProject, { data, error }] = useMutation<GQLCreateForkedStudioMutationData>(forkViewMutation);
@@ -101,6 +107,11 @@ export const ForkToolContribution = forwardRef(
       }
     }
 
+    const matchResult = searchedValue ? fuzzyMatch(toolLabel, searchedValue) : null;
+    if (!!searchedValue && !matchResult?.matches) {
+      return null;
+    }
+
     const forkViewMutationHandler = () => {
       const input: GQLCreateForkedStudioInput = {
         id: crypto.randomUUID(),
@@ -122,7 +133,11 @@ export const ForkToolContribution = forwardRef(
           <ListItemIcon>
             <EditNoteIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Fork View Model</ListItemText>
+          {matchResult ? (
+            <HighlightedLabel label={toolLabel} textIndicesToHighlight={matchResult.matchingIndices} />
+          ) : (
+            <ListItemText primary={toolLabel} />
+          )}
         </MenuItem>
         {state.isOpen ? (
           <Dialog

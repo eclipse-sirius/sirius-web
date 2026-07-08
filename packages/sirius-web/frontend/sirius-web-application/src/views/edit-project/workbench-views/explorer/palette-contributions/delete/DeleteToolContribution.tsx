@@ -10,7 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { PaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  fuzzyMatch,
+  HighlightedLabel,
+  PaletteToolContributionComponentProps,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -40,7 +44,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const DeleteToolContribution = ({ onInvoked }: PaletteToolContributionComponentProps) => {
+export const DeleteToolContribution = ({ onInvoked, searchedValue }: PaletteToolContributionComponentProps) => {
   const { handleDelete } = useDelete();
   const { editingContextId, item, treeId, readOnly } = useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -58,6 +62,11 @@ export const DeleteToolContribution = ({ onInvoked }: PaletteToolContributionCom
     deleteTreeItem();
   };
 
+  const matchResult = searchedValue ? fuzzyMatch(t('delete'), searchedValue) : null;
+  if (!!searchedValue && !matchResult?.matches) {
+    return null;
+  }
+
   return (
     <Tooltip title={t('delete')} placement="right">
       <ListItemButton
@@ -68,7 +77,11 @@ export const DeleteToolContribution = ({ onInvoked }: PaletteToolContributionCom
         <ListItemIcon className={classes.listItemIcon}>
           <DeleteIcon />
         </ListItemIcon>
-        <ListItemText primary={t('delete')} className={classes.listItemText} />
+        {matchResult ? (
+          <HighlightedLabel label={t('delete')} textIndicesToHighlight={matchResult.matchingIndices} />
+        ) : (
+          <ListItemText primary={t('delete')} className={classes.listItemText} />
+        )}
       </ListItemButton>
     </Tooltip>
   );

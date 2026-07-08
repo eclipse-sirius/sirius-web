@@ -10,7 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { PaletteToolContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  fuzzyMatch,
+  HighlightedLabel,
+  PaletteToolContributionComponentProps,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import EditIcon from '@mui/icons-material/Edit';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -19,7 +23,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export const DirectEditToolContribution = ({ onInvoked }: PaletteToolContributionComponentProps) => {
+export const DirectEditToolContribution = ({ onInvoked, searchedValue }: PaletteToolContributionComponentProps) => {
   const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'renameMenuItem' });
   const { item, readOnly, onDirectEditClick } = useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -32,12 +36,21 @@ export const DirectEditToolContribution = ({ onInvoked }: PaletteToolContributio
     onDirectEditClick();
   };
 
+  const matchResult = searchedValue ? fuzzyMatch(t('rename'), searchedValue) : null;
+  if (!!searchedValue && !matchResult?.matches) {
+    return null;
+  }
+
   return (
     <MenuItem key="rename" onClick={handleClick} data-testid="rename-tree-item" disabled={readOnly}>
       <ListItemIcon>
         <EditIcon fontSize="small" />
       </ListItemIcon>
-      <ListItemText primary={t('rename')} />
+      {matchResult ? (
+        <HighlightedLabel label={t('rename')} textIndicesToHighlight={matchResult.matchingIndices} />
+      ) : (
+        <ListItemText primary={t('rename')} />
+      )}
     </MenuItem>
   );
 };
