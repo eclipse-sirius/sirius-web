@@ -53,6 +53,7 @@ If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation 
 - https://github.com/eclipse-sirius/sirius-web/issues/5369[#5369] [form] Prevent existing values from being added again when selecting a new value in a multi-valued reference widget.
 - https://github.com/eclipse-sirius/sirius-web/issues/6694[#6694] [diagram] Fix incorrect bending point handling for non-Manhattan edges during layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6667[#6667] [diagram] Preserve the layout of child nodes while resizing a free-form node.
+- https://github.com/eclipse-sirius/sirius-web/issues/6640[#6640] [diagram] Apply `resizedByUser` flag to list children.
 
 
 === New Features

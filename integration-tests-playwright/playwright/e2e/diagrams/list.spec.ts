@@ -199,7 +199,7 @@ test.describe('diagram - list', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when a list node is resized, then it can not be resized to a size smaller than that produced by the layout', async ({
+  test('when a list node is resized, then the height can not be resized to a size smaller than that produced by the layout', async ({
     page,
   }) => {
     const playwrightExplorer = new PlaywrightExplorer(page);
@@ -214,5 +214,28 @@ test.describe('diagram - list', () => {
     await node.resize({ height: -50, width: -50 });
     const nodeSizeAfter = await node.getReactFlowSize();
     expect(nodeSizeAfter.height).toBe(nodeSizeBefore.height);
+  });
+
+  test('when a list node is resized, then the width can be resized to a size smaller than that the default', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.expand('Package');
+    await (await playwrightExplorer.getTreeItemLabel('NewClass')).dragTo(page.getByTestId('rf__wrapper'));
+
+    const node = new PlaywrightNode(page, 'NewClass', 'List');
+    await expect(node.nodeLocator).toBeAttached();
+
+    const nodeSizeBefore = await node.getReactFlowSize();
+    await node.click();
+    await node.resize({ height: -50, width: -50 });
+    const nodeSizeAfter = await node.getReactFlowSize();
+    expect(nodeSizeAfter.width).toBeLessThan(nodeSizeBefore.width);
+
+    await node.openPalette();
+    await page.getByTestId('Adjust size - Tool').click();
+
+    const nodeSizeAfterAdjustSize = await node.getReactFlowSize();
+    expect(nodeSizeAfterAdjustSize.width).toBe(nodeSizeBefore.width);
   });
 });

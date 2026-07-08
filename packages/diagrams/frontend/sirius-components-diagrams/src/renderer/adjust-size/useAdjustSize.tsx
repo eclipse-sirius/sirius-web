@@ -15,7 +15,10 @@ import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { RawDiagram } from '../layout/layout.types';
 import { useLayout } from '../layout/useLayout';
 import { useSynchronizeLayoutData } from '../layout/useSynchronizeLayoutData';
+import { ListNodeData } from '../node/ListNode.types';
 import { UseAdjustSizeValue } from './useAdjustSize.types';
+
+const isListData = (node: Node): node is Node<ListNodeData> => node.type === 'listNode';
 
 export const useAdjustSize = (): UseAdjustSizeValue => {
   const { layout } = useLayout();
@@ -23,8 +26,14 @@ export const useAdjustSize = (): UseAdjustSizeValue => {
   const { getNodes, getEdges, setNodes, setEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
 
   const adjustSize = (nodeIds: string[]): void => {
+    const listNodeIds = getNodes()
+      .filter((node) => nodeIds.includes(node.id) && isListData(node))
+      .map((node) => node.id);
     const updatedNodes = getNodes().map((node) => {
-      if (nodeIds.find((nodeId) => nodeId === node.id)) {
+      const isDirectlyReset = nodeIds.includes(node.id);
+      const isChildOfResetList = node.parentId && listNodeIds.includes(node.parentId);
+
+      if (isDirectlyReset || isChildOfResetList) {
         return {
           ...node,
           data: {
