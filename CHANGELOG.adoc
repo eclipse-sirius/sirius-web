@@ -56,6 +56,9 @@ If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation 
 Add `searchedValue` prop to `PaletteToolOverriddenContributionComponentProps`
 Export fuzzyMatch function to filter a tool with the searchedValue.
 Use exported `ToolListItemText component` from the palette package to highlight the searched text in rendered contributions.
+- https://github.com/eclipse-sirius/sirius-web/issues/6678[#6678] [palette] Fix the search feature of the palette with tool contribution
+Add `searchedValue` prop to `PaletteToolContributionComponentProps`.
+Contributions have to return null in their component if they are not candidate of the search, you can do that using `searchedValue` and `fuzzyMatch function`
 
 === New Features
 
@@ -172,7 +175,6 @@ This is to make it easier to type when the area overlaps another elements.
 Added `asLastToolUsed` to `PaletteToolOverriddenContributionComponentProps` & `PaletteToolContributionComponentProps`
 Added `isToolInPalette` to `PaletteToolOverriddenContributionComponentProps`, this can be use to know if a tool rendered as the last tool used should be disabled because the precondition of the tool is false (and thus it's not in the palette of that element)
 - https://github.com/eclipse-sirius/sirius-web/issues/6655[#6655] [trees] Fix an issue where the Tree palette was rendered outside the workbench.
-
 
 === New Features
 

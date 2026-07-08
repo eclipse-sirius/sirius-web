@@ -123,7 +123,8 @@ export const useTool = (): useToolValue => {
         <ContributedComponent
           representationElementIds={representationElementIds}
           onInvoked={() => setLastToolInvokedId(palette.id, contributedTool.id)}
-          asLastToolUsed={asLastToolUsed}></ContributedComponent>
+          asLastToolUsed={asLastToolUsed}
+          searchedValue={searchedValue}></ContributedComponent>
       );
     }
     return null;
