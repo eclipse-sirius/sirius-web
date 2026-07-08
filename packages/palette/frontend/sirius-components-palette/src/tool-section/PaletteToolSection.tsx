@@ -148,7 +148,8 @@ export const PaletteToolSection = ({
         <ContributedComponent
           representationElementIds={representationElementIds}
           onInvoked={() => setLastToolInvokedId(palette.id, contributedTool.id)}
-          asLastToolUsed={false}></ContributedComponent>
+          asLastToolUsed={false}
+          searchedValue={null}></ContributedComponent>
       );
     });
 

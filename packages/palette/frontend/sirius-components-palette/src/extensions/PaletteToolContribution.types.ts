@@ -28,4 +28,8 @@ export interface PaletteToolContributionComponentProps {
    * True if the tool is rendered as the last tool used, false otherwise.
    */
   asLastToolUsed: boolean;
+  /**
+   * Current text in the search field of the toolbar or null if nothing is being searched.
+   */
+  searchedValue: string | null;
 }
