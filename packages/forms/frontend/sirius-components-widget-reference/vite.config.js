@@ -1,10 +1,14 @@
 import react from '@vitejs/plugin-react';
+import { createRequire } from 'node:module';
 import path from 'node:path';
-import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 import { defineConfig } from 'vite';
 
+const require = createRequire(import.meta.url);
+const { peerDependencies = {} } = require('./package.json');
+const isExternal = (id) => Object.keys(peerDependencies).some((dependency) => id === dependency || id.startsWith(`${dependency}/`));
+
 export default defineConfig({
-  plugins: [peerDepsExternal(), react()],
+  plugins: [react()],
   build: {
     minify: false,
     lib: {
@@ -12,6 +16,9 @@ export default defineConfig({
       entry: path.resolve(__dirname, 'src/index.ts'),
       formats: ['es', 'cjs'],
       fileName: (format) => `sirius-components-widget-reference.${format}.js`,
+    },
+    rollupOptions: {
+      external: isExternal,
     },
   },
   test: {

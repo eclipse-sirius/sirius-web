@@ -70,7 +70,6 @@
     "graphql": "16.8.1",
     "prettier": "2.7.1",
     "lexical": "0.42.0",
-    "rollup-plugin-peer-deps-external": "2.2.4",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-i18next": "16.2.3",
