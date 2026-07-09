@@ -50,7 +50,10 @@ const createRepresentationMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -189,8 +192,7 @@ export const NewRepresentationModal = ({
       if (createRepresentationData) {
         const { createRepresentation } = createRepresentationData;
         if (isErrorPayload(createRepresentation)) {
-          const { message } = createRepresentation;
-          addErrorMessage(message);
+          addErrorMessage(createRepresentation.messages[0]?.body ?? t('errors.unexpected'));
         }
 
         if (isCreateRepresentationSuccessPayload(createRepresentation)) {

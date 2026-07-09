@@ -22,9 +22,9 @@ import {
   DeleteMenuItemProps,
   GQLDeleteTreeItemData,
   GQLDeleteTreeItemInput,
+  GQLErrorPayload,
   GQLDeleteTreeItemPayload,
   GQLDeleteTreeItemVariables,
-  GQLErrorPayload,
 } from './DeleteMenuItem.types';
 
 const deleteTreeItemMutation = gql`
@@ -32,7 +32,10 @@ const deleteTreeItemMutation = gql`
     deleteTreeItem(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -42,10 +45,11 @@ const isErrorPayload = (payload: GQLDeleteTreeItemPayload): payload is GQLErrorP
   payload.__typename === 'ErrorPayload';
 
 export const DeleteMenuItem = ({ editingContextId, treeId, item, readOnly, onClick }: DeleteMenuItemProps) => {
-  const [deleteTreeItem, { data, error }] = useMutation<GQLDeleteTreeItemData, GQLDeleteTreeItemVariables>(
+  const [deleteTreeItem, deleteTreeItemResult] = useMutation<GQLDeleteTreeItemData, GQLDeleteTreeItemVariables>(
     deleteTreeItemMutation
   );
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'deleteMenuItem' });
 
@@ -62,18 +66,14 @@ export const DeleteMenuItem = ({ editingContextId, treeId, item, readOnly, onCli
     });
   };
 
-  const { addErrorMessage } = useMultiToast();
   useEffect(() => {
-    if (error) {
-      addErrorMessage('An error has occurred while executing this action, please contact the server administrator');
+    if (deleteTreeItemResult.error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (data) {
-      const { deleteTreeItem } = data;
-      if (isErrorPayload(deleteTreeItem)) {
-        addErrorMessage(deleteTreeItem.message);
-      }
+    if (deleteTreeItemResult.data && isErrorPayload(deleteTreeItemResult.data.deleteTreeItem)) {
+      addMessages(deleteTreeItemResult.data.deleteTreeItem.messages);
     }
-  }, [error, data]);
+  }, [deleteTreeItemResult.data, deleteTreeItemResult.error, addErrorMessage, addMessages]);
 
   if (!item.deletable) {
     return null;

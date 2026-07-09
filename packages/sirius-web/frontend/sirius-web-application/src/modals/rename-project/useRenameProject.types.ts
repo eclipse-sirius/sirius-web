@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface UseRenameProjectValue {
   renameProject: (projectId: string, newName: string) => void;
   loading: boolean;
@@ -26,7 +28,7 @@ export interface GQLRenameProjectPayload {
 }
 
 export interface GQLErrorPayload extends GQLRenameProjectPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLRenameProjectMutationVariables {

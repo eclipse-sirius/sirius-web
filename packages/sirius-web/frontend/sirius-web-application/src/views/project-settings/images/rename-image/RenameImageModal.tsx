@@ -34,7 +34,10 @@ const renameImageMutation = gql`
     renameImage(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -69,8 +72,7 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
       if (data) {
         const { renameImage } = data;
         if (isErrorPayload(renameImage)) {
-          const { message } = renameImage;
-          addErrorMessage(message);
+          addErrorMessage(renameImage.messages[0]?.body ?? t('errors.unexpected'));
           onClose();
         } else {
           onImageRenamed();

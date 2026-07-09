@@ -14,12 +14,11 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   GQLDeleteProjectMutationData,
   GQLDeleteProjectMutationVariables,
-  GQLDeleteProjectPayload,
   GQLErrorPayload,
+  GQLDeleteProjectPayload,
   UseDeleteProjectValue,
 } from './useDeleteProject.types';
 
@@ -28,7 +27,10 @@ const deleteProjectMutation = gql`
     deleteProject(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -38,24 +40,21 @@ const isErrorPayload = (payload: GQLDeleteProjectPayload): payload is GQLErrorPa
   payload.__typename === 'ErrorPayload';
 
 export const useDeleteProject = (): UseDeleteProjectValue => {
-  const [performProjectDeletion, { loading, data, error }] = useMutation<
+  const [performProjectDeletion, mutationResult] = useMutation<
     GQLDeleteProjectMutationData,
     GQLDeleteProjectMutationVariables
   >(deleteProjectMutation);
+  const { loading, data } = mutationResult;
+  const { addErrorMessage, addMessages } = useMultiToast();
 
-  const { addErrorMessage } = useMultiToast();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useDeleteProject' });
   useEffect(() => {
-    if (error) {
-      addErrorMessage(t('errors.unexpected'));
+    if (data && isErrorPayload(data.deleteProject)) {
+      addMessages(data.deleteProject.messages);
     }
-    if (data) {
-      const { deleteProject } = data;
-      if (isErrorPayload(deleteProject)) {
-        addErrorMessage(deleteProject.message);
-      }
+    if (mutationResult.error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-  }, [data, error]);
+  }, [data, mutationResult.error, addErrorMessage, addMessages]);
 
   const deleteProject = (projectId: string) => {
     const variables: GQLDeleteProjectMutationVariables = {

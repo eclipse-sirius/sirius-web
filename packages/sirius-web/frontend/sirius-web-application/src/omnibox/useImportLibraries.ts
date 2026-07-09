@@ -15,9 +15,9 @@ import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
-  GQLErrorPayload,
   GQLImportLibrariesMutationData,
   GQLImportLibrariesMutationVariables,
+  GQLErrorPayload,
   GQLImportLibrariesPayload,
   GQLSuccessPayload,
   UseImportLibrariesValue,
@@ -34,7 +34,6 @@ const importLibrariesMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
         messages {
           level
           body
@@ -44,33 +43,32 @@ const importLibrariesMutation = gql`
   }
 `;
 
+const isSuccessPayload = (payload: GQLImportLibrariesPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 const isErrorPayload = (payload: GQLImportLibrariesPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-const isSuccessPayload = (payload: GQLImportLibrariesPayload): payload is GQLSuccessPayload =>
-  payload.__typename === 'SuccessPayload';
-
 export const useImportLibraries = (): UseImportLibrariesValue => {
-  const { addErrorMessage, addMessages } = useMultiToast();
-  const [performImportLibraries, { loading, data, error }] = useMutation<
+  const [performImportLibraries, mutationResult] = useMutation<
     GQLImportLibrariesMutationData,
     GQLImportLibrariesMutationVariables
   >(importLibrariesMutation);
+  const { loading, data } = mutationResult;
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (data) {
-      const { importLibraries } = data;
-      if (isErrorPayload(importLibraries)) {
-        addMessages(importLibraries.messages);
-      }
-      if (isSuccessPayload(importLibraries)) {
-        addMessages(importLibraries.messages);
-      }
-    }
-    if (error) {
+    if (mutationResult.error) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-  }, [error, data]);
+    if (data) {
+      if (isSuccessPayload(data.importLibraries)) {
+        addMessages(data.importLibraries.messages);
+      }
+      if (isErrorPayload(data.importLibraries)) {
+        addMessages(data.importLibraries.messages);
+      }
+    }
+  }, [data, mutationResult.error, addErrorMessage, addMessages]);
 
   const importLibraries = (editingContextId: string, type: string, libraryIds: string[]) => {
     const variables: GQLImportLibrariesMutationVariables = {

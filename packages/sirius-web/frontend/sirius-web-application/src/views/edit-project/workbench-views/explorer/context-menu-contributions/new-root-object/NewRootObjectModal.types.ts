@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface NewRootObjectModalState {
   rootObjectCreationDescriptions: GQLChildCreationDescription[];
@@ -95,5 +96,5 @@ export interface GQLObject {
 }
 
 export interface GQLErrorPayload extends GQLCreateRootObjectPayload {
-  message: string;
+  messages: GQLMessage[];
 }

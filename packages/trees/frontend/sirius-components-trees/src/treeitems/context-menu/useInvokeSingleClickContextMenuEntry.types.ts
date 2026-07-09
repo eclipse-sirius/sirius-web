@@ -68,8 +68,9 @@ export interface GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
 
 export interface GQLSuccessPayload extends GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
   id: string;
+  messages: GQLMessage[] | null;
 }
 
 export interface GQLErrorPayload extends GQLInvokeSingleClickTreeItemContextMenuEntryPayload {
-  messages: GQLMessage[];
+  messages: GQLMessage[] | null;
 }

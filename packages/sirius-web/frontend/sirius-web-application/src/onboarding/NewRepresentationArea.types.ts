@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { RepresentationMetadata } from '@eclipse-sirius/sirius-components-core';
+import { GQLMessage, RepresentationMetadata } from '@eclipse-sirius/sirius-components-core';
 
 export interface NewRepresentationAreaState {
   message: string;
@@ -34,7 +34,7 @@ export interface GQLCreateRepresentationPayload {
 }
 
 export interface GQLErrorPayload extends GQLCreateRepresentationPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLCreateRepresentationInput {

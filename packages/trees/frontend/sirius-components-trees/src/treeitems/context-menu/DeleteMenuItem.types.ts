@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeItem } from '../../views/TreeView.types';
 
 export interface DeleteMenuItemProps {
@@ -45,5 +46,5 @@ export interface GQLSuccessPayload extends GQLDeleteTreeItemPayload {
 }
 
 export interface GQLErrorPayload extends GQLDeleteTreeItemPayload {
-  message: string;
+  messages: GQLMessage[];
 }
