@@ -101,8 +101,8 @@ export const getChildNodePosition = (
 
   if (!previousSibling) {
     return {
-      x: rectangularNodePadding + borderWidth + maxWestBorderNodeWidth,
-      y: borderWidth + headerHeightFootprint + maxNorthBorderNodeHeight,
+      x: borderWidth + rectangularNodePadding + maxWestBorderNodeWidth,
+      y: borderWidth + rectangularNodePadding + headerHeightFootprint + maxNorthBorderNodeHeight,
     };
   } else {
     const previousSiblingsMaxEastBorderNodeWidth = getChildren(previousSibling, allVisibleNodes)
@@ -136,8 +136,6 @@ export const getHeaderHeightFootprint = (
     if (displayHeaderSeparator) {
       headerHeightFootprint += borderWith;
     }
-  } else {
-    headerHeightFootprint = borderWith;
   }
 
   return headerHeightFootprint;

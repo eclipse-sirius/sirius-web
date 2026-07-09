@@ -68,9 +68,9 @@ test.describe('diagram - node creation', () => {
     const reactFlowSizeEntity4First = await entity4FirstNode.getReactFlowSize();
 
     const nodePadding = 8;
-    const headerHeight = 37;
+    const headerHeight = 38;
     const borderWidth = 1;
-    expect(reactFlowXYPositionEntity4First.y).toBe(headerHeight + borderWidth * 2);
+    expect(reactFlowXYPositionEntity4First.y).toBe(headerHeight + borderWidth + nodePadding);
     expect(reactFlowXYPositionEntity4First.x).toBe(nodePadding + borderWidth * 2);
 
     // When creating a second one, it should place next to the first one

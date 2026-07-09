@@ -94,13 +94,13 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
 
       if (!!createdNode) {
         child.position = createdNode.position;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
+        if (child.position.y < borderWidth + rectangularNodePadding + headerHeightFootprint) {
+          child.position = { ...child.position, y: borderWidth + rectangularNodePadding + headerHeightFootprint };
         }
       } else if (previousPosition) {
         child.position = previousPosition;
-        if (child.position.y < borderWidth + headerHeightFootprint) {
-          child.position = { ...child.position, y: borderWidth + headerHeightFootprint };
+        if (child.position.y < borderWidth + rectangularNodePadding + headerHeightFootprint) {
+          child.position = { ...child.position, y: borderWidth + rectangularNodePadding + headerHeightFootprint };
         }
         if (child.position.x < borderWidth + rectangularNodePadding) {
           child.position = { ...child.position, x: borderWidth + rectangularNodePadding };
@@ -136,8 +136,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
         labelOnlyWidth,
         northBorderNodeFootprintWidth,
         southBorderNodeFootprintWidth
-      ) +
-      borderWidth * 2;
+      ) + borderWidth;
 
     // WARN: the label is not used for the height because children are already position under the label
     const directChildrenAwareNodeHeight =
@@ -147,7 +146,7 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
 
     const nodeMinComputeHeight =
       Math.max(directChildrenAwareNodeHeight, eastBorderNodeFootprintHeight, westBorderNodeFootprintHeight) +
-      borderWidth * 2;
+      borderWidth;
 
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
