@@ -11,7 +11,7 @@ export default defineConfig(() => {
       lib: {
         name: 'sirius-components-datatree',
         entry: path.resolve(__dirname, 'src/index.ts'),
-        formats: ['es', 'umd'],
+        formats: ['es', 'cjs'],
         fileName: (format) => `sirius-components-datatree.${format}.js`,
       },
     },

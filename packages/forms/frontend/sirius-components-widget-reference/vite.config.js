@@ -10,7 +10,7 @@ export default defineConfig({
     lib: {
       name: 'sirius-components-widget-reference',
       entry: path.resolve(__dirname, 'src/index.ts'),
-      formats: ['es', 'umd'],
+      formats: ['es', 'cjs'],
       fileName: (format) => `sirius-components-widget-reference.${format}.js`,
     },
   },

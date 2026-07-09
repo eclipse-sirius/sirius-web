@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
       lib: {
         name: 'sirius-components-deck',
         entry: path.resolve(__dirname, 'src/index.ts'),
-        formats: ['es', 'umd'],
+        formats: ['es', 'cjs'],
         fileName: (format) => `sirius-components-deck.${format}.js`,
       },
     },
