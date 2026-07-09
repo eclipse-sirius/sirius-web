@@ -47,6 +47,7 @@ Downstream consumers relying on the previous `.umd.js` artifacts or on direct br
 This removes Rollup warnings about missing global names for externalized peer dependencies while keeping React, MUI, Apollo and other shared dependencies outside the published bundles.
 - [cleanup] Add formatting related tasks to package.json to make them easier to use.
 One can now simply run `npm run format` to format the frontend code or `npm run format-lint` to check the proper formatting of the frontend code.
+- [releng] Reduce the log of the frontend tasks `format-lint` and `build-dev` by default to make tasks such as `build` or `start` less verbose.
 
 
 

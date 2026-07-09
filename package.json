@@ -21,7 +21,8 @@
   "scripts": {
     "format": "turbo run format",
     "format-lint": "turbo run format-lint",
-    "build": "turbo run build",
+    "build": "turbo run build --output-logs=errors-only",
+    "build-verbose": "turbo run build",
     "start": "turbo run start",
     "test": "turbo run test",
     "coverage": "turbo run coverage"
