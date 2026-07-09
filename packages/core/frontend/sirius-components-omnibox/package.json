@@ -10,7 +10,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "main": "./dist/sirius-components-omnibox.umd.js",
+  "main": "./dist/sirius-components-omnibox.cjs.js",
   "module": "./dist/sirius-components-omnibox.es.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -18,7 +18,7 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/sirius-components-omnibox.umd.js",
+      "require": "./dist/sirius-components-omnibox.cjs.js",
       "import": "./dist/sirius-components-omnibox.es.js"
     }
   },

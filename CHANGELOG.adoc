@@ -19,6 +19,9 @@
 
 === Breaking changes
 
+- [releng] Frontend packages published from `packages/*/frontend/` do not provide UMD bundles anymore.
+They are now distributed as ES modules and CommonJS bundles only.
+Downstream consumers relying on the previous `.umd.js` artifacts or on direct browser script-tag usage must migrate to a bundler-based integration or consume the new CommonJS entry points instead.
 
 
 
@@ -39,6 +42,8 @@
 
 === Improvements
 
+- [releng] Improve the frontend package build by replacing UMD outputs with CommonJS outputs for reusable npm libraries.
+This removes Rollup warnings about missing global names for externalized peer dependencies while keeping React, MUI, Apollo and other shared dependencies outside the published bundles.
 
 
 

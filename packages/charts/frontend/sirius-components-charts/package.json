@@ -10,7 +10,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "main": "./dist/sirius-components-charts.umd.js",
+  "main": "./dist/sirius-components-charts.cjs.js",
   "module": "./dist/sirius-components-charts.es.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -18,7 +18,7 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/sirius-components-charts.umd.js",
+      "require": "./dist/sirius-components-charts.cjs.js",
       "import": "./dist/sirius-components-charts.es.js"
     }
   },

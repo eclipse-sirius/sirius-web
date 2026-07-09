@@ -10,7 +10,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "main": "./dist/sirius-components-impactanalysis.umd.js",
+  "main": "./dist/sirius-components-impactanalysis.cjs.js",
   "module": "./dist/sirius-components-impactanalysis.es.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -18,7 +18,7 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/sirius-components-impactanalysis.umd.js",
+      "require": "./dist/sirius-components-impactanalysis.cjs.js",
       "import": "./dist/sirius-components-impactanalysis.es.js"
     }
   },

@@ -10,7 +10,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "main": "./dist/sirius-components-datatree.umd.js",
+  "main": "./dist/sirius-components-datatree.cjs.js",
   "module": "./dist/sirius-components-datatree.es.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -18,7 +18,7 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/sirius-components-datatree.umd.js",
+      "require": "./dist/sirius-components-datatree.cjs.js",
       "import": "./dist/sirius-components-datatree.es.js"
     }
   },
