@@ -19,8 +19,10 @@ import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { MarkdownShortcutPlugin } from "@lexical/react/LexicalMarkdownShortcutPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { TablePlugin } from "@lexical/react/LexicalTablePlugin";
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { HeadingNode, QuoteNode } from "@lexical/rich-text";
+import { TableCellNode, TableNode, TableRowNode } from "@lexical/table";
 import { $setSelection, TextNode } from "lexical";
 import { FocusEvent, useCallback, useEffect } from "react";
 import { makeStyles } from "tss-react/mui";
@@ -175,6 +177,26 @@ const useMarkdownRendererStyles = makeStyles()((theme) => ({
   editorNestedListitem: {
     listStyleType: "none",
   },
+  editorTable: {
+    borderCollapse: "collapse",
+    borderSpacing: 0,
+    marginBottom: theme.spacing(2),
+    tableLayout: "fixed",
+    width: "100%",
+  },
+  editorTableScrollableWrapper: {
+    overflowX: "auto",
+  },
+  editorTableCell: {
+    border: `${theme.spacing(0.125)} solid ${theme.palette.divider}`,
+    padding: theme.spacing(1),
+    minWidth: theme.spacing(10),
+    verticalAlign: "top",
+  },
+  editorTableCellHeader: {
+    backgroundColor: theme.palette.action.hover,
+    fontWeight: Number(theme.typography.fontWeightMedium),
+  },
 }));
 
 export const MarkdownRenderer = ({
@@ -199,6 +221,10 @@ export const MarkdownRenderer = ({
       ul: classes.editorListUl,
       listitem: classes.editorListitem,
     },
+    table: classes.editorTable,
+    tableScrollableWrapper: classes.editorTableScrollableWrapper,
+    tableCell: classes.editorTableCell,
+    tableCellHeader: `${classes.editorTableCell} ${classes.editorTableCellHeader}`,
     text: {
       bold: classes.editorTextBold,
       italic: classes.editorTextItalic,
@@ -221,6 +247,9 @@ export const MarkdownRenderer = ({
       TextNode,
       CodeNode,
       LinkNode,
+      TableNode,
+      TableRowNode,
+      TableCellNode,
     ],
   };
   return (
@@ -231,6 +260,11 @@ export const MarkdownRenderer = ({
         <div className={classes.editorContainer}>
           <MarkdownShortcutPlugin transformers={MARKDOWN_TRANSFORMERS} />
           <ListPlugin />
+          <TablePlugin
+            hasCellMerge={false}
+            hasCellBackgroundColor={false}
+            hasHorizontalScroll
+          />
           <RichTextPlugin
             contentEditable={<ContentEditable readOnly={readOnly} />}
             placeholder={

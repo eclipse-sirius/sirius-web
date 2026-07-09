@@ -9,6 +9,8 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
+ *     tbezierslafosse - add markdown table toolbar command
+ *     tbezierslafosse - add table row and column toolbar commands
  *******************************************************************************/
 import {
   $isListNode,
@@ -20,6 +22,14 @@ import {
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { $createHeadingNode, $isHeadingNode } from "@lexical/rich-text";
 import { $setBlocksType } from "@lexical/selection";
+import {
+  $deleteTableColumnAtSelection,
+  $deleteTableRowAtSelection,
+  $getTableCellNodeFromLexicalNode,
+  $insertTableColumnAtSelection,
+  $insertTableRowAtSelection,
+  INSERT_TABLE_COMMAND,
+} from "@lexical/table";
 import { $getNearestNodeOfType, mergeRegister } from "@lexical/utils";
 import CodeIcon from "@mui/icons-material/Code";
 import FormatBoldIcon from "@mui/icons-material/FormatBold";
@@ -28,7 +38,12 @@ import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import FormatListNumberedIcon from "@mui/icons-material/FormatListNumbered";
 import StrikethroughSIcon from "@mui/icons-material/StrikethroughS";
 import SubjectIcon from "@mui/icons-material/Subject";
+import TableChartIcon from "@mui/icons-material/TableChart";
+import TableRowsIcon from "@mui/icons-material/TableRows";
+import TableRowsOutlinedIcon from "@mui/icons-material/TableRowsOutlined";
 import TitleIcon from "@mui/icons-material/Title";
+import ViewColumnIcon from "@mui/icons-material/ViewColumn";
+import ViewColumnOutlinedIcon from "@mui/icons-material/ViewColumnOutlined";
 import Divider from "@mui/material/Divider";
 import Paper from "@mui/material/Paper";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -83,6 +98,7 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
   const [isItalic, setIsItalic] = useState<boolean>(false);
   const [isStrikeTrough, setIsStrikeTrough] = useState<boolean>(false);
   const [isCode, setIsCode] = useState<boolean>(false);
+  const [isInTable, setIsInTable] = useState<boolean>(false);
   const [blockType, setBlockType] = useState<string>("paragraph");
 
   const updateButtons = (toggled) => {
@@ -108,6 +124,7 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
     const selection = $getSelection();
     if ($isRangeSelection(selection)) {
       const anchorNode = selection.anchor.getNode();
+      setIsInTable($getTableCellNodeFromLexicalNode(anchorNode) !== null);
       const element =
         anchorNode.getKey() === "root"
           ? anchorNode
@@ -142,6 +159,8 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
           }
         }
       }
+    } else {
+      setIsInTable(false);
     }
   }, []);
 
@@ -247,7 +266,92 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
         >
           <FormatListNumberedIcon fontSize="small" />
         </ToggleButton>
+        <ToggleButton
+          classes={{ root: classes.button }}
+          disabled={readOnly}
+          value={"table"}
+          key={"table"}
+          onClick={() => {
+            editor.dispatchCommand(INSERT_TABLE_COMMAND, {
+              columns: "2",
+              includeHeaders: {
+                columns: false,
+                rows: true,
+              },
+              rows: "2",
+            });
+          }}
+        >
+          <TableChartIcon fontSize="small" />
+        </ToggleButton>
       </StyledToggleButtonGroup>
+      {isInTable ? (
+        <>
+          <Divider
+            flexItem
+            orientation="vertical"
+            className={classes.divider}
+          />
+          <StyledToggleButtonGroup
+            size="small"
+            value={toggled}
+            onChange={(_, newStyles) => updateButtons(newStyles)}
+          >
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={"table-row-add"}
+              key={"table-row-add"}
+              onClick={() => {
+                editor.update(() => {
+                  $insertTableRowAtSelection(true);
+                });
+              }}
+            >
+              <TableRowsIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={"table-row-delete"}
+              key={"table-row-delete"}
+              onClick={() => {
+                editor.update(() => {
+                  $deleteTableRowAtSelection();
+                });
+              }}
+            >
+              <TableRowsOutlinedIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={"table-column-add"}
+              key={"table-column-add"}
+              onClick={() => {
+                editor.update(() => {
+                  $insertTableColumnAtSelection(true);
+                });
+              }}
+            >
+              <ViewColumnIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton
+              classes={{ root: classes.button }}
+              disabled={readOnly}
+              value={"table-column-delete"}
+              key={"table-column-delete"}
+              onClick={() => {
+                editor.update(() => {
+                  $deleteTableColumnAtSelection();
+                });
+              }}
+            >
+              <ViewColumnOutlinedIcon fontSize="small" />
+            </ToggleButton>
+          </StyledToggleButtonGroup>
+        </>
+      ) : null}
       <Divider flexItem orientation="vertical" className={classes.divider} />
       <StyledToggleButtonGroup
         size="small"
