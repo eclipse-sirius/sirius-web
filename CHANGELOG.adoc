@@ -45,6 +45,8 @@ Downstream consumers relying on the previous `.umd.js` artifacts or on direct br
 
 - [releng] Improve the frontend package build by replacing UMD outputs with CommonJS outputs for reusable npm libraries.
 This removes Rollup warnings about missing global names for externalized peer dependencies while keeping React, MUI, Apollo and other shared dependencies outside the published bundles.
+- [cleanup] Add formatting related tasks to package.json to make them easier to use.
+One can now simply run `npm run format` to format the frontend code or `npm run format-lint` to check the proper formatting of the frontend code.
 
 
 
