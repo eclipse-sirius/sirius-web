@@ -78,7 +78,6 @@
     "react-resizable": "3.0.5",
     "@types/react-resizable": "3.0.8",
     "react-resizable-panels": "4.11.2",
-    "rollup-plugin-peer-deps-external": "2.2.4",
     "svg-path-parser": "1.1.0",
     "tss-react": "4.9.16",
     "typescript": "5.4.5",
