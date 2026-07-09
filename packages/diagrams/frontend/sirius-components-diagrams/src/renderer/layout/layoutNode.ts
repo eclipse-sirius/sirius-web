@@ -168,11 +168,22 @@ const getNodeFootprint = (allVisibleNodes: Node<NodeData>[], node: Node<NodeData
 
   const footPrint: Box = [node, ...borderNodes].reduce<Box>(
     (currentFootPrint, child) => {
+      let outsideLabelFootPrint = 0;
+      if (!child.data.isBorderNode) {
+        const bottomOutsideLabel = child.data.outsideLabels?.BOTTOM_MIDDLE;
+        if (
+          bottomOutsideLabel &&
+          !bottomOutsideLabel.movedByUser &&
+          (!bottomOutsideLabel.style.visibility || bottomOutsideLabel.style.visibility === 'visible')
+        ) {
+          outsideLabelFootPrint = bottomOutsideLabel.height;
+        }
+      }
       const nodeBox = rectToBox({
         x: node !== child && child.data.isBorderNode ? node.position.x + child.position.x : child.position.x,
         y: node !== child && child.data.isBorderNode ? node.position.y + child.position.y : child.position.y,
         width: child.width ?? 0,
-        height: child.height ?? 0,
+        height: (child.height ?? 0) + outsideLabelFootPrint,
       });
 
       return getBoundsOfBoxes(currentFootPrint, nodeBox);
