@@ -86,6 +86,7 @@ Downstream applications can implement `IOmniboxCommandOrdererDelegate` to define
 - https://github.com/eclipse-sirius/sirius-web/issues/6538[#6538] [diagram] Align the lifecycle of the connector tool popup and the palette
 - https://github.com/eclipse-sirius/sirius-web/issues/6736[#6736] [core] Update `ChangeDescription` to accept an `ICause` as parameter instead of just `IInput`.
 This will allow us to reuse the change description to propagate more information.
+- https://github.com/eclipse-sirius/sirius-web/issues/6688[#6688] [diagram] Use outside label height for child node layout in freeform diagrams
 
 
 

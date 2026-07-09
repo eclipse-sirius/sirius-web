@@ -89,10 +89,18 @@ test.describe('diagram - freeform layout', () => {
     const nodePadding = 8;
     const borderWidth = 1;
     const parentLabel = new PlaywrightNodeLabel(page, 'CP1');
+    const childLabel = new PlaywrightNodeLabel(page, 'Proc1');
     const parentLabelBox = await parentLabel.labelLocator.boundingBox();
+    const childLabelBox = await childLabel.labelLocator.boundingBox();
     expect(reactFlowParentSize.width).toBe(borderWidth + nodePadding + childNodeSize.width + nodePadding + borderWidth);
     expect(reactFlowParentSize.height).toBe(
-      borderWidth + nodePadding + (parentLabelBox?.height ?? 0) + childNodeSize.height + nodePadding + borderWidth
+      borderWidth +
+        nodePadding +
+        (parentLabelBox?.height ?? 0) +
+        childNodeSize.height +
+        (childLabelBox?.height ?? 0) +
+        nodePadding +
+        borderWidth
     );
     expect(childNodePosition.x).toBe(borderWidth + nodePadding);
     expect(childNodePosition.y).toBe(borderWidth + nodePadding + (parentLabelBox?.height ?? 0));
