@@ -62,7 +62,16 @@ export type { ConnectionHandle } from './renderer/handles/ConnectionHandles.type
 export { ConnectionTargetHandle } from './renderer/handles/ConnectionTargetHandle';
 export { useRefreshConnectionHandles } from './renderer/handles/useRefreshConnectionHandles';
 export { Label } from './renderer/Label';
+export { useArrangeAll } from './renderer/layout/arrange-all/useArrangeAll';
+export type { UseArrangeAllValue } from './renderer/layout/arrange-all/useArrangeAll.types';
+export { useLayoutConfigurations } from './renderer/layout/arrange-all/useLayoutConfigurations';
+export type {
+  LayoutConfiguration,
+  UseLayoutConfigurationsValue,
+} from './renderer/layout/arrange-all/useLayoutConfigurations.types';
 export { computePreviousPosition, computePreviousSize } from './renderer/layout/bounds';
+export { useElkLayout } from './renderer/layout/elk/useElkLayout';
+export type { UseElkLayoutValue } from './renderer/layout/elk/useElkLayout.types';
 export type { ForcedDimensions, RawDiagram } from './renderer/layout/layout.types';
 export * from './renderer/layout/layoutBorderNodes';
 export type { ILayoutEngine, INodeLayoutHandler } from './renderer/layout/LayoutEngine.types';
