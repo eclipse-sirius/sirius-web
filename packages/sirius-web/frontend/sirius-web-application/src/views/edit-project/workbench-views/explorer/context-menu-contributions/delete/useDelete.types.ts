@@ -21,6 +21,8 @@ export interface DeleteMenuItemProps {
   onClick: () => void;
 }
 
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface UseDeleteValue {
   handleDelete: (editingContextId: string, treeId: string, item: GQLTreeItem) => void;
 }
@@ -49,5 +51,5 @@ export interface GQLSuccessPayload extends GQLDeleteTreeItemPayload {
 }
 
 export interface GQLErrorPayload extends GQLDeleteTreeItemPayload {
-  message: string;
+  messages: GQLMessage[];
 }

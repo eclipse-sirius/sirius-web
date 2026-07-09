@@ -58,7 +58,10 @@ const createRepresentationMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -98,7 +101,7 @@ export const NewRepresentationArea = ({
           setSelection({ entries: [{ id }] });
         }
         if (isErrorPayload(createRepresentation)) {
-          setState({ message: createRepresentation.message });
+          setState({ message: createRepresentation.messages[0]?.body ?? t('errors.unexpected') });
         }
       }
     }

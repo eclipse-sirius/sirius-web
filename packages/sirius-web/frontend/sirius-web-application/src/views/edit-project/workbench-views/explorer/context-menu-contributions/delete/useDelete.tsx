@@ -12,14 +12,14 @@
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
 import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import { useEffect } from 'react';
+import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
 import {
   GQLDeleteTreeItemData,
   GQLDeleteTreeItemInput,
-  GQLDeleteTreeItemPayload,
   GQLDeleteTreeItemVariables,
   GQLErrorPayload,
+  GQLDeleteTreeItemPayload,
   UseDeleteValue,
 } from './useDelete.types';
 
@@ -28,7 +28,10 @@ const deleteTreeItemMutation = gql`
     deleteTreeItem(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -38,10 +41,11 @@ const isErrorPayload = (payload: GQLDeleteTreeItemPayload): payload is GQLErrorP
   payload.__typename === 'ErrorPayload';
 
 export const useDelete = (): UseDeleteValue => {
-  const [deleteTreeItem, { data, error }] = useMutation<GQLDeleteTreeItemData, GQLDeleteTreeItemVariables>(
+  const [deleteTreeItem, mutationResult] = useMutation<GQLDeleteTreeItemData, GQLDeleteTreeItemVariables>(
     deleteTreeItemMutation
   );
   const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const handleDelete = (editingContextId: string, treeId: string, item: GQLTreeItem) => {
     if (item.deletable) {
@@ -57,18 +61,14 @@ export const useDelete = (): UseDeleteValue => {
     }
   };
 
-  const { addErrorMessage } = useMultiToast();
   useEffect(() => {
-    if (error) {
-      addErrorMessage('An error has occurred while executing this action, please contact the server administrator');
+    if (mutationResult.error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (data) {
-      const { deleteTreeItem } = data;
-      if (isErrorPayload(deleteTreeItem)) {
-        addErrorMessage(deleteTreeItem.message);
-      }
+    if (mutationResult.data && isErrorPayload(mutationResult.data.deleteTreeItem)) {
+      addMessages(mutationResult.data.deleteTreeItem.messages);
     }
-  }, [error, data]);
+  }, [mutationResult.data, mutationResult.error, addErrorMessage, addMessages]);
 
   return {
     handleDelete,

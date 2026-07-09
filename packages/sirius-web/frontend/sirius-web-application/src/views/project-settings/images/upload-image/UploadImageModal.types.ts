@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface UploadImageModalState {
   label: string;
   file: File | null;
@@ -42,5 +44,5 @@ export interface GQLUploadImagePayload {
 }
 
 export interface GQLErrorPayload extends GQLUploadImagePayload {
-  message: string;
+  messages: GQLMessage[];
 }

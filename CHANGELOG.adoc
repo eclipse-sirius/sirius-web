@@ -39,6 +39,7 @@
 
 === Improvements
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6194[#6194] [core] Frontend GraphQL error payloads now request `ErrorPayload#messages` instead of `ErrorPayload#message`, and the affected mutation hooks now log server feedback with `useMultiToast` when they use custom payloads and `useReporting` when they use the shared success/error contract.
 
 
 

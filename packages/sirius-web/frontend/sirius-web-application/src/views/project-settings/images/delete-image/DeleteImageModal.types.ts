@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface DeleteImageModalProps {
   imageId: string;
   onImageDeleted: () => void;
@@ -34,5 +36,5 @@ export interface GQLDeleteImagePayload {
 }
 
 export interface GQLErrorPayload extends GQLDeleteImagePayload {
-  message: string;
+  messages: GQLMessage[];
 }

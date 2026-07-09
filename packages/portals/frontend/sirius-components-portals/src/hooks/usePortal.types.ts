@@ -34,7 +34,7 @@ export interface GQLPortalEventPayload {
 }
 
 export interface GQLErrorPayload extends GQLPortalEventPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLPortalEventVariables {
@@ -82,3 +82,4 @@ export interface GQLPortalViewLayoutData {
   width: number;
   height: number;
 }
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';

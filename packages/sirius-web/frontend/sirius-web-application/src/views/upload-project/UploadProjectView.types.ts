@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface UploadProjectViewState {
   file: File | null;
   loading: boolean;
@@ -25,7 +27,7 @@ export interface GQLUploadProjectPayload {
 }
 
 export interface GQLErrorPayload extends GQLUploadProjectPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLUploadProjectSuccessPayload extends GQLUploadProjectPayload {

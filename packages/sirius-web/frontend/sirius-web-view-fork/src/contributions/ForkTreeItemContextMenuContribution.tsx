@@ -28,11 +28,11 @@ import { useNavigate } from 'react-router-dom';
 import { useRepresentationMetadata } from '../representationmetadata/useRepresentationMetadata';
 import {
   CreateForkedStudioPayload,
+  GQLErrorPayload,
   CreateProjectSuccessPayload,
   ForkTreeItemContextMenuContributionState,
   GQLCreateForkedStudioInput,
   GQLCreateForkedStudioMutationData,
-  GQLErrorPayload,
 } from './ForkTreeItemContextMenuContribution.types';
 
 const forkViewMutation = gql`
@@ -45,23 +45,25 @@ const forkViewMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
 `;
 
+const isSuccessPayload = (payload: CreateForkedStudioPayload): payload is CreateProjectSuccessPayload =>
+  payload.__typename === 'CreateProjectSuccessPayload';
 const isErrorPayload = (payload: CreateForkedStudioPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-const isSuccessPayload = (payload: CreateForkedStudioPayload): payload is CreateProjectSuccessPayload =>
-  payload.__typename === 'CreateProjectSuccessPayload';
-
 export const ForkTreeItemContextMenuContribution = forwardRef(
   ({ editingContextId, item, readOnly }: TreeItemContextMenuComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
-    const [createProject, { data, error }] = useMutation<GQLCreateForkedStudioMutationData>(forkViewMutation);
-    const { addErrorMessage } = useMultiToast();
+    const [createProject, mutationResult] = useMutation<GQLCreateForkedStudioMutationData>(forkViewMutation);
     const navigate = useNavigate();
+    const { addErrorMessage, addMessages } = useMultiToast();
 
     const [state, setState] = useState<ForkTreeItemContextMenuContributionState>({
       isOpen: false,
@@ -85,20 +87,23 @@ export const ForkTreeItemContextMenuContribution = forwardRef(
     };
 
     useEffect(() => {
-      if (data) {
-        if (isErrorPayload(data.createForkedStudio)) {
-          addErrorMessage(data.createForkedStudio.message);
-        }
-        if (isSuccessPayload(data.createForkedStudio)) {
-          navigate(`/projects/${data.createForkedStudio.project.id}/edit`);
+      if (mutationResult.error) {
+        addErrorMessage('An unexpected error has occurred, please refresh the page');
+      }
+      if (mutationResult.data && isErrorPayload(mutationResult.data.createForkedStudio)) {
+        addMessages(mutationResult.data.createForkedStudio.messages);
+      }
+    }, [mutationResult.data, mutationResult.error, addErrorMessage, addMessages]);
+
+    useEffect(() => {
+      if (mutationResult.data) {
+        const { createForkedStudio } = mutationResult.data;
+        if (isSuccessPayload(createForkedStudio)) {
+          navigate(`/projects/${createForkedStudio.project.id}/edit`);
           navigate(0);
         }
       }
-
-      if (error) {
-        addErrorMessage('An unexpected error has occurred, please refresh the page');
-      }
-    }, [data, error]);
+    }, [mutationResult.data]);
 
     if (!representationMetaData) {
       return null;

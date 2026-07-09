@@ -40,7 +40,10 @@ const uploadProjectMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -143,7 +146,7 @@ export const UploadProjectView = () => {
             ...prevState,
             loading: false,
           }));
-          addErrorMessage(uploadProject.message);
+          addErrorMessage(uploadProject.messages[0]?.body ?? t('errors.unexpected'));
         }
       }
     } catch (exception) {

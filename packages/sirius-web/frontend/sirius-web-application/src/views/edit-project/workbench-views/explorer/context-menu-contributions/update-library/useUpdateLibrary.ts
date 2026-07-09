@@ -15,10 +15,10 @@ import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
 import {
-  GQLErrorPayload,
-  GQLSuccessPayload,
   GQLUpdateLibraryMutationData,
   GQLUpdateLibraryMutationVariables,
+  GQLErrorPayload,
+  GQLSuccessPayload,
   GQLUpdateLibraryPayload,
   UseUpdateLibraryValue,
 } from './useUpdateLibrary.types';
@@ -34,7 +34,6 @@ const updateLibraryMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
         messages {
           level
           body
@@ -44,33 +43,32 @@ const updateLibraryMutation = gql`
   }
 `;
 
+const isSuccessPayload = (payload: GQLUpdateLibraryPayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 const isErrorPayload = (payload: GQLUpdateLibraryPayload): payload is GQLErrorPayload =>
   payload.__typename === 'ErrorPayload';
 
-const isSuccessPayload = (payload: GQLUpdateLibraryPayload): payload is GQLSuccessPayload =>
-  payload.__typename === 'SuccessPayload';
-
 export const useUpdateLibrary = (): UseUpdateLibraryValue => {
-  const { addErrorMessage, addMessages } = useMultiToast();
-  const [performUpdateLibrary, { loading, data, error }] = useMutation<
+  const [performUpdateLibrary, mutationResult] = useMutation<
     GQLUpdateLibraryMutationData,
     GQLUpdateLibraryMutationVariables
   >(updateLibraryMutation);
+  const { loading, data } = mutationResult;
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (data) {
-      const { updateLibrary } = data;
-      if (isErrorPayload(updateLibrary)) {
-        addMessages(updateLibrary.messages);
-      }
-      if (isSuccessPayload(updateLibrary)) {
-        addMessages(updateLibrary.messages);
-      }
-    }
-    if (error) {
+    if (mutationResult.error) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-  }, [error, data]);
+    if (data) {
+      if (isSuccessPayload(data.updateLibrary)) {
+        addMessages(data.updateLibrary.messages);
+      }
+      if (isErrorPayload(data.updateLibrary)) {
+        addMessages(data.updateLibrary.messages);
+      }
+    }
+  }, [data, mutationResult.error, addErrorMessage, addMessages]);
 
   const updateLibrary = (editingContextId: string, libraryId: string) => {
     const variables: GQLUpdateLibraryMutationVariables = {

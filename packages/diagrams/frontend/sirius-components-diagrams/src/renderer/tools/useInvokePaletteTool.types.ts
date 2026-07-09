@@ -32,7 +32,6 @@ export interface GQLGetToolSectionsVariables {
 }
 
 export interface GQLErrorPayload extends GQLInvokeSingleClickOnDiagramElementToolPayload {
-  message: string;
   messages: GQLMessage[];
 }
 

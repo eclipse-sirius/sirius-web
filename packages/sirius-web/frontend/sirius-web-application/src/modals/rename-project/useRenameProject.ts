@@ -14,11 +14,10 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
-  GQLErrorPayload,
   GQLRenameProjectMutationData,
   GQLRenameProjectMutationVariables,
+  GQLErrorPayload,
   GQLRenameProjectPayload,
   UseRenameProjectValue,
 } from './useRenameProject.types';
@@ -28,7 +27,10 @@ const renameProjectMutation = gql`
     renameProject(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -38,25 +40,21 @@ const isErrorPayload = (payload: GQLRenameProjectPayload): payload is GQLErrorPa
   payload.__typename === 'ErrorPayload';
 
 export const useRenameProject = (): UseRenameProjectValue => {
-  const [performProjectRename, { loading, data, error }] = useMutation<
+  const [performProjectRename, mutationResult] = useMutation<
     GQLRenameProjectMutationData,
     GQLRenameProjectMutationVariables
   >(renameProjectMutation);
-
+  const { loading, data } = mutationResult;
   const { addErrorMessage, addMessages } = useMultiToast();
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useRenameProject' });
 
   useEffect(() => {
-    if (error) {
-      addErrorMessage(t('errors.unexpected'));
+    if (mutationResult.error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (data) {
-      const { renameProject } = data;
-      if (isErrorPayload(renameProject)) {
-        addMessages(renameProject.message);
-      }
+    if (data && isErrorPayload(data.renameProject)) {
+      addMessages(data.renameProject.messages);
     }
-  }, [data, error]);
+  }, [data, mutationResult.error, addErrorMessage, addMessages]);
 
   const renameProject = (projectId: string, newName: string) => {
     const variables: GQLRenameProjectMutationVariables = {

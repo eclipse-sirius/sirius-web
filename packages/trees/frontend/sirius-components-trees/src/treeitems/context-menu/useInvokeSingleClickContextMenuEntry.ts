@@ -17,11 +17,11 @@ import { useEffect, useState } from 'react';
 import { useInvokeImpactAnalysis } from './impact-analysis/useTreeImpactAnalysis';
 import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 import {
-  GQLErrorPayload,
   GQLInvokeSingleClickTreeItemContextMenuEntryData,
   GQLInvokeSingleClickTreeItemContextMenuEntryInput,
-  GQLInvokeSingleClickTreeItemContextMenuEntryPayload,
   GQLInvokeSingleClickTreeItemContextMenuEntryVariables,
+  GQLErrorPayload,
+  GQLInvokeSingleClickTreeItemContextMenuEntryPayload,
   UseInvokeSingleClickContextMenuEntryState,
   UseInvokeSingleClickContextMenuEntryValue,
 } from './useInvokeSingleClickContextMenuEntry.types';
@@ -31,7 +31,10 @@ const invokeSingleClickTreeItemContextMenuEntryMutation = gql`
     invokeSingleClickTreeItemContextMenuEntry(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -41,29 +44,25 @@ const isErrorPayload = (payload: GQLInvokeSingleClickTreeItemContextMenuEntryPay
   payload.__typename === 'ErrorPayload';
 
 export const useInvokeSingleClickContextMenuEntry = (): UseInvokeSingleClickContextMenuEntryValue => {
-  const { addMessages, addErrorMessage } = useMultiToast();
-
   const [state, setState] = useState<UseInvokeSingleClickContextMenuEntryState>({
     currentEntry: null,
     onEntryExecution: () => {},
   });
 
-  const [invokeSingleClickTreeItemContextMenuEntry, { data, error }] = useMutation<
+  const [invokeSingleClickTreeItemContextMenuEntry, mutationResult] = useMutation<
     GQLInvokeSingleClickTreeItemContextMenuEntryData,
     GQLInvokeSingleClickTreeItemContextMenuEntryVariables
   >(invokeSingleClickTreeItemContextMenuEntryMutation);
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   useEffect(() => {
-    if (error) {
-      addErrorMessage('An error has occurred while executing this action, please contact the server administrator');
+    if (mutationResult.error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (data) {
-      const { invokeSingleClickTreeItemContextMenuEntry } = data;
-      if (isErrorPayload(invokeSingleClickTreeItemContextMenuEntry)) {
-        addMessages(invokeSingleClickTreeItemContextMenuEntry.messages);
-      }
+    if (mutationResult.data && isErrorPayload(mutationResult.data.invokeSingleClickTreeItemContextMenuEntry)) {
+      addMessages(mutationResult.data.invokeSingleClickTreeItemContextMenuEntry.messages);
     }
-  }, [error, data]);
+  }, [mutationResult.data, mutationResult.error, addErrorMessage, addMessages]);
 
   const invokeEntry = (
     editingContextId: string,

@@ -11,16 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useCallback, useContext, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useReporting } from '@eclipse-sirius/sirius-components-core';
+import { useCallback, useContext } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
-  GQLErrorPayload,
   GQLPinDiagramElementData,
   GQLPinDiagramElementInput,
-  GQLPinDiagramElementPayload,
   GQLPinDiagramElementVariables,
   UsePinDiagramElements,
 } from './usePinDiagramElements.types';
@@ -30,7 +27,10 @@ const pinDiagramElementMutation = gql`
     pinDiagramElement(input: $input) {
       __typename
       ... on SuccessPayload {
-        id
+        messages {
+          body
+          level
+        }
       }
       ... on ErrorPayload {
         messages {
@@ -42,30 +42,15 @@ const pinDiagramElementMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLPinDiagramElementPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-
 export const usePinDiagramElements = (): UsePinDiagramElements => {
-  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'usePinDiagramElements' });
-  const { addErrorMessage, addMessages } = useMultiToast();
   const { diagramId, editingContextId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
 
-  const [pinElementMutation, { data: pinDiagramElementData, error: pinDiagramElementError }] = useMutation<
+  const [pinElementMutation, pinElementMutationResult] = useMutation<
     GQLPinDiagramElementData,
     GQLPinDiagramElementVariables
   >(pinDiagramElementMutation);
 
-  useEffect(() => {
-    if (pinDiagramElementError) {
-      addErrorMessage(t('errors.unexpected'));
-    }
-    if (pinDiagramElementData) {
-      const { pinDiagramElement } = pinDiagramElementData;
-      if (isErrorPayload(pinDiagramElement)) {
-        addMessages(pinDiagramElement.messages);
-      }
-    }
-  }, [pinDiagramElementData, pinDiagramElementError]);
+  useReporting(pinElementMutationResult, (data: GQLPinDiagramElementData) => data.pinDiagramElement);
 
   const pinDiagramElements = useCallback(
     (elementIds: string[], pinned: boolean) => {

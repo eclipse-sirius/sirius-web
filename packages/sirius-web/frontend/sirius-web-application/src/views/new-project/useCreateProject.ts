@@ -17,9 +17,9 @@ import {
   GQLCreateProjectMutationData,
   GQLCreateProjectMutationInput,
   GQLCreateProjectMutationVariables,
+  GQLErrorPayload,
   GQLCreateProjectPayload,
   GQLCreateProjectSuccessPayload,
-  GQLErrorPayload,
   UseCreateProjectValue,
 } from './useCreateProject.types';
 
@@ -42,16 +42,19 @@ const createProjectMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
 const isCreateProjectSuccessPayload = (payload: GQLCreateProjectPayload): payload is GQLCreateProjectSuccessPayload =>
   payload.__typename === 'CreateProjectSuccessPayload';
 
+const isErrorPayload = (payload: GQLCreateProjectPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
+
 export const useCreateProject = (): UseCreateProjectValue => {
-  const [rawCreateProject, { data, loading, error }] = useMutation<
+  const [rawCreateProject, mutationResult] = useMutation<
     GQLCreateProjectMutationData,
     GQLCreateProjectMutationVariables
   >(createProjectMutation);
+  const { data, loading } = mutationResult;
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const createProject = (name: string, templateId: string, libraryIds: string[]) => {
     const input: GQLCreateProjectMutationInput = {
@@ -63,18 +66,14 @@ export const useCreateProject = (): UseCreateProjectValue => {
     rawCreateProject({ variables: { input } });
   };
 
-  const { addErrorMessage, addMessages } = useMultiToast();
   useEffect(() => {
-    if (error) {
+    if (mutationResult.error) {
       addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (data) {
-      const { createProject } = data;
-      if (isErrorPayload(createProject)) {
-        addMessages(createProject.messages);
-      }
+    if (data && isErrorPayload(data.createProject)) {
+      addMessages(data.createProject.messages);
     }
-  }, [data, error]);
+  }, [data, mutationResult.error, addErrorMessage, addMessages]);
 
   return {
     createProject,

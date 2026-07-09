@@ -47,7 +47,10 @@ const invokeEditingContextActionMutation = gql`
     invokeEditingContextAction(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -90,7 +93,7 @@ export const NewDocumentArea = ({ editingContextId, editingContextActions, readO
       if (dataEditingContextAction) {
         const { invokeEditingContextAction } = dataEditingContextAction;
         if (isErrorPayload(invokeEditingContextAction)) {
-          setState({ message: invokeEditingContextAction.message });
+          setState({ message: invokeEditingContextAction.messages[0]?.body ?? t('errors.unexpected') });
         }
       }
     }

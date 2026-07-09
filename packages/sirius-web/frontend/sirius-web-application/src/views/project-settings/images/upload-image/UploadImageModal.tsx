@@ -40,7 +40,10 @@ const uploadImageMutationFile = gql`
         id
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -103,8 +106,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
       if (data) {
         const { uploadImage } = data;
         if (isErrorPayload(uploadImage)) {
-          const { message } = uploadImage;
-          addErrorMessage(message);
+          addErrorMessage(uploadImage.messages[0]?.body ?? t('errors.unexpected'));
           onClose();
         } else {
           onImageUploaded();

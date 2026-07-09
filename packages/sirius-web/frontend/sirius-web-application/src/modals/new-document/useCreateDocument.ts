@@ -14,13 +14,12 @@
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import {
   GQLCreateDocumentMutationData,
   GQLCreateDocumentMutationVariables,
+  GQLErrorPayload,
   GQLCreateDocumentPayload,
   GQLCreateDocumentSuccessPayload,
-  GQLErrorPayload,
   UseCreateDocumentValue,
 } from './useCreateDocument.types';
 
@@ -29,38 +28,37 @@ const createDocumentMutation = gql`
     createDocument(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
 `;
-
-const isErrorPayload = (payload: GQLCreateDocumentPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
 const isCreateDocumentSuccessPayload = (
   payload: GQLCreateDocumentPayload
 ): payload is GQLCreateDocumentSuccessPayload => payload.__typename === 'CreateDocumentSuccessPayload';
 
+const isErrorPayload = (payload: GQLCreateDocumentPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
+
 export const useCreateDocument = (): UseCreateDocumentValue => {
-  const [performDocumentCreation, { data, loading, error }] = useMutation<
+  const [performDocumentCreation, mutationResult] = useMutation<
     GQLCreateDocumentMutationData,
     GQLCreateDocumentMutationVariables
   >(createDocumentMutation);
-
-  const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useCreateDocument' });
-
+  const { data, loading } = mutationResult;
   const { addErrorMessage, addMessages } = useMultiToast();
+
   useEffect(() => {
-    if (error) {
-      addErrorMessage(t('errors.unexpected'));
+    if (mutationResult.error) {
+      addErrorMessage('An unexpected error has occurred, please refresh the page');
     }
-    if (data) {
-      const { createDocument } = data;
-      if (isErrorPayload(createDocument)) {
-        addMessages(createDocument.messages);
-      }
+    if (data && isErrorPayload(data.createDocument)) {
+      addMessages(data.createDocument.messages);
     }
-  }, [data, error]);
+  }, [data, mutationResult.error, addErrorMessage, addMessages]);
 
   const createDocument = (editingContextId: string, stereotypeId: string, name: string) => {
     const variables: GQLCreateDocumentMutationVariables = {

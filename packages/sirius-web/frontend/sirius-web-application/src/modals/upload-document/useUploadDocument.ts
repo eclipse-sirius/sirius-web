@@ -29,7 +29,10 @@ const uploadDocumentMutationFile = gql`
     uploadDocument(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
       ... on UploadDocumentSuccessPayload {
         report
@@ -73,8 +76,7 @@ export const useUploadDocument = (): UseUploadDocumentValue => {
         if (data) {
           const { uploadDocument } = data;
           if (isErrorPayload(uploadDocument)) {
-            const { message } = uploadDocument;
-            addErrorMessage(message);
+            addErrorMessage(uploadDocument.messages[0]?.body ?? 'An unexpected error has occurred');
             setState((prevState) => ({ ...prevState, loading: false, uploadedDocument: null }));
           } else if (isUploadDocumentSuccessPayload(uploadDocument)) {
             setState((prevState) => ({ ...prevState, loading: false, uploadedDocument: uploadDocument }));

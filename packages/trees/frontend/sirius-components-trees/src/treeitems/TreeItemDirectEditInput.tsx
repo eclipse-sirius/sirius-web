@@ -11,16 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, GQLSuccessPayload, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  GQLErrorPayload,
   GQLInitialDirectEditElementLabelData,
   GQLInitialDirectEditElementLabelVariables,
+  GQLRenameTreeItemMutationData,
   GQLRenameTreeItemPayload,
-  GQLSuccessPayload,
+  GQLRenameTreeItemMutationVariables,
   TreeItemDirectEditInputProps,
   TreeItemDirectEditInputState,
 } from './TreeItemDirectEditInput.types';
@@ -30,7 +30,10 @@ const renameTreeItemMutation = gql`
     renameTreeItem(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -70,7 +73,7 @@ export const TreeItemDirectEditInput = ({
     newLabel: initialLabel,
   });
 
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const textInput = useRef<HTMLInputElement | null>(null);
   const editionFinished = useRef<boolean>(false);
@@ -109,33 +112,31 @@ export const TreeItemDirectEditInput = ({
     return () => {};
   }, [initialLabelTreeItemItemError, initialLabelTreeItemItemData]);
 
-  const [renameTreeItem, { data: renameTreeItemData, error: renameTreeItemError }] =
-    useMutation(renameTreeItemMutation);
+  const [renameTreeItem, renameTreeItemResult] = useMutation<
+    GQLRenameTreeItemMutationData,
+    GQLRenameTreeItemMutationVariables
+  >(renameTreeItemMutation);
 
   useEffect(() => {
-    if (renameTreeItemError) {
+    if (renameTreeItemResult.error) {
       addErrorMessage(t('errors.unexpected'));
     }
-    if (renameTreeItemData) {
-      const { renameTreeItem } = renameTreeItemData;
-      if (isErrorPayload(renameTreeItem)) {
-        addErrorMessage(renameTreeItem.message);
-      } else if (isSuccessPayload(renameTreeItem)) {
-        if (renameTreeItem.__typename === 'SuccessPayload') {
-          onClose();
-        }
-      }
+    if (renameTreeItemResult.data && isErrorPayload(renameTreeItemResult.data.renameTreeItem)) {
+      addMessages(renameTreeItemResult.data.renameTreeItem.messages);
     }
-  }, [renameTreeItemData, renameTreeItemError]);
+    if (renameTreeItemResult.data && isSuccessPayload(renameTreeItemResult.data.renameTreeItem)) {
+      onClose();
+    }
+  }, [renameTreeItemResult.data, renameTreeItemResult.error, addErrorMessage, addMessages, onClose, t]);
 
   const doRename = () => {
     renameTreeItem({
       variables: {
         input: {
           id: crypto.randomUUID(),
-          editingContextId: editingContextId,
+          editingContextId,
           representationId: treeId,
-          treeItemId: treeItemId,
+          treeItemId,
           newLabel: state.newLabel,
         },
       },

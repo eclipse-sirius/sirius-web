@@ -33,7 +33,10 @@ const deleteImageMutation = gql`
     deleteImage(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -55,8 +58,7 @@ export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteIma
       if (data) {
         const { deleteImage } = data;
         if (isErrorPayload(deleteImage)) {
-          const { message } = deleteImage;
-          addErrorMessage(message);
+          addErrorMessage(deleteImage.messages[0]?.body ?? t('errors.unexpected'));
           onClose();
         } else {
           onImageDeleted();
