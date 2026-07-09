@@ -10,7 +10,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "main": "./dist/sirius-components-validation.umd.js",
+  "main": "./dist/sirius-components-validation.cjs.js",
   "module": "./dist/sirius-components-validation.es.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -18,7 +18,7 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/sirius-components-validation.umd.js",
+      "require": "./dist/sirius-components-validation.cjs.js",
       "import": "./dist/sirius-components-validation.es.js"
     }
   },

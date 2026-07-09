@@ -11,7 +11,7 @@ export default defineConfig(() => {
       lib: {
         name: 'sirius-components-gantt',
         entry: path.resolve(__dirname, 'src/index.ts'),
-        formats: ['es', 'umd'],
+        formats: ['es', 'cjs'],
         fileName: (format) => `sirius-components-gantt.${format}.js`,
       },
     },

@@ -10,7 +10,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "main": "./dist/sirius-web-papaya.umd.js",
+  "main": "./dist/sirius-web-papaya.cjs.js",
   "module": "./dist/sirius-web-papaya.es.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -18,7 +18,7 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/sirius-web-papaya.umd.js",
+      "require": "./dist/sirius-web-papaya.cjs.js",
       "import": "./dist/sirius-web-papaya.es.js"
     }
   },

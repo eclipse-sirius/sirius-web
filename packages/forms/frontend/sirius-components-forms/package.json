@@ -10,7 +10,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
-  "main": "./dist/sirius-components-forms.umd.js",
+  "main": "./dist/sirius-components-forms.cjs.js",
   "module": "./dist/sirius-components-forms.es.js",
   "types": "./dist/index.d.ts",
   "files": [
@@ -18,7 +18,7 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/sirius-components-forms.umd.js",
+      "require": "./dist/sirius-components-forms.cjs.js",
       "import": "./dist/sirius-components-forms.es.js"
     }
   },

@@ -22,7 +22,7 @@ export default defineConfig({
     lib: {
       name: 'sirius-components-browser',
       entry: path.resolve(__dirname, 'src/index.ts'),
-      formats: ['es', 'umd'],
+      formats: ['es', 'cjs'],
       fileName: (format) => `sirius-components-browser.${format}.js`,
     },
   },

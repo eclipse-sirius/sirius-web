@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
       lib: {
         name: 'sirius-components-formdescriptioneditors',
         entry: path.resolve(__dirname, 'src/index.ts'),
-        formats: ['es', 'umd'],
+        formats: ['es', 'cjs'],
         fileName: (format) => `sirius-components-formdescriptioneditors.${format}.js`,
       },
     },
