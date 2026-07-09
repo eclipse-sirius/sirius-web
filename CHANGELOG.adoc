@@ -19,7 +19,7 @@
 
 === Breaking changes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6635[#6635] [sirius-web] Add a dedicated package for markdown edition and rendering.
 
 
 === Dependency update
@@ -39,7 +39,8 @@
 
 === Improvements
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6635[#6635] [sirius-web] Add a dedicated package for markdown edition and rendering.
+- https://github.com/eclipse-sirius/sirius-web/issues/6635[#6635] [sirius-web] Add GFM table support in markdown rich text rendering and edition.
 
 
 

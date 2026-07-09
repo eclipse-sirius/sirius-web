@@ -1,0 +1,74 @@
+{
+  "name": "@eclipse-sirius/sirius-components-markdown",
+  "version": "2026.5.4",
+  "author": "Eclipse Sirius",
+  "license": "EPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eclipse-sirius/sirius-web"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "main": "./dist/sirius-components-markdown.umd.js",
+  "module": "./dist/sirius-components-markdown.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/sirius-components-markdown.umd.js",
+      "import": "./dist/sirius-components-markdown.es.js"
+    }
+  },
+  "scripts": {
+    "build-dev": "vite build --mode 'development' && tsc",
+    "build": "vite build && tsc",
+    "format": "prettier --write \"src/**/*.{js,ts,tsx,css}\"",
+    "format-lint": "prettier --list-different \"src/**/*.{js,ts,tsx,css}\"",
+    "publish:local": "yalc push"
+  },
+  "peerDependencies": {
+    "@lexical/code-core": "0.42.0",
+    "@lexical/extension": "0.42.0",
+    "@lexical/link": "0.42.0",
+    "@lexical/list": "0.42.0",
+    "@lexical/markdown": "0.42.0",
+    "@lexical/react": "0.42.0",
+    "@lexical/rich-text": "0.42.0",
+    "@lexical/selection": "0.42.0",
+    "@lexical/table": "0.42.0",
+    "@lexical/utils": "0.42.0",
+    "@mui/icons-material": "7.3.10",
+    "@mui/material": "7.3.10",
+    "lexical": "0.42.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "tss-react": "4.9.16"
+  },
+  "devDependencies": {
+    "@eclipse-sirius/sirius-components-tsconfig": "*",
+    "@lexical/code-core": "0.42.0",
+    "@lexical/extension": "0.42.0",
+    "@lexical/link": "0.42.0",
+    "@lexical/list": "0.42.0",
+    "@lexical/markdown": "0.42.0",
+    "@lexical/react": "0.42.0",
+    "@lexical/rich-text": "0.42.0",
+    "@lexical/selection": "0.42.0",
+    "@lexical/table": "0.42.0",
+    "@lexical/utils": "0.42.0",
+    "lexical": "0.42.0",    
+    "@mui/icons-material": "7.3.10",
+    "@mui/material": "7.3.10",
+    "@types/react": "18.3.3",
+    "prettier": "2.7.1",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "tss-react": "4.9.16",
+    "typescript": "5.4.5",
+    "vite": "8.0.14"
+  }
+}
