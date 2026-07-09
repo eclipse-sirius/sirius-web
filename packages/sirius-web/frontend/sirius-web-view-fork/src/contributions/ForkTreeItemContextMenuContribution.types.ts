@@ -11,6 +11,8 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface ForkTreeItemContextMenuContributionState {
   isOpen: boolean;
 }
@@ -32,7 +34,7 @@ export interface GQLProject {
 }
 
 export interface GQLErrorPayload extends CreateForkedStudioPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLCreateForkedStudioInput {

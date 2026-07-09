@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
+
 export interface RenameImageModalState {
   name: string;
 }
@@ -35,10 +37,4 @@ export interface GQLRenameImageMutationData {
   renameImage: GQLRenameImagePayload;
 }
 
-export interface GQLRenameImagePayload {
-  __typename: string;
-}
-
-export interface GQLErrorPayload extends GQLRenameImagePayload {
-  message: string;
-}
+export type GQLRenameImagePayload = GQLSuccessPayload | GQLErrorPayload;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { RepresentationLoadingIndicator } from '@eclipse-sirius/sirius-components-core';
+import { RepresentationLoadingIndicator, useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import Typography from '@mui/material/Typography';
 import { memo, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   GQLDiagramEventPayload,
   GQLDiagramRefreshedEventPayload,
+  GQLErrorPayload,
 } from '../graphql/subscription/diagramEventSubscription.types';
 import { DiagramRenderer } from '../renderer/DiagramRenderer';
 import { HelperLinesContextProvider } from '../renderer/helper-lines/HelperLinesContext';
@@ -32,6 +33,9 @@ const isDiagramRefreshedEventPayload = (
   payload: GQLDiagramEventPayload | null
 ): payload is GQLDiagramRefreshedEventPayload => !!payload && payload.__typename === 'DiagramRefreshedEventPayload';
 
+const isErrorPayload = (payload: GQLDiagramEventPayload | null): payload is GQLErrorPayload =>
+  !!payload && payload.__typename === 'ErrorPayload';
+
 export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }: DiagramSubscriptionProviderProps) => {
   const [state, setState] = useState<DiagramSubscriptionState>({
     id: crypto.randomUUID(),
@@ -40,11 +44,15 @@ export const DiagramSubscriptionProvider = memo(({ diagramId, editingContextId }
     message: '',
   });
 
-  const { complete, payload } = useDiagramSubscription(editingContextId, diagramId);
   const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'diagramSubscriptionProvider' });
+
+  const { complete, payload } = useDiagramSubscription(editingContextId, diagramId);
+  const { addMessages } = useMultiToast();
   useEffect(() => {
     if (isDiagramRefreshedEventPayload(payload)) {
       setState((prevState) => ({ ...prevState, diagramRefreshedEventPayload: payload }));
+    } else if (isErrorPayload(payload)) {
+      addMessages(payload.messages);
     }
   }, [payload]);
 

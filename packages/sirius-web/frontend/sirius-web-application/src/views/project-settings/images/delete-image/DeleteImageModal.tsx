@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLSuccessPayload, useReporting } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -25,45 +25,42 @@ import {
   GQLDeleteImageMutationData,
   GQLDeleteImageMutationVariables,
   GQLDeleteImagePayload,
-  GQLErrorPayload,
 } from './DeleteImageModal.types';
 
 const deleteImageMutation = gql`
   mutation deleteImage($input: DeleteImageInput!) {
     deleteImage(input: $input) {
       __typename
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
 `;
 
-const isErrorPayload = (payload: GQLDeleteImagePayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLDeleteImagePayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const DeleteImageModal = ({ imageId, onImageDeleted, onClose }: DeleteImageModalProps) => {
-  const { addErrorMessage } = useMultiToast();
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'deleteImageModal' });
 
-  const [deleteImage, { loading, data, error }] = useMutation<GQLDeleteImageMutationData>(deleteImageMutation);
+  const [deleteImage, result] = useMutation<GQLDeleteImageMutationData>(deleteImageMutation);
+  useReporting(result, (payload) => payload.deleteImage);
+
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage(error.message);
-      }
-      if (data) {
-        const { deleteImage } = data;
-        if (isErrorPayload(deleteImage)) {
-          const { message } = deleteImage;
-          addErrorMessage(message);
-          onClose();
-        } else {
-          onImageDeleted();
-        }
-      }
+    if (result.data && isSuccessPayload(result.data.deleteImage)) {
+      onImageDeleted();
     }
-  }, [loading, data, error]);
+  }, [result]);
 
   const onDeleteImage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();

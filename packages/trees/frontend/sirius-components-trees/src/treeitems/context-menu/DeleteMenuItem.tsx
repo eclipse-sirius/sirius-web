@@ -32,7 +32,10 @@ const deleteTreeItemMutation = gql`
     deleteTreeItem(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -62,7 +65,7 @@ export const DeleteMenuItem = ({ editingContextId, treeId, item, readOnly, onCli
     });
   };
 
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   useEffect(() => {
     if (error) {
       addErrorMessage('An error has occurred while executing this action, please contact the server administrator');
@@ -70,7 +73,7 @@ export const DeleteMenuItem = ({ editingContextId, treeId, item, readOnly, onCli
     if (data) {
       const { deleteTreeItem } = data;
       if (isErrorPayload(deleteTreeItem)) {
-        addErrorMessage(deleteTreeItem.message);
+        addMessages(deleteTreeItem.messages);
       }
     }
   }, [error, data]);

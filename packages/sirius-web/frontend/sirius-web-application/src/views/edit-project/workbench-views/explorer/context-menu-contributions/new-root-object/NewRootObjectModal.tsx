@@ -50,7 +50,10 @@ const createRootObjectMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -198,8 +201,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
       if (createRootObjectData) {
         const { createRootObject } = createRootObjectData;
         if (isErrorPayload(createRootObject)) {
-          const { message } = createRootObject;
-          addMessages(message);
+          addMessages(createRootObject.messages);
         } else if (isCreateRootObjectSuccessPayload(createRootObject)) {
           const { object } = createRootObject;
           onObjectCreated({ entries: [object] });

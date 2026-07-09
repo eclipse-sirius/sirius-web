@@ -48,6 +48,7 @@ This removes Rollup warnings about missing global names for externalized peer de
 - [cleanup] Add formatting related tasks to package.json to make them easier to use.
 One can now simply run `npm run format` to format the frontend code or `npm run format-lint` to check the proper formatting of the frontend code.
 - [releng] Reduce the log of the frontend tasks `format-lint` and `build-dev` by default to make tasks such as `build` or `start` less verbose.
+- https://github.com/eclipse-sirius/sirius-web/issues/6194[#6194] [core] Frontend GraphQL error payloads now request `ErrorPayload#messages` instead of `ErrorPayload#message`, and the affected mutation hooks now log server feedback with `useMultiToast` when they use custom payloads and `useReporting` when they use the shared success/error contract.
 
 
 

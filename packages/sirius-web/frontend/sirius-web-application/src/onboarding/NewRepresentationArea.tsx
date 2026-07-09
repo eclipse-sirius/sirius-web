@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { Toast, useSelection } from '@eclipse-sirius/sirius-components-core';
+import { useMultiToast, useSelection } from '@eclipse-sirius/sirius-components-core';
 import Collections from '@mui/icons-material/Collections';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -20,7 +20,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import {
@@ -29,7 +29,6 @@ import {
   GQLCreateRepresentationVariables,
   GQLErrorPayload,
   NewRepresentationAreaProps,
-  NewRepresentationAreaState,
 } from './NewRepresentationArea.types';
 
 const useNewRepresentationAreaStyles = makeStyles()((theme) => ({
@@ -58,7 +57,10 @@ const createRepresentationMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -71,11 +73,9 @@ export const NewRepresentationArea = ({
   representationDescriptions,
   readOnly,
 }: NewRepresentationAreaProps) => {
-  const [state, setState] = useState<NewRepresentationAreaState>({
-    message: null,
-  });
   const { classes } = useNewRepresentationAreaStyles();
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newRepresentationArea' });
+  const { addMessages, addErrorMessage } = useMultiToast();
   const { selection, setSelection } = useSelection();
 
   const selectedItem = selection.entries.length > 0 ? selection.entries[0] : null;
@@ -89,7 +89,7 @@ export const NewRepresentationArea = ({
   useEffect(() => {
     if (!loading) {
       if (error) {
-        setState({ message: t('errors.unexpected') });
+        addErrorMessage(t('errors.unexpected'));
       }
       if (data) {
         const { createRepresentation } = data;
@@ -98,7 +98,7 @@ export const NewRepresentationArea = ({
           setSelection({ entries: [{ id }] });
         }
         if (isErrorPayload(createRepresentation)) {
-          setState({ message: createRepresentation.message });
+          addMessages(createRepresentation.messages);
         }
       }
     }
@@ -121,43 +121,40 @@ export const NewRepresentationArea = ({
     selectedItem && representationDescriptions.length > 0 ? t('selectRepresentationToCreate') : t('noRepresentations');
 
   return (
-    <>
-      <Card>
-        <CardContent className={classes.cardContent}>
-          <Typography variant="h6">{t('createRepresentation')}</Typography>
-          <Typography className={classes.subtitles} color="textSecondary">
-            {readOnly ? t('noAccessToCreateRepresentation') : subtitle}
-          </Typography>
-          <List dense={true}>
-            {readOnly
-              ? null
-              : representationDescriptions
-                  .sort((a, b) => a.defaultName.localeCompare(b.defaultName))
-                  .map((representationDescription) => {
-                    return (
-                      <ListItemButton
-                        className={classes.item}
-                        dense
-                        disableGutters
-                        key={representationDescription.id}
-                        data-testid={representationDescription.id}
-                        onClick={() => {
-                          onCreateRepresentation(representationDescription.id);
-                        }}>
-                        <ListItemIcon>
-                          <Collections fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={representationDescription.defaultName}
-                          secondary={representationDescription.label}
-                        />
-                      </ListItemButton>
-                    );
-                  })}
-          </List>
-        </CardContent>
-      </Card>
-      <Toast message={state.message} open={!!state.message} onClose={() => setState({ message: null })} />
-    </>
+    <Card>
+      <CardContent className={classes.cardContent}>
+        <Typography variant="h6">{t('createRepresentation')}</Typography>
+        <Typography className={classes.subtitles} color="textSecondary">
+          {readOnly ? t('noAccessToCreateRepresentation') : subtitle}
+        </Typography>
+        <List dense={true}>
+          {readOnly
+            ? null
+            : representationDescriptions
+                .sort((a, b) => a.defaultName.localeCompare(b.defaultName))
+                .map((representationDescription) => {
+                  return (
+                    <ListItemButton
+                      className={classes.item}
+                      dense
+                      disableGutters
+                      key={representationDescription.id}
+                      data-testid={representationDescription.id}
+                      onClick={() => {
+                        onCreateRepresentation(representationDescription.id);
+                      }}>
+                      <ListItemIcon>
+                        <Collections fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={representationDescription.defaultName}
+                        secondary={representationDescription.label}
+                      />
+                    </ListItemButton>
+                  );
+                })}
+        </List>
+      </CardContent>
+    </Card>
   );
 };

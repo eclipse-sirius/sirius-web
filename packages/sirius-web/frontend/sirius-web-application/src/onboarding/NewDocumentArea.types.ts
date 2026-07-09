@@ -11,9 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-export interface NewDocumentAreaState {
-  message: string;
-}
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface EditingContextAction {
   id: string;
@@ -37,7 +35,7 @@ export interface GQLInvokeEditingContextActionPayload {
 }
 
 export interface GQLErrorPayload extends GQLInvokeEditingContextActionPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLInvokeEditingContextActionData {

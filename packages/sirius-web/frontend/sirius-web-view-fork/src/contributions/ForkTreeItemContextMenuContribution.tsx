@@ -45,7 +45,10 @@ const forkViewMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -60,8 +63,8 @@ const isSuccessPayload = (payload: CreateForkedStudioPayload): payload is Create
 export const ForkTreeItemContextMenuContribution = forwardRef(
   ({ editingContextId, item, readOnly }: TreeItemContextMenuComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const [createProject, { data, error }] = useMutation<GQLCreateForkedStudioMutationData>(forkViewMutation);
-    const { addErrorMessage } = useMultiToast();
     const navigate = useNavigate();
+    const { addErrorMessage, addMessages } = useMultiToast();
 
     const [state, setState] = useState<ForkTreeItemContextMenuContributionState>({
       isOpen: false,
@@ -87,7 +90,7 @@ export const ForkTreeItemContextMenuContribution = forwardRef(
     useEffect(() => {
       if (data) {
         if (isErrorPayload(data.createForkedStudio)) {
-          addErrorMessage(data.createForkedStudio.message);
+          addMessages(data.createForkedStudio.messages);
         }
         if (isSuccessPayload(data.createForkedStudio)) {
           navigate(`/projects/${data.createForkedStudio.project.id}/edit`);

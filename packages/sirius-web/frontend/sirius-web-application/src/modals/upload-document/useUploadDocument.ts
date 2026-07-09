@@ -29,7 +29,10 @@ const uploadDocumentMutationFile = gql`
     uploadDocument(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
       ... on UploadDocumentSuccessPayload {
         report
@@ -50,7 +53,7 @@ export const useUploadDocument = (): UseUploadDocumentValue => {
     uploadedDocument: null,
   });
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const { addErrorMessage } = useMultiToast();
+  const { addMessages, addErrorMessage } = useMultiToast();
 
   const uploadDocument = (editingContextId: string, file: File, readOnly: boolean) => {
     setState((prevState) => ({ ...prevState, loading: true }));
@@ -73,8 +76,7 @@ export const useUploadDocument = (): UseUploadDocumentValue => {
         if (data) {
           const { uploadDocument } = data;
           if (isErrorPayload(uploadDocument)) {
-            const { message } = uploadDocument;
-            addErrorMessage(message);
+            addMessages(uploadDocument.messages);
             setState((prevState) => ({ ...prevState, loading: false, uploadedDocument: null }));
           } else if (isUploadDocumentSuccessPayload(uploadDocument)) {
             setState((prevState) => ({ ...prevState, loading: false, uploadedDocument: uploadDocument }));

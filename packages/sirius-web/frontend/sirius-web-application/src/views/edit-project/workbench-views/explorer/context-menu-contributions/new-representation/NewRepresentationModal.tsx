@@ -50,7 +50,10 @@ const createRepresentationMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -111,7 +114,7 @@ export const NewRepresentationModal = ({
 }: NewRepresentationModalProps) => {
   const { classes } = useNewRepresentationModalStyles();
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newRepresentationModal' });
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const [state, setState] = useState<NewRepresentationState>({
     representationDescriptions: [],
     selectedRepresentationDescriptionId: '',
@@ -189,8 +192,7 @@ export const NewRepresentationModal = ({
       if (createRepresentationData) {
         const { createRepresentation } = createRepresentationData;
         if (isErrorPayload(createRepresentation)) {
-          const { message } = createRepresentation;
-          addErrorMessage(message);
+          addMessages(createRepresentation.messages);
         }
 
         if (isCreateRepresentationSuccessPayload(createRepresentation)) {

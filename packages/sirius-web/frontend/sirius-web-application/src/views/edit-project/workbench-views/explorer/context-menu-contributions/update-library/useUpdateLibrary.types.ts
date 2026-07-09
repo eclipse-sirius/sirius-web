@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseUpdateLibraryValue {
   updateLibrary: (editingContextId: string, libraryId: string) => void;
@@ -32,14 +32,4 @@ export interface GQLUpdateLibraryMutationData {
   updateLibrary: GQLUpdateLibraryPayload;
 }
 
-export interface GQLUpdateLibraryPayload {
-  __typename: string;
-}
-
-export interface GQLSuccessPayload extends GQLUpdateLibraryPayload {
-  messages: GQLMessage[];
-}
-
-export interface GQLErrorPayload extends GQLUpdateLibraryPayload {
-  messages: GQLMessage[];
-}
+export type GQLUpdateLibraryPayload = GQLSuccessPayload | GQLErrorPayload;

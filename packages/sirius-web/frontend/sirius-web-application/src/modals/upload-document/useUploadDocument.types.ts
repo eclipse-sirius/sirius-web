@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+
 export interface UseUploadDocumentValue {
   uploadDocument: (editingContextId: string, file: File, readOnly: boolean) => void;
   loading: boolean;
@@ -41,7 +43,7 @@ export interface GQLUploadDocumentPayload {
 }
 
 export interface GQLErrorPayload extends GQLUploadDocumentPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLUploadDocumentSuccessPayload extends GQLUploadDocumentPayload {
