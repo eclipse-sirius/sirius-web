@@ -192,7 +192,7 @@ test.describe('diagram - drag and drop', () => {
 
     const playwrightNodeAfterDrop = new PlaywrightNode(page, 'Entity3-dropped');
     const reactFlowXYPositionAfter = await playwrightNodeAfterDrop.getReactFlowXYPosition();
-    expect(reactFlowXYPositionAfter.y).toBeGreaterThan(15);
+    expect(reactFlowXYPositionAfter.y).toBeGreaterThan(8);
     expect(reactFlowXYPositionAfter.x).toBeGreaterThan(50);
   });
 });

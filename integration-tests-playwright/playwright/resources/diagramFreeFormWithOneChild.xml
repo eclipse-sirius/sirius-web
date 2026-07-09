@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:flow="http://www.obeo.fr/dsl/designer/sample/flow">
+  <elements xmi:type="flow:CompositeProcessor" name="CP1">
+    <elements xmi:type="flow:Processor" name="Proc1"/>
+  </elements>
+</flow:System>
