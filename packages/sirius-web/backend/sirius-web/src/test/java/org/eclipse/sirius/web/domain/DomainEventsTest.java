@@ -102,6 +102,9 @@ public class DomainEventsTest extends AbstractIntegrationTests {
     public void givenProjectWhenNameModifiedDomainEventPublished() {
         assertThat(this.domainEventCollector.getDomainEvents()).isEmpty();
 
+        var sampleProject = this.projectSearchService.findById(TestIdentifiers.ECORE_SAMPLE_PROJECT).get();
+        var sampleProjectPreviousName = sampleProject.getName();
+
         var newProjectName = "renamed project";
         this.projectUpdateService.renameProject(null, TestIdentifiers.ECORE_SAMPLE_PROJECT, newProjectName);
         TestTransaction.flagForCommit();
@@ -109,7 +112,9 @@ public class DomainEventsTest extends AbstractIntegrationTests {
 
         assertThat(this.domainEventCollector.getDomainEvents()).hasSize(1);
         var event = this.domainEventCollector.getDomainEvents().get(0);
-        assertThat(event instanceof ProjectNameUpdatedEvent projectNameUpdateEvent && projectNameUpdateEvent.project().getName().equals(newProjectName)).isTrue();
+        assertThat(event instanceof ProjectNameUpdatedEvent projectNameUpdateEvent
+                && projectNameUpdateEvent.project().getName().equals(newProjectName)
+                && projectNameUpdateEvent.previousName().equals(sampleProjectPreviousName)).isTrue();
     }
 
     @Test
