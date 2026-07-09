@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     Obeo - initial API and implementation
+ *     tbezierslafosse - support GFM markdown table rendering
  *******************************************************************************/
 import {
   $convertFromMarkdownString,
@@ -16,8 +17,12 @@ import {
   TRANSFORMERS,
   Transformer,
 } from "@lexical/markdown";
+import { GFM_TABLE } from "./MarkdownTableTransformer";
 
-export const MARKDOWN_TRANSFORMERS: Transformer[] = TRANSFORMERS;
+export const MARKDOWN_TRANSFORMERS: Transformer[] = [
+  GFM_TABLE,
+  ...TRANSFORMERS,
+];
 
 export const convertFromMarkdownString = (markdown: string): void => {
   $convertFromMarkdownString(markdown, MARKDOWN_TRANSFORMERS);
