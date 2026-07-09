@@ -232,7 +232,9 @@ export const useElkLayout = (): UseElkLayoutValue => {
 
       const processedEdges = edges.map((edge) => {
         const elkEdge = layoutGraph?.edges?.find((e) => e.id === edge.id);
-        if (elkEdge) {
+        const bendingPointsLength = edge.data?.bendingPoints?.length || 0;
+        if (elkEdge && edge.type === 'manhattan') {
+          // manhattan is the only type for which the bendingPoints calculated by elk make sense
           return {
             ...edge,
             data: {
@@ -240,8 +242,17 @@ export const useElkLayout = (): UseElkLayoutValue => {
               bendingPoints: elkEdge.sections?.flatMap((section) => section.bendPoints).filter(Boolean) ?? [],
             },
           };
+        } else if (bendingPointsLength > 0 && edge.type !== 'manhattan') {
+          return {
+            ...edge,
+            data: {
+              ...edge.data,
+              bendingPoints: [],
+            },
+          };
+        } else {
+          return edge;
         }
-        return edge;
       });
 
       return {
