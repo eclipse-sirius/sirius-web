@@ -52,6 +52,7 @@ One can now simply run `npm run format` to format the frontend code or `npm run 
 - [releng] Reduce the log of the frontend tasks `format-lint` and `build-dev` by default to make tasks such as `build` or `start` less verbose.
 - [releng] Start enforcing the size limit check for pull requests
 - https://github.com/eclipse-sirius/sirius-web/issues/6691[#6691] [diagram] Add a top margin for child node with free form layout
+- https://github.com/eclipse-sirius/sirius-web/issues/6705[#6705] Use backend internationalization for `ITreeItemContextMenuEntryProvider` contributions rendered in the tree palette.
 
 
 

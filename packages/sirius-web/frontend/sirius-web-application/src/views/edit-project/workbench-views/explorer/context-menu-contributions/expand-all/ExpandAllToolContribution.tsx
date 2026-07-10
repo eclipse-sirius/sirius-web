@@ -10,7 +10,10 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
+} from '@eclipse-sirius/sirius-components-palette';
 import {
   GQLGetExpandAllTreePathVariables,
   TreePaletteContext,
@@ -19,15 +22,12 @@ import {
 } from '@eclipse-sirius/sirius-components-trees';
 import UnfoldMore from '@mui/icons-material/UnfoldMore';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import { Fragment, forwardRef, useContext, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { forwardRef, Fragment, useContext, useEffect } from 'react';
 
 export const ExpandAllToolContribution = forwardRef(
-  ({ onInvoked }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked, tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const { getExpandAllTreePath, data: expandAllTreePathData } = useExpandAllTreePath();
-    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'expandAllTreeItemContextMenuContribution' });
     const { editingContextId, treeId, item, onExpandedElementChange, expanded, onClose } =
       useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -67,7 +67,7 @@ export const ExpandAllToolContribution = forwardRef(
           <ListItemIcon>
             <UnfoldMore fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary={t('expandAll')} />
+          <ToolListItemText label={tool.label} searchedValue={null} />
         </MenuItem>
       </Fragment>
     );

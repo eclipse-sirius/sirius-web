@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.springframework.stereotype.Service;
@@ -44,9 +45,12 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
 
     private final IReadOnlyObjectPredicate readOnlyObjectPredicate;
 
-    public DomainTreeItemContextMenuEntryProvider(IObjectSearchService objectSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate) {
+    private final ISiriusWebApplicationMessageService messageService;
+
+    public DomainTreeItemContextMenuEntryProvider(IObjectSearchService objectSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ISiriusWebApplicationMessageService messageService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -63,7 +67,7 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
             result.addAll(this.getRepresentationContextMenuEntries(emfEditingContext, treeItem));
         }
         if (treeItem.isHasChildren()) {
-            result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, "", List.of(), false, List.of()));
+            result.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, this.messageService.treeToolExpandAll(), List.of(), false, List.of()));
         }
         return result;
     }
@@ -77,9 +81,9 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
 
             List<ITreeItemContextMenuEntry> entries = new ArrayList<>();
             if (!this.readOnlyObjectPredicate.test(resource)) {
-                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, "", List.of(), false, List.of()));
+                entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, this.messageService.treeToolNewObject(), List.of(), false, List.of()));
             }
-            entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, "", List.of(), false, List.of()));
+            entries.add(new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, this.messageService.treeToolDownload(), List.of(), false, List.of()));
             return entries;
         }
         return List.of();
@@ -93,9 +97,9 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
             var object = optionalEObject.get();
             if (!this.readOnlyObjectPredicate.test(object)) {
                 return List.of(
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, "", List.of(), false, List.of()),
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, "", List.of(), false, List.of()),
-                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, "", List.of(), false, List.of())
+                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, this.messageService.treeToolNewObject(), List.of(), false, List.of()),
+                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, this.messageService.treeToolNewRepresentation(), List.of(), false, List.of()),
+                        new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, this.messageService.treeToolDuplicateObject(), List.of(), false, List.of())
                 );
             }
         }
@@ -108,7 +112,7 @@ public class DomainTreeItemContextMenuEntryProvider implements ITreeItemContextM
                 .map(RepresentationMetadata.class::cast);
         if (optionalRepresentationMetadata.isPresent()) {
             return List.of(
-                    new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, "", List.of(), false, List.of())
+                    new SingleClickTreeItemContextMenuEntry(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION, this.messageService.treeToolDuplicateRepresentation(), List.of(), false, List.of())
             );
         }
         return List.of();

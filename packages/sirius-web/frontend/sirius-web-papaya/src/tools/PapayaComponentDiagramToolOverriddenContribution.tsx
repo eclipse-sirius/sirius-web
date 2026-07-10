@@ -11,7 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
+} from '@eclipse-sirius/sirius-components-palette';
 import Slideshow from '@mui/icons-material/Slideshow';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -45,6 +48,7 @@ export const PapayaComponentDiagramToolOverriddenContribution = ({
   asLastToolUsed,
   isToolInPalette,
   onInvoked,
+  tool,
 }: PaletteToolOverriddenContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
@@ -89,7 +93,7 @@ export const PapayaComponentDiagramToolOverriddenContribution = ({
 
   return (
     <Fragment key="label-detail-modal-contribution">
-      <Tooltip key={'tooltip_'} title={'details'} placement="right">
+      <Tooltip key={'tooltip_'} title={tool.label} placement="right">
         <ListItemButton
           disabled={!!asLastToolUsed && !isToolInPalette}
           onClick={() => {
@@ -99,7 +103,7 @@ export const PapayaComponentDiagramToolOverriddenContribution = ({
           data-testid="overridden_tool_detail"
           className={classes.listItemButton}>
           <Slideshow sx={{ fontSize: 16, marginRight: 2 }} />
-          <ListItemText primary={'Details'} className={classes.listItemText} />
+          <ToolListItemText label={tool.label} searchedValue={null} />
         </ListItemButton>
       </Tooltip>
       {modalElement}

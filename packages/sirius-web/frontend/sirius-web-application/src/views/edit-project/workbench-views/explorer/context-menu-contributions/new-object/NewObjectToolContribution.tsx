@@ -11,25 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import AddIcon from '@mui/icons-material/Add';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { forwardRef, useContext, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { NewObjectModal } from './NewObjectModal';
 import { NewObjectToolContributionState } from './NewObjectToolContribution.types';
 
 export const NewObjectToolContribution = forwardRef(
-  ({ onInvoked }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked, tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const [state, setState] = useState<NewObjectToolContributionState>({
       isModalOpen: false,
     });
     const { editingContextId, item, readOnly, selectTreeItems, expandItem, onClose } =
       useContext<TreePaletteContextValue>(TreePaletteContext);
-    const { t } = useTranslation('sirius-web-application', { keyPrefix: 'newObjectTreeItemContextMenuContribution' });
 
     const { setSelection } = useSelection();
     const onObjectCreated = (selection: Selection) => {
@@ -50,7 +50,7 @@ export const NewObjectToolContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary={t('newObject')} />
+          <ToolListItemText label={tool.label} searchedValue={null} />
         </MenuItem>
         {state.isModalOpen ? (
           <NewObjectModal

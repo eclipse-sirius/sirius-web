@@ -14,21 +14,14 @@
 import { IconOverlay, KeyBinding } from '@eclipse-sirius/sirius-components-core';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { makeStyles } from 'tss-react/mui';
 import { isSingleClickOnDiagramElementTool } from '../Palette';
 import { GQLTool } from '../Palette.types';
 import { ToolListItemProps } from './ToolListItem.types';
+import { ToolListItemText } from './ToolListItemText';
 
 const useStyle = makeStyles()((theme) => ({
-  listItemText: {
-    '& .MuiListItemText-primary': {
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-    },
-  },
   listItemButton: {
     paddingTop: 0,
     paddingBottom: 0,
@@ -39,7 +32,7 @@ const useStyle = makeStyles()((theme) => ({
   },
 }));
 
-export const ToolListItem = ({ tool, disabled, onToolClick }: ToolListItemProps) => {
+export const ToolListItem = ({ tool, disabled, onToolClick, selected, searchedValue }: ToolListItemProps) => {
   const { classes } = useStyle();
 
   const handleToolClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>, tool: GQLTool) => {
@@ -53,11 +46,12 @@ export const ToolListItem = ({ tool, disabled, onToolClick }: ToolListItemProps)
         className={classes.listItemButton}
         disabled={disabled}
         onClick={(event) => handleToolClick(event, tool)}
-        data-testid={`tool-${tool.label}`}>
+        data-testid={`tool-${tool.label}`}
+        selected={selected}>
         <ListItemIcon className={classes.listItemIcon}>
           <IconOverlay iconURLs={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
         </ListItemIcon>
-        <ListItemText primary={tool.label} className={classes.listItemText} />
+        <ToolListItemText label={tool.label} searchedValue={searchedValue} />
         {isSingleClickOnDiagramElementTool(tool) && tool.keyBindings[0] ? (
           <KeyBinding keyBinding={tool.keyBindings[0]} data-testid={`key-binding-${tool.label}`} />
         ) : null}

@@ -145,7 +145,7 @@ const diagramPaletteToolOverriddenContributions: PaletteToolOverriddenContributi
   {
     component: PapayaComponentDiagramToolOverriddenContribution,
     canHandle: (representationKind, tool) =>
-      canHandleDiagramRepresentation(representationKind) && tool.label === 'Papaya_Details',
+      canHandleDiagramRepresentation(representationKind) && tool.label === 'Details',
   },
 ];
 papayaExtensionRegistry.putData<PaletteToolOverriddenContributionProps[]>(paletteToolOverrideExtensionPoint, {
