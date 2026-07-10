@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
+  fuzzyMatch,
   PaletteToolOverriddenContributionComponentProps,
   ToolListItemText,
 } from '@eclipse-sirius/sirius-components-palette';
@@ -24,7 +25,10 @@ import { NewRepresentationModal } from './NewRepresentationModal';
 import { NewRepresentationToolContributionState } from './NewRepresentationToolContribution.types';
 
 export const NewRepresentationToolContribution = forwardRef(
-  ({ onInvoked, tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  (
+    { onInvoked, searchedValue, tool }: PaletteToolOverriddenContributionComponentProps,
+    ref: React.ForwardedRef<HTMLLIElement>
+  ) => {
     const [state, setState] = useState<NewRepresentationToolContributionState>({
       isModalOpen: false,
     });
@@ -44,6 +48,11 @@ export const NewRepresentationToolContribution = forwardRef(
       setState((prevState) => ({ ...prevState, isModalOpen: true }));
     };
 
+    const matchResult = searchedValue ? fuzzyMatch(tool.label, searchedValue) : null;
+    if (!!searchedValue && !matchResult?.matches) {
+      return null;
+    }
+
     return (
       <>
         <MenuItem
@@ -55,7 +64,7 @@ export const NewRepresentationToolContribution = forwardRef(
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>
-          <ToolListItemText label={tool.label} searchedValue={null} />
+          <ToolListItemText label={tool.label} searchedValue={searchedValue} />
         </MenuItem>
         {state.isModalOpen ? (
           <NewRepresentationModal

@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
 import {
+  fuzzyMatch,
   PaletteToolOverriddenContributionComponentProps,
   ToolListItemText,
 } from '@eclipse-sirius/sirius-components-palette';
@@ -23,7 +24,10 @@ import { forwardRef, useContext, useEffect } from 'react';
 import { useDuplicateRepresentation } from '../useDuplicateRepresentation';
 
 export const DuplicateRepresentationToolContribution = forwardRef(
-  ({ onInvoked, tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  (
+    { onInvoked, searchedValue, tool }: PaletteToolOverriddenContributionComponentProps,
+    ref: React.ForwardedRef<HTMLLIElement>
+  ) => {
     const { setSelection } = useSelection();
     const { editingContextId, item, readOnly, onClose } = useContext<TreePaletteContextValue>(TreePaletteContext);
     const { duplicateRepresentation, duplicatedRepresentationMetadata } = useDuplicateRepresentation();
@@ -49,6 +53,11 @@ export const DuplicateRepresentationToolContribution = forwardRef(
       onDuplicate();
     };
 
+    const matchResult = searchedValue ? fuzzyMatch(tool.label, searchedValue) : null;
+    if (!!searchedValue && !matchResult?.matches) {
+      return null;
+    }
+
     return (
       <MenuItem
         key="duplicate-representation"
@@ -59,7 +68,7 @@ export const DuplicateRepresentationToolContribution = forwardRef(
         <ListItemIcon>
           <AddToPhotosIcon fontSize="small" />
         </ListItemIcon>
-        <ToolListItemText label={tool.label} searchedValue={null} />
+        <ToolListItemText label={tool.label} searchedValue={searchedValue} />
       </MenuItem>
     );
   }

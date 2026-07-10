@@ -11,21 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { IconOverlay } from '@eclipse-sirius/sirius-components-core';
+import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { Theme } from '@mui/material/styles';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { useEffect, useMemo, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
+import { PaletteToolOverriddenContributionProps } from '../extensions/PaletteToolOverrideContribution.types';
+import { paletteToolOverrideExtensionPoint } from '../extensions/PaletteToolOverrideExtensionPoints';
 import { isTool, isToolSection } from '../Palette';
 import { GQLPaletteEntry, GQLTool } from '../Palette.types';
+import { useTool } from '../tool-section/useTool';
 import { fuzzyMatch } from './fuzzyMatch';
-import { HighlightedLabelProps, PaletteSearchResultProps } from './PaletteSearchResult.types';
+import { PaletteSearchResultProps } from './PaletteSearchResult.types';
 
 const convertToList = (entry: GQLPaletteEntry): GQLTool[] => {
   if (isTool(entry)) {
@@ -41,38 +39,13 @@ const flatToolsFromPaletteEntries = (paletteEntries: GQLPaletteEntry[]): GQLTool
   return paletteEntries.filter((entry) => isToolSection(entry) || isTool(entry)).flatMap(convertToList);
 };
 
-const useLabelStyles = makeStyles()((theme: Theme) => ({
-  highlight: {
-    backgroundColor: theme.palette.navigation.leftBackground,
+const useStyle = makeStyles()(() => ({
+  container: {
+    display: 'grid',
+    gridTemplateRows: `repeat(2,min-content) 1fr`,
+    overflowY: 'auto',
+    overflowX: 'hidden',
   },
-  itemText: {
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  },
-}));
-
-const HighlightedLabel = ({ label, textIndicesToHighlight }: HighlightedLabelProps) => {
-  const { classes } = useLabelStyles();
-  const itemLabel: JSX.Element = (
-    <>
-      {label.split('').map((value, index) => {
-        const shouldHighlight = textIndicesToHighlight.includes(index);
-        return (
-          <span
-            key={value + index}
-            data-testid={`${label}-${value}-${index}`}
-            className={shouldHighlight ? classes.highlight : ''}>
-            {value}
-          </span>
-        );
-      })}
-    </>
-  );
-  return <Typography className={classes.itemText}>{itemLabel}</Typography>;
-};
-
-const useStyle = makeStyles()((theme) => ({
   toolListContainer: {
     display: 'grid',
     overflowY: 'auto',
@@ -85,30 +58,34 @@ const useStyle = makeStyles()((theme) => ({
     width: '100%',
     padding: 0,
   },
-  listItemText: {
-    '& .MuiListItemText-primary': {
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-    },
-  },
-  listItemButton: {
-    paddingTop: 0,
-    paddingBottom: 0,
-  },
-  listItemIcon: {
-    minWidth: 0,
-    marginRight: theme.spacing(2),
-  },
 }));
-export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: PaletteSearchResultProps) => {
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
+export const PaletteSearchResult = ({
+  palette,
+  onToolClick,
+  searchedValue,
+  representationElementIds,
+  representationKind,
+}: PaletteSearchResultProps) => {
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const { getRenderedTool } = useTool();
   const { classes } = useStyle();
+  const paletteToolOverriddenData: DataExtension<PaletteToolOverriddenContributionProps[]> = useData(
+    paletteToolOverrideExtensionPoint
+  );
 
   const toolList: GQLTool[] = useMemo(() => flatToolsFromPaletteEntries(palette.paletteEntries), [palette]);
-
-  const filteredToolList: GQLTool[] = toolList.filter((tool) => fuzzyMatch(tool.label, searchToolValue).matches);
+  const filteredToolList: GQLTool[] = toolList.filter((tool) => {
+    const overriddenTool = paletteToolOverriddenData.data.find((contributedTool) =>
+      contributedTool.canHandle(representationKind, tool)
+    );
+    // If the tool is overridden then the contribution handles if the tool appears in the search result or not
+    if (!!overriddenTool) {
+      return true;
+    } else {
+      return fuzzyMatch(tool.label, searchedValue).matches;
+    }
+  });
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -135,35 +112,32 @@ export const PaletteSearchResult = ({ palette, onToolClick, searchToolValue }: P
   }, [selectedIndex, filteredToolList]);
 
   const convertToListItem = (tool: GQLTool, index: number): JSX.Element | null => {
-    const matchResult = fuzzyMatch(tool.label, searchToolValue);
-    return (
-      <Tooltip title={tool.label} key={tool.id} placement="right">
-        <ListItemButton
-          className={classes.listItemButton}
-          onClick={() => onToolClick(tool)}
-          selected={index === selectedIndex}>
-          <ListItemIcon className={classes.listItemIcon}>
-            <IconOverlay iconURLs={tool.iconURL} alt={tool.label} customIconHeight={16} customIconWidth={16} />
-          </ListItemIcon>
-          <ListItemText
-            primary={<HighlightedLabel label={tool.label} textIndicesToHighlight={matchResult.matchingIndices} />}
-          />
-        </ListItemButton>
-      </Tooltip>
+    const selected = index === selectedIndex;
+    return getRenderedTool(
+      palette,
+      tool.id,
+      representationElementIds,
+      representationKind,
+      false,
+      selected,
+      searchedValue,
+      onToolClick
     );
   };
 
   return (
-    <Box className={classes.toolListContainer}>
-      {filteredToolList.length > 0 ? (
-        <List className={classes.toolList} component="nav">
-          {filteredToolList.map(convertToListItem)}
-        </List>
-      ) : (
-        <Typography variant="body2" align="center">
-          No result
-        </Typography>
-      )}
+    <Box className={classes.container}>
+      <Box className={classes.toolListContainer}>
+        {filteredToolList.length > 0 ? (
+          <List className={classes.toolList} component="nav">
+            {filteredToolList.map(convertToListItem)}
+          </List>
+        ) : (
+          <Typography variant="body2" align="center">
+            No result
+          </Typography>
+        )}
+      </Box>
     </Box>
   );
 };

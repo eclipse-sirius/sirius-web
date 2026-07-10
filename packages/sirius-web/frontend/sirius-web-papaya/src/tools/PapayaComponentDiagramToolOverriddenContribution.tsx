@@ -12,6 +12,7 @@
  *******************************************************************************/
 import { EdgeData, NodeData } from '@eclipse-sirius/sirius-components-diagrams';
 import {
+  fuzzyMatch,
   PaletteToolOverriddenContributionComponentProps,
   ToolListItemText,
 } from '@eclipse-sirius/sirius-components-palette';
@@ -25,6 +26,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Tooltip from '@mui/material/Tooltip';
 import { Edge, InternalNode, Node, useStoreApi } from '@xyflow/react';
 import { Fragment, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 
 const useStyle = makeStyles()(() => ({
@@ -48,11 +50,15 @@ export const PapayaComponentDiagramToolOverriddenContribution = ({
   asLastToolUsed,
   isToolInPalette,
   onInvoked,
-  tool,
+  searchedValue,
 }: PaletteToolOverriddenContributionComponentProps) => {
   const [modal, setModal] = useState<Modal | null>(null);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { classes } = useStyle();
+
+  const { t } = useTranslation('sirius-web-papaya', {
+    keyPrefix: 'papayaPaletteToolOverridden',
+  });
 
   const shouldRender = representationElementIds.every((elementId) =>
     store
@@ -91,9 +97,14 @@ export const PapayaComponentDiagramToolOverriddenContribution = ({
     return null;
   }
 
+  const matchResult = searchedValue ? fuzzyMatch(t('details'), searchedValue) : null;
+  if (!!searchedValue && !matchResult?.matches) {
+    return null;
+  }
+
   return (
     <Fragment key="label-detail-modal-contribution">
-      <Tooltip key={'tooltip_'} title={tool.label} placement="right">
+      <Tooltip key={'tooltip_'} title={t('details')} placement="right">
         <ListItemButton
           disabled={!!asLastToolUsed && !isToolInPalette}
           onClick={() => {
@@ -103,7 +114,7 @@ export const PapayaComponentDiagramToolOverriddenContribution = ({
           data-testid="overridden_tool_detail"
           className={classes.listItemButton}>
           <Slideshow sx={{ fontSize: 16, marginRight: 2 }} />
-          <ToolListItemText label={tool.label} searchedValue={null} />
+          <ToolListItemText label={t('details')} searchedValue={searchedValue} />
         </ListItemButton>
       </Tooltip>
       {modalElement}

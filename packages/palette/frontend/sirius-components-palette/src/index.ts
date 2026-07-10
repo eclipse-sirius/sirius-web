@@ -45,6 +45,7 @@ export type {
 } from './PaletteExtensionSection.types';
 export { PaletteQuickAccessToolBar } from './quick-access-tool/PaletteQuickAccessToolBar';
 export { Tool } from './quick-access-tool/Tool';
+export { fuzzyMatch } from './search/fuzzyMatch';
 export { PaletteSearchField } from './search/PaletteSearchField';
 export { PaletteSearchResult } from './search/PaletteSearchResult';
 export { ToolListItem } from './tool-list-item/ToolListItem';

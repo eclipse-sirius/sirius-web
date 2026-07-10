@@ -20,6 +20,8 @@ export interface useToolValue {
     representationElementIds: string[],
     representationKind: string,
     asLastToolUsed: boolean,
+    isSelected: boolean,
+    searchedValue: string | null,
     onToolClick: (tool: GQLTool) => void
   ) => JSX.Element | null;
 }

@@ -32,4 +32,8 @@ export interface PaletteToolOverriddenContributionComponentProps {
    * Useful if the tool is rendered as the last tool used but is not in the palette because of a precondition and need to be disabled
    */
   isToolInPalette: boolean;
+  /**
+   * Current text in the search field of the toolbar or null if nothing is being searched.
+   */
+  searchedValue: string | null;
 }
