@@ -11,28 +11,25 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection, useSelection } from '@eclipse-sirius/sirius-components-core';
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { forwardRef, useContext, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { DuplicateObjectModal } from './DuplicateObjectModal';
 import { DuplicateObjectToolContributionState } from './DuplicateObjectToolContribution.types';
 
 export const DuplicateObjectToolContribution = forwardRef(
-  ({ onInvoked }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked, tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const [state, setState] = useState<DuplicateObjectToolContributionState>({
       isModalOpen: false,
     });
     const { editingContextId, item, readOnly, selectTreeItems, expandItem, onClose } =
       useContext<TreePaletteContextValue>(TreePaletteContext);
-
-    const { t } = useTranslation('sirius-web-application', {
-      keyPrefix: 'duplicateObjectTreeItemContextMenuContribution',
-    });
 
     const { setSelection } = useSelection();
     const onObjectCreated = (selection: Selection) => {
@@ -58,7 +55,7 @@ export const DuplicateObjectToolContribution = forwardRef(
           <ListItemIcon>
             <AddToPhotosIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary={t('duplicate')} />
+          <ToolListItemText label={tool.label} searchedValue={null} />
         </MenuItem>
         {state.isModalOpen ? (
           <DuplicateObjectModal

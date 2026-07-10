@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapter;
+import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
@@ -73,11 +74,14 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
 
     private final ISemanticDataSearchService semanticDataSearchService;
 
-    public ExplorerTreeItemContextMenuEntryProvider(IObjectSearchService objectSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ILibrarySearchService librarySearchService, ISemanticDataSearchService semanticDataSearchService) {
+    private final ISiriusWebApplicationMessageService messageService;
+
+    public ExplorerTreeItemContextMenuEntryProvider(IObjectSearchService objectSearchService, IReadOnlyObjectPredicate readOnlyObjectPredicate, ILibrarySearchService librarySearchService, ISemanticDataSearchService semanticDataSearchService, ISiriusWebApplicationMessageService messageService) {
         this.objectSearchService = Objects.requireNonNull(objectSearchService);
         this.readOnlyObjectPredicate = Objects.requireNonNull(readOnlyObjectPredicate);
         this.librarySearchService = Objects.requireNonNull(librarySearchService);
         this.semanticDataSearchService = Objects.requireNonNull(semanticDataSearchService);
+        this.messageService = Objects.requireNonNull(messageService);
     }
 
     @Override
@@ -96,7 +100,7 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
             result.addAll(this.getLibraryRelatedEntries(emfEditingContext, treeItem));
         }
         if (treeItem.isHasChildren()) {
-            result.add(new SingleClickTreeItemContextMenuEntry(EXPAND_ALL, "", List.of(), false, List.of()));
+            result.add(new SingleClickTreeItemContextMenuEntry(EXPAND_ALL, this.messageService.treeToolExpandAll(), List.of(), false, List.of()));
         }
         return result;
     }
@@ -110,9 +114,9 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
 
             List<ITreeItemContextMenuEntry> entries = new ArrayList<>();
             if (!this.readOnlyObjectPredicate.test(resource)) {
-                entries.add(new SingleClickTreeItemContextMenuEntry(NEW_ROOT_OBJECT, "", List.of(), false, List.of()));
+                entries.add(new SingleClickTreeItemContextMenuEntry(NEW_ROOT_OBJECT, this.messageService.treeToolNewObject(), List.of(), false, List.of()));
             }
-            entries.add(new SingleClickTreeItemContextMenuEntry(DOWNLOAD_DOCUMENT, "", List.of(), false, List.of()));
+            entries.add(new SingleClickTreeItemContextMenuEntry(DOWNLOAD_DOCUMENT, this.messageService.treeToolDownload(), List.of(), false, List.of()));
             return entries;
         }
         return List.of();
@@ -126,9 +130,9 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
             var object = optionalEObject.get();
             if (!this.readOnlyObjectPredicate.test(object)) {
                 return List.of(
-                        new SingleClickTreeItemContextMenuEntry(NEW_OBJECT, "", List.of(), false, List.of()),
-                        new SingleClickTreeItemContextMenuEntry(NEW_REPRESENTATION, "", List.of(), false, List.of()),
-                        new SingleClickTreeItemContextMenuEntry(DUPLICATE_OBJECT, "", List.of(), false, List.of())
+                        new SingleClickTreeItemContextMenuEntry(NEW_OBJECT, this.messageService.treeToolNewObject(), List.of(), false, List.of()),
+                        new SingleClickTreeItemContextMenuEntry(NEW_REPRESENTATION, this.messageService.treeToolNewRepresentation(), List.of(), false, List.of()),
+                        new SingleClickTreeItemContextMenuEntry(DUPLICATE_OBJECT, this.messageService.treeToolDuplicateObject(), List.of(), false, List.of())
                 );
             }
         }
@@ -141,7 +145,7 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
                 .map(RepresentationMetadata.class::cast);
         if (optionalRepresentationMetadata.isPresent()) {
             return List.of(
-                    new SingleClickTreeItemContextMenuEntry(DUPLICATE_REPRESENTATION, "", List.of(), false, List.of())
+                    new SingleClickTreeItemContextMenuEntry(DUPLICATE_REPRESENTATION, this.messageService.treeToolDuplicateRepresentation(), List.of(), false, List.of())
             );
         }
         return List.of();
@@ -171,8 +175,8 @@ public class ExplorerTreeItemContextMenuEntryProvider implements ITreeItemContex
             var libraryMetadataAdapter = optionalLibraryMetadataAdapter.get();
             if (this.isDirectDependency(editingContext, libraryMetadataAdapter)) {
                 // We do not support the update or removal of a transitive dependency for the moment.
-                result.add(new SingleClickTreeItemContextMenuEntry(UPDATE_LIBRARY, "Update the library", List.of(), true, List.of()));
-                result.add(new SingleClickTreeItemContextMenuEntry(REMOVE_LIBRARY, "Remove library", List.of("/icons/remove_library.svg"), true, List.of()));
+                result.add(new SingleClickTreeItemContextMenuEntry(UPDATE_LIBRARY, this.messageService.treeToolUpdateLibrary(), List.of(), true, List.of()));
+                result.add(new SingleClickTreeItemContextMenuEntry(REMOVE_LIBRARY, this.messageService.treeToolRemoveLibrary(), List.of("/icons/remove_library.svg"), true, List.of()));
             }
         }
         return result;

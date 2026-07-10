@@ -61,6 +61,8 @@ export const useTool = (): useToolValue => {
           disabled={!isInPalette}
           key={'toolItem_' + tool.id}
           data-testid={`paletteEntry-${tool.label}`}
+          selected={false}
+          searchedValue={null}
         />
       );
     } else {

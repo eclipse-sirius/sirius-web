@@ -11,17 +11,19 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { useSelection } from '@eclipse-sirius/sirius-components-core';
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { forwardRef, useContext, useEffect } from 'react';
 import { useDuplicateRepresentation } from '../useDuplicateRepresentation';
 
 export const DuplicateRepresentationToolContribution = forwardRef(
-  ({ onInvoked }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  ({ onInvoked, tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const { setSelection } = useSelection();
     const { editingContextId, item, readOnly, onClose } = useContext<TreePaletteContextValue>(TreePaletteContext);
     const { duplicateRepresentation, duplicatedRepresentationMetadata } = useDuplicateRepresentation();
@@ -57,7 +59,7 @@ export const DuplicateRepresentationToolContribution = forwardRef(
         <ListItemIcon>
           <AddToPhotosIcon fontSize="small" />
         </ListItemIcon>
-        <ListItemText primary="Duplicate representation" />
+        <ToolListItemText label={tool.label} searchedValue={null} />
       </MenuItem>
     );
   }

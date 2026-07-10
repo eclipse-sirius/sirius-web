@@ -11,28 +11,34 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { ServerContext, ServerContextValue } from '@eclipse-sirius/sirius-components-core';
-import { PaletteToolOverriddenContributionComponentProps } from '@eclipse-sirius/sirius-components-palette';
+import {
+  PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
+} from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import GetAppIcon from '@mui/icons-material/GetApp';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { forwardRef, useContext } from 'react';
-import { useTranslation } from 'react-i18next';
 
 export const DownloadDocumentToolContribution = forwardRef(
-  ({}: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLAnchorElement>) => {
+  (
+    { onInvoked, tool }: PaletteToolOverriddenContributionComponentProps,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+  ) => {
     const { editingContextId, item, onClose } = useContext<TreePaletteContextValue>(TreePaletteContext);
-    const { t } = useTranslation('sirius-web-application', {
-      keyPrefix: 'downloadDocumentTreeItemContextMenuContribution',
-    });
     const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
+
+    const handleClick = () => {
+      onInvoked();
+      onClose();
+    };
 
     return (
       <MenuItem
         key="download-document"
         divider
-        onClick={onClose}
+        onClick={handleClick}
         ref={ref}
         component="a"
         href={`${httpOrigin}/api/editingcontexts/${editingContextId}/documents/${item.id}`}
@@ -41,7 +47,7 @@ export const DownloadDocumentToolContribution = forwardRef(
         <ListItemIcon>
           <GetAppIcon fontSize="small" />
         </ListItemIcon>
-        <ListItemText primary={t('download')} />
+        <ToolListItemText label={tool.label} searchedValue={null} />
       </MenuItem>
     );
   }

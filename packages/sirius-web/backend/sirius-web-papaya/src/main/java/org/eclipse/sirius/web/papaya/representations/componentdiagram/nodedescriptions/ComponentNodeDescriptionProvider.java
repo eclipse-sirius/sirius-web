@@ -96,7 +96,7 @@ public class ComponentNodeDescriptionProvider implements INodeDescriptionProvide
                 .nodeTools(
                         new ImportDependenciesNodeToolProvider().create(cache),
                         new ImportAllDependenciesNodeToolProvider().create(cache),
-                        new NodeToolBuilder().name("Papaya_Details").build() // overridden frontend
+                        new NodeToolBuilder().name("Details").build() // overridden frontend
                 )
                 .build();
     }

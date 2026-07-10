@@ -13,11 +13,11 @@
 import {
   isSingleClickOnDiagramElementTool,
   PaletteToolOverriddenContributionComponentProps,
+  ToolListItemText,
 } from '@eclipse-sirius/sirius-components-palette';
 import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import { forwardRef, Fragment, useContext, useState } from 'react';
 import { useObject } from '../useObject';
@@ -27,6 +27,7 @@ export const UpdateLibraryToolContribution = forwardRef(
   ({ onInvoked, tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
     const [dialogOpened, setDialogOpened] = useState<boolean>(false);
     const { editingContextId, item, readOnly, onClose } = useContext<TreePaletteContextValue>(TreePaletteContext);
+
     let fragment = null;
 
     const handleClick = () => {
@@ -49,7 +50,7 @@ export const UpdateLibraryToolContribution = forwardRef(
               <ListItemIcon>
                 <RefreshIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText primary="Update Library" />
+              <ToolListItemText label={tool.label} searchedValue={null} />
             </MenuItem>
             <UpdateLibraryModal
               open={dialogOpened}
