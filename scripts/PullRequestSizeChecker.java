@@ -63,6 +63,7 @@ public class PullRequestSizeChecker {
             System.out.println("### Getting Large\nThis PR is quite large. Make sure you've provided excellent documentation and context for the reviewers.");
         } else {
             System.out.println("### Too Long\nThis PR is too large (over 500 lines). Review fatigue is highly likely. Consider breaking this down into smaller, standalone Pull Requests if possible.");
+            System.exit(1);
         }
 
         System.exit(processExitCode);
