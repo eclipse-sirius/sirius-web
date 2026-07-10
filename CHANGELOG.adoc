@@ -35,7 +35,7 @@ The package `@lexical/code` is not used anymore.
 `IOmniboxCommandOrdererDelegate` instead.
 If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation of `IDefaultOmniboxCommandOrderer` that is part of sirius-components will be used.
 - https://github.com/eclipse-sirius/sirius-web/issues/6736[#6736] [core] `ChangeDescription#getInput(): IInput` has been modified to `ChangeDescription#getCause(): ICause`.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6674[#6674] [palette] An overridden tool contribution has to return null or an empty fragment if the `searchedValue` does not match the label of the overridden tool, we can't guess what label will be used in external contributions.
 
 === Dependency update
 
@@ -54,7 +54,10 @@ If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation 
 - https://github.com/eclipse-sirius/sirius-web/issues/6694[#6694] [diagram] Fix incorrect bending point handling for non-Manhattan edges during layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6667[#6667] [diagram] Preserve the layout of child nodes while resizing a free-form node.
 - https://github.com/eclipse-sirius/sirius-web/issues/6640[#6640] [diagram] Apply `resizedByUser` flag to list children.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6674[#6674] [palette] Add overridden contribution to palette search results.
+Add `searchedValue` prop to `PaletteToolOverriddenContributionComponentProps`
+Export fuzzyMatch function to filter a tool with the searchedValue.
+Use exported `ToolListItemText component` from the palette package to highlight the searched text in rendered contributions.
 
 === New Features
 

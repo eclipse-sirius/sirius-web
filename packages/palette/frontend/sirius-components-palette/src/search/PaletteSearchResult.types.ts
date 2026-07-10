@@ -16,10 +16,7 @@ import { GQLPalette, GQLTool } from '../Palette.types';
 export interface PaletteSearchResultProps {
   onToolClick: (tool: GQLTool) => void;
   palette: GQLPalette;
-  searchToolValue: string;
-}
-
-export interface HighlightedLabelProps {
-  label: string;
-  textIndicesToHighlight: number[];
+  searchedValue: string;
+  representationElementIds: string[];
+  representationKind: string;
 }

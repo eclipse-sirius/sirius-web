@@ -78,8 +78,9 @@ export const PaletteToolSection = ({
   extensionSections,
 }: PaletteToolSectionProps) => {
   const [state, setState] = useState<PaletteToolSectionStateValue>(defaultStateValue);
-  const isFirstRender = useRef<boolean>(true);
   const { classes } = useStyle();
+
+  const isFirstRender = useRef<boolean>(true);
   const { setLastToolInvokedId } = usePalette();
   const { getRenderedTool } = useTool();
   const paletteToolData: DataExtension<PaletteToolContributionProps[]> = useData(paletteToolExtensionPoint);
@@ -122,6 +123,8 @@ export const PaletteToolSection = ({
         representationElementIds,
         representationKind,
         false,
+        false,
+        null,
         onToolClick
       );
       return renderedTool ? renderedTool : <></>;
@@ -182,12 +185,14 @@ export const PaletteToolSection = ({
     representationElementIds,
     representationKind,
     true,
+    false,
+    null,
     onToolClick
   );
 
   const lastUsedTool: JSX.Element = lastToolRendered ? (
     <>
-      {getRenderedTool(palette, lastToolInvokedId, representationElementIds, representationKind, true, onToolClick)}
+      {lastToolRendered}
       <Divider />
     </>
   ) : (
