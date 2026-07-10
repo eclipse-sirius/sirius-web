@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import {
+  fuzzyMatch,
   isSingleClickOnDiagramElementTool,
   PaletteToolOverriddenContributionComponentProps,
   ToolListItemText,
@@ -24,7 +25,10 @@ import { useObject } from '../useObject';
 import { UpdateLibraryModal } from './UpdateLibraryModal';
 
 export const UpdateLibraryToolContribution = forwardRef(
-  ({ onInvoked, tool }: PaletteToolOverriddenContributionComponentProps, ref: React.ForwardedRef<HTMLLIElement>) => {
+  (
+    { onInvoked, searchedValue, tool }: PaletteToolOverriddenContributionComponentProps,
+    ref: React.ForwardedRef<HTMLLIElement>
+  ) => {
     const [dialogOpened, setDialogOpened] = useState<boolean>(false);
     const { editingContextId, item, readOnly, onClose } = useContext<TreePaletteContextValue>(TreePaletteContext);
 
@@ -50,7 +54,7 @@ export const UpdateLibraryToolContribution = forwardRef(
               <ListItemIcon>
                 <RefreshIcon fontSize="small" />
               </ListItemIcon>
-              <ToolListItemText label={tool.label} searchedValue={null} />
+              <ToolListItemText label={tool.label} searchedValue={searchedValue} />
             </MenuItem>
             <UpdateLibraryModal
               open={dialogOpened}
@@ -64,6 +68,11 @@ export const UpdateLibraryToolContribution = forwardRef(
           </Fragment>
         );
       }
+    }
+
+    const matchResult = searchedValue ? fuzzyMatch(tool.label, searchedValue) : null;
+    if (!!searchedValue && !matchResult?.matches) {
+      return null;
     }
 
     return fragment;

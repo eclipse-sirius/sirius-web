@@ -47,6 +47,8 @@ export const useTool = (): useToolValue => {
     representationElementIds: string[],
     representationKind: string,
     asLastToolUsed: boolean,
+    isSelected: boolean,
+    searchedValue: string | null,
     onToolClick: (tool: GQLTool) => void
   ): JSX.Element => {
     const overriddenTool = paletteToolOverriddenData.data.find((contributedTool) =>
@@ -61,8 +63,8 @@ export const useTool = (): useToolValue => {
           disabled={!isInPalette}
           key={'toolItem_' + tool.id}
           data-testid={`paletteEntry-${tool.label}`}
-          selected={false}
-          searchedValue={null}
+          selected={isSelected}
+          searchedValue={searchedValue}
         />
       );
     } else {
@@ -73,7 +75,9 @@ export const useTool = (): useToolValue => {
           onInvoked={() => setLastToolInvokedId(palette.id, tool.id)}
           tool={tool}
           asLastToolUsed={asLastToolUsed}
-          isToolInPalette={isInPalette}></OverriddenComponent>
+          isToolInPalette={isInPalette}
+          searchedValue={searchedValue}
+        />
       );
     }
   };
@@ -84,6 +88,8 @@ export const useTool = (): useToolValue => {
     representationElementIds: string[],
     representationKind: string,
     asLastToolUsed: boolean,
+    isSelected: boolean,
+    searchedValue: string | null,
     onToolClick: (tool: GQLTool) => void
   ): JSX.Element | null => {
     if (!toolId) {
@@ -104,6 +110,8 @@ export const useTool = (): useToolValue => {
         representationElementIds,
         representationKind,
         asLastToolUsed,
+        isSelected,
+        searchedValue,
         onToolClick
       );
     }

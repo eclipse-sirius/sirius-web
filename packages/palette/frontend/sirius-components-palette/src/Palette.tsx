@@ -154,8 +154,10 @@ export const Palette = React.forwardRef<HTMLDivElement, PaletteProps & React.HTM
             <PaletteSearchField onValueChanged={onSearchFieldValueChanged} />
             {state.searchToolValue.length > 0 ? (
               <PaletteSearchResult
-                searchToolValue={state.searchToolValue}
+                searchedValue={state.searchToolValue}
                 palette={palette}
+                representationKind={representationKind}
+                representationElementIds={representationElementIds}
                 onToolClick={handleToolClick}
               />
             ) : (
