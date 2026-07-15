@@ -18,6 +18,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
 import { memo, useContext, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectorContextualMenuProps, GQLTool } from './ConnectorContextualMenu.types';
 import { ConnectorPaletteContext } from './context/ConnectorPaletteContext';
@@ -40,6 +41,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   const { screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { invokeConnectorTool, data: invokeSingleClickOnTwoDiagramElementToolCalled } =
     useSingleClickOnTwoDiagramElementTool();
+  const { t } = useTranslation('sirius-components-diagrams', { keyPrefix: 'connectorContextualMenu' });
 
   const { connectorTools, loading } = useConnectorPaletteContents(
     sourceDiagramElementId || '',
@@ -58,7 +60,7 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
 
   useEffect(() => {
     if (!loading && sourceDiagramElementId && targetDiagramElementId && connectorTools.length === 0) {
-      addMessages([{ body: 'No edge found between source and target selected', level: 'WARNING' }]);
+      addMessages([{ body: t('warnings.noEdgeFound'), level: 'WARNING' }]);
     }
   }, [loading, connectorTools, sourceDiagramElementId, targetDiagramElementId, connectorTools.length]);
 

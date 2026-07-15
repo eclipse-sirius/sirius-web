@@ -34,6 +34,7 @@ Downstream consumers relying on the previous `.umd.js` artifacts or on direct br
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6662[#6662] [diagram] Center the position of the creation handles relative to their node
+- https://github.com/eclipse-sirius/sirius-web/issues/6704[#6704] [diagram] Add a translation for the warning notification that no edges are available.
 
 
 === New Features
