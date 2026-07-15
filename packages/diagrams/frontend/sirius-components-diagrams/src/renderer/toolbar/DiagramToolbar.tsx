@@ -56,6 +56,7 @@ import { DiagramToolbarActionProps, DiagramToolbarProps, DiagramToolbarState } f
 import { diagramToolbarActionExtensionPoint } from './DiagramToolbarExtensionPoints';
 import { ExportImageButton } from './ExportImageButton';
 import { RevealSelectionInDiagramButton } from './RevealSelectionInDiagramButton';
+import { FilterSelectionToolbarButton } from './filter-selection/FilterSelectionToolbarButton';
 
 export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => {
   const [state, setState] = useState<DiagramToolbarState>({
@@ -283,6 +284,7 @@ export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => 
               <DiagramToolbarActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
             ))}
           </Box>
+          <FilterSelectionToolbarButton />
           {state.expanded ? (
             <Tooltip title={t('collapse')}>
               <IconButton
