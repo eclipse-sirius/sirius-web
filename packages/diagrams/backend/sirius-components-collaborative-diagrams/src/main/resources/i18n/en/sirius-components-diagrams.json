@@ -12,6 +12,7 @@
     "exitFullScreen": "Exit full screen mode",
     "exitSnapToGrid": "Exit snap to grid mode",
     "fitToScreen": "Fit to screen",
+    "filterSelectedElement": "Filter selected elements",
     "hideHelperLines": "Hide helper lines",
     "hideMiniMap": "Hide mini map",
     "revealFaded": "Reveal faded elements",

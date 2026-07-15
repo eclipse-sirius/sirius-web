@@ -38,6 +38,8 @@ Downstream consumers relying on the previous `.umd.js` artifacts or on direct br
 
 === New Features
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6352[#6336] [6352] A new button in the diagram tool bar was added to filter the selection.
+You can add menu items with `IDiagramToolbarFilterSelectionProvider` and their handler with `IFilterSelectionHandler` where you need to return the list of element ids that will be selected.
 
 
 
