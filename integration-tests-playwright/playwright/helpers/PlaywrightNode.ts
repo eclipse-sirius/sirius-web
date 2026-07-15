@@ -107,13 +107,13 @@ export class PlaywrightNode {
     await this.page.mouse.up();
   }
 
-  async resize(offset: { height: number; width: number }, anchor: string = 'bottom.right') {
+  async resize(offset: { height: number; width: number }, anchor: string = 'bottom.right', steps: number = 2) {
     const resizeAnchor = this.nodeLocator.locator(`.react-flow__resize-control.${anchor}`).first();
 
     const box = (await resizeAnchor.boundingBox())!;
     await resizeAnchor.hover();
     await this.page.mouse.down();
-    await this.page.mouse.move(box.x + offset.width, box.y + offset.height, { steps: 2 });
+    await this.page.mouse.move(box.x + offset.width, box.y + offset.height, { steps });
     await this.page.mouse.up();
   }
 

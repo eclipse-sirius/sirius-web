@@ -84,13 +84,13 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
 
     const borderNodes = directChildren.filter((node) => node.data.isBorderNode);
     const directNodesChildren = directChildren.filter((child) => !child.data.isBorderNode);
+    const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
 
     // Update children position to be under the label and at the right padding.
     directNodesChildren.forEach((child, index) => {
       const previousNode = (previousDiagram?.nodes ?? []).find((previouseNode) => previouseNode.id === child.id);
       const previousPosition = computePreviousPosition(previousNode, child);
       const createdNode = newlyAddedNodes.find((n) => n.id === child.id);
-      const headerHeightFootprint = getHeaderHeightFootprint(node.data.insideLabel, 'TOP', borderWidth);
 
       if (!!createdNode) {
         child.position = createdNode.position;
@@ -183,8 +183,21 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
     });
     setBorderNodesPosition(borderNodes, node, previousDiagram);
 
-    node.data.minComputedWidth = nodeMinComputeWidth;
-    node.data.minComputedHeight = nodeMinComputeHeight;
+    node.data.minComputedWidth =
+      Math.max(
+        childrenContentBox.width + rectangularNodePadding * 2,
+        labelOnlyWidth,
+        northBorderNodeFootprintWidth,
+        southBorderNodeFootprintWidth
+      ) +
+      borderWidth * 2;
+    node.data.minComputedHeight =
+      Math.max(
+        childrenContentBox.height + headerHeightFootprint + footerHeightFootprint + rectangularNodePadding * 2,
+        eastBorderNodeFootprintHeight,
+        westBorderNodeFootprintHeight
+      ) +
+      borderWidth * 2;
   }
 
   private handleLeafNode(
