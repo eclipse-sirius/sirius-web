@@ -295,20 +295,72 @@ test.describe('diagram - resize', () => {
       await page.getByTestId('hide-mini-map').click();
 
       const parentNode = new PlaywrightNode(page, 'CompositeProcessor1');
+      const parentSizeBefore = await parentNode.getReactFlowSize('CompositeProcessor1');
+      // Hide Node Panel Info to avoid overlap in diagram
+      await new PlaywrightDiagram(page).hideDebugPanel();
       const childNode = new PlaywrightNode(page, 'Processor1');
       const childNodePositionBefore = await childNode.getReactFlowXYPosition('Processor1');
-      // Hide Node Panel Info to avoid overlap in diagram
-      const panel = await page.locator('.react-flow__panel.bottom.left');
-      await panel.evaluate((node) => {
-        node.style.visibility = 'hidden';
-      });
 
       await parentNode.click();
       await parentNode.resize(resizeOffset!, `${resizeHandle}`);
+      const parentSizeAfter = await parentNode.getReactFlowSize('CompositeProcessor1', false);
+      const deltaX = resizeHandle.endsWith('left') ? parentSizeBefore.width - parentSizeAfter.width : 0;
+      const deltaY = resizeHandle.startsWith('top') ? parentSizeBefore.height - parentSizeAfter.height : 0;
 
       const childNodePositionAfter = await childNode.getReactFlowXYPosition('Processor1');
-      expect(childNodePositionAfter.x).toBeCloseTo(childNodePositionBefore.x, 1);
-      expect(childNodePositionAfter.y).toBeCloseTo(childNodePositionBefore.y, 1);
+      expect(childNodePositionAfter.x).toBeCloseTo(childNodePositionBefore.x - deltaX, 0);
+      expect(childNodePositionAfter.y).toBeCloseTo(childNodePositionBefore.y - deltaY, 0);
+    });
+  });
+
+  [
+    { resizeHandle: 'bottom.right', resizeOffset: { height: -250, width: -250 } },
+    { resizeHandle: 'bottom.left', resizeOffset: { height: -250, width: 250 } },
+    { resizeHandle: 'top.right', resizeOffset: { height: 250, width: -250 } },
+    { resizeHandle: 'top.left', resizeOffset: { height: 250, width: 250 } },
+  ].forEach(({ resizeHandle, resizeOffset }) => {
+    test(`when shrinking a parent node from its ${resizeHandle} handle around multiple children, then their relative layout is preserved`, async ({
+      page,
+    }) => {
+      const playwrightExplorer = new PlaywrightExplorer(page);
+      await playwrightExplorer.select('Topography');
+      await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+      await page.getByTestId('hide-mini-map').click();
+
+      const parentNode = new PlaywrightNode(page, 'CompositeProcessor1');
+      const firstChildNode = new PlaywrightNode(page, 'Processor1');
+      const secondChildNode = new PlaywrightNode(page, 'Processor2');
+      const firstChildPositionBefore = await firstChildNode.getReactFlowXYPosition('Processor1');
+      const secondChildPositionBefore = await secondChildNode.getReactFlowXYPosition('Processor2');
+
+      await new PlaywrightDiagram(page).hideDebugPanel();
+      await parentNode.click();
+      await parentNode.resize(resizeOffset, resizeHandle, 10);
+
+      const firstChildPositionAfter = await firstChildNode.getReactFlowXYPosition('Processor1');
+      const secondChildPositionAfter = await secondChildNode.getReactFlowXYPosition('Processor2');
+      const firstChildDelta = {
+        x: firstChildPositionAfter.x - firstChildPositionBefore.x,
+        y: firstChildPositionAfter.y - firstChildPositionBefore.y,
+      };
+      const secondChildDelta = {
+        x: secondChildPositionAfter.x - secondChildPositionBefore.x,
+        y: secondChildPositionAfter.y - secondChildPositionBefore.y,
+      };
+
+      expect(firstChildDelta.x).not.toBeCloseTo(0, 1);
+      expect(firstChildDelta.y).not.toBeCloseTo(0, 1);
+      expect(secondChildDelta.x).toBeCloseTo(firstChildDelta.x, 1);
+      expect(secondChildDelta.y).toBeCloseTo(firstChildDelta.y, 1);
+      expect(secondChildPositionAfter.x - firstChildPositionAfter.x).toBeCloseTo(
+        secondChildPositionBefore.x - firstChildPositionBefore.x,
+        1
+      );
+      expect(secondChildPositionAfter.y - firstChildPositionAfter.y).toBeCloseTo(
+        secondChildPositionBefore.y - firstChildPositionBefore.y,
+        1
+      );
     });
   });
 });
