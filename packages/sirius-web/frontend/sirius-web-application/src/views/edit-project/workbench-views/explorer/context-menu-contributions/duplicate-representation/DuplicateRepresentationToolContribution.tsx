@@ -53,8 +53,7 @@ export const DuplicateRepresentationToolContribution = forwardRef(
         onClick={handleClick}
         data-testid="duplicate-representation"
         disabled={readOnly}
-        ref={ref}
-        aria-disabled>
+        ref={ref}>
         <ListItemIcon>
           <AddToPhotosIcon fontSize="small" />
         </ListItemIcon>

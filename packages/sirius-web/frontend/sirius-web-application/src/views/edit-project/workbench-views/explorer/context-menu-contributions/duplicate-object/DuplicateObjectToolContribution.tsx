@@ -54,8 +54,7 @@ export const DuplicateObjectToolContribution = forwardRef(
           onClick={handleClick}
           ref={ref}
           data-testid="duplicate-object"
-          disabled={readOnly}
-          aria-disabled>
+          disabled={readOnly}>
           <ListItemIcon>
             <AddToPhotosIcon fontSize="small" />
           </ListItemIcon>

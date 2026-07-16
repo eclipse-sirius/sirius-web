@@ -45,8 +45,7 @@ export const UpdateLibraryToolContribution = forwardRef(
               onClick={handleClick}
               data-testid="update-library"
               disabled={readOnly}
-              ref={ref}
-              aria-disabled>
+              ref={ref}>
               <ListItemIcon>
                 <RefreshIcon fontSize="small" />
               </ListItemIcon>

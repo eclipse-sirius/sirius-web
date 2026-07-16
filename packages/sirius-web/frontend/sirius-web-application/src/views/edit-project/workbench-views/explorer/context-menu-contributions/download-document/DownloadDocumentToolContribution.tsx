@@ -37,12 +37,11 @@ export const DownloadDocumentToolContribution = forwardRef(
         component="a"
         href={`${httpOrigin}/api/editingcontexts/${editingContextId}/documents/${item.id}`}
         type="application/octet-stream"
-        data-testid="download"
-        aria-disabled>
+        data-testid="download">
         <ListItemIcon>
           <GetAppIcon fontSize="small" />
         </ListItemIcon>
-        <ListItemText primary={t('download')} aria-disabled />
+        <ListItemText primary={t('download')} />
       </MenuItem>
     );
   }

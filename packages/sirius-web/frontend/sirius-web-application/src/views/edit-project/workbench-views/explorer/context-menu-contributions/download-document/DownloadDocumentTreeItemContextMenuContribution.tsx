@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,12 +38,11 @@ export const DownloadDocumentTreeItemContextMenuContribution = forwardRef(
         component="a"
         href={`${httpOrigin}/api/editingcontexts/${editingContextId}/documents/${item.id}`}
         type="application/octet-stream"
-        data-testid="download"
-        aria-disabled>
+        data-testid="download">
         <ListItemIcon>
           <GetAppIcon fontSize="small" />
         </ListItemIcon>
-        <ListItemText primary={t('download')} aria-disabled />
+        <ListItemText primary={t('download')} />
       </MenuItem>
     );
   }

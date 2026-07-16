@@ -38,7 +38,7 @@ export const DeleteToolContribution = ({ onInvoked }: PaletteToolContributionCom
   };
 
   return (
-    <MenuItem key="delete-tree-item" onClick={handleClick} data-testid="delete" disabled={readOnly} aria-disabled>
+    <MenuItem key="delete-tree-item" onClick={handleClick} data-testid="delete" disabled={readOnly}>
       <ListItemIcon>
         <DeleteIcon fontSize="small" />
       </ListItemIcon>
