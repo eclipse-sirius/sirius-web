@@ -33,7 +33,7 @@ export const DirectEditToolContribution = ({ onInvoked }: PaletteToolContributio
   };
 
   return (
-    <MenuItem key="rename" onClick={handleClick} data-testid="rename-tree-item" disabled={readOnly} aria-disabled>
+    <MenuItem key="rename" onClick={handleClick} data-testid="rename-tree-item" disabled={readOnly}>
       <ListItemIcon>
         <EditIcon fontSize="small" />
       </ListItemIcon>

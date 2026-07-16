@@ -54,8 +54,7 @@ export const NewRepresentationToolContribution = forwardRef(
           onClick={handleClick}
           ref={ref}
           data-testid="new-representation"
-          disabled={readOnly}
-          aria-disabled>
+          disabled={readOnly}>
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>

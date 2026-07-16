@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import type { Locator, Page } from '@playwright/test';
+import { type Locator, type Page } from '@playwright/test';
 
 export class PlaywrightExplorer {
   readonly page: Page;
@@ -23,7 +23,7 @@ export class PlaywrightExplorer {
 
   async createRootObject(treeItemLabel: string, domain: string, entity: string) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
-    await this.page.getByTestId('new-object').click({ force: true });
+    await this.page.getByTestId('new-object').click();
     await this.page.getByTestId('domain').click();
     await this.page.locator(`[data-value="domain://${domain}"]`).click();
     await this.page.getByTestId('type').click();
@@ -33,7 +33,7 @@ export class PlaywrightExplorer {
 
   async createNewObject(treeItemLabel: string, childCreationDescriptionLabel: string) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
-    await this.page.getByTestId('new-object').click({ force: true });
+    await this.page.getByTestId('new-object').click();
     await this.page.getByTestId('childCreationDescription').click();
     await this.page.locator(`[data-value="${childCreationDescriptionLabel}"]`).click();
     await this.page.getByTestId('create-object').click();
@@ -45,7 +45,7 @@ export class PlaywrightExplorer {
     representationLabel: string
   ) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
-    await this.page.getByTestId('new-representation').click({ force: true });
+    await this.page.getByTestId('new-representation').click();
     await this.page.getByTestId('name').clear();
     await this.page.getByTestId('name').fill(representationLabel);
     await this.page.getByTestId('representationDescription').click();
@@ -68,7 +68,7 @@ export class PlaywrightExplorer {
   async expandAll(treeItemLabel: string) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
     await this.page.getByTestId('expand-all').isVisible();
-    await this.page.getByTestId('expand-all').click({ force: true });
+    await this.page.getByTestId('expand-all').click();
   }
 
   async uploadDocument(fileName: string) {

@@ -49,13 +49,7 @@ export const NewRootObjectToolContribution = forwardRef(
 
     return (
       <>
-        <MenuItem
-          key="new-object"
-          data-testid="new-object"
-          onClick={handleClick}
-          ref={ref}
-          disabled={readOnly}
-          aria-disabled>
+        <MenuItem key="new-object" data-testid="new-object" onClick={handleClick} ref={ref} disabled={readOnly}>
           <ListItemIcon>
             <AddIcon fontSize="small" />
           </ListItemIcon>

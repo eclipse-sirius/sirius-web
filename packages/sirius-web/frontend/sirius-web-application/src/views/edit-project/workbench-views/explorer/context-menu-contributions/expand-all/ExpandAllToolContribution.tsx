@@ -63,7 +63,7 @@ export const ExpandAllToolContribution = forwardRef(
 
     return (
       <Fragment key="expand-all-tree-item-context-menu-contribution">
-        <MenuItem key="expand-all" data-testid="expand-all" onClick={handleClick} ref={ref} aria-disabled>
+        <MenuItem key="expand-all" data-testid="expand-all" onClick={handleClick} ref={ref}>
           <ListItemIcon>
             <UnfoldMore fontSize="small" />
           </ListItemIcon>
