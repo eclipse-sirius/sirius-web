@@ -32,7 +32,7 @@ Downstream projects are advised to just rely on MUI's `CssBaseline` and perform 
 === Dependency update
 
 - [releng] Remove usage of the development dependency `rollup-plugin-peer-deps-external` in favor of native Vite based solution
-
+- [releng] Update the version of `turbo` used for the frontend from 2.4.4 to 2.10.5.
 
 
 === Bug fixes
