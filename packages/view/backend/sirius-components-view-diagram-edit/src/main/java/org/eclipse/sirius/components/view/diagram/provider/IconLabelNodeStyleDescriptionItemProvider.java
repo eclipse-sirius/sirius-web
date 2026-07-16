@@ -174,7 +174,7 @@ public class IconLabelNodeStyleDescriptionItemProvider extends ItemProviderAdapt
     /**
      * This returns IconLabelNodeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {

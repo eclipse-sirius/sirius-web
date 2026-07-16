@@ -173,7 +173,7 @@ public class EllipseNodeStyleDescriptionItemProvider extends ItemProviderAdapter
     /**
      * This returns EllipseNodeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {

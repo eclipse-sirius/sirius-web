@@ -71,7 +71,7 @@ public class SemanticDecoratorDescriptionItemProvider extends DecoratorDescripti
     /**
      * This returns SemanticDecoratorDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {

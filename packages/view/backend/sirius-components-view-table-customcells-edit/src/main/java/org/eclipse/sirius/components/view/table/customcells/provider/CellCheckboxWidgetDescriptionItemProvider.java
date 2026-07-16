@@ -97,7 +97,7 @@ public class CellCheckboxWidgetDescriptionItemProvider extends ItemProviderAdapt
     /**
      * This returns CellCheckboxWidgetDescription.svg. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {

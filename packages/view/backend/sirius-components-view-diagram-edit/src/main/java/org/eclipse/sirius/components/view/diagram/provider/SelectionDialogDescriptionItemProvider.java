@@ -319,7 +319,7 @@ public class SelectionDialogDescriptionItemProvider extends DialogDescriptionIte
     /**
      * This returns SelectionDialogDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {

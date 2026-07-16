@@ -94,7 +94,7 @@ public class DiagramToolbarItemProvider extends ItemProviderAdapter
     /**
      * This returns DiagramToolbar.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {

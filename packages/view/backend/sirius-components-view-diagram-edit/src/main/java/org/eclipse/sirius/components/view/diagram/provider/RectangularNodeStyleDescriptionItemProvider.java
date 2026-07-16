@@ -174,7 +174,7 @@ public class RectangularNodeStyleDescriptionItemProvider extends ItemProviderAda
     /**
      * This returns RectangularNodeStyleDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {

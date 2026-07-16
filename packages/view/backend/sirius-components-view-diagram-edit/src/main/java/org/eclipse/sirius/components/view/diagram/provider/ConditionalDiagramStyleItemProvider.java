@@ -89,7 +89,7 @@ public class ConditionalDiagramStyleItemProvider extends ConditionalItemProvider
     /**
      * This returns ConditionalDiagramStyle.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
