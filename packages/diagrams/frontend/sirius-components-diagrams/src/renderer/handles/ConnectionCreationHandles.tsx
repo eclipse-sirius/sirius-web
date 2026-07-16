@@ -13,8 +13,8 @@
 import { memo, useContext, useEffect } from 'react';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
-import { ConnectorContext } from '../connector/ConnectorContext';
-import { ConnectorContextValue } from '../connector/ConnectorContext.types';
+import { ConnectorPaletteContext } from '../connector/context/ConnectorPaletteContext';
+import { ConnectorPaletteContextValue } from '../connector/context/ConnectorPaletteContext.types';
 import { useHandles } from './../connector/useHandles';
 import { ConnectionCreationHandlesProps } from './ConnectionCreationHandles.types';
 import { useConnectionCandidatesQuery } from './useConnectionCandidatesQuery';
@@ -23,7 +23,7 @@ export const ConnectionCreationHandles = memo(
   ({ nodeId, nodePosition, nodeWidth, nodeHeight, isDraggedNode }: ConnectionCreationHandlesProps) => {
     const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
     const { mountNodeHandles, updateNodeHandles, unMountHandles } = useHandles();
-    const { setCandidates } = useContext<ConnectorContextValue>(ConnectorContext);
+    const { setCandidateDescriptionIds } = useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
 
     const candidates = useConnectionCandidatesQuery(editingContextId, diagramId, nodeId);
     const shouldRender = candidates !== null && candidates.length > 0 && !readOnly;
@@ -55,7 +55,7 @@ export const ConnectionCreationHandles = memo(
     // Set candidates in the context
     useEffect(() => {
       if (candidates !== null) {
-        setCandidates(candidates);
+        setCandidateDescriptionIds(candidates.map((candidate) => candidate.id));
       }
     }, [candidates]);
 

@@ -105,7 +105,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const ref = useRef<HTMLDivElement | null>(null);
   const { layout } = useLayout();
   const { synchronizeLayoutData } = useSynchronizeLayoutData();
-  const { onConnect, onConnectStart, onConnectEnd } = useConnector();
+  const { onConnectEnd } = useConnector();
   const { onReconnectEdgeStart, reconnectEdge, onReconnectEdgeEnd } = useReconnectEdge();
   const { onDrop, onDragOver } = useDrop();
   const { onNodesDragStart, onNodesDrag, onNodesDragStop } = useDropNodes();
@@ -450,8 +450,6 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     edgeTypes: edgeTypes,
     edgesReconnectable: !readOnly,
     onKeyDown: onKeyDown,
-    onConnect: onConnect,
-    onConnectStart: onConnectStart,
     onConnectEnd: onConnectEnd,
     connectionLineComponent: ConnectionLine,
     onReconnectStart: onReconnectEdgeStart,

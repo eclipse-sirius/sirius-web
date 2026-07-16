@@ -21,7 +21,8 @@ import { DiagramDialogVariable } from '../../dialog/DialogContextExtensionPoints
 import { useDialog } from '../../dialog/useDialog';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { isCursorNearCenterOfTheNode } from '../edge/EdgeLayout';
-import { useConnector } from './useConnector';
+import { ConnectorPaletteContext } from './context/ConnectorPaletteContext';
+import { ConnectorPaletteContextValue } from './context/ConnectorPaletteContext.types';
 import { GQLSingleClickOnTwoDiagramElementsTool } from './useConnector.types';
 import {
   GQLInvokeSingleClickOnTwoDiagramElementsToolData,
@@ -75,7 +76,7 @@ export const useSingleClickOnTwoDiagramElementTool = (): UseSingleClickOnTwoDiag
     GQLInvokeSingleClickOnTwoDiagramElementsToolVariables
   >(invokeSingleClickOnTwoDiagramElementsToolMutation);
   const { registerPostToolSelection } = useContext<DiagramContextValue>(DiagramContext);
-  const { onConnectorContextualMenuClose } = useConnector();
+  const { hideConnectorPalette } = useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
   const { addMessages, addErrorMessage } = useMultiToast();
   const { showDialog, isOpened } = useDialog();
 
@@ -105,7 +106,7 @@ export const useSingleClickOnTwoDiagramElementTool = (): UseSingleClickOnTwoDiag
       }
 
       if (error || data) {
-        onConnectorContextualMenuClose();
+        hideConnectorPalette();
       }
     }
   }, [loading, data, error]);
@@ -149,7 +150,7 @@ export const useSingleClickOnTwoDiagramElementTool = (): UseSingleClickOnTwoDiag
         { name: 'sourceDiagramElementTargetObjectId', value: sourceNode.data.targetObjectId },
         { name: 'targetDiagramElementTargetObjectId', value: targetNode.data.targetObjectId },
       ];
-      showDialog(tool.dialogDescriptionId, variables, onConfirm, onConnectorContextualMenuClose);
+      showDialog(tool.dialogDescriptionId, variables, onConfirm, hideConnectorPalette);
     }
   };
 
