@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,10 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
+import org.eclipse.sirius.components.domain.provider.spec.AttributeItemProviderSpec;
+import org.eclipse.sirius.components.domain.provider.spec.DomainItemProviderSpec;
+import org.eclipse.sirius.components.domain.provider.spec.EntityItemProviderSpec;
+import org.eclipse.sirius.components.domain.provider.spec.RelationItemProviderSpec;
 import org.eclipse.sirius.components.domain.util.DomainAdapterFactory;
 
 /**
@@ -45,7 +49,7 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
      * end-user-doc -->
      *
      * @generated
-     */
+    */
     protected ComposedAdapterFactory parentAdapterFactory;
 
     /**
@@ -89,12 +93,12 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
      * This creates an adapter for a {@link org.eclipse.sirius.components.domain.Domain}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createDomainAdapter() {
         if (this.domainItemProvider == null) {
-            this.domainItemProvider = new DomainItemProvider(this);
+            this.domainItemProvider = new DomainItemProviderSpec(this);
         }
 
         return this.domainItemProvider;
@@ -105,19 +109,19 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
-     */
+    */
     protected EntityItemProvider entityItemProvider;
 
     /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.domain.Entity}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createEntityAdapter() {
         if (this.entityItemProvider == null) {
-            this.entityItemProvider = new EntityItemProvider(this);
+            this.entityItemProvider = new EntityItemProviderSpec(this);
         }
 
         return this.entityItemProvider;
@@ -128,19 +132,19 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
-     */
+    */
     protected AttributeItemProvider attributeItemProvider;
 
     /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.domain.Attribute}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createAttributeAdapter() {
         if (this.attributeItemProvider == null) {
-            this.attributeItemProvider = new AttributeItemProvider(this);
+            this.attributeItemProvider = new AttributeItemProviderSpec(this);
         }
 
         return this.attributeItemProvider;
@@ -151,19 +155,19 @@ public class DomainItemProviderAdapterFactory extends DomainAdapterFactory imple
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
-     */
+    */
     protected RelationItemProvider relationItemProvider;
 
     /**
      * This creates an adapter for a {@link org.eclipse.sirius.components.domain.Relation}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createRelationAdapter() {
         if (this.relationItemProvider == null) {
-            this.relationItemProvider = new RelationItemProvider(this);
+            this.relationItemProvider = new RelationItemProviderSpec(this);
         }
 
         return this.relationItemProvider;

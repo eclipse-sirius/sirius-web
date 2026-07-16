@@ -41,6 +41,15 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.table.TableDescription;
 import org.eclipse.sirius.components.view.table.TableFactory;
 import org.eclipse.sirius.components.view.table.TablePackage;
+import org.eclipse.sirius.components.view.table.provider.spec.CellDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.table.provider.spec.CellLabelWidgetDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.table.provider.spec.CellTextareaWidgetDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.table.provider.spec.CellTextfieldWidgetDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.table.provider.spec.ColumnDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.table.provider.spec.RowContextMenuEntryItemProviderSpec;
+import org.eclipse.sirius.components.view.table.provider.spec.RowDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.table.provider.spec.RowFilterDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.table.provider.spec.TableDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.table.util.TableAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
@@ -181,12 +190,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.TableDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTableDescriptionAdapter() {
         if (this.tableDescriptionItemProvider == null) {
-            this.tableDescriptionItemProvider = new TableDescriptionItemProvider(this);
+            this.tableDescriptionItemProvider = new TableDescriptionItemProviderSpec(this);
         }
 
         return this.tableDescriptionItemProvider;
@@ -196,12 +205,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.ColumnDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createColumnDescriptionAdapter() {
         if (this.columnDescriptionItemProvider == null) {
-            this.columnDescriptionItemProvider = new ColumnDescriptionItemProvider(this);
+            this.columnDescriptionItemProvider = new ColumnDescriptionItemProviderSpec(this);
         }
 
         return this.columnDescriptionItemProvider;
@@ -211,12 +220,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.RowDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createRowDescriptionAdapter() {
         if (this.rowDescriptionItemProvider == null) {
-            this.rowDescriptionItemProvider = new RowDescriptionItemProvider(this);
+            this.rowDescriptionItemProvider = new RowDescriptionItemProviderSpec(this);
         }
 
         return this.rowDescriptionItemProvider;
@@ -226,12 +235,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.CellDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCellDescriptionAdapter() {
         if (this.cellDescriptionItemProvider == null) {
-            this.cellDescriptionItemProvider = new CellDescriptionItemProvider(this);
+            this.cellDescriptionItemProvider = new CellDescriptionItemProviderSpec(this);
         }
 
         return this.cellDescriptionItemProvider;
@@ -241,12 +250,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.CellTextfieldWidgetDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCellTextfieldWidgetDescriptionAdapter() {
         if (this.cellTextfieldWidgetDescriptionItemProvider == null) {
-            this.cellTextfieldWidgetDescriptionItemProvider = new CellTextfieldWidgetDescriptionItemProvider(this);
+            this.cellTextfieldWidgetDescriptionItemProvider = new CellTextfieldWidgetDescriptionItemProviderSpec(this);
         }
 
         return this.cellTextfieldWidgetDescriptionItemProvider;
@@ -256,12 +265,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.CellLabelWidgetDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCellLabelWidgetDescriptionAdapter() {
         if (this.cellLabelWidgetDescriptionItemProvider == null) {
-            this.cellLabelWidgetDescriptionItemProvider = new CellLabelWidgetDescriptionItemProvider(this);
+            this.cellLabelWidgetDescriptionItemProvider = new CellLabelWidgetDescriptionItemProviderSpec(this);
         }
 
         return this.cellLabelWidgetDescriptionItemProvider;
@@ -271,12 +280,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.CellTextareaWidgetDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCellTextareaWidgetDescriptionAdapter() {
         if (this.cellTextareaWidgetDescriptionItemProvider == null) {
-            this.cellTextareaWidgetDescriptionItemProvider = new CellTextareaWidgetDescriptionItemProvider(this);
+            this.cellTextareaWidgetDescriptionItemProvider = new CellTextareaWidgetDescriptionItemProviderSpec(this);
         }
 
         return this.cellTextareaWidgetDescriptionItemProvider;
@@ -286,12 +295,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.RowFilterDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createRowFilterDescriptionAdapter() {
         if (this.rowFilterDescriptionItemProvider == null) {
-            this.rowFilterDescriptionItemProvider = new RowFilterDescriptionItemProvider(this);
+            this.rowFilterDescriptionItemProvider = new RowFilterDescriptionItemProviderSpec(this);
         }
 
         return this.rowFilterDescriptionItemProvider;
@@ -301,12 +310,12 @@ public class TableItemProviderAdapterFactory extends TableAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.table.RowContextMenuEntry}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createRowContextMenuEntryAdapter() {
         if (this.rowContextMenuEntryItemProvider == null) {
-            this.rowContextMenuEntryItemProvider = new RowContextMenuEntryItemProvider(this);
+            this.rowContextMenuEntryItemProvider = new RowContextMenuEntryItemProviderSpec(this);
         }
 
         return this.rowContextMenuEntryItemProvider;

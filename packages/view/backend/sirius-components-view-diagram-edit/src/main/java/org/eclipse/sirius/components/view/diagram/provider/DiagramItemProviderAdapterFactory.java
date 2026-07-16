@@ -42,6 +42,47 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.diagram.DiagramDescription;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.DiagramPackage;
+import org.eclipse.sirius.components.view.diagram.provider.spec.ActionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.ConditionalDiagramStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.ConditionalEdgeStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.ConditionalInsideLabelStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.ConditionalNodeStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.ConditionalOutsideLabelStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.CreateViewItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.DeleteToolItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.DeleteViewItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.DiagramDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.DiagramPaletteItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.DiagramStyleDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.DiagramToolSectionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.DiagramToolbarItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.DropNodeToolItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.DropToolItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.EdgeDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.EdgePaletteItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.EdgeToolItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.EdgeToolSectionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.FreeFormLayoutStrategyDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.GroupPaletteItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.IconLabelNodeStyleDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.ImageNodeStyleDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.InsideLabelDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.InsideLabelStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.LabelEditToolItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.ListLayoutStrategyDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.NodeDecoratorDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.NodeDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.NodePaletteItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.NodeToolItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.NodeToolSectionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.OutsideLabelDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.OutsideLabelStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.RectangularNodeStyleDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.SelectionDialogDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.SelectionDialogTreeDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.SemanticDecoratorDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.SourceEdgeEndReconnectionToolItemProviderSpec;
+import org.eclipse.sirius.components.view.diagram.provider.spec.TargetEdgeEndReconnectionToolItemProviderSpec;
 import org.eclipse.sirius.components.view.diagram.util.DiagramAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
@@ -425,12 +466,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDiagramDescriptionAdapter() {
         if (this.diagramDescriptionItemProvider == null) {
-            this.diagramDescriptionItemProvider = new DiagramDescriptionItemProvider(this);
+            this.diagramDescriptionItemProvider = new DiagramDescriptionItemProviderSpec(this);
         }
 
         return this.diagramDescriptionItemProvider;
@@ -440,12 +481,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createNodeDescriptionAdapter() {
         if (this.nodeDescriptionItemProvider == null) {
-            this.nodeDescriptionItemProvider = new NodeDescriptionItemProvider(this);
+            this.nodeDescriptionItemProvider = new NodeDescriptionItemProviderSpec(this);
         }
 
         return this.nodeDescriptionItemProvider;
@@ -455,12 +496,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createEdgeDescriptionAdapter() {
         if (this.edgeDescriptionItemProvider == null) {
-            this.edgeDescriptionItemProvider = new EdgeDescriptionItemProvider(this);
+            this.edgeDescriptionItemProvider = new EdgeDescriptionItemProviderSpec(this);
         }
 
         return this.edgeDescriptionItemProvider;
@@ -470,12 +511,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ListLayoutStrategyDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createListLayoutStrategyDescriptionAdapter() {
         if (this.listLayoutStrategyDescriptionItemProvider == null) {
-            this.listLayoutStrategyDescriptionItemProvider = new ListLayoutStrategyDescriptionItemProvider(this);
+            this.listLayoutStrategyDescriptionItemProvider = new ListLayoutStrategyDescriptionItemProviderSpec(this);
         }
 
         return this.listLayoutStrategyDescriptionItemProvider;
@@ -486,12 +527,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * {@link org.eclipse.sirius.components.view.diagram.FreeFormLayoutStrategyDescription}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createFreeFormLayoutStrategyDescriptionAdapter() {
         if (this.freeFormLayoutStrategyDescriptionItemProvider == null) {
-            this.freeFormLayoutStrategyDescriptionItemProvider = new FreeFormLayoutStrategyDescriptionItemProvider(this);
+            this.freeFormLayoutStrategyDescriptionItemProvider = new FreeFormLayoutStrategyDescriptionItemProviderSpec(this);
         }
 
         return this.freeFormLayoutStrategyDescriptionItemProvider;
@@ -501,12 +542,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.InsideLabelDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createInsideLabelDescriptionAdapter() {
         if (this.insideLabelDescriptionItemProvider == null) {
-            this.insideLabelDescriptionItemProvider = new InsideLabelDescriptionItemProvider(this);
+            this.insideLabelDescriptionItemProvider = new InsideLabelDescriptionItemProviderSpec(this);
         }
 
         return this.insideLabelDescriptionItemProvider;
@@ -516,12 +557,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.OutsideLabelDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createOutsideLabelDescriptionAdapter() {
         if (this.outsideLabelDescriptionItemProvider == null) {
-            this.outsideLabelDescriptionItemProvider = new OutsideLabelDescriptionItemProvider(this);
+            this.outsideLabelDescriptionItemProvider = new OutsideLabelDescriptionItemProviderSpec(this);
         }
 
         return this.outsideLabelDescriptionItemProvider;
@@ -531,12 +572,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.InsideLabelStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createInsideLabelStyleAdapter() {
         if (this.insideLabelStyleItemProvider == null) {
-            this.insideLabelStyleItemProvider = new InsideLabelStyleItemProvider(this);
+            this.insideLabelStyleItemProvider = new InsideLabelStyleItemProviderSpec(this);
         }
 
         return this.insideLabelStyleItemProvider;
@@ -546,12 +587,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.OutsideLabelStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createOutsideLabelStyleAdapter() {
         if (this.outsideLabelStyleItemProvider == null) {
-            this.outsideLabelStyleItemProvider = new OutsideLabelStyleItemProvider(this);
+            this.outsideLabelStyleItemProvider = new OutsideLabelStyleItemProviderSpec(this);
         }
 
         return this.outsideLabelStyleItemProvider;
@@ -561,12 +602,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramStyleDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDiagramStyleDescriptionAdapter() {
         if (this.diagramStyleDescriptionItemProvider == null) {
-            this.diagramStyleDescriptionItemProvider = new DiagramStyleDescriptionItemProvider(this);
+            this.diagramStyleDescriptionItemProvider = new DiagramStyleDescriptionItemProviderSpec(this);
         }
 
         return this.diagramStyleDescriptionItemProvider;
@@ -576,12 +617,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalNodeStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createConditionalNodeStyleAdapter() {
         if (this.conditionalNodeStyleItemProvider == null) {
-            this.conditionalNodeStyleItemProvider = new ConditionalNodeStyleItemProvider(this);
+            this.conditionalNodeStyleItemProvider = new ConditionalNodeStyleItemProviderSpec(this);
         }
 
         return this.conditionalNodeStyleItemProvider;
@@ -591,12 +632,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createConditionalDiagramStyleAdapter() {
         if (this.conditionalDiagramStyleItemProvider == null) {
-            this.conditionalDiagramStyleItemProvider = new ConditionalDiagramStyleItemProvider(this);
+            this.conditionalDiagramStyleItemProvider = new ConditionalDiagramStyleItemProviderSpec(this);
         }
 
         return this.conditionalDiagramStyleItemProvider;
@@ -606,12 +647,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalInsideLabelStyle}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createConditionalInsideLabelStyleAdapter() {
         if (this.conditionalInsideLabelStyleItemProvider == null) {
-            this.conditionalInsideLabelStyleItemProvider = new ConditionalInsideLabelStyleItemProvider(this);
+            this.conditionalInsideLabelStyleItemProvider = new ConditionalInsideLabelStyleItemProviderSpec(this);
         }
 
         return this.conditionalInsideLabelStyleItemProvider;
@@ -621,12 +662,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalOutsideLabelStyle}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createConditionalOutsideLabelStyleAdapter() {
         if (this.conditionalOutsideLabelStyleItemProvider == null) {
-            this.conditionalOutsideLabelStyleItemProvider = new ConditionalOutsideLabelStyleItemProvider(this);
+            this.conditionalOutsideLabelStyleItemProvider = new ConditionalOutsideLabelStyleItemProviderSpec(this);
         }
 
         return this.conditionalOutsideLabelStyleItemProvider;
@@ -636,12 +677,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createRectangularNodeStyleDescriptionAdapter() {
         if (this.rectangularNodeStyleDescriptionItemProvider == null) {
-            this.rectangularNodeStyleDescriptionItemProvider = new RectangularNodeStyleDescriptionItemProvider(this);
+            this.rectangularNodeStyleDescriptionItemProvider = new RectangularNodeStyleDescriptionItemProviderSpec(this);
         }
 
         return this.rectangularNodeStyleDescriptionItemProvider;
@@ -651,12 +692,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createImageNodeStyleDescriptionAdapter() {
         if (this.imageNodeStyleDescriptionItemProvider == null) {
-            this.imageNodeStyleDescriptionItemProvider = new ImageNodeStyleDescriptionItemProvider(this);
+            this.imageNodeStyleDescriptionItemProvider = new ImageNodeStyleDescriptionItemProviderSpec(this);
         }
 
         return this.imageNodeStyleDescriptionItemProvider;
@@ -666,12 +707,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.IconLabelNodeStyleDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createIconLabelNodeStyleDescriptionAdapter() {
         if (this.iconLabelNodeStyleDescriptionItemProvider == null) {
-            this.iconLabelNodeStyleDescriptionItemProvider = new IconLabelNodeStyleDescriptionItemProvider(this);
+            this.iconLabelNodeStyleDescriptionItemProvider = new IconLabelNodeStyleDescriptionItemProviderSpec(this);
         }
 
         return this.iconLabelNodeStyleDescriptionItemProvider;
@@ -696,12 +737,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalEdgeStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createConditionalEdgeStyleAdapter() {
         if (this.conditionalEdgeStyleItemProvider == null) {
-            this.conditionalEdgeStyleItemProvider = new ConditionalEdgeStyleItemProvider(this);
+            this.conditionalEdgeStyleItemProvider = new ConditionalEdgeStyleItemProviderSpec(this);
         }
 
         return this.conditionalEdgeStyleItemProvider;
@@ -711,12 +752,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramPalette}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDiagramPaletteAdapter() {
         if (this.diagramPaletteItemProvider == null) {
-            this.diagramPaletteItemProvider = new DiagramPaletteItemProvider(this);
+            this.diagramPaletteItemProvider = new DiagramPaletteItemProviderSpec(this);
         }
 
         return this.diagramPaletteItemProvider;
@@ -734,12 +775,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.GroupPalette}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createGroupPaletteAdapter() {
         if (this.groupPaletteItemProvider == null) {
-            this.groupPaletteItemProvider = new GroupPaletteItemProvider(this);
+            this.groupPaletteItemProvider = new GroupPaletteItemProviderSpec(this);
         }
 
         return this.groupPaletteItemProvider;
@@ -749,12 +790,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodePalette}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createNodePaletteAdapter() {
         if (this.nodePaletteItemProvider == null) {
-            this.nodePaletteItemProvider = new NodePaletteItemProvider(this);
+            this.nodePaletteItemProvider = new NodePaletteItemProviderSpec(this);
         }
 
         return this.nodePaletteItemProvider;
@@ -764,12 +805,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgePalette}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createEdgePaletteAdapter() {
         if (this.edgePaletteItemProvider == null) {
-            this.edgePaletteItemProvider = new EdgePaletteItemProvider(this);
+            this.edgePaletteItemProvider = new EdgePaletteItemProviderSpec(this);
         }
 
         return this.edgePaletteItemProvider;
@@ -779,12 +820,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DeleteTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDeleteToolAdapter() {
         if (this.deleteToolItemProvider == null) {
-            this.deleteToolItemProvider = new DeleteToolItemProvider(this);
+            this.deleteToolItemProvider = new DeleteToolItemProviderSpec(this);
         }
 
         return this.deleteToolItemProvider;
@@ -794,12 +835,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DropTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDropToolAdapter() {
         if (this.dropToolItemProvider == null) {
-            this.dropToolItemProvider = new DropToolItemProvider(this);
+            this.dropToolItemProvider = new DropToolItemProviderSpec(this);
         }
 
         return this.dropToolItemProvider;
@@ -809,12 +850,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createEdgeToolAdapter() {
         if (this.edgeToolItemProvider == null) {
-            this.edgeToolItemProvider = new EdgeToolItemProvider(this);
+            this.edgeToolItemProvider = new EdgeToolItemProviderSpec(this);
         }
 
         return this.edgeToolItemProvider;
@@ -824,12 +865,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.LabelEditTool}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createLabelEditToolAdapter() {
         if (this.labelEditToolItemProvider == null) {
-            this.labelEditToolItemProvider = new LabelEditToolItemProvider(this);
+            this.labelEditToolItemProvider = new LabelEditToolItemProviderSpec(this);
         }
 
         return this.labelEditToolItemProvider;
@@ -839,12 +880,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createNodeToolAdapter() {
         if (this.nodeToolItemProvider == null) {
-            this.nodeToolItemProvider = new NodeToolItemProvider(this);
+            this.nodeToolItemProvider = new NodeToolItemProviderSpec(this);
         }
 
         return this.nodeToolItemProvider;
@@ -854,12 +895,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SourceEdgeEndReconnectionTool}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createSourceEdgeEndReconnectionToolAdapter() {
         if (this.sourceEdgeEndReconnectionToolItemProvider == null) {
-            this.sourceEdgeEndReconnectionToolItemProvider = new SourceEdgeEndReconnectionToolItemProvider(this);
+            this.sourceEdgeEndReconnectionToolItemProvider = new SourceEdgeEndReconnectionToolItemProviderSpec(this);
         }
 
         return this.sourceEdgeEndReconnectionToolItemProvider;
@@ -869,12 +910,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.TargetEdgeEndReconnectionTool}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTargetEdgeEndReconnectionToolAdapter() {
         if (this.targetEdgeEndReconnectionToolItemProvider == null) {
-            this.targetEdgeEndReconnectionToolItemProvider = new TargetEdgeEndReconnectionToolItemProvider(this);
+            this.targetEdgeEndReconnectionToolItemProvider = new TargetEdgeEndReconnectionToolItemProviderSpec(this);
         }
 
         return this.targetEdgeEndReconnectionToolItemProvider;
@@ -884,12 +925,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.CreateView}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCreateViewAdapter() {
         if (this.createViewItemProvider == null) {
-            this.createViewItemProvider = new CreateViewItemProvider(this);
+            this.createViewItemProvider = new CreateViewItemProviderSpec(this);
         }
 
         return this.createViewItemProvider;
@@ -899,12 +940,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DeleteView}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDeleteViewAdapter() {
         if (this.deleteViewItemProvider == null) {
-            this.deleteViewItemProvider = new DeleteViewItemProvider(this);
+            this.deleteViewItemProvider = new DeleteViewItemProviderSpec(this);
         }
 
         return this.deleteViewItemProvider;
@@ -914,12 +955,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createSelectionDialogDescriptionAdapter() {
         if (this.selectionDialogDescriptionItemProvider == null) {
-            this.selectionDialogDescriptionItemProvider = new SelectionDialogDescriptionItemProvider(this);
+            this.selectionDialogDescriptionItemProvider = new SelectionDialogDescriptionItemProviderSpec(this);
         }
 
         return this.selectionDialogDescriptionItemProvider;
@@ -929,12 +970,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramToolSection}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDiagramToolSectionAdapter() {
         if (this.diagramToolSectionItemProvider == null) {
-            this.diagramToolSectionItemProvider = new DiagramToolSectionItemProvider(this);
+            this.diagramToolSectionItemProvider = new DiagramToolSectionItemProviderSpec(this);
         }
 
         return this.diagramToolSectionItemProvider;
@@ -944,12 +985,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeToolSection}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createNodeToolSectionAdapter() {
         if (this.nodeToolSectionItemProvider == null) {
-            this.nodeToolSectionItemProvider = new NodeToolSectionItemProvider(this);
+            this.nodeToolSectionItemProvider = new NodeToolSectionItemProviderSpec(this);
         }
 
         return this.nodeToolSectionItemProvider;
@@ -959,12 +1000,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeToolSection}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createEdgeToolSectionAdapter() {
         if (this.edgeToolSectionItemProvider == null) {
-            this.edgeToolSectionItemProvider = new EdgeToolSectionItemProvider(this);
+            this.edgeToolSectionItemProvider = new EdgeToolSectionItemProviderSpec(this);
         }
 
         return this.edgeToolSectionItemProvider;
@@ -974,12 +1015,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DropNodeTool}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDropNodeToolAdapter() {
         if (this.dropNodeToolItemProvider == null) {
-            this.dropNodeToolItemProvider = new DropNodeToolItemProvider(this);
+            this.dropNodeToolItemProvider = new DropNodeToolItemProviderSpec(this);
         }
 
         return this.dropNodeToolItemProvider;
@@ -989,12 +1030,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SelectionDialogTreeDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createSelectionDialogTreeDescriptionAdapter() {
         if (this.selectionDialogTreeDescriptionItemProvider == null) {
-            this.selectionDialogTreeDescriptionItemProvider = new SelectionDialogTreeDescriptionItemProvider(this);
+            this.selectionDialogTreeDescriptionItemProvider = new SelectionDialogTreeDescriptionItemProviderSpec(this);
         }
 
         return this.selectionDialogTreeDescriptionItemProvider;
@@ -1012,12 +1053,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.Action}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createActionAdapter() {
         if (this.actionItemProvider == null) {
-            this.actionItemProvider = new ActionItemProvider(this);
+            this.actionItemProvider = new ActionItemProviderSpec(this);
         }
 
         return this.actionItemProvider;
@@ -1036,12 +1077,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramToolbar}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDiagramToolbarAdapter() {
         if (this.diagramToolbarItemProvider == null) {
-            this.diagramToolbarItemProvider = new DiagramToolbarItemProvider(this);
+            this.diagramToolbarItemProvider = new DiagramToolbarItemProviderSpec(this);
         }
 
         return this.diagramToolbarItemProvider;
@@ -1060,12 +1101,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createNodeDecoratorDescriptionAdapter() {
         if (this.nodeDecoratorDescriptionItemProvider == null) {
-            this.nodeDecoratorDescriptionItemProvider = new NodeDecoratorDescriptionItemProvider(this);
+            this.nodeDecoratorDescriptionItemProvider = new NodeDecoratorDescriptionItemProviderSpec(this);
         }
 
         return this.nodeDecoratorDescriptionItemProvider;
@@ -1084,12 +1125,12 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createSemanticDecoratorDescriptionAdapter() {
         if (this.semanticDecoratorDescriptionItemProvider == null) {
-            this.semanticDecoratorDescriptionItemProvider = new SemanticDecoratorDescriptionItemProvider(this);
+            this.semanticDecoratorDescriptionItemProvider = new SemanticDecoratorDescriptionItemProviderSpec(this);
         }
 
         return this.semanticDecoratorDescriptionItemProvider;

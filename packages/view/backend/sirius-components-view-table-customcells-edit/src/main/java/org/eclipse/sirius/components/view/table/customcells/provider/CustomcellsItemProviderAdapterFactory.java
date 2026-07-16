@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.sirius.components.view.table.CellDescription;
 import org.eclipse.sirius.components.view.table.TablePackage;
 import org.eclipse.sirius.components.view.table.customcells.CustomcellsFactory;
+import org.eclipse.sirius.components.view.table.customcells.provider.spec.CellCheckboxWidgetDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.table.customcells.util.CustomcellsAdapterFactory;
 import org.eclipse.sirius.components.view.table.util.TableSwitch;
 
@@ -56,7 +57,7 @@ public class CustomcellsItemProviderAdapterFactory extends CustomcellsAdapterFac
      * end-user-doc -->
      *
      * @generated
-     */
+    */
     protected ComposedAdapterFactory parentAdapterFactory;
 
     /**
@@ -101,12 +102,12 @@ public class CustomcellsItemProviderAdapterFactory extends CustomcellsAdapterFac
      * {@link org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCellCheckboxWidgetDescriptionAdapter() {
         if (this.cellCheckboxWidgetDescriptionItemProvider == null) {
-            this.cellCheckboxWidgetDescriptionItemProvider = new CellCheckboxWidgetDescriptionItemProvider(this);
+            this.cellCheckboxWidgetDescriptionItemProvider = new CellCheckboxWidgetDescriptionItemProviderSpec(this);
         }
 
         return this.cellCheckboxWidgetDescriptionItemProvider;
