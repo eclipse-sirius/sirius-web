@@ -28,6 +28,6 @@
     "coverage": "turbo run coverage"
   },
   "devDependencies": {
-    "turbo": "2.4.4"
+    "turbo": "2.10.5"
   }
 }
