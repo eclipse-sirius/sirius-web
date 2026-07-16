@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -169,7 +169,7 @@ export const ValuedReferenceAutocomplete = ({
   const getOnlyNewValueIds = (updatedValues: GQLReferenceValue[]): string[] => {
     if (widget.referenceValues?.length > 0) {
       return updatedValues
-        .filter((updatedValue) => widget.referenceValues.some((value) => value.id !== updatedValue.id))
+        .filter((updatedValue) => !widget.referenceValues.some((value) => value.id === updatedValue.id))
         .map((value) => value.id);
     } else {
       return updatedValues.map((value) => value.id);

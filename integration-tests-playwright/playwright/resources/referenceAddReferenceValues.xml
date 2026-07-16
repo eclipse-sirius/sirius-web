@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<flow:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:flow="http://www.obeo.fr/dsl/designer/sample/flow">
+  <outgoingFlows target="//@elements.0"/>
+  <outgoingFlows usage="low" target="//@elements.0"/>
+  <outgoingFlows usage="standard" target="//@elements.0"/>
+  <outgoingFlows usage="high"/>
+  <elements xmi:type="flow:CompositeProcessor" name="CompositeProcessor1" incomingFlows="//@outgoingFlows.0 //@outgoingFlows.1 //@outgoingFlows.2">
+    <elements xmi:type="flow:Processor" capacity="5" name="Processor1"/>
+    <elements xmi:type="flow:Processor" capacity="5" name="Processor2"/>
+  </elements>
+</flow:System>
