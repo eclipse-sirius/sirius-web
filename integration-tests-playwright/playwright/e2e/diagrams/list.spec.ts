@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../fixtures/coverage';
 import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
@@ -101,6 +101,7 @@ test.describe('diagram - list', () => {
       margin
     );
     expect(parentNodeSizeAfter.height).toBeGreaterThan(parentNodeSizeBefore.height);
+    expect(Math.abs(childNodeSizeAfter.width - (parentNodeSizeAfter.width - borderWidth))).toBeLessThanOrEqual(margin);
   });
 
   test('when a list node is moved, then the size of the node is not updated', async ({ page }) => {

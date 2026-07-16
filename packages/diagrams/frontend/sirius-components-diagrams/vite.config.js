@@ -5,13 +5,16 @@ import { defineConfig } from 'vite';
 
 const require = createRequire(import.meta.url);
 const { peerDependencies = {} } = require('./package.json');
-const isExternal = (id) => Object.keys(peerDependencies).some((dependency) => id === dependency || id.startsWith(`${dependency}/`));
+const isExternal = (id) =>
+  Object.keys(peerDependencies).some((dependency) => id === dependency || id.startsWith(`${dependency}/`));
 
 export default defineConfig(() => {
+  const isPlaywrightCoverageEnabled = process.env.SIRIUS_PLAYWRIGHT_COVERAGE === 'true';
   const configuration = {
     plugins: [react()],
     build: {
       minify: false,
+      sourcemap: isPlaywrightCoverageEnabled,
       lib: {
         name: 'sirius-components-diagrams',
         entry: path.resolve(__dirname, 'src/index.ts'),

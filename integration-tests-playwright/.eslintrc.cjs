@@ -16,4 +16,22 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   root: true,
+  overrides: [
+    {
+      files: ['playwright/e2e/diagrams/*.spec.ts'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            paths: [
+              {
+                name: '@playwright/test',
+                message: 'Import test and expect from ../../fixtures/coverage so diagram coverage is collected.',
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
 };

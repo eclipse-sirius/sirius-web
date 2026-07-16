@@ -10,6 +10,7 @@
     },
     "build": {
       "dependsOn": ["format-lint", "^build"],
+      "env": ["SIRIUS_PLAYWRIGHT_COVERAGE"],
       "outputs": ["dist/**"]
     },
     "test": {

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../fixtures/coverage';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';

@@ -5,17 +5,23 @@
   "private": true,
   "devDependencies": {
     "@playwright/test": "1.57.0",
+    "@swc/core": "1.15.43",
     "@types/node": "24.3.0",
     "@typescript-eslint/eslint-plugin": "6.13.2",
     "@typescript-eslint/parser": "6.13.2",
+    "cross-env": "10.0.0",
     "eslint": "8.55.0",
+    "monocart-reporter": "2.12.2",
     "typescript": "5.1.6"
   },
   "scripts": {
     "start": "npx playwright test",
+    "start:coverage": "cross-env SIRIUS_PLAYWRIGHT_COVERAGE=true playwright test --project=chromium",
     "start:dev": "npx playwright test --ui",
-    "format-lint": "prettier --list-different \"playwright/**/*.ts\"",
-    "eslint": "npx eslint ./playwright/**/*.ts"
+    "coverage:check": "node scripts/check-diagram-coverage.mjs",
+    "coverage:update-baseline": "node scripts/check-diagram-coverage.mjs --update-baseline",
+    "format-lint": "prettier --list-different \"playwright/**/*.ts\" \"playwright.config.ts\" \"scripts/**/*.mjs\" \"diagram-coverage-baseline.json\" \"README.md\"",
+    "eslint": "npx eslint ./playwright/**/*.ts playwright.config.ts scripts/**/*.mjs"
   },
   "dependencies": {
     "prettier": "2.7.1"
