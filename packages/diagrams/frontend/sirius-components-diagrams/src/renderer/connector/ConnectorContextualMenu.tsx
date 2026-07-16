@@ -17,46 +17,50 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { Edge, Node, useReactFlow } from '@xyflow/react';
-import { memo, useEffect } from 'react';
+import { memo, useContext, useEffect } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { ConnectorContextualMenuProps, GQLTool } from './ConnectorContextualMenu.types';
-import { useConnector } from './useConnector';
+import { ConnectorPaletteContext } from './context/ConnectorPaletteContext';
+import { ConnectorPaletteContextValue } from './context/ConnectorPaletteContext.types';
 import { useConnectorPaletteContents } from './useConnectorPaletteContents';
 import { useSingleClickOnTwoDiagramElementTool } from './useSingleClickOnTwoDiagramElementTool';
 import { useTemporaryEdge } from './useTemporaryEdge';
 
 const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps) => {
-  const { connection, position, onConnectorContextualMenuClose } = useConnector();
+  const {
+    isOpened,
+    x: paletteX,
+    y: paletteY,
+    sourceDiagramElementId,
+    targetDiagramElementId,
+    hideConnectorPalette,
+  } = useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
   const { addTempConnectionLine, removeTempConnectionLine } = useTemporaryEdge();
   const { addMessages } = useMultiToast();
   const { screenToFlowPosition } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const { invokeConnectorTool, data: invokeSingleClickOnTwoDiagramElementToolCalled } =
     useSingleClickOnTwoDiagramElementTool();
 
-  const connectionSource: HTMLElement | null = connection
-    ? document.querySelector(`[data-id="${connection.source}"]`)
+  const { connectorTools, loading } = useConnectorPaletteContents(
+    sourceDiagramElementId || '',
+    targetDiagramElementId || ''
+  );
+
+  const connectionTarget: HTMLElement | null = targetDiagramElementId
+    ? document.querySelector(`[data-id="${targetDiagramElementId}"]`)
     : null;
-
-  const connectionTarget: HTMLElement | null = connection
-    ? document.querySelector(`[data-id="${connection.target}"]`)
-    : null;
-
-  const sourceDiagramElementId = connectionSource?.dataset.id ?? '';
-  const targetDiagramElementId = connectionTarget?.dataset.id ?? '';
-
-  const { connectorTools, loading } = useConnectorPaletteContents(sourceDiagramElementId, targetDiagramElementId);
 
   useEffect(() => {
-    if (connectorTools.length > 1) {
+    if (connectorTools.length > 1 && !!sourceDiagramElementId && !!targetDiagramElementId) {
       addTempConnectionLine(sourceDiagramElementId, targetDiagramElementId);
     }
-  }, [connection, connectorTools.length]);
+  }, [sourceDiagramElementId, targetDiagramElementId, connectorTools.length]);
 
   useEffect(() => {
-    if (!loading && connection && connectorTools.length === 0) {
+    if (!loading && sourceDiagramElementId && targetDiagramElementId && connectorTools.length === 0) {
       addMessages([{ body: 'No edge found between source and target selected', level: 'WARNING' }]);
     }
-  }, [loading, connectorTools, connection, connectorTools.length]);
+  }, [loading, connectorTools, sourceDiagramElementId, targetDiagramElementId, connectorTools.length]);
 
   useEffect(() => {
     return () => removeTempConnectionLine();
@@ -69,8 +73,10 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
   }, [connectorTools.length]);
 
   const invokeTool = (tool: GQLTool) => {
-    const { x: cursorPositionX, y: cursorPositionY } = screenToFlowPosition({ x: position.x, y: position.y });
-    invokeConnectorTool(tool, sourceDiagramElementId, targetDiagramElementId, cursorPositionX, cursorPositionY);
+    if (!!sourceDiagramElementId && !!targetDiagramElementId && !!paletteX && !!paletteY) {
+      const { x: cursorPositionX, y: cursorPositionY } = screenToFlowPosition({ x: paletteX, y: paletteY });
+      invokeConnectorTool(tool, sourceDiagramElementId, targetDiagramElementId, cursorPositionX, cursorPositionY);
+    }
   };
 
   if (!connectorTools || connectorTools.length <= 1) {
@@ -79,12 +85,12 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
 
   return (
     <Menu
-      open={!!connection}
-      onClose={onConnectorContextualMenuClose}
+      open={!!isOpened}
+      onClose={hideConnectorPalette}
       anchorEl={connectionTarget}
       anchorReference="anchorPosition"
       data-testid="connectorContextualMenu"
-      anchorPosition={{ left: position?.x || 0, top: position?.y || 0 }}>
+      anchorPosition={{ left: paletteX || 0, top: paletteY || 0 }}>
       {connectorTools.map((tool) => (
         <MenuItem key={tool.id} onClick={() => invokeTool(tool)} data-testid={`connectorContextualMenu-${tool.label}`}>
           <ListItemIcon>
@@ -98,6 +104,6 @@ const ConnectorContextualMenuComponent = memo(({}: ConnectorContextualMenuProps)
 });
 
 export const ConnectorContextualMenu = memo(({}: ConnectorContextualMenuProps) => {
-  const { connection } = useConnector();
-  return !!connection ? <ConnectorContextualMenuComponent /> : null;
+  const { isOpened } = useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
+  return !!isOpened ? <ConnectorContextualMenuComponent /> : null;
 });

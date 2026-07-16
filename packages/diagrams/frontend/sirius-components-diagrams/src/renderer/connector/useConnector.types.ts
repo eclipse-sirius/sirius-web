@@ -12,17 +12,10 @@
  *******************************************************************************/
 
 import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
-import { Connection, OnConnect, OnConnectEnd, OnConnectStart, XYPosition } from '@xyflow/react';
+import { OnConnectEnd } from '@xyflow/react';
 
 export interface UseConnectorValue {
-  onConnect: OnConnect;
-  onConnectStart: OnConnectStart;
   onConnectEnd: OnConnectEnd;
-  onConnectorContextualMenuClose: () => void;
-  connection: Connection | null;
-  position: XYPosition;
-  isConnectionInProgress: boolean;
-  candidates: GQLNodeDescription[];
 }
 
 export interface GQLGetToolSectionsData {

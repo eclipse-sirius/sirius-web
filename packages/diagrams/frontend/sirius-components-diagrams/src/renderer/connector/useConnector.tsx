@@ -11,127 +11,94 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  Connection,
-  Edge,
-  FinalConnectionState,
-  InternalNode,
-  Node,
-  OnConnect,
-  OnConnectEnd,
-  OnConnectStart,
-  OnConnectStartParams,
-  useReactFlow,
-  useStoreApi,
-  useUpdateNodeInternals,
-} from '@xyflow/react';
+import { Edge, FinalConnectionState, InternalNode, Node, OnConnectEnd, useStoreApi, XYPosition } from '@xyflow/react';
 import { useCallback, useContext } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
-import { isHandleNode, isInternalHandleNode } from '../node/HandleNode.types';
-import { ConnectorContext } from './ConnectorContext';
-import { ConnectorContextValue } from './ConnectorContext.types';
+import { HandleNodeData } from '../node/HandleNode.types';
+import { ConnectorPaletteContext } from './context/ConnectorPaletteContext';
+import { ConnectorPaletteContextValue } from './context/ConnectorPaletteContext.types';
 import { UseConnectorValue } from './useConnector.types';
 
+const computePalettePosition = (event: MouseEvent | TouchEvent): XYPosition => {
+  if ('clientX' in event && 'clientY' in event) {
+    return {
+      x: event.clientX,
+      y: event.clientY,
+    };
+  } else if ('touches' in event) {
+    const touchEvent = event as TouchEvent;
+    return {
+      x: touchEvent.touches[0]?.clientX || 0,
+      y: touchEvent.touches[0]?.clientY || 0,
+    };
+  } else {
+    return { x: 0, y: 0 };
+  }
+};
+
+const isHandleNode = (node: InternalNode<Node<NodeData>>): node is InternalNode<Node<HandleNodeData>> =>
+  node.type === 'handleNode';
+
 export const useConnector = (): UseConnectorValue => {
-  const { connection, setConnection, position, setPosition, resetConnection, candidates, isConnectionInProgress } =
-    useContext<ConnectorContextValue>(ConnectorContext);
-  const { getEdges } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
+  const { showConnectorPalette, candidateDescriptionIds } =
+    useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
   const { nodeLookup } = store.getState();
-  const updateNodeInternals = useUpdateNodeInternals();
 
-  //  Set the new connection if we're connecting to a node
-  const onConnect: OnConnect = useCallback(
-    (connection: Connection) => {
-      if (connection.sourceHandle?.startsWith('creationhandle')) {
-        const nodeSource = nodeLookup.get(connection.source);
-        //  Set the edge as source when we're connecting from an EdgeAnchorNode
-        if (nodeSource && isHandleNode(nodeSource) && nodeSource.data.edgeId) {
-          connection.source = nodeSource.data.edgeId;
-        }
-
-        // Use one of the parent as target if it's candidate
-        let isNodeCandidate = false;
-        let candidate: InternalNode<Node<NodeData>> | undefined = store.getState().nodeLookup.get(connection.target);
-
-        while (!isNodeCandidate && !!candidate) {
-          isNodeCandidate = candidates.map((candidate) => candidate.id).includes(candidate.data.descriptionId);
-
-          if (isNodeCandidate && candidate) {
-            connection.target = candidate.id;
-          } else {
-            candidate = store.getState().nodeLookup.get(candidate.parentId || '');
-          }
-        }
-
-        setConnection(connection);
-      }
-    },
-    [candidates.join('-')]
-  );
-
-  const onConnectStart: OnConnectStart = useCallback(
-    (_event: MouseEvent | TouchEvent, params: OnConnectStartParams) => {
-      if (params.handleId?.startsWith('creationhandle')) {
-        resetConnection();
-        if (params.nodeId) {
-          updateNodeInternals(params.nodeId);
-        }
+  const openPalette = useCallback(
+    (event: MouseEvent | TouchEvent, sourceDiagramElementId: string, targetDiagramElementId: string) => {
+      const palettePosition = computePalettePosition(event);
+      if (!event.altKey && !event.ctrlKey) {
+        event.preventDefault();
+        showConnectorPalette(palettePosition.x, palettePosition.y, sourceDiagramElementId, targetDiagramElementId);
       }
     },
     []
   );
 
   const onConnectEnd: OnConnectEnd = useCallback(
-    (event: MouseEvent | TouchEvent, connectionState: FinalConnectionState<InternalNode<Node>>) => {
-      if (connectionState.fromHandle?.id?.startsWith('creationhandle')) {
-        if ('clientX' in event && 'clientY' in event) {
-          setPosition({ x: event.clientX || 0, y: event.clientY });
-        } else if ('touches' in event) {
-          const touchEvent = event as TouchEvent;
-          setPosition({ x: touchEvent.touches[0]?.clientX || 0, y: touchEvent.touches[0]?.clientY || 0 });
-        }
+    (event: MouseEvent | TouchEvent, connectionState: FinalConnectionState) => {
+      const nodeSource = nodeLookup.get(connectionState?.fromNode?.id || '');
+      if (nodeSource && isHandleNode(nodeSource) && connectionState.fromHandle?.id?.startsWith('creationhandle')) {
+        const sourceDiagramElementId = nodeSource.data.nodeId || nodeSource.data.edgeId;
+        if (sourceDiagramElementId) {
+          if (connectionState.toNode) {
+            // Use one of the parent as target if it's candidate
+            let targetDiagramElementId = connectionState.toNode.id;
+            let isNodeCandidate = false;
+            let candidate: InternalNode<Node<NodeData>> | undefined = store
+              .getState()
+              .nodeLookup.get(connectionState.toNode.id);
 
-        //  Set the new connection if we're connecting to an edge
-        const hoveredEdge = getEdges().find((edge) => edge.data && edge.data.isHovered);
-        if (
-          connectionState.fromNode &&
-          isInternalHandleNode(connectionState.fromNode) &&
-          connectionState.fromNode.data.nodeId &&
-          !!hoveredEdge
-        ) {
-          setConnection({
-            source: connectionState.fromNode.data.nodeId,
-            target: hoveredEdge.id,
-            sourceHandle: null,
-            targetHandle: null,
-          });
-        } else if (
-          connectionState.fromNode &&
-          isInternalHandleNode(connectionState.fromNode) &&
-          connectionState.fromNode.data.nodeId &&
-          connectionState.toNode?.id
-        ) {
-          setConnection({
-            source: connectionState.fromNode.data.nodeId,
-            target: connectionState.toNode.id,
-            sourceHandle: null,
-            targetHandle: null,
-          });
+            while (!isNodeCandidate && !!candidate) {
+              isNodeCandidate = candidateDescriptionIds.includes(candidate.data.descriptionId);
+
+              if (isNodeCandidate && candidate) {
+                targetDiagramElementId = candidate.id;
+              } else {
+                candidate = store.getState().nodeLookup.get(candidate.parentId || '');
+              }
+            }
+            if (isNodeCandidate) {
+              openPalette(event, sourceDiagramElementId, targetDiagramElementId);
+            }
+          } else {
+            //  Set the edge as target if we're connecting to an edge
+            const hoveredEdge = store.getState().edges.find((edge) => edge.data && edge.data.isHovered);
+            const shouldConnectToAnEdge =
+              hoveredEdge && hoveredEdge.data && candidateDescriptionIds.includes(hoveredEdge.data.descriptionId);
+
+            if (connectionState.fromNode && shouldConnectToAnEdge) {
+              openPalette(event, sourceDiagramElementId, hoveredEdge.id);
+            }
+          }
         }
       }
     },
-    []
+    [candidateDescriptionIds.join('-')]
   );
 
   return {
-    onConnect,
-    onConnectStart,
     onConnectEnd,
-    onConnectorContextualMenuClose: resetConnection,
-    connection,
-    position,
-    candidates,
-    isConnectionInProgress,
   };
 };

@@ -13,21 +13,18 @@
 
 import { useTheme } from '@mui/material/styles';
 import { useContext, useMemo } from 'react';
-import { ConnectorContext } from './ConnectorContext';
-import { ConnectorContextValue } from './ConnectorContext.types';
-import { useConnector } from './useConnector';
+import { ConnectorPaletteContext } from './context/ConnectorPaletteContext';
+import { ConnectorPaletteContextValue } from './context/ConnectorPaletteContext.types';
 import { UseConnectorEdgeStyleValue } from './useConnectorEdgeStyle.types';
 
 export const useConnectorEdgeStyle = (descriptionId: string, isHovered: boolean): UseConnectorEdgeStyleValue => {
   const theme = useTheme();
-  const { isConnectionInProgress } = useConnector();
-  const { candidates } = useContext<ConnectorContextValue>(ConnectorContext);
+  const { candidateDescriptionIds, isConnectionInProgress } =
+    useContext<ConnectorPaletteContextValue>(ConnectorPaletteContext);
 
   const style: React.CSSProperties = {};
   if (isConnectionInProgress) {
-    const isConnectionCompatibleNode = Boolean(
-      candidates.find((nodeDescription) => nodeDescription.id === descriptionId)
-    );
+    const isConnectionCompatibleNode = candidateDescriptionIds.includes(descriptionId);
 
     if (isConnectionCompatibleNode) {
       if (isHovered) {
@@ -42,10 +39,7 @@ export const useConnectorEdgeStyle = (descriptionId: string, isHovered: boolean)
     }
   }
 
-  const memoizedStyle = useMemo(
-    () => style,
-    [candidates.map((candidate) => candidate.id).join('-'), isConnectionInProgress, isHovered]
-  );
+  const memoizedStyle = useMemo(() => style, [candidateDescriptionIds.join('-'), isConnectionInProgress, isHovered]);
 
   return { style: memoizedStyle };
 };
