@@ -35,6 +35,7 @@ Downstream consumers relying on the previous `.umd.js` artifacts or on direct br
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6662[#6662] [diagram] Center the position of the creation handles relative to their node
 - https://github.com/eclipse-sirius/sirius-web/issues/6704[#6704] [diagram] Add a translation for the warning notification that no edges are available.
+- https://github.com/eclipse-sirius/sirius-web/issues/5706[#5706] [diagram] Fix post tool selection not set correctly on diagrams
 
 
 === New Features
