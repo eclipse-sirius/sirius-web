@@ -1,0 +1,102 @@
+:author: Charfadi Michaël
+:date: 2026-09-03
+:status: proposed
+:consulted: 
+:informed: 
+:deciders: Stéphane Bégaudeau
+:pitch: 
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6715
+
+= ADR-238 - Improve create object tool UI/UX on tree representation
+
+== Context and Problem Statement
+
+We recently made several improvements to the palette component in order to make it reusable on others representations, and it can be used to execute tools on a tree item (on the explorer representation).
+
+In order to create an element from a tree item in the explorer you need several steps and UI components :
+
+- Open the palette
+- Click on the `New Object` tool to open the object creation modal
+- Select the type of object
+- Click the confirmation button.
+
+We want to improve the UI/UX of the above scenario by getting rid of the modal and reducing the number of clicks needed.
+
+As such, we will render a tool section `New object` with each tool inside handling the creation of the object on a click.
+
+
+== Decision Drivers
+
+- UI: The new UI should contain the icons of the object type and looks like default creation tools implemented on diagrams.
+- UX: One click to open the palette, one to open the create object section and another to create the object is needed.
+
+
+== Considered Options
+
+=== Declare the tool section and the tools on the backend
+
+We will add an API that will retrieve a tool section with tools inside for each type of object that can be created thanks to the existing `getChildCreationDescriptions` method from `IEditService`.
+
+[source, java]
+----
+  List<ChildCreationDescription> getChildCreationDescriptions(IEditingContext editingContext, String containerId, String referenceKind);
+
+  public record ChildCreationDescription(String id, String label, List<String> iconURL)
+----
+
+In order to execute the tool, each tool with be prefixed with the string CREATE_OBJECT# resulting in CREATE_OBJECT#ChildCreationDescriptionId, for example CREATE_OBJECT#elements-Processor.
+
+The `ISingleClickTreeItemContextMenuEntryExecutor` will be used to implement a handler that will execute a tool that starts with the CREATE_OBJECT# object prefix and execute `createChild` from `IEditService`.
+
+[source, java]
+----
+Optional<Object> createChild(IEditingContext editingContext, Object object, String childCreationDescriptionId);`
+----
+
+_Note that an API `ISingleClickTreeItemToolHandler` should replace `ISingleClickTreeItemContextMenuEntryExecutor` in the near future but this does not change the intent of the proposed solution._
+
+The current `NewObjectToolContribution` will be removed.
+
+=== Second Option
+
+The `NewObjectToolContribution` will retrieve the list of `ChildCreationDescription` and behave like a tool section.
+
+We already have this kind of behavior for the appearance tool section from the diagram representation.
+
+This solution would not be ideal since the current extension point to override tools was not created to support tool sections.
+
+== Decision Outcome
+
+In the context of improving the creation of objects from the explorer, facing the need to reuse existing API we decided to declare the tools on the backend to achieve the continuity of our API, accepting that existing frontend contribution will be deprecated.
+
+== Consequences
+
+=== Advantages
+
+- The solution will not require frontend development.
+- The solution will reuse existing API
+
+
+=== Drawbacks
+
+- no drawback
+
+
+== More Information
+
+=== Implementation
+
+An API to retrieve the create object tool section will be added.
+An API to execute tools from the create object tool section will be added.
+
+
+=== Decision Details
+
+
+
+=== References
+
+
+- xref:233_use_the_diagram_palette_for_tree_base_representations.adoc[ADR 233 - Use the diagram palette for tree based representations]
+
+
