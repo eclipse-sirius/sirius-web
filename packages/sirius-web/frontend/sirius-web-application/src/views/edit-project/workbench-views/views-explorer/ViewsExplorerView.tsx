@@ -17,6 +17,7 @@ import {
   useSelection,
   ViewAccordion,
   ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -48,7 +49,7 @@ const useStyles = makeStyles()((theme) => ({
   treeView: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto auto 1fr',
+    gridTemplateRows: 'auto 1fr',
     justifyItems: 'stretch',
     overflow: 'auto',
   },
@@ -227,30 +228,34 @@ export const ViewsExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCo
       );
     }
 
+    const toolbar = (
+      <TreeToolBar
+        editingContextId={editingContextId}
+        readOnly={readOnly}
+        onRevealSelection={revealSelection}
+        treeFilters={[]}
+        onTreeFilterMenuItemClick={() => {}}
+        onFilter={() => {
+          setState((prevState) => {
+            return !prevState.filterBar
+              ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
+              : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+          });
+        }}
+        treeToolBarContributionComponents={[]}>
+        <></>
+      </TreeToolBar>
+    );
+
     return (
       <ViewAccordion id={id} title="Views">
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
         <ViewAccordionContent>
           <Box className={classes.treeView} sx={{ flexGrow: 1, minHeight: 0 }} ref={treeElement}>
             {!state.tree ? (
               <RepresentationLoadingIndicator />
             ) : (
               <>
-                <TreeToolBar
-                  editingContextId={editingContextId}
-                  readOnly={readOnly}
-                  onRevealSelection={revealSelection}
-                  treeFilters={[]}
-                  onTreeFilterMenuItemClick={() => {}}
-                  onFilter={() => {
-                    setState((prevState) => {
-                      return !prevState.filterBar
-                        ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
-                        : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-                    });
-                  }}
-                  treeToolBarContributionComponents={[]}>
-                  <></>
-                </TreeToolBar>
                 {filterBar}
                 {state.tree.children.length === 0 ? (
                   <div className={classes.idle}>

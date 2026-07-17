@@ -17,6 +17,7 @@ import {
   useSelection,
   ViewAccordion,
   ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -50,7 +51,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto auto 1fr',
+    gridTemplateRows: 'auto 1fr',
     justifyItems: 'stretch',
     overflow: 'auto',
   },
@@ -327,34 +328,38 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       />
     );
 
+    const toolbar = (
+      <TreeToolBar
+        editingContextId={editingContextId}
+        readOnly={readOnly}
+        treeFilters={state.treeFilters}
+        onRevealSelection={revealSelection}
+        onTreeFilterMenuItemClick={(treeFilters) =>
+          setState((prevState) => {
+            return { ...prevState, treeFilters };
+          })
+        }
+        onFilter={() => {
+          setState((prevState) => {
+            return !prevState.filterBar
+              ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
+              : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+          });
+        }}
+        treeToolBarContributionComponents={treeToolBarContributionComponents}>
+        {treeDescriptionSelector}
+      </TreeToolBar>
+    );
+
     return (
       <ViewAccordion id={id} title="Explorer">
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
         <ViewAccordionContent>
           <Box className={styles.treeView} sx={{ flexGrow: 1, minHeight: 0 }} ref={treeElement}>
             {!state.tree || loading ? (
               <RepresentationLoadingIndicator />
             ) : (
               <>
-                <TreeToolBar
-                  editingContextId={editingContextId}
-                  readOnly={readOnly}
-                  treeFilters={state.treeFilters}
-                  onRevealSelection={revealSelection}
-                  onTreeFilterMenuItemClick={(treeFilters) =>
-                    setState((prevState) => {
-                      return { ...prevState, treeFilters };
-                    })
-                  }
-                  onFilter={() => {
-                    setState((prevState) => {
-                      return !prevState.filterBar
-                        ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
-                        : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-                    });
-                  }}
-                  treeToolBarContributionComponents={treeToolBarContributionComponents}>
-                  {treeDescriptionSelector}
-                </TreeToolBar>
                 <DuplicateObjectKeyboardShortcut
                   target={treeElement?.current}
                   editingContextId={editingContextId}
