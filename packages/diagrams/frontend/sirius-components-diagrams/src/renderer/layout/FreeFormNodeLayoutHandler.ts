@@ -197,7 +197,13 @@ export class FreeFormNodeLayoutHandler implements INodeLayoutHandler<FreeFormNod
   ) {
     const nodeMinComputeWidth = getInsideLabelWidthConstraint(node.data.insideLabel) + borderWidth * 2;
 
-    const nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
+    let nodeMinComputeHeight = (node.data.insideLabel?.height ?? 0) + borderWidth * 2;
+
+    const element = document.querySelector(`[data-id="${node.data.insideLabel?.id}"]`);
+    if (element) {
+      const newLabelHeight = element.getBoundingClientRect().height;
+      nodeMinComputeHeight = newLabelHeight + borderWidth * 2;
+    }
 
     const nodeWidth = forceDimensions?.width ?? getDefaultOrMinWidth(nodeMinComputeWidth, node);
     const nodeHeight = forceDimensions?.height ?? getDefaultOrMinHeight(nodeMinComputeHeight, node);
