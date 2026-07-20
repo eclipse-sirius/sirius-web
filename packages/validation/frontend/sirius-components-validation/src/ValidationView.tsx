@@ -10,9 +10,13 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewComponentProps, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import {
+  ViewAccordion,
+  ViewAccordionContent,
+  WorkbenchViewComponentProps,
+  WorkbenchViewHandle,
+} from '@eclipse-sirius/sirius-components-core';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import WarningIcon from '@mui/icons-material/Warning';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -141,27 +145,11 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
     }
 
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Validation">
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'row',
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: theme.palette.divider,
-          })}>
-          <WarningIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
-          <Typography
-            sx={(theme) => ({
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              marginBottom: theme.spacing(1),
-            })}>
-            Validation
-          </Typography>
-        </Box>
-        <Box sx={{ flexGrow: 1, minHeight: 0, overflow: 'auto' }}>{content}</Box>
-      </Box>
+      <ViewAccordion id={id} title="Validation">
+        <ViewAccordionContent>
+          <Box sx={{ flexGrow: 1, minHeight: 0, overflow: 'auto' }}>{content}</Box>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );

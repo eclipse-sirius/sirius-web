@@ -14,6 +14,9 @@ import {
   RepresentationLoadingIndicator,
   Selection,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -28,7 +31,6 @@ import {
   ListPropertySection,
   TreePropertySection,
 } from '@eclipse-sirius/sirius-components-forms';
-import Filter from '@mui/icons-material/Filter';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
@@ -47,27 +49,6 @@ import {
 const useRepresentationsViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
-  },
-  view: {
-    display: 'grid',
-    gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto 1fr',
-    justifyItems: 'stretch',
-    overflow: 'auto',
-  },
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    overflow: 'hidden',
-    height: theme.spacing(4),
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    gap: theme.spacing(1),
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    justifyContent: 'right',
-    alignItems: 'center',
-    borderBottomColor: theme.palette.divider,
   },
   content: {
     overflow: 'auto',
@@ -204,30 +185,12 @@ export const RelatedViewsView = forwardRef<WorkbenchViewHandle, WorkbenchViewCom
     }
 
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Related Views">
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'row',
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: theme.palette.divider,
-          })}>
-          <Filter sx={(theme) => ({ margin: theme.spacing(1) })} />
-          <Typography
-            sx={(theme) => ({
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              marginBottom: theme.spacing(1),
-            })}>
-            Related Views
-          </Typography>
-        </Box>
-        <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
-          <div className={classes.toolbar}>{toolbar}</div>
+      <ViewAccordion id={id} title="Related Views">
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+        <ViewAccordionContent>
           <div className={classes.content}>{contents}</div>
-        </Box>
-      </Box>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );

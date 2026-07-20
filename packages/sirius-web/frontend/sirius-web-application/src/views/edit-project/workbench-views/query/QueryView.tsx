@@ -15,11 +15,13 @@ import {
   Selection,
   useData,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -79,27 +81,7 @@ import {
 import { useExpression } from './useExpression';
 import { useQueryViewHandle } from './useQueryViewHandle';
 
-const useQueryViewStyles = makeStyles()((theme) => ({
-  view: {
-    display: 'grid',
-    gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto 1fr',
-    justifyItems: 'stretch',
-    overflow: 'auto',
-  },
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    overflow: 'hidden',
-    height: theme.spacing(4),
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    justifyContent: 'right',
-    alignItems: 'center',
-    borderBottomColor: theme.palette.divider,
-  },
+const useQueryViewStyles = makeStyles()(() => ({
   content: {
     overflow: 'auto',
     display: 'grid',
@@ -172,30 +154,12 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
       </Box>
     );
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Query">
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'row',
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: theme.palette.divider,
-          })}>
-          <PlayArrowIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
-          <Typography
-            sx={(theme) => ({
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              marginBottom: theme.spacing(1),
-            })}>
-            Query
-          </Typography>
-        </Box>
-        <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
-          <div className={classes.toolbar}>{toolbar}</div>
+      <ViewAccordion id={id} title="Query">
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+        <ViewAccordionContent>
           <div className={classes.content}>{contents}</div>
-        </Box>
-      </Box>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );
