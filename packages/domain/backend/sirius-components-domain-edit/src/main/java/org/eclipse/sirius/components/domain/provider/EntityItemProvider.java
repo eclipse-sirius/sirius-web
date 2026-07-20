@@ -31,129 +31,143 @@ import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.domain.Relation;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.domain.Entity} object. <!-- begin-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.domain.Entity} object.
+ * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
- *
  * @generated
  */
 public class EntityItemProvider extends NamedElementItemProvider {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public EntityItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addSuperTypesPropertyDescriptor(object);
-            this.addAbstractPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addSuperTypesPropertyDescriptor(object);
+			addAbstractPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Super Types feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Super Types feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addSuperTypesPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Entity_superTypes_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Entity_superTypes_feature", "_UI_Entity_type"),
-                        DomainPackage.Literals.ENTITY__SUPER_TYPES, true, false, true, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Entity_superTypes_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Entity_superTypes_feature", "_UI_Entity_type"),
+				 DomainPackage.Literals.ENTITY__SUPER_TYPES,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Abstract feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Abstract feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addAbstractPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(
-                this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(), this.getString("_UI_Entity_abstract_feature"),
-                        this.getString("_UI_PropertyDescriptor_description", "_UI_Entity_abstract_feature", "_UI_Entity_type"),
-                        DomainPackage.Literals.ENTITY__ABSTRACT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_Entity_abstract_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_Entity_abstract_feature", "_UI_Entity_type"),
+				 DomainPackage.Literals.ENTITY__ABSTRACT,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(DomainPackage.Literals.ENTITY__ATTRIBUTES);
-            this.childrenFeatures.add(DomainPackage.Literals.ENTITY__RELATIONS);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(DomainPackage.Literals.ENTITY__ATTRIBUTES);
+			childrenFeatures.add(DomainPackage.Literals.ENTITY__RELATIONS);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
-     * This returns Entity.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns Entity.gif.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object getImage(Object object) {
-        Entity entity = (Entity) object;
-        if (entity.isAbstract()) {
-            return new ComposedImage(List.of(this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Entity.svg")), this.getResourceLocator()
-                    .getImage("full/obj16/Abstract.svg")));
-        }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/Entity.svg"));
-    }
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/Entity"));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((Entity) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_Entity_type") :
-                this.getString("_UI_Entity_type") + " " + label;
-    }
+		String label = ((Entity)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_Entity_type") :
+			getString("_UI_Entity_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -164,42 +178,40 @@ public class EntityItemProvider extends NamedElementItemProvider {
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(Entity.class)) {
-            case DomainPackage.ENTITY__ABSTRACT:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-            case DomainPackage.ENTITY__ATTRIBUTES:
-            case DomainPackage.ENTITY__RELATIONS:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(Entity.class))
+		{
+			case DomainPackage.ENTITY__ABSTRACT:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case DomainPackage.ENTITY__ATTRIBUTES:
+			case DomainPackage.ENTITY__RELATIONS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        Attribute newAttribute = DomainFactory.eINSTANCE.createAttribute();
-        newAttribute.setName("newString");
-        newAttribute.setType(DataType.STRING);
-        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__ATTRIBUTES, newAttribute));
+		newChildDescriptors.add
+			(createChildParameter
+				(DomainPackage.Literals.ENTITY__ATTRIBUTES,
+				 DomainFactory.eINSTANCE.createAttribute()));
 
-        Relation newRelation = DomainFactory.eINSTANCE.createRelation();
-        newRelation.setName("relation");
-        newRelation.setMany(true);
-        if (object instanceof Entity owner) {
-            newRelation.setTargetType(owner);
-        }
-        newChildDescriptors.add(this.createChildParameter(DomainPackage.Literals.ENTITY__RELATIONS, newRelation));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(DomainPackage.Literals.ENTITY__RELATIONS,
+				 DomainFactory.eINSTANCE.createRelation()));
+	}
 
 }

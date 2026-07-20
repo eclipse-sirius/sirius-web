@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,36 +33,34 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface TextStylePalette extends EObject {
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getTextStylePalette_Name()
-     * @model dataType="org.eclipse.sirius.components.view.Identifier" required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getTextStylePalette_Name()
+	 * @model dataType="org.eclipse.sirius.components.view.Identifier" required="true"
+	 * @generated
+	 */
     String getName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.TextStylePalette#getName <em>Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.TextStylePalette#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
     void setName(String value);
 
     /**
-     * Returns the value of the '<em><b>Styles</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.TextStyleDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.ViewPackage#getTextStylePalette_Styles()
-     * @model containment="true" keys="name"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Styles</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.TextStyleDescription}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Styles</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getTextStylePalette_Styles()
+	 * @model containment="true" keys="name"
+	 * @generated
+	 */
     EList<TextStyleDescription> getStyles();
 
 } // TextStylePalette

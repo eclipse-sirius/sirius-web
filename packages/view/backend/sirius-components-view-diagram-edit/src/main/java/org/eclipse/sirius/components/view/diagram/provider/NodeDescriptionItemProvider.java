@@ -35,237 +35,329 @@ import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescriptio
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.NodeDescription} object.
  * <!-- begin-user-doc --> <!-- end-user-doc -->
- *
  * @generated
  */
 public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemProvider {
 
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public NodeDescriptionItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addCollapsiblePropertyDescriptor(object);
-            this.addReusedChildNodeDescriptionsPropertyDescriptor(object);
-            this.addReusedBorderNodeDescriptionsPropertyDescriptor(object);
-            this.addUserResizablePropertyDescriptor(object);
-            this.addDefaultWidthExpressionPropertyDescriptor(object);
-            this.addDefaultHeightExpressionPropertyDescriptor(object);
-            this.addKeepAspectRatioPropertyDescriptor(object);
-            this.addIsCollapsedByDefaultExpressionPropertyDescriptor(object);
-            this.addIsHiddenByDefaultExpressionPropertyDescriptor(object);
-            this.addIsFadedByDefaultExpressionPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addCollapsiblePropertyDescriptor(object);
+			addReusedChildNodeDescriptionsPropertyDescriptor(object);
+			addReusedBorderNodeDescriptionsPropertyDescriptor(object);
+			addUserResizablePropertyDescriptor(object);
+			addDefaultWidthExpressionPropertyDescriptor(object);
+			addDefaultHeightExpressionPropertyDescriptor(object);
+			addKeepAspectRatioPropertyDescriptor(object);
+			addIsCollapsedByDefaultExpressionPropertyDescriptor(object);
+			addIsHiddenByDefaultExpressionPropertyDescriptor(object);
+			addIsFadedByDefaultExpressionPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Collapsible feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Collapsible feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addCollapsiblePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_collapsible_feature"), this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_collapsible_feature", "_UI_NodeDescription_type"),
-                DiagramPackage.Literals.NODE_DESCRIPTION__COLLAPSIBLE, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_collapsible_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_collapsible_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__COLLAPSIBLE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Reused Child Node Descriptions feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Reused Child Node Descriptions feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addReusedChildNodeDescriptionsPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_reusedChildNodeDescriptions_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_reusedChildNodeDescriptions_feature", "_UI_NodeDescription_type"),
-                DiagramPackage.Literals.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS, true, false, true, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_reusedChildNodeDescriptions_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_reusedChildNodeDescriptions_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__REUSED_CHILD_NODE_DESCRIPTIONS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Reused Border Node Descriptions feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Reused Border Node Descriptions feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addReusedBorderNodeDescriptionsPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_reusedBorderNodeDescriptions_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_reusedBorderNodeDescriptions_feature", "_UI_NodeDescription_type"),
-                DiagramPackage.Literals.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS, true, false, true, null, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_reusedBorderNodeDescriptions_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_reusedBorderNodeDescriptions_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__REUSED_BORDER_NODE_DESCRIPTIONS,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the User Resizable feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the User Resizable feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addUserResizablePropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_userResizable_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_userResizable_feature", "_UI_NodeDescription_type"), DiagramPackage.Literals.NODE_DESCRIPTION__USER_RESIZABLE,
-                true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_userResizable_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_userResizable_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__USER_RESIZABLE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Default Width Expression feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Default Width Expression feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addDefaultWidthExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_defaultWidthExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_defaultWidthExpression_feature", "_UI_NodeDescription_type"),
-                DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_defaultWidthExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_defaultWidthExpression_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Default Height Expression feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Default Height Expression feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addDefaultHeightExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_defaultHeightExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_defaultHeightExpression_feature", "_UI_NodeDescription_type"),
-                DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_defaultHeightExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_defaultHeightExpression_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Keep Aspect Ratio feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Keep Aspect Ratio feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addKeepAspectRatioPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_keepAspectRatio_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_keepAspectRatio_feature", "_UI_NodeDescription_type"),
-                DiagramPackage.Literals.NODE_DESCRIPTION__KEEP_ASPECT_RATIO, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_keepAspectRatio_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_keepAspectRatio_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__KEEP_ASPECT_RATIO,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Is Collapsed By Default Expression feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Is Collapsed By Default Expression feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addIsCollapsedByDefaultExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_isCollapsedByDefaultExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_isCollapsedByDefaultExpression_feature", "_UI_NodeDescription_type"),
-                DiagramPackage.Literals.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_isCollapsedByDefaultExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_isCollapsedByDefaultExpression_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Is Hidden By Default Expression feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Is Hidden By Default Expression feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addIsHiddenByDefaultExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_isHiddenByDefaultExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_isHiddenByDefaultExpression_feature", "_UI_NodeDescription_type"),
-                DiagramPackage.Literals.NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_isHiddenByDefaultExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_isHiddenByDefaultExpression_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This adds a property descriptor for the Is Faded By Default Expression feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Is Faded By Default Expression feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addIsFadedByDefaultExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_NodeDescription_isFadedByDefaultExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_isFadedByDefaultExpression_feature", "_UI_NodeDescription_type"),
-                DiagramPackage.Literals.NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_NodeDescription_isFadedByDefaultExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_NodeDescription_isFadedByDefaultExpression_feature", "_UI_NodeDescription_type"),
+				 DiagramPackage.Literals.NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__INSIDE_LABEL);
-            this.childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__OUTSIDE_LABELS);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE);
+			childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS);
+			childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE);
+			childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES);
+			childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS);
+			childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS);
+			childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__INSIDE_LABEL);
+			childrenFeatures.add(DiagramPackage.Literals.NODE_DESCRIPTION__OUTSIDE_LABELS);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
-     * This returns NodeDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns NodeDescription.gif.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/NodeDescription.svg"));
-    }
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/NodeDescription"));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((NodeDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_NodeDescription_type") : this.getString("_UI_NodeDescription_type") + " " + label;
-    }
+		String label = ((NodeDescription)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_NodeDescription_type") :
+			getString("_UI_NodeDescription_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -276,114 +368,117 @@ public class NodeDescriptionItemProvider extends DiagramElementDescriptionItemPr
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(NodeDescription.class)) {
-            case DiagramPackage.NODE_DESCRIPTION__COLLAPSIBLE:
-            case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
-            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
-            case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
-            case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
-            case DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION:
-            case DiagramPackage.NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION:
-            case DiagramPackage.NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-            case DiagramPackage.NODE_DESCRIPTION__PALETTE:
-            case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
-            case DiagramPackage.NODE_DESCRIPTION__STYLE:
-            case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
-            case DiagramPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
-            case DiagramPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
-            case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
-            case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(NodeDescription.class))
+		{
+			case DiagramPackage.NODE_DESCRIPTION__COLLAPSIBLE:
+			case DiagramPackage.NODE_DESCRIPTION__USER_RESIZABLE:
+			case DiagramPackage.NODE_DESCRIPTION__DEFAULT_WIDTH_EXPRESSION:
+			case DiagramPackage.NODE_DESCRIPTION__DEFAULT_HEIGHT_EXPRESSION:
+			case DiagramPackage.NODE_DESCRIPTION__KEEP_ASPECT_RATIO:
+			case DiagramPackage.NODE_DESCRIPTION__IS_COLLAPSED_BY_DEFAULT_EXPRESSION:
+			case DiagramPackage.NODE_DESCRIPTION__IS_HIDDEN_BY_DEFAULT_EXPRESSION:
+			case DiagramPackage.NODE_DESCRIPTION__IS_FADED_BY_DEFAULT_EXPRESSION:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case DiagramPackage.NODE_DESCRIPTION__PALETTE:
+			case DiagramPackage.NODE_DESCRIPTION__ACTIONS:
+			case DiagramPackage.NODE_DESCRIPTION__STYLE:
+			case DiagramPackage.NODE_DESCRIPTION__CONDITIONAL_STYLES:
+			case DiagramPackage.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS:
+			case DiagramPackage.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS:
+			case DiagramPackage.NODE_DESCRIPTION__INSIDE_LABEL:
+			case DiagramPackage.NODE_DESCRIPTION__OUTSIDE_LABELS:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE,
+				 DiagramFactory.eINSTANCE.createNodePalette()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultNodePalette()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS, DiagramFactory.eINSTANCE.createAction()));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__ACTIONS,
+				 DiagramFactory.eINSTANCE.createAction()));
 
-        NodeDescription nodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
-        nodeChild.setName("Sub-node");
-        var subNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        subNodeStyle.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
-        nodeChild.setStyle(subNodeStyle);
-        nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
-        nodeChild.setInsideLabel(defaultToolsFactory.createDefaultInsideLabelDescription());
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+				 DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription()));
 
-        var defaultAction = DiagramFactory.eINSTANCE.createAction();
-        defaultAction.setName("HideAction");
-        defaultAction.setTooltipExpression("Hide");
-        defaultAction.setIconURLsExpression("aql:'/icons/full/obj16/HideTool.svg'");
-        var defaultActionService = ViewFactory.eINSTANCE.createChangeContext();
-        defaultActionService.setExpression("aql:diagramServices.hide(Sequence{selectedNode})");
-        defaultAction.getBody().add(defaultActionService);
-        nodeChild.getActions().add(defaultAction);
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+				 DiagramFactory.eINSTANCE.createImageNodeStyleDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS, nodeChild));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE,
+				 DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription()));
 
-        NodeDescription borderNodeChild = DiagramFactory.eINSTANCE.createNodeDescription();
-        borderNodeChild.setName("Border node");
-        var borderNodeStyle = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
-        borderNodeStyle.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
-        borderNodeChild.setStyle(borderNodeStyle);
-        borderNodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
-        borderNodeChild.getOutsideLabels().add(defaultToolsFactory.createDefaultOutsideLabelDescription());
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS, borderNodeChild));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES,
+				 DiagramFactory.eINSTANCE.createConditionalNodeStyle()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE, DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE, DiagramFactory.eINSTANCE.createImageNodeStyleDescription()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__STYLE, DiagramFactory.eINSTANCE.createIconLabelNodeStyleDescription()));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS,
+				 DiagramFactory.eINSTANCE.createNodeDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__CONDITIONAL_STYLES, DiagramFactory.eINSTANCE.createConditionalNodeStyle()));
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS,
+				 DiagramFactory.eINSTANCE.createNodeDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__INSIDE_LABEL, defaultToolsFactory.createDefaultInsideLabelDescription()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_DESCRIPTION__OUTSIDE_LABELS, defaultToolsFactory.createDefaultOutsideLabelDescription()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__INSIDE_LABEL,
+				 DiagramFactory.eINSTANCE.createInsideLabelDescription()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(DiagramPackage.Literals.NODE_DESCRIPTION__OUTSIDE_LABELS,
+				 DiagramFactory.eINSTANCE.createOutsideLabelDescription()));
+	}
 
     /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        String text = "";
-        if (feature == DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS) {
-            text = "Sub-node";
-        } else if (feature == DiagramPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS) {
-            text = "Border node";
-        } else if (child instanceof RectangularNodeStyleDescription) {
-            text = "Style Rectangular";
-        } else if (child instanceof ImageNodeStyleDescription) {
-            text = "Style Image";
-        } else if (child instanceof IconLabelNodeStyleDescription) {
-            text = "Style Icon-Label";
-        } else if (child instanceof FreeFormLayoutStrategyDescription) {
-            text = "Layout Free Form";
-        } else if (child instanceof ListLayoutStrategyDescription) {
-            text = "Layout List";
-        } else {
-            text = super.getCreateChildText(owner, feature, child, selection);
-        }
+		Object childFeature = feature;
+		Object childObject = child;
 
-        return text;
-    }
+		boolean qualify =
+			childFeature == DiagramPackage.Literals.NODE_DESCRIPTION__CHILDREN_DESCRIPTIONS ||
+			childFeature == DiagramPackage.Literals.NODE_DESCRIPTION__BORDER_NODES_DESCRIPTIONS;
+
+		if (qualify)
+		{
+			return getString
+				("_UI_CreateChild_text2",
+				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+		}
+		return super.getCreateChildText(owner, feature, child, selection);
+	}
 
 }

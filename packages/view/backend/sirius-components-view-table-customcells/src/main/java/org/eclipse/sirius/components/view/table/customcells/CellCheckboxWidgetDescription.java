@@ -12,8 +12,9 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table.customcells;
 
+import java.rmi.server.Operation;
+
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.table.CellWidgetDescription;
 
 /**
@@ -24,25 +25,23 @@ import org.eclipse.sirius.components.view.table.CellWidgetDescription;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription#getBody
- * <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription#getBody <em>Body</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.table.customcells.CustomcellsPackage#getCellCheckboxWidgetDescription()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.table.customcells.CustomcellsPackage#getCellCheckboxWidgetDescription()
  */
 public interface CellCheckboxWidgetDescription extends CellWidgetDescription {
-
     /**
-     * Returns the value of the '<em><b>Body</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.Operation}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Body</em>' containment reference list.
-     * @model containment="true"
-     * @generated
-     * @see org.eclipse.sirius.components.view.table.customcells.CustomcellsPackage#getCellCheckboxWidgetDescription_Body()
-     */
-    EList<Operation> getBody();
+	 * Returns the value of the '<em><b>Body</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.Operation}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Body</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.table.customcells.CustomcellsPackage#getCellCheckboxWidgetDescription_Body()
+	 * @model containment="true"
+	 * @generated
+	 */
+    EList<org.eclipse.sirius.components.view.Operation> getBody();
 
 } // CellCheckboxWidgetDescription

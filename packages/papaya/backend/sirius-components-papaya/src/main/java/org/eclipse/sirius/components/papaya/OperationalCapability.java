@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ package org.eclipse.sirius.components.papaya;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.OperationalCapability#getConstraints <em>Constraints</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.OperationalCapability#getConstraints <em>Constraints</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getOperationalCapability()
@@ -29,25 +29,23 @@ package org.eclipse.sirius.components.papaya;
  */
 public interface OperationalCapability extends NamedElement, FolderElement {
     /**
-     * Returns the value of the '<em><b>Constraints</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Constraints</em>' attribute.
-     * @see #setConstraints(String)
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getOperationalCapability_Constraints()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Constraints</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Constraints</em>' attribute.
+	 * @see #setConstraints(String)
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getOperationalCapability_Constraints()
+	 * @model
+	 * @generated
+	 */
     String getConstraints();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.OperationalCapability#getConstraints
-     * <em>Constraints</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Constraints</em>' attribute.
-     * @see #getConstraints()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.papaya.OperationalCapability#getConstraints <em>Constraints</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Constraints</em>' attribute.
+	 * @see #getConstraints()
+	 * @generated
+	 */
     void setConstraints(String value);
 
 } // OperationalCapability

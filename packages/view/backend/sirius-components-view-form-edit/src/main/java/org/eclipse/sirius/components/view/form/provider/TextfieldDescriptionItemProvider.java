@@ -30,46 +30,55 @@ import org.eclipse.sirius.components.view.form.TextfieldDescription;
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.form.TextfieldDescription} object.
  * <!-- begin-user-doc --> <!-- end-user-doc -->
- *
  * @generated
  */
 public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public TextfieldDescriptionItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addValueExpressionPropertyDescriptor(object);
-            this.addIsEnabledExpressionPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addValueExpressionPropertyDescriptor(object);
+			addIsEnabledExpressionPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Value Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Value Expression feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addValueExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TextfieldDescription_valueExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TextfieldDescription_valueExpression_feature", "_UI_TextfieldDescription_type"),
-                FormPackage.Literals.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TextfieldDescription_valueExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TextfieldDescription_valueExpression_feature", "_UI_TextfieldDescription_type"),
+				 FormPackage.Literals.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
@@ -78,74 +87,84 @@ public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvi
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_TextfieldDescription_IsEnabledExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_TextfieldDescription_IsEnabledExpression_feature", "_UI_TextfieldDescription_type"),
-                FormPackage.Literals.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TextfieldDescription_IsEnabledExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TextfieldDescription_IsEnabledExpression_feature", "_UI_TextfieldDescription_type"),
+				 FormPackage.Literals.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY);
-            this.childrenFeatures.add(FormPackage.Literals.TEXTFIELD_DESCRIPTION__STYLE);
-            this.childrenFeatures.add(FormPackage.Literals.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY);
+			childrenFeatures.add(FormPackage.Literals.TEXTFIELD_DESCRIPTION__STYLE);
+			childrenFeatures.add(FormPackage.Literals.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
-     * This returns TextfieldDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns TextfieldDescription.gif.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/TextfieldDescription.svg"));
-    }
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/TextfieldDescription"));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((TextfieldDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_TextfieldDescription_type") : this.getString("_UI_TextfieldDescription_type") + " " + label;
-    }
+		String label = ((TextfieldDescription)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_TextfieldDescription_type") :
+			getString("_UI_TextfieldDescription_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -156,64 +175,111 @@ public class TextfieldDescriptionItemProvider extends WidgetDescriptionItemProvi
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(TextfieldDescription.class)) {
-            case FormPackage.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION:
-            case FormPackage.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-            case FormPackage.TEXTFIELD_DESCRIPTION__BODY:
-            case FormPackage.TEXTFIELD_DESCRIPTION__STYLE:
-            case FormPackage.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(TextfieldDescription.class))
+		{
+			case FormPackage.TEXTFIELD_DESCRIPTION__VALUE_EXPRESSION:
+			case FormPackage.TEXTFIELD_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case FormPackage.TEXTFIELD_DESCRIPTION__BODY:
+			case FormPackage.TEXTFIELD_DESCRIPTION__STYLE:
+			case FormPackage.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createChangeContext()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createChangeContext()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createCreateInstance()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createCreateInstance()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createSetValue()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createSetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createUnsetValue()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createUnsetValue()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY, ViewFactory.eINSTANCE.createDeleteElement()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createDeleteElement()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.TEXTFIELD_DESCRIPTION__STYLE, FormFactory.eINSTANCE.createTextfieldDescriptionStyle()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createLet()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES, FormFactory.eINSTANCE.createConditionalTextfieldDescriptionStyle()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createIf()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__BODY,
+				 ViewFactory.eINSTANCE.createFor()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__STYLE,
+				 FormFactory.eINSTANCE.createTextfieldDescriptionStyle()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__STYLE,
+				 FormFactory.eINSTANCE.createConditionalTextfieldDescriptionStyle()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES,
+				 FormFactory.eINSTANCE.createConditionalTextfieldDescriptionStyle()));
+	}
 
     /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
+		Object childFeature = feature;
+		Object childObject = child;
 
-        boolean qualify = childFeature == FormPackage.Literals.TEXTFIELD_DESCRIPTION__STYLE || childFeature == FormPackage.Literals.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES;
+		boolean qualify =
+			childFeature == FormPackage.Literals.TEXTFIELD_DESCRIPTION__STYLE ||
+			childFeature == FormPackage.Literals.TEXTFIELD_DESCRIPTION__CONDITIONAL_STYLES;
 
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
-        return super.getCreateChildText(owner, feature, child, selection);
-    }
+		if (qualify)
+		{
+			return getString
+				("_UI_CreateChild_text2",
+				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+		}
+		return super.getCreateChildText(owner, feature, child, selection);
+	}
 
 }

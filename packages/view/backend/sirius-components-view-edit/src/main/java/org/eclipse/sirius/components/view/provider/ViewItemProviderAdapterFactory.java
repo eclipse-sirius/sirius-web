@@ -60,26 +60,26 @@ import org.eclipse.sirius.components.view.util.ViewAdapterFactory;
  */
 public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable, IChildCreationExtender {
     /**
-     * This keeps track of the root adapter factory that delegates to this adapter factory. <!-- begin-user-doc --> <!--
+	 * This keeps track of the root adapter factory that delegates to this adapter factory.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ComposedAdapterFactory parentAdapterFactory;
 
     /**
-     * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!-- begin-user-doc --> <!--
+	 * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
 
     /**
-     * This helps manage the child creation extenders. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This helps manage the child creation extenders.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ChildCreationExtenderManager childCreationExtenderManager = new ChildCreationExtenderManager(ViewEditPlugin.INSTANCE, ViewPackage.eNS_URI);
 
     /**
@@ -88,20 +88,20 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
      *
      * @generated
      */
-    protected Collection<Object> supportedTypes = new ArrayList<>();
+    protected Collection<Object> supportedTypes = new ArrayList<Object>();
 
     /**
-     * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public ViewItemProviderAdapterFactory() {
-        this.supportedTypes.add(IEditingDomainItemProvider.class);
-        this.supportedTypes.add(IStructuredItemContentProvider.class);
-        this.supportedTypes.add(ITreeItemContentProvider.class);
-        this.supportedTypes.add(IItemLabelProvider.class);
-        this.supportedTypes.add(IItemPropertySource.class);
-    }
+		supportedTypes.add(IEditingDomainItemProvider.class);
+		supportedTypes.add(IStructuredItemContentProvider.class);
+		supportedTypes.add(ITreeItemContentProvider.class);
+		supportedTypes.add(IItemLabelProvider.class);
+		supportedTypes.add(IItemPropertySource.class);
+	}
 
     /**
      * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.View} instances. <!--
@@ -127,11 +127,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.ColorPalette}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.ColorPalette} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ColorPaletteItemProvider colorPaletteItemProvider;
 
     /**
@@ -150,11 +149,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.FixedColor} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.FixedColor} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FixedColorItemProvider fixedColorItemProvider;
 
     /**
@@ -173,11 +171,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.ChangeContext}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.ChangeContext} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ChangeContextItemProvider changeContextItemProvider;
 
     /**
@@ -196,11 +193,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.CreateInstance}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.CreateInstance} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CreateInstanceItemProvider createInstanceItemProvider;
 
     /**
@@ -219,11 +215,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.SetValue} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.SetValue} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected SetValueItemProvider setValueItemProvider;
 
     /**
@@ -242,11 +237,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.UnsetValue} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.UnsetValue} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected UnsetValueItemProvider unsetValueItemProvider;
 
     /**
@@ -265,11 +259,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DeleteElement}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.DeleteElement} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DeleteElementItemProvider deleteElementItemProvider;
 
     /**
@@ -357,11 +350,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.TextStylePalette}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.TextStylePalette} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TextStylePaletteItemProvider textStylePaletteItemProvider;
 
     /**
@@ -380,11 +372,10 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.TextStyleDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.TextStyleDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TextStyleDescriptionItemProvider textStyleDescriptionItemProvider;
 
     /**
@@ -403,185 +394,169 @@ public class ViewItemProviderAdapterFactory extends ViewAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.KeyBinding} instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.KeyBinding} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected KeyBindingItemProvider keyBindingItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.eclipse.sirius.components.view.KeyBinding}. <!-- begin-user-doc --> <!--
+	 * This creates an adapter for a {@link org.eclipse.sirius.components.view.KeyBinding}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter createKeyBindingAdapter() {
-        if (this.keyBindingItemProvider == null) {
-            this.keyBindingItemProvider = new KeyBindingItemProvider(this);
-        }
+		if (keyBindingItemProvider == null)
+		{
+			keyBindingItemProvider = new KeyBindingItemProvider(this);
+		}
 
-        return this.keyBindingItemProvider;
-    }
+		return keyBindingItemProvider;
+	}
 
     /**
-     * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the root adapter factory that contains this factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
-    }
+		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
+	}
 
     /**
-     * This sets the composed adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This sets the composed adapter factory that contains this factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
-        this.parentAdapterFactory = parentAdapterFactory;
-    }
+		this.parentAdapterFactory = parentAdapterFactory;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isFactoryForType(Object type) {
-        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
-    }
+		return supportedTypes.contains(type) || super.isFactoryForType(type);
+	}
 
     /**
-     * This implementation substitutes the factory itself as the key for the adapter. <!-- begin-user-doc --> <!--
+	 * This implementation substitutes the factory itself as the key for the adapter.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter adapt(Notifier notifier, Object type) {
-        return super.adapt(notifier, this);
-    }
+		return super.adapt(notifier, this);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object adapt(Object object, Object type) {
-        if (this.isFactoryForType(type)) {
-            Object adapter = super.adapt(object, type);
-            if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
-                return adapter;
-            }
-        }
+		if (isFactoryForType(type))
+		{
+			Object adapter = super.adapt(object, type);
+			if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter)))
+			{
+				return adapter;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public List<IChildCreationExtender> getChildCreationExtenders() {
-        return this.childCreationExtenderManager.getChildCreationExtenders();
-    }
+		return childCreationExtenderManager.getChildCreationExtenders();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Collection<?> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
-        return this.childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
-    }
+		return childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ResourceLocator getResourceLocator() {
-        return this.childCreationExtenderManager;
-    }
+		return childCreationExtenderManager;
+	}
 
     /**
-     * This adds a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a listener.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void addListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.addListener(notifyChangedListener);
-    }
+		changeNotifier.addListener(notifyChangedListener);
+	}
 
     /**
-     * This removes a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This removes a listener.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void removeListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.removeListener(notifyChangedListener);
-    }
+		changeNotifier.removeListener(notifyChangedListener);
+	}
 
     /**
-     * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!-- begin-user-doc --> <!--
+	 * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void fireNotifyChanged(Notification notification) {
-        this.changeNotifier.fireNotifyChanged(notification);
+		changeNotifier.fireNotifyChanged(notification);
 
-        if (this.parentAdapterFactory != null) {
-            this.parentAdapterFactory.fireNotifyChanged(notification);
-        }
-    }
+		if (parentAdapterFactory != null)
+		{
+			parentAdapterFactory.fireNotifyChanged(notification);
+		}
+	}
 
     /**
-     * This disposes all of the item providers created by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This disposes all of the item providers created by this factory. 
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void dispose() {
-        if (this.viewItemProvider != null)
-            this.viewItemProvider.dispose();
-        if (this.colorPaletteItemProvider != null)
-            this.colorPaletteItemProvider.dispose();
-        if (this.fixedColorItemProvider != null)
-            this.fixedColorItemProvider.dispose();
-        if (this.changeContextItemProvider != null)
-            this.changeContextItemProvider.dispose();
-        if (this.createInstanceItemProvider != null)
-            this.createInstanceItemProvider.dispose();
-        if (this.setValueItemProvider != null)
-            this.setValueItemProvider.dispose();
-        if (this.unsetValueItemProvider != null)
-            this.unsetValueItemProvider.dispose();
-        if (this.deleteElementItemProvider != null)
-            this.deleteElementItemProvider.dispose();
-        if (this.letItemProvider != null)
-            this.letItemProvider.dispose();
-        if (this.ifItemProvider != null)
-            this.ifItemProvider.dispose();
-        if (this.forItemProvider != null)
-            this.forItemProvider.dispose();
-        if (this.textStylePaletteItemProvider != null)
-            this.textStylePaletteItemProvider.dispose();
-        if (this.textStyleDescriptionItemProvider != null)
-            this.textStyleDescriptionItemProvider.dispose();
-        if (this.keyBindingItemProvider != null)
-            this.keyBindingItemProvider.dispose();
-    }
+		if (viewItemProvider != null) viewItemProvider.dispose();
+		if (colorPaletteItemProvider != null) colorPaletteItemProvider.dispose();
+		if (fixedColorItemProvider != null) fixedColorItemProvider.dispose();
+		if (changeContextItemProvider != null) changeContextItemProvider.dispose();
+		if (createInstanceItemProvider != null) createInstanceItemProvider.dispose();
+		if (setValueItemProvider != null) setValueItemProvider.dispose();
+		if (unsetValueItemProvider != null) unsetValueItemProvider.dispose();
+		if (deleteElementItemProvider != null) deleteElementItemProvider.dispose();
+		if (letItemProvider != null) letItemProvider.dispose();
+		if (ifItemProvider != null) ifItemProvider.dispose();
+		if (forItemProvider != null) forItemProvider.dispose();
+		if (textStylePaletteItemProvider != null) textStylePaletteItemProvider.dispose();
+		if (textStyleDescriptionItemProvider != null) textStyleDescriptionItemProvider.dispose();
+		if (keyBindingItemProvider != null) keyBindingItemProvider.dispose();
+	}
 
 }

@@ -39,257 +39,247 @@ import org.eclipse.sirius.components.papaya.Task;
  */
 public class DependencyLinkImpl extends MinimalEObjectImpl.Container implements DependencyLink {
     /**
-     * The default value of the '{@link #getTargetKind() <em>Target Kind</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getTargetKind() <em>Target Kind</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getTargetKind()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTargetKind()
+	 * @generated
+	 * @ordered
+	 */
     protected static final StartOrEnd TARGET_KIND_EDEFAULT = StartOrEnd.START;
 
     /**
-     * The cached value of the '{@link #getTargetKind() <em>Target Kind</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getTargetKind() <em>Target Kind</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getTargetKind()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTargetKind()
+	 * @generated
+	 * @ordered
+	 */
     protected StartOrEnd targetKind = TARGET_KIND_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getSourceKind() <em>Source Kind</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getSourceKind() <em>Source Kind</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getSourceKind()
-     * @generated
-     * @ordered
-     */
+	 * @see #getSourceKind()
+	 * @generated
+	 * @ordered
+	 */
     protected static final StartOrEnd SOURCE_KIND_EDEFAULT = StartOrEnd.START;
 
     /**
-     * The cached value of the '{@link #getSourceKind() <em>Source Kind</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getSourceKind() <em>Source Kind</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getSourceKind()
-     * @generated
-     * @ordered
-     */
+	 * @see #getSourceKind()
+	 * @generated
+	 * @ordered
+	 */
     protected StartOrEnd sourceKind = SOURCE_KIND_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getSource() <em>Source</em>}' reference. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getSource() <em>Source</em>}' reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getSource()
-     * @generated
-     * @ordered
-     */
+	 * @see #getSource()
+	 * @generated
+	 * @ordered
+	 */
     protected Task source;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DependencyLinkImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return PapayaPackage.Literals.DEPENDENCY_LINK;
-    }
+		return PapayaPackage.Literals.DEPENDENCY_LINK;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public StartOrEnd getTargetKind() {
-        return this.targetKind;
-    }
+		return targetKind;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setTargetKind(StartOrEnd newTargetKind) {
-        StartOrEnd oldTargetKind = this.targetKind;
-        this.targetKind = newTargetKind == null ? TARGET_KIND_EDEFAULT : newTargetKind;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.DEPENDENCY_LINK__TARGET_KIND, oldTargetKind, this.targetKind));
-    }
+		StartOrEnd oldTargetKind = targetKind;
+		targetKind = newTargetKind == null ? TARGET_KIND_EDEFAULT : newTargetKind;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.DEPENDENCY_LINK__TARGET_KIND, oldTargetKind, targetKind));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public StartOrEnd getSourceKind() {
-        return this.sourceKind;
-    }
+		return sourceKind;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setSourceKind(StartOrEnd newSourceKind) {
-        StartOrEnd oldSourceKind = this.sourceKind;
-        this.sourceKind = newSourceKind == null ? SOURCE_KIND_EDEFAULT : newSourceKind;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND, oldSourceKind, this.sourceKind));
-    }
+		StartOrEnd oldSourceKind = sourceKind;
+		sourceKind = newSourceKind == null ? SOURCE_KIND_EDEFAULT : newSourceKind;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND, oldSourceKind, sourceKind));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Task getSource() {
-        if (this.source != null && this.source.eIsProxy()) {
-            InternalEObject oldSource = (InternalEObject) this.source;
-            this.source = (Task) this.eResolveProxy(oldSource);
-            if (this.source != oldSource) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, PapayaPackage.DEPENDENCY_LINK__SOURCE, oldSource, this.source));
-            }
-        }
-        return this.source;
-    }
+		if (source != null && source.eIsProxy())
+		{
+			InternalEObject oldSource = (InternalEObject)source;
+			source = (Task)eResolveProxy(oldSource);
+			if (source != oldSource)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, PapayaPackage.DEPENDENCY_LINK__SOURCE, oldSource, source));
+			}
+		}
+		return source;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public Task basicGetSource() {
-        return this.source;
-    }
+		return source;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setSource(Task newSource) {
-        Task oldSource = this.source;
-        this.source = newSource;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.DEPENDENCY_LINK__SOURCE, oldSource, this.source));
-    }
+		Task oldSource = source;
+		source = newSource;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, PapayaPackage.DEPENDENCY_LINK__SOURCE, oldSource, source));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case PapayaPackage.DEPENDENCY_LINK__TARGET_KIND:
-                return this.getTargetKind();
-            case PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND:
-                return this.getSourceKind();
-            case PapayaPackage.DEPENDENCY_LINK__SOURCE:
-                if (resolve)
-                    return this.getSource();
-                return this.basicGetSource();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.DEPENDENCY_LINK__TARGET_KIND:
+				return getTargetKind();
+			case PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND:
+				return getSourceKind();
+			case PapayaPackage.DEPENDENCY_LINK__SOURCE:
+				if (resolve) return getSource();
+				return basicGetSource();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case PapayaPackage.DEPENDENCY_LINK__TARGET_KIND:
-                this.setTargetKind((StartOrEnd) newValue);
-                return;
-            case PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND:
-                this.setSourceKind((StartOrEnd) newValue);
-                return;
-            case PapayaPackage.DEPENDENCY_LINK__SOURCE:
-                this.setSource((Task) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.DEPENDENCY_LINK__TARGET_KIND:
+				setTargetKind((StartOrEnd)newValue);
+				return;
+			case PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND:
+				setSourceKind((StartOrEnd)newValue);
+				return;
+			case PapayaPackage.DEPENDENCY_LINK__SOURCE:
+				setSource((Task)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.DEPENDENCY_LINK__TARGET_KIND:
-                this.setTargetKind(TARGET_KIND_EDEFAULT);
-                return;
-            case PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND:
-                this.setSourceKind(SOURCE_KIND_EDEFAULT);
-                return;
-            case PapayaPackage.DEPENDENCY_LINK__SOURCE:
-                this.setSource((Task) null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.DEPENDENCY_LINK__TARGET_KIND:
+				setTargetKind(TARGET_KIND_EDEFAULT);
+				return;
+			case PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND:
+				setSourceKind(SOURCE_KIND_EDEFAULT);
+				return;
+			case PapayaPackage.DEPENDENCY_LINK__SOURCE:
+				setSource((Task)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case PapayaPackage.DEPENDENCY_LINK__TARGET_KIND:
-                return this.targetKind != TARGET_KIND_EDEFAULT;
-            case PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND:
-                return this.sourceKind != SOURCE_KIND_EDEFAULT;
-            case PapayaPackage.DEPENDENCY_LINK__SOURCE:
-                return this.source != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case PapayaPackage.DEPENDENCY_LINK__TARGET_KIND:
+				return targetKind != TARGET_KIND_EDEFAULT;
+			case PapayaPackage.DEPENDENCY_LINK__SOURCE_KIND:
+				return sourceKind != SOURCE_KIND_EDEFAULT;
+			case PapayaPackage.DEPENDENCY_LINK__SOURCE:
+				return source != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (targetKind: ");
-        result.append(this.targetKind);
-        result.append(", sourceKind: ");
-        result.append(this.sourceKind);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (targetKind: ");
+		result.append(targetKind);
+		result.append(", sourceKind: ");
+		result.append(sourceKind);
+		result.append(')');
+		return result.toString();
+	}
 
 } // DependencyLinkImpl

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ package org.eclipse.sirius.components.papaya;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.TypedElement#getType <em>Type</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.TypedElement#getType <em>Type</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getTypedElement()
@@ -40,14 +40,12 @@ public interface TypedElement extends NamedElement, AnnotableElement {
     GenericType getType();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.TypedElement#getType <em>Type</em>}'
-     * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Type</em>' containment reference.
-     * @see #getType()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.papaya.TypedElement#getType <em>Type</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Type</em>' containment reference.
+	 * @see #getType()
+	 * @generated
+	 */
     void setType(GenericType value);
 
 } // TypedElement

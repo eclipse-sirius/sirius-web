@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DropNodeTool#getAcceptedNodeTypes <em>Accepted Node
- * Types</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DropNodeTool#getAcceptedNodeTypes <em>Accepted Node Types</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDropNodeTool()
@@ -32,13 +31,13 @@ import org.eclipse.emf.common.util.EList;
 public interface DropNodeTool extends Tool {
 
     /**
-     * Returns the value of the '<em><b>Accepted Node Types</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Accepted Node Types</em>' reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDropNodeTool_AcceptedNodeTypes()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Accepted Node Types</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.diagram.NodeDescription}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Accepted Node Types</em>' reference list.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDropNodeTool_AcceptedNodeTypes()
+	 * @model
+	 * @generated
+	 */
     EList<NodeDescription> getAcceptedNodeTypes();
 } // DropNodeTool

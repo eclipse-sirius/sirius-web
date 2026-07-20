@@ -22,8 +22,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription#getNodeDescriptions <em>Node
- * Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription#getNodeDescriptions <em>Node Descriptions</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDecoratorDescription()
@@ -32,14 +31,14 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface NodeDecoratorDescription extends DecoratorDescription {
     /**
-     * Returns the value of the '<em><b>Node Descriptions</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Node Descriptions</em>' reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDecoratorDescription_NodeDescriptions()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Node Descriptions</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.diagram.NodeDescription}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Node Descriptions</em>' reference list.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getNodeDecoratorDescription_NodeDescriptions()
+	 * @model
+	 * @generated
+	 */
     EList<NodeDescription> getNodeDescriptions();
 
 } // NodeDecoratorDescription

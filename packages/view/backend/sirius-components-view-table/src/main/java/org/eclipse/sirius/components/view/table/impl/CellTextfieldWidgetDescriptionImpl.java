@@ -32,8 +32,7 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.table.impl.CellTextfieldWidgetDescriptionImpl#getBody
- * <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.impl.CellTextfieldWidgetDescriptionImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
@@ -41,119 +40,117 @@ import org.eclipse.sirius.components.view.table.TablePackage;
 public class CellTextfieldWidgetDescriptionImpl extends MinimalEObjectImpl.Container implements CellTextfieldWidgetDescription {
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getBody()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Operation> body;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CellTextfieldWidgetDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION;
-    }
+		return TablePackage.Literals.CELL_TEXTFIELD_WIDGET_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Operation> getBody() {
-        if (this.body == null) {
-            this.body = new EObjectContainmentEList<>(Operation.class, this, TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY);
-        }
-        return this.body;
-    }
+		if (body == null)
+		{
+			body = new EObjectContainmentEList<Operation>(Operation.class, this, TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY);
+		}
+		return body;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
-                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
+				return ((InternalEList<?>)getBody()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
-                return this.getBody();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
+				return getBody();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
-                this.getBody().clear();
-                this.getBody().addAll((Collection<? extends Operation>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
+				getBody().clear();
+				getBody().addAll((Collection<? extends Operation>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
-                this.getBody().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
+				getBody().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
-                return this.body != null && !this.body.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case TablePackage.CELL_TEXTFIELD_WIDGET_DESCRIPTION__BODY:
+				return body != null && !body.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // CellTextfieldWidgetDescriptionImpl

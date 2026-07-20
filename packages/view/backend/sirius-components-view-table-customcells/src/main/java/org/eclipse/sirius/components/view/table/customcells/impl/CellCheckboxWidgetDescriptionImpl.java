@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.table.customcells.impl;
 
+import java.rmi.server.Operation;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -21,7 +22,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.sirius.components.view.Operation;
 import org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription;
 import org.eclipse.sirius.components.view.table.customcells.CustomcellsPackage;
 
@@ -32,128 +32,124 @@ import org.eclipse.sirius.components.view.table.customcells.CustomcellsPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.table.customcells.impl.CellCheckboxWidgetDescriptionImpl#getBody
- * <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.customcells.impl.CellCheckboxWidgetDescriptionImpl#getBody <em>Body</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class CellCheckboxWidgetDescriptionImpl extends MinimalEObjectImpl.Container implements CellCheckboxWidgetDescription {
-
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBody()
-     */
-    protected EList<Operation> body;
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
+    protected EList<org.eclipse.sirius.components.view.Operation> body;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CellCheckboxWidgetDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return CustomcellsPackage.Literals.CELL_CHECKBOX_WIDGET_DESCRIPTION;
-    }
+		return CustomcellsPackage.Literals.CELL_CHECKBOX_WIDGET_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
-    public EList<Operation> getBody() {
-        if (this.body == null) {
-            this.body = new EObjectContainmentEList<Operation>(Operation.class, this, CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY);
-        }
-        return this.body;
-    }
+    public EList<org.eclipse.sirius.components.view.Operation> getBody() {
+		if (body == null)
+		{
+			body = new EObjectContainmentEList<org.eclipse.sirius.components.view.Operation>(org.eclipse.sirius.components.view.Operation.class, this, CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY);
+		}
+		return body;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
-                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
+				return ((InternalEList<?>)getBody()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
-                return this.getBody();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
+				return getBody();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
-                this.getBody().clear();
-                this.getBody().addAll((Collection<? extends Operation>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
+				getBody().clear();
+				getBody().addAll((Collection<? extends org.eclipse.sirius.components.view.Operation>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
-                this.getBody().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
+				getBody().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
-                return this.body != null && !this.body.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION__BODY:
+				return body != null && !body.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // CellCheckboxWidgetDescriptionImpl

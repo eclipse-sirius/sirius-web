@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,9 +22,9 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.View#getDescriptions <em>Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.View#getColorPalettes <em>Color Palettes</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.View#getTextStylePalettes <em>Text Style Palettes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.View#getDescriptions <em>Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.View#getColorPalettes <em>Color Palettes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.View#getTextStylePalettes <em>Text Style Palettes</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getView()
@@ -45,14 +45,14 @@ public interface View extends EObject {
     EList<RepresentationDescription> getDescriptions();
 
     /**
-     * Returns the value of the '<em><b>Color Palettes</b></em>' containment reference list. The list contents are of
-     * type {@link org.eclipse.sirius.components.view.ColorPalette}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Color Palettes</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.ViewPackage#getView_ColorPalettes()
-     * @model containment="true" keys="name"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Color Palettes</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.ColorPalette}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Color Palettes</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getView_ColorPalettes()
+	 * @model containment="true" keys="name"
+	 * @generated
+	 */
     EList<ColorPalette> getColorPalettes();
 
     /**

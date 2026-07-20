@@ -37,132 +37,128 @@ import org.eclipse.sirius.components.view.diagram.DiagramStyleDescription;
 public class DiagramStyleDescriptionImpl extends MinimalEObjectImpl.Container implements DiagramStyleDescription {
 
     /**
-     * The cached value of the '{@link #getBackground() <em>Background</em>}' reference. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getBackground() <em>Background</em>}' reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     * @ordered
-     * @see #getBackground()
-     */
+	 * @see #getBackground()
+	 * @generated
+	 * @ordered
+	 */
     protected UserColor background;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DiagramStyleDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.DIAGRAM_STYLE_DESCRIPTION;
-    }
+		return DiagramPackage.Literals.DIAGRAM_STYLE_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public UserColor getBackground() {
-        if (this.background != null && this.background.eIsProxy()) {
-            InternalEObject oldBackground = (InternalEObject) this.background;
-            this.background = (UserColor) this.eResolveProxy(oldBackground);
-            if (this.background != oldBackground) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND, oldBackground, this.background));
-            }
-        }
-        return this.background;
-    }
+		if (background != null && background.eIsProxy())
+		{
+			InternalEObject oldBackground = (InternalEObject)background;
+			background = (UserColor)eResolveProxy(oldBackground);
+			if (background != oldBackground)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND, oldBackground, background));
+			}
+		}
+		return background;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setBackground(UserColor newBackground) {
-        UserColor oldBackground = this.background;
-        this.background = newBackground;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND, oldBackground, this.background));
-    }
+		UserColor oldBackground = background;
+		background = newBackground;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND, oldBackground, background));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public UserColor basicGetBackground() {
-        return this.background;
-    }
+		return background;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND:
-                if (resolve)
-                    return this.getBackground();
-                return this.basicGetBackground();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND:
+				if (resolve) return getBackground();
+				return basicGetBackground();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND:
-                this.setBackground((UserColor) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND:
+				setBackground((UserColor)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND:
-                this.setBackground(null);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND:
+				setBackground((UserColor)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND:
-                return this.background != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_STYLE_DESCRIPTION__BACKGROUND:
+				return background != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // DiagramStyleDescriptionImpl

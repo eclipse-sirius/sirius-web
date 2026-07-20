@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,8 @@ package org.eclipse.sirius.components.view;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.SetValue#getFeatureName <em>Feature Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.SetValue#getValueExpression <em>Value Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.SetValue#getFeatureName <em>Feature Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.SetValue#getValueExpression <em>Value Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.ViewPackage#getSetValue()
@@ -29,25 +29,23 @@ package org.eclipse.sirius.components.view;
  */
 public interface SetValue extends Operation {
     /**
-     * Returns the value of the '<em><b>Feature Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Feature Name</em>' attribute.
-     * @see #setFeatureName(String)
-     * @see org.eclipse.sirius.components.view.ViewPackage#getSetValue_FeatureName()
-     * @model required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Feature Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Feature Name</em>' attribute.
+	 * @see #setFeatureName(String)
+	 * @see org.eclipse.sirius.components.view.ViewPackage#getSetValue_FeatureName()
+	 * @model required="true"
+	 * @generated
+	 */
     String getFeatureName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.SetValue#getFeatureName <em>Feature Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Feature Name</em>' attribute.
-     * @see #getFeatureName()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.SetValue#getFeatureName <em>Feature Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Feature Name</em>' attribute.
+	 * @see #getFeatureName()
+	 * @generated
+	 */
     void setFeatureName(String value);
 
     /**
@@ -63,14 +61,12 @@ public interface SetValue extends Operation {
     String getValueExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.SetValue#getValueExpression <em>Value
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Value Expression</em>' attribute.
-     * @see #getValueExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.SetValue#getValueExpression <em>Value Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Value Expression</em>' attribute.
+	 * @see #getValueExpression()
+	 * @generated
+	 */
     void setValueExpression(String value);
 
 } // SetValue

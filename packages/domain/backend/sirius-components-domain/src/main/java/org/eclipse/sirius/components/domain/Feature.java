@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,8 @@ package org.eclipse.sirius.components.domain;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.domain.Feature#isOptional <em>Optional</em>}</li>
- * <li>{@link org.eclipse.sirius.components.domain.Feature#isMany <em>Many</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.Feature#isOptional <em>Optional</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.Feature#isMany <em>Many</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.domain.DomainPackage#getFeature()
@@ -41,14 +41,12 @@ public interface Feature extends NamedElement {
     boolean isOptional();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.domain.Feature#isOptional <em>Optional</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Optional</em>' attribute.
-     * @see #isOptional()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.domain.Feature#isOptional <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Optional</em>' attribute.
+	 * @see #isOptional()
+	 * @generated
+	 */
     void setOptional(boolean value);
 
     /**

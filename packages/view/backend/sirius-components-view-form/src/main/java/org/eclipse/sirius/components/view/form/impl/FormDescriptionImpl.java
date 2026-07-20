@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,22 +32,21 @@ import org.eclipse.sirius.components.view.impl.RepresentationDescriptionImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.FormDescriptionImpl#getPages <em>Pages</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.FormDescriptionImpl#getFormVariables <em>Form
- * Variables</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.FormDescriptionImpl#getPages <em>Pages</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.FormDescriptionImpl#getFormVariables <em>Form Variables</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class FormDescriptionImpl extends RepresentationDescriptionImpl implements FormDescription {
     /**
-     * The cached value of the '{@link #getPages() <em>Pages</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getPages() <em>Pages</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getPages()
-     * @generated
-     * @ordered
-     */
+	 * @see #getPages()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<PageDescription> pages;
 
     /**
@@ -61,135 +60,133 @@ public class FormDescriptionImpl extends RepresentationDescriptionImpl implement
     protected EList<FormVariable> formVariables;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FormDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.FORM_DESCRIPTION;
-    }
+		return FormPackage.Literals.FORM_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<PageDescription> getPages() {
-        if (this.pages == null) {
-            this.pages = new EObjectContainmentEList<>(PageDescription.class, this, FormPackage.FORM_DESCRIPTION__PAGES);
-        }
-        return this.pages;
-    }
+		if (pages == null)
+		{
+			pages = new EObjectContainmentEList<PageDescription>(PageDescription.class, this, FormPackage.FORM_DESCRIPTION__PAGES);
+		}
+		return pages;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<FormVariable> getFormVariables() {
-        if (this.formVariables == null) {
-            this.formVariables = new EObjectContainmentEList<>(FormVariable.class, this, FormPackage.FORM_DESCRIPTION__FORM_VARIABLES);
-        }
-        return this.formVariables;
-    }
+		if (formVariables == null)
+		{
+			formVariables = new EObjectContainmentEList<FormVariable>(FormVariable.class, this, FormPackage.FORM_DESCRIPTION__FORM_VARIABLES);
+		}
+		return formVariables;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case FormPackage.FORM_DESCRIPTION__PAGES:
-                return ((InternalEList<?>) this.getPages()).basicRemove(otherEnd, msgs);
-            case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
-                return ((InternalEList<?>) this.getFormVariables()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_DESCRIPTION__PAGES:
+				return ((InternalEList<?>)getPages()).basicRemove(otherEnd, msgs);
+			case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
+				return ((InternalEList<?>)getFormVariables()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.FORM_DESCRIPTION__PAGES:
-                return this.getPages();
-            case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
-                return this.getFormVariables();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_DESCRIPTION__PAGES:
+				return getPages();
+			case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
+				return getFormVariables();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.FORM_DESCRIPTION__PAGES:
-                this.getPages().clear();
-                this.getPages().addAll((Collection<? extends PageDescription>) newValue);
-                return;
-            case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
-                this.getFormVariables().clear();
-                this.getFormVariables().addAll((Collection<? extends FormVariable>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_DESCRIPTION__PAGES:
+				getPages().clear();
+				getPages().addAll((Collection<? extends PageDescription>)newValue);
+				return;
+			case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
+				getFormVariables().clear();
+				getFormVariables().addAll((Collection<? extends FormVariable>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.FORM_DESCRIPTION__PAGES:
-                this.getPages().clear();
-                return;
-            case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
-                this.getFormVariables().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_DESCRIPTION__PAGES:
+				getPages().clear();
+				return;
+			case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
+				getFormVariables().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.FORM_DESCRIPTION__PAGES:
-                return this.pages != null && !this.pages.isEmpty();
-            case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
-                return this.formVariables != null && !this.formVariables.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_DESCRIPTION__PAGES:
+				return pages != null && !pages.isEmpty();
+			case FormPackage.FORM_DESCRIPTION__FORM_VARIABLES:
+				return formVariables != null && !formVariables.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // FormDescriptionImpl

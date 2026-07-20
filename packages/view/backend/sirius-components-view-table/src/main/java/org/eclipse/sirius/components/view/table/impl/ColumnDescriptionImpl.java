@@ -65,43 +65,41 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
     protected String name = NAME_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getDomainType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDomainType()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String DOMAIN_TYPE_EDEFAULT = "";
 
     /**
-     * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getDomainType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDomainType()
+	 * @generated
+	 * @ordered
+	 */
     protected String domainType = DOMAIN_TYPE_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSemanticCandidatesExpression()
-     * @generated
-     * @ordered
-     */
+	 * The default value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getSemanticCandidatesExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getSemanticCandidatesExpression()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getSemanticCandidatesExpression() <em>Semantic Candidates Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getSemanticCandidatesExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String semanticCandidatesExpression = SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT;
 
     /**
@@ -125,23 +123,21 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
     protected String preconditionExpression = PRECONDITION_EXPRESSION_EDEFAULT;
 
     /**
-     * The default value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getHeaderIndexLabelExpression()
-     * @generated
-     * @ordered
-     */
+	 * The default value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getHeaderIndexLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT = "";
 
     /**
-     * The cached value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getHeaderIndexLabelExpression()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getHeaderIndexLabelExpression() <em>Header Index Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getHeaderIndexLabelExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String headerIndexLabelExpression = HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT;
 
     /**
@@ -265,471 +261,444 @@ public class ColumnDescriptionImpl extends MinimalEObjectImpl.Container implemen
     protected String isSortableExpression = IS_SORTABLE_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ColumnDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TablePackage.Literals.COLUMN_DESCRIPTION;
-    }
+		return TablePackage.Literals.COLUMN_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+		return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__NAME, oldName, this.name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__NAME, oldName, name));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getDomainType() {
-        return this.domainType;
-    }
+		return domainType;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setDomainType(String newDomainType) {
-        String oldDomainType = this.domainType;
-        this.domainType = newDomainType;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE, oldDomainType, this.domainType));
-    }
+		String oldDomainType = domainType;
+		domainType = newDomainType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE, oldDomainType, domainType));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getSemanticCandidatesExpression() {
-        return this.semanticCandidatesExpression;
-    }
+		return semanticCandidatesExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setSemanticCandidatesExpression(String newSemanticCandidatesExpression) {
-        String oldSemanticCandidatesExpression = this.semanticCandidatesExpression;
-        this.semanticCandidatesExpression = newSemanticCandidatesExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(
-                    new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, oldSemanticCandidatesExpression, this.semanticCandidatesExpression));
-    }
+		String oldSemanticCandidatesExpression = semanticCandidatesExpression;
+		semanticCandidatesExpression = newSemanticCandidatesExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION, oldSemanticCandidatesExpression, semanticCandidatesExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getPreconditionExpression() {
-        return this.preconditionExpression;
-    }
+		return preconditionExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setPreconditionExpression(String newPreconditionExpression) {
-        String oldPreconditionExpression = this.preconditionExpression;
-        this.preconditionExpression = newPreconditionExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
-    }
+		String oldPreconditionExpression = preconditionExpression;
+		preconditionExpression = newPreconditionExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION, oldPreconditionExpression, preconditionExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getHeaderIndexLabelExpression() {
-        return this.headerIndexLabelExpression;
-    }
+		return headerIndexLabelExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setHeaderIndexLabelExpression(String newHeaderIndexLabelExpression) {
-        String oldHeaderIndexLabelExpression = this.headerIndexLabelExpression;
-        this.headerIndexLabelExpression = newHeaderIndexLabelExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION, oldHeaderIndexLabelExpression, this.headerIndexLabelExpression));
-    }
+		String oldHeaderIndexLabelExpression = headerIndexLabelExpression;
+		headerIndexLabelExpression = newHeaderIndexLabelExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION, oldHeaderIndexLabelExpression, headerIndexLabelExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getHeaderLabelExpression() {
-        return this.headerLabelExpression;
-    }
+		return headerLabelExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setHeaderLabelExpression(String newHeaderLabelExpression) {
-        String oldHeaderLabelExpression = this.headerLabelExpression;
-        this.headerLabelExpression = newHeaderLabelExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION, oldHeaderLabelExpression, this.headerLabelExpression));
-    }
+		String oldHeaderLabelExpression = headerLabelExpression;
+		headerLabelExpression = newHeaderLabelExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION, oldHeaderLabelExpression, headerLabelExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getHeaderIconExpression() {
-        return this.headerIconExpression;
-    }
+		return headerIconExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setHeaderIconExpression(String newHeaderIconExpression) {
-        String oldHeaderIconExpression = this.headerIconExpression;
-        this.headerIconExpression = newHeaderIconExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION, oldHeaderIconExpression, this.headerIconExpression));
-    }
+		String oldHeaderIconExpression = headerIconExpression;
+		headerIconExpression = newHeaderIconExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION, oldHeaderIconExpression, headerIconExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getInitialWidthExpression() {
-        return this.initialWidthExpression;
-    }
+		return initialWidthExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setInitialWidthExpression(String newInitialWidthExpression) {
-        String oldInitialWidthExpression = this.initialWidthExpression;
-        this.initialWidthExpression = newInitialWidthExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION, oldInitialWidthExpression, this.initialWidthExpression));
-    }
+		String oldInitialWidthExpression = initialWidthExpression;
+		initialWidthExpression = newInitialWidthExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION, oldInitialWidthExpression, initialWidthExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIsResizableExpression() {
-        return this.isResizableExpression;
-    }
+		return isResizableExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIsResizableExpression(String newIsResizableExpression) {
-        String oldIsResizableExpression = this.isResizableExpression;
-        this.isResizableExpression = newIsResizableExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION, oldIsResizableExpression, this.isResizableExpression));
-    }
+		String oldIsResizableExpression = isResizableExpression;
+		isResizableExpression = newIsResizableExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION, oldIsResizableExpression, isResizableExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getFilterWidgetExpression() {
-        return this.filterWidgetExpression;
-    }
+		return filterWidgetExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setFilterWidgetExpression(String newFilterWidgetExpression) {
-        String oldFilterWidgetExpression = this.filterWidgetExpression;
-        this.filterWidgetExpression = newFilterWidgetExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION, oldFilterWidgetExpression, this.filterWidgetExpression));
-    }
+		String oldFilterWidgetExpression = filterWidgetExpression;
+		filterWidgetExpression = newFilterWidgetExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION, oldFilterWidgetExpression, filterWidgetExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIsSortableExpression() {
-        return this.isSortableExpression;
-    }
+		return isSortableExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIsSortableExpression(String newIsSortableExpression) {
-        String oldIsSortableExpression = this.isSortableExpression;
-        this.isSortableExpression = newIsSortableExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION, oldIsSortableExpression, this.isSortableExpression));
-    }
+		String oldIsSortableExpression = isSortableExpression;
+		isSortableExpression = newIsSortableExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION, oldIsSortableExpression, isSortableExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TablePackage.COLUMN_DESCRIPTION__NAME:
-                return this.getName();
-            case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
-                return this.getDomainType();
-            case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                return this.getSemanticCandidatesExpression();
-            case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
-                return this.getPreconditionExpression();
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
-                return this.getHeaderIndexLabelExpression();
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION:
-                return this.getHeaderLabelExpression();
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION:
-                return this.getHeaderIconExpression();
-            case TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION:
-                return this.getInitialWidthExpression();
-            case TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
-                return this.getIsResizableExpression();
-            case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
-                return this.getFilterWidgetExpression();
-            case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
-                return this.getIsSortableExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case TablePackage.COLUMN_DESCRIPTION__NAME:
+				return getName();
+			case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
+				return getDomainType();
+			case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+				return getSemanticCandidatesExpression();
+			case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
+				return getPreconditionExpression();
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
+				return getHeaderIndexLabelExpression();
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION:
+				return getHeaderLabelExpression();
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION:
+				return getHeaderIconExpression();
+			case TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION:
+				return getInitialWidthExpression();
+			case TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
+				return getIsResizableExpression();
+			case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
+				return getFilterWidgetExpression();
+			case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
+				return getIsSortableExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TablePackage.COLUMN_DESCRIPTION__NAME:
-                this.setName((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
-                this.setDomainType((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                this.setSemanticCandidatesExpression((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
-                this.setHeaderIndexLabelExpression((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION:
-                this.setHeaderLabelExpression((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION:
-                this.setHeaderIconExpression((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION:
-                this.setInitialWidthExpression((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
-                this.setIsResizableExpression((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
-                this.setFilterWidgetExpression((String) newValue);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
-                this.setIsSortableExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case TablePackage.COLUMN_DESCRIPTION__NAME:
+				setName((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
+				setDomainType((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+				setSemanticCandidatesExpression((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
+				setPreconditionExpression((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
+				setHeaderIndexLabelExpression((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION:
+				setHeaderLabelExpression((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION:
+				setHeaderIconExpression((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION:
+				setInitialWidthExpression((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
+				setIsResizableExpression((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
+				setFilterWidgetExpression((String)newValue);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
+				setIsSortableExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TablePackage.COLUMN_DESCRIPTION__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
-                this.setDomainType(DOMAIN_TYPE_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                this.setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
-                this.setHeaderIndexLabelExpression(HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION:
-                this.setHeaderLabelExpression(HEADER_LABEL_EXPRESSION_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION:
-                this.setHeaderIconExpression(HEADER_ICON_EXPRESSION_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION:
-                this.setInitialWidthExpression(INITIAL_WIDTH_EXPRESSION_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
-                this.setIsResizableExpression(IS_RESIZABLE_EXPRESSION_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
-                this.setFilterWidgetExpression(FILTER_WIDGET_EXPRESSION_EDEFAULT);
-                return;
-            case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
-                this.setIsSortableExpression(IS_SORTABLE_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case TablePackage.COLUMN_DESCRIPTION__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
+				setDomainType(DOMAIN_TYPE_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+				setSemanticCandidatesExpression(SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
+				setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
+				setHeaderIndexLabelExpression(HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION:
+				setHeaderLabelExpression(HEADER_LABEL_EXPRESSION_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION:
+				setHeaderIconExpression(HEADER_ICON_EXPRESSION_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION:
+				setInitialWidthExpression(INITIAL_WIDTH_EXPRESSION_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
+				setIsResizableExpression(IS_RESIZABLE_EXPRESSION_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
+				setFilterWidgetExpression(FILTER_WIDGET_EXPRESSION_EDEFAULT);
+				return;
+			case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
+				setIsSortableExpression(IS_SORTABLE_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TablePackage.COLUMN_DESCRIPTION__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
-                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
-            case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
-                return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? this.semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(this.semanticCandidatesExpression);
-            case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
-                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
-                return HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT == null ? this.headerIndexLabelExpression != null : !HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT.equals(this.headerIndexLabelExpression);
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION:
-                return HEADER_LABEL_EXPRESSION_EDEFAULT == null ? this.headerLabelExpression != null : !HEADER_LABEL_EXPRESSION_EDEFAULT.equals(this.headerLabelExpression);
-            case TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION:
-                return HEADER_ICON_EXPRESSION_EDEFAULT == null ? this.headerIconExpression != null : !HEADER_ICON_EXPRESSION_EDEFAULT.equals(this.headerIconExpression);
-            case TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION:
-                return INITIAL_WIDTH_EXPRESSION_EDEFAULT == null ? this.initialWidthExpression != null : !INITIAL_WIDTH_EXPRESSION_EDEFAULT.equals(this.initialWidthExpression);
-            case TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
-                return IS_RESIZABLE_EXPRESSION_EDEFAULT == null ? this.isResizableExpression != null : !IS_RESIZABLE_EXPRESSION_EDEFAULT.equals(this.isResizableExpression);
-            case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
-                return FILTER_WIDGET_EXPRESSION_EDEFAULT == null ? this.filterWidgetExpression != null : !FILTER_WIDGET_EXPRESSION_EDEFAULT.equals(this.filterWidgetExpression);
-            case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
-                return IS_SORTABLE_EXPRESSION_EDEFAULT == null ? this.isSortableExpression != null : !IS_SORTABLE_EXPRESSION_EDEFAULT.equals(this.isSortableExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case TablePackage.COLUMN_DESCRIPTION__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case TablePackage.COLUMN_DESCRIPTION__DOMAIN_TYPE:
+				return DOMAIN_TYPE_EDEFAULT == null ? domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(domainType);
+			case TablePackage.COLUMN_DESCRIPTION__SEMANTIC_CANDIDATES_EXPRESSION:
+				return SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT == null ? semanticCandidatesExpression != null : !SEMANTIC_CANDIDATES_EXPRESSION_EDEFAULT.equals(semanticCandidatesExpression);
+			case TablePackage.COLUMN_DESCRIPTION__PRECONDITION_EXPRESSION:
+				return PRECONDITION_EXPRESSION_EDEFAULT == null ? preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(preconditionExpression);
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_INDEX_LABEL_EXPRESSION:
+				return HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT == null ? headerIndexLabelExpression != null : !HEADER_INDEX_LABEL_EXPRESSION_EDEFAULT.equals(headerIndexLabelExpression);
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_LABEL_EXPRESSION:
+				return HEADER_LABEL_EXPRESSION_EDEFAULT == null ? headerLabelExpression != null : !HEADER_LABEL_EXPRESSION_EDEFAULT.equals(headerLabelExpression);
+			case TablePackage.COLUMN_DESCRIPTION__HEADER_ICON_EXPRESSION:
+				return HEADER_ICON_EXPRESSION_EDEFAULT == null ? headerIconExpression != null : !HEADER_ICON_EXPRESSION_EDEFAULT.equals(headerIconExpression);
+			case TablePackage.COLUMN_DESCRIPTION__INITIAL_WIDTH_EXPRESSION:
+				return INITIAL_WIDTH_EXPRESSION_EDEFAULT == null ? initialWidthExpression != null : !INITIAL_WIDTH_EXPRESSION_EDEFAULT.equals(initialWidthExpression);
+			case TablePackage.COLUMN_DESCRIPTION__IS_RESIZABLE_EXPRESSION:
+				return IS_RESIZABLE_EXPRESSION_EDEFAULT == null ? isResizableExpression != null : !IS_RESIZABLE_EXPRESSION_EDEFAULT.equals(isResizableExpression);
+			case TablePackage.COLUMN_DESCRIPTION__FILTER_WIDGET_EXPRESSION:
+				return FILTER_WIDGET_EXPRESSION_EDEFAULT == null ? filterWidgetExpression != null : !FILTER_WIDGET_EXPRESSION_EDEFAULT.equals(filterWidgetExpression);
+			case TablePackage.COLUMN_DESCRIPTION__IS_SORTABLE_EXPRESSION:
+				return IS_SORTABLE_EXPRESSION_EDEFAULT == null ? isSortableExpression != null : !IS_SORTABLE_EXPRESSION_EDEFAULT.equals(isSortableExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(", domainType: ");
-        result.append(this.domainType);
-        result.append(", semanticCandidatesExpression: ");
-        result.append(this.semanticCandidatesExpression);
-        result.append(", preconditionExpression: ");
-        result.append(this.preconditionExpression);
-        result.append(", headerIndexLabelExpression: ");
-        result.append(this.headerIndexLabelExpression);
-        result.append(", headerLabelExpression: ");
-        result.append(this.headerLabelExpression);
-        result.append(", headerIconExpression: ");
-        result.append(this.headerIconExpression);
-        result.append(", initialWidthExpression: ");
-        result.append(this.initialWidthExpression);
-        result.append(", isResizableExpression: ");
-        result.append(this.isResizableExpression);
-        result.append(", filterWidgetExpression: ");
-        result.append(this.filterWidgetExpression);
-        result.append(", isSortableExpression: ");
-        result.append(this.isSortableExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", domainType: ");
+		result.append(domainType);
+		result.append(", semanticCandidatesExpression: ");
+		result.append(semanticCandidatesExpression);
+		result.append(", preconditionExpression: ");
+		result.append(preconditionExpression);
+		result.append(", headerIndexLabelExpression: ");
+		result.append(headerIndexLabelExpression);
+		result.append(", headerLabelExpression: ");
+		result.append(headerLabelExpression);
+		result.append(", headerIconExpression: ");
+		result.append(headerIconExpression);
+		result.append(", initialWidthExpression: ");
+		result.append(initialWidthExpression);
+		result.append(", isResizableExpression: ");
+		result.append(isResizableExpression);
+		result.append(", filterWidgetExpression: ");
+		result.append(filterWidgetExpression);
+		result.append(", isSortableExpression: ");
+		result.append(isSortableExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // ColumnDescriptionImpl

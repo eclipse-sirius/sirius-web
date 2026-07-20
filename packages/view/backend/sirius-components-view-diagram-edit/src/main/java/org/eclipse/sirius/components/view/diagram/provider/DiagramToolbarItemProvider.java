@@ -35,48 +35,57 @@ import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
 /**
  * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramToolbar} object.
  * <!-- begin-user-doc --> <!-- end-user-doc -->
- *
  * @generated
  */
 public class DiagramToolbarItemProvider extends ItemProviderAdapter
         implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public DiagramToolbarItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addPreconditionExpressionPropertyDescriptor(object);
-            this.addExpandedByDefaultPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addPreconditionExpressionPropertyDescriptor(object);
+			addExpandedByDefaultPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Precondition Expression feature. <!-- begin-user-doc --> <!--
+	 * This adds a property descriptor for the Precondition Expression feature.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected void addPreconditionExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramToolbar_preconditionExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramToolbar_preconditionExpression_feature", "_UI_DiagramToolbar_type"),
-                DiagramPackage.Literals.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_DiagramToolbar_preconditionExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DiagramToolbar_preconditionExpression_feature", "_UI_DiagramToolbar_type"),
+				 DiagramPackage.Literals.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Expanded By Default feature. <!-- begin-user-doc --> <!-- end-user-doc
@@ -85,42 +94,52 @@ public class DiagramToolbarItemProvider extends ItemProviderAdapter
      * @generated
      */
     protected void addExpandedByDefaultPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_DiagramToolbar_expandedByDefault_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_DiagramToolbar_expandedByDefault_feature", "_UI_DiagramToolbar_type"),
-                DiagramPackage.Literals.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT, true, false, false, ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_DiagramToolbar_expandedByDefault_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_DiagramToolbar_expandedByDefault_feature", "_UI_DiagramToolbar_type"),
+				 DiagramPackage.Literals.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.BOOLEAN_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This returns DiagramToolbar.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns DiagramToolbar.gif.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object getImage(Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/DiagramToolbar.svg"));
-    }
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/DiagramToolbar"));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((DiagramToolbar) object).getPreconditionExpression();
-        return label == null || label.length() == 0 ? this.getString("_UI_DiagramToolbar_type") : this.getString("_UI_DiagramToolbar_type") + " " + label;
-    }
+		String label = ((DiagramToolbar)object).getPreconditionExpression();
+		return label == null || label.length() == 0 ?
+			getString("_UI_DiagramToolbar_type") :
+			getString("_UI_DiagramToolbar_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -131,36 +150,37 @@ public class DiagramToolbarItemProvider extends ItemProviderAdapter
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(DiagramToolbar.class)) {
-            case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
-            case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(DiagramToolbar.class))
+		{
+			case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
+			case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
+		super.collectNewChildDescriptors(newChildDescriptors, object);
+	}
 
     /**
-     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Return the resource locator for this item provider's resources.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ResourceLocator getResourceLocator() {
-        return ((IChildCreationExtender) this.adapterFactory).getResourceLocator();
-    }
+		return ((IChildCreationExtender)adapterFactory).getResourceLocator();
+	}
 
 }

@@ -17,88 +17,87 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+import org.eclipse.sirius.components.view.table.customcells.*;
 import org.eclipse.sirius.components.view.table.customcells.CellCheckboxWidgetDescription;
 import org.eclipse.sirius.components.view.table.customcells.CustomcellsFactory;
 import org.eclipse.sirius.components.view.table.customcells.CustomcellsPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
  * @generated
  */
 public class CustomcellsFactoryImpl extends EFactoryImpl implements CustomcellsFactory {
-
     /**
-     * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    public CustomcellsFactoryImpl() {
-        super();
-    }
-
-    /**
-     * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates the default factory implementation.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public static CustomcellsFactory init() {
-        try {
-            CustomcellsFactory theCustomcellsFactory = (CustomcellsFactory) EPackage.Registry.INSTANCE.getEFactory(CustomcellsPackage.eNS_URI);
-            if (theCustomcellsFactory != null) {
-                return theCustomcellsFactory;
-            }
-        } catch (Exception exception) {
-            EcorePlugin.INSTANCE.log(exception);
-        }
-        return new CustomcellsFactoryImpl();
-    }
+		try
+		{
+			CustomcellsFactory theCustomcellsFactory = (CustomcellsFactory)EPackage.Registry.INSTANCE.getEFactory(CustomcellsPackage.eNS_URI);
+			if (theCustomcellsFactory != null)
+			{
+				return theCustomcellsFactory;
+			}
+		}
+		catch (Exception exception)
+		{
+			EcorePlugin.INSTANCE.log(exception);
+		}
+		return new CustomcellsFactoryImpl();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates an instance of the factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+    public CustomcellsFactoryImpl() {
+		super();
+	}
+
+    /**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EObject create(EClass eClass) {
-        switch (eClass.getClassifierID()) {
-            case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION:
-                return this.createCellCheckboxWidgetDescription();
-            default:
-                throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-        }
-    }
+		switch (eClass.getClassifierID())
+		{
+			case CustomcellsPackage.CELL_CHECKBOX_WIDGET_DESCRIPTION: return createCellCheckboxWidgetDescription();
+			default:
+				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		}
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public CellCheckboxWidgetDescription createCellCheckboxWidgetDescription() {
-        CellCheckboxWidgetDescriptionImpl cellCheckboxWidgetDescription = new CellCheckboxWidgetDescriptionImpl();
-        return cellCheckboxWidgetDescription;
-    }
+		CellCheckboxWidgetDescriptionImpl cellCheckboxWidgetDescription = new CellCheckboxWidgetDescriptionImpl();
+		return cellCheckboxWidgetDescription;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public CustomcellsPackage getCustomcellsPackage() {
-        return (CustomcellsPackage) this.getEPackage();
-    }
+		return (CustomcellsPackage)getEPackage();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     * @deprecated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @deprecated
+	 * @generated
+	 */
     @Deprecated
     public static CustomcellsPackage getPackage() {
-        return CustomcellsPackage.eINSTANCE;
-    }
+		return CustomcellsPackage.eINSTANCE;
+	}
 
 } // CustomcellsFactoryImpl

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.task.Team#getMembers <em>Members</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.task.Team#getMembers <em>Members</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.task.TaskPackage#getTeam()
@@ -30,14 +30,14 @@ import org.eclipse.emf.common.util.EList;
  */
 public interface Team extends Resource {
     /**
-     * Returns the value of the '<em><b>Members</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.task.Person}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Members</em>' reference list.
-     * @see org.eclipse.sirius.components.task.TaskPackage#getTeam_Members()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Members</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.task.Person}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Members</em>' reference list.
+	 * @see org.eclipse.sirius.components.task.TaskPackage#getTeam_Members()
+	 * @model
+	 * @generated
+	 */
     EList<Person> getMembers();
 
 } // Team

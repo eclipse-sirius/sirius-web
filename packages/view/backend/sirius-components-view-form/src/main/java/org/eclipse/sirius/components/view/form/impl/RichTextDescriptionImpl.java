@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,44 +33,42 @@ import org.eclipse.sirius.components.view.form.RichTextDescription;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl#getValueExpression <em>Value
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl#getBody <em>Body</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl#getIsEnabledExpression <em>Is Enabled
- * Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl#getValueExpression <em>Value Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl#getBody <em>Body</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.RichTextDescriptionImpl#getIsEnabledExpression <em>Is Enabled Expression</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements RichTextDescription {
     /**
-     * The default value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getValueExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getValueExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String VALUE_EXPRESSION_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getValueExpression() <em>Value Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getValueExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getValueExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String valueExpression = VALUE_EXPRESSION_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getBody() <em>Body</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getBody()
-     * @generated
-     * @ordered
-     */
+	 * @see #getBody()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Operation> body;
 
     /**
@@ -94,194 +92,186 @@ public class RichTextDescriptionImpl extends WidgetDescriptionImpl implements Ri
     protected String isEnabledExpression = IS_ENABLED_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RichTextDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.RICH_TEXT_DESCRIPTION;
-    }
+		return FormPackage.Literals.RICH_TEXT_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getValueExpression() {
-        return this.valueExpression;
-    }
+		return valueExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setValueExpression(String newValueExpression) {
-        String oldValueExpression = this.valueExpression;
-        this.valueExpression = newValueExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION, oldValueExpression, this.valueExpression));
-    }
+		String oldValueExpression = valueExpression;
+		valueExpression = newValueExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION, oldValueExpression, valueExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Operation> getBody() {
-        if (this.body == null) {
-            this.body = new EObjectContainmentEList<>(Operation.class, this, FormPackage.RICH_TEXT_DESCRIPTION__BODY);
-        }
-        return this.body;
-    }
+		if (body == null)
+		{
+			body = new EObjectContainmentEList<Operation>(Operation.class, this, FormPackage.RICH_TEXT_DESCRIPTION__BODY);
+		}
+		return body;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIsEnabledExpression() {
-        return this.isEnabledExpression;
-    }
+		return isEnabledExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIsEnabledExpression(String newIsEnabledExpression) {
-        String oldIsEnabledExpression = this.isEnabledExpression;
-        this.isEnabledExpression = newIsEnabledExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, this.isEnabledExpression));
-    }
+		String oldIsEnabledExpression = isEnabledExpression;
+		isEnabledExpression = newIsEnabledExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION, oldIsEnabledExpression, isEnabledExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
-                return ((InternalEList<?>) this.getBody()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
+				return ((InternalEList<?>)getBody()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
-                return this.getValueExpression();
-            case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
-                return this.getBody();
-            case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return this.getIsEnabledExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
+				return getValueExpression();
+			case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
+				return getBody();
+			case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				return getIsEnabledExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
-                this.setValueExpression((String) newValue);
-                return;
-            case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
-                this.getBody().clear();
-                this.getBody().addAll((Collection<? extends Operation>) newValue);
-                return;
-            case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.setIsEnabledExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
+				setValueExpression((String)newValue);
+				return;
+			case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
+				getBody().clear();
+				getBody().addAll((Collection<? extends Operation>)newValue);
+				return;
+			case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				setIsEnabledExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
-                this.setValueExpression(VALUE_EXPRESSION_EDEFAULT);
-                return;
-            case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
-                this.getBody().clear();
-                return;
-            case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
+				setValueExpression(VALUE_EXPRESSION_EDEFAULT);
+				return;
+			case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
+				getBody().clear();
+				return;
+			case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				setIsEnabledExpression(IS_ENABLED_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
-                return VALUE_EXPRESSION_EDEFAULT == null ? this.valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(this.valueExpression);
-            case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
-                return this.body != null && !this.body.isEmpty();
-            case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                return IS_ENABLED_EXPRESSION_EDEFAULT == null ? this.isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(this.isEnabledExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.RICH_TEXT_DESCRIPTION__VALUE_EXPRESSION:
+				return VALUE_EXPRESSION_EDEFAULT == null ? valueExpression != null : !VALUE_EXPRESSION_EDEFAULT.equals(valueExpression);
+			case FormPackage.RICH_TEXT_DESCRIPTION__BODY:
+				return body != null && !body.isEmpty();
+			case FormPackage.RICH_TEXT_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				return IS_ENABLED_EXPRESSION_EDEFAULT == null ? isEnabledExpression != null : !IS_ENABLED_EXPRESSION_EDEFAULT.equals(isEnabledExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (valueExpression: ");
-        result.append(this.valueExpression);
-        result.append(", IsEnabledExpression: ");
-        result.append(this.isEnabledExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (valueExpression: ");
+		result.append(valueExpression);
+		result.append(", IsEnabledExpression: ");
+		result.append(isEnabledExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // RichTextDescriptionImpl

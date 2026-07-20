@@ -28,8 +28,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeDecoratorDescriptionImpl#getNodeDescriptions <em>Node
- * Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.NodeDecoratorDescriptionImpl#getNodeDescriptions <em>Node Descriptions</em>}</li>
  * </ul>
  *
  * @generated
@@ -46,95 +45,93 @@ public class NodeDecoratorDescriptionImpl extends DecoratorDescriptionImpl imple
     protected EList<NodeDescription> nodeDescriptions;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected NodeDecoratorDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.NODE_DECORATOR_DESCRIPTION;
-    }
+		return DiagramPackage.Literals.NODE_DECORATOR_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<NodeDescription> getNodeDescriptions() {
-        if (this.nodeDescriptions == null) {
-            this.nodeDescriptions = new EObjectResolvingEList<>(NodeDescription.class, this, DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS);
-        }
-        return this.nodeDescriptions;
-    }
+		if (nodeDescriptions == null)
+		{
+			nodeDescriptions = new EObjectResolvingEList<NodeDescription>(NodeDescription.class, this, DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS);
+		}
+		return nodeDescriptions;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS:
-                return this.getNodeDescriptions();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS:
+				return getNodeDescriptions();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS:
-                this.getNodeDescriptions().clear();
-                this.getNodeDescriptions().addAll((Collection<? extends NodeDescription>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS:
+				getNodeDescriptions().clear();
+				getNodeDescriptions().addAll((Collection<? extends NodeDescription>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS:
-                this.getNodeDescriptions().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS:
+				getNodeDescriptions().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS:
-                return this.nodeDescriptions != null && !this.nodeDescriptions.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.NODE_DECORATOR_DESCRIPTION__NODE_DESCRIPTIONS:
+				return nodeDescriptions != null && !nodeDescriptions.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // NodeDecoratorDescriptionImpl

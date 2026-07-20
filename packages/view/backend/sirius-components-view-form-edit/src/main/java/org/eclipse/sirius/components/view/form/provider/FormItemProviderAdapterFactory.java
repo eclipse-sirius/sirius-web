@@ -109,26 +109,26 @@ import org.eclipse.sirius.components.view.util.ViewSwitch;
  */
 public class FormItemProviderAdapterFactory extends FormAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable, IChildCreationExtender {
     /**
-     * This keeps track of the root adapter factory that delegates to this adapter factory. <!-- begin-user-doc --> <!--
+	 * This keeps track of the root adapter factory that delegates to this adapter factory.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ComposedAdapterFactory parentAdapterFactory;
 
     /**
-     * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!-- begin-user-doc --> <!--
+	 * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
 
     /**
-     * This helps manage the child creation extenders. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This helps manage the child creation extenders.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ChildCreationExtenderManager childCreationExtenderManager = new ChildCreationExtenderManager(FormEditPlugin.INSTANCE, FormPackage.eNS_URI);
 
     /**
@@ -137,27 +137,26 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
      *
      * @generated
      */
-    protected Collection<Object> supportedTypes = new ArrayList<>();
+    protected Collection<Object> supportedTypes = new ArrayList<Object>();
 
     /**
-     * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public FormItemProviderAdapterFactory() {
-        this.supportedTypes.add(IEditingDomainItemProvider.class);
-        this.supportedTypes.add(IStructuredItemContentProvider.class);
-        this.supportedTypes.add(ITreeItemContentProvider.class);
-        this.supportedTypes.add(IItemLabelProvider.class);
-        this.supportedTypes.add(IItemPropertySource.class);
-    }
+		supportedTypes.add(IEditingDomainItemProvider.class);
+		supportedTypes.add(IStructuredItemContentProvider.class);
+		supportedTypes.add(ITreeItemContentProvider.class);
+		supportedTypes.add(IItemLabelProvider.class);
+		supportedTypes.add(IItemPropertySource.class);
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FormDescriptionItemProvider formDescriptionItemProvider;
 
     /**
@@ -176,11 +175,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormVariable}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormVariable} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FormVariableItemProvider formVariableItemProvider;
 
     /**
@@ -199,11 +197,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.PageDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.PageDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected PageDescriptionItemProvider pageDescriptionItemProvider;
 
     /**
@@ -222,11 +219,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.GroupDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.GroupDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected GroupDescriptionItemProvider groupDescriptionItemProvider;
 
     /**
@@ -245,12 +241,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.BarChartDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.BarChartDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected BarChartDescriptionItemProvider barChartDescriptionItemProvider;
 
     /**
@@ -269,12 +264,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.SplitButtonDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.SplitButtonDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected SplitButtonDescriptionItemProvider splitButtonDescriptionItemProvider;
 
     /**
@@ -293,12 +287,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ButtonDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ButtonDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ButtonDescriptionItemProvider buttonDescriptionItemProvider;
 
     /**
@@ -317,12 +310,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.CheckboxDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.CheckboxDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected CheckboxDescriptionItemProvider checkboxDescriptionItemProvider;
 
     /**
@@ -341,12 +333,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription} instances. <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription} instances.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected FlexboxContainerDescriptionItemProvider flexboxContainerDescriptionItemProvider;
 
     /**
@@ -365,11 +356,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ImageDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ImageDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ImageDescriptionItemProvider imageDescriptionItemProvider;
 
     /**
@@ -388,11 +378,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.LabelDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.LabelDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected LabelDescriptionItemProvider labelDescriptionItemProvider;
 
     /**
@@ -411,11 +400,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.LinkDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.LinkDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected LinkDescriptionItemProvider linkDescriptionItemProvider;
 
     /**
@@ -434,11 +422,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ListDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ListDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ListDescriptionItemProvider listDescriptionItemProvider;
 
     /**
@@ -457,12 +444,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.MultiSelectDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.MultiSelectDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected MultiSelectDescriptionItemProvider multiSelectDescriptionItemProvider;
 
     /**
@@ -481,11 +467,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.TreeDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.TreeDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected TreeDescriptionItemProvider treeDescriptionItemProvider;
 
     /**
@@ -504,12 +489,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.DateTimeDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.DateTimeDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected DateTimeDescriptionItemProvider dateTimeDescriptionItemProvider;
 
     /**
@@ -528,12 +512,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.SliderDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.SliderDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected SliderDescriptionItemProvider sliderDescriptionItemProvider;
 
     /**
@@ -552,12 +535,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.PieChartDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.PieChartDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected PieChartDescriptionItemProvider pieChartDescriptionItemProvider;
 
     /**
@@ -576,11 +558,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.RadioDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.RadioDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RadioDescriptionItemProvider radioDescriptionItemProvider;
 
     /**
@@ -599,12 +580,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.RichTextDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.RichTextDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected RichTextDescriptionItemProvider richTextDescriptionItemProvider;
 
     /**
@@ -623,12 +603,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.SelectDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.SelectDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected SelectDescriptionItemProvider selectDescriptionItemProvider;
 
     /**
@@ -647,12 +626,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.TextAreaDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.TextAreaDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected TextAreaDescriptionItemProvider textAreaDescriptionItemProvider;
 
     /**
@@ -671,12 +649,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.TextfieldDescription} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.TextfieldDescription} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected TextfieldDescriptionItemProvider textfieldDescriptionItemProvider;
 
     /**
@@ -695,12 +672,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.BarChartDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.BarChartDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected BarChartDescriptionStyleItemProvider barChartDescriptionStyleItemProvider;
 
     /**
@@ -744,12 +720,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ButtonDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ButtonDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ButtonDescriptionStyleItemProvider buttonDescriptionStyleItemProvider;
 
     /**
@@ -768,12 +743,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle} instances. <!-- begin-user-doc
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ConditionalButtonDescriptionStyle} instances.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ConditionalButtonDescriptionStyleItemProvider conditionalButtonDescriptionStyleItemProvider;
 
     /**
@@ -792,12 +766,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.CheckboxDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected CheckboxDescriptionStyleItemProvider checkboxDescriptionStyleItemProvider;
 
     /**
@@ -841,12 +814,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.LabelDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.LabelDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected LabelDescriptionStyleItemProvider labelDescriptionStyleItemProvider;
 
     /**
@@ -865,12 +837,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle} instances. <!-- begin-user-doc
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ConditionalLabelDescriptionStyle} instances.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ConditionalLabelDescriptionStyleItemProvider conditionalLabelDescriptionStyleItemProvider;
 
     /**
@@ -889,12 +860,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.LinkDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.LinkDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected LinkDescriptionStyleItemProvider linkDescriptionStyleItemProvider;
 
     /**
@@ -913,12 +883,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle} instances. <!-- begin-user-doc
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ConditionalLinkDescriptionStyle} instances.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ConditionalLinkDescriptionStyleItemProvider conditionalLinkDescriptionStyleItemProvider;
 
     /**
@@ -937,12 +906,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ListDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ListDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ListDescriptionStyleItemProvider listDescriptionStyleItemProvider;
 
     /**
@@ -961,12 +929,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle} instances. <!-- begin-user-doc
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ConditionalListDescriptionStyle} instances.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ConditionalListDescriptionStyleItemProvider conditionalListDescriptionStyleItemProvider;
 
     /**
@@ -985,12 +952,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle} instances. <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.MultiSelectDescriptionStyle} instances.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected MultiSelectDescriptionStyleItemProvider multiSelectDescriptionStyleItemProvider;
 
     /**
@@ -1034,12 +1000,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.PieChartDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.PieChartDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected PieChartDescriptionStyleItemProvider pieChartDescriptionStyleItemProvider;
 
     /**
@@ -1083,12 +1048,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.RadioDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.RadioDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected RadioDescriptionStyleItemProvider radioDescriptionStyleItemProvider;
 
     /**
@@ -1107,12 +1071,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle} instances. <!-- begin-user-doc
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ConditionalRadioDescriptionStyle} instances.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ConditionalRadioDescriptionStyleItemProvider conditionalRadioDescriptionStyleItemProvider;
 
     /**
@@ -1131,12 +1094,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.SelectDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected SelectDescriptionStyleItemProvider selectDescriptionStyleItemProvider;
 
     /**
@@ -1155,12 +1117,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle} instances. <!-- begin-user-doc
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ConditionalSelectDescriptionStyle} instances.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ConditionalSelectDescriptionStyleItemProvider conditionalSelectDescriptionStyleItemProvider;
 
     /**
@@ -1179,12 +1140,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.TextareaDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.TextareaDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected TextareaDescriptionStyleItemProvider textareaDescriptionStyleItemProvider;
 
     /**
@@ -1228,12 +1188,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.TextfieldDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected TextfieldDescriptionStyleItemProvider textfieldDescriptionStyleItemProvider;
 
     /**
@@ -1277,12 +1236,11 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.DateTimeDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected DateTimeDescriptionStyleItemProvider dateTimeDescriptionStyleItemProvider;
 
     /**
@@ -1326,21 +1284,19 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ContainerBorderStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ContainerBorderStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ContainerBorderStyleItemProvider containerBorderStyleItemProvider;
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle} instances. <!-- begin-user-doc
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.ConditionalContainerBorderStyle} instances.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ConditionalContainerBorderStyleItemProvider conditionalContainerBorderStyleItemProvider;
 
     /**
@@ -1374,11 +1330,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormElementFor}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormElementFor} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FormElementForItemProvider formElementForItemProvider;
 
     /**
@@ -1397,11 +1352,10 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormElementIf}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.form.FormElementIf} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FormElementIfItemProvider formElementIfItemProvider;
 
     /**
@@ -1420,279 +1374,224 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
     }
 
     /**
-     * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the root adapter factory that contains this factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
-    }
+		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
+	}
 
     /**
-     * This sets the composed adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This sets the composed adapter factory that contains this factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
-        this.parentAdapterFactory = parentAdapterFactory;
-    }
+		this.parentAdapterFactory = parentAdapterFactory;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isFactoryForType(Object type) {
-        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
-    }
+		return supportedTypes.contains(type) || super.isFactoryForType(type);
+	}
 
     /**
-     * This implementation substitutes the factory itself as the key for the adapter. <!-- begin-user-doc --> <!--
+	 * This implementation substitutes the factory itself as the key for the adapter.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter adapt(Notifier notifier, Object type) {
-        return super.adapt(notifier, this);
-    }
+		return super.adapt(notifier, this);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object adapt(Object object, Object type) {
-        if (this.isFactoryForType(type)) {
-            Object adapter = super.adapt(object, type);
-            if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
-                return adapter;
-            }
-        }
+		if (isFactoryForType(type))
+		{
+			Object adapter = super.adapt(object, type);
+			if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter)))
+			{
+				return adapter;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public List<IChildCreationExtender> getChildCreationExtenders() {
-        return this.childCreationExtenderManager.getChildCreationExtenders();
-    }
+		return childCreationExtenderManager.getChildCreationExtenders();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Collection<?> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
-        return this.childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
-    }
+		return childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ResourceLocator getResourceLocator() {
-        return this.childCreationExtenderManager;
-    }
+		return childCreationExtenderManager;
+	}
 
     /**
-     * This adds a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a listener.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void addListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.addListener(notifyChangedListener);
-    }
+		changeNotifier.addListener(notifyChangedListener);
+	}
 
     /**
-     * This removes a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This removes a listener.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void removeListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.removeListener(notifyChangedListener);
-    }
+		changeNotifier.removeListener(notifyChangedListener);
+	}
 
     /**
-     * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!-- begin-user-doc --> <!--
+	 * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void fireNotifyChanged(Notification notification) {
-        this.changeNotifier.fireNotifyChanged(notification);
+		changeNotifier.fireNotifyChanged(notification);
 
-        if (this.parentAdapterFactory != null) {
-            this.parentAdapterFactory.fireNotifyChanged(notification);
-        }
-    }
+		if (parentAdapterFactory != null)
+		{
+			parentAdapterFactory.fireNotifyChanged(notification);
+		}
+	}
 
     /**
-     * This disposes all of the item providers created by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This disposes all of the item providers created by this factory. 
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void dispose() {
-        if (this.formDescriptionItemProvider != null)
-            this.formDescriptionItemProvider.dispose();
-        if (this.formVariableItemProvider != null)
-            this.formVariableItemProvider.dispose();
-        if (this.pageDescriptionItemProvider != null)
-            this.pageDescriptionItemProvider.dispose();
-        if (this.groupDescriptionItemProvider != null)
-            this.groupDescriptionItemProvider.dispose();
-        if (this.barChartDescriptionItemProvider != null)
-            this.barChartDescriptionItemProvider.dispose();
-        if (this.buttonDescriptionItemProvider != null)
-            this.buttonDescriptionItemProvider.dispose();
-        if (this.checkboxDescriptionItemProvider != null)
-            this.checkboxDescriptionItemProvider.dispose();
-        if (this.dateTimeDescriptionItemProvider != null)
-            this.dateTimeDescriptionItemProvider.dispose();
-        if (this.flexboxContainerDescriptionItemProvider != null)
-            this.flexboxContainerDescriptionItemProvider.dispose();
-        if (this.imageDescriptionItemProvider != null)
-            this.imageDescriptionItemProvider.dispose();
-        if (this.labelDescriptionItemProvider != null)
-            this.labelDescriptionItemProvider.dispose();
-        if (this.linkDescriptionItemProvider != null)
-            this.linkDescriptionItemProvider.dispose();
-        if (this.listDescriptionItemProvider != null)
-            this.listDescriptionItemProvider.dispose();
-        if (this.multiSelectDescriptionItemProvider != null)
-            this.multiSelectDescriptionItemProvider.dispose();
-        if (this.pieChartDescriptionItemProvider != null)
-            this.pieChartDescriptionItemProvider.dispose();
-        if (this.radioDescriptionItemProvider != null)
-            this.radioDescriptionItemProvider.dispose();
-        if (this.richTextDescriptionItemProvider != null)
-            this.richTextDescriptionItemProvider.dispose();
-        if (this.selectDescriptionItemProvider != null)
-            this.selectDescriptionItemProvider.dispose();
-        if (this.splitButtonDescriptionItemProvider != null)
-            this.splitButtonDescriptionItemProvider.dispose();
-        if (this.textAreaDescriptionItemProvider != null)
-            this.textAreaDescriptionItemProvider.dispose();
-        if (this.textfieldDescriptionItemProvider != null)
-            this.textfieldDescriptionItemProvider.dispose();
-        if (this.treeDescriptionItemProvider != null)
-            this.treeDescriptionItemProvider.dispose();
-        if (this.sliderDescriptionItemProvider != null)
-            this.sliderDescriptionItemProvider.dispose();
-        if (this.barChartDescriptionStyleItemProvider != null)
-            this.barChartDescriptionStyleItemProvider.dispose();
-        if (this.conditionalBarChartDescriptionStyleItemProvider != null)
-            this.conditionalBarChartDescriptionStyleItemProvider.dispose();
-        if (this.buttonDescriptionStyleItemProvider != null)
-            this.buttonDescriptionStyleItemProvider.dispose();
-        if (this.conditionalButtonDescriptionStyleItemProvider != null)
-            this.conditionalButtonDescriptionStyleItemProvider.dispose();
-        if (this.checkboxDescriptionStyleItemProvider != null)
-            this.checkboxDescriptionStyleItemProvider.dispose();
-        if (this.conditionalCheckboxDescriptionStyleItemProvider != null)
-            this.conditionalCheckboxDescriptionStyleItemProvider.dispose();
-        if (this.dateTimeDescriptionStyleItemProvider != null)
-            this.dateTimeDescriptionStyleItemProvider.dispose();
-        if (this.conditionalDateTimeDescriptionStyleItemProvider != null)
-            this.conditionalDateTimeDescriptionStyleItemProvider.dispose();
-        if (this.labelDescriptionStyleItemProvider != null)
-            this.labelDescriptionStyleItemProvider.dispose();
-        if (this.conditionalLabelDescriptionStyleItemProvider != null)
-            this.conditionalLabelDescriptionStyleItemProvider.dispose();
-        if (this.linkDescriptionStyleItemProvider != null)
-            this.linkDescriptionStyleItemProvider.dispose();
-        if (this.conditionalLinkDescriptionStyleItemProvider != null)
-            this.conditionalLinkDescriptionStyleItemProvider.dispose();
-        if (this.listDescriptionStyleItemProvider != null)
-            this.listDescriptionStyleItemProvider.dispose();
-        if (this.conditionalListDescriptionStyleItemProvider != null)
-            this.conditionalListDescriptionStyleItemProvider.dispose();
-        if (this.multiSelectDescriptionStyleItemProvider != null)
-            this.multiSelectDescriptionStyleItemProvider.dispose();
-        if (this.conditionalMultiSelectDescriptionStyleItemProvider != null)
-            this.conditionalMultiSelectDescriptionStyleItemProvider.dispose();
-        if (this.pieChartDescriptionStyleItemProvider != null)
-            this.pieChartDescriptionStyleItemProvider.dispose();
-        if (this.conditionalPieChartDescriptionStyleItemProvider != null)
-            this.conditionalPieChartDescriptionStyleItemProvider.dispose();
-        if (this.radioDescriptionStyleItemProvider != null)
-            this.radioDescriptionStyleItemProvider.dispose();
-        if (this.conditionalRadioDescriptionStyleItemProvider != null)
-            this.conditionalRadioDescriptionStyleItemProvider.dispose();
-        if (this.selectDescriptionStyleItemProvider != null)
-            this.selectDescriptionStyleItemProvider.dispose();
-        if (this.conditionalSelectDescriptionStyleItemProvider != null)
-            this.conditionalSelectDescriptionStyleItemProvider.dispose();
-        if (this.textareaDescriptionStyleItemProvider != null)
-            this.textareaDescriptionStyleItemProvider.dispose();
-        if (this.conditionalTextareaDescriptionStyleItemProvider != null)
-            this.conditionalTextareaDescriptionStyleItemProvider.dispose();
-        if (this.textfieldDescriptionStyleItemProvider != null)
-            this.textfieldDescriptionStyleItemProvider.dispose();
-        if (this.conditionalTextfieldDescriptionStyleItemProvider != null)
-            this.conditionalTextfieldDescriptionStyleItemProvider.dispose();
-        if (this.containerBorderStyleItemProvider != null)
-            this.containerBorderStyleItemProvider.dispose();
-        if (this.conditionalContainerBorderStyleItemProvider != null)
-            this.conditionalContainerBorderStyleItemProvider.dispose();
-        if (this.formElementForItemProvider != null)
-            this.formElementForItemProvider.dispose();
-        if (this.formElementIfItemProvider != null)
-            this.formElementIfItemProvider.dispose();
-    }
+		if (formDescriptionItemProvider != null) formDescriptionItemProvider.dispose();
+		if (formVariableItemProvider != null) formVariableItemProvider.dispose();
+		if (pageDescriptionItemProvider != null) pageDescriptionItemProvider.dispose();
+		if (groupDescriptionItemProvider != null) groupDescriptionItemProvider.dispose();
+		if (barChartDescriptionItemProvider != null) barChartDescriptionItemProvider.dispose();
+		if (buttonDescriptionItemProvider != null) buttonDescriptionItemProvider.dispose();
+		if (checkboxDescriptionItemProvider != null) checkboxDescriptionItemProvider.dispose();
+		if (dateTimeDescriptionItemProvider != null) dateTimeDescriptionItemProvider.dispose();
+		if (flexboxContainerDescriptionItemProvider != null) flexboxContainerDescriptionItemProvider.dispose();
+		if (imageDescriptionItemProvider != null) imageDescriptionItemProvider.dispose();
+		if (labelDescriptionItemProvider != null) labelDescriptionItemProvider.dispose();
+		if (linkDescriptionItemProvider != null) linkDescriptionItemProvider.dispose();
+		if (listDescriptionItemProvider != null) listDescriptionItemProvider.dispose();
+		if (multiSelectDescriptionItemProvider != null) multiSelectDescriptionItemProvider.dispose();
+		if (pieChartDescriptionItemProvider != null) pieChartDescriptionItemProvider.dispose();
+		if (radioDescriptionItemProvider != null) radioDescriptionItemProvider.dispose();
+		if (richTextDescriptionItemProvider != null) richTextDescriptionItemProvider.dispose();
+		if (selectDescriptionItemProvider != null) selectDescriptionItemProvider.dispose();
+		if (splitButtonDescriptionItemProvider != null) splitButtonDescriptionItemProvider.dispose();
+		if (textAreaDescriptionItemProvider != null) textAreaDescriptionItemProvider.dispose();
+		if (textfieldDescriptionItemProvider != null) textfieldDescriptionItemProvider.dispose();
+		if (treeDescriptionItemProvider != null) treeDescriptionItemProvider.dispose();
+		if (sliderDescriptionItemProvider != null) sliderDescriptionItemProvider.dispose();
+		if (barChartDescriptionStyleItemProvider != null) barChartDescriptionStyleItemProvider.dispose();
+		if (conditionalBarChartDescriptionStyleItemProvider != null) conditionalBarChartDescriptionStyleItemProvider.dispose();
+		if (buttonDescriptionStyleItemProvider != null) buttonDescriptionStyleItemProvider.dispose();
+		if (conditionalButtonDescriptionStyleItemProvider != null) conditionalButtonDescriptionStyleItemProvider.dispose();
+		if (checkboxDescriptionStyleItemProvider != null) checkboxDescriptionStyleItemProvider.dispose();
+		if (conditionalCheckboxDescriptionStyleItemProvider != null) conditionalCheckboxDescriptionStyleItemProvider.dispose();
+		if (dateTimeDescriptionStyleItemProvider != null) dateTimeDescriptionStyleItemProvider.dispose();
+		if (conditionalDateTimeDescriptionStyleItemProvider != null) conditionalDateTimeDescriptionStyleItemProvider.dispose();
+		if (labelDescriptionStyleItemProvider != null) labelDescriptionStyleItemProvider.dispose();
+		if (conditionalLabelDescriptionStyleItemProvider != null) conditionalLabelDescriptionStyleItemProvider.dispose();
+		if (linkDescriptionStyleItemProvider != null) linkDescriptionStyleItemProvider.dispose();
+		if (conditionalLinkDescriptionStyleItemProvider != null) conditionalLinkDescriptionStyleItemProvider.dispose();
+		if (listDescriptionStyleItemProvider != null) listDescriptionStyleItemProvider.dispose();
+		if (conditionalListDescriptionStyleItemProvider != null) conditionalListDescriptionStyleItemProvider.dispose();
+		if (multiSelectDescriptionStyleItemProvider != null) multiSelectDescriptionStyleItemProvider.dispose();
+		if (conditionalMultiSelectDescriptionStyleItemProvider != null) conditionalMultiSelectDescriptionStyleItemProvider.dispose();
+		if (pieChartDescriptionStyleItemProvider != null) pieChartDescriptionStyleItemProvider.dispose();
+		if (conditionalPieChartDescriptionStyleItemProvider != null) conditionalPieChartDescriptionStyleItemProvider.dispose();
+		if (radioDescriptionStyleItemProvider != null) radioDescriptionStyleItemProvider.dispose();
+		if (conditionalRadioDescriptionStyleItemProvider != null) conditionalRadioDescriptionStyleItemProvider.dispose();
+		if (selectDescriptionStyleItemProvider != null) selectDescriptionStyleItemProvider.dispose();
+		if (conditionalSelectDescriptionStyleItemProvider != null) conditionalSelectDescriptionStyleItemProvider.dispose();
+		if (textareaDescriptionStyleItemProvider != null) textareaDescriptionStyleItemProvider.dispose();
+		if (conditionalTextareaDescriptionStyleItemProvider != null) conditionalTextareaDescriptionStyleItemProvider.dispose();
+		if (textfieldDescriptionStyleItemProvider != null) textfieldDescriptionStyleItemProvider.dispose();
+		if (conditionalTextfieldDescriptionStyleItemProvider != null) conditionalTextfieldDescriptionStyleItemProvider.dispose();
+		if (containerBorderStyleItemProvider != null) containerBorderStyleItemProvider.dispose();
+		if (conditionalContainerBorderStyleItemProvider != null) conditionalContainerBorderStyleItemProvider.dispose();
+		if (formElementForItemProvider != null) formElementForItemProvider.dispose();
+		if (formElementIfItemProvider != null) formElementIfItemProvider.dispose();
+	}
 
     /**
-     * A child creation extender for the {@link ViewPackage}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * A child creation extender for the {@link ViewPackage}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public static class ViewChildCreationExtender implements IChildCreationExtender {
         /**
-         * The switch for creating child descriptors specific to each extended class. <!-- begin-user-doc --> <!--
+		 * The switch for creating child descriptors specific to each extended class.
+		 * <!-- begin-user-doc --> <!--
          * end-user-doc -->
-         *
-         * @generated
-         */
+		 * @generated
+		 */
         protected static class CreationSwitch extends ViewSwitch<Object> {
             /**
-             * The child descriptors being populated. <!-- begin-user-doc --> <!-- end-user-doc -->
-             *
-             * @generated
-             */
+			 * The child descriptors being populated.
+			 * <!-- begin-user-doc --> <!-- end-user-doc -->
+			 * @generated
+			 */
             protected List<Object> newChildDescriptors;
 
             /**
-             * The domain in which to create the children. <!-- begin-user-doc --> <!-- end-user-doc -->
-             *
-             * @generated
-             */
+			 * The domain in which to create the children.
+			 * <!-- begin-user-doc --> <!-- end-user-doc -->
+			 * @generated
+			 */
             protected EditingDomain editingDomain;
 
             /**
-             * Creates the a switch for populating child descriptors in the given domain. <!-- begin-user-doc --> <!--
+			 * Creates the a switch for populating child descriptors in the given domain.
+			 * <!-- begin-user-doc --> <!--
              * end-user-doc -->
-             *
-             * @generated
-             */
+			 * @generated
+			 */
             CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) {
-                this.newChildDescriptors = newChildDescriptors;
-                this.editingDomain = editingDomain;
-            }
+				this.newChildDescriptors = newChildDescriptors;
+				this.editingDomain = editingDomain;
+			}
 
             /**
              * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -1713,37 +1612,34 @@ public class FormItemProviderAdapterFactory extends FormAdapterFactory implement
             }
 
             /**
-             * <!-- begin-user-doc --> <!-- end-user-doc -->
-             *
-             * @generated
-             */
+			 * <!-- begin-user-doc --> <!-- end-user-doc -->
+			 * @generated
+			 */
             protected CommandParameter createChildParameter(Object feature, Object child) {
-                return new CommandParameter(null, feature, child);
-            }
+				return new CommandParameter(null, feature, child);
+			}
 
         }
 
         /**
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * @generated
+		 */
         @Override
         public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
-            ArrayList<Object> result = new ArrayList<>();
-            new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
-            return result;
-        }
+			ArrayList<Object> result = new ArrayList<Object>();
+			new CreationSwitch(result, editingDomain).doSwitch((EObject)object);
+			return result;
+		}
 
         /**
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * @generated
+		 */
         @Override
         public ResourceLocator getResourceLocator() {
-            return FormEditPlugin.INSTANCE;
-        }
+			return FormEditPlugin.INSTANCE;
+		}
     }
 
 }
