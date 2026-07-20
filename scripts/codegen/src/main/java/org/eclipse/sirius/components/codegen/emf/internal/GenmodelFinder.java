@@ -30,6 +30,7 @@ public final class GenmodelFinder {
         PathMatcher matcher = repositoryRoot.getFileSystem().getPathMatcher("glob:" + genmodelPattern);
         try (Stream<Path> paths = Files.walk(repositoryRoot)) {
             return paths.filter(Files::isRegularFile)
+                    .filter(path -> !this.isBuildOutput(normalizedRoot, path))
                     .filter(path -> path.getFileName().toString().endsWith(this.genmodelExtension))
                     .filter(path -> this.matches(normalizedRoot, matcher, path))
                     .sorted(Comparator.naturalOrder())
@@ -42,5 +43,18 @@ public final class GenmodelFinder {
     private boolean matches(Path repositoryRoot, PathMatcher matcher, Path path) {
         Path normalizedPath = path.toAbsolutePath().normalize();
         return normalizedPath.startsWith(repositoryRoot) && matcher.matches(repositoryRoot.relativize(normalizedPath));
+    }
+
+    private boolean isBuildOutput(Path repositoryRoot, Path path) {
+        Path normalizedPath = path.toAbsolutePath().normalize();
+        if (!normalizedPath.startsWith(repositoryRoot)) {
+            return false;
+        }
+        for (Path segment : repositoryRoot.relativize(normalizedPath)) {
+            if ("target".equals(segment.toString())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

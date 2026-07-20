@@ -60,6 +60,7 @@ public final class GenmodelGenerationService {
                 .addDescriptor(GenModelPackage.eNS_URI, GenModelGeneratorAdapterFactory.DESCRIPTOR);
         genModel.reconcile();
         genModel.setCanGenerate(true);
+        genModel.setDynamicTemplates(false);
         genModel.setCodeFormatting(true);
         genModel.setCommentFormatting(true);
         genModel.setCleanup(true);

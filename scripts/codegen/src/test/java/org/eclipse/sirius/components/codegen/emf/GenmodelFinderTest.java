@@ -40,4 +40,17 @@ public class GenmodelFinderTest {
 
         assertEquals(List.of(source.resolve("a.genmodel"), source.resolve("b.genmodel")), found);
     }
+
+    @Test
+    public void ignoresCompiledGenmodels() throws Exception {
+        Path root = this.temporaryFolder.newFolder("repository").toPath();
+        Path source = Files.createDirectories(root.resolve("module/src/main/resources/model"));
+        Path compiled = Files.createDirectories(root.resolve("module/target/classes/model"));
+        Path sourceGenmodel = Files.writeString(source.resolve("domain.genmodel"), "");
+        Files.writeString(compiled.resolve("domain.genmodel"), "");
+
+        List<Path> found = new GenmodelFinder().find(root, "**/src/**.genmodel");
+
+        assertEquals(List.of(sourceGenmodel), found);
+    }
 }
