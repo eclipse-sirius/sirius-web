@@ -14,11 +14,12 @@ import {
   RepresentationLoadingIndicator,
   Selection,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import { FormBasedView, FormContext, FormHandle } from '@eclipse-sirius/sirius-components-forms';
-import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
@@ -168,30 +169,14 @@ export const DetailsView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponen
     }
 
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Details">
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'row',
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: theme.palette.divider,
-          })}>
-          <MenuIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
-          <Typography
-            sx={(theme) => ({
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              marginBottom: theme.spacing(1),
-            })}>
-            Details
-          </Typography>
-        </Box>
-        <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
-          <div className={classes.toolbar}>{toolbar}</div>
-          <div className={classes.content}>{contents}</div>
-        </Box>
-      </Box>
+      <ViewAccordion id={id} title="Details">
+        <ViewAccordionContent>
+          <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
+            <div className={classes.toolbar}>{toolbar}</div>
+            <div className={classes.content}>{contents}</div>
+          </Box>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );

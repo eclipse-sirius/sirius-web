@@ -10,20 +10,14 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import React from 'react';
 
-import { WorkbenchSidePanelConfiguration, WorkbenchViewContribution } from './Workbench.types';
-
-export interface SidePanelProps {
-  editingContextId: string;
-  readOnly: boolean;
-  contributions: WorkbenchViewContribution[];
-  panelConfiguration: WorkbenchSidePanelConfiguration | null;
-  side: 'left' | 'right';
-  initialSize: number;
+export interface ViewAccordionProps {
+  id: string;
+  title: string;
+  children: React.ReactNode;
 }
 
-export interface SidePanelState {
-  selectedContributionIds: string[];
-  collapsedContributionIds: string[];
-  isOpen: boolean;
+export interface ViewAccordionContentProps {
+  children: React.ReactNode;
 }
