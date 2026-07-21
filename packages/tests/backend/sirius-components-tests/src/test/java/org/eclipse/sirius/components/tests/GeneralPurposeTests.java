@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -106,6 +106,8 @@ public class GeneralPurposeTests {
 
     private static final String CYPRESS_NO_UNNECESSARY_WAITING = "cypress/no-unnecessary-waiting";
 
+    private static final String GENERATED_NOT = "@generated NOT";
+
     private static final List<Pattern> COPYRIGHT_HEADER_START = List.of(
             Pattern.compile(Pattern.quote("/*******************************************************************************")),
             Pattern.compile(" \\* Copyright \\(c\\) [0-9]{4}(, [0-9]{4})* (.*)\\.$"),
@@ -132,6 +134,15 @@ public class GeneralPurposeTests {
             "/sirius-components-view-diagram-customnodes",
             "/sirius-components-papaya",
             "/sirius-components-widget-table-view"
+    );
+
+    private static final List<String> GENERATED_EDIT_MODULE_PATHS = List.of(
+            "/sirius-components-widget-reference-view-edit"
+    );
+
+    private static final List<String> IGNORED_GENERATED_EDIT_CLASSES_SUFFIX = List.of(
+            "ItemProviderAdapterFactory",
+            "EditPlugin"
     );
 
     /**
@@ -210,12 +221,26 @@ public class GeneralPurposeTests {
                             this.testNoContinue(index, line, javaFilePath);
                         }
                     }
+                    if (GENERATED_EDIT_MODULE_PATHS.stream()
+                            .anyMatch(modulePath -> javaFilePath.toString().replace(WINDOWS_PATH_SEPARATOR, UNIX_PATH_SEPARATOR).contains(modulePath))
+                            && IGNORED_GENERATED_EDIT_CLASSES_SUFFIX.stream().noneMatch(suffix -> javaFilePath.toString().endsWith(suffix + "." + JAVA_FILE_EXTENSION))) {
+                        for (int index = 0; index < lines.size(); index++) {
+                            String line = lines.get(index);
+                            this.testNoGeneratedNot(index, line, javaFilePath);
+                        }
+                    }
 
                     this.testCopyrightHeader(javaFilePath, lines);
                 } catch (IOException exception) {
                     fail(exception.getMessage());
                 }
             }
+        }
+    }
+
+    private void testNoGeneratedNot(int index, String line, Path javaFilePath) {
+        if (line.contains(GENERATED_NOT)) {
+            fail(this.createErrorMessage(GENERATED_NOT, javaFilePath, index));
         }
     }
 
