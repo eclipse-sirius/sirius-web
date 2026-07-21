@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,8 @@ package org.eclipse.sirius.components.papaya;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.papaya.OperationalActivity#getPrecondition <em>Precondition</em>}</li>
- * <li>{@link org.eclipse.sirius.components.papaya.OperationalActivity#getPostcondition <em>Postcondition</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.OperationalActivity#getPrecondition <em>Precondition</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.papaya.OperationalActivity#getPostcondition <em>Postcondition</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.papaya.PapayaPackage#getOperationalActivity()
@@ -30,47 +30,43 @@ package org.eclipse.sirius.components.papaya;
  */
 public interface OperationalActivity extends NamedElement, FolderElement {
     /**
-     * Returns the value of the '<em><b>Precondition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Precondition</em>' attribute.
-     * @see #setPrecondition(String)
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getOperationalActivity_Precondition()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Precondition</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Precondition</em>' attribute.
+	 * @see #setPrecondition(String)
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getOperationalActivity_Precondition()
+	 * @model
+	 * @generated
+	 */
     String getPrecondition();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.OperationalActivity#getPrecondition
-     * <em>Precondition</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Precondition</em>' attribute.
-     * @see #getPrecondition()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.papaya.OperationalActivity#getPrecondition <em>Precondition</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Precondition</em>' attribute.
+	 * @see #getPrecondition()
+	 * @generated
+	 */
     void setPrecondition(String value);
 
     /**
-     * Returns the value of the '<em><b>Postcondition</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Postcondition</em>' attribute.
-     * @see #setPostcondition(String)
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getOperationalActivity_Postcondition()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Postcondition</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Postcondition</em>' attribute.
+	 * @see #setPostcondition(String)
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getOperationalActivity_Postcondition()
+	 * @model
+	 * @generated
+	 */
     String getPostcondition();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.papaya.OperationalActivity#getPostcondition
-     * <em>Postcondition</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Postcondition</em>' attribute.
-     * @see #getPostcondition()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.papaya.OperationalActivity#getPostcondition <em>Postcondition</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Postcondition</em>' attribute.
+	 * @see #getPostcondition()
+	 * @generated
+	 */
     void setPostcondition(String value);
 
 } // OperationalActivity

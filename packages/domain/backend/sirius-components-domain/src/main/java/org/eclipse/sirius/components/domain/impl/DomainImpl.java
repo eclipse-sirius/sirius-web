@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,126 +30,124 @@ import org.eclipse.sirius.components.domain.Entity;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.domain.impl.DomainImpl#getTypes <em>Types</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.impl.DomainImpl#getTypes <em>Types</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class DomainImpl extends NamedElementImpl implements Domain {
     /**
-     * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list. <!-- begin-user-doc -->
+	 * The cached value of the '{@link #getTypes() <em>Types</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @see #getTypes()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTypes()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<Entity> types;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DomainImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DomainPackage.Literals.DOMAIN;
-    }
+		return DomainPackage.Literals.DOMAIN;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<Entity> getTypes() {
-        if (this.types == null) {
-            this.types = new EObjectContainmentEList<>(Entity.class, this, DomainPackage.DOMAIN__TYPES);
-        }
-        return this.types;
-    }
+		if (types == null)
+		{
+			types = new EObjectContainmentEList<Entity>(Entity.class, this, DomainPackage.DOMAIN__TYPES);
+		}
+		return types;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-        case DomainPackage.DOMAIN__TYPES:
-            return ((InternalEList<?>) this.getTypes()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.DOMAIN__TYPES:
+				return ((InternalEList<?>)getTypes()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-        case DomainPackage.DOMAIN__TYPES:
-            return this.getTypes();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.DOMAIN__TYPES:
+				return getTypes();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-        case DomainPackage.DOMAIN__TYPES:
-            this.getTypes().clear();
-            this.getTypes().addAll((Collection<? extends Entity>) newValue);
-            return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.DOMAIN__TYPES:
+				getTypes().clear();
+				getTypes().addAll((Collection<? extends Entity>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-        case DomainPackage.DOMAIN__TYPES:
-            this.getTypes().clear();
-            return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.DOMAIN__TYPES:
+				getTypes().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-        case DomainPackage.DOMAIN__TYPES:
-            return this.types != null && !this.types.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.DOMAIN__TYPES:
+				return types != null && !types.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // DomainImpl

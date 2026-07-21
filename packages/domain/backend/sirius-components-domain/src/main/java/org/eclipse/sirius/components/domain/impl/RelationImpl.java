@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,210 +26,202 @@ import org.eclipse.sirius.components.domain.Relation;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.domain.impl.RelationImpl#isContainment <em>Containment</em>}</li>
- * <li>{@link org.eclipse.sirius.components.domain.impl.RelationImpl#getTargetType <em>Target Type</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.impl.RelationImpl#isContainment <em>Containment</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.domain.impl.RelationImpl#getTargetType <em>Target Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class RelationImpl extends FeatureImpl implements Relation {
     /**
-     * The default value of the '{@link #isContainment() <em>Containment</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #isContainment() <em>Containment</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isContainment()
-     * @generated
-     * @ordered
-     */
+	 * @see #isContainment()
+	 * @generated
+	 * @ordered
+	 */
     protected static final boolean CONTAINMENT_EDEFAULT = false;
 
     /**
-     * The cached value of the '{@link #isContainment() <em>Containment</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #isContainment() <em>Containment</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #isContainment()
-     * @generated
-     * @ordered
-     */
+	 * @see #isContainment()
+	 * @generated
+	 * @ordered
+	 */
     protected boolean containment = CONTAINMENT_EDEFAULT;
 
     /**
-     * The cached value of the '{@link #getTargetType() <em>Target Type</em>}' reference. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getTargetType() <em>Target Type</em>}' reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getTargetType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getTargetType()
+	 * @generated
+	 * @ordered
+	 */
     protected Entity targetType;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected RelationImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DomainPackage.Literals.RELATION;
-    }
+		return DomainPackage.Literals.RELATION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isContainment() {
-        return this.containment;
-    }
+		return containment;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setContainment(boolean newContainment) {
-        boolean oldContainment = this.containment;
-        this.containment = newContainment;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.RELATION__CONTAINMENT, oldContainment, this.containment));
-    }
+		boolean oldContainment = containment;
+		containment = newContainment;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.RELATION__CONTAINMENT, oldContainment, containment));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Entity getTargetType() {
-        if (this.targetType != null && this.targetType.eIsProxy()) {
-            InternalEObject oldTargetType = (InternalEObject) this.targetType;
-            this.targetType = (Entity) this.eResolveProxy(oldTargetType);
-            if (this.targetType != oldTargetType) {
-                if (this.eNotificationRequired())
-                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE, DomainPackage.RELATION__TARGET_TYPE, oldTargetType, this.targetType));
-            }
-        }
-        return this.targetType;
-    }
+		if (targetType != null && targetType.eIsProxy())
+		{
+			InternalEObject oldTargetType = (InternalEObject)targetType;
+			targetType = (Entity)eResolveProxy(oldTargetType);
+			if (targetType != oldTargetType)
+			{
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DomainPackage.RELATION__TARGET_TYPE, oldTargetType, targetType));
+			}
+		}
+		return targetType;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public Entity basicGetTargetType() {
-        return this.targetType;
-    }
+		return targetType;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setTargetType(Entity newTargetType) {
-        Entity oldTargetType = this.targetType;
-        this.targetType = newTargetType;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.RELATION__TARGET_TYPE, oldTargetType, this.targetType));
-    }
+		Entity oldTargetType = targetType;
+		targetType = newTargetType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DomainPackage.RELATION__TARGET_TYPE, oldTargetType, targetType));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-        case DomainPackage.RELATION__CONTAINMENT:
-            return this.isContainment();
-        case DomainPackage.RELATION__TARGET_TYPE:
-            if (resolve)
-                return this.getTargetType();
-            return this.basicGetTargetType();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.RELATION__CONTAINMENT:
+				return isContainment();
+			case DomainPackage.RELATION__TARGET_TYPE:
+				if (resolve) return getTargetType();
+				return basicGetTargetType();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-        case DomainPackage.RELATION__CONTAINMENT:
-            this.setContainment((Boolean) newValue);
-            return;
-        case DomainPackage.RELATION__TARGET_TYPE:
-            this.setTargetType((Entity) newValue);
-            return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.RELATION__CONTAINMENT:
+				setContainment((Boolean)newValue);
+				return;
+			case DomainPackage.RELATION__TARGET_TYPE:
+				setTargetType((Entity)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-        case DomainPackage.RELATION__CONTAINMENT:
-            this.setContainment(CONTAINMENT_EDEFAULT);
-            return;
-        case DomainPackage.RELATION__TARGET_TYPE:
-            this.setTargetType((Entity) null);
-            return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.RELATION__CONTAINMENT:
+				setContainment(CONTAINMENT_EDEFAULT);
+				return;
+			case DomainPackage.RELATION__TARGET_TYPE:
+				setTargetType((Entity)null);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-        case DomainPackage.RELATION__CONTAINMENT:
-            return this.containment != CONTAINMENT_EDEFAULT;
-        case DomainPackage.RELATION__TARGET_TYPE:
-            return this.targetType != null;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DomainPackage.RELATION__CONTAINMENT:
+				return containment != CONTAINMENT_EDEFAULT;
+			case DomainPackage.RELATION__TARGET_TYPE:
+				return targetType != null;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (containment: ");
-        result.append(this.containment);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (containment: ");
+		result.append(containment);
+		result.append(')');
+		return result.toString();
+	}
 
 } // RelationImpl

@@ -25,10 +25,8 @@ import org.eclipse.sirius.components.view.diagram.DiagramToolbar;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramToolbarImpl#getPreconditionExpression
- * <em>Precondition Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramToolbarImpl#isExpandedByDefault <em>Expanded By
- * Default</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramToolbarImpl#getPreconditionExpression <em>Precondition Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.DiagramToolbarImpl#isExpandedByDefault <em>Expanded By Default</em>}</li>
  * </ul>
  *
  * @generated
@@ -75,155 +73,147 @@ public class DiagramToolbarImpl extends MinimalEObjectImpl.Container implements 
     protected boolean expandedByDefault = EXPANDED_BY_DEFAULT_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DiagramToolbarImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.DIAGRAM_TOOLBAR;
-    }
+		return DiagramPackage.Literals.DIAGRAM_TOOLBAR;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getPreconditionExpression() {
-        return this.preconditionExpression;
-    }
+		return preconditionExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setPreconditionExpression(String newPreconditionExpression) {
-        String oldPreconditionExpression = this.preconditionExpression;
-        this.preconditionExpression = newPreconditionExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION, oldPreconditionExpression, this.preconditionExpression));
-    }
+		String oldPreconditionExpression = preconditionExpression;
+		preconditionExpression = newPreconditionExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION, oldPreconditionExpression, preconditionExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isExpandedByDefault() {
-        return this.expandedByDefault;
-    }
+		return expandedByDefault;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setExpandedByDefault(boolean newExpandedByDefault) {
-        boolean oldExpandedByDefault = this.expandedByDefault;
-        this.expandedByDefault = newExpandedByDefault;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT, oldExpandedByDefault, this.expandedByDefault));
-    }
+		boolean oldExpandedByDefault = expandedByDefault;
+		expandedByDefault = newExpandedByDefault;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT, oldExpandedByDefault, expandedByDefault));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
-                return this.getPreconditionExpression();
-            case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
-                return this.isExpandedByDefault();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
+				return getPreconditionExpression();
+			case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
+				return isExpandedByDefault();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression((String) newValue);
-                return;
-            case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
-                this.setExpandedByDefault((Boolean) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
+				setPreconditionExpression((String)newValue);
+				return;
+			case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
+				setExpandedByDefault((Boolean)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
-                this.setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
-                return;
-            case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
-                this.setExpandedByDefault(EXPANDED_BY_DEFAULT_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
+				setPreconditionExpression(PRECONDITION_EXPRESSION_EDEFAULT);
+				return;
+			case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
+				setExpandedByDefault(EXPANDED_BY_DEFAULT_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
-                return PRECONDITION_EXPRESSION_EDEFAULT == null ? this.preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(this.preconditionExpression);
-            case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
-                return this.expandedByDefault != EXPANDED_BY_DEFAULT_EDEFAULT;
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.DIAGRAM_TOOLBAR__PRECONDITION_EXPRESSION:
+				return PRECONDITION_EXPRESSION_EDEFAULT == null ? preconditionExpression != null : !PRECONDITION_EXPRESSION_EDEFAULT.equals(preconditionExpression);
+			case DiagramPackage.DIAGRAM_TOOLBAR__EXPANDED_BY_DEFAULT:
+				return expandedByDefault != EXPANDED_BY_DEFAULT_EDEFAULT;
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (preconditionExpression: ");
-        result.append(this.preconditionExpression);
-        result.append(", expandedByDefault: ");
-        result.append(this.expandedByDefault);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (preconditionExpression: ");
+		result.append(preconditionExpression);
+		result.append(", expandedByDefault: ");
+		result.append(expandedByDefault);
+		result.append(')');
+		return result.toString();
+	}
 
 } // DiagramToolbarImpl

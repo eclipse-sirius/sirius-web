@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,15 +24,13 @@ import org.eclipse.sirius.components.view.diagram.customnodes.EllipseNodeStyleDe
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
- *
  * @generated
  */
 public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesPackage {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private EClass ellipseNodeStyleDescriptionEClass = null;
 
     /**
@@ -49,14 +47,13 @@ public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesP
      * @generated
      */
     private CustomnodesPackageImpl() {
-        super(eNS_URI, CustomnodesFactory.eINSTANCE);
-    }
+		super(eNS_URI, CustomnodesFactory.eINSTANCE);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private static boolean isInited = false;
 
     /**
@@ -73,128 +70,118 @@ public class CustomnodesPackageImpl extends EPackageImpl implements CustomnodesP
      * @generated
      */
     public static CustomnodesPackage init() {
-        if (isInited)
-            return (CustomnodesPackage) EPackage.Registry.INSTANCE.getEPackage(CustomnodesPackage.eNS_URI);
+		if (isInited) return (CustomnodesPackage)EPackage.Registry.INSTANCE.getEPackage(CustomnodesPackage.eNS_URI);
 
-        // Obtain or create and register package
-        Object registeredCustomnodesPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
-        CustomnodesPackageImpl theCustomnodesPackage = registeredCustomnodesPackage instanceof CustomnodesPackageImpl ? (CustomnodesPackageImpl) registeredCustomnodesPackage
-                : new CustomnodesPackageImpl();
+		// Obtain or create and register package
+		Object registeredCustomnodesPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		CustomnodesPackageImpl theCustomnodesPackage = registeredCustomnodesPackage instanceof CustomnodesPackageImpl ? (CustomnodesPackageImpl)registeredCustomnodesPackage : new CustomnodesPackageImpl();
 
-        isInited = true;
+		isInited = true;
 
-        // Initialize simple dependencies
-        DiagramPackage.eINSTANCE.eClass();
-        ViewPackage.eINSTANCE.eClass();
+		// Initialize simple dependencies
+		DiagramPackage.eINSTANCE.eClass();
+		ViewPackage.eINSTANCE.eClass();
 
-        // Create package meta-data objects
-        theCustomnodesPackage.createPackageContents();
+		// Create package meta-data objects
+		theCustomnodesPackage.createPackageContents();
 
-        // Initialize created meta-data
-        theCustomnodesPackage.initializePackageContents();
+		// Initialize created meta-data
+		theCustomnodesPackage.initializePackageContents();
 
-        // Mark meta-data to indicate it can't be changed
-        theCustomnodesPackage.freeze();
+		// Mark meta-data to indicate it can't be changed
+		theCustomnodesPackage.freeze();
 
-        // Update the registry and return the package
-        EPackage.Registry.INSTANCE.put(CustomnodesPackage.eNS_URI, theCustomnodesPackage);
-        return theCustomnodesPackage;
-    }
+		// Update the registry and return the package
+		EPackage.Registry.INSTANCE.put(CustomnodesPackage.eNS_URI, theCustomnodesPackage);
+		return theCustomnodesPackage;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EClass getEllipseNodeStyleDescription() {
-        return this.ellipseNodeStyleDescriptionEClass;
-    }
+		return ellipseNodeStyleDescriptionEClass;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EReference getEllipseNodeStyleDescription_Background() {
-        return (EReference) this.ellipseNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
-    }
+		return (EReference)ellipseNodeStyleDescriptionEClass.getEStructuralFeatures().get(0);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public CustomnodesFactory getCustomnodesFactory() {
-        return (CustomnodesFactory) this.getEFactoryInstance();
-    }
+		return (CustomnodesFactory)getEFactoryInstance();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private boolean isCreated = false;
 
     /**
-     * Creates the meta-model objects for the package. This method is guarded to have no affect on any invocation but
-     * its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Creates the meta-model objects for the package.  This method is
+	 * guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public void createPackageContents() {
-        if (this.isCreated)
-            return;
-        this.isCreated = true;
+		if (isCreated) return;
+		isCreated = true;
 
-        // Create classes and their features
-        this.ellipseNodeStyleDescriptionEClass = this.createEClass(ELLIPSE_NODE_STYLE_DESCRIPTION);
-        this.createEReference(this.ellipseNodeStyleDescriptionEClass, ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND);
-    }
+		// Create classes and their features
+		ellipseNodeStyleDescriptionEClass = createEClass(ELLIPSE_NODE_STYLE_DESCRIPTION);
+		createEReference(ellipseNodeStyleDescriptionEClass, ELLIPSE_NODE_STYLE_DESCRIPTION__BACKGROUND);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     private boolean isInitialized = false;
 
     /**
-     * Complete the initialization of the package and its meta-model. This method is guarded to have no affect on any
-     * invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * Complete the initialization of the package and its meta-model.  This
+	 * method is guarded to have no affect on any invocation but its first.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public void initializePackageContents() {
-        if (this.isInitialized)
-            return;
-        this.isInitialized = true;
+		if (isInitialized) return;
+		isInitialized = true;
 
-        // Initialize package
-        this.setName(eNAME);
-        this.setNsPrefix(eNS_PREFIX);
-        this.setNsURI(eNS_URI);
+		// Initialize package
+		setName(eNAME);
+		setNsPrefix(eNS_PREFIX);
+		setNsURI(eNS_URI);
 
-        // Obtain other dependent packages
-        DiagramPackage theDiagramPackage = (DiagramPackage) EPackage.Registry.INSTANCE.getEPackage(DiagramPackage.eNS_URI);
-        ViewPackage theViewPackage = (ViewPackage) EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI);
+		// Obtain other dependent packages
+		DiagramPackage theDiagramPackage = (DiagramPackage)EPackage.Registry.INSTANCE.getEPackage(DiagramPackage.eNS_URI);
+		ViewPackage theViewPackage = (ViewPackage)EPackage.Registry.INSTANCE.getEPackage(ViewPackage.eNS_URI);
 
-        // Create type parameters
+		// Create type parameters
 
-        // Set bounds for type parameters
+		// Set bounds for type parameters
 
-        // Add supertypes to classes
-        this.ellipseNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
+		// Add supertypes to classes
+		ellipseNodeStyleDescriptionEClass.getESuperTypes().add(theDiagramPackage.getNodeStyleDescription());
 
-        // Initialize classes, features, and operations; add parameters
-        this.initEClass(this.ellipseNodeStyleDescriptionEClass, EllipseNodeStyleDescription.class, "EllipseNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getEllipseNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EllipseNodeStyleDescription.class, !IS_TRANSIENT,
-                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		// Initialize classes, features, and operations; add parameters
+		initEClass(ellipseNodeStyleDescriptionEClass, EllipseNodeStyleDescription.class, "EllipseNodeStyleDescription", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEllipseNodeStyleDescription_Background(), theViewPackage.getUserColor(), null, "background", null, 0, 1, EllipseNodeStyleDescription.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        // Create resource
-        this.createResource(eNS_URI);
-    }
+		// Create resource
+		createResource(eNS_URI);
+	}
 
 } // CustomnodesPackageImpl

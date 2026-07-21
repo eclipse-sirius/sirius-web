@@ -67,26 +67,26 @@ import org.eclipse.sirius.components.view.util.ViewSwitch;
  */
 public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implements ComposeableAdapterFactory, IChangeNotifier, IDisposable, IChildCreationExtender {
     /**
-     * This keeps track of the root adapter factory that delegates to this adapter factory. <!-- begin-user-doc --> <!--
+	 * This keeps track of the root adapter factory that delegates to this adapter factory.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ComposedAdapterFactory parentAdapterFactory;
 
     /**
-     * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!-- begin-user-doc --> <!--
+	 * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
 
     /**
-     * This helps manage the child creation extenders. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This helps manage the child creation extenders.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ChildCreationExtenderManager childCreationExtenderManager = new ChildCreationExtenderManager(DeckEditPlugin.INSTANCE, DeckPackage.eNS_URI);
 
     /**
@@ -95,27 +95,26 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      *
      * @generated
      */
-    protected Collection<Object> supportedTypes = new ArrayList<>();
+    protected Collection<Object> supportedTypes = new ArrayList<Object>();
 
     /**
-     * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public DeckItemProviderAdapterFactory() {
-        this.supportedTypes.add(IEditingDomainItemProvider.class);
-        this.supportedTypes.add(IStructuredItemContentProvider.class);
-        this.supportedTypes.add(ITreeItemContentProvider.class);
-        this.supportedTypes.add(IItemLabelProvider.class);
-        this.supportedTypes.add(IItemPropertySource.class);
-    }
+		supportedTypes.add(IEditingDomainItemProvider.class);
+		supportedTypes.add(IStructuredItemContentProvider.class);
+		supportedTypes.add(ITreeItemContentProvider.class);
+		supportedTypes.add(IItemLabelProvider.class);
+		supportedTypes.add(IItemPropertySource.class);
+	}
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.DeckDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.DeckDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DeckDescriptionItemProvider deckDescriptionItemProvider;
 
     /**
@@ -134,11 +133,10 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.LaneDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.LaneDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected LaneDescriptionItemProvider laneDescriptionItemProvider;
 
     /**
@@ -157,11 +155,10 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.CardDescription}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.CardDescription} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CardDescriptionItemProvider cardDescriptionItemProvider;
 
     /**
@@ -180,11 +177,10 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.CreateCardTool}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.CreateCardTool} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CreateCardToolItemProvider createCardToolItemProvider;
 
     /**
@@ -203,11 +199,10 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.EditCardTool}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.EditCardTool} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EditCardToolItemProvider editCardToolItemProvider;
 
     /**
@@ -226,11 +221,10 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.DeleteCardTool}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.DeleteCardTool} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected DeleteCardToolItemProvider deleteCardToolItemProvider;
 
     /**
@@ -249,11 +243,10 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.EditLaneTool}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.EditLaneTool} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EditLaneToolItemProvider editLaneToolItemProvider;
 
     /**
@@ -272,11 +265,10 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.CardDropTool}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.CardDropTool} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CardDropToolItemProvider cardDropToolItemProvider;
 
     /**
@@ -295,11 +287,10 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.LaneDropTool}
-     * instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.LaneDropTool} instances.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected LaneDropToolItemProvider laneDropToolItemProvider;
 
     /**
@@ -318,12 +309,11 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle} instances. <!-- begin-user-doc --> <!--
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle} instances.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected DeckDescriptionStyleItemProvider deckDescriptionStyleItemProvider;
 
     /**
@@ -342,12 +332,11 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle} instances. <!-- begin-user-doc
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle} instances.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected ConditionalDeckDescriptionStyleItemProvider conditionalDeckDescriptionStyleItemProvider;
 
     /**
@@ -366,12 +355,11 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This keeps track of the one adapter used for all
-     * {@link org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle} instances. <!-- begin-user-doc -->
+	 * This keeps track of the one adapter used for all {@link org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle} instances.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     protected DeckElementDescriptionStyleItemProvider deckElementDescriptionStyleItemProvider;
 
     /**
@@ -415,199 +403,184 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
     }
 
     /**
-     * This returns the root adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the root adapter factory that contains this factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
-    }
+		return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
+	}
 
     /**
-     * This sets the composed adapter factory that contains this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This sets the composed adapter factory that contains this factory.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
-        this.parentAdapterFactory = parentAdapterFactory;
-    }
+		this.parentAdapterFactory = parentAdapterFactory;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean isFactoryForType(Object type) {
-        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
-    }
+		return supportedTypes.contains(type) || super.isFactoryForType(type);
+	}
 
     /**
-     * This implementation substitutes the factory itself as the key for the adapter. <!-- begin-user-doc --> <!--
+	 * This implementation substitutes the factory itself as the key for the adapter.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Adapter adapt(Notifier notifier, Object type) {
-        return super.adapt(notifier, this);
-    }
+		return super.adapt(notifier, this);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object adapt(Object object, Object type) {
-        if (this.isFactoryForType(type)) {
-            Object adapter = super.adapt(object, type);
-            if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
-                return adapter;
-            }
-        }
+		if (isFactoryForType(type))
+		{
+			Object adapter = super.adapt(object, type);
+			if (!(type instanceof Class<?>) || (((Class<?>)type).isInstance(adapter)))
+			{
+				return adapter;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public List<IChildCreationExtender> getChildCreationExtenders() {
-        return this.childCreationExtenderManager.getChildCreationExtenders();
-    }
+		return childCreationExtenderManager.getChildCreationExtenders();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Collection<?> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
-        return this.childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
-    }
+		return childCreationExtenderManager.getNewChildDescriptors(object, editingDomain);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public ResourceLocator getResourceLocator() {
-        return this.childCreationExtenderManager;
-    }
+		return childCreationExtenderManager;
+	}
 
     /**
-     * This adds a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a listener.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void addListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.addListener(notifyChangedListener);
-    }
+		changeNotifier.addListener(notifyChangedListener);
+	}
 
     /**
-     * This removes a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This removes a listener.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void removeListener(INotifyChangedListener notifyChangedListener) {
-        this.changeNotifier.removeListener(notifyChangedListener);
-    }
+		changeNotifier.removeListener(notifyChangedListener);
+	}
 
     /**
-     * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!-- begin-user-doc --> <!--
+	 * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public void fireNotifyChanged(Notification notification) {
-        this.changeNotifier.fireNotifyChanged(notification);
+		changeNotifier.fireNotifyChanged(notification);
 
-        if (this.parentAdapterFactory != null) {
-            this.parentAdapterFactory.fireNotifyChanged(notification);
-        }
-    }
+		if (parentAdapterFactory != null)
+		{
+			parentAdapterFactory.fireNotifyChanged(notification);
+		}
+	}
 
     /**
-     * This disposes all of the item providers created by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This disposes all of the item providers created by this factory. 
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void dispose() {
-        if (this.deckDescriptionItemProvider != null)
-            this.deckDescriptionItemProvider.dispose();
-        if (this.laneDescriptionItemProvider != null)
-            this.laneDescriptionItemProvider.dispose();
-        if (this.cardDescriptionItemProvider != null)
-            this.cardDescriptionItemProvider.dispose();
-        if (this.createCardToolItemProvider != null)
-            this.createCardToolItemProvider.dispose();
-        if (this.editCardToolItemProvider != null)
-            this.editCardToolItemProvider.dispose();
-        if (this.deleteCardToolItemProvider != null)
-            this.deleteCardToolItemProvider.dispose();
-        if (this.editLaneToolItemProvider != null)
-            this.editLaneToolItemProvider.dispose();
-        if (this.cardDropToolItemProvider != null)
-            this.cardDropToolItemProvider.dispose();
-        if (this.laneDropToolItemProvider != null)
-            this.laneDropToolItemProvider.dispose();
-        if (this.deckDescriptionStyleItemProvider != null)
-            this.deckDescriptionStyleItemProvider.dispose();
-        if (this.conditionalDeckDescriptionStyleItemProvider != null)
-            this.conditionalDeckDescriptionStyleItemProvider.dispose();
-        if (this.deckElementDescriptionStyleItemProvider != null)
-            this.deckElementDescriptionStyleItemProvider.dispose();
-        if (this.conditionalDeckElementDescriptionStyleItemProvider != null)
-            this.conditionalDeckElementDescriptionStyleItemProvider.dispose();
-    }
+		if (deckDescriptionItemProvider != null) deckDescriptionItemProvider.dispose();
+		if (laneDescriptionItemProvider != null) laneDescriptionItemProvider.dispose();
+		if (cardDescriptionItemProvider != null) cardDescriptionItemProvider.dispose();
+		if (createCardToolItemProvider != null) createCardToolItemProvider.dispose();
+		if (editCardToolItemProvider != null) editCardToolItemProvider.dispose();
+		if (deleteCardToolItemProvider != null) deleteCardToolItemProvider.dispose();
+		if (editLaneToolItemProvider != null) editLaneToolItemProvider.dispose();
+		if (cardDropToolItemProvider != null) cardDropToolItemProvider.dispose();
+		if (laneDropToolItemProvider != null) laneDropToolItemProvider.dispose();
+		if (deckDescriptionStyleItemProvider != null) deckDescriptionStyleItemProvider.dispose();
+		if (conditionalDeckDescriptionStyleItemProvider != null) conditionalDeckDescriptionStyleItemProvider.dispose();
+		if (deckElementDescriptionStyleItemProvider != null) deckElementDescriptionStyleItemProvider.dispose();
+		if (conditionalDeckElementDescriptionStyleItemProvider != null) conditionalDeckElementDescriptionStyleItemProvider.dispose();
+	}
 
     /**
-     * A child creation extender for the {@link ViewPackage}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * A child creation extender for the {@link ViewPackage}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public static class ViewChildCreationExtender implements IChildCreationExtender {
         /**
-         * The switch for creating child descriptors specific to each extended class. <!-- begin-user-doc --> <!--
+		 * The switch for creating child descriptors specific to each extended class.
+		 * <!-- begin-user-doc --> <!--
          * end-user-doc -->
-         *
-         * @generated
-         */
+		 * @generated
+		 */
         protected static class CreationSwitch extends ViewSwitch<Object> {
             /**
-             * The child descriptors being populated. <!-- begin-user-doc --> <!-- end-user-doc -->
-             *
-             * @generated
-             */
+			 * The child descriptors being populated.
+			 * <!-- begin-user-doc --> <!-- end-user-doc -->
+			 * @generated
+			 */
             protected List<Object> newChildDescriptors;
 
             /**
-             * The domain in which to create the children. <!-- begin-user-doc --> <!-- end-user-doc -->
-             *
-             * @generated
-             */
+			 * The domain in which to create the children.
+			 * <!-- begin-user-doc --> <!-- end-user-doc -->
+			 * @generated
+			 */
             protected EditingDomain editingDomain;
 
             /**
-             * Creates the a switch for populating child descriptors in the given domain. <!-- begin-user-doc --> <!--
+			 * Creates the a switch for populating child descriptors in the given domain.
+			 * <!-- begin-user-doc --> <!--
              * end-user-doc -->
-             *
-             * @generated
-             */
+			 * @generated
+			 */
             CreationSwitch(List<Object> newChildDescriptors, EditingDomain editingDomain) {
-                this.newChildDescriptors = newChildDescriptors;
-                this.editingDomain = editingDomain;
-            }
+				this.newChildDescriptors = newChildDescriptors;
+				this.editingDomain = editingDomain;
+			}
 
             /**
              * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -625,37 +598,34 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
             }
 
             /**
-             * <!-- begin-user-doc --> <!-- end-user-doc -->
-             *
-             * @generated
-             */
+			 * <!-- begin-user-doc --> <!-- end-user-doc -->
+			 * @generated
+			 */
             protected CommandParameter createChildParameter(Object feature, Object child) {
-                return new CommandParameter(null, feature, child);
-            }
+				return new CommandParameter(null, feature, child);
+			}
 
         }
 
         /**
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * @generated
+		 */
         @Override
         public Collection<Object> getNewChildDescriptors(Object object, EditingDomain editingDomain) {
-            ArrayList<Object> result = new ArrayList<>();
-            new CreationSwitch(result, editingDomain).doSwitch((EObject) object);
-            return result;
-        }
+			ArrayList<Object> result = new ArrayList<Object>();
+			new CreationSwitch(result, editingDomain).doSwitch((EObject)object);
+			return result;
+		}
 
         /**
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
-         * @generated
-         */
+		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * @generated
+		 */
         @Override
         public ResourceLocator getResourceLocator() {
-            return DeckEditPlugin.INSTANCE;
-        }
+			return DeckEditPlugin.INSTANCE;
+		}
     }
 
 }

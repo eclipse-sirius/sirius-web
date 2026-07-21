@@ -1,0 +1,75 @@
+= ADR-222 - Headless EMF code generation via Maven-driven standalone generator
+
+== Context
+
+Sirius Web relies on EMF-generated code derived from Ecore models.
+The generation workflow must remain easy to execute, repeatable across environments, and predictable over time.
+
+Today, EMF code generation is performed in multiple ways within the team.
+Some approaches depend on locally available tooling or manual steps, which increases friction and makes the expected workflow less discoverable and less consistent.
+When regeneration is not straightforward, there is a risk that changes are applied to produced Java code instead of being expressed in the models, which undermines consistency and makes future evolution harder.
+
+In addition, the stock EMF code generation output is not directly usable as-is in the Sirius Web context.
+We currently rely on manual post-generation adjustments to obtain a correct and consistent result, such as:
+* removing or updating artifacts like `plugin.xml` and `build.properties`,
+* initializing SVG image files,
+* merging i18n properties files.
+
+These manual steps are easy to forget and may lead to inconsistent repository states depending on who ran the generation and how.
+
+We want a workflow that keeps models central, makes generation easy to trigger when needed, keeps the generated output committed in the repository, and produces Sirius-Web-correct artifacts in a systematic way.
+
+== Decision
+
+We will introduce a single, documented, headless entrypoint to run EMF code generation.
+This entrypoint will be a Maven module that launches a standalone Java generator application.
+
+The generator application will be plain Java code maintained in the Sirius Web repository.
+It will be runnable from the command line through Maven, without requiring additional external tooling beyond the build prerequisites.
+
+The generator will treat Ecore as the source of truth, reload the corresponding GenModel, then perform EMF validation.
+If validation fails, the generator will fail fast and stop generation.
+
+The generator will also apply Sirius Web specific post-generation steps in a consistent and automated way.
+This includes handling known adjustments that are currently performed manually, such as removing or updating `plugin.xml` and `build.properties`, initializing SVG image files, and merging i18n properties files.
+Those steps become part of the canonical generation pipeline.
+
+Generated code will continue to be committed to the repository.
+The intended workflow is that developers run generation explicitly using this launcher when they change Ecore and GenModel, and then commit the resulting updates.
+
+We explicitly do not adopt dynamic EMF generation, runtime metamodel mutation, or customization mechanisms that would reduce predictability.
+We prefer a stable and deterministic generation pipeline.
+
+Continuous integration checks for “generated code is up to date” are considered out of scope for this decision and may be addressed in a later ADR.
+
+== Status
+
+Proposed.
+
+== Consequences
+
+This change provides a single, repeatable way to generate EMF code across developer environments.
+It reduces onboarding friction because new contributors only need the JDK and Maven to regenerate code.
+
+Because the generation logic is implemented as plain Java in the repository, it is easier to debug, evolve, and review than manual or tool-specific procedures.
+It also allows us to enforce project-specific rules such as validation, deterministic ordering, and consistent configuration.
+
+By automating Sirius Web specific post-generation steps, we reduce the risk of incomplete regeneration and inconsistent artifacts being committed.
+This should also make the expected repository state clearer, since the generator produces Sirius-Web-correct outputs by construction.
+
+Failing fast on validation issues shifts errors earlier in the workflow.
+This should improve model quality and prevent committing invalid or partially generated outputs.
+
+Keeping generated code committed preserves fast builds and straightforward code navigation, and avoids surprising build-time generation costs.
+However, it also means model changes can create large diffs, which may increase review noise.
+To mitigate this, the generator should aim for deterministic output and stable formatting so that diffs are as small and mechanical as possible.
+
+By not addressing CI enforcement in this ADR, we accept that developers can still forget to run generation.
+This is an acknowledged limitation, and a follow-up decision may introduce lightweight safeguards once the new entrypoint is stable and accepted.
+
+== References
+- `doc/adrs/018_adopt_a_subset_of_ecore_to_define_data_schemas.adoc` - Establishes Ecore as the implementation basis for schemas that must be generated.
+- `doc/adrs/019_support_simple_diagram_definitions.adoc` - Documents ongoing EMF dependencies that motivate a deterministic codegen pipeline.
+- `doc/adrs/100_add_support_for_custom_widgets.adoc` - Requires GenModel extensibility and regeneration of `view.ecore`-based outputs.
+- `doc/adrs/107_dynamic_widgets.adoc` - Notes that custom widget metamodels must be regenerated when the DSL evolves.
+- `doc/adrs/144_add_support_for_emf_models_migration.adoc` - Addresses EMF model evolution, which depends on consistent regeneration.

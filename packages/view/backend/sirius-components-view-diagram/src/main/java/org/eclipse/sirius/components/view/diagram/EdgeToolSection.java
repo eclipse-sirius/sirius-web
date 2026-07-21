@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -34,14 +34,14 @@ import org.eclipse.emf.common.util.EList;
 public interface EdgeToolSection extends ToolSection {
 
     /**
-     * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.diagram.NodeTool}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Node Tools</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeToolSection_NodeTools()
-     * @model containment="true" keys="name"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Node Tools</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.diagram.NodeTool}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Node Tools</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getEdgeToolSection_NodeTools()
+	 * @model containment="true" keys="name"
+	 * @generated
+	 */
     EList<NodeTool> getNodeTools();
 
 } // EdgeToolSection

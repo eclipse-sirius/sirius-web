@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -24,22 +24,20 @@ import org.eclipse.sirius.components.view.diagram.EdgeReconnectionTool;
  */
 public abstract class EdgeReconnectionToolImpl extends ToolImpl implements EdgeReconnectionTool {
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected EdgeReconnectionToolImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.EDGE_RECONNECTION_TOOL;
-    }
+		return DiagramPackage.Literals.EDGE_RECONNECTION_TOOL;
+	}
 
 } // EdgeReconnectionToolImpl

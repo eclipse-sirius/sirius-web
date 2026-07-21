@@ -22,12 +22,12 @@ import org.eclipse.sirius.components.view.Conditional;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle#getStyle <em>Style</em>}</li>
  * </ul>
  *
+ * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getConditionalDiagramStyle()
  * @model
  * @generated
- * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getConditionalDiagramStyle()
  */
 public interface ConditionalDiagramStyle extends Conditional {
 
@@ -44,14 +44,12 @@ public interface ConditionalDiagramStyle extends Conditional {
     DiagramStyleDescription getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle#getStyle
-     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Style</em>' containment reference.
-     * @generated
-     * @see #getStyle()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle#getStyle <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Style</em>' containment reference.
+	 * @see #getStyle()
+	 * @generated
+	 */
     void setStyle(DiagramStyleDescription value);
 
 } // ConditionalDiagramStyle

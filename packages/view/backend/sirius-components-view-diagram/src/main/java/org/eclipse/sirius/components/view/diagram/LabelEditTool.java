@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,7 @@ package org.eclipse.sirius.components.view.diagram;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.LabelEditTool#getInitialDirectEditLabelExpression <em>Initial
- * Direct Edit Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.LabelEditTool#getInitialDirectEditLabelExpression <em>Initial Direct Edit Label Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelEditTool()
@@ -29,27 +28,24 @@ package org.eclipse.sirius.components.view.diagram;
  */
 public interface LabelEditTool extends Tool {
     /**
-     * Returns the value of the '<em><b>Initial Direct Edit Label Expression</b></em>' attribute. <!-- begin-user-doc
+	 * Returns the value of the '<em><b>Initial Direct Edit Label Expression</b></em>' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Initial Direct Edit Label Expression</em>' attribute.
-     * @see #setInitialDirectEditLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelEditTool_InitialDirectEditLabelExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Initial Direct Edit Label Expression</em>' attribute.
+	 * @see #setInitialDirectEditLabelExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getLabelEditTool_InitialDirectEditLabelExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getInitialDirectEditLabelExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.LabelEditTool#getInitialDirectEditLabelExpression <em>Initial
-     * Direct Edit Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Initial Direct Edit Label Expression</em>' attribute.
-     * @see #getInitialDirectEditLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.LabelEditTool#getInitialDirectEditLabelExpression <em>Initial Direct Edit Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Initial Direct Edit Label Expression</em>' attribute.
+	 * @see #getInitialDirectEditLabelExpression()
+	 * @generated
+	 */
     void setInitialDirectEditLabelExpression(String value);
 
 } // LabelEditTool

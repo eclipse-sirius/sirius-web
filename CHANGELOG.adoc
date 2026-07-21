@@ -54,6 +54,7 @@ One can now simply run `npm run format` to format the frontend code or `npm run 
 - https://github.com/eclipse-sirius/sirius-web/issues/6691[#6691] [diagram] Add a top margin for child node with free form layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6705[#6705] Use backend internationalization for `ITreeItemContextMenuEntryProvider` contributions rendered in the tree palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6726[#6726] [releng] Move overridden code from generated code into a spec package.
+- https://github.com/eclipse-sirius/sirius-web/issues/6115[#6115] [releng] Add a module to generate code from genmodel files.
 
 
 

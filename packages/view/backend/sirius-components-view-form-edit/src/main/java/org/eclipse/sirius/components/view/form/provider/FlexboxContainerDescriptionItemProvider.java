@@ -44,48 +44,57 @@ import org.eclipse.sirius.components.view.form.TextAreaDescription;
 import org.eclipse.sirius.components.view.form.TextfieldDescription;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
- *
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.form.FlexboxContainerDescription} object.
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
  * @generated
  */
 public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionItemProvider {
     /**
-     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This constructs an instance from a factory and a notifier.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     public FlexboxContainerDescriptionItemProvider(AdapterFactory adapterFactory) {
-        super(adapterFactory);
-    }
+		super(adapterFactory);
+	}
 
     /**
-     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the property descriptors for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
-        if (this.itemPropertyDescriptors == null) {
-            super.getPropertyDescriptors(object);
+		if (itemPropertyDescriptors == null)
+		{
+			super.getPropertyDescriptors(object);
 
-            this.addFlexDirectionPropertyDescriptor(object);
-            this.addIsEnabledExpressionPropertyDescriptor(object);
-        }
-        return this.itemPropertyDescriptors;
-    }
+			addFlexDirectionPropertyDescriptor(object);
+			addIsEnabledExpressionPropertyDescriptor(object);
+		}
+		return itemPropertyDescriptors;
+	}
 
     /**
-     * This adds a property descriptor for the Flex Direction feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds a property descriptor for the Flex Direction feature.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected void addFlexDirectionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_FlexboxContainerDescription_flexDirection_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_flexDirection_feature", "_UI_FlexboxContainerDescription_type"),
-                FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_FlexboxContainerDescription_flexDirection_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_flexDirection_feature", "_UI_FlexboxContainerDescription_type"),
+				 FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
      * This adds a property descriptor for the Is Enabled Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
@@ -94,77 +103,84 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
      * @generated
      */
     protected void addIsEnabledExpressionPropertyDescriptor(Object object) {
-        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_FlexboxContainerDescription_IsEnabledExpression_feature"),
-                this.getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_IsEnabledExpression_feature", "_UI_FlexboxContainerDescription_type"),
-                FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
-    }
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_FlexboxContainerDescription_IsEnabledExpression_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_FlexboxContainerDescription_IsEnabledExpression_feature", "_UI_FlexboxContainerDescription_type"),
+				 FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
-        if (this.childrenFeatures == null) {
-            super.getChildrenFeatures(object);
-            this.childrenFeatures.add(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
-            this.childrenFeatures.add(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE);
-            this.childrenFeatures.add(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
-        }
-        return this.childrenFeatures;
-    }
+		if (childrenFeatures == null)
+		{
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN);
+			childrenFeatures.add(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE);
+			childrenFeatures.add(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES);
+		}
+		return childrenFeatures;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EStructuralFeature getChildFeature(Object object, Object child) {
-        // Check the type of the specified child object and return the proper feature to use for
-        // adding (see {@link AddCommand}) it as a child.
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
 
-        return super.getChildFeature(object, child);
-    }
+		return super.getChildFeature(object, child);
+	}
 
     /**
-     * This returns FlexboxContainerDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns FlexboxContainerDescription.gif.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object getImage(Object object) {
-        if (object instanceof FlexboxContainerDescription && FlexDirection.ROW.equals(((FlexboxContainerDescription) object).getFlexDirection())) {
-            return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FlexboxContainerDescription_Row.svg"));
-        }
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/FlexboxContainerDescription_Column.svg"));
-    }
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/FlexboxContainerDescription"));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected boolean shouldComposeCreationImage() {
-        return true;
-    }
+		return true;
+	}
 
     /**
-     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This returns the label text for the adapted class.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getText(Object object) {
-        String label = ((FlexboxContainerDescription) object).getName();
-        return label == null || label.length() == 0 ? this.getString("_UI_FlexboxContainerDescription_type") : this.getString("_UI_FlexboxContainerDescription_type") + " " + label;
-    }
+		String label = ((FlexboxContainerDescription)object).getName();
+		return label == null || label.length() == 0 ?
+			getString("_UI_FlexboxContainerDescription_type") :
+			getString("_UI_FlexboxContainerDescription_type") + " " + label;
+	}
 
     /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
@@ -175,127 +191,176 @@ public class FlexboxContainerDescriptionItemProvider extends WidgetDescriptionIt
      */
     @Override
     public void notifyChanged(Notification notification) {
-        this.updateChildren(notification);
+		updateChildren(notification);
 
-        switch (notification.getFeatureID(FlexboxContainerDescription.class)) {
-            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
-            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
-            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
-            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE:
-            case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES:
-                this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-                return;
-        }
-        super.notifyChanged(notification);
-    }
+		switch (notification.getFeatureID(FlexboxContainerDescription.class))
+		{
+			case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__FLEX_DIRECTION:
+			case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__IS_ENABLED_EXPRESSION:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN:
+			case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE:
+			case FormPackage.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+				return;
+		}
+		super.notifyChanged(notification);
+	}
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
+	 * that can be created under this object.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
-        super.collectNewChildDescriptors(newChildDescriptors, object);
+		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createFormElementFor()));
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createFormElementIf()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createBarChartDescription()));
 
-        BarChartDescription barChartDescription = FormFactory.eINSTANCE.createBarChartDescription();
-        barChartDescription.setStyle(FormFactory.eINSTANCE.createBarChartDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, barChartDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createButtonDescription()));
 
-        ButtonDescription buttonDescription = FormFactory.eINSTANCE.createButtonDescription();
-        buttonDescription.setStyle(FormFactory.eINSTANCE.createButtonDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, buttonDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createCheckboxDescription()));
 
-        CheckboxDescription checkboxDescription = FormFactory.eINSTANCE.createCheckboxDescription();
-        checkboxDescription.setStyle(FormFactory.eINSTANCE.createCheckboxDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, checkboxDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createDateTimeDescription()));
 
-        DateTimeDescription dateTimeDescription = FormFactory.eINSTANCE.createDateTimeDescription();
-        dateTimeDescription.setStyle(FormFactory.eINSTANCE.createDateTimeDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, dateTimeDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createFlexboxContainerDescription()));
 
-        FlexboxContainerDescription flexboxContainerDescription = FormFactory.eINSTANCE.createFlexboxContainerDescription();
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, flexboxContainerDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createImageDescription()));
 
-        ImageDescription imageDescription = FormFactory.eINSTANCE.createImageDescription();
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, imageDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createLabelDescription()));
 
-        LabelDescription labelDescription = FormFactory.eINSTANCE.createLabelDescription();
-        labelDescription.setStyle(FormFactory.eINSTANCE.createLabelDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, labelDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createLinkDescription()));
 
-        LinkDescription linkDescription = FormFactory.eINSTANCE.createLinkDescription();
-        linkDescription.setStyle(FormFactory.eINSTANCE.createLinkDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, linkDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createListDescription()));
 
-        ListDescription listDescription = FormFactory.eINSTANCE.createListDescription();
-        listDescription.setStyle(FormFactory.eINSTANCE.createListDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, listDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createMultiSelectDescription()));
 
-        MultiSelectDescription multiSelectDescription = FormFactory.eINSTANCE.createMultiSelectDescription();
-        multiSelectDescription.setStyle(FormFactory.eINSTANCE.createMultiSelectDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, multiSelectDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createPieChartDescription()));
 
-        PieChartDescription pieChartDescription = FormFactory.eINSTANCE.createPieChartDescription();
-        pieChartDescription.setStyle(FormFactory.eINSTANCE.createPieChartDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, pieChartDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createRadioDescription()));
 
-        RadioDescription radioDescription = FormFactory.eINSTANCE.createRadioDescription();
-        radioDescription.setStyle(FormFactory.eINSTANCE.createRadioDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, radioDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createRichTextDescription()));
 
-        RichTextDescription richTextDescription = FormFactory.eINSTANCE.createRichTextDescription();
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, richTextDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createSelectDescription()));
 
-        SelectDescription selectDescription = FormFactory.eINSTANCE.createSelectDescription();
-        selectDescription.setStyle(FormFactory.eINSTANCE.createSelectDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, selectDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createSplitButtonDescription()));
 
-        SliderDescription sliderDescription = FormFactory.eINSTANCE.createSliderDescription();
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, sliderDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createTextAreaDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createSplitButtonDescription()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createTextfieldDescription()));
 
-        TextAreaDescription textareaDescription = FormFactory.eINSTANCE.createTextAreaDescription();
-        textareaDescription.setStyle(FormFactory.eINSTANCE.createTextareaDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, textareaDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createTreeDescription()));
 
-        TextfieldDescription textfieldDescription = FormFactory.eINSTANCE.createTextfieldDescription();
-        textfieldDescription.setStyle(FormFactory.eINSTANCE.createTextfieldDescriptionStyle());
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, textfieldDescription));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createSliderDescription()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN, FormFactory.eINSTANCE.createTreeDescription()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createFormElementFor()));
 
-        newChildDescriptors.add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE, FormFactory.eINSTANCE.createContainerBorderStyle()));
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CHILDREN,
+				 FormFactory.eINSTANCE.createFormElementIf()));
 
-        newChildDescriptors
-                .add(this.createChildParameter(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES, FormFactory.eINSTANCE.createConditionalContainerBorderStyle()));
-    }
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE,
+				 FormFactory.eINSTANCE.createContainerBorderStyle()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE,
+				 FormFactory.eINSTANCE.createConditionalContainerBorderStyle()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES,
+				 FormFactory.eINSTANCE.createConditionalContainerBorderStyle()));
+	}
 
     /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
+	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * @generated
+	 */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
-        Object childFeature = feature;
-        Object childObject = child;
+		Object childFeature = feature;
+		Object childObject = child;
 
-        boolean qualify = childFeature == FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE
-                || childFeature == FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES;
+		boolean qualify =
+			childFeature == FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__BORDER_STYLE ||
+			childFeature == FormPackage.Literals.FLEXBOX_CONTAINER_DESCRIPTION__CONDITIONAL_BORDER_STYLES;
 
-        if (qualify) {
-            return this.getString("_UI_CreateChild_text2", new Object[] { this.getTypeText(childObject), this.getFeatureText(childFeature), this.getTypeText(owner) });
-        }
-        return super.getCreateChildText(owner, feature, child, selection);
-    }
+		if (qualify)
+		{
+			return getString
+				("_UI_CreateChild_text2",
+				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+		}
+		return super.getCreateChildText(owner, feature, child, selection);
+	}
 
 }

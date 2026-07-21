@@ -24,11 +24,9 @@ import org.eclipse.sirius.components.view.KeyBinding;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getPreconditionExpression
- * <em>Precondition Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getKeyBindings <em>Key
- * Bindings</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getPreconditionExpression <em>Precondition Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getKeyBindings <em>Key Bindings</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry()
@@ -37,60 +35,55 @@ import org.eclipse.sirius.components.view.KeyBinding;
  */
 public interface TreeItemContextMenuEntry extends EObject {
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry_Name()
-     * @model dataType="org.eclipse.sirius.components.view.Identifier" required="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry_Name()
+	 * @model dataType="org.eclipse.sirius.components.view.Identifier" required="true"
+	 * @generated
+	 */
     String getName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getName
-     * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
     void setName(String value);
 
     /**
-     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Precondition Expression</em>' attribute.
-     * @see #setPreconditionExpression(String)
-     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry_PreconditionExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Precondition Expression</em>' attribute.
+	 * @see #setPreconditionExpression(String)
+	 * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry_PreconditionExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getPreconditionExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getPreconditionExpression
-     * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Precondition Expression</em>' attribute.
-     * @see #getPreconditionExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry#getPreconditionExpression <em>Precondition Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Precondition Expression</em>' attribute.
+	 * @see #getPreconditionExpression()
+	 * @generated
+	 */
     void setPreconditionExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Key Bindings</b></em>' containment reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.view.KeyBinding}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Key Bindings</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry_KeyBindings()
-     * @model containment="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Key Bindings</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.KeyBinding}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Key Bindings</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.tree.TreePackage#getTreeItemContextMenuEntry_KeyBindings()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<KeyBinding> getKeyBindings();
 
 } // TreeItemContextMenuEntry

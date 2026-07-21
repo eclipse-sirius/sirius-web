@@ -22,14 +22,11 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getLabelExpression <em>Label
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getPreconditionExpression <em>Precondition
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getIconURLExpression <em>Icon URL
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getPosition <em>Position</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getLabelExpression <em>Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getPreconditionExpression <em>Precondition Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getIconURLExpression <em>Icon URL Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getPosition <em>Position</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getName <em>Name</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDecoratorDescription()
@@ -50,62 +47,54 @@ public interface DecoratorDescription extends EObject {
     String getLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getLabelExpression
-     * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Label Expression</em>' attribute.
-     * @see #getLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getLabelExpression <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Label Expression</em>' attribute.
+	 * @see #getLabelExpression()
+	 * @generated
+	 */
     void setLabelExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Precondition Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Precondition Expression</em>' attribute.
-     * @see #setPreconditionExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDecoratorDescription_PreconditionExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Precondition Expression</em>' attribute.
+	 * @see #setPreconditionExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDecoratorDescription_PreconditionExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getPreconditionExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getPreconditionExpression
-     * <em>Precondition Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Precondition Expression</em>' attribute.
-     * @see #getPreconditionExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getPreconditionExpression <em>Precondition Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Precondition Expression</em>' attribute.
+	 * @see #getPreconditionExpression()
+	 * @generated
+	 */
     void setPreconditionExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Icon URL Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Icon URL Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Icon URL Expression</em>' attribute.
-     * @see #setIconURLExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDecoratorDescription_IconURLExpression()
-     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * @return the value of the '<em>Icon URL Expression</em>' attribute.
+	 * @see #setIconURLExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDecoratorDescription_IconURLExpression()
+	 * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getIconURLExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getIconURLExpression <em>Icon URL
-     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Icon URL Expression</em>' attribute.
-     * @see #getIconURLExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getIconURLExpression <em>Icon URL Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Icon URL Expression</em>' attribute.
+	 * @see #getIconURLExpression()
+	 * @generated
+	 */
     void setIconURLExpression(String value);
 
     /**
@@ -123,37 +112,33 @@ public interface DecoratorDescription extends EObject {
     DecoratorPosition getPosition();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getPosition
-     * <em>Position</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Position</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.DecoratorPosition
-     * @see #getPosition()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getPosition <em>Position</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Position</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.DecoratorPosition
+	 * @see #getPosition()
+	 * @generated
+	 */
     void setPosition(DecoratorPosition value);
 
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDecoratorDescription_Name()
-     * @model dataType="org.eclipse.sirius.components.view.Identifier"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDecoratorDescription_Name()
+	 * @model dataType="org.eclipse.sirius.components.view.Identifier"
+	 * @generated
+	 */
     String getName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getName
-     * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DecoratorDescription#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
     void setName(String value);
 
 } // DecoratorDescription

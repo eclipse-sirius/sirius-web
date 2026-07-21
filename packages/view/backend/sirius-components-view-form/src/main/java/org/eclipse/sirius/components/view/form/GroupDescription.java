@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,25 +40,23 @@ import org.eclipse.emf.ecore.EObject;
 public interface GroupDescription extends EObject {
 
     /**
-     * Returns the value of the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Name</em>' attribute.
-     * @see #setName(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_Name()
-     * @model dataType="org.eclipse.sirius.components.view.Identifier"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Name</em>' attribute.
+	 * @see #setName(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_Name()
+	 * @model dataType="org.eclipse.sirius.components.view.Identifier"
+	 * @generated
+	 */
     String getName();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getName <em>Name</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Name</em>' attribute.
-     * @see #getName()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getName <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * @see #getName()
+	 * @generated
+	 */
     void setName(String value);
 
     /**
@@ -74,14 +72,12 @@ public interface GroupDescription extends EObject {
     String getLabelExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getLabelExpression
-     * <em>Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Label Expression</em>' attribute.
-     * @see #getLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getLabelExpression <em>Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Label Expression</em>' attribute.
+	 * @see #getLabelExpression()
+	 * @generated
+	 */
     void setLabelExpression(String value);
 
     /**
@@ -99,39 +95,34 @@ public interface GroupDescription extends EObject {
     GroupDisplayMode getDisplayMode();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getDisplayMode <em>Display
-     * Mode</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Display Mode</em>' attribute.
-     * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
-     * @see #getDisplayMode()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getDisplayMode <em>Display Mode</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Display Mode</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.form.GroupDisplayMode
+	 * @see #getDisplayMode()
+	 * @generated
+	 */
     void setDisplayMode(GroupDisplayMode value);
 
     /**
-     * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute. The default value is
-     * <code>"aql:self"</code>. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Semantic Candidates Expression</em>' attribute.
-     * @see #setSemanticCandidatesExpression(String)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_SemanticCandidatesExpression()
-     * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Semantic Candidates Expression</b></em>' attribute.
+	 * The default value is <code>"aql:self"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Semantic Candidates Expression</em>' attribute.
+	 * @see #setSemanticCandidatesExpression(String)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_SemanticCandidatesExpression()
+	 * @model default="aql:self" dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+	 * @generated
+	 */
     String getSemanticCandidatesExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.form.GroupDescription#getSemanticCandidatesExpression <em>Semantic
-     * Candidates Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Semantic Candidates Expression</em>' attribute.
-     * @see #getSemanticCandidatesExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getSemanticCandidatesExpression <em>Semantic Candidates Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Semantic Candidates Expression</em>' attribute.
+	 * @see #getSemanticCandidatesExpression()
+	 * @generated
+	 */
     void setSemanticCandidatesExpression(String value);
 
     /**
@@ -159,26 +150,24 @@ public interface GroupDescription extends EObject {
     EList<FormElementDescription> getChildren();
 
     /**
-     * Returns the value of the '<em><b>Border Style</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Border Style</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Border Style</em>' containment reference.
-     * @see #setBorderStyle(ContainerBorderStyle)
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_BorderStyle()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Border Style</em>' containment reference.
+	 * @see #setBorderStyle(ContainerBorderStyle)
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getGroupDescription_BorderStyle()
+	 * @model containment="true"
+	 * @generated
+	 */
     ContainerBorderStyle getBorderStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getBorderStyle <em>Border
-     * Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Border Style</em>' containment reference.
-     * @see #getBorderStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.GroupDescription#getBorderStyle <em>Border Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Border Style</em>' containment reference.
+	 * @see #getBorderStyle()
+	 * @generated
+	 */
     void setBorderStyle(ContainerBorderStyle value);
 
     /**

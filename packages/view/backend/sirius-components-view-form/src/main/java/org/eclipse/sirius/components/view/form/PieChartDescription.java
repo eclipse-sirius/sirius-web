@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,13 +22,10 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.PieChartDescription#getValuesExpression <em>Values
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.PieChartDescription#getKeysExpression <em>Keys
- * Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.PieChartDescription#getStyle <em>Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.PieChartDescription#getConditionalStyles <em>Conditional
- * Styles</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.PieChartDescription#getValuesExpression <em>Values Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.PieChartDescription#getKeysExpression <em>Keys Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.PieChartDescription#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.PieChartDescription#getConditionalStyles <em>Conditional Styles</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.form.FormPackage#getPieChartDescription()
@@ -49,14 +46,12 @@ public interface PieChartDescription extends WidgetDescription {
     String getValuesExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.PieChartDescription#getValuesExpression
-     * <em>Values Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Values Expression</em>' attribute.
-     * @see #getValuesExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.PieChartDescription#getValuesExpression <em>Values Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Values Expression</em>' attribute.
+	 * @see #getValuesExpression()
+	 * @generated
+	 */
     void setValuesExpression(String value);
 
     /**
@@ -72,14 +67,12 @@ public interface PieChartDescription extends WidgetDescription {
     String getKeysExpression();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.PieChartDescription#getKeysExpression
-     * <em>Keys Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Keys Expression</em>' attribute.
-     * @see #getKeysExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.PieChartDescription#getKeysExpression <em>Keys Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Keys Expression</em>' attribute.
+	 * @see #getKeysExpression()
+	 * @generated
+	 */
     void setKeysExpression(String value);
 
     /**
@@ -95,26 +88,24 @@ public interface PieChartDescription extends WidgetDescription {
     PieChartDescriptionStyle getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.form.PieChartDescription#getStyle
-     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.form.PieChartDescription#getStyle <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Style</em>' containment reference.
+	 * @see #getStyle()
+	 * @generated
+	 */
     void setStyle(PieChartDescriptionStyle value);
 
     /**
-     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle}. <!-- begin-user-doc
+	 * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.form.ConditionalPieChartDescriptionStyle}.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.form.FormPackage#getPieChartDescription_ConditionalStyles()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.form.FormPackage#getPieChartDescription_ConditionalStyles()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<ConditionalPieChartDescriptionStyle> getConditionalStyles();
 
 } // PieChartDescription

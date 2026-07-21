@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,9 +25,8 @@ import org.eclipse.sirius.components.view.form.FormVariable;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.FormVariableImpl#getName <em>Name</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.form.impl.FormVariableImpl#getDefaultValueExpression <em>Default Value
- * Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.FormVariableImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.form.impl.FormVariableImpl#getDefaultValueExpression <em>Default Value Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -74,155 +73,147 @@ public class FormVariableImpl extends MinimalEObjectImpl.Container implements Fo
     protected String defaultValueExpression = DEFAULT_VALUE_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected FormVariableImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return FormPackage.Literals.FORM_VARIABLE;
-    }
+		return FormPackage.Literals.FORM_VARIABLE;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getName() {
-        return this.name;
-    }
+		return name;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setName(String newName) {
-        String oldName = this.name;
-        this.name = newName;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_VARIABLE__NAME, oldName, this.name));
-    }
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_VARIABLE__NAME, oldName, name));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getDefaultValueExpression() {
-        return this.defaultValueExpression;
-    }
+		return defaultValueExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setDefaultValueExpression(String newDefaultValueExpression) {
-        String oldDefaultValueExpression = this.defaultValueExpression;
-        this.defaultValueExpression = newDefaultValueExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION, oldDefaultValueExpression, this.defaultValueExpression));
-    }
+		String oldDefaultValueExpression = defaultValueExpression;
+		defaultValueExpression = newDefaultValueExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION, oldDefaultValueExpression, defaultValueExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case FormPackage.FORM_VARIABLE__NAME:
-                return this.getName();
-            case FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION:
-                return this.getDefaultValueExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_VARIABLE__NAME:
+				return getName();
+			case FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION:
+				return getDefaultValueExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case FormPackage.FORM_VARIABLE__NAME:
-                this.setName((String) newValue);
-                return;
-            case FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION:
-                this.setDefaultValueExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_VARIABLE__NAME:
+				setName((String)newValue);
+				return;
+			case FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION:
+				setDefaultValueExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case FormPackage.FORM_VARIABLE__NAME:
-                this.setName(NAME_EDEFAULT);
-                return;
-            case FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION:
-                this.setDefaultValueExpression(DEFAULT_VALUE_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_VARIABLE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION:
+				setDefaultValueExpression(DEFAULT_VALUE_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case FormPackage.FORM_VARIABLE__NAME:
-                return NAME_EDEFAULT == null ? this.name != null : !NAME_EDEFAULT.equals(this.name);
-            case FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION:
-                return DEFAULT_VALUE_EXPRESSION_EDEFAULT == null ? this.defaultValueExpression != null : !DEFAULT_VALUE_EXPRESSION_EDEFAULT.equals(this.defaultValueExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case FormPackage.FORM_VARIABLE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case FormPackage.FORM_VARIABLE__DEFAULT_VALUE_EXPRESSION:
+				return DEFAULT_VALUE_EXPRESSION_EDEFAULT == null ? defaultValueExpression != null : !DEFAULT_VALUE_EXPRESSION_EDEFAULT.equals(defaultValueExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (name: ");
-        result.append(this.name);
-        result.append(", defaultValueExpression: ");
-        result.append(this.defaultValueExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (name: ");
+		result.append(name);
+		result.append(", defaultValueExpression: ");
+		result.append(defaultValueExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // FormVariableImpl

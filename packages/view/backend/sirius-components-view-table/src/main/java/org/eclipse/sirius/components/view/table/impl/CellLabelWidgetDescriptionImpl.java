@@ -26,8 +26,7 @@ import org.eclipse.sirius.components.view.table.TablePackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.table.impl.CellLabelWidgetDescriptionImpl#getIconExpression <em>Icon
- * Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.table.impl.CellLabelWidgetDescriptionImpl#getIconExpression <em>Icon Expression</em>}</li>
  * </ul>
  *
  * @generated
@@ -35,140 +34,134 @@ import org.eclipse.sirius.components.view.table.TablePackage;
 public class CellLabelWidgetDescriptionImpl extends MinimalEObjectImpl.Container implements CellLabelWidgetDescription {
 
     /**
-     * The default value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute. <!-- begin-user-doc
+	 * The default value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getIconExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getIconExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String ICON_EXPRESSION_EDEFAULT = "";
 
     /**
-     * The cached value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute. <!-- begin-user-doc
+	 * The cached value of the '{@link #getIconExpression() <em>Icon Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @see #getIconExpression()
-     * @generated
-     * @ordered
-     */
+	 * @see #getIconExpression()
+	 * @generated
+	 * @ordered
+	 */
     protected String iconExpression = ICON_EXPRESSION_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected CellLabelWidgetDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return TablePackage.Literals.CELL_LABEL_WIDGET_DESCRIPTION;
-    }
+		return TablePackage.Literals.CELL_LABEL_WIDGET_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getIconExpression() {
-        return this.iconExpression;
-    }
+		return iconExpression;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setIconExpression(String newIconExpression) {
-        String oldIconExpression = this.iconExpression;
-        this.iconExpression = newIconExpression;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION, oldIconExpression, this.iconExpression));
-    }
+		String oldIconExpression = iconExpression;
+		iconExpression = newIconExpression;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION, oldIconExpression, iconExpression));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
-                return this.getIconExpression();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
+				return getIconExpression();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
-                this.setIconExpression((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
+				setIconExpression((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
-                this.setIconExpression(ICON_EXPRESSION_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
+				setIconExpression(ICON_EXPRESSION_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
-                return ICON_EXPRESSION_EDEFAULT == null ? this.iconExpression != null : !ICON_EXPRESSION_EDEFAULT.equals(this.iconExpression);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case TablePackage.CELL_LABEL_WIDGET_DESCRIPTION__ICON_EXPRESSION:
+				return ICON_EXPRESSION_EDEFAULT == null ? iconExpression != null : !ICON_EXPRESSION_EDEFAULT.equals(iconExpression);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (iconExpression: ");
-        result.append(this.iconExpression);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (iconExpression: ");
+		result.append(iconExpression);
+		result.append(')');
+		return result.toString();
+	}
 
 } // CellLabelWidgetDescriptionImpl

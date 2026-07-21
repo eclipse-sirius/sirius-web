@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,9 +33,9 @@ import org.eclipse.sirius.components.view.ViewPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getDescriptions <em>Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getColorPalettes <em>Color Palettes</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getTextStylePalettes <em>Text Style Palettes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getDescriptions <em>Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getColorPalettes <em>Color Palettes</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.impl.ViewImpl#getTextStylePalettes <em>Text Style Palettes</em>}</li>
  * </ul>
  *
  * @generated
@@ -62,171 +62,168 @@ public class ViewImpl extends MinimalEObjectImpl.Container implements View {
     protected EList<ColorPalette> colorPalettes;
 
     /**
-     * The cached value of the '{@link #getTextStylePalettes() <em>Text Style Palettes</em>}' containment reference
-     * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getTextStylePalettes()
-     * @generated
-     * @ordered
-     */
+	 * The cached value of the '{@link #getTextStylePalettes() <em>Text Style Palettes</em>}' containment reference list.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @see #getTextStylePalettes()
+	 * @generated
+	 * @ordered
+	 */
     protected EList<TextStylePalette> textStylePalettes;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected ViewImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return ViewPackage.Literals.VIEW;
-    }
+		return ViewPackage.Literals.VIEW;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<RepresentationDescription> getDescriptions() {
-        if (this.descriptions == null) {
-            this.descriptions = new EObjectContainmentEList<>(RepresentationDescription.class, this, ViewPackage.VIEW__DESCRIPTIONS);
-        }
-        return this.descriptions;
-    }
+		if (descriptions == null)
+		{
+			descriptions = new EObjectContainmentEList<RepresentationDescription>(RepresentationDescription.class, this, ViewPackage.VIEW__DESCRIPTIONS);
+		}
+		return descriptions;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<ColorPalette> getColorPalettes() {
-        if (this.colorPalettes == null) {
-            this.colorPalettes = new EObjectContainmentEList<>(ColorPalette.class, this, ViewPackage.VIEW__COLOR_PALETTES);
-        }
-        return this.colorPalettes;
-    }
+		if (colorPalettes == null)
+		{
+			colorPalettes = new EObjectContainmentEList<ColorPalette>(ColorPalette.class, this, ViewPackage.VIEW__COLOR_PALETTES);
+		}
+		return colorPalettes;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public EList<TextStylePalette> getTextStylePalettes() {
-        if (this.textStylePalettes == null) {
-            this.textStylePalettes = new EObjectContainmentEList<>(TextStylePalette.class, this, ViewPackage.VIEW__TEXT_STYLE_PALETTES);
-        }
-        return this.textStylePalettes;
-    }
+		if (textStylePalettes == null)
+		{
+			textStylePalettes = new EObjectContainmentEList<TextStylePalette>(TextStylePalette.class, this, ViewPackage.VIEW__TEXT_STYLE_PALETTES);
+		}
+		return textStylePalettes;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
-        switch (featureID) {
-            case ViewPackage.VIEW__DESCRIPTIONS:
-                return ((InternalEList<?>) this.getDescriptions()).basicRemove(otherEnd, msgs);
-            case ViewPackage.VIEW__COLOR_PALETTES:
-                return ((InternalEList<?>) this.getColorPalettes()).basicRemove(otherEnd, msgs);
-            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
-                return ((InternalEList<?>) this.getTextStylePalettes()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.VIEW__DESCRIPTIONS:
+				return ((InternalEList<?>)getDescriptions()).basicRemove(otherEnd, msgs);
+			case ViewPackage.VIEW__COLOR_PALETTES:
+				return ((InternalEList<?>)getColorPalettes()).basicRemove(otherEnd, msgs);
+			case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+				return ((InternalEList<?>)getTextStylePalettes()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case ViewPackage.VIEW__DESCRIPTIONS:
-                return this.getDescriptions();
-            case ViewPackage.VIEW__COLOR_PALETTES:
-                return this.getColorPalettes();
-            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
-                return this.getTextStylePalettes();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.VIEW__DESCRIPTIONS:
+				return getDescriptions();
+			case ViewPackage.VIEW__COLOR_PALETTES:
+				return getColorPalettes();
+			case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+				return getTextStylePalettes();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @SuppressWarnings("unchecked")
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case ViewPackage.VIEW__DESCRIPTIONS:
-                this.getDescriptions().clear();
-                this.getDescriptions().addAll((Collection<? extends RepresentationDescription>) newValue);
-                return;
-            case ViewPackage.VIEW__COLOR_PALETTES:
-                this.getColorPalettes().clear();
-                this.getColorPalettes().addAll((Collection<? extends ColorPalette>) newValue);
-                return;
-            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
-                this.getTextStylePalettes().clear();
-                this.getTextStylePalettes().addAll((Collection<? extends TextStylePalette>) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.VIEW__DESCRIPTIONS:
+				getDescriptions().clear();
+				getDescriptions().addAll((Collection<? extends RepresentationDescription>)newValue);
+				return;
+			case ViewPackage.VIEW__COLOR_PALETTES:
+				getColorPalettes().clear();
+				getColorPalettes().addAll((Collection<? extends ColorPalette>)newValue);
+				return;
+			case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+				getTextStylePalettes().clear();
+				getTextStylePalettes().addAll((Collection<? extends TextStylePalette>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case ViewPackage.VIEW__DESCRIPTIONS:
-                this.getDescriptions().clear();
-                return;
-            case ViewPackage.VIEW__COLOR_PALETTES:
-                this.getColorPalettes().clear();
-                return;
-            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
-                this.getTextStylePalettes().clear();
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.VIEW__DESCRIPTIONS:
+				getDescriptions().clear();
+				return;
+			case ViewPackage.VIEW__COLOR_PALETTES:
+				getColorPalettes().clear();
+				return;
+			case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+				getTextStylePalettes().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case ViewPackage.VIEW__DESCRIPTIONS:
-                return this.descriptions != null && !this.descriptions.isEmpty();
-            case ViewPackage.VIEW__COLOR_PALETTES:
-                return this.colorPalettes != null && !this.colorPalettes.isEmpty();
-            case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
-                return this.textStylePalettes != null && !this.textStylePalettes.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case ViewPackage.VIEW__DESCRIPTIONS:
+				return descriptions != null && !descriptions.isEmpty();
+			case ViewPackage.VIEW__COLOR_PALETTES:
+				return colorPalettes != null && !colorPalettes.isEmpty();
+			case ViewPackage.VIEW__TEXT_STYLE_PALETTES:
+				return textStylePalettes != null && !textStylePalettes.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // ViewImpl

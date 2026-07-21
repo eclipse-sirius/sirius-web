@@ -20,38 +20,23 @@ package org.eclipse.sirius.components.view.diagram;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription
- * <em>Selection Dialog Tree Description</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple <em>Multiple</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isOptional <em>Optional</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDefaultTitleExpression
- * <em>Default Title Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionTitleExpression <em>No
- * Selection Title Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionTitleExpression
- * <em>With Selection Title Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDescriptionExpression
- * <em>Description Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionLabelExpression
- * <em>No Selection Action Label Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionDescriptionExpression
- * <em>No Selection Action Description Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionLabelExpression
- * <em>With Selection Action Label Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionDescriptionExpression
- * <em>With Selection Action Description Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionStatusMessageExpression
- * <em>No Selection Action Status Message Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionStatusMessageExpression
- * <em>Selection Required Without Selection Status Message Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionStatusMessageExpression
- * <em>Selection Required With Selection Status Message Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionConfirmButtonLabelExpression
- * <em>No Selection Confirm Button Label Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression
- * <em>Selection Required Without Selection Confirm Button Label Expression</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionConfirmButtonLabelExpression
- * <em>Selection Required With Selection Confirm Button Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription <em>Selection Dialog Tree Description</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple <em>Multiple</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isOptional <em>Optional</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDefaultTitleExpression <em>Default Title Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionTitleExpression <em>No Selection Title Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionTitleExpression <em>With Selection Title Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDescriptionExpression <em>Description Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionLabelExpression <em>No Selection Action Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionDescriptionExpression <em>No Selection Action Description Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionLabelExpression <em>With Selection Action Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionDescriptionExpression <em>With Selection Action Description Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionStatusMessageExpression <em>No Selection Action Status Message Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionStatusMessageExpression <em>Selection Required Without Selection Status Message Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionStatusMessageExpression <em>Selection Required With Selection Status Message Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionConfirmButtonLabelExpression <em>No Selection Confirm Button Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression <em>Selection Required Without Selection Confirm Button Label Expression</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionConfirmButtonLabelExpression <em>Selection Required With Selection Confirm Button Label Expression</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription()
@@ -72,179 +57,157 @@ public interface SelectionDialogDescription extends DialogDescription {
     SelectionDialogTreeDescription getSelectionDialogTreeDescription();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription
-     * <em>Selection Dialog Tree Description</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Selection Dialog Tree Description</em>' containment reference.
-     * @see #getSelectionDialogTreeDescription()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionDialogTreeDescription <em>Selection Dialog Tree Description</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Selection Dialog Tree Description</em>' containment reference.
+	 * @see #getSelectionDialogTreeDescription()
+	 * @generated
+	 */
     void setSelectionDialogTreeDescription(SelectionDialogTreeDescription value);
 
     /**
-     * Returns the value of the '<em><b>Multiple</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Multiple</em>' attribute.
-     * @see #setMultiple(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_Multiple()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Multiple</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Multiple</em>' attribute.
+	 * @see #setMultiple(boolean)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_Multiple()
+	 * @model
+	 * @generated
+	 */
     boolean isMultiple();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple
-     * <em>Multiple</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Multiple</em>' attribute.
-     * @see #isMultiple()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isMultiple <em>Multiple</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Multiple</em>' attribute.
+	 * @see #isMultiple()
+	 * @generated
+	 */
     void setMultiple(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Optional</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Optional</em>' attribute.
-     * @see #setOptional(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_Optional()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Optional</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Optional</em>' attribute.
+	 * @see #setOptional(boolean)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_Optional()
+	 * @model
+	 * @generated
+	 */
     boolean isOptional();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isOptional
-     * <em>Optional</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Optional</em>' attribute.
-     * @see #isOptional()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#isOptional <em>Optional</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Optional</em>' attribute.
+	 * @see #isOptional()
+	 * @generated
+	 */
     void setOptional(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Default Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Default Title Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Default Title Expression</em>' attribute.
-     * @see #setDefaultTitleExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_DefaultTitleExpression()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Default Title Expression</em>' attribute.
+	 * @see #setDefaultTitleExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_DefaultTitleExpression()
+	 * @model
+	 * @generated
+	 */
     String getDefaultTitleExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDefaultTitleExpression
-     * <em>Default Title Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Default Title Expression</em>' attribute.
-     * @see #getDefaultTitleExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDefaultTitleExpression <em>Default Title Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Default Title Expression</em>' attribute.
+	 * @see #getDefaultTitleExpression()
+	 * @generated
+	 */
     void setDefaultTitleExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>No Selection Title Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>No Selection Title Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>No Selection Title Expression</em>' attribute.
-     * @see #setNoSelectionTitleExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_NoSelectionTitleExpression()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>No Selection Title Expression</em>' attribute.
+	 * @see #setNoSelectionTitleExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_NoSelectionTitleExpression()
+	 * @model
+	 * @generated
+	 */
     String getNoSelectionTitleExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionTitleExpression
-     * <em>No Selection Title Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>No Selection Title Expression</em>' attribute.
-     * @see #getNoSelectionTitleExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionTitleExpression <em>No Selection Title Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>No Selection Title Expression</em>' attribute.
+	 * @see #getNoSelectionTitleExpression()
+	 * @generated
+	 */
     void setNoSelectionTitleExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>With Selection Title Expression</b></em>' attribute. <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>With Selection Title Expression</b></em>' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>With Selection Title Expression</em>' attribute.
-     * @see #setWithSelectionTitleExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_WithSelectionTitleExpression()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>With Selection Title Expression</em>' attribute.
+	 * @see #setWithSelectionTitleExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_WithSelectionTitleExpression()
+	 * @model
+	 * @generated
+	 */
     String getWithSelectionTitleExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionTitleExpression
-     * <em>With Selection Title Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>With Selection Title Expression</em>' attribute.
-     * @see #getWithSelectionTitleExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionTitleExpression <em>With Selection Title Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>With Selection Title Expression</em>' attribute.
+	 * @see #getWithSelectionTitleExpression()
+	 * @generated
+	 */
     void setWithSelectionTitleExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Description Expression</b></em>' attribute. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Description Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Description Expression</em>' attribute.
-     * @see #setDescriptionExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_DescriptionExpression()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>Description Expression</em>' attribute.
+	 * @see #setDescriptionExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_DescriptionExpression()
+	 * @model
+	 * @generated
+	 */
     String getDescriptionExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDescriptionExpression
-     * <em>Description Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Description Expression</em>' attribute.
-     * @see #getDescriptionExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getDescriptionExpression <em>Description Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Description Expression</em>' attribute.
+	 * @see #getDescriptionExpression()
+	 * @generated
+	 */
     void setDescriptionExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>No Selection Action Label Expression</b></em>' attribute. <!-- begin-user-doc
+	 * Returns the value of the '<em><b>No Selection Action Label Expression</b></em>' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>No Selection Action Label Expression</em>' attribute.
-     * @see #setNoSelectionActionLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_NoSelectionActionLabelExpression()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>No Selection Action Label Expression</em>' attribute.
+	 * @see #setNoSelectionActionLabelExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_NoSelectionActionLabelExpression()
+	 * @model
+	 * @generated
+	 */
     String getNoSelectionActionLabelExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionLabelExpression
-     * <em>No Selection Action Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>No Selection Action Label Expression</em>' attribute.
-     * @see #getNoSelectionActionLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionLabelExpression <em>No Selection Action Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>No Selection Action Label Expression</em>' attribute.
+	 * @see #getNoSelectionActionLabelExpression()
+	 * @generated
+	 */
     void setNoSelectionActionLabelExpression(String value);
 
     /**
@@ -260,39 +223,33 @@ public interface SelectionDialogDescription extends DialogDescription {
     String getNoSelectionActionDescriptionExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionDescriptionExpression
-     * <em>No Selection Action Description Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>No Selection Action Description Expression</em>' attribute.
-     * @see #getNoSelectionActionDescriptionExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionDescriptionExpression <em>No Selection Action Description Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>No Selection Action Description Expression</em>' attribute.
+	 * @see #getNoSelectionActionDescriptionExpression()
+	 * @generated
+	 */
     void setNoSelectionActionDescriptionExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>With Selection Action Label Expression</b></em>' attribute. <!-- begin-user-doc
+	 * Returns the value of the '<em><b>With Selection Action Label Expression</b></em>' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>With Selection Action Label Expression</em>' attribute.
-     * @see #setWithSelectionActionLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_WithSelectionActionLabelExpression()
-     * @model
-     * @generated
-     */
+	 * @return the value of the '<em>With Selection Action Label Expression</em>' attribute.
+	 * @see #setWithSelectionActionLabelExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_WithSelectionActionLabelExpression()
+	 * @model
+	 * @generated
+	 */
     String getWithSelectionActionLabelExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionLabelExpression
-     * <em>With Selection Action Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>With Selection Action Label Expression</em>' attribute.
-     * @see #getWithSelectionActionLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionLabelExpression <em>With Selection Action Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>With Selection Action Label Expression</em>' attribute.
+	 * @see #getWithSelectionActionLabelExpression()
+	 * @generated
+	 */
     void setWithSelectionActionLabelExpression(String value);
 
     /**
@@ -308,15 +265,12 @@ public interface SelectionDialogDescription extends DialogDescription {
     String getWithSelectionActionDescriptionExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionDescriptionExpression
-     * <em>With Selection Action Description Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>With Selection Action Description Expression</em>' attribute.
-     * @see #getWithSelectionActionDescriptionExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getWithSelectionActionDescriptionExpression <em>With Selection Action Description Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>With Selection Action Description Expression</em>' attribute.
+	 * @see #getWithSelectionActionDescriptionExpression()
+	 * @generated
+	 */
     void setWithSelectionActionDescriptionExpression(String value);
 
     /**
@@ -332,66 +286,54 @@ public interface SelectionDialogDescription extends DialogDescription {
     String getNoSelectionActionStatusMessageExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionStatusMessageExpression
-     * <em>No Selection Action Status Message Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>No Selection Action Status Message Expression</em>' attribute.
-     * @see #getNoSelectionActionStatusMessageExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionActionStatusMessageExpression <em>No Selection Action Status Message Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>No Selection Action Status Message Expression</em>' attribute.
+	 * @see #getNoSelectionActionStatusMessageExpression()
+	 * @generated
+	 */
     void setNoSelectionActionStatusMessageExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Selection Required Without Selection Status Message Expression</b></em>'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Selection Required Without Selection Status Message Expression</em>' attribute.
-     * @see #setSelectionRequiredWithoutSelectionStatusMessageExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionRequiredWithoutSelectionStatusMessageExpression()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Selection Required Without Selection Status Message Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Selection Required Without Selection Status Message Expression</em>' attribute.
+	 * @see #setSelectionRequiredWithoutSelectionStatusMessageExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionRequiredWithoutSelectionStatusMessageExpression()
+	 * @model
+	 * @generated
+	 */
     String getSelectionRequiredWithoutSelectionStatusMessageExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionStatusMessageExpression
-     * <em>Selection Required Without Selection Status Message Expression</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionStatusMessageExpression <em>Selection Required Without Selection Status Message Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Selection Required Without Selection Status Message Expression</em>'
-     *            attribute.
-     * @see #getSelectionRequiredWithoutSelectionStatusMessageExpression()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Selection Required Without Selection Status Message Expression</em>' attribute.
+	 * @see #getSelectionRequiredWithoutSelectionStatusMessageExpression()
+	 * @generated
+	 */
     void setSelectionRequiredWithoutSelectionStatusMessageExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Selection Required With Selection Status Message Expression</b></em>' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Selection Required With Selection Status Message Expression</em>' attribute.
-     * @see #setSelectionRequiredWithSelectionStatusMessageExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionRequiredWithSelectionStatusMessageExpression()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Selection Required With Selection Status Message Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Selection Required With Selection Status Message Expression</em>' attribute.
+	 * @see #setSelectionRequiredWithSelectionStatusMessageExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionRequiredWithSelectionStatusMessageExpression()
+	 * @model
+	 * @generated
+	 */
     String getSelectionRequiredWithSelectionStatusMessageExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionStatusMessageExpression
-     * <em>Selection Required With Selection Status Message Expression</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionStatusMessageExpression <em>Selection Required With Selection Status Message Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Selection Required With Selection Status Message Expression</em>' attribute.
-     * @see #getSelectionRequiredWithSelectionStatusMessageExpression()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Selection Required With Selection Status Message Expression</em>' attribute.
+	 * @see #getSelectionRequiredWithSelectionStatusMessageExpression()
+	 * @generated
+	 */
     void setSelectionRequiredWithSelectionStatusMessageExpression(String value);
 
     /**
@@ -407,68 +349,54 @@ public interface SelectionDialogDescription extends DialogDescription {
     String getNoSelectionConfirmButtonLabelExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionConfirmButtonLabelExpression
-     * <em>No Selection Confirm Button Label Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>No Selection Confirm Button Label Expression</em>' attribute.
-     * @see #getNoSelectionConfirmButtonLabelExpression()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getNoSelectionConfirmButtonLabelExpression <em>No Selection Confirm Button Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>No Selection Confirm Button Label Expression</em>' attribute.
+	 * @see #getNoSelectionConfirmButtonLabelExpression()
+	 * @generated
+	 */
     void setNoSelectionConfirmButtonLabelExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Selection Required Without Selection Confirm Button Label Expression</b></em>'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Selection Required Without Selection Confirm Button Label Expression</em>'
-     *         attribute.
-     * @see #setSelectionRequiredWithoutSelectionConfirmButtonLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionRequiredWithoutSelectionConfirmButtonLabelExpression()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Selection Required Without Selection Confirm Button Label Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Selection Required Without Selection Confirm Button Label Expression</em>' attribute.
+	 * @see #setSelectionRequiredWithoutSelectionConfirmButtonLabelExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionRequiredWithoutSelectionConfirmButtonLabelExpression()
+	 * @model
+	 * @generated
+	 */
     String getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression
-     * <em>Selection Required Without Selection Confirm Button Label Expression</em>}' attribute. <!-- begin-user-doc
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression <em>Selection Required Without Selection Confirm Button Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Selection Required Without Selection Confirm Button Label Expression</em>'
-     *            attribute.
-     * @see #getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Selection Required Without Selection Confirm Button Label Expression</em>' attribute.
+	 * @see #getSelectionRequiredWithoutSelectionConfirmButtonLabelExpression()
+	 * @generated
+	 */
     void setSelectionRequiredWithoutSelectionConfirmButtonLabelExpression(String value);
 
     /**
-     * Returns the value of the '<em><b>Selection Required With Selection Confirm Button Label Expression</b></em>'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Selection Required With Selection Confirm Button Label Expression</em>' attribute.
-     * @see #setSelectionRequiredWithSelectionConfirmButtonLabelExpression(String)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionRequiredWithSelectionConfirmButtonLabelExpression()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Selection Required With Selection Confirm Button Label Expression</b></em>' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Selection Required With Selection Confirm Button Label Expression</em>' attribute.
+	 * @see #setSelectionRequiredWithSelectionConfirmButtonLabelExpression(String)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getSelectionDialogDescription_SelectionRequiredWithSelectionConfirmButtonLabelExpression()
+	 * @model
+	 * @generated
+	 */
     String getSelectionRequiredWithSelectionConfirmButtonLabelExpression();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionConfirmButtonLabelExpression
-     * <em>Selection Required With Selection Confirm Button Label Expression</em>}' attribute. <!-- begin-user-doc -->
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.SelectionDialogDescription#getSelectionRequiredWithSelectionConfirmButtonLabelExpression <em>Selection Required With Selection Confirm Button Label Expression</em>}' attribute.
+	 * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Selection Required With Selection Confirm Button Label Expression</em>'
-     *            attribute.
-     * @see #getSelectionRequiredWithSelectionConfirmButtonLabelExpression()
-     * @generated
-     */
+	 * @param value the new value of the '<em>Selection Required With Selection Confirm Button Label Expression</em>' attribute.
+	 * @see #getSelectionRequiredWithSelectionConfirmButtonLabelExpression()
+	 * @generated
+	 */
     void setSelectionRequiredWithSelectionConfirmButtonLabelExpression(String value);
 
 } // SelectionDialogDescription

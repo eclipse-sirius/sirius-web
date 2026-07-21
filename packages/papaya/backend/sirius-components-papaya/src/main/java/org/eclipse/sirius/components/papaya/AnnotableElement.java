@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,14 +32,14 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface AnnotableElement extends EObject {
     /**
-     * Returns the value of the '<em><b>Annotations</b></em>' reference list. The list contents are of type
-     * {@link org.eclipse.sirius.components.papaya.Annotation}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Annotations</em>' reference list.
-     * @see org.eclipse.sirius.components.papaya.PapayaPackage#getAnnotableElement_Annotations()
-     * @model
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Annotations</b></em>' reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.papaya.Annotation}.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Annotations</em>' reference list.
+	 * @see org.eclipse.sirius.components.papaya.PapayaPackage#getAnnotableElement_Annotations()
+	 * @model
+	 * @generated
+	 */
     EList<Annotation> getAnnotations();
 
 } // AnnotableElement

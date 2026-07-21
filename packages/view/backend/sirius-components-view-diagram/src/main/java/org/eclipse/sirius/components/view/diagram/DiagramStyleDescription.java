@@ -33,25 +33,23 @@ import org.eclipse.sirius.components.view.UserColor;
 public interface DiagramStyleDescription extends EObject {
 
     /**
-     * Returns the value of the '<em><b>Background</b></em>' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Background</em>' reference.
-     * @model
-     * @generated
-     * @see #setBackground(UserColor)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramStyleDescription_Background()
-     */
+	 * Returns the value of the '<em><b>Background</b></em>' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Background</em>' reference.
+	 * @see #setBackground(UserColor)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramStyleDescription_Background()
+	 * @model
+	 * @generated
+	 */
     UserColor getBackground();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramStyleDescription#getBackground
-     * <em>Background</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *         the new value of the '<em>Background</em>' reference.
-     * @generated
-     * @see #getBackground()
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramStyleDescription#getBackground <em>Background</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Background</em>' reference.
+	 * @see #getBackground()
+	 * @generated
+	 */
     void setBackground(UserColor value);
 
 } // DiagramStyleDescription

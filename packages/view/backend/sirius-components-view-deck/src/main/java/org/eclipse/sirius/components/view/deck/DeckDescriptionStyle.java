@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,14 +45,12 @@ public interface DeckDescriptionStyle extends EObject {
     UserColor getBackgroundColor();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle#getBackgroundColor
-     * <em>Background Color</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Background Color</em>' reference.
-     * @see #getBackgroundColor()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle#getBackgroundColor <em>Background Color</em>}' reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Background Color</em>' reference.
+	 * @see #getBackgroundColor()
+	 * @generated
+	 */
     void setBackgroundColor(UserColor value);
 
 } // DeckDescriptionStyle

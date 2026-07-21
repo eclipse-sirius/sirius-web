@@ -25,148 +25,141 @@ import org.eclipse.sirius.components.view.diagram.SemanticDecoratorDescription;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.impl.SemanticDecoratorDescriptionImpl#getDomainType <em>Domain
- * Type</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.impl.SemanticDecoratorDescriptionImpl#getDomainType <em>Domain Type</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class SemanticDecoratorDescriptionImpl extends DecoratorDescriptionImpl implements SemanticDecoratorDescription {
     /**
-     * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The default value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getDomainType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDomainType()
+	 * @generated
+	 * @ordered
+	 */
     protected static final String DOMAIN_TYPE_EDEFAULT = null;
 
     /**
-     * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute. <!-- begin-user-doc --> <!--
+	 * The cached value of the '{@link #getDomainType() <em>Domain Type</em>}' attribute.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @see #getDomainType()
-     * @generated
-     * @ordered
-     */
+	 * @see #getDomainType()
+	 * @generated
+	 * @ordered
+	 */
     protected String domainType = DOMAIN_TYPE_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     protected SemanticDecoratorDescriptionImpl() {
-        super();
-    }
+		super();
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     protected EClass eStaticClass() {
-        return DiagramPackage.Literals.SEMANTIC_DECORATOR_DESCRIPTION;
-    }
+		return DiagramPackage.Literals.SEMANTIC_DECORATOR_DESCRIPTION;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String getDomainType() {
-        return this.domainType;
-    }
+		return domainType;
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void setDomainType(String newDomainType) {
-        String oldDomainType = this.domainType;
-        this.domainType = newDomainType;
-        if (this.eNotificationRequired())
-            this.eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE, oldDomainType, this.domainType));
-    }
+		String oldDomainType = domainType;
+		domainType = newDomainType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE, oldDomainType, domainType));
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
-        switch (featureID) {
-            case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE:
-                return this.getDomainType();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE:
+				return getDomainType();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eSet(int featureID, Object newValue) {
-        switch (featureID) {
-            case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE:
-                this.setDomainType((String) newValue);
-                return;
-        }
-        super.eSet(featureID, newValue);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE:
+				setDomainType((String)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public void eUnset(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE:
-                this.setDomainType(DOMAIN_TYPE_EDEFAULT);
-                return;
-        }
-        super.eUnset(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE:
+				setDomainType(DOMAIN_TYPE_EDEFAULT);
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public boolean eIsSet(int featureID) {
-        switch (featureID) {
-            case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE:
-                return DOMAIN_TYPE_EDEFAULT == null ? this.domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(this.domainType);
-        }
-        return super.eIsSet(featureID);
-    }
+		switch (featureID)
+		{
+			case DiagramPackage.SEMANTIC_DECORATOR_DESCRIPTION__DOMAIN_TYPE:
+				return DOMAIN_TYPE_EDEFAULT == null ? domainType != null : !DOMAIN_TYPE_EDEFAULT.equals(domainType);
+		}
+		return super.eIsSet(featureID);
+	}
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
     @Override
     public String toString() {
-        if (this.eIsProxy())
-            return super.toString();
+		if (eIsProxy()) return super.toString();
 
-        StringBuilder result = new StringBuilder(super.toString());
-        result.append(" (domainType: ");
-        result.append(this.domainType);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (domainType: ");
+		result.append(domainType);
+		result.append(')');
+		return result.toString();
+	}
 
 } // SemanticDecoratorDescriptionImpl

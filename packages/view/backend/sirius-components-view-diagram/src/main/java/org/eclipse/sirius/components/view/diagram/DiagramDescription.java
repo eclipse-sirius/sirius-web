@@ -22,23 +22,17 @@ import org.eclipse.sirius.components.view.RepresentationDescription;
  * The following features are supported:
  * </p>
  * <ul>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getLayoutOption <em>Layout Option</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getToolbar <em>Toolbar</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getPalette <em>Palette</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getNodeDescriptions <em>Node
- * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getEdgeDescriptions <em>Edge
- * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout
- * Direction</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle <em>Style</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getConditionalStyles <em>Conditional
- * Styles</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getDecoratorDescriptions <em>Decorator
- * Descriptions</em>}</li>
- * <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isMinimapVisible <em>Minimap
- * Visible</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getLayoutOption <em>Layout Option</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getToolbar <em>Toolbar</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getPalette <em>Palette</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getNodeDescriptions <em>Node Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getEdgeDescriptions <em>Edge Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout Direction</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle <em>Style</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getConditionalStyles <em>Conditional Styles</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getDecoratorDescriptions <em>Decorator Descriptions</em>}</li>
+ *   <li>{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isMinimapVisible <em>Minimap Visible</em>}</li>
  * </ul>
  *
  * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription()
@@ -62,113 +56,104 @@ public interface DiagramDescription extends RepresentationDescription {
     DiagramLayoutOption getLayoutOption();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getLayoutOption
-     * <em>Layout Option</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Layout Option</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramLayoutOption
-     * @see #getLayoutOption()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getLayoutOption <em>Layout Option</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Layout Option</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramLayoutOption
+	 * @see #getLayoutOption()
+	 * @generated
+	 */
     void setLayoutOption(DiagramLayoutOption value);
 
     /**
-     * Returns the value of the '<em><b>Toolbar</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Toolbar</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Toolbar</em>' containment reference.
-     * @see #setToolbar(DiagramToolbar)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Toolbar()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Toolbar</em>' containment reference.
+	 * @see #setToolbar(DiagramToolbar)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Toolbar()
+	 * @model containment="true"
+	 * @generated
+	 */
     DiagramToolbar getToolbar();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getToolbar
-     * <em>Toolbar</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Toolbar</em>' containment reference.
-     * @see #getToolbar()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getToolbar <em>Toolbar</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Toolbar</em>' containment reference.
+	 * @see #getToolbar()
+	 * @generated
+	 */
     void setToolbar(DiagramToolbar value);
 
     /**
-     * Returns the value of the '<em><b>Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Palette</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Palette</em>' containment reference.
-     * @see #setPalette(DiagramPalette)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Palette()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Palette</em>' containment reference.
+	 * @see #setPalette(DiagramPalette)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_Palette()
+	 * @model containment="true"
+	 * @generated
+	 */
     DiagramPalette getPalette();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getPalette
-     * <em>Palette</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Palette</em>' containment reference.
-     * @see #getPalette()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getPalette <em>Palette</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Palette</em>' containment reference.
+	 * @see #getPalette()
+	 * @generated
+	 */
     void setPalette(DiagramPalette value);
 
     /**
-     * Returns the value of the '<em><b>Node Descriptions</b></em>' containment reference list. The list contents are of
-     * type {@link org.eclipse.sirius.components.view.diagram.NodeDescription}. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Node Descriptions</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.diagram.NodeDescription}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Node Descriptions</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_NodeDescriptions()
-     * @model containment="true" keys="name"
-     * @generated
-     */
+	 * @return the value of the '<em>Node Descriptions</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_NodeDescriptions()
+	 * @model containment="true" keys="name"
+	 * @generated
+	 */
     EList<NodeDescription> getNodeDescriptions();
 
     /**
-     * Returns the value of the '<em><b>Edge Descriptions</b></em>' containment reference list. The list contents are of
-     * type {@link org.eclipse.sirius.components.view.diagram.EdgeDescription}. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Edge Descriptions</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.diagram.EdgeDescription}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Edge Descriptions</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_EdgeDescriptions()
-     * @model containment="true" keys="name"
-     * @generated
-     */
+	 * @return the value of the '<em>Edge Descriptions</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_EdgeDescriptions()
+	 * @model containment="true" keys="name"
+	 * @generated
+	 */
     EList<EdgeDescription> getEdgeDescriptions();
 
     /**
-     * Returns the value of the '<em><b>Arrange Layout Direction</b></em>' attribute. The default value is
-     * <code>"UNDEFINED"</code>. The literals are from the enumeration
-     * {@link org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection}. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Arrange Layout Direction</b></em>' attribute.
+	 * The default value is <code>"UNDEFINED"</code>.
+	 * The literals are from the enumeration {@link org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Arrange Layout Direction</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
-     * @see #setArrangeLayoutDirection(ArrangeLayoutDirection)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ArrangeLayoutDirection()
-     * @model default="UNDEFINED" required="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Arrange Layout Direction</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
+	 * @see #setArrangeLayoutDirection(ArrangeLayoutDirection)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ArrangeLayoutDirection()
+	 * @model default="UNDEFINED" required="true"
+	 * @generated
+	 */
     ArrangeLayoutDirection getArrangeLayoutDirection();
 
     /**
-     * Sets the value of the
-     * '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange
-     * Layout Direction</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Arrange Layout Direction</em>' attribute.
-     * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
-     * @see #getArrangeLayoutDirection()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getArrangeLayoutDirection <em>Arrange Layout Direction</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Arrange Layout Direction</em>' attribute.
+	 * @see org.eclipse.sirius.components.view.diagram.ArrangeLayoutDirection
+	 * @see #getArrangeLayoutDirection()
+	 * @generated
+	 */
     void setArrangeLayoutDirection(ArrangeLayoutDirection value);
 
     /**
@@ -184,84 +169,78 @@ public interface DiagramDescription extends RepresentationDescription {
     DiagramStyleDescription getStyle();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle
-     * <em>Style</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Style</em>' containment reference.
-     * @see #getStyle()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getStyle <em>Style</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Style</em>' containment reference.
+	 * @see #getStyle()
+	 * @generated
+	 */
     void setStyle(DiagramStyleDescription value);
 
     /**
-     * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list. The list contents are
-     * of type {@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle}. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Conditional Styles</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Conditional Styles</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ConditionalStyles()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Conditional Styles</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_ConditionalStyles()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<ConditionalDiagramStyle> getConditionalStyles();
 
     /**
-     * Returns the value of the '<em><b>Decorator Descriptions</b></em>' containment reference list. The list contents
-     * are of type {@link org.eclipse.sirius.components.view.diagram.DecoratorDescription}. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Decorator Descriptions</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.sirius.components.view.diagram.DecoratorDescription}.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Decorator Descriptions</em>' containment reference list.
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_DecoratorDescriptions()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Decorator Descriptions</em>' containment reference list.
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_DecoratorDescriptions()
+	 * @model containment="true"
+	 * @generated
+	 */
     EList<DecoratorDescription> getDecoratorDescriptions();
 
     /**
-     * Returns the value of the '<em><b>Minimap Visible</b></em>' attribute. The default value is <code>"true"</code>.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Minimap Visible</em>' attribute.
-     * @see #setMinimapVisible(boolean)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_MinimapVisible()
-     * @model default="true"
-     * @generated
-     */
+	 * Returns the value of the '<em><b>Minimap Visible</b></em>' attribute.
+	 * The default value is <code>"true"</code>.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @return the value of the '<em>Minimap Visible</em>' attribute.
+	 * @see #setMinimapVisible(boolean)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_MinimapVisible()
+	 * @model default="true"
+	 * @generated
+	 */
     boolean isMinimapVisible();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isMinimapVisible
-     * <em>Minimap Visible</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Minimap Visible</em>' attribute.
-     * @see #isMinimapVisible()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#isMinimapVisible <em>Minimap Visible</em>}' attribute.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Minimap Visible</em>' attribute.
+	 * @see #isMinimapVisible()
+	 * @generated
+	 */
     void setMinimapVisible(boolean value);
 
     /**
-     * Returns the value of the '<em><b>Group Palette</b></em>' containment reference. <!-- begin-user-doc --> <!--
+	 * Returns the value of the '<em><b>Group Palette</b></em>' containment reference.
+	 * <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
-     * @return the value of the '<em>Group Palette</em>' containment reference.
-     * @see #setGroupPalette(GroupPalette)
-     * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_GroupPalette()
-     * @model containment="true"
-     * @generated
-     */
+	 * @return the value of the '<em>Group Palette</em>' containment reference.
+	 * @see #setGroupPalette(GroupPalette)
+	 * @see org.eclipse.sirius.components.view.diagram.DiagramPackage#getDiagramDescription_GroupPalette()
+	 * @model containment="true"
+	 * @generated
+	 */
     GroupPalette getGroupPalette();
 
     /**
-     * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette
-     * <em>Group Palette</em>}' containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @param value
-     *            the new value of the '<em>Group Palette</em>' containment reference.
-     * @see #getGroupPalette()
-     * @generated
-     */
+	 * Sets the value of the '{@link org.eclipse.sirius.components.view.diagram.DiagramDescription#getGroupPalette <em>Group Palette</em>}' containment reference.
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Group Palette</em>' containment reference.
+	 * @see #getGroupPalette()
+	 * @generated
+	 */
     void setGroupPalette(GroupPalette value);
 
 } // DiagramDescription
