@@ -15,5 +15,5 @@ package org.eclipse.sirius.components.codegen.emf.internal;
 
 import java.nio.file.Path;
 
-public record GeneratorArguments(Path repositoryRoot, String genmodelPattern) {
+public record GeneratorArguments(Path repositoryRoot, String genmodelPattern, boolean format) {
 }

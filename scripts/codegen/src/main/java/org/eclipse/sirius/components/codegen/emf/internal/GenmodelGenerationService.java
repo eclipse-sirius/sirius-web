@@ -42,13 +42,13 @@ public final class GenmodelGenerationService {
         this.editProjectCleaner = editProjectCleaner;
     }
 
-    public void generateAll(List<LoadedGenmodel> genmodels) {
+    public void generateAll(List<LoadedGenmodel> genmodels, boolean format) {
         for (LoadedGenmodel entry : genmodels) {
-            this.generate(entry);
+            this.generate(entry, format);
         }
     }
 
-    private void generate(LoadedGenmodel entry) {
+    private void generate(LoadedGenmodel entry, boolean format) {
         Resource resource = entry.resource();
         GenModel genModel = this.findGenModel(resource);
         if (genModel == null) {
@@ -61,11 +61,11 @@ public final class GenmodelGenerationService {
         genModel.reconcile();
         genModel.setCanGenerate(true);
         genModel.setDynamicTemplates(false);
-        genModel.setCodeFormatting(true);
-        genModel.setCommentFormatting(true);
+        genModel.setCodeFormatting(format);
+        genModel.setCommentFormatting(format);
         genModel.setCleanup(true);
         generator.setInput(genModel);
-        this.formattingConfigurer.configure(generator, resource.getResourceSet(), entry.projectLocation());
+        this.formattingConfigurer.configure(generator, resource.getResourceSet(), entry.projectLocation(), format);
         EditProjectLocation editProject = this.editProjectLocationResolver.resolve(entry.projectLocation(), genModel);
         if (editProject != null && Files.isDirectory(editProject.projectRoot())) {
             this.projectUriMapper.registerProject(resource.getResourceSet(), editProject.projectName(), editProject.projectRoot());

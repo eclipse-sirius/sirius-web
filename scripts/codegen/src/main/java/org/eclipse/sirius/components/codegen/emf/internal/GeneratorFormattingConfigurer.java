@@ -29,13 +29,16 @@ public final class GeneratorFormattingConfigurer {
     private final String formatterPrefix = "org.eclipse.jdt.core.formatter.";
     private final String classpathPreferences = "/org.eclipse.jdt.core.prefs";
 
-    void configure(Generator generator, ResourceSet resourceSet, ProjectLocation projectLocation) {
+    void configure(Generator generator, ResourceSet resourceSet, ProjectLocation projectLocation, boolean format) {
         Generator.Options options = generator.getOptions();
-        options.codeFormatting = true;
-        options.commentFormatting = true;
+        options.codeFormatting = format;
+        options.commentFormatting = format;
         options.importOrganizing = true;
         options.cleanup = true;
         options.resourceSet = resourceSet;
+        if (!format) {
+            return;
+        }
         Map<String, String> formatterOptions = DefaultCodeFormatterConstants.getEclipseDefaultSettings();
         formatterOptions.putAll(JavaCore.getOptions());
         formatterOptions.putAll(this.fromClasspath());

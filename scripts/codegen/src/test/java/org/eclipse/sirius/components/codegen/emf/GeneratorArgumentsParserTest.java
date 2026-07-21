@@ -36,6 +36,7 @@ public class GeneratorArgumentsParserTest {
 
         assertEquals(root, arguments.repositoryRoot());
         assertEquals("**/*.genmodel", arguments.genmodelPattern());
+        assertEquals(true, arguments.format());
     }
 
     @Test
@@ -46,11 +47,35 @@ public class GeneratorArgumentsParserTest {
 
         assertEquals(root, arguments.repositoryRoot());
         assertEquals("**/src/**.genmodel", arguments.genmodelPattern());
+        assertEquals(true, arguments.format());
+    }
+
+    @Test
+    public void parsesExplicitFormatValues() throws Exception {
+        Path root = this.temporaryFolder.newFolder("repository").toPath();
+
+        GeneratorArguments enabled = new GeneratorArgumentsParser().parse(new String[] { root.toString(), "--format=true" });
+        GeneratorArguments disabled = new GeneratorArgumentsParser().parse(new String[] { root.toString(), "--format=false" });
+
+        assertEquals(true, enabled.format());
+        assertEquals(false, disabled.format());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void rejectsBlankPattern() throws Exception {
         Path root = this.temporaryFolder.newFolder("repository").toPath();
         new GeneratorArgumentsParser().parse(new String[] { root.toString(), "--genmodel-pattern=" });
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void rejectsFormatWithoutValue() throws Exception {
+        Path root = this.temporaryFolder.newFolder("repository").toPath();
+        new GeneratorArgumentsParser().parse(new String[] { root.toString(), "--format" });
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void rejectsInvalidFormatValue() throws Exception {
+        Path root = this.temporaryFolder.newFolder("repository").toPath();
+        new GeneratorArgumentsParser().parse(new String[] { root.toString(), "--format=maybe" });
     }
 }
