@@ -69,6 +69,7 @@ One can now simply run `npm run format` to format the frontend code or `npm run 
 - https://github.com/eclipse-sirius/sirius-web/issues/6695[#6695] [project] Expose previous project name in 'ProjectNameUpdatedEvent'
 - https://github.com/eclipse-sirius/sirius-web/issues/6635[#6635] [sirius-web] Add a dedicated package for markdown edition and rendering.
 This package can thus be eaily reused by those who want to integrate markdown rendering the their Sirius Web based applications.
+- https://github.com/eclipse-sirius/sirius-web/issues/6726[#6726] [releng] Move '@generated NOT' code from generated code into a spec package.
 
 
 
