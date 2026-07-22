@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,14 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.gantt.GanttDescription;
 import org.eclipse.sirius.components.view.gantt.GanttFactory;
 import org.eclipse.sirius.components.view.gantt.GanttPackage;
+import org.eclipse.sirius.components.view.gantt.provider.spec.CreateTaskDependencyToolItemProviderSpec;
+import org.eclipse.sirius.components.view.gantt.provider.spec.CreateTaskToolItemProviderSpec;
+import org.eclipse.sirius.components.view.gantt.provider.spec.DeleteTaskDependencyToolItemProviderSpec;
+import org.eclipse.sirius.components.view.gantt.provider.spec.DeleteTaskToolItemProviderSpec;
+import org.eclipse.sirius.components.view.gantt.provider.spec.DropTaskToolItemProviderSpec;
+import org.eclipse.sirius.components.view.gantt.provider.spec.EditTaskToolItemProviderSpec;
+import org.eclipse.sirius.components.view.gantt.provider.spec.GanttDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.gantt.provider.spec.TaskDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.gantt.util.GanttAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
@@ -110,12 +118,12 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.GanttDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createGanttDescriptionAdapter() {
         if (this.ganttDescriptionItemProvider == null) {
-            this.ganttDescriptionItemProvider = new GanttDescriptionItemProvider(this);
+            this.ganttDescriptionItemProvider = new GanttDescriptionItemProviderSpec(this);
         }
 
         return this.ganttDescriptionItemProvider;
@@ -133,12 +141,12 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.TaskDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTaskDescriptionAdapter() {
         if (this.taskDescriptionItemProvider == null) {
-            this.taskDescriptionItemProvider = new TaskDescriptionItemProvider(this);
+            this.taskDescriptionItemProvider = new TaskDescriptionItemProviderSpec(this);
         }
 
         return this.taskDescriptionItemProvider;
@@ -156,12 +164,12 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.CreateTaskTool}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCreateTaskToolAdapter() {
         if (this.createTaskToolItemProvider == null) {
-            this.createTaskToolItemProvider = new CreateTaskToolItemProvider(this);
+            this.createTaskToolItemProvider = new CreateTaskToolItemProviderSpec(this);
         }
 
         return this.createTaskToolItemProvider;
@@ -179,12 +187,12 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.EditTaskTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createEditTaskToolAdapter() {
         if (this.editTaskToolItemProvider == null) {
-            this.editTaskToolItemProvider = new EditTaskToolItemProvider(this);
+            this.editTaskToolItemProvider = new EditTaskToolItemProviderSpec(this);
         }
 
         return this.editTaskToolItemProvider;
@@ -202,12 +210,12 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.DeleteTaskTool}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDeleteTaskToolAdapter() {
         if (this.deleteTaskToolItemProvider == null) {
-            this.deleteTaskToolItemProvider = new DeleteTaskToolItemProvider(this);
+            this.deleteTaskToolItemProvider = new DeleteTaskToolItemProviderSpec(this);
         }
 
         return this.deleteTaskToolItemProvider;
@@ -225,12 +233,12 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.DropTaskTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDropTaskToolAdapter() {
         if (this.dropTaskToolItemProvider == null) {
-            this.dropTaskToolItemProvider = new DropTaskToolItemProvider(this);
+            this.dropTaskToolItemProvider = new DropTaskToolItemProviderSpec(this);
         }
 
         return this.dropTaskToolItemProvider;
@@ -249,12 +257,12 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.CreateTaskDependencyTool}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createCreateTaskDependencyToolAdapter() {
         if (this.createTaskDependencyToolItemProvider == null) {
-            this.createTaskDependencyToolItemProvider = new CreateTaskDependencyToolItemProvider(this);
+            this.createTaskDependencyToolItemProvider = new CreateTaskDependencyToolItemProviderSpec(this);
         }
 
         return this.createTaskDependencyToolItemProvider;
@@ -273,12 +281,12 @@ public class GanttItemProviderAdapterFactory extends GanttAdapterFactory impleme
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.gantt.DeleteTaskDependencyTool}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createDeleteTaskDependencyToolAdapter() {
         if (this.deleteTaskDependencyToolItemProvider == null) {
-            this.deleteTaskDependencyToolItemProvider = new DeleteTaskDependencyToolItemProvider(this);
+            this.deleteTaskDependencyToolItemProvider = new DeleteTaskDependencyToolItemProviderSpec(this);
         }
 
         return this.deleteTaskDependencyToolItemProvider;
