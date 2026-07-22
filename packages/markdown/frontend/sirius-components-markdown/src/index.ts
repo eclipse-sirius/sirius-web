@@ -10,3 +10,6 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+export { MarkdownRenderer } from './markdown/MarkdownRenderer';
+export { type MarkdownRendererProps } from './markdown/MarkdownRenderer.types';
