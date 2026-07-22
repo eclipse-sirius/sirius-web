@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -13,12 +13,12 @@
 
 import { gql, useMutation } from '@apollo/client';
 import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { MarkdownRenderer } from '@eclipse-sirius/sirius-components-markdown';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { makeStyles } from 'tss-react/mui';
 import { PropertySectionComponent, PropertySectionComponentProps } from '../form/Form.types';
 import { GQLRichText } from '../form/FormEventFragments.types';
-import { RichTextEditor } from '../richtexteditor/RichTextEditor';
 import { LoadingIndicator } from './LoadingIndicator';
 import { PropertySectionLabel } from './PropertySectionLabel';
 import {
@@ -119,7 +119,7 @@ export const RichTextPropertySection: PropertySectionComponent<GQLRichText> = ({
         <LoadingIndicator loading={updateRichTextLoading} />
       </div>
       <div data-testid={widget.label}>
-        <RichTextEditor
+        <MarkdownRenderer
           value={widget.stringValue}
           placeholder={widget.label}
           onBlur={onBlur}

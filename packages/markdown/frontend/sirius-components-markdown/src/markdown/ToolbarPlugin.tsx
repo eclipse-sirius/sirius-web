@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -43,7 +43,7 @@ import {
 } from 'lexical';
 import { useCallback, useEffect, useState } from 'react';
 import { makeStyles, withStyles } from 'tss-react/mui';
-import { ToolbarPluginProps } from './RichTextEditor.types';
+import { ToolbarPluginProps } from './MarkdownRenderer.types';
 
 const useToolbarStyles = makeStyles()((theme) => ({
   paper: {
@@ -83,9 +83,9 @@ export const ToolbarPlugin = ({ readOnly }: ToolbarPluginProps) => {
   const [isItalic, setIsItalic] = useState<boolean>(false);
   const [isStrikeTrough, setIsStrikeTrough] = useState<boolean>(false);
   const [isCode, setIsCode] = useState<boolean>(false);
-  const [blockType, setBlockType] = useState('paragraph');
+  const [blockType, setBlockType] = useState<string>('paragraph');
 
-  const updateButtons = (toggled) => {
+  const updateButtons = (toggled: string) => {
     setIsBold(toggled.includes('bold'));
     setIsItalic(toggled.includes('italic'));
     setIsStrikeTrough(toggled.includes('strikethrough'));

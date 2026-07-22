@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,13 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { CodeNode } from '@lexical/code-core';
+import { HorizontalRuleNode } from '@lexical/extension';
 import { LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { $convertFromMarkdownString, $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
-import { HorizontalRuleNode } from '@lexical/react/LexicalHorizontalRuleNode';
 import { MarkdownShortcutPlugin } from '@lexical/react/LexicalMarkdownShortcutPlugin';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
@@ -28,15 +28,12 @@ import { makeStyles } from 'tss-react/mui';
 import { ListPlugin } from './ListPlugin';
 import {
   ContentEditableProps,
+  MarkdownRendererProps,
   OnBlurPluginProps,
-  RichTextEditorProps,
   UpdateValuePluginProps,
-} from './RichTextEditor.types';
+} from './MarkdownRenderer.types';
 import { ToolbarPlugin } from './ToolbarPlugin';
 
-/**
- * A content-editable div managed by lexical, but which also invokes our onFocus callback.
- */
 const ContentEditable = ({ readOnly }: ContentEditableProps): JSX.Element => {
   const [editor] = useLexicalComposerContext();
   const ref = useCallback(
@@ -48,9 +45,6 @@ const ContentEditable = ({ readOnly }: ContentEditableProps): JSX.Element => {
   return <div ref={ref} contentEditable={!readOnly} spellCheck={false}></div>;
 };
 
-/**
- * Updates the editor's content when we get a new value for the widget's text.
- */
 const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): JSX.Element | null => {
   const [editor] = useLexicalComposerContext();
   useEffect(() => {
@@ -62,10 +56,6 @@ const UpdateValuePlugin = ({ markdownText }: UpdateValuePluginProps): JSX.Elemen
   return null;
 };
 
-/**
- * Invokes the supplied callback with the markdown representation of the document
- * when focus is moved out of the editor area (including the toolbar).
- */
 const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): JSX.Element => {
   const [editor] = useLexicalComposerContext();
   return (
@@ -83,7 +73,7 @@ const OnBlurPlugin = ({ onBlur, children }: OnBlurPluginProps): JSX.Element => {
   );
 };
 
-const useRichTextEditorStyles = makeStyles()((theme) => ({
+const useMarkdownRendererStyles = makeStyles()((theme) => ({
   editorContainer: {
     marginTop: theme.spacing(2),
     color: theme.palette.text.primary,
@@ -178,8 +168,8 @@ const useRichTextEditorStyles = makeStyles()((theme) => ({
   },
 }));
 
-export const RichTextEditor = ({ value, placeholder, readOnly, onBlur }: RichTextEditorProps) => {
-  const { classes } = useRichTextEditorStyles();
+export const MarkdownRenderer = ({ value, placeholder, readOnly, onBlur }: MarkdownRendererProps) => {
+  const { classes } = useMarkdownRendererStyles();
   const theme = {
     placeholder: classes.editorPlaceholder,
     paragraph: classes.editorParagraph,
@@ -205,7 +195,7 @@ export const RichTextEditor = ({ value, placeholder, readOnly, onBlur }: RichTex
     },
   };
   const initialConfig = {
-    namespace: 'RichTextEditor',
+    namespace: 'MarkdownRenderer',
     onError: console.error,
     theme,
     nodes: [HeadingNode, ListNode, ListItemNode, QuoteNode, HorizontalRuleNode, TextNode, CodeNode, LinkNode],
