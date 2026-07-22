@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,19 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.deck.DeckDescription;
 import org.eclipse.sirius.components.view.deck.DeckFactory;
 import org.eclipse.sirius.components.view.deck.DeckPackage;
+import org.eclipse.sirius.components.view.deck.provider.spec.CardDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.CardDropToolItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.ConditionalDeckDescriptionStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.ConditionalDeckElementDescriptionStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.CreateCardToolItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.DeckDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.DeckDescriptionStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.DeckElementDescriptionStyleItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.DeleteCardToolItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.EditCardToolItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.EditLaneToolItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.LaneDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.deck.provider.spec.LaneDropToolItemProviderSpec;
 import org.eclipse.sirius.components.view.deck.util.DeckAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
@@ -109,12 +122,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.DeckDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createDeckDescriptionAdapter() {
         if (this.deckDescriptionItemProvider == null) {
-            this.deckDescriptionItemProvider = new DeckDescriptionItemProvider(this);
+            this.deckDescriptionItemProvider = new DeckDescriptionItemProviderSpec(this);
         }
 
         return this.deckDescriptionItemProvider;
@@ -132,12 +145,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.LaneDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createLaneDescriptionAdapter() {
         if (this.laneDescriptionItemProvider == null) {
-            this.laneDescriptionItemProvider = new LaneDescriptionItemProvider(this);
+            this.laneDescriptionItemProvider = new LaneDescriptionItemProviderSpec(this);
         }
 
         return this.laneDescriptionItemProvider;
@@ -155,12 +168,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.CardDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createCardDescriptionAdapter() {
         if (this.cardDescriptionItemProvider == null) {
-            this.cardDescriptionItemProvider = new CardDescriptionItemProvider(this);
+            this.cardDescriptionItemProvider = new CardDescriptionItemProviderSpec(this);
         }
 
         return this.cardDescriptionItemProvider;
@@ -178,12 +191,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.CreateCardTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createCreateCardToolAdapter() {
         if (this.createCardToolItemProvider == null) {
-            this.createCardToolItemProvider = new CreateCardToolItemProvider(this);
+            this.createCardToolItemProvider = new CreateCardToolItemProviderSpec(this);
         }
 
         return this.createCardToolItemProvider;
@@ -201,12 +214,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.EditCardTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createEditCardToolAdapter() {
         if (this.editCardToolItemProvider == null) {
-            this.editCardToolItemProvider = new EditCardToolItemProvider(this);
+            this.editCardToolItemProvider = new EditCardToolItemProviderSpec(this);
         }
 
         return this.editCardToolItemProvider;
@@ -224,12 +237,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.DeleteCardTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createDeleteCardToolAdapter() {
         if (this.deleteCardToolItemProvider == null) {
-            this.deleteCardToolItemProvider = new DeleteCardToolItemProvider(this);
+            this.deleteCardToolItemProvider = new DeleteCardToolItemProviderSpec(this);
         }
 
         return this.deleteCardToolItemProvider;
@@ -247,12 +260,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.EditLaneTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createEditLaneToolAdapter() {
         if (this.editLaneToolItemProvider == null) {
-            this.editLaneToolItemProvider = new EditLaneToolItemProvider(this);
+            this.editLaneToolItemProvider = new EditLaneToolItemProviderSpec(this);
         }
 
         return this.editLaneToolItemProvider;
@@ -270,12 +283,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.CardDropTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createCardDropToolAdapter() {
         if (this.cardDropToolItemProvider == null) {
-            this.cardDropToolItemProvider = new CardDropToolItemProvider(this);
+            this.cardDropToolItemProvider = new CardDropToolItemProviderSpec(this);
         }
 
         return this.cardDropToolItemProvider;
@@ -293,12 +306,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.LaneDropTool}. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createLaneDropToolAdapter() {
         if (this.laneDropToolItemProvider == null) {
-            this.laneDropToolItemProvider = new LaneDropToolItemProvider(this);
+            this.laneDropToolItemProvider = new LaneDropToolItemProviderSpec(this);
         }
 
         return this.laneDropToolItemProvider;
@@ -317,12 +330,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.DeckDescriptionStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createDeckDescriptionStyleAdapter() {
         if (this.deckDescriptionStyleItemProvider == null) {
-            this.deckDescriptionStyleItemProvider = new DeckDescriptionStyleItemProvider(this);
+            this.deckDescriptionStyleItemProvider = new DeckDescriptionStyleItemProviderSpec(this);
         }
 
         return this.deckDescriptionStyleItemProvider;
@@ -341,12 +354,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.ConditionalDeckDescriptionStyle}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createConditionalDeckDescriptionStyleAdapter() {
         if (this.conditionalDeckDescriptionStyleItemProvider == null) {
-            this.conditionalDeckDescriptionStyleItemProvider = new ConditionalDeckDescriptionStyleItemProvider(this);
+            this.conditionalDeckDescriptionStyleItemProvider = new ConditionalDeckDescriptionStyleItemProviderSpec(this);
         }
 
         return this.conditionalDeckDescriptionStyleItemProvider;
@@ -365,12 +378,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.deck.DeckElementDescriptionStyle}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createDeckElementDescriptionStyleAdapter() {
         if (this.deckElementDescriptionStyleItemProvider == null) {
-            this.deckElementDescriptionStyleItemProvider = new DeckElementDescriptionStyleItemProvider(this);
+            this.deckElementDescriptionStyleItemProvider = new DeckElementDescriptionStyleItemProviderSpec(this);
         }
 
         return this.deckElementDescriptionStyleItemProvider;
@@ -390,12 +403,12 @@ public class DeckItemProviderAdapterFactory extends DeckAdapterFactory implement
      * {@link org.eclipse.sirius.components.view.deck.ConditionalDeckElementDescriptionStyle}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated
-     */
+     * @generated NOT
+    */
     @Override
     public Adapter createConditionalDeckElementDescriptionStyleAdapter() {
         if (this.conditionalDeckElementDescriptionStyleItemProvider == null) {
-            this.conditionalDeckElementDescriptionStyleItemProvider = new ConditionalDeckElementDescriptionStyleItemProvider(this);
+            this.conditionalDeckElementDescriptionStyleItemProvider = new ConditionalDeckElementDescriptionStyleItemProviderSpec(this);
         }
 
         return this.conditionalDeckElementDescriptionStyleItemProvider;

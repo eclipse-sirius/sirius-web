@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -130,7 +130,7 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
     /**
      * This returns LaneDescription.svg. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
@@ -189,7 +189,7 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
@@ -208,7 +208,7 @@ public class LaneDescriptionItemProvider extends DeckElementDescriptionItemProvi
      * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public String getCreateChildText(Object owner, Object feature, Object child, Collection<?> selection) {
