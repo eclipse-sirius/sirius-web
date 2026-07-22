@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { CodeNode } from '@lexical/code';
+import { CodeNode } from '@lexical/code-core';
 import { LinkNode } from '@lexical/link';
 import { ListItemNode, ListNode } from '@lexical/list';
 import { $convertFromMarkdownString, $convertToMarkdownString, TRANSFORMERS } from '@lexical/markdown';

@@ -27,6 +27,10 @@ As a result, we have updated some of our components to deactivate at some very s
 We have also removed the `listStyle`, `margin` and `padding` of some `ul` used in specific locations.
 We should probably not rely on `ul` entirely in the future.
 Downstream projects are advised to just rely on MUI's `CssBaseline` and perform the relevant customization locally in their components instead.
+- https://github.com/eclipse-sirius/sirius-web/issues/6635[#6635] [sirius-web] Add a dedicated package for markdown edition and rendering.
+As such a new dependency is required to run Sirius Web, the package `sirius-components-markdown` which mainly depends on Lexical npm packages.
+Downstream projects using this sirius-components-markdown package will thus have to depend on `lexical`, `@lexical/code-core`, `@lexical/extension`, `@lexical/link`, `@lexical/list`, `@lexical/markdown`, `@lexical/react`, `@lexical/rich-text`, `@lexical/selection` and `@lexical/utils` in version `0.42.0` for now.
+The package `@lexical/code` is not used anymore.
 
 
 === Dependency update
@@ -61,6 +65,8 @@ One can now simply run `npm run format` to format the frontend code or `npm run 
 - https://github.com/eclipse-sirius/sirius-web/issues/6691[#6691] [diagram] Add a top margin for child node with free form layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6705[#6705] Use backend internationalization for `ITreeItemContextMenuEntryProvider` contributions rendered in the tree palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6695[#6695] [project] Expose previous project name in 'ProjectNameUpdatedEvent'
+- https://github.com/eclipse-sirius/sirius-web/issues/6635[#6635] [sirius-web] Add a dedicated package for markdown edition and rendering.
+This package can thus be eaily reused by those who want to integrate markdown rendering the their Sirius Web based applications.
 
 
 
