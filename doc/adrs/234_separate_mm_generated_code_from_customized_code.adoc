@@ -1,0 +1,98 @@
+:author: Laurent Fasani
+:date: 2026-07-22
+:status: accepted
+:consulted: Stéphane Bégaudeau
+:deciders: Stéphane Bégaudeau
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6726
+
+= ADR-234 - Separate metamodels generated code from the customized part
+
+== Context and Problem Statement
+
+We want to have a tool, integrated in sirius-web, to automatically generate the code from the various genmodel files.
+The problem is that, doing so, the resulting generated code will have thousands of formatting differences leading to an unreviewable PR.
+
+We need to differentiate easily what is pure formatting differences and what has been overridden (code that have been customized).
+
+An other reason to do the changes is that we consider that separating generated code from customized changes is a good practise to clarify the code.
+
+
+== Decision Drivers
+
+* Code quality: we need to avoid to loose customized code
+* Code readablility: we need to easyly identify the customized code
+
+
+== Considered Options
+
+=== Generation Gap pattern
+
+==== Edit Code
+
+We will consider only one option but use this ADR to capture how it will behave.
+
+All generated code from `*-edit` modules that need to be customized must be moved in a subpackage called `spec`.
+
+A class `*ItemProviderSpec` must be created for every `ItemProvider` that need to be customized.
+For example, in  `sirius-components-view-diagram` module a new package `org.eclipse.sirius.components.view.diagram.provider.spec` will be created.
+
+this `spec` package will contain classes suffixed by `ItemProviderSpec`.
+These classes will inherit from the corresponding `ItemProvider` class.
+For example, a class `ConditionalDiagramStyleItemProviderSpec` will be created to override `ConditionalDiagramStyleItemProvider`.
+
+The various methods `create*Adapter()` in the classes `*ItemProviderAdapterFactory` will be changed:
+
+- A tag `@generated NOT` will be added.
+- The class `ItemProviderSpec` will be instanciated instead of the regular item provider.
+
+For example 
+```
+    /**
+     * This creates an adapter for a {@link org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated NOT
+     */
+    @Override
+    public Adapter createConditionalDiagramStyleAdapter() {
+        if (this.conditionalDiagramStyleItemProvider == null) {
+            this.conditionalDiagramStyleItemProvider = new ConditionalDiagramStyleItemProviderSpec(this);
+        }
+
+        return this.conditionalDiagramStyleItemProvider;
+    }
+```
+
+
+==== Model Code
+
+All generated code from metamodels modules (not `*-edit`) that need to be customized must be moved in a subpackage called `spec` too.
+
+If two classes `Parent` and `Child` are generated and need to be customized, a `ParentSpec` class will be created to override `Parent`, and a `ChildSpec` class will be created to override `Child`.
+If some methods needs to be overridden both in `Parent` and `Child`, the common behavior will have to be extracted in a reusable class which will be called by both `ParentSpec` and `ChildSpec` classes since multiple inheritance is not supported in Java.
+
+
+== Decision Outcome
+
+In the context of maintaing the manual code added to the generated code, facing the need to differentiate between generated and customized code, we decided for the adoption of the generation gap pattern to achieve a clear separation of concerns, accepting a sizable refactoring.
+
+
+== Consequences
+
+=== Advantages
+
+We clearly identify the customized code since it will be extracted in dedicated classes.
+
+The various `@generated NOT` tags will not be necessary anymore in the `ItemProvider`.
+Before, if forgotten, the customized code could be erased with a new code generation.
+
+
+=== Drawbacks
+
+We will have to perform a refactoring of the existing code to move the customized code in the `spec` package.
+
+
+=== Implementation
+
+We will perform the refactoring of the existing code potentially in several pull requests to avoid a massive pull request that will be hard to review.
+Some test will also need to be contributed to ensure that `@generated NOT` tags do not return in the `ItemProvider` classes.

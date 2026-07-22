@@ -9,7 +9,7 @@
 
 === Architectural decision records
 
-
+- [ADR-234] Separate metamodels generated code from the customized part
 
 
 === Deprecation warning
