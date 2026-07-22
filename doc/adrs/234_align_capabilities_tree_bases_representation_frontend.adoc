@@ -1,0 +1,118 @@
+:author: Charfadi Michaël
+:date: 20226-05-27
+:status: proposed
+:consulted:
+:informed:
+:deciders: Stéphane Bégaudeau
+:pitch:
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6510
+
+
+= ADR-234 - Align the capabilities of all tree based representations (frontend)
+
+
+== Context and Problem Statement
+
+
+We have several features on the explorer Tree representation.
+
+We want to make these features available on all Tree representation :
+
+- Switch between tree descriptions
+- Filter appearance
+- Custom actions
+
+We also want to store the current state of the expanded collapse on the browser's local storage.
+
+We will need to extract several responsibilities of the `ExplorerView` component into more components or hooks in order to enable these features in other tree representations.
+
+
+== Decision Drivers
+
+
+- Reusability: We want to be able to reuse some components from the ExplorerView into other Tree representation
+
+
+=== Saving the expand collapse state into local storage.
+
+
+The existing `ExplorerView` component is used to initiate the subscription, retrieving the tree description & the list of tree filters.
+
+This creates a component with a really complex lifecycle and it's hard to know when the current props values are actually set, thus making the storage of the props into the local storage difficult.
+
+We should create a parent component to the `ExplorerView` named `ExplorerRepresentation` that will be used to retrieve the tree descriptions & tree filters.
+
+We might want to have another component `ExplorerSubscriptionProvider` that will call `useXXXSubscription` and render the current ExplorerView.
+
+This could look like this :
+
+
+```
+<ExplorerRepresentation>
+  <ExplorerSubscriptionProvider>
+    <ExplorerView>
+      <TreeView>
+      </TreeView>
+    </ExplorerView>
+  </ExplorerSubscriptionProvider>
+</ExplorerRepresentation>
+```
+
+This separation will make it so that it's easier to store the current expand/collapse tree into the local storage since all values should be correct and set when rendering the ExplorerView now.
+
+This will also allow us to move the `RepresentationLoadingIndicator` outside of the `ExplorerView`.
+
+
+=== Switch between tree descriptions
+
+
+The `TreeDescriptionsMenu` should be inside the `TreeToolBar` component in order to be rendered on all tree representations (if more than one treeDescription is available).
+
+On the ExplorerView the expanded state value is actually inside a map since we want to store each given state for a given tree description.
+
+This create long syntax in order to get the correct value `state.expanded[state.activeTreeDescriptionId]`, we probably want to have a custom hook that will store the state and expose helper like `setExpanded(newExpanded)` so we don't have to deal with the activeTreeDescriptionId in the `ExplorerView` component.
+
+This custom hook could then be reused in other tree representations to handle several tree descriptions.
+
+
+=== List of Filter feature
+
+
+The filter selector is already rendered on the TreeToolBar, there are no changes required on the frontend to make it work with other representations.
+
+
+=== Custom actions
+
+
+The custom actions are contributed in `EditProjectView` into the `TreeToolBarContext`.
+
+We should use the existing contribution mechanism (`useData()`) in order to add custom actions.
+
+
+== Decision Outcome
+
+
+Theses changes are necessary to align the Tree representation with others representation in term of reusability and extensibility.
+
+
+== Consequences
+
+
+=== Advantages
+
+
+- Better separation of concerns.
+- Less code needed to set up a Tree representation on the frontend.
+
+
+=== Drawbacks
+
+
+- Some API might break.
+
+
+=== References
+
+
+- https://github.com/eclipse-sirius/sirius-web/issues/6540[Use the palette to render connector tools]
+

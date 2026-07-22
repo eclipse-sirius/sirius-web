@@ -9,7 +9,7 @@
 
 === Architectural decision records
 
-
+- [ADR-234] Align the capabilities of all tree based representations (frontend)
 
 
 === Deprecation warning
