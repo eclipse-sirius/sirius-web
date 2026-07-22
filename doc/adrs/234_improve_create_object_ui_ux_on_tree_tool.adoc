@@ -1,0 +1,93 @@
+:author: Charfadi Michaël
+:date: 2026-16-07
+:status: proposed
+:consulted: 
+:informed: 
+:deciders: Stéphane Bégaudeau
+:pitch: 
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6715
+
+= ADR-233 - Improve create object tool UI/UX on tree representation
+
+== Context and Problem Statement
+
+We recently made several improvements to the palette component in order to make it reusable on others representations, and it can be used to execute tools on a tree item (on the explorer representation).
+
+In order to create an element from a tree item in the explorer you need several steps and UI components : 
+
+- Open the palette
+- Click on the `New Object` tool to open the object creation modal
+- Select the type of object
+- Click the confirmation button.
+
+We want to improve the UI/UX of the above scenario by getting rid of the modal and reducing the number of click needed.
+
+As such, we will render a tool section `New object` with each tool inside handling the creation of the object on a click.
+
+
+== Decision Drivers
+
+- UI: The new UI should contains the icons of the object type and looks like default creation tools implemented on diagrams.
+- UX: One click to open the palette, one to open the create object section and another to create the object is needed.
+
+
+== Considered Options
+
+
+=== First Option
+
+We will retrieve a Palette payload from the backend and render it on the frontend.
+
+This will involve this mandatory step :
+
+- Implement a GraphQL query `palette(treeElementIds: [ID!]): Palette!` on `type TreeDescription`
+
+This can be done with granularity :
+
+- Convert the `getTreePaletteInput` to a `FetchTreeItemContextMenuEntryDataInput` and the result to a `GQLPalette` in order render the payload on the frontend reusing existing API.
+- Convert the entries with dedicated `ITreePaletteProvider`.
+
+Note that given the signature of the methods of the `IPaletteProvider API` from the `sirius-components-collaborative-diagrams`, the same API could be used (extracted in another project) or if a new one has to be created then it should have the same signature.
+
+We also have to consider the need to align diagram palette backend API capabilities with the future tree palette backend API.
+
+
+=== Second Option
+
+We add a single frontend tool contribution that will behave like a tool section and renders each tools, more or less like the layout section on the diagram palette.
+
+
+== Decision Outcome
+
+We will go with the first option since retrieving the tree palette from the backend was already discussed in the previous xref:233_use_the_diagram_palette_for_tree_base_representations.adoc[ADR 233]
+
+
+
+== Consequences
+
+=== Advantages
+
+- This option will have 0 impact on the frontend since we already use a `GQLPalette` to render tools.
+- It can be implemented gradually.
+
+
+=== Drawbacks
+
+- Backend API related to the Tree palette and the Diagram palette will need to be homogenized  
+
+
+== More Information
+
+=== Implementation
+
+- The implementation will take heavy inspiration from the one used by the diagram palette.
+- Another ADR might be written if we decide to share a common API between palettes used in several representations.
+
+
+=== Decision Details
+
+
+
+=== References
+
+- xref:233_use_the_diagram_palette_for_tree_base_representations.adoc[ADR 233 - Use the diagram palette for tree based representations]
