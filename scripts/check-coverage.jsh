@@ -92,7 +92,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-view-gantt", 63.0),
   new ModuleCoverage("sirius-components-view-gantt-edit", 37.0),
   new ModuleCoverage("sirius-components-view-deck", 50.0),
-  new ModuleCoverage("sirius-components-view-deck-edit", 31.0),
+  new ModuleCoverage("sirius-components-view-deck-edit", 27.0),
   new ModuleCoverage("sirius-components-view-tree", 57.0),
   new ModuleCoverage("sirius-components-view-tree-edit", 16.0),
   new ModuleCoverage("sirius-components-view-emf", 82.0),
