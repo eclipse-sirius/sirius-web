@@ -70,8 +70,8 @@ One can now simply run `npm run format` to format the frontend code or `npm run 
 - https://github.com/eclipse-sirius/sirius-web/issues/6691[#6691] [diagram] Add a top margin for child node with free form layout
 - https://github.com/eclipse-sirius/sirius-web/issues/6705[#6705] Use backend internationalization for `ITreeItemContextMenuEntryProvider` contributions rendered in the tree palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6695[#6695] [project] Expose previous project name in 'ProjectNameUpdatedEvent'
-- https://github.com/eclipse-sirius/sirius-web/issues/6635[#6635] [sirius-web] Add a dedicated package for markdown edition and rendering.
-This package can thus be eaily reused by those who want to integrate markdown rendering the their Sirius Web based applications.
+- https://github.com/eclipse-sirius/sirius-web/issues/6635[#6635] [sirius-web] Add a dedicated package for Markdown edition and rendering.
+This package can thus be easily reused by those who want to integrate Markdown rendering the their Sirius Web based applications.
 - https://github.com/eclipse-sirius/sirius-web/issues/6461[#6461] [core] Make `IOmniboxCommandOrderer` extensible by downstream applications.
 Downstream applications can implement `IOmniboxCommandOrdererDelegate` to define their own ordering strategy.
 - https://github.com/eclipse-sirius/sirius-web/issues/6726[#6726] [releng] Start extracting the manual code annotated with '@generated NOT' from generated code into a spec package.
