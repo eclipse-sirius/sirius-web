@@ -15,7 +15,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import IconButton from '@mui/material/IconButton';
 import { CSSProperties, Theme, useTheme } from '@mui/material/styles';
 import { Handle, Node, NodeProps, Position } from '@xyflow/react';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
+import { useConnectorPalette } from '../connector/context/useConnectorPalette';
 import { HandleNodeData, HandleNodeState } from './HandleNode.types';
 import { NodeComponentsMap } from './NodeTypes';
 
@@ -76,6 +77,7 @@ const initialState: HandleNodeState = {
 
 export const HandleNode: NodeComponentsMap['handleNode'] = memo(({ data }: NodeProps<Node<HandleNodeData>>) => {
   const [state, setState] = useState<HandleNodeState>(initialState);
+  const { isOpened, isConnectionInProgress } = useConnectorPalette();
   const theme = useTheme();
 
   let Icon = (
@@ -97,6 +99,15 @@ export const HandleNode: NodeComponentsMap['handleNode'] = memo(({ data }: NodeP
       isMouseDown: true,
     }));
   };
+
+  useEffect(() => {
+    if (!isOpened && !isConnectionInProgress && state.isMouseDown) {
+      setState((prevState) => ({
+        ...prevState,
+        isMouseDown: false,
+      }));
+    }
+  }, [isOpened, isConnectionInProgress]);
 
   return (
     <div style={nodeStyle}>
