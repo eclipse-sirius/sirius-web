@@ -62,6 +62,7 @@ Use exported `ToolListItemText component` from the palette package to highlight 
 - https://github.com/eclipse-sirius/sirius-web/issues/6678[#6678] [palette] Fix the search feature of the palette with tool contribution
 Add `searchedValue` prop to `PaletteToolContributionComponentProps`.
 Contributions have to return null in their component if they are not candidate of the search, you can do that using `searchedValue` and `fuzzyMatch function`
+- https://github.com/eclipse-sirius/sirius-web/issues/6746[#6746] [diagram] Fix an issue where a creation handle could stay highlighted after a connection
 
 === New Features
 
