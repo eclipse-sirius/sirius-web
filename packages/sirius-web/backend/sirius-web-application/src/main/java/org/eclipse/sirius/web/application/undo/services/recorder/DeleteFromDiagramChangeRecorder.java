@@ -24,6 +24,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventCon
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.InvokeSingleClickOnDiagramElementToolInput;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
+import org.eclipse.sirius.components.core.api.ICausalityChainVisitor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
@@ -67,105 +68,121 @@ public class DeleteFromDiagramChangeRecorder implements IDiagramEventConsumer {
 
     private final List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders;
 
-    public DeleteFromDiagramChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders, IEdgeAppearanceChangeUndoRecorder edgeAppearanceChangeUndoRecorder, List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders) {
+    private final ICausalityChainVisitor causalityChainVisitor;
+
+    public DeleteFromDiagramChangeRecorder(IDiagramQueryService diagramQueryService, List<INodeAppearanceChangeUndoRecorder> nodeAppearanceChangeUndoRecorders,
+            IEdgeAppearanceChangeUndoRecorder edgeAppearanceChangeUndoRecorder, List<ILabelAppearanceChangeUndoRecorder> labelAppearanceChangeUndoRecorders,
+            ICausalityChainVisitor causalityChainVisitor) {
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.nodeAppearanceChangeUndoRecorders = Objects.requireNonNull(nodeAppearanceChangeUndoRecorders);
         this.edgeAppearanceChangeUndoRecorder = Objects.requireNonNull(edgeAppearanceChangeUndoRecorder);
         this.labelAppearanceChangeUndoRecorders = Objects.requireNonNull(labelAppearanceChangeUndoRecorders);
+        this.causalityChainVisitor = Objects.requireNonNull(causalityChainVisitor);
     }
 
     @Override
     public void accept(IEditingContext editingContext, Diagram previousDiagram, List<IDiagramEvent> diagramEvents, List<ViewDeletionRequest> viewDeletionRequests, List<ViewCreationRequest> viewCreationRequests, ChangeDescription changeDescription) {
-        if (editingContext instanceof EditingContext siriusEditingContext && changeDescription.getCause() instanceof InvokeSingleClickOnDiagramElementToolInput invokeSingleClickOnDiagramElementToolInput && (invokeSingleClickOnDiagramElementToolInput.toolId()
-                .equals(DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID) || invokeSingleClickOnDiagramElementToolInput.toolId()
-                .equals(DeleteMultipleDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID))) {
-            List<IAppearanceChange> undoAppearanceChanges = new ArrayList<>();
-            List<IRepresentationChange> representationChanges = new ArrayList<>();
-
-            invokeSingleClickOnDiagramElementToolInput.diagramElementIds().forEach(diagramElementId -> {
-                Optional<Edge> optionalPreviousEdge = this.diagramQueryService.findEdgeById(previousDiagram, diagramElementId);
-                if (optionalPreviousEdge.isPresent()) {
-                    var previousEdge = optionalPreviousEdge.get();
-                    undoAppearanceChanges.addAll(this.edgeAppearanceChangeUndoRecorder.computeEdgeAppearanceChanges(previousEdge, Optional.empty()));
-                } else {
-                    Optional<Node> optionalPreviousNode = this.diagramQueryService.findNodeById(previousDiagram, diagramElementId);
-                    if (optionalPreviousNode.isPresent()) {
-                        var previousNode = optionalPreviousNode.get();
-                        this.nodeAppearanceChangeUndoRecorders.stream()
-                                .filter(handler -> handler.canHandle(previousNode))
-                                .forEach(handler -> undoAppearanceChanges.addAll(handler.computeUndoNodeAppearanceChanges(previousNode, Optional.empty())));
-
-                        if (previousNode.isPinned()) {
-                            var diagramPinElementChange = new DiagramPinElementChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), Set.of(previousNode.getId()), true, false);
-                            representationChanges.add(diagramPinElementChange);
-                        }
-                        if (previousNode.getState().equals(ViewModifier.Faded)) {
-                            var diagramFadeElementChange = new DiagramFadeElementChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), Set.of(previousNode.getId()), true, false);
-                            representationChanges.add(diagramFadeElementChange);
-                        }
-                        if (previousNode.getState().equals(ViewModifier.Hidden)) {
-                            var diagramHideElementChange = new DiagramHideElementChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), Set.of(previousNode.getId()), true, false);
-                            representationChanges.add(diagramHideElementChange);
-                        }
-
-                        var previousNodeLayoutData = previousDiagram.getLayoutData().nodeLayoutData();
-                        if (previousNodeLayoutData.containsKey(previousNode.getId())) {
-                            var undoPositionEvent = new DiagramNodeLayoutEvent(previousNode.getId(), previousNodeLayoutData.get(previousNode.getId()));
-                            var nodeLayoutChange = new DiagramNodeLayoutChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), List.of(undoPositionEvent), List.of());
-                            representationChanges.add(nodeLayoutChange);
-                        }
-
-                        previousNode.getOutsideLabels().forEach(label -> {
-                            var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
-                            if (previousLabelLayoutData.containsKey(label.id())) {
-                                var diagramLabelLayoutChange = this.getDiagramNodeLabelChange(label.id(), previousLabelLayoutData.get(label.id()), invokeSingleClickOnDiagramElementToolInput.representationId());
-                                representationChanges.addAll(diagramLabelLayoutChange);
-                            }
-                            var undoLabelAppearanceChanges = new ArrayList<IAppearanceChange>();
-                            this.labelAppearanceChangeUndoRecorders.stream()
-                                    .filter(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.canHandle(previousNode))
-                                    .findFirst()
-                                    .map(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.computeUndoLabelAppearanceChanges(previousNode, label.id(), Optional.empty()))
-                                    .map(undoLabelAppearanceChanges::addAll);
-                            var diagramNodeLabelAppearanceChange = new DiagramLabelAppearanceChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), undoLabelAppearanceChanges, List.of());
-                            representationChanges.add(diagramNodeLabelAppearanceChange);
-                        });
-
-                        Optional.ofNullable(previousNode.getInsideLabel())
-                                .ifPresent(label -> {
-                                    var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
-                                    if (previousLabelLayoutData.containsKey(label.getId())) {
-                                        var diagramLabelLayoutChange = this.getDiagramNodeLabelChange(label.getId(), previousLabelLayoutData.get(label.getId()),
-                                                invokeSingleClickOnDiagramElementToolInput.representationId());
-                                        representationChanges.addAll(diagramLabelLayoutChange);
-                                    }
-                                    var undoLabelAppearanceChanges = new ArrayList<IAppearanceChange>();
-                                    this.labelAppearanceChangeUndoRecorders.stream()
-                                            .filter(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.canHandle(previousNode))
-                                            .findFirst()
-                                            .map(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.computeUndoLabelAppearanceChanges(previousNode, label.getId(), Optional.empty()))
-                                            .map(undoLabelAppearanceChanges::addAll);
-                                    var diagramNodeLabelAppearanceChange = new DiagramLabelAppearanceChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), undoLabelAppearanceChanges, List.of());
-                                    representationChanges.add(diagramNodeLabelAppearanceChange);
-                                });
-                    }
-                }
-            });
-
-            if (!undoAppearanceChanges.isEmpty()) {
-                var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), undoAppearanceChanges, List.of());
-                representationChanges.add(diagramNodeAppearanceChange);
-            }
-
-            if (!representationChanges.isEmpty()) {
-                if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(invokeSingleClickOnDiagramElementToolInput.id()) || siriusEditingContext.getInputId2RepresentationChanges()
-                        .get(invokeSingleClickOnDiagramElementToolInput.id()).isEmpty()) {
-                    siriusEditingContext.getInputId2RepresentationChanges().put(invokeSingleClickOnDiagramElementToolInput.id(), representationChanges);
-                } else {
-                    siriusEditingContext.getInputId2RepresentationChanges().get(invokeSingleClickOnDiagramElementToolInput.id()).addAll(representationChanges);
-                }
+        Optional<InvokeSingleClickOnDiagramElementToolInput> optionalInvokeSingleClickOnDiagramElementToolInput = this.causalityChainVisitor.findFirstCauseOfType(changeDescription.getCause(), InvokeSingleClickOnDiagramElementToolInput.class);
+        if (editingContext instanceof EditingContext siriusEditingContext && optionalInvokeSingleClickOnDiagramElementToolInput.isPresent()) {
+            InvokeSingleClickOnDiagramElementToolInput invokeSingleClickOnDiagramElementToolInput = optionalInvokeSingleClickOnDiagramElementToolInput.get();
+            if (this.isDeleteFromDiagramTool(invokeSingleClickOnDiagramElementToolInput.toolId())) {
+                this.recordChanges(siriusEditingContext, previousDiagram, invokeSingleClickOnDiagramElementToolInput);
             }
         }
+    }
+
+    private void recordChanges(EditingContext siriusEditingContext, Diagram previousDiagram, InvokeSingleClickOnDiagramElementToolInput invokeSingleClickOnDiagramElementToolInput) {
+        List<IAppearanceChange> undoAppearanceChanges = new ArrayList<>();
+        List<IRepresentationChange> representationChanges = new ArrayList<>();
+
+        invokeSingleClickOnDiagramElementToolInput.diagramElementIds().forEach(diagramElementId -> {
+            Optional<Edge> optionalPreviousEdge = this.diagramQueryService.findEdgeById(previousDiagram, diagramElementId);
+            if (optionalPreviousEdge.isPresent()) {
+                var previousEdge = optionalPreviousEdge.get();
+                undoAppearanceChanges.addAll(this.edgeAppearanceChangeUndoRecorder.computeEdgeAppearanceChanges(previousEdge, Optional.empty()));
+            } else {
+                Optional<Node> optionalPreviousNode = this.diagramQueryService.findNodeById(previousDiagram, diagramElementId);
+                if (optionalPreviousNode.isPresent()) {
+                    var previousNode = optionalPreviousNode.get();
+                    this.nodeAppearanceChangeUndoRecorders.stream()
+                            .filter(handler -> handler.canHandle(previousNode))
+                            .forEach(handler -> undoAppearanceChanges.addAll(handler.computeUndoNodeAppearanceChanges(previousNode, Optional.empty())));
+
+                    if (previousNode.isPinned()) {
+                        var diagramPinElementChange = new DiagramPinElementChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), Set.of(previousNode.getId()), true, false);
+                        representationChanges.add(diagramPinElementChange);
+                    }
+                    if (previousNode.getState().equals(ViewModifier.Faded)) {
+                        var diagramFadeElementChange = new DiagramFadeElementChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), Set.of(previousNode.getId()), true, false);
+                        representationChanges.add(diagramFadeElementChange);
+                    }
+                    if (previousNode.getState().equals(ViewModifier.Hidden)) {
+                        var diagramHideElementChange = new DiagramHideElementChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), Set.of(previousNode.getId()), true, false);
+                        representationChanges.add(diagramHideElementChange);
+                    }
+
+                    var previousNodeLayoutData = previousDiagram.getLayoutData().nodeLayoutData();
+                    if (previousNodeLayoutData.containsKey(previousNode.getId())) {
+                        var undoPositionEvent = new DiagramNodeLayoutEvent(previousNode.getId(), previousNodeLayoutData.get(previousNode.getId()));
+                        var nodeLayoutChange = new DiagramNodeLayoutChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), List.of(undoPositionEvent), List.of());
+                        representationChanges.add(nodeLayoutChange);
+                    }
+
+                    previousNode.getOutsideLabels().forEach(label -> {
+                        var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
+                        if (previousLabelLayoutData.containsKey(label.id())) {
+                            var diagramLabelLayoutChange = this.getDiagramNodeLabelChange(label.id(), previousLabelLayoutData.get(label.id()), invokeSingleClickOnDiagramElementToolInput.representationId());
+                            representationChanges.addAll(diagramLabelLayoutChange);
+                        }
+                        var undoLabelAppearanceChanges = new ArrayList<IAppearanceChange>();
+                        this.labelAppearanceChangeUndoRecorders.stream()
+                                .filter(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.canHandle(previousNode))
+                                .findFirst()
+                                .map(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.computeUndoLabelAppearanceChanges(previousNode, label.id(), Optional.empty()))
+                                .map(undoLabelAppearanceChanges::addAll);
+                        var diagramNodeLabelAppearanceChange = new DiagramLabelAppearanceChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), undoLabelAppearanceChanges, List.of());
+                        representationChanges.add(diagramNodeLabelAppearanceChange);
+                    });
+
+                    Optional.ofNullable(previousNode.getInsideLabel())
+                            .ifPresent(label -> {
+                                var previousLabelLayoutData = previousDiagram.getLayoutData().labelLayoutData();
+                                if (previousLabelLayoutData.containsKey(label.getId())) {
+                                    var diagramLabelLayoutChange = this.getDiagramNodeLabelChange(label.getId(), previousLabelLayoutData.get(label.getId()),
+                                            invokeSingleClickOnDiagramElementToolInput.representationId());
+                                    representationChanges.addAll(diagramLabelLayoutChange);
+                                }
+                                var undoLabelAppearanceChanges = new ArrayList<IAppearanceChange>();
+                                this.labelAppearanceChangeUndoRecorders.stream()
+                                        .filter(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.canHandle(previousNode))
+                                        .findFirst()
+                                        .map(labelAppearanceChangeUndoRecorder -> labelAppearanceChangeUndoRecorder.computeUndoLabelAppearanceChanges(previousNode, label.getId(), Optional.empty()))
+                                        .map(undoLabelAppearanceChanges::addAll);
+                                var diagramNodeLabelAppearanceChange = new DiagramLabelAppearanceChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), undoLabelAppearanceChanges, List.of());
+                                representationChanges.add(diagramNodeLabelAppearanceChange);
+                            });
+                }
+            }
+        });
+
+        if (!undoAppearanceChanges.isEmpty()) {
+            var diagramNodeAppearanceChange = new DiagramNodeAppearanceChange(invokeSingleClickOnDiagramElementToolInput.id(), invokeSingleClickOnDiagramElementToolInput.representationId(), undoAppearanceChanges, List.of());
+            representationChanges.add(diagramNodeAppearanceChange);
+        }
+
+        if (!representationChanges.isEmpty()) {
+            if (!siriusEditingContext.getInputId2RepresentationChanges().containsKey(invokeSingleClickOnDiagramElementToolInput.id()) || siriusEditingContext.getInputId2RepresentationChanges()
+                    .get(invokeSingleClickOnDiagramElementToolInput.id()).isEmpty()) {
+                siriusEditingContext.getInputId2RepresentationChanges().put(invokeSingleClickOnDiagramElementToolInput.id(), representationChanges);
+            } else {
+                siriusEditingContext.getInputId2RepresentationChanges().get(invokeSingleClickOnDiagramElementToolInput.id()).addAll(representationChanges);
+            }
+        }
+    }
+
+    private boolean isDeleteFromDiagramTool(String toolId) {
+        return DeleteOneDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID.equals(toolId)
+                || DeleteMultipleDiagramElementToolHandler.DELETE_ELEMENT_TOOL_ID.equals(toolId);
     }
 
     private List<IRepresentationChange> getDiagramNodeLabelChange(String labelId, LabelLayoutData previousLabelLayoutData, String representationId) {

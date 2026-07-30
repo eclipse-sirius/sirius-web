@@ -126,6 +126,8 @@ It has long been unused by Sirius Web itself (since the transition to MUI).
 - https://github.com/eclipse-sirius/sirius-web/issues/2928[#2928] [diagram] `ConnectionCreationHandles` now needs the node current position, width,  height and isDraggedNode props
 - https://github.com/eclipse-sirius/sirius-web/issues/6612[#6612] [core] `index.html` is not cached anymore.
 - https://github.com/eclipse-sirius/sirius-web/issues/6591[#6591] [diagram] added `representationKind` to `canHandle` methods of the `Palette` frontend extensions points, exported `DIAGRAM_REPRESENTATION_KIND` variable from the diagram package, `paletteQuickToolExtensionPoint` is now a `DataExtensionPoint` with a `canHandle` method
+- https://github.com/eclipse-sirius/sirius-web/issues/6751[#6751] [core] Existing code inspecting causes (via `cause.causedBy()`) should now rely on
+`ICausalityChainVisitor#findFirstCauseOfType`, which allows to navigate causality chains in a generic way.
 
 
 === Dependency update
@@ -193,6 +195,7 @@ The documentation can be built using `./doc/generate-local.bash`
 - https://github.com/eclipse-sirius/sirius-web/issues/6544[#6544] [tree] Leverage the Palette used by the diagram on the explorer.
 Use the configuration property `sirius.web.tree.new-palette.enabled` to temporary switch back to the old context menu.
 This configuration property will be removed soon once the migration to the palette will be completed.
+- https://github.com/eclipse-sirius/sirius-web/issues/6751[#6751] [core] Introduce `ICausalityChainVisitor` to navigate causality chains
 
 
 === Improvements
