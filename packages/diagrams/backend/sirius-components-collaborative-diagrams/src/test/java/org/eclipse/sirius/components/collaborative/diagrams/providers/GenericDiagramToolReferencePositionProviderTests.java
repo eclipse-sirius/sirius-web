@@ -27,6 +27,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.PinDiagramElemen
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReconnectEdgeInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ReferencePosition;
 import org.eclipse.sirius.components.collaborative.diagrams.handlers.TestDiagramBuilder;
+import org.eclipse.sirius.components.core.services.CausalityChainVisitor;
 import org.eclipse.sirius.components.diagrams.events.ReconnectEdgeKind;
 import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
 
     @Test
     public void canHandle() {
-        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
+        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider(new CausalityChainVisitor());
 
         InvokeSingleClickOnDiagramElementToolInput inputInvokeSingleClick = new InvokeSingleClickOnDiagramElementToolInput(UUID.randomUUID(), "", "",
                 List.of(), "", 0, 0, List.of());
@@ -63,7 +64,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
 
     @Test
     public void getReferencePositionInvokeSingleClickOnDiagramElementTool() {
-        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
+        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider(new CausalityChainVisitor());
         var diagramId = UUID.randomUUID().toString();
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         // Test click on diagram
@@ -80,7 +81,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
 
     @Test
     public void getReferencePositionDropOnDiagramElementTool() {
-        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
+        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider(new CausalityChainVisitor());
         var diagramId = UUID.randomUUID().toString();
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         // Test drop on diagram
@@ -97,7 +98,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
 
     @Test
     public void getReferencePositionDropOnNodeTool() {
-        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
+        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider(new CausalityChainVisitor());
         var diagramId = UUID.randomUUID().toString();
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         DropNodesInput dropNodeInput = new DropNodesInput(UUID.randomUUID(), "", "",
@@ -108,7 +109,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
 
     @Test
     public void getReferencePositionInvokeSingleClickOnTwoDiagramElementsTool() {
-        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
+        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider(new CausalityChainVisitor());
         var diagramId = UUID.randomUUID().toString();
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         InvokeSingleClickOnTwoDiagramElementsToolInput invokeSingleClickOnTwoDiagramElementsToolInput = new InvokeSingleClickOnTwoDiagramElementsToolInput(UUID.randomUUID(), "", "",
@@ -120,7 +121,7 @@ public class GenericDiagramToolReferencePositionProviderTests {
 
     @Test
     public void getReferencePositionReconnectEdgeTool() {
-        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider();
+        var diagramToolReferencePositionProvider = new GenericDiagramToolReferencePositionProvider(new CausalityChainVisitor());
         var diagramId = UUID.randomUUID().toString();
         DiagramContext diagramContext = new DiagramContext(new TestDiagramBuilder().getDiagram(diagramId));
         ReconnectEdgeInput reconnectEdgeInput = new ReconnectEdgeInput(UUID.randomUUID(), "", "", "", CONTAINER_ID, ReconnectEdgeKind.SOURCE, 3, 2);
