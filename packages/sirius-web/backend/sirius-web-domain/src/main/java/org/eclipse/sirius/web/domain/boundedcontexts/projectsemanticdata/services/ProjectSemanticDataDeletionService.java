@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,13 @@ package org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.servic
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.repositories.IProjectSemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataDeletionService;
+import org.eclipse.sirius.web.domain.services.Failure;
 import org.eclipse.sirius.web.domain.services.IResult;
 import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
@@ -48,5 +50,21 @@ public class ProjectSemanticDataDeletionService implements IProjectSemanticDataD
         this.projectSemanticDataRepository.deleteAll(allProjectSemanticData);
 
         return new Success<>(null);
+
+    }
+
+    @Override
+    public IResult<Void> deleteProjectSemanticDataByProjectIdAndName(ICause cause, String projectId, String name) {
+        IResult<Void> result = new Failure<>(this.messageService.notFound());
+
+        Optional<ProjectSemanticData> optionalProjectSemanticData = this.projectSemanticDataRepository.findByProjectIdAndName(projectId, name);
+        if (optionalProjectSemanticData.isPresent()) {
+            ProjectSemanticData projectSemanticData = optionalProjectSemanticData.get();
+            projectSemanticData.dispose(cause);
+            this.projectSemanticDataRepository.delete(projectSemanticData);
+            result = new Success<>(null);
+        }
+
+        return result;
     }
 }
