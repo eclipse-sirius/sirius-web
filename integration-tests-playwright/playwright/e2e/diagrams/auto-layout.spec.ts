@@ -110,7 +110,8 @@ test.describe('diagram - auto-until-manual', () => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
 
     const node = new PlaywrightNode(page, 'Entity1', 'List');
-    const position = await node.getReactFlowXYPosition();
+    await node.nodeLocator.click({ position: { x: 1, y: 1 } });
+    const position = await node.getReactFlowXYPosition('Entity1', false);
     expect(position.x).toBe(12);
     expect(position.y).toBe(242);
   });

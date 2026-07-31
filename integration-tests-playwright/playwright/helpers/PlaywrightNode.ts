@@ -128,42 +128,42 @@ export class PlaywrightNode {
   async waitForAnimationToFinish() {
     // Playwright performs checks before making actions, so Playwright waits for the animation to finish before performing the next action.
     // see https://playwright.dev/docs/actionability
-    await this.nodeLocator.click();
+    await this.nodeLocator.click({ trial: true });
   }
 
   async isLastOneSelected() {
-    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
+    await expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
       'background-color',
       'rgb(190, 26, 120)'
     );
-    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.right.handle')).toHaveCSS(
+    await expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.right.handle')).toHaveCSS(
       'background-color',
       'rgb(190, 26, 120)'
     );
-    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.left.handle')).toHaveCSS(
+    await expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.left.handle')).toHaveCSS(
       'background-color',
       'rgb(190, 26, 120)'
     );
-    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.right.handle')).toHaveCSS(
+    await expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.right.handle')).toHaveCSS(
       'background-color',
       'rgb(190, 26, 120)'
     );
   }
 
   async isNotLastOneSelected() {
-    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
+    await expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
       'background-color',
       'rgb(255, 255, 255)'
     );
-    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.right.handle')).toHaveCSS(
+    await expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.right.handle')).toHaveCSS(
       'background-color',
       'rgb(255, 255, 255)'
     );
-    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.left.handle')).toHaveCSS(
+    await expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.left.handle')).toHaveCSS(
       'background-color',
       'rgb(255, 255, 255)'
     );
-    expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.right.handle')).toHaveCSS(
+    await expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.bottom.right.handle')).toHaveCSS(
       'background-color',
       'rgb(255, 255, 255)'
     );

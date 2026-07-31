@@ -75,7 +75,7 @@ test.describe('diagram - resize smaller than default', () => {
   }) => {
     const resizableNode = new PlaywrightNode(page, 'Resizable');
     await resizableNode.waitForAnimationToFinish();
-    const resizableNodeSizeBefore = await resizableNode.getReactFlowSize('Resizable', false);
+    const resizableNodeSizeBefore = await resizableNode.getReactFlowSize('Resizable');
     expect(resizableNodeSizeBefore.width).toBe(200);
     expect(resizableNodeSizeBefore.height).toBe(100);
 

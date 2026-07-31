@@ -91,7 +91,9 @@ test.describe('diagram - direct edit', () => {
     await page.getByTestId('Palette').getByTestId('Edit - Tool').click();
     await expect(page.getByTestId('Palette')).toBeHidden();
     await expect(page.getByTestId('name-edit')).toBeAttached();
-    await page.keyboard.type('Edited');
+    const nameEdit = page.getByTestId('name-edit').getByRole('textbox');
+    await expect(nameEdit).toHaveValue('DataSource1');
+    await nameEdit.fill('Edited');
     await page.keyboard.press('Enter');
     await expect(page.getByTestId('name-edit')).not.toBeAttached();
     const editedNode = new PlaywrightNode(page, 'Edited');
@@ -105,7 +107,9 @@ test.describe('diagram - direct edit', () => {
     await page.getByTestId('Palette').getByTestId('Edit - Tool').click();
     await expect(page.getByTestId('Palette')).toBeHidden();
     await expect(page.getByTestId('name-edit')).toBeAttached();
-    await page.keyboard.type('10');
+    const nameEdit = page.getByTestId('name-edit').getByRole('textbox');
+    await expect(nameEdit).toHaveValue('6');
+    await nameEdit.fill('10');
     await page.keyboard.press('Enter');
     await expect(page.getByTestId('name-edit')).not.toBeAttached();
     await expect(page.getByTestId('Label - 10')).toBeAttached();

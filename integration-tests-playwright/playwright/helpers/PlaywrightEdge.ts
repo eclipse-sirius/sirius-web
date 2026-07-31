@@ -38,7 +38,7 @@ export class PlaywrightEdge {
   }
 
   async getEdgeStyle() {
-    return await this.edgeLocator.locator('.react-flow__edge-path').first();
+    return this.edgeLocator.locator('.react-flow__edge-path').first();
   }
 
   async openPalette() {

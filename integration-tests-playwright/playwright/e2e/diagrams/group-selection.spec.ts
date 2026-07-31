@@ -14,6 +14,7 @@ import { expect, test } from '@playwright/test';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 
 test.describe('diagram - group selection', () => {
   let projectId;
@@ -43,6 +44,7 @@ test.describe('diagram - group selection', () => {
 
     await page.keyboard.down('ControlOrMeta');
     await playwrightNode1.click();
+    await new PlaywrightDiagram(page).hideDebugPanel();
     expect(await playwrightNode1.isLastOneSelected());
 
     await playwrightNode2.click();

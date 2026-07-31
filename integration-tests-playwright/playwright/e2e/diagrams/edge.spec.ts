@@ -41,9 +41,10 @@ test.describe('edge', () => {
   test('when a bend point is moved, then the edge path is changed', async ({ page }) => {
     const playwrightEdge = new PlaywrightEdge(page);
     await playwrightEdge.click();
+    await new PlaywrightDiagram(page).hideDebugPanel();
     await playwrightEdge.isSelected();
 
-    const edgePathBefore = playwrightEdge.getEdgePath();
+    const edgePathBefore = await playwrightEdge.getEdgePath();
 
     const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
     const box = (await lastBendingPoint.boundingBox())!;
@@ -52,9 +53,7 @@ test.describe('edge', () => {
     await page.mouse.move(box.x - 40, box.y + 80, { steps: 2 });
     await page.mouse.up();
 
-    const edgePathAfter = playwrightEdge.getEdgePath();
-
-    expect(edgePathAfter).not.toBe(edgePathBefore);
+    await expect.poll(() => playwrightEdge.getEdgePath()).not.toBe(edgePathBefore);
   });
 
   test('when last edge segment is moved, then a new bend point is added at the middle of node border', async ({
@@ -64,17 +63,18 @@ test.describe('edge', () => {
     await playwrightEdge.click();
     await playwrightEdge.isSelected();
 
-    const edgePathBefore = playwrightEdge.getEdgePath();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+
+    const edgePathBefore = await playwrightEdge.getEdgePath();
 
     const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
     const box = (await lastBendingPoint.boundingBox())!;
     await lastBendingPoint.hover({ force: true });
     await page.mouse.down();
-    await page.mouse.move(box.x - 40, box.y + 150, { steps: 2 });
+    await page.mouse.move(box.x - 40, box.y + 150, { steps: 4 });
     await page.mouse.up();
 
-    const edgePathAfter = playwrightEdge.getEdgePath();
-    expect(edgePathAfter).not.toBe(edgePathBefore);
+    await expect.poll(() => playwrightEdge.getEdgePath()).not.toBe(edgePathBefore);
 
     const newBendingPoint = page.locator(`[data-testid="bend-point-2"]`).first();
     await expect(newBendingPoint).toBeAttached();
@@ -489,6 +489,7 @@ test.describe('edge', () => {
     const edge3Path = await playwrightEdge3.getEdgePath();
 
     const node1 = new PlaywrightNode(page, 'A');
+    await node1.waitForAnimationToFinish();
     await node1.move({ x: 100, y: 100 });
 
     const edge1PathAfter = await playwrightEdge1.getEdgePath();
