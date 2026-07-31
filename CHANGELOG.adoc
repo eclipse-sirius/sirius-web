@@ -90,6 +90,7 @@ Downstream applications can implement `IOmniboxCommandOrdererDelegate` to define
 - https://github.com/eclipse-sirius/sirius-web/issues/6736[#6736] [core] Update `ChangeDescription` to accept an `ICause` as parameter instead of just `IInput`.
 This will allow us to reuse the change description to propagate more information.
 - https://github.com/eclipse-sirius/sirius-web/issues/6688[#6688] [diagram] Use outside label height for child node layout in freeform diagrams
+- https://github.com/eclipse-sirius/sirius-web/issues/6753[#6753] [sirius-web] Allow project semantic data to be deleted by project identifier and name.
 
 
 

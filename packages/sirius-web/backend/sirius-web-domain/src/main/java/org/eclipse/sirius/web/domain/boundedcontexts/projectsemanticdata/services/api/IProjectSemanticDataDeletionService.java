@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,5 +21,8 @@ import org.eclipse.sirius.web.domain.services.IResult;
  * @author ntinsalhi
  */
 public interface IProjectSemanticDataDeletionService {
+
     IResult<Void> deleteProjectSemanticData(ICause cause, String projectId);
+
+    IResult<Void> deleteProjectSemanticDataByProjectIdAndName(ICause cause, String projectId, String name);
 }
