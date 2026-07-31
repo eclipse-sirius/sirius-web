@@ -165,6 +165,7 @@ test.describe('edge on edge', () => {
     await expect(page.locator('.target_handle_top')).toHaveCount(2);
 
     const playwrightNode2b = new PlaywrightNode(page, 'Entity2b');
+    await playwrightNode2b.waitForAnimationToFinish();
     const xyPosition = await playwrightNode2b.getDOMXYPosition();
     await playwrightNode2b.nodeLocator.hover({ position: { x: 10, y: 10 } });
     await page.mouse.down();
@@ -198,6 +199,7 @@ test.describe('edge on edge', () => {
     await expect(page.locator('.target_handle_top')).toHaveCount(2);
 
     const playwrightNode1a = new PlaywrightNode(page, 'Entity1a');
+    await playwrightNode1a.waitForAnimationToFinish();
     const xyPosition1 = await playwrightNode1a.getDOMXYPosition();
     const playwrightNode2a = new PlaywrightNode(page, 'Entity2a');
     const xyPosition2 = await playwrightNode2a.getDOMXYPosition();
