@@ -31,7 +31,6 @@ const useStyles = makeStyles()((_) => ({
     height: '100%',
     width: '100%',
     overflow: 'hidden',
-    pointerEvents: 'none',
   },
 }));
 
@@ -62,6 +61,10 @@ export const DecoratorContainer = ({ decorators }: DecoratorContainerProps) => {
     if (renderedDecorator) {
       renderedDecorators.push(renderedDecorator);
     }
+  }
+
+  if (!decorators.length) {
+    return null;
   }
 
   return <div className={classes.decoratorContainer}>{renderedDecorators}</div>;
