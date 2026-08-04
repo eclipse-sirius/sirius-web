@@ -146,7 +146,8 @@ export const GroupPaletteLayoutSection = ({
     }
     return true;
   });
-  const refElementId = filteredNodeIds.at(diagramElementIds.length - 1);
+
+  const refElementId = filteredNodeIds.find((elementId) => getNode(elementId)?.data.isLastNodeSelected);
   if (!refElementId || filteredNodeIds.length < 2) {
     return null;
   }
