@@ -144,13 +144,16 @@ export const PaletteSearchResult = ({
     );
   };
 
+  const matchingTools: JSX.Element[] = [...filteredToolList.map(convertToListItem), ...filteredContributions].filter(
+    (tool) => tool !== null
+  ) as JSX.Element[];
+
   return (
     <Box className={classes.container}>
       <Box className={classes.toolListContainer}>
-        {filteredToolList.length > 0 ? (
+        {matchingTools.length > 0 ? (
           <List className={classes.toolList} component="nav">
-            {filteredToolList.map(convertToListItem)}
-            {filteredContributions}
+            {matchingTools}
           </List>
         ) : (
           <Typography variant="body2" align="center">
