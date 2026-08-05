@@ -323,6 +323,8 @@ Add dedicated executors and fluent assertion classes for the deck card creation,
 - https://github.com/eclipse-sirius/sirius-web/issues/6844[#6844] [diagram] Expose available variables in the Javadoc of generated View DSL builders.
 - https://github.com/eclipse-sirius/sirius-web/issues/6818[#6818] [tree] Improve Explorer view component responsibilities by splitting the rendering between an `ExplorerToolbarRenderer` & `ExplorerTreeRenderer`.
 Export `FilterBarContext` from `sirius-components-trees` in order to reuse filter bar logic in the explorer view.
+- https://github.com/eclipse-sirius/sirius-web/issues/6761[#6761] [tree] Extract the explorer subscription in a dedicated component in order to reduce the number of rerender.
+
 
 
 == 2026.7.0

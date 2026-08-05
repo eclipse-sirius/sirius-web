@@ -10,10 +10,11 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
-import { GQLTree, GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
+import { Selection, WorkbenchViewHandle } from '@eclipse-sirius/sirius-components-core';
+import { GQLTree, GQLTreeItem, TreeFilter } from '@eclipse-sirius/sirius-components-trees';
+import { ForwardedRef } from 'react';
 
-export interface UseExplorerSelectionValue {
+export interface ExplorerSelectionContextValue {
   selectedTreeItemIds: string[];
   singleTreeItemSelected: GQLTreeItem | null;
   setSelectedTreeItemIds: (selectedTreeItemIds: string[]) => void;
@@ -22,7 +23,18 @@ export interface UseExplorerSelectionValue {
   applySelection: (selection: Selection) => void;
 }
 
-export interface UseExplorerSelectionState {
+export interface ExplorerSelectionContextState {
   selectedTreeItemIds: string[];
   singleTreeItemSelected: GQLTreeItem | null;
+}
+
+export interface ExplorerSelectionContextProviderProps {
+  id: string;
+  activeTreeDescriptionId: string;
+  treeFilters: TreeFilter[];
+  editingContextId: string;
+  refHandle: ForwardedRef<WorkbenchViewHandle>;
+  expanded: string[];
+  onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void;
+  children: React.ReactNode;
 }
