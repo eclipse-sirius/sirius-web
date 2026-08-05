@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,10 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewConfiguration } from '@eclipse-sirius/sirius-components-core';
-import { TreeFilter } from '@eclipse-sirius/sirius-components-trees';
-
-export interface ExplorerViewConfiguration extends WorkbenchViewConfiguration {
-  activeTreeDescriptionId: string | null;
-  activeTreeFilters: TreeFilter[];
+import { GQLTree } from '@eclipse-sirius/sirius-components-trees';
+export interface ExplorerContextValue {
+  tree: GQLTree | null;
+  resetTree: () => void;
 }

@@ -19,8 +19,6 @@ export interface ExplorerToolbarRendererProps {
   readOnly: boolean;
   explorerDescriptions: TreeDescriptionMetadata[];
   treeFilters: TreeFilter[];
-  resetTree: () => void;
   setTreeFilters: (treeFilters: TreeFilter[]) => void;
   setActiveDescriptionId: (activeDescriptionId: string) => void;
-  onRevealSelection: () => void;
 }
