@@ -21,6 +21,7 @@ import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregate
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataDeletedEvent;
+import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataNameUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -71,6 +72,15 @@ public class ProjectSemanticData extends AbstractValidatingAggregateRoot<Project
 
     public String getName() {
         return this.name;
+    }
+
+    public void updateName(ICause cause, String newName) {
+        if (!Objects.equals(this.name, newName)) {
+            this.name = newName;
+            this.lastModifiedOn = Instant.now();
+
+            this.registerEvent(new ProjectSemanticDataNameUpdatedEvent(UUID.randomUUID(), this.lastModifiedOn, cause, this));
+        }
     }
 
     public Instant getCreatedOn() {
