@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,17 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { WorkbenchViewConfiguration } from '@eclipse-sirius/sirius-components-core';
-import { TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 
-export interface ExplorerViewState {
-  initialActiveTreeDescriptionId: string | null;
+export interface UseTreeStateLocalStorageValue {
+  activeTreeDescriptionId: string;
+  expanded: string[];
+  maxDepth: number;
+  setActiveDescriptionId: (activeDescriptionId: string) => void;
+  onExpandedElementChange: (newExpandedIds: string[], newMaxDepth: number) => void;
 }
 
-export interface ExplorerViewConfiguration extends WorkbenchViewConfiguration {
-  activeTreeDescriptionId: string | null;
-  activeTreeFilters: TreeFilter[];
+export interface UseTreeStateLocalStorageState {
+  activeTreeDescriptionId: string;
+  expanded: { [key: string]: string[] };
+  maxDepth: { [key: string]: number };
 }

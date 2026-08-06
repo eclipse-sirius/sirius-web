@@ -69,6 +69,7 @@ Contributions have to return null in their component if they are not candidate o
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6540[#6540] [diagram] Use the palette to render connector tools
+- https://github.com/eclipse-sirius/sirius-web/issues/6765[#6765] [tree] Persist expanded and selected tree description state of the explorer in local storage
 
 
 
@@ -93,6 +94,7 @@ Downstream applications can implement `IOmniboxCommandOrdererDelegate` to define
 This will allow us to reuse the change description to propagate more information.
 - https://github.com/eclipse-sirius/sirius-web/issues/6688[#6688] [diagram] Use outside label height for child node layout in freeform diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/6753[#6753] [sirius-web] Allow project semantic data to be deleted by project identifier and name.
+- https://github.com/eclipse-sirius/sirius-web/issues/6761[#6761] [form] Extract the explorer subscription in a dedicated component in order to reduce the number of rerender.
 
 
 
