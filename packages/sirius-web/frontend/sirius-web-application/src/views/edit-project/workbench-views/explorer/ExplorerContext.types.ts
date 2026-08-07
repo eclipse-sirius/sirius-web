@@ -13,5 +13,4 @@
 import { GQLTree } from '@eclipse-sirius/sirius-components-trees';
 export interface ExplorerContextValue {
   tree: GQLTree | null;
-  resetTree: () => void;
 }

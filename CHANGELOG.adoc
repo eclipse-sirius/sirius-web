@@ -30,7 +30,7 @@
 
 === Bug fixes
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6035[#6035] [tree] Fix an issue where explorer subscription was initiated before retrieving explorer filters
 
 
 === New Features
