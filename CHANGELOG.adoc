@@ -94,6 +94,7 @@ This will allow us to reuse the change description to propagate more information
 - https://github.com/eclipse-sirius/sirius-web/issues/6688[#6688] [diagram] Use outside label height for child node layout in freeform diagrams
 - https://github.com/eclipse-sirius/sirius-web/issues/6753[#6753] [sirius-web] Allow project semantic data to be deleted by project identifier and name.
 - https://github.com/eclipse-sirius/sirius-web/issues/6763[#6763] [sirius-web] Allow project semantic data to be renamed.
+- https://github.com/eclipse-sirius/sirius-web/issues/6761[#6761] [tree] Extract the explorer subscription in a dedicated component in order to reduce the number of rerender.
 
 
 
