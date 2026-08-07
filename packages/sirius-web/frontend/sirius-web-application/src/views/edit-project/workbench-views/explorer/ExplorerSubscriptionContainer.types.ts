@@ -18,6 +18,7 @@ export interface ExplorerSubscriptionContainerProps {
   activeTreeFilterIds: string[];
   expanded: string[];
   maxDepth: number;
+  skip: boolean;
   children: JSX.Element;
 }
 
