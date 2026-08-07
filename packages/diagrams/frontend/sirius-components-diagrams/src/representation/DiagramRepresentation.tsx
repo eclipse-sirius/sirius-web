@@ -64,6 +64,7 @@ export const getDiagramDescription = gql`
                 droppableOnDiagram
                 droppableOnNodeTypes
               }
+              keyBindings
               debug
               arrangeLayoutDirection
               layoutOption
