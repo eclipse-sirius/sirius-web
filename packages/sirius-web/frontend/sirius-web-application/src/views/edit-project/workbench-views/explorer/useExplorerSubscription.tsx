@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,8 @@ export const useExplorerSubscription = (
   treeDescriptionId: string,
   activeFilterIds: string[],
   expanded: string[],
-  maxDepth: number
+  maxDepth: number,
+  shouldSkip: boolean
 ): UseExplorerSubscriptionValue => {
   const [state, setState] = useState<UseExplorerSubscriptionState>({
     id: crypto.randomUUID(),
@@ -68,7 +69,7 @@ export const useExplorerSubscription = (
       onData,
       onComplete,
       onError,
-      skip: treeDescriptionId === null,
+      skip: treeDescriptionId === null || shouldSkip,
     }
   );
 

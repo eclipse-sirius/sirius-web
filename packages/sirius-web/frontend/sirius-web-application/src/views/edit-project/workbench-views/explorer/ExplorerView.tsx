@@ -51,19 +51,34 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       initialConfiguration as unknown as ExplorerViewConfiguration;
 
     const configuredActiveTreeDescriptionId = initialExplorerViewConfiguration?.activeTreeDescriptionId ?? null;
-    const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
+    const configuredTreeFilters = initialExplorerViewConfiguration?.activeTreeFilters ?? [];
+
+    const { explorerDescriptions, loading: descriptionsLoading } = useExplorerDescriptions(editingContextId);
     const { activeTreeDescriptionId, expanded, maxDepth, onExpandedElementChange, setActiveDescriptionId } =
       useTreeStateContainer(configuredActiveTreeDescriptionId, explorerDescriptions);
 
-    const { treeFilters, setTreeFilters } = useTreeFiltering(
-      editingContextId,
-      activeTreeDescriptionId,
-      initialExplorerViewConfiguration?.activeTreeFilters ?? []
-    );
+    const {
+      treeFilters,
+      loading: treeFiltersLoading,
+      setTreeFilters,
+    } = useTreeFiltering(editingContextId, activeTreeDescriptionId, configuredTreeFilters);
 
-    const activeTreeFilterIds = treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
+    const activeTreeFilterIds = !!treeFilters
+      ? treeFilters.filter((filter) => filter.state).map((filter) => filter.id)
+      : [];
 
     const treeElement = useRef<HTMLDivElement>(null);
+
+    const shouldStartSubscription =
+      !!treeFilters && !!activeTreeDescriptionId && !descriptionsLoading && !treeFiltersLoading;
+
+    console.log({
+      treeFilters,
+      activeTreeDescriptionId,
+      descriptionsLoading,
+      treeFiltersLoading,
+      shouldStartSubscription,
+    });
 
     return (
       <FilterBarContextProvider containerRef={treeElement}>
@@ -72,7 +87,8 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
           activeTreeDescriptionId={activeTreeDescriptionId}
           activeTreeFilterIds={activeTreeFilterIds}
           expanded={expanded}
-          maxDepth={maxDepth}>
+          maxDepth={maxDepth}
+          shouldSkip={!shouldStartSubscription}>
           <ExplorerSelectionContextProvider
             id={id}
             activeTreeDescriptionId={activeTreeDescriptionId}

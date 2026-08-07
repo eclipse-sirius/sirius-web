@@ -29,18 +29,17 @@ export const useTreeFiltering = (
   configuredTreeFilters: TreeFilter[]
 ): UseTreeFilteringValue => {
   const { loading, treeFilters } = useTreeFilters(editingContextId, activeTreeDescriptionId);
-
   const [state, setState] = useState<UseTreeFilteringState>({
-    treeFilters: configuredTreeFilters,
+    treeFilters: null,
   });
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && !!treeFilters) {
       const retrievedFilters: TreeFilter[] = treeFilters.map(convertGQLTreeFiltersToTreeFilters);
       setState((prevState) => ({
         ...prevState,
         treeFilters: retrievedFilters.map((retrievedFilter) => {
-          const existingFilter: TreeFilter = state.treeFilters.find((filter) => filter.id === retrievedFilter.id);
+          const existingFilter: TreeFilter = configuredTreeFilters.find((filter) => filter.id === retrievedFilter.id);
           if (existingFilter) {
             return {
               ...retrievedFilter,
@@ -52,7 +51,7 @@ export const useTreeFiltering = (
         }),
       }));
     }
-  }, [loading, treeFilters.map((treeFilter) => treeFilter.id).join()]);
+  }, [loading, treeFilters]);
 
   const setTreeFilters = (treeFilters: TreeFilter[]) => {
     setState((prevState) => {

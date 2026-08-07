@@ -29,6 +29,7 @@ export const ExplorerSubscriptionContainer = ({
   activeTreeFilterIds,
   expanded,
   maxDepth,
+  shouldSkip,
   children,
 }: ExplorerSubscriptionContainerProps) => {
   const [state, setState] = useState<ExplorerSubscriptionContainerState>({
@@ -40,7 +41,8 @@ export const ExplorerSubscriptionContainer = ({
     activeTreeDescriptionId,
     activeTreeFilterIds,
     expanded,
-    maxDepth
+    maxDepth,
+    shouldSkip
   );
 
   useEffect(() => {
@@ -49,7 +51,7 @@ export const ExplorerSubscriptionContainer = ({
     }
   }, [payload]);
 
-  const resetTree = () => setState((prevState) => ({ ...prevState, tree: null }));
-
-  return <ExplorerContext.Provider value={{ tree: state.tree, resetTree }}>{children}</ExplorerContext.Provider>;
+  return (
+    <ExplorerContext.Provider value={{ tree: state.tree }}>{!shouldSkip ? children : null}</ExplorerContext.Provider>
+  );
 };
