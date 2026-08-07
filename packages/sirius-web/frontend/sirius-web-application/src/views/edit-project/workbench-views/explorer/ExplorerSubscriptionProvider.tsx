@@ -157,7 +157,8 @@ export const ExplorerSubscriptionProvider = ({
     state.activeTreeDescriptionId,
     activeTreeFilterIds,
     state.expanded[state.activeTreeDescriptionId] ?? [],
-    state.maxDepth[state.activeTreeDescriptionId] ?? 1
+    state.maxDepth[state.activeTreeDescriptionId] ?? 1,
+    loading
   );
 
   useEffect(() => {

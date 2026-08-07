@@ -29,7 +29,8 @@ export const useExplorerSubscription = (
   treeDescriptionId: string,
   activeFilterIds: string[],
   expanded: string[],
-  maxDepth: number
+  maxDepth: number,
+  shouldSkip: boolean
 ): UseExplorerSubscriptionValue => {
   const [state, setState] = useState<UseExplorerSubscriptionState>({
     id: crypto.randomUUID(),
@@ -68,7 +69,7 @@ export const useExplorerSubscription = (
       onData,
       onComplete,
       onError,
-      skip: treeDescriptionId === null,
+      skip: treeDescriptionId === null || shouldSkip,
     }
   );
 
