@@ -15,7 +15,6 @@ import { ExplorerContextValue } from './ExplorerContext.types';
 
 const value: ExplorerContextValue = {
   tree: null,
-  resetTree: () => {},
 };
 
 export const ExplorerContext = React.createContext<ExplorerContextValue>(value);
