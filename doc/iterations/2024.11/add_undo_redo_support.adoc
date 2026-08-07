@@ -12,36 +12,70 @@ The user can undo/redo an action he performed on a representation (he can't undo
 
 == Solution
 
-Pressing ctrl+z will undo the last action performed on a representation.
-Pressing ctrl+y will redo the action that was previously undone.
+Pressing [CMD]+z will undo the last action performed on a representation.
+Pressing [CMD]+y will redo the action that was previously undone.
 
 
-=== Scenario
+=== Scenario (semantic)
 
 1. Given only one user working on a representation, the user can undo/redo the actions performed
-- An user renames an element from "Paul" to "Bernard"
-- An user press ctrl+z
-- *Expected*: the element is renamed back to "Paul" and all elements that were impacted by the change also revert back to their previous state.
-- An user press ctrl+y
-- *Expected*: the element is renamed back to "Bernard" and all elements that were impacted by the change also revert back to their previous state.
+- A user renames an element from "Paul" to "Bernard"
+- A user press [CMD]+z
+- *Expected*: the element is renamed back to "Paul" and all elements that were impacted by the change also revert to their previous state.
+- A user press [CMD]+y
+- *Expected*: the element is renamed back to "Bernard" and all elements that were impacted by the change also revert to their previous state.
 
 
 2. Several users are working on the same representation
-- An user u1 renames an element from "Paul" to "Bernard"
-- An user u2 delete the element
-- If An user u1 press ctrl+z
+- A user u1 renames an element from "Paul" to "Bernard"
+- A user u2 delete the element
+- If A user u1 press [CMD]+z
 - *Expected*: nothing will change since it would create a conflict with the change from u2
 
 
-- If An user u2 press ctrl+z
-- *Expected*: the semantic elements are reverted back to when the element was "Bernard"
+- If A user u2 press [CMD]+z
+- *Expected*: the semantic elements are reverted to when the element was "Bernard"
 
 This should work regardless of the representation.
+
+=== Scenario (representation)
+
+Representation currently used in Sirius Web contains data that cannot be deducted from semantic data. (e.g. the layout in diagram or the sort order for table).
+
+On any representation holding a state, the same scenarios as above should work.
+
+1. Several users are editing the same Portal representation
+- The user _u1_ adds three other representations inside the portal, on at a time.
+- Another user _u2_ adds a fourth representation.
+- _u1_ undoes the addition of the third representation.
+- *Expected*: The Portal representation should display representations 1, 2 and 4.
+
+2. Several users are working on the same node
+- The user _u1_ moves the node from 0,0 to 10,10
+- After receiving the refresh, the user _u2_ moves this node from 10,10 to 20,20
+- After reveiving the refresh _u1_ presses [CMD]+z
+- *Expected*: Since it would create a conflict with the change from _u2_, nothing will change and an error is sent to _u1_
+
+3. Several users are working on the same node
+- The user _u1_ moves the node from 0,0 to 10,10
+- After receiving the refresh, the user _u2_ moves this node from 10,10 to 20,20
+- After receiving the refresh, _u2_ presses [CMD]+z
+- *Expected*: the node is moved back to 10,10
+- After receiving the refresh, _u1_ presses [CMD]+z
+- *Expected*: the node is moved back to 0,0
+
+4. Several users are working on the same node 3
+- The user _u1_ moves a node from 0,0 to 10,10
+- The user _u2_ moves this node from 10,10 to 20,20
+- _u2_ presses [CMD]+z to move back the node to 10,10
+- _u1_ moves the node from 10,10 to 0,0
+- _u2_ press [CMD]+y
+- *Expected*: Since it would create a conflict with the change from _u1_, nothing will change and an error is sent to _u2_
 
 === Cutting backs
 
 The undo redo will revert all semantic changes at first.
-Other changes likes layout on a diagram will be taken care of later.
+Other changes like the layout on a diagram will be taken care of later.
 The undo/redo stack is lost when a user closes the web page.
 
 
@@ -50,6 +84,6 @@ The undo/redo stack is lost when a user closes the web page.
 Nothing identified
 
 
-== No-gos
+== No-go
 
 Nothing identified
