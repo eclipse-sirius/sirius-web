@@ -14,10 +14,10 @@ import { TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 
 export interface UseTreeFilteringValue {
   loading: boolean;
-  treeFilters: TreeFilter[];
+  treeFilters: TreeFilter[] | null;
   setTreeFilters: (treeFilters: TreeFilter[]) => void;
 }
 
 export interface UseTreeFilteringState {
-  treeFilters: TreeFilter[];
+  treeFilters: TreeFilter[] | null;
 }
