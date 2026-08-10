@@ -275,6 +275,39 @@ test.describe('diagram - resize', () => {
   test.afterEach(async ({ request }) => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
+
+  test('when moving a child partially outside its free-form parent, then the parent grows to contain it', async ({
+    page,
+  }) => {
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.select('Topography');
+    await expect(page.getByTestId('rf__wrapper')).toBeAttached();
+
+    await page.getByTestId('hide-mini-map').click();
+
+    const parentNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    const childNode = new PlaywrightNode(page, 'Processor2');
+    const parentSizeBefore = await parentNode.getReactFlowSize('CompositeProcessor1');
+    const childSize = await childNode.getReactFlowSize('Processor2');
+    const parentBox = await parentNode.getDOMBoundingBox();
+
+    await new PlaywrightDiagram(page).hideDebugPanel();
+    await childNode.nodeLocator.hover({ position: { x: 10, y: 10 } });
+    await page.mouse.down();
+    await page.mouse.move(parentBox.x + parentBox.width - 10, parentBox.y + parentBox.height - 10, { steps: 10 });
+    await page.mouse.up();
+
+    const childPositionAfter = await childNode.getReactFlowXYPosition('Processor2');
+    const parentSizeAfter = await parentNode.getReactFlowSize('CompositeProcessor1');
+
+    expect(childPositionAfter.x + childSize.width).toBeGreaterThan(parentSizeBefore.width);
+    expect(childPositionAfter.y + childSize.height).toBeGreaterThan(parentSizeBefore.height);
+    expect(parentSizeAfter.width).toBeGreaterThan(parentSizeBefore.width);
+    expect(parentSizeAfter.height).toBeGreaterThan(parentSizeBefore.height);
+    expect(parentSizeAfter.width).toBeGreaterThan(childPositionAfter.x + childSize.width);
+    expect(parentSizeAfter.height).toBeGreaterThan(childPositionAfter.y + childSize.height);
+  });
+
   [
     { resizeHandle: 'top.left', resizeOffset: { height: 50, width: 50 }, resizeDirection: 'smaller' },
     { resizeHandle: 'top.right', resizeOffset: { height: 50, width: -50 }, resizeDirection: 'smaller' },

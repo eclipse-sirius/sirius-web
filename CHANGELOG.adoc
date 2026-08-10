@@ -66,6 +66,7 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6732[#6732] [diagram] Fix node decorators not showing on hover.
 - https://github.com/eclipse-sirius/sirius-web/issues/6759[#6759] [palette] Fix palette tool search sometimes dropping matching elements
 - https://github.com/eclipse-sirius/sirius-web/issues/6782[#6782] [diagram] Fix an issue where quicktools contributed from `IGroupPaletteToolsProvider` were displayed after the ones from the view model.
+- https://github.com/eclipse-sirius/sirius-web/issues/6769[#6769] [diagram] Resize free-form parent nodes to contain child nodes moved partially outside their bounds.
 
 === New Features
 
