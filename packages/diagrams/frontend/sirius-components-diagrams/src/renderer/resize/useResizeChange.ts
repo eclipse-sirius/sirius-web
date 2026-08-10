@@ -179,7 +179,13 @@ const constrainFreeFormChildMoveChanges = (
       (node) => node.id === change.id && !node.data.isBorderNode && !resizedNodeIds.includes(node.id)
     );
     const parentNode = nodes.find((node) => node.id === movedNode?.parentId);
-    if (movedNode && parentNode && isFreeFormData(parentNode) && change.position) {
+    if (
+      movedNode &&
+      parentNode &&
+      resizedNodeIds.includes(parentNode.id) &&
+      isFreeFormData(parentNode) &&
+      change.position
+    ) {
       const currentChanges = moveChangesByParentNodeId.get(parentNode.id) ?? [];
       moveChangesByParentNodeId.set(parentNode.id, [...currentChanges, { movedNode, change }]);
     }
