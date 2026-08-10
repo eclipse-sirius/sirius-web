@@ -1,0 +1,87 @@
+:author: Charfadi Michaël
+:date: 20226-09-02
+:status: proposed
+:consulted: 
+:informed: 
+:deciders: Stéphane Bégaudeau
+:pitch: 
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6511
+
+= ADR-238 - Add support for backend filtering in tree based representations
+
+== Context and Problem Statement
+
+The logic for filtering a tree representation based on the input on the search field is computed on the frontend.
+
+As such we are only filtering on the elements returned by the subscription.
+
+We should compute the list of elements matching the input on the backend in order to consider all elements.
+
+
+== Decision Drivers
+
+- Compatibility: A default filter should be implemented with the same behavior as what is currently available with the frontend implementation.
+- Extensibility: The default filter can be changed with a dedicated API.
+- Performance: This will have an impact on performance since we'll have to check every element to know if it's candidate or not, the performance overhead should be kept as low as possible.
+
+
+== Considered Options
+
+=== Add searchedValue as a variable of the subscription
+
+The searched value becomes part of the subscription variables.
+
+When it changes, the frontend disposes of the existing subscription and subscribes to a differently filtered version of the tree.
+
+We can't decide to cut a parent item if we did not rendered all its children first in order to be sure they are not matching the filter.
+
+
+=== Add a mutation to trigger a rerender of the tree
+
+We will add a mutation `updateTreeFromSearchedValue` that causes to compute a new Tree and send a new payload to the frontend through the active subscription.
+
+This would behave as with diagram when we send a layout mutation that has for effect to refresh the payload of the subscription.
+
+The Tree would also have to be rerendered for every `updateTreeFromSearchedValue` mutation or semantic change triggered by another user.
+
+== Decision Outcome
+
+In the context of moving the filtering of a tree on the backend side, facing concerns on the performance we decided for adding a variable to the subscription to achieve a proven lifecycle, accepting the performance cost.
+
+We already trigger a new subscription every time the state of expanded elements changes or when switching tree description.
+
+Considering that the 2 solutions will suffer from the same heavy bottleneck that is the necessity of rerendering the whole tree on the backend every time another user makes a semantic change or the searched value changes.
+
+We will opt for the first solution as adding another variable to the subscription is straightforward and this will not bring massive architectural transformation or breaking changes.
+
+The second solution would avoid the necessity of creating a new subscription but this will not bring noticeable performance gain.
+
+
+== Consequences
+
+=== Advantages
+
+We already have several parameters for the tree subscription so adding another would be easier than using a dedicated mutation to refresh the payload.
+
+
+=== Drawbacks
+
+Each active filtered subscription requires its own complete tree rendering whenever the underlying tree is refreshed.
+
+Consequently, the rendering cost grows with both the model size and the number of concurrent filtered users.
+
+For large models, including SysMLv2 libraries containing hundreds of thousands of elements, this may impose a severe CPU and latency cost on the server.
+
+Given the current rendering architecture, mitigating this cost later (if possible) may require a substantial redesign.
+
+
+== More Information
+
+=== Implementation
+
+
+
+=== Decision Details
+
+
+=== References
