@@ -10,6 +10,7 @@
 === Architectural decision records
 
 - [ADR-234] Separate metamodels generated code from the customized part
+- [ADR-235] Add support for backend filtering in tree based representations
 
 
 === Deprecation warning
