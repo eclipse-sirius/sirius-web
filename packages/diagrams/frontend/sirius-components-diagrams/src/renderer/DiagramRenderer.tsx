@@ -252,7 +252,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { transformBorderNodeChanges } = useBorderChange();
   const { transformUndraggableListNodeChanges, applyMoveChange } = useMoveChange();
   const { applyLastElementSelected } = useLastElementSelectedChange();
-  const { transformResizeListNodeChanges, applyResizeByUserState } = useResizeChange();
+  const { transformResizeNodeChanges, applyResizeByUserState } = useResizeChange();
   const { transformMultiSelectResizeNodeChanges } = useMultiSelectResizeChange();
   const { applyHandleChange } = useHandleChange();
   const { applyResizeHandleChange } = useHandleResizedChange();
@@ -286,7 +286,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
         transformedNodeChanges = transformUndraggableListNodeChanges(transformedNodeChanges);
         transformedNodeChanges = applyHelperLines(transformedNodeChanges);
         transformedNodeChanges = transformMultiSelectResizeNodeChanges(transformedNodeChanges);
-        transformedNodeChanges = transformResizeListNodeChanges(transformedNodeChanges);
+        transformedNodeChanges = transformResizeNodeChanges(transformedNodeChanges);
 
         let newNodes = applyNodeChanges(transformedNodeChanges, nodes);
         newNodes = applyMoveChange(transformedNodeChanges, newNodes);

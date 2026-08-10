@@ -48,7 +48,7 @@ const getBorderWidth = (resizedNode: Node<NodeData>): number => {
   return borderLeftWidth;
 };
 
-const computeFreeFormContentDelta = (
+const computeFreeFormContentContainmentDelta = (
   parentNode: Node<FreeFormNodeData>,
   nodesBox: Rect,
   dimensions: Dimensions
@@ -167,7 +167,7 @@ const applyMoveToListContain = (
   return change;
 };
 
-const applyMoveToFreeFormContain = (
+const constrainFreeFormChildMoveChanges = (
   nodes: Node<NodeData>[],
   changes: NodeChange<Node<NodeData>>[]
 ): Map<string, NodePositionChange> => {
@@ -194,7 +194,7 @@ const applyMoveToFreeFormContain = (
         position: change.position!,
       }));
       const movedNodesBox = computeNodesBox(nodes, movedNodes);
-      const delta = computeFreeFormContentDelta(parentNode, movedNodesBox, {
+      const delta = computeFreeFormContentContainmentDelta(parentNode, movedNodesBox, {
         width: parentNode.width ?? 0,
         height: parentNode.height ?? 0,
       });
@@ -293,7 +293,7 @@ const applyMoveToListChild = (
   return [];
 };
 
-const applyMoveToFreeFormChild = (
+const createFreeFormChildMoveChangesAfterResize = (
   resizedNode: Node<NodeData>,
   nodes: Node<NodeData>[],
   change: NodeDimensionChange
@@ -304,7 +304,7 @@ const applyMoveToFreeFormChild = (
     );
     if (children.length > 0) {
       const childrenBox = computeNodesBox(nodes, children);
-      const delta = computeFreeFormContentDelta(resizedNode, childrenBox, change.dimensions);
+      const delta = computeFreeFormContentContainmentDelta(resizedNode, childrenBox, change.dimensions);
 
       return children.map((node) => {
         return {
@@ -325,29 +325,29 @@ export const useResizeChange = (): UseResizeChangeValue => {
   const { getNodes } = useStore();
   const store = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
-  const transformResizeListNodeChanges = useCallback(
+  const transformResizeNodeChanges = useCallback(
     (changes: NodeChange<Node<NodeData>>[]): NodeChange<Node<NodeData>>[] => {
       const zoom = store.getState().transform[2];
       const nodes = getNodes();
-      const freeFormContainChanges = applyMoveToFreeFormContain(nodes, changes);
-      const newResizeListContainChanges: NodeChange<Node<NodeData>>[] = [];
+      const constrainedFreeFormChildMoveChanges = constrainFreeFormChildMoveChanges(nodes, changes);
+      const newChildNodeChanges: NodeChange<Node<NodeData>>[] = [];
       const newBorderNodeMoveChanges: NodeChange<Node<NodeData>>[] = [];
       const updatedChanges: NodeChange<Node<NodeData>>[] = changes.map((currentChange) => {
         if (isResizing(currentChange)) {
           const resizedNode = nodes.find((node) => currentChange.id === node.id);
           if (resizedNode) {
-            newResizeListContainChanges.push(...applyResizeToListContain(resizedNode, nodes, currentChange));
+            newChildNodeChanges.push(...applyResizeToListContain(resizedNode, nodes, currentChange));
             newBorderNodeMoveChanges.push(...applyMoveToBorderNodes(resizedNode, nodes, currentChange));
-            newResizeListContainChanges.push(...applyMoveToListChild(resizedNode, nodes, currentChange, zoom));
+            newChildNodeChanges.push(...applyMoveToListChild(resizedNode, nodes, currentChange, zoom));
             const isCurrentResizedNodeNotMoved =
               changes.filter((change) => isMove(change) && change.id === resizedNode.id).length === 0;
             if (isCurrentResizedNodeNotMoved) {
-              newResizeListContainChanges.push(...applyMoveToFreeFormChild(resizedNode, nodes, currentChange));
+              newChildNodeChanges.push(...createFreeFormChildMoveChangesAfterResize(resizedNode, nodes, currentChange));
             }
           }
         }
         if (isMove(currentChange)) {
-          const freeFormContainChange = freeFormContainChanges.get(currentChange.id);
+          const freeFormContainChange = constrainedFreeFormChildMoveChanges.get(currentChange.id);
           if (freeFormContainChange) {
             return freeFormContainChange;
           }
@@ -377,7 +377,7 @@ export const useResizeChange = (): UseResizeChangeValue => {
         }
         return currentChange;
       });
-      return [...newBorderNodeMoveChanges, ...updatedChanges, ...newResizeListContainChanges];
+      return [...newBorderNodeMoveChanges, ...updatedChanges, ...newChildNodeChanges];
     },
     [getNodes]
   );
@@ -408,5 +408,5 @@ export const useResizeChange = (): UseResizeChangeValue => {
     });
   };
 
-  return { transformResizeListNodeChanges, applyResizeByUserState };
+  return { transformResizeNodeChanges, applyResizeByUserState };
 };
