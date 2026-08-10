@@ -195,10 +195,12 @@ const constrainFreeFormChildMoveChanges = (
   moveChangesByParentNodeId.forEach((moveChanges, parentNodeId) => {
     const parentNode = nodes.find((node) => node.id === parentNodeId);
     if (parentNode && isFreeFormData(parentNode)) {
-      const movedNodes = moveChanges.map(({ movedNode, change }) => ({
-        ...movedNode,
-        position: change.position!,
-      }));
+      const movedNodes = moveChanges
+        .filter(({ movedNode }) => !movedNode.hidden && !movedNode.data.isBorderNode)
+        .map(({ movedNode, change }) => ({
+          ...movedNode,
+          position: change.position!,
+        }));
       const movedNodesBox = computeNodesBox(nodes, movedNodes);
       const delta = computeFreeFormContentContainmentDelta(parentNode, movedNodesBox, {
         width: parentNode.width ?? 0,
