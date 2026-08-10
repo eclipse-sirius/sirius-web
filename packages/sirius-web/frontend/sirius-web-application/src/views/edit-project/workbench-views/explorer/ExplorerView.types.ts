@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ export interface ExplorerViewState {
   filterBar: boolean;
   filterBarText: string | null;
   filterBarTreeFiltering: boolean;
-  treeFilters: TreeFilter[];
   activeTreeDescriptionId: string | null;
   expanded: { [key: string]: string[] };
   maxDepth: { [key: string]: number };

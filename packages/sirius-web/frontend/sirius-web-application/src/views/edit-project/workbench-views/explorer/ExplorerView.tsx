@@ -23,12 +23,10 @@ import {
   GQLGetTreePathVariables,
   GQLTree,
   GQLTreeItem,
-  TreeFilter,
   TreeToolBar,
   TreeToolBarContext,
   TreeToolBarContextValue,
   TreeView,
-  useTreeFilters,
   useTreePath,
   useTreeSelection,
 } from '@eclipse-sirius/sirius-components-trees';
@@ -45,6 +43,7 @@ import { useExplorerDescriptions } from './useExplorerDescriptions';
 import { useExplorerSubscription } from './useExplorerSubscription';
 import { GQLTreeEventPayload, GQLTreeRefreshedEventPayload } from './useExplorerSubscription.types';
 import { useExplorerViewHandle } from './useExplorerViewHandle';
+import { useTreeFiltering } from './useTreeFiltering';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
@@ -74,11 +73,11 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
 
     const initialExplorerViewConfiguration: ExplorerViewConfiguration =
       initialConfiguration as unknown as ExplorerViewConfiguration;
+
     const [state, setState] = useState<ExplorerViewState>({
       filterBar: false,
       filterBarText: '',
       filterBarTreeFiltering: false,
-      treeFilters: initialExplorerViewConfiguration?.activeTreeFilters ?? [],
       activeTreeDescriptionId: initialExplorerViewConfiguration?.activeTreeDescriptionId ?? null,
       expanded: {},
       maxDepth: {},
@@ -108,12 +107,23 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       }
     };
 
-    useExplorerViewHandle(id, state.tree?.id, state.treeFilters, state.activeTreeDescriptionId, applySelection, ref);
+    const {
+      treeFilters,
+      loading: treeFiltersLoading,
+      setTreeFilters,
+    } = useTreeFiltering(
+      editingContextId,
+      state.activeTreeDescriptionId,
+      initialExplorerViewConfiguration?.activeTreeFilters ?? []
+    );
+
+    useExplorerViewHandle(id, state.tree?.id, treeFilters, state.activeTreeDescriptionId, applySelection, ref);
 
     const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
       (contribution) => contribution.props.component
     );
-    const activeTreeFilterIds = state.treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
+
+    const activeTreeFilterIds = treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
 
     const { payload } = useExplorerSubscription(
       editingContextId,
@@ -148,32 +158,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
         }));
       }
     }, [explorerDescriptions]);
-
-    const { loading, treeFilters } = useTreeFilters(editingContextId, state.activeTreeDescriptionId || null);
-
-    useEffect(() => {
-      if (!loading) {
-        const allAvailableFilters: TreeFilter[] = treeFilters.map((gqlTreeFilter) => ({
-          id: gqlTreeFilter.id,
-          label: gqlTreeFilter.label,
-          state: gqlTreeFilter.defaultState,
-        }));
-        setState((prevState) => ({
-          ...prevState,
-          treeFilters: allAvailableFilters.map((availableFilter) => {
-            const existingFilter: TreeFilter = state.treeFilters.find((filter) => filter.id === availableFilter.id);
-            if (existingFilter) {
-              return {
-                ...availableFilter,
-                state: existingFilter.state,
-              };
-            } else {
-              return availableFilter;
-            }
-          }),
-        }));
-      }
-    }, [loading, treeFilters.map((treeFilter) => treeFilter.id).join()]);
 
     const treeElement = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -348,20 +332,16 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
           </Typography>
         </Box>
         <Box className={styles.treeView} sx={{ flexGrow: 1, minHeight: 0 }} ref={treeElement}>
-          {!state.tree || loading ? (
+          {!state.tree || treeFiltersLoading ? (
             <RepresentationLoadingIndicator />
           ) : (
             <>
               <TreeToolBar
                 editingContextId={editingContextId}
                 readOnly={readOnly}
-                treeFilters={state.treeFilters}
+                treeFilters={treeFilters}
                 onRevealSelection={revealSelection}
-                onTreeFilterMenuItemClick={(treeFilters) =>
-                  setState((prevState) => {
-                    return { ...prevState, treeFilters };
-                  })
-                }
+                onTreeFilterMenuItemClick={setTreeFilters}
                 onFilter={() => {
                   setState((prevState) => {
                     return !prevState.filterBar
