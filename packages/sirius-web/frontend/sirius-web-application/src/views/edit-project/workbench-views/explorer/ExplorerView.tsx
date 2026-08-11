@@ -44,6 +44,7 @@ import { useExplorerSubscription } from './useExplorerSubscription';
 import { GQLTreeEventPayload, GQLTreeRefreshedEventPayload } from './useExplorerSubscription.types';
 import { useExplorerViewHandle } from './useExplorerViewHandle';
 import { useTreeFiltering } from './useTreeFiltering';
+import { useTreeStateContainer } from './useTreeStateContainer';
 
 const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
@@ -78,9 +79,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       filterBar: false,
       filterBarText: '',
       filterBarTreeFiltering: false,
-      activeTreeDescriptionId: initialExplorerViewConfiguration?.activeTreeDescriptionId ?? null,
-      expanded: {},
-      maxDepth: {},
       tree: null,
       selectedTreeItemIds: [],
       singleTreeItemSelected: null,
@@ -107,17 +105,23 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       }
     };
 
+    const configuredActiveTreeDescriptionId = initialExplorerViewConfiguration?.activeTreeDescriptionId ?? null;
+
+    const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
+    const { activeTreeDescriptionId, expanded, maxDepth, onExpandedElementChange, setActiveDescriptionId } =
+      useTreeStateContainer(configuredActiveTreeDescriptionId, explorerDescriptions);
+
     const {
       treeFilters,
       loading: treeFiltersLoading,
       setTreeFilters,
     } = useTreeFiltering(
       editingContextId,
-      state.activeTreeDescriptionId,
+      activeTreeDescriptionId,
       initialExplorerViewConfiguration?.activeTreeFilters ?? []
     );
 
-    useExplorerViewHandle(id, state.tree?.id, treeFilters, state.activeTreeDescriptionId, applySelection, ref);
+    useExplorerViewHandle(id, state.tree?.id, treeFilters, activeTreeDescriptionId, applySelection, ref);
 
     const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
       (contribution) => contribution.props.component
@@ -127,10 +131,10 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
 
     const { payload } = useExplorerSubscription(
       editingContextId,
-      state.activeTreeDescriptionId,
+      activeTreeDescriptionId,
       activeTreeFilterIds,
-      state.expanded[state.activeTreeDescriptionId] ?? [],
-      state.maxDepth[state.activeTreeDescriptionId] ?? 1
+      expanded,
+      maxDepth
     );
 
     useEffect(() => {
@@ -138,26 +142,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
         setState((prevState) => ({ ...prevState, tree: payload.tree }));
       }
     }, [payload]);
-
-    const { explorerDescriptions } = useExplorerDescriptions(editingContextId);
-
-    useEffect(() => {
-      if (explorerDescriptions && explorerDescriptions.length > 0) {
-        const expandedInitiated: { [key: string]: string[] } = {};
-        const maxDepthInitiated: { [key: string]: number } = {};
-        explorerDescriptions.forEach((explorerDescription) => {
-          expandedInitiated[explorerDescription.id] = [];
-          maxDepthInitiated[explorerDescription.id] = 1;
-        });
-
-        setState((prevState) => ({
-          ...prevState,
-          activeTreeDescriptionId: state.activeTreeDescriptionId ?? explorerDescriptions[0].id,
-          expanded: expandedInitiated,
-          maxDepth: maxDepthInitiated,
-        }));
-      }
-    }, [explorerDescriptions]);
 
     const treeElement = useRef<HTMLDivElement>(null);
     useEffect(() => {
@@ -205,51 +189,19 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
 
     useEffect(() => {
       if (treePathData && treePathData.viewer?.editingContext?.treePath) {
+        const expandedIds = treePathData.viewer.editingContext.treePath.treeItemIdsToExpand.filter(
+          (id) => !expanded.includes(id)
+        );
+        const newExpandedIds = [...expanded, ...expandedIds];
+        onExpandedElementChange(newExpandedIds, treePathData.viewer.editingContext.treePath.maxDepth);
         setState((prevState) => {
-          const { expanded, maxDepth } = prevState;
-          const { treeItemIdsToExpand, maxDepth: expandedMaxDepth } = treePathData.viewer.editingContext.treePath;
-          const newExpanded: string[] = [...expanded[prevState.activeTreeDescriptionId]];
-
-          treeItemIdsToExpand?.forEach((itemToExpand) => {
-            if (!expanded[prevState.activeTreeDescriptionId].includes(itemToExpand)) {
-              newExpanded.push(itemToExpand);
-            }
-          });
           return {
             ...prevState,
             selectedTreeItemIds: selection.entries.map((entry) => entry.id),
-            expanded: {
-              ...prevState.expanded,
-              [prevState.activeTreeDescriptionId]: newExpanded,
-            },
-            maxDepth: {
-              ...prevState.maxDepth,
-              [prevState.activeTreeDescriptionId]: Math.max(
-                expandedMaxDepth,
-                maxDepth[prevState.activeTreeDescriptionId]
-              ),
-            },
           };
         });
       }
     }, [treePathData]);
-
-    const onExpandedElementChange = (newExpandedIds: string[], newMaxDepth: number) => {
-      setState((prevState) => ({
-        ...prevState,
-        expanded: {
-          ...prevState.expanded,
-          [prevState.activeTreeDescriptionId]: newExpandedIds,
-        },
-        maxDepth: {
-          ...prevState.maxDepth,
-          [prevState.activeTreeDescriptionId]: Math.max(
-            newMaxDepth,
-            prevState.maxDepth[prevState.activeTreeDescriptionId]
-          ),
-        },
-      }));
-    };
 
     let filterBar: JSX.Element = <div />;
     if (state.filterBar) {
@@ -300,14 +252,14 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
       <TreeDescriptionsMenu
         treeDescriptions={explorerDescriptions}
-        activeTreeDescriptionId={state.activeTreeDescriptionId}
-        onTreeDescriptionChange={(treeDescription) =>
+        activeTreeDescriptionId={activeTreeDescriptionId}
+        onTreeDescriptionChange={(treeDescription) => {
+          setActiveDescriptionId(treeDescription.id);
           setState((prevState) => ({
             ...prevState,
-            activeTreeDescriptionId: treeDescription.id,
             tree: null,
-          }))
-        }
+          }));
+        }}
       />
     );
 
@@ -371,8 +323,8 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
                     textToHighlight={state.filterBarText}
                     textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
                     onExpandedElementChange={onExpandedElementChange}
-                    expanded={state.expanded[state.activeTreeDescriptionId]}
-                    maxDepth={state.maxDepth[state.activeTreeDescriptionId]}
+                    expanded={expanded}
+                    maxDepth={maxDepth}
                     onTreeItemClick={onTreeItemClick}
                     selectTreeItems={(selectedTreeItemIds: string[]) =>
                       setState((prevState) => {
