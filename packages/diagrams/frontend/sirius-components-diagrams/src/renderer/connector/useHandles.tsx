@@ -65,6 +65,7 @@ const createHandleNode = (
     position: xyPosition,
     height: 1, // The size is fixed for this type of node
     width: 1, // The size is fixed for this type of node
+    selectable: false,
     style: { zIndex: 3000 },
     data: {
       targetObjectId: '',

@@ -203,6 +203,9 @@ To select multiple elements:
 
 * Hold *`Shift` and drag* with the left mouse button to draw a rectangular selection zone.
 * Or hold *`Ctrl` (or `Cmd` on Mac) and click* individual elements to add or remove them from the selection.
+
+When a rectangular selection starts on a node, that node and its containers are excluded from the selection.
+Start the selection outside nodes to include containers.
 ====
 
 [cols="10%,20%,70%", options="header"]

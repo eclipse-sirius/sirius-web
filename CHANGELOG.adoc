@@ -248,6 +248,7 @@ Inside the resulting section, the tools are ordered depending on the order the `
 Added `IDiagramPaletteCustomizer` to customize all contributed tool section from `IPaletteToolsProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6625[#6625] [sirius-web] Make the project title more compact
 - https://github.com/eclipse-sirius/sirius-web/issues/6792[#6792] [diagram] Increase ReactFlow's node drag threshold from 1 px to 5 px to reduce unintended node dragging.
+- https://github.com/eclipse-sirius/sirius-web/issues/6795[#6795] [diagram] Allow users to start a lasso selection on a node without selecting that node or its containers, so nested nodes can be selected while their containers remain unselected.
 
 
 
