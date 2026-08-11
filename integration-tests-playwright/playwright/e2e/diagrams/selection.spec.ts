@@ -45,6 +45,100 @@ test.describe('selection', () => {
     await expect(treeItem).not.toBeVisible();
   });
 
+  test('rectangle selection does not select the node where it starts', async ({ page }) => {
+    const parentNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    const parentNodeBounds = await parentNode.getDOMBoundingBox();
+
+    await page.keyboard.down('Shift');
+    await page.mouse.move(parentNodeBounds.x + 5, parentNodeBounds.y + 5);
+    await page.mouse.down();
+    await page.mouse.move(parentNodeBounds.x + 20, parentNodeBounds.y + 20, { steps: 2 });
+    await page.mouse.up();
+    await page.keyboard.up('Shift');
+
+    await expect(parentNode.nodeLocator).not.toContainClass('selected');
+  });
+
+  test('rectangle selection can select a child without selecting its container', async ({ page }) => {
+    const parentNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    const childNode = new PlaywrightNode(page, 'Processor1');
+    const childNodeBounds = await childNode.getDOMBoundingBox();
+    const parentNodeBounds = await parentNode.getDOMBoundingBox();
+
+    await page.keyboard.down('Shift');
+    await page.mouse.move(parentNodeBounds.x + 5, parentNodeBounds.y + 5);
+    await page.mouse.down();
+    await page.mouse.move(
+      childNodeBounds.x + childNodeBounds.width + 5,
+      childNodeBounds.y + childNodeBounds.height + 5,
+      {
+        steps: 2,
+      }
+    );
+    await page.mouse.up();
+    await page.keyboard.up('Shift');
+
+    await expect(parentNode.nodeLocator).not.toContainClass('selected');
+    await expect(childNode.nodeLocator).toContainClass('selected');
+  });
+
+  test('rectangle selection does not select the starting node or its containers', async ({ page }) => {
+    const parentNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    const childNode = new PlaywrightNode(page, 'Processor1');
+    const childNodeBounds = await childNode.getDOMBoundingBox();
+
+    await page.keyboard.down('Shift');
+    await page.mouse.move(childNodeBounds.x + 5, childNodeBounds.y + 5);
+    await page.mouse.down();
+    await page.mouse.move(childNodeBounds.x + 20, childNodeBounds.y + 20, { steps: 2 });
+    await page.mouse.up();
+    await page.keyboard.up('Shift');
+
+    await expect(parentNode.nodeLocator).not.toContainClass('selected');
+    await expect(childNode.nodeLocator).not.toContainClass('selected');
+  });
+
+  test('rectangle selection deselects the starting node and its containers while dragging', async ({ page }) => {
+    const parentNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    const childNode = new PlaywrightNode(page, 'Processor1');
+    const childNodeBounds = await childNode.getDOMBoundingBox();
+
+    await parentNode.click();
+    await childNode.controlClick();
+    await expect(parentNode.nodeLocator).toContainClass('selected');
+    await expect(childNode.nodeLocator).toContainClass('selected');
+
+    await page.keyboard.down('Shift');
+    await page.mouse.move(childNodeBounds.x + 5, childNodeBounds.y + 5);
+    await page.mouse.down();
+    await page.mouse.move(childNodeBounds.x + 20, childNodeBounds.y + 20, { steps: 2 });
+
+    await expect(page.locator('.react-flow__selection')).toBeVisible();
+    await expect(parentNode.nodeLocator).not.toContainClass('selected');
+    await expect(childNode.nodeLocator).not.toContainClass('selected');
+
+    await page.mouse.up();
+    await page.keyboard.up('Shift');
+  });
+
+  test('rectangle selection started outside nodes can select containers', async ({ page }) => {
+    const parentNode = new PlaywrightNode(page, 'CompositeProcessor1');
+    const parentNodeBounds = await parentNode.getDOMBoundingBox();
+
+    await page.keyboard.down('Shift');
+    await page.mouse.move(parentNodeBounds.x - 20, parentNodeBounds.y - 20);
+    await page.mouse.down();
+    await page.mouse.move(
+      parentNodeBounds.x + parentNodeBounds.width + 20,
+      parentNodeBounds.y + parentNodeBounds.height + 20,
+      { steps: 2 }
+    );
+    await page.mouse.up();
+    await page.keyboard.up('Shift');
+
+    await expect(parentNode.nodeLocator).toContainClass('selected');
+  });
+
   test('the explorer can update its local selection with an explicit button click', async ({ page }) => {
     await new PlaywrightNode(page, 'CompositeProcessor1').click();
 

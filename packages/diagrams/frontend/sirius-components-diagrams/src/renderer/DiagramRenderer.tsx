@@ -14,6 +14,7 @@
 import { useData, useSelection } from '@eclipse-sirius/sirius-components-core';
 import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import {
+  applyNodeChanges,
   Background,
   BackgroundVariant,
   ConnectionLineType,
@@ -28,12 +29,11 @@ import {
   ReactFlow,
   ReactFlowProps,
   SelectionMode,
-  applyNodeChanges,
   useReactFlow,
   useStoreApi,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import React, { MouseEvent as ReactMouseEvent, memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import React, { memo, MouseEvent as ReactMouseEvent, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { DiagramContext } from '../contexts/DiagramContext';
 import { DiagramContextValue } from '../contexts/DiagramContext.types';
 import { NodeTypeContext } from '../contexts/NodeContext';
@@ -86,6 +86,7 @@ import { useDiagramSelection } from './selection/useDiagramSelection';
 import { useLastElementSelectedChange } from './selection/useLastElementSelectedChange';
 import { useOnRightClickElement } from './selection/useOnRightClickElement';
 import { usePostToolSelection } from './selection/usePostToolSelection';
+import { useRectangleSelection } from './selection/useRectangleSelection';
 import { SnapToGridContext } from './snap-to-grid/SnapToGridContext';
 import { SnapToGridContextValue } from './snap-to-grid/SnapToGridContext.types';
 import { DiagramToolbar } from './toolbar/DiagramToolbar';
@@ -114,6 +115,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
   const { background, setBackground, largeGridColor, smallGridColor } = useDropDiagramStyle();
   const { nodeTypes } = useNodeType();
   const { setSelection } = useSelection();
+  const { onRectangleSelectionStart, onRectangleSelectionEnd } = useRectangleSelection();
 
   const { nodeConverters } = useContext<NodeTypeContextValue>(NodeTypeContext);
   const { isMiniMapVisible } = useContext<MiniMapContextValue>(MiniMapContext);
@@ -380,6 +382,8 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onNodeMouseLeave: onNodeMouseLeave,
     onEdgeMouseEnter: onEdgeMouseEnter,
     onEdgeMouseLeave: onEdgeMouseLeave,
+    onSelectionStart: onRectangleSelectionStart,
+    onSelectionEnd: onRectangleSelectionEnd,
     onSelectionChange: onSelectionChange,
     selectionMode: SelectionMode.Partial,
     maxZoom: 40,
