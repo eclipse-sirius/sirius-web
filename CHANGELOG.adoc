@@ -11,6 +11,7 @@
 
 - [ADR-234] Separate metamodels generated code from the customized part
 - [ADR-235] Add support for custom non-working days in Gantt
+- [ADR-236] Add the ability to configure default libraries per template
 
 
 === Deprecation warning
@@ -111,13 +112,8 @@ This will allow us to reuse the change description to propagate more information
 === Architectural decision records
 
 - [ADR-231] Add support for decorating events with metadata
-<<<<<<< HEAD
 - [ADR-232] Add support for GitHub Flavored Markdown rendering
 - [ADR-233] Use the diagram palette for tree based representations
-=======
-- [ADR-232] Add support for custom holidays in Gantt
-
->>>>>>> f5f73d69bf ([doc] Add ADR for custom holidays in Gantt)
 
 
 === Deprecation warning

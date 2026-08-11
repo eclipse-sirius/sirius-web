@@ -1,0 +1,80 @@
+:author: Gwendal DANIEL
+:date: 2026-08-11
+:status: proposed
+:consulted: Mélanie Bats
+:informed: Florian Rouëné
+:deciders: Stéphane Bégaudeau
+:pitch: None
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6740
+
+= ADR-236 - Add the ability to configure default libraries per template
+
+== Context and Problem Statement
+
+We now have an unified page to create a new project, which allows to select both the template and the libraries to add as dependencies.
+Some templates may require some libraries to fully work (e.g. they create semantic elements which are connected to library elements).
+Currently, there is no way to specify the libraries to load as dependencies for a given template, and users have to manually select them.
+
+We want to provide a solution to specify such dependency.
+
+
+== Decision Drivers
+
+- Compatibility: existing templates should continue to work as they used to.
+- Synchronization: the selected libraries should change depending on the template selected by the user
+
+
+== Considered Options
+
+=== Add a GraphQL field to specify the libraries to select for a template
+
+We will add the `libraryIds` field in `ProjectTemplate`:
+
+[source, graphqls]
+----
+type ProjectTemplate {
+  id: ID!
+  label: String!
+  imageURL: String!
+  libraries: [Library!]!
+}
+----
+
+This field will contain the libraries that should be selected by default in the library table when the project template is selected.
+The frontend will react to template selection change, and render a `LibrariesImportTable` with an initial selection containing the template's required libraries.
+It should not be possible to unselect these libraries, but users should be able to select additional libraries if they want to.
+
+The default libraries to use must also be checked when creating a project from a template, to ensure that the project is created with the required libraries.
+We must not blindly trust the frontend to send the correct libraries, as it could easily be bypassed.
+
+
+== Decision Outcome
+
+In the context of the selection of the default libraries of a project template, facing the need to ensure that some specific libraries are always included, we decided for the addition of the libraries field to the ProjectTemplate type to achieve a simple evolution of our API, accepting that it will require the backend to find the proper libraries.
+
+
+== Consequences
+
+=== Advantages
+
+- The change is relatively small and integrates well with the existing code.
+
+=== Drawbacks
+
+- The backend will have to fetch the libraries metadata properly for each template.
+
+
+== More Information
+
+=== Implementation
+
+- We will update the _Papaya Performance_ template to remove the `java` resource built with reflection and set a published java library dependencies as default library.
+- We will add integration tests to check the feature.
+
+
+=== Decision Details
+
+
+=== References
+
+- https://github.com/eclipse-sirius/sirius-web/issues/5776[5776 - Libraries can be used in projects in which they can never work] 
