@@ -67,9 +67,6 @@ public final class SpringWebMvcConfigurerConstants {
     /** Pattern used to match any path. */
     public static final String ANY_PATTERN = "/**";
 
-    /** Path of the folder containing the static resources. */
-    public static final String STATIC_ASSETS_PATH = "classpath:/static/";
-
     private SpringWebMvcConfigurerConstants() {
         // Prevent instantiation
     }

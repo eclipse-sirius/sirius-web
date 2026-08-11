@@ -63,6 +63,28 @@ The distribution module produces a JAR that bundles both backend and view contri
 
 TIP: Follow the Spring Boot documentation for `PropertiesLauncher` to combine multiple add-ons or external configuration directories.
 
+== Override {product} frontend in an add-on
+
+Use this mechanism when an add-on provides a frontend that must replace the default {product} frontend.
+Package the compiled frontend artifacts in a dedicated classpath directory in the add-on JAR, with `index.html` at its root.
+Do not name this directory `static` because it would collide with {product}'s frontend resources.
+Use a name specific to your add-on, like `your-add-on-static`, to prevent clashes with other add-ons.
+Set the Spring Boot `spring.web.resources.static-locations` property to this directory:
+
+[source,properties]
+----
+spring.web.resources.static-locations=classpath:/your-add-on-static/
+----
+
+Note the trailing `/` that lets {product} resolve `index.html` relative to the configured location.
+
+[WARNING]
+====
+If multiple add-ons provide a frontend, only the `index.html` from the first matching static location is used.
+When possible, combine their frontend contributions into a single complete frontend build before deployment.
+This is a known limitation on the support for frontend add-ons.
+====
+
 == Best practices
 
 * Version your add-ons independently from the base application and document compatibility.
