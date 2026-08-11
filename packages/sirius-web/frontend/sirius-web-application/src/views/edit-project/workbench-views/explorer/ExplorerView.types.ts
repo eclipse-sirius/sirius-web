@@ -17,9 +17,6 @@ export interface ExplorerViewState {
   filterBar: boolean;
   filterBarText: string | null;
   filterBarTreeFiltering: boolean;
-  activeTreeDescriptionId: string | null;
-  expanded: { [key: string]: string[] };
-  maxDepth: { [key: string]: number };
   tree: GQLTree | null;
   selectedTreeItemIds: string[];
   selectionPivotTreeItemId: string | null;

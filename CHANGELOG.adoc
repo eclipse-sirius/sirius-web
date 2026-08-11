@@ -101,6 +101,7 @@ This will allow us to reuse the change description to propagate more information
 - https://github.com/eclipse-sirius/sirius-web/issues/6773[#6773] [tree] Extract tree filters logic into a dedicated hook.
 - https://github.com/eclipse-sirius/sirius-web/issues/6734[#6734] [sirius-web] Allow downstream applications to configure the static locations to use to load frontend artifacts.
 Downstream applications can now use the `spring.web.resources.static-locations` property to configure the location of its frontend artifacts.
+- https://github.com/eclipse-sirius/sirius-web/issues/6790[#6790] [tree] Extract tree states into a dedicated hook.
 
 
 
