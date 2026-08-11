@@ -9,7 +9,6 @@ This page explains how the View description models diagram editors inside {produ
 The Diagram representation allows you to create rich graphical editors for your domain models.
 As with other representation types, it uses the same foundational expression language and styling concepts.
 
-
 How to create a diagram description in four steps:
 
 1. Create a Studio project with a View inside.
@@ -29,35 +28,59 @@ These elements describe the top level nodes and the edges that can be displayed 
 * `nodeDescriptions: NodeDescription`
 * `edgeDescriptions: EdgeDescription`
 
-
 === Styling
 
 The diagram description itself can contain styling information.
 
 * `style: DiagramStyleDescription` The default style of the diagram
 * `conditionalStyles: ConditionalDiagramStyle` A list of conditional styles that can be applied to the diagram based on its state
-* `decoratorDescriptions: DecoratorDescription` A list of decorators that can be applied to some diagram elements. Decorators are used to add additional information or visual cues to the diagram elements thanks to icons and labels
-
+* `decoratorDescriptions: DecoratorDescription` A list of decorators that can be applied to some diagram elements.
+Decorators are used to add additional information or visual cues to the diagram elements thanks to icons and labels
 
 === Interaction
 
 The diagram description can also contain information about the interaction with the diagram, such as the toolbar and palette.
 
-* `toolbar: DiagramToolbar` Used to configure the toolbar of the diagram. The toolbar is visible at the top of the diagram and can contain buttons to perform actions on the diagram or its elements.
-* `palette: DiagramPalette` Used to configure the palette of the diagram. The palette is accessible thanks to a right click on the background of the diagram. It can contain tools to create new elements in the diagram or to perform actions on the diagram or its elements.
-* `groupPalette: GroupPalette` Used to configure the palette of the diagram when multiple elements are selected. This palette is visible when multiple elements are selected and a right click is performed on the selection. It can contain tools to perform actions on the selected elements.
-* `minimapVisible: boolean` Used to indicate if the minimap is visible or not. The minimap is a small overview of the diagram that can be used to navigate the diagram quickly.
+* `toolbar: DiagramToolbar` Used to configure the toolbar of the diagram.
+The toolbar is visible at the top of the diagram and can contain buttons to perform actions on the diagram or its elements.
+* `palette: DiagramPalette` Used to configure the palette of the diagram.
+The palette is accessible thanks to a right click on the background of the diagram.
+It can contain tools to create new elements in the diagram or to perform actions on the diagram or its elements.
+* `groupPalette: GroupPalette` Used to configure the palette of the diagram when multiple elements are selected.
+This palette is visible when multiple elements are selected and a right click is performed on the selection.
+It can contain tools to perform actions on the selected elements.
+* `minimapVisible: boolean` Used to indicate if the minimap is visible or not.
+The minimap is a small overview of the diagram that can be used to navigate the diagram quickly.
 
+==== Delete views from a group palette
+
+The `diagramServices.deleteViews(nodes)` AQL service can be used to remove a collection of nodes from the diagram without deleting their semantic elements.
+It accepts diagram nodes, such as those available in the `selectedNodes` variable of a group palette tool.
+
+To provide a configurable _Delete from diagram_ action for multiple nodes:
+
+1. Add a `Node Tool` to the `Quick Access Node Tools` of the `Group Palette`.
+2. Add a `Change Context` operation to the tool.
+3. Set its expression to `aql:diagramServices.deleteViews(selectedNodes)`.
+
+For a tool intended only for node selections, its precondition can be configured as follows:
+
+`aql:selectedNodes->notEmpty() and selectedEdges->isEmpty()`
+
+The service creates one view deletion request for each selected node and returns the supplied nodes.
+It is intended for unsynchronized node descriptions; synchronized nodes are recreated from their semantic elements during diagram rendering.
 
 === Layout
 
-* `layoutOption: DiagramLayoutOption` Used to configure the behavior of the automatic layout of the diagram. It can be configured to one of the following values:
-  - `NONE` no automatic layout is applied to the diagram
-  - `AUTO_LAYOUT` the automatic layout is applied to the diagram when the diagram is opened or when the diagram is refreshed
-  - `AUTO_UNTIL_MANUAL` the automatic layout is applied to the diagram when the diagram is opened or when the diagram is refreshed, but it stops being applied when the user starts moving or resizing diagram elements
-* `arrangeLayoutDirection: ArrangeLayoutDirection` Used to configure the direction in which elements will be arranged when the automatic layout is applied to the diagram. It can be configured to one of the following values:
-  - `UNDEFINED``
-  - `RIGHT`
-  - `LEFT`
-  - `UP`
-  - `DOWN`
+* `layoutOption: DiagramLayoutOption` Used to configure the behavior of the automatic layout of the diagram.
+It can be configured to one of the following values:
+- `NONE` no automatic layout is applied to the diagram
+- `AUTO_LAYOUT` the automatic layout is applied to the diagram when the diagram is opened or when the diagram is refreshed
+- `AUTO_UNTIL_MANUAL` the automatic layout is applied to the diagram when the diagram is opened or when the diagram is refreshed, but it stops being applied when the user starts moving or resizing diagram elements
+* `arrangeLayoutDirection: ArrangeLayoutDirection` Used to configure the direction in which elements will be arranged when the automatic layout is applied to the diagram.
+It can be configured to one of the following values:
+- `UNDEFINED``
+- `RIGHT`
+- `LEFT`
+- `UP`
+- `DOWN`

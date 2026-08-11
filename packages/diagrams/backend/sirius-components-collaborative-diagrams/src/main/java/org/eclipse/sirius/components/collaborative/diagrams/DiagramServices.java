@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
+import org.eclipse.sirius.components.diagrams.ViewDeletionRequest;
 import org.eclipse.sirius.components.diagrams.ViewModifier;
 import org.eclipse.sirius.components.diagrams.events.FadeDiagramElementEvent;
 import org.eclipse.sirius.components.diagrams.events.HideDiagramElementEvent;
@@ -86,6 +87,16 @@ public class DiagramServices implements IDiagramServices {
         Set<String> diagramElementIds = diagramElements.stream().map(IDiagramElement::getId).collect(Collectors.toSet());
         diagramService.getDiagramContext().diagramEvents().add(new ResetViewModifiersEvent(diagramElementIds));
         return diagramElementIds;
+    }
+
+    @Override
+    public Object deleteViews(IDiagramService diagramService, List<Node> nodes) {
+        var viewDeletionRequests = nodes.stream()
+                .map(Node::getId)
+                .map(elementId -> ViewDeletionRequest.newViewDeletionRequest().elementId(elementId).build())
+                .toList();
+        diagramService.getDiagramContext().viewDeletionRequests().addAll(viewDeletionRequests);
+        return nodes;
     }
 
     @Override

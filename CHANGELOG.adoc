@@ -111,6 +111,7 @@ Downstream applications can now use the `spring.web.resources.static-locations` 
 - https://github.com/eclipse-sirius/sirius-web/issues/6790[#6790] [tree] Extract tree states into a dedicated hook.
 - https://github.com/eclipse-sirius/sirius-web/issues/6786[#6786] [diagram] Add pin/unpin to group palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6803[#6803] [tree] Extract explorer selection logic into a dedicated hook.
+- https://github.com/eclipse-sirius/sirius-web/issues/6779[#6779] [diagram] Add the `diagramServices.deleteViews(nodes)` AQL service to let studio makers configure tools that remove multiple nodes from a diagram without deleting their semantic elements, and use it in the Flow unsynchronized diagram's group palette.
 
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -107,12 +107,12 @@ public class DiagramServicesTests {
         diagramServices.fade(diagramServicesContext, nodesToFade);
 
         assertThat(diagramServicesContext.getDiagramContext().diagramEvents())
-            .hasSize(1)
-            .first()
-            .asInstanceOf(type(FadeDiagramElementEvent.class))
-            .returns(true, FadeDiagramElementEvent::fadeElement)
-            .extracting(FadeDiagramElementEvent::getElementIds, collection(String.class))
-            .hasSameElementsAs(List.of(nodeId));
+                .hasSize(1)
+                .first()
+                .asInstanceOf(type(FadeDiagramElementEvent.class))
+                .returns(true, FadeDiagramElementEvent::fadeElement)
+                .extracting(FadeDiagramElementEvent::getElementIds, collection(String.class))
+                .hasSameElementsAs(List.of(nodeId));
     }
 
     @Test
@@ -124,12 +124,12 @@ public class DiagramServicesTests {
         diagramServices.unfade(diagramServicesContext, nodesToUnfade);
 
         assertThat(diagramServicesContext.getDiagramContext().diagramEvents())
-            .hasSize(1)
-            .first()
-            .asInstanceOf(type(FadeDiagramElementEvent.class))
-            .returns(false, FadeDiagramElementEvent::fadeElement)
-            .extracting(FadeDiagramElementEvent::getElementIds, collection(String.class))
-            .hasSameElementsAs(List.of(nodeId));
+                .hasSize(1)
+                .first()
+                .asInstanceOf(type(FadeDiagramElementEvent.class))
+                .returns(false, FadeDiagramElementEvent::fadeElement)
+                .extracting(FadeDiagramElementEvent::getElementIds, collection(String.class))
+                .hasSameElementsAs(List.of(nodeId));
     }
 
     @Test
@@ -141,11 +141,40 @@ public class DiagramServicesTests {
         diagramServices.resetViewModifiers(diagramServicesContext, nodesToReset);
 
         assertThat(diagramServicesContext.getDiagramContext().diagramEvents())
-            .hasSize(1)
-            .first()
-            .asInstanceOf(type(ResetViewModifiersEvent.class))
-            .extracting(ResetViewModifiersEvent::getElementIds, collection(String.class))
-            .hasSameElementsAs(List.of(nodeId));
+                .hasSize(1)
+                .first()
+                .asInstanceOf(type(ResetViewModifiersEvent.class))
+                .extracting(ResetViewModifiersEvent::getElementIds, collection(String.class))
+                .hasSameElementsAs(List.of(nodeId));
+    }
+
+    @Test
+    public void testDeleteView() {
+        var diagramServices = new DiagramServices();
+        var diagramServicesContext = new DiagramService(new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString())));
+        var firstNodeId = UUID.randomUUID().toString();
+        var secondNodeId = UUID.randomUUID().toString();
+        var nodesToDelete = List.of(
+                new TestDiagramBuilder().getNode(firstNodeId, false),
+                new TestDiagramBuilder().getNode(secondNodeId, false));
+
+        var result = diagramServices.deleteViews(diagramServicesContext, nodesToDelete);
+
+        assertThat(result).isSameAs(nodesToDelete);
+        assertThat(diagramServicesContext.getDiagramContext().viewDeletionRequests())
+                .extracting("elementId")
+                .containsExactly(firstNodeId, secondNodeId);
+    }
+
+    @Test
+    public void testDeleteViewWithEmptyList() {
+        var diagramServices = new DiagramServices();
+        var diagramServicesContext = new DiagramService(new DiagramContext(new TestDiagramBuilder().getDiagram(UUID.randomUUID().toString())));
+
+        var result = diagramServices.deleteViews(diagramServicesContext, List.of());
+
+        assertThat(result).isEqualTo(List.of());
+        assertThat(diagramServicesContext.getDiagramContext().viewDeletionRequests()).isEmpty();
     }
 
     @Test

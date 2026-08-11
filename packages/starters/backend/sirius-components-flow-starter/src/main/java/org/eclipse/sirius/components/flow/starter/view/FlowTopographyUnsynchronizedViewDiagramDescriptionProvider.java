@@ -86,6 +86,9 @@ public class FlowTopographyUnsynchronizedViewDiagramDescriptionProvider implemen
 
         var palette = this.createDiagramPalette(cache);
         diagramDescription.setPalette(palette);
+        diagramDescription.setGroupPalette(this.diagramBuilderHelper.newGroupPalette()
+                .quickAccessTools(new FlowViewBuilder().getDeleteSelectedNodesFromDiagramTool())
+                .build());
 
         return diagramDescription;
     }
