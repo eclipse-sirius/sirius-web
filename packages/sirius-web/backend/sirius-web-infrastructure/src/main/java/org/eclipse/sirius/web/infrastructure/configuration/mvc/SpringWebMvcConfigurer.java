@@ -15,6 +15,7 @@ package org.eclipse.sirius.web.infrastructure.configuration.mvc;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -36,16 +37,20 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
 
     private final boolean allowedCredentials;
 
+    private final String[] staticLocations;
+
     public SpringWebMvcConfigurer(
             @Value("${sirius.components.cors.allowedOriginPatterns:}") String[] allowedOriginPatterns,
             @Value("${sirius.components.cors.allowedHeaders:}") String[] allowedHeaders,
             @Value("${sirius.components.cors.allowedMethods:}") String[] allowedMethods,
-            @Value("${sirius.components.cors.allowedCredentials:false}") boolean allowedCredentials
+            @Value("${sirius.components.cors.allowedCredentials:false}") boolean allowedCredentials,
+            WebProperties webProperties
     ) {
         this.allowedOriginPatterns = Objects.requireNonNull(allowedOriginPatterns);
         this.allowedHeaders = Objects.requireNonNull(allowedHeaders);
         this.allowedMethods = Objects.requireNonNull(allowedMethods);
         this.allowedCredentials = allowedCredentials;
+        this.staticLocations = webProperties.getResources().getStaticLocations();
     }
 
     @Override
@@ -67,7 +72,7 @@ public class SpringWebMvcConfigurer implements WebMvcConfigurer {
                 SpringWebMvcConfigurerConstants.JPEG_PATTERN,
                 SpringWebMvcConfigurerConstants.PNG_PATTERN,
                 SpringWebMvcConfigurerConstants.SVG_PATTERN
-        ).addResourceLocations(SpringWebMvcConfigurerConstants.STATIC_ASSETS_PATH);
+        ).addResourceLocations(this.staticLocations);
     }
 
     @Override
