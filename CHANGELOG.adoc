@@ -65,6 +65,7 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6746[#6746] [diagram] Fix an issue where a creation handle could stay highlighted after a connection
 - https://github.com/eclipse-sirius/sirius-web/issues/6732[#6732] [diagram] Fix node decorators not showing on hover.
 - https://github.com/eclipse-sirius/sirius-web/issues/6759[#6759] [palette] Fix palette tool search sometimes dropping matching elements
+- https://github.com/eclipse-sirius/sirius-web/issues/6782[#6782] [diagram] Fix an issue where quicktools contributed from `IGroupPaletteToolsProvider` were displayed after the ones from the view model.
 
 === New Features
 

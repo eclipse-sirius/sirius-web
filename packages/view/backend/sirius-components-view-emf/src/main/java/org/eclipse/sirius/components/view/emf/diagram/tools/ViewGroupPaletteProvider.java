@@ -108,27 +108,8 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
             org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = optionalDiagramDescription.get();
             if (viewDiagramDescription.eContainer() instanceof  View view) {
                 var interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, view);
-                palette = this.getGroupDiagramPalette(viewDiagramDescription, variableManager, interpreter);
+                palette = this.getGroupDiagramPalette(viewDiagramDescription, variableManager, interpreter, diagramContext, diagramDescription, diagramElements);
             }
-        }
-
-        var diagramElementDescriptions = diagramElements.stream()
-                .map(diagramElement -> this.findDiagramElementDescription(diagramDescription, diagramElement))
-                .flatMap(Optional::stream).toList();
-
-        List<ToolSection> extraToolSections = this.paletteToolsProviders.stream()
-                .map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(diagramContext, diagramElementDescriptions, diagramElements))
-                .flatMap(List::stream)
-                .toList();
-
-        List<ITool> quickAccessTools = this.paletteToolsProviders.stream()
-                .map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(diagramContext, diagramElementDescriptions, diagramElements))
-                .flatMap(List::stream)
-                .toList();
-
-        if (palette != null) {
-            palette.paletteEntries().addAll(extraToolSections);
-            palette.quickAccessTools().addAll(quickAccessTools);
         }
 
         return palette;
@@ -159,27 +140,46 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
         return Optional.empty();
     }
 
-    private Palette getGroupDiagramPalette(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter) {
+    private Palette getGroupDiagramPalette(org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, VariableManager variableManager, AQLInterpreter interpreter, DiagramContext diagramContext, DiagramDescription diagramDescription, List<Object> diagramElements) {
         String paletteId = "";
-        var paletteEntries = new ArrayList<IPaletteEntry>();
-        var quickAccessTools = new ArrayList<ITool>();
-        if (viewDiagramDescription.getGroupPalette() != null) {
-            viewDiagramDescription.getGroupPalette().getNodeTools().stream()
-                    .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
-                    .map(nodeTool -> this.nodeToolConverter.createNodeTool(interpreter, nodeTool, variableManager))
-                    .forEach(paletteEntries::add);
 
+        var diagramElementDescriptions = diagramElements.stream()
+                .map(diagramElement -> this.findDiagramElementDescription(diagramDescription, diagramElement))
+                .flatMap(Optional::stream).toList();
+
+        List<ToolSection> extraToolSections = new ArrayList<>();
+        this.paletteToolsProviders.stream()
+                .map(paletteToolsProvider -> paletteToolsProvider.createExtraToolSections(diagramContext, diagramElementDescriptions, diagramElements))
+                .flatMap(List::stream)
+                .forEach(extraToolSections::add);
+
+        var quickAccessTools = new ArrayList<ITool>();
+        this.paletteToolsProviders.stream()
+                .map(paletteToolsProvider -> paletteToolsProvider.createQuickAccessTools(diagramContext, diagramElementDescriptions, diagramElements))
+                .flatMap(List::stream)
+                .forEach(quickAccessTools::add);
+
+        var paletteEntries = new ArrayList<IPaletteEntry>();
+        if (viewDiagramDescription.getGroupPalette() != null) {
             viewDiagramDescription.getGroupPalette().getQuickAccessTools().stream()
                     .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
                     .map(nodeTool -> this.nodeToolConverter.createNodeTool(interpreter, nodeTool, variableManager))
                     .forEach(quickAccessTools::add);
+
+            viewDiagramDescription.getGroupPalette().getNodeTools().stream()
+                    .filter(nodeTool -> this.checkPrecondition(nodeTool, variableManager, interpreter))
+                    .map(nodeTool -> this.nodeToolConverter.createNodeTool(interpreter, nodeTool, variableManager))
+                    .forEach(paletteEntries::add);
 
             viewDiagramDescription.getGroupPalette().getToolSections().stream()
                     .filter(NodeToolSection.class::isInstance)
                     .map(NodeToolSection.class::cast)
                     .map(nodeToolSection -> this.createToolSection(nodeToolSection, variableManager, interpreter))
                     .forEach(paletteEntries::add);
+
+
         }
+        paletteEntries.addAll(extraToolSections);
         return new Palette(paletteId, quickAccessTools, paletteEntries);
     }
 
