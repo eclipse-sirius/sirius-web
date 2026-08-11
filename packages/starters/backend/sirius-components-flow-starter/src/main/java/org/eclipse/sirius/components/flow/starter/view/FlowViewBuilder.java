@@ -128,13 +128,12 @@ public class FlowViewBuilder {
                 .build();
     }
 
-
     public InsideLabelDescription getInsideLabelDescription(IColorProvider colorProvider, String labelExpression) {
         return this.getInsideLabelDescription(colorProvider, labelExpression, false, false, HeaderSeparatorDisplayMode.NEVER);
     }
 
-
-    public InsideLabelDescription getInsideLabelDescription(IColorProvider colorProvider, String labelExpression, boolean bold, boolean withHeader, HeaderSeparatorDisplayMode headerSeparatorDisplayMode) {
+    public InsideLabelDescription getInsideLabelDescription(IColorProvider colorProvider, String labelExpression, boolean bold, boolean withHeader,
+            HeaderSeparatorDisplayMode headerSeparatorDisplayMode) {
         return this.diagramBuilderHelper.newInsideLabelDescription()
                 .labelExpression(labelExpression)
                 .style(this.diagramBuilderHelper.newInsideLabelStyle()
@@ -166,6 +165,18 @@ public class FlowViewBuilder {
                 .name("Delete from Diagram")
                 .iconURLsExpression("/diagram-images/graphicalDelete.svg")
                 .body(deleteView.build())
+                .build();
+    }
+
+    public NodeTool getDeleteSelectedNodesFromDiagramTool() {
+        var deleteViews = this.viewBuilderHelper.newChangeContext()
+                .expression("aql:diagramServices.deleteViews(selectedNodes)");
+
+        return this.diagramBuilderHelper.newNodeTool()
+                .name("Delete from diagram")
+                .iconURLsExpression("/diagram-images/graphicalDelete.svg")
+                .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty()")
+                .body(deleteViews.build())
                 .build();
     }
 

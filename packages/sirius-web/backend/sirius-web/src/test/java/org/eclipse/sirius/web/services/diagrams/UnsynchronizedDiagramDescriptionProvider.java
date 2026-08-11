@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuild
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DropToolBuilder;
+import org.eclipse.sirius.components.view.builder.generated.diagram.GroupPaletteBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.InsideLabelDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodeDescriptionBuilder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.NodePaletteBuilder;
@@ -71,6 +72,8 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
     private NodeTool removeViewTool;
 
+    private NodeTool deleteViewsTool;
+
     private DropTool dropOnDiagramTool;
 
     public UnsynchronizedDiagramDescriptionProvider(IDiagramIdProvider diagramIdProvider) {
@@ -95,6 +98,10 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
 
     public String getRemoveViewToolId() {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.removeViewTool).toString().getBytes()).toString();
+    }
+
+    public String getDeleteViewsToolId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.deleteViewsTool).toString().getBytes()).toString();
     }
 
     public String getDropToolId() {
@@ -194,6 +201,8 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .dropTool(this.dropOnDiagramTool)
                 .build();
 
+        var groupPalette = this.createGroupPalette();
+
         this.diagramDescription = new DiagramDescriptionBuilder()
                 .name("Diagram")
                 .titleExpression("aql:'UnsynchronizedDiagram'")
@@ -201,10 +210,26 @@ public class UnsynchronizedDiagramDescriptionProvider implements IEditingContext
                 .nodeDescriptions(nodeDescription)
                 .edgeDescriptions()
                 .palette(diagramPalette)
+                .groupPalette(groupPalette)
                 .layoutOption(DiagramLayoutOption.NONE)
                 .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
 
         return this.diagramDescription;
+    }
+
+    private org.eclipse.sirius.components.view.diagram.GroupPalette createGroupPalette() {
+        this.deleteViewsTool = new NodeToolBuilder()
+                .name("Delete from diagram")
+                .iconURLsExpression("/diagram-images/graphicalDelete.svg")
+                .preconditionExpression("aql:selectedNodes->notEmpty() and selectedEdges->isEmpty()")
+                .body(new ChangeContextBuilder()
+                        .expression("aql:diagramServices.deleteViews(selectedNodes)")
+                        .build())
+                .build();
+
+        return new GroupPaletteBuilder()
+                .quickAccessTools(this.deleteViewsTool)
+                .build();
     }
 }

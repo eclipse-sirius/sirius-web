@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -26,8 +27,10 @@ import java.util.function.Consumer;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.DropOnDiagramSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
+import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.tests.graphql.DropOnDiagramMutationRunner;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
+import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.data.PapayaIdentifiers;
 import org.eclipse.sirius.web.services.diagrams.UnsynchronizedDiagramDescriptionProvider;
@@ -65,6 +68,9 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
     @Autowired
     private DropOnDiagramMutationRunner dropOnDiagramMutationRunner;
+
+    @Autowired
+    private PaletteQueryRunner paletteQueryRunner;
 
     @Autowired
     private UnsynchronizedDiagramDescriptionProvider unsynchronizedDiagramDescriptionProvider;
@@ -114,7 +120,8 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
             assertThat(diagram.getNodes()).isEmpty();
         });
 
-        Runnable createNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(diagramId.get()), this.unsynchronizedDiagramDescriptionProvider.getCreateNodeToolId(), 0, 0, List.of())
+        Runnable createNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(), diagramId.get(), List.of(diagramId.get()),
+                        this.unsynchronizedDiagramDescriptionProvider.getCreateNodeToolId(), 0, 0, List.of())
                 .isSuccess();
 
         Consumer<Object> updatedDiagramContentMatcher = assertRefreshedDiagramThat(diagram -> {
@@ -125,6 +132,94 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(createNode)
                 .consumeNextWith(updatedDiagramContentMatcher)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given an unsynchronized diagram with multiple nodes, when they are deleted from the diagram, then they disappear")
+    public void givenUnsynchronizedDiagramWithMultipleNodesWhenTheyAreDeletedFromDiagramThenTheyDisappear() {
+        var flux = this.givenSubscriptionToUnsynchronizedDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var nodeIds = new AtomicReference<List<String>>(List.of());
+        var targetObjectIds = new AtomicReference<List<String>>(List.of());
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            assertThat(diagram.getNodes()).isEmpty();
+        });
+
+        Runnable createNode = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                diagramId.get(),
+                List.of(diagramId.get()),
+                this.unsynchronizedDiagramDescriptionProvider.getCreateNodeToolId(),
+                0,
+                0,
+                List.of()).isSuccess();
+
+        Consumer<Object> oneNodeDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> assertThat(diagram.getNodes()).hasSize(1));
+
+        Consumer<Object> twoNodesDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            assertThat(diagram.getNodes()).hasSize(2);
+            nodeIds.set(diagram.getNodes().stream().map(Node::getId).toList());
+            targetObjectIds.set(diagram.getNodes().stream().map(Node::getTargetObjectId).toList());
+        });
+
+        Runnable requestGroupPalette = () -> {
+            Map<String, Object> variables = Map.of(
+                    "editingContextId", PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    "representationId", diagramId.get(),
+                    "diagramElementIds", nodeIds.get()
+            );
+            var result = this.paletteQueryRunner.run(variables);
+
+            List<String> quickAccessToolIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].id");
+            assertThat(quickAccessToolIds)
+                    .containsExactly("pin", "fade", "adjust-size", "hide", this.unsynchronizedDiagramDescriptionProvider.getDeleteViewsToolId());
+        };
+
+        Runnable deleteNodesFromDiagram = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                diagramId.get(),
+                nodeIds.get(),
+                this.unsynchronizedDiagramDescriptionProvider.getDeleteViewsToolId(),
+                0,
+                0,
+                List.of()).isSuccess();
+
+        Consumer<Object> emptyDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> assertThat(diagram.getNodes()).isEmpty());
+
+        Runnable dropNodesOnDiagram = () -> {
+            var input = new DropOnDiagramInput(
+                    UUID.randomUUID(),
+                    PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                    diagramId.get(),
+                    diagramId.get(),
+                    targetObjectIds.get(),
+                    0,
+                    0);
+            var result = this.dropOnDiagramMutationRunner.run(input);
+
+            String typename = JsonPath.read(result.data(), "$.data.dropOnDiagram.__typename");
+            assertThat(typename).isEqualTo(DropOnDiagramSuccessPayload.class.getSimpleName());
+        };
+
+        Consumer<Object> restoredDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> assertThat(diagram.getNodes()).hasSize(2));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(createNode)
+                .consumeNextWith(oneNodeDiagramContentConsumer)
+                .then(createNode)
+                .consumeNextWith(twoNodesDiagramContentConsumer)
+                .then(requestGroupPalette)
+                .then(deleteNodesFromDiagram)
+                .consumeNextWith(emptyDiagramContentConsumer)
+                .then(dropNodesOnDiagram)
+                .consumeNextWith(restoredDiagramContentConsumer)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
