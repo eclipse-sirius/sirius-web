@@ -85,7 +85,14 @@ export type { CursorBasedPaginationProps } from './table/CursorBasedPagination.t
 export { useCurrentViewer } from './viewer/useCurrentViewer';
 export type { UseCurrentViewerValue } from './viewer/useCurrentViewer.types';
 export { useViewer } from './viewer/useViewer';
-export type { UseViewerValue } from './viewer/useViewer.types';
+export type {
+  GQLGetViewerQueryData,
+  GQLLibrariesCapabilities,
+  GQLProjectsCapabilities,
+  GQLViewer,
+  GQLViewerCapabilities,
+  UseViewerValue,
+} from './viewer/useViewer.types';
 export { ViewerContext, ViewerContextProvider } from './viewer/ViewerContext';
 export type { ViewerContextProviderProps, ViewerContextValue } from './viewer/ViewerContext.types';
 export { DisplayLibraryView } from './views/display-library/DisplayLibraryView';
