@@ -33,6 +33,10 @@ The following factory methods have been removed: `createDefaultSourceEdgeReconne
 `Reset All Children Visibility` and `Reveal Children With Value` tools used by Flow DSL have been removed.
 `DefaultMultiSelectionVisibilityToolsFactory` has been removed from `sirius-components-view-diagram-edit`.
 Programmatic DSLs that relied on these factories must define the tools they expose in their own description providers.
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Contributed views should now use the new `ViewAccordion` component.
+cf Papaya view and Related Element view to see how.
+`ViewAccordion` gives its content a definite height, so the content of a view must not scroll the view itself: it has to declare its own `overflow` on the element which is expected to scroll.
+
 
 
 === Dependency update
@@ -57,6 +61,7 @@ A new provisional method `IValidationEventProcessor#update` is available to upda
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
 The classes `Module`, `Window`, `Failure`, `IResult`, `Success`, and `AbstractValidatingAggregateRoot` has been moved to this new module.
 
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Papaya view and Related Element view are now collapsible.
 
 
 == 2026.9.0
