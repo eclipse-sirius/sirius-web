@@ -154,7 +154,8 @@ public class PullRequestSizeChecker {
                 "packages/view/backend/sirius-components-widget-reference-view",
                 "packages/view/backend/sirius-components-widget-reference-view-edit",
                 "packages/view/backend/sirius-components-widget-table-view",
-                "packages/view/backend/sirius-components-widget-table-view-edit"
+                "packages/view/backend/sirius-components-widget-table-view-edit",
+                "packages/sirius-web/backend/sirius-web/src/test"
         ).stream().anyMatch(line::contains);
     }
 }
