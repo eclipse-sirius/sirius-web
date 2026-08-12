@@ -101,12 +101,30 @@ type TreeDescription implements RepresentationDescription {
   fetchTreeItemContextMenuEntryData(treeItemId: ID!, menuEntryId: ID!): FetchTreeItemContextMenuEntryData!
   treeImpactAnalysisReport(treeItemId: ID!, menuEntryId: ID!): ImpactAnalysisReport!
   treeItemTooltip(treeItemId: ID!): String!
+  palette(treeItemId: ID!): Palette!
 }
 
 type TreeFilter {
   id: ID!
   label: String!
   defaultState: Boolean!
+}
+
+extend union PaletteEntry = FetchTreeItemTool | SingleClickTreeItemTool
+
+type FetchTreeItemTool implements Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  keyBindings: [KeyBinding!]!
+}
+
+type SingleClickTreeItemTool implements Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  withImpactAnalysis: Boolean!
+  keyBindings: [KeyBinding!]!
 }
 
 interface TreeItemContextMenuEntry {
