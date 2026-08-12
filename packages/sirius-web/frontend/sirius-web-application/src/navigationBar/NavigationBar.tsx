@@ -28,6 +28,7 @@ export const useNavigationBarStyles = makeStyles()((theme: Theme) => ({
   navbar: {
     display: 'flex',
     flexDirection: 'column',
+    zIndex: 1,
   },
   appBarHeader: {
     height: '4px',
