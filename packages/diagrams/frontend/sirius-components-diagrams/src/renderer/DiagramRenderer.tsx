@@ -370,7 +370,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onEdgeContextMenu: onEdgeContextMenu,
     onNodeContextMenu: onNodeContextMenu,
     onSelectionContextMenu: onSelectionContextMenu,
-    nodeDragThreshold: 1,
+    nodeDragThreshold: 5,
     onDrop: onDrop,
     onDragOver: onDragOver,
     onNodeDrag: handleNodeDrag,
