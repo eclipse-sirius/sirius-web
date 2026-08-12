@@ -10,13 +10,12 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.dto;
+package org.eclipse.sirius.components.palette.dto;
 
 import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IPayload;
-import org.eclipse.sirius.components.palette.dto.Palette;
 
 /**
  * The payload of the "Get Palette" query returned on success.

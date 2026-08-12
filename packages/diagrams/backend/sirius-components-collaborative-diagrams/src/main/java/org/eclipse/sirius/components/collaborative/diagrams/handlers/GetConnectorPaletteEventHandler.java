@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorPaletteInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.GetPaletteSuccessPayload;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -36,6 +35,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.palette.dto.GetPaletteSuccessPayload;
 import org.eclipse.sirius.components.palette.dto.Palette;
 import org.springframework.stereotype.Service;
 

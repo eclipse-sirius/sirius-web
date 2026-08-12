@@ -20,10 +20,10 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorPaletteInput;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.GetPaletteSuccessPayload;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.IEditingContextDispatcher;
 import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
+import org.eclipse.sirius.components.palette.dto.GetPaletteSuccessPayload;
 import org.eclipse.sirius.components.palette.dto.Palette;
 
 import graphql.schema.DataFetchingEnvironment;

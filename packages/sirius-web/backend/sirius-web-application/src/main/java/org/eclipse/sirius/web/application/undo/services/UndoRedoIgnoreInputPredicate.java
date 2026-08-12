@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.collaborative.trees.dto.ExpandAllTreePathIn
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemContextMenuInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreeItemTooltipInput;
 import org.eclipse.sirius.components.collaborative.trees.dto.TreePathInput;
+import org.eclipse.sirius.components.collaborative.trees.dto.palette.TreeItemPaletteInput;
 import org.eclipse.sirius.components.collaborative.widget.reference.dto.ReferenceValueOptionsQueryInput;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.web.application.undo.dto.RedoInput;
@@ -73,6 +74,7 @@ public class UndoRedoIgnoreInputPredicate implements IUndoRedoIgnoreInputPredica
             ReferenceValueOptionsQueryInput.class,
             SearchInput.class,
             TreeItemContextMenuInput.class,
+            TreeItemPaletteInput.class,
             TreeItemTooltipInput.class,
             TreePathInput.class,
             UndoInput.class
