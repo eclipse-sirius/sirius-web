@@ -14,6 +14,7 @@ import {
   RepresentationLoadingIndicator,
   Selection,
   useSelection,
+  ViewAccordion,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -25,7 +26,6 @@ import {
   GQLFormRefreshedEventPayload,
   Group,
 } from '@eclipse-sirius/sirius-components-forms';
-import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
@@ -47,9 +47,9 @@ const useRelatedElementsViewStyles = makeStyles()((theme) => ({
   view: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto 1fr',
+    gridTemplateRows: 'auto minmax(0, 1fr)',
     justifyItems: 'stretch',
-    overflow: 'auto',
+    overflow: 'hidden',
   },
   toolbar: {
     display: 'flex',
@@ -123,13 +123,9 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     const extractFirstGroup = (editingContextId: string, form: GQLForm, readOnly: boolean): JSX.Element => {
       const group = form.pages[0]?.groups[0];
       if (group) {
-        return (
-          <div className={classes.content}>
-            <Group editingContextId={editingContextId} formId={form.id} readOnly={readOnly} group={group} />
-          </div>
-        );
+        return <Group editingContextId={editingContextId} formId={form.id} readOnly={readOnly} group={group} />;
       } else {
-        return <div className={classes.content} />;
+        return <></>;
       }
     };
 
@@ -184,30 +180,12 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     }
 
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Related Elements">
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'row',
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: theme.palette.divider,
-          })}>
-          <LinkIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
-          <Typography
-            sx={(theme) => ({
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              marginBottom: theme.spacing(1),
-            })}>
-            Related Elements
-          </Typography>
-        </Box>
-        <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
+      <ViewAccordion id={id} title="Related Elements">
+        <Box className={classes.view}>
           <div className={classes.toolbar}>{toolbar}</div>
           <div className={classes.content}>{contents}</div>
         </Box>
-      </Box>
+      </ViewAccordion>
     );
   }
 );
