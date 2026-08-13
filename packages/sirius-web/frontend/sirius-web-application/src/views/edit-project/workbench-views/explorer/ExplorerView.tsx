@@ -12,6 +12,7 @@
  *******************************************************************************/
 import {
   RepresentationLoadingIndicator,
+  ViewAccordion,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -22,10 +23,8 @@ import {
   TreeToolBarContextValue,
   TreeView,
 } from '@eclipse-sirius/sirius-components-trees';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import Box from '@mui/material/Box';
 import { Theme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 import { DuplicateObjectKeyboardShortcut } from './context-menu-contributions/duplicate-object/DuplicateObjectKeyboardShortcut';
@@ -43,9 +42,9 @@ const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto auto 1fr',
+    gridTemplateRows: 'auto auto minmax(0, 1fr)',
     justifyItems: 'stretch',
-    overflow: 'auto',
+    overflow: 'hidden',
   },
   treeFilter: {
     paddingTop: theme.spacing(1),
@@ -192,26 +191,8 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
     );
 
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Explorer">
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'row',
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: theme.palette.divider,
-          })}>
-          <AccountTreeIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
-          <Typography
-            sx={(theme) => ({
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              marginBottom: theme.spacing(1),
-            })}>
-            Explorer
-          </Typography>
-        </Box>
-        <Box className={styles.treeView} sx={{ flexGrow: 1, minHeight: 0 }} ref={treeElement}>
+      <ViewAccordion id={id} title="Explorer">
+        <Box className={styles.treeView} ref={treeElement}>
           {!state.tree || treeFiltersLoading ? (
             <RepresentationLoadingIndicator />
           ) : (
@@ -260,7 +241,7 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
             </>
           )}
         </Box>
-      </Box>
+      </ViewAccordion>
     );
   }
 );
