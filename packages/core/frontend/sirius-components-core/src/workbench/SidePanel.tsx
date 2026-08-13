@@ -73,7 +73,7 @@ export const SidePanel = forwardRef<WorkbenchPanelsHandle | null, SidePanelProps
       panelState.selectedContributionIds.includes(contribution.id)
     );
     const spacerId = `${side}-spacer`;
-    const viewHeaderHeight: string = theme.spacing(4.5);
+    const viewHeaderHeight: string = theme.spacing(3.5);
 
     useImperativeHandle(
       refPanelsHandle,

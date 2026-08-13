@@ -13,6 +13,7 @@
 
 import {
   ViewAccordion,
+  ViewAccordionContent,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -23,7 +24,9 @@ export const PapayaView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponent
   ({ id }: WorkbenchViewComponentProps, _ref: ForwardedRef<WorkbenchViewHandle>) => {
     return (
       <ViewAccordion id={id} title="Papaya View">
-        <Box sx={{ overflow: 'auto' }}>Papaya View</Box>
+        <ViewAccordionContent>
+          <Box sx={{ overflow: 'auto' }}>Papaya View</Box>
+        </ViewAccordionContent>
       </ViewAccordion>
     );
   }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { theme } from '@eclipse-sirius/sirius-components-core';
-import { Theme, createTheme } from '@mui/material/styles';
+import { createTheme, Theme } from '@mui/material/styles';
 
 export const baseTheme: Theme = createTheme({
   ...theme,
@@ -62,6 +62,9 @@ export const baseTheme: Theme = createTheme({
       background: '#261E58',
     },
     selected: '#BE1A78',
+    view: {
+      background: '#F1F0F6',
+    },
     action: {
       hover: '#BE1A7826',
       selected: '#BE1A7842',
