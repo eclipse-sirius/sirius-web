@@ -71,11 +71,10 @@ A new provisional method `IValidationEventProcessor#update` is available to upda
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
 The classes `Module`, `Window`, `Failure`, `IResult`, `Success`, and `AbstractValidatingAggregateRoot` has been moved to this new module.
 - https://github.com/eclipse-sirius/sirius-web/issues/6844[#6844] [view] Expose available variables in the Javadoc of generated View DSL builders.
-- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Papaya view and Related Element view are now collapsible.
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] All sirius-web views in the workbench are now collapsible.
 - https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [core] Improve the consistency of the variables used.
 For that, some calls to `VariableManager.SELF` have thus been replaced by `RepresentationVariables.SELF.name()` and calls to `IEditingContext.EDITING_CONTEXT` have been replaced by `CoreVariables.EDITING_CONTEXT.name()`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [deck] Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
-
 
 
 == 2026.9.0
