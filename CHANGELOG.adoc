@@ -43,9 +43,15 @@ The following factory methods have been removed: `createDefaultSourceEdgeReconne
 `Reset All Children Visibility` and `Reveal Children With Value` tools used by Flow DSL have been removed.
 `DefaultMultiSelectionVisibilityToolsFactory` has been removed from `sirius-components-view-diagram-edit`.
 Programmatic DSLs that relied on these factories must define the tools they expose in their own description providers.
-- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Contributed views should now use the new `ViewAccordion` component.
-cf Papaya view and Related Element view to see how.
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Contributed views should now use the new `ViewAccordion` component with its two subcomponents:
+* `ViewAccordionToolbar` if the view has a toolbar
+* `ViewAccordionContent` for the content of the view.
+You can check Sirius Web's views for concrete examples.
 `ViewAccordion` gives its content a definite height, so the content of a view must not scroll the view itself: it has to declare its own `overflow` on the element which is expected to scroll.
+Using the `ViewAccordion` will merge the title bar and the toolbar (if any) of the view into a single header bar.
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] The workbench header bar (merge of the title + toolbar) now has a grayish background.
+This color can be changed with through the theme palette `view.background`.
+Defining this color may be required.
 
 
 === Dependency update

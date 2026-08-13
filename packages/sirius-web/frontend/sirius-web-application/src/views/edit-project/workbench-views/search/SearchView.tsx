@@ -12,6 +12,7 @@
  *******************************************************************************/
 import {
   ViewAccordion,
+  ViewAccordionContent,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -74,24 +75,26 @@ export const SearchView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponent
 
     return (
       <ViewAccordion id={id} title="Search">
-        <Box className={classes.view} data-representation-kind="search-view">
-          <SearchQueryInput
-            editingContextId={editingContextId}
-            initialQuery={initialQuery}
-            onLaunchSearch={(newQuery) => {
-              setState((prevState) => ({ ...prevState, query: newQuery }));
-              launchSearch(editingContextId, newQuery);
-            }}
-            ref={searchQueryRef}
-          />
-          <div className={classes.separator} />
-          <SearchResults
-            loading={loading}
-            query={state.query}
-            result={state.result}
-            timestamp={state.resultsReceivedTimestamp}
-          />
-        </Box>
+        <ViewAccordionContent>
+          <Box className={classes.view} data-representation-kind="search-view">
+            <SearchQueryInput
+              editingContextId={editingContextId}
+              initialQuery={initialQuery}
+              onLaunchSearch={(newQuery) => {
+                setState((prevState) => ({ ...prevState, query: newQuery }));
+                launchSearch(editingContextId, newQuery);
+              }}
+              ref={searchQueryRef}
+            />
+            <div className={classes.separator} />
+            <SearchResults
+              loading={loading}
+              query={state.query}
+              result={state.result}
+              timestamp={state.resultsReceivedTimestamp}
+            />
+          </Box>
+        </ViewAccordionContent>
       </ViewAccordion>
     );
   }

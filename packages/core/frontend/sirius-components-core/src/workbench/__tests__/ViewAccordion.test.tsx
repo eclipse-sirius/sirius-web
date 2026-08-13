@@ -10,25 +10,31 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { ThemeProvider } from '@mui/material/styles';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, expect, test, vi } from 'vitest';
+import { theme } from '../../theme';
 import { PanelCollapseContextProvider } from '../PanelCollapseContext';
-import { ViewAccordion } from '../ViewAccordion';
+import { ViewAccordion, ViewAccordionContent } from '../ViewAccordion';
 
 afterEach(() => {
   cleanup();
 });
 
-const viewHeaderHeight = '36px';
+const viewHeaderHeight = '28px';
 
 const renderViewAccordion = (onCollapseChange: (id: string, collapsed: boolean) => void = () => {}) =>
   render(
-    <PanelCollapseContextProvider onCollapseChange={onCollapseChange} viewHeaderHeight={viewHeaderHeight}>
-      <ViewAccordion id="view-id" title="Test View">
-        <div data-testid="content">Content</div>
-      </ViewAccordion>
-    </PanelCollapseContextProvider>
+    <ThemeProvider theme={theme}>
+      <PanelCollapseContextProvider onCollapseChange={onCollapseChange} viewHeaderHeight={viewHeaderHeight}>
+        <ViewAccordion id="view-id" title="Test View">
+          <ViewAccordionContent>
+            <div data-testid="content">Content</div>
+          </ViewAccordionContent>
+        </ViewAccordion>
+      </PanelCollapseContextProvider>
+    </ThemeProvider>
   );
 
 test('given an expanded view accordion, then its content is bounded by the height of the view', () => {
