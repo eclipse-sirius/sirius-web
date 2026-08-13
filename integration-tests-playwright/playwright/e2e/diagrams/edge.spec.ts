@@ -68,19 +68,28 @@ test.describe('edge', () => {
     const edgePathBefore = await playwrightEdge.getEdgePath();
 
     const lastBendingPoint = page.locator(`[data-testid="bend-point-1"]`).first();
-    const box = (await lastBendingPoint.boundingBox())!;
-    await lastBendingPoint.hover({ force: true });
+    const lastBendingPointBox = (await lastBendingPoint.boundingBox())!;
+    const playwrightTargetNode = new PlaywrightNode(page, 'Processor1');
+    const targetNodeBox = await playwrightTargetNode.getDOMBoundingBox();
+    await page.mouse.move(
+      lastBendingPointBox.x + (lastBendingPointBox.width * 3) / 4,
+      lastBendingPointBox.y + (lastBendingPointBox.height * 3) / 4
+    );
     await page.mouse.down();
-    await page.mouse.move(box.x - 40, box.y + 150, { steps: 4 });
-    await page.mouse.up();
-
-    await expect.poll(() => playwrightEdge.getEdgePath()).not.toBe(edgePathBefore);
+    await page.mouse.move(
+      lastBendingPointBox.x + lastBendingPointBox.width / 2 - 40,
+      targetNodeBox.y + targetNodeBox.height + 50,
+      { steps: 4 }
+    );
 
     const newBendingPoint = page.locator(`[data-testid="bend-point-2"]`).first();
     await expect(newBendingPoint).toBeAttached();
-    const playwrightTargetNode = new PlaywrightNode(page, 'Processor1');
+    await page.mouse.up();
+
+    await expect.poll(() => playwrightEdge.getEdgePath()).not.toBe(edgePathBefore);
+    await expect(newBendingPoint).toBeAttached();
+
     const newBendingPointBox = (await newBendingPoint.boundingBox())!;
-    const targetNodeBox = await playwrightTargetNode.getDOMBoundingBox();
     expect(newBendingPointBox.x + newBendingPointBox.width / 2).toBeCloseTo(
       targetNodeBox.x + targetNodeBox.width / 2,
       1
