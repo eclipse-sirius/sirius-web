@@ -23,6 +23,7 @@
 == Improvements
 
 * Diagram users can now pin or unpin multiple selected nodes at once from the group palette.
+* Small pointer movements while clicking a diagram node no longer start a drag, reducing accidental node movements.
 * Studio makers can now use the `diagramServices.deleteViews(nodes)` AQL service to configure group palette actions that remove multiple selected unsynchronized nodes from a diagram without deleting their semantic elements.
 
 == Technical details
