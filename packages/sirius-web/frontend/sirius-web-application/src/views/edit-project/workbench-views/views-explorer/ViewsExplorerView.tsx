@@ -15,6 +15,7 @@ import {
   Selection,
   SelectionEntry,
   useSelection,
+  ViewAccordion,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -29,7 +30,6 @@ import {
   useTreePath,
   useTreeSelection,
 } from '@eclipse-sirius/sirius-components-trees';
-import Filter from '@mui/icons-material/Filter';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React, { ForwardedRef, forwardRef, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
@@ -47,9 +47,9 @@ const useStyles = makeStyles()((theme) => ({
   treeView: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto auto 1fr',
+    gridTemplateRows: 'auto auto minmax(0, 1fr)',
     justifyItems: 'stretch',
-    overflow: 'auto',
+    overflow: 'hidden',
   },
   treeContent: {
     overflow: 'auto',
@@ -227,26 +227,8 @@ export const ViewsExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCo
     }
 
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Views">
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'row',
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: theme.palette.divider,
-          })}>
-          <Filter sx={(theme) => ({ margin: theme.spacing(1) })} />
-          <Typography
-            sx={(theme) => ({
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              marginBottom: theme.spacing(1),
-            })}>
-            Views
-          </Typography>
-        </Box>
-        <Box className={classes.treeView} sx={{ flexGrow: 1, minHeight: 0 }} ref={treeElement}>
+      <ViewAccordion id={id} title="Views">
+        <Box className={classes.treeView} ref={treeElement}>
           {!state.tree ? (
             <RepresentationLoadingIndicator />
           ) : (
@@ -308,7 +290,7 @@ export const ViewsExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCo
             </>
           )}
         </Box>
-      </Box>
+      </ViewAccordion>
     );
   }
 );
