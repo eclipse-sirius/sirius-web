@@ -29,9 +29,9 @@ import { useTranslation } from 'react-i18next';
 const useSearchResultStyles = makeStyles()((theme) => ({
   results: {
     display: 'grid',
-    gridTemplateRows: 'min-content 1fr', // status, matches
-    gridTemplateColumns: '1fr',
-    overflow: 'auto',
+    gridTemplateRows: 'min-content minmax(0, 1fr)', // status, matches
+    gridTemplateColumns: 'minmax(0, 1fr)',
+    overflow: 'hidden',
   },
   statusMessage: {
     display: 'flex',
@@ -41,10 +41,10 @@ const useSearchResultStyles = makeStyles()((theme) => ({
     padding: '10px',
   },
   matches: {
-    overflow: 'auto',
     display: 'grid',
-    gridTemplateRows: '1fr',
-    gridTemplateColumns: '1fr',
+    gridTemplateRows: 'minmax(0, 1fr)',
+    gridTemplateColumns: 'minmax(0, 1fr)',
+    overflow: 'auto',
   },
   matchItem: {
     cursor: 'pointer',

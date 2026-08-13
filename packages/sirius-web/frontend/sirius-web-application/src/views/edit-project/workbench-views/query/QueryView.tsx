@@ -15,11 +15,12 @@ import {
   Selection,
   useData,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -83,9 +84,9 @@ const useQueryViewStyles = makeStyles()((theme) => ({
   view: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto 1fr',
+    gridTemplateRows: 'auto minmax(0, 1fr)',
     justifyItems: 'stretch',
-    overflow: 'auto',
+    overflow: 'hidden',
   },
   toolbar: {
     display: 'flex',
@@ -101,10 +102,10 @@ const useQueryViewStyles = makeStyles()((theme) => ({
     borderBottomColor: theme.palette.divider,
   },
   content: {
-    overflow: 'auto',
     display: 'grid',
-    gridTemplateColumns: '1fr',
-    gridTemplateRows: '1fr',
+    gridTemplateColumns: 'minmax(0, 1fr)',
+    gridTemplateRows: 'minmax(0, 1fr)',
+    overflow: 'hidden',
   },
 }));
 
@@ -172,30 +173,14 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
       </Box>
     );
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Query">
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'row',
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: theme.palette.divider,
-          })}>
-          <PlayArrowIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
-          <Typography
-            sx={(theme) => ({
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              marginBottom: theme.spacing(1),
-            })}>
-            Query
-          </Typography>
-        </Box>
-        <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
-          <div className={classes.toolbar}>{toolbar}</div>
-          <div className={classes.content}>{contents}</div>
-        </Box>
-      </Box>
+      <ViewAccordion id={id} title="Query">
+        <ViewAccordionContent>
+          <Box className={classes.view}>
+            <div className={classes.toolbar}>{toolbar}</div>
+            <div className={classes.content}>{contents}</div>
+          </Box>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );
@@ -552,7 +537,7 @@ const ResultArea = ({ loading, payload }: ResultAreaProps) => {
   }
 
   return (
-    <div data-role="result" style={{ overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
+    <div data-role="result" style={{ display: 'flex', flexDirection: 'column' }}>
       <Box sx={resultAreaToolbarStyle}>
         <Box sx={titleAreaStyle}>
           <Typography variant="subtitle2">{t('evaluationResult')}</Typography>
