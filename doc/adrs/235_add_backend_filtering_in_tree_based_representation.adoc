@@ -1,0 +1,88 @@
+:author: Charfadi Michaël
+:date: 20226-08-10
+:status: proposed
+:consulted: 
+:informed: 
+:deciders: Stéphane Bégaudeau
+:pitch: 
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6511
+
+= ADR-235 - Add support for backend filtering in tree based representations
+
+== Context and Problem Statement
+
+The logic for filtering a tree representation based on the input on the search field is computed on the frontend.
+
+As such we are only filtering on the elements returned by the subscription.
+
+We should compute the list of elements matching the input on the backend in order to consider all elements.
+
+
+== Decision Drivers
+
+- Compatibility: A default filter should be implemented with the same behavior as what is currently available.
+- Extensibility: The default filter can be changed.
+- Performance: This will have an impact on performance since we'll have to check every element to know if it's candidate or not, the performance overhead should be kept as low as possible
+
+
+== Considered Options
+
+=== First Option
+
+We will add a variable `searchedValue` on the `tree subscriptions`.
+
+We will add theses interfaces `IDefaultSearchTreeProvider` `IComposedSearchTreeProvider` `ISearchTreeProviderDelegate`.
+
+We'll use the `StyledString` field of a TreeItem to handle how to `highlight`.
+
+As such the `ISearchTreeProviderDelegate` will have these methods :
+
+- `boolean canHandle(String editingContextId, TreeDescription treeDescription)`
+
+- `boolean isTreeItemCandidate(TreeItem treeItem, String searchedValue)`
+
+- `StyledString getHighlightedLabel(TreeItem treeItem, String searchedValue)`
+
+We will need to render the whole tree at first in order to match against the computed labels of the TreeItem.
+
+We can't decide to cut a parent leaf if we did not rendered all its children first in order to be sure they are not matching the filter.
+
+As such we will have another `TreeFilteredRender` utility class that will have this public method `public Tree render(Tree tree)`
+
+
+=== Second Option
+
+We will add a query updateTreeFromSearchedValue that will have for effect to compute a new Tree.
+
+This would behave as with diagram when we send a layout query that has for effect to refresh the payload of the subscription.
+
+
+== Decision Outcome
+
+The second solution is not what is currently done for the `TreeFilters` and as such would mix 2 ways of rendering the Tree representation.
+
+We will opt for the first solution as it would allow us to implement the backend filter without bringing massive architectural transformation and breaking changes.
+
+
+== Consequences
+
+=== Advantages
+
+- Less development time.
+- Offer the same features as before.
+
+
+=== Drawbacks
+
+- Rendering the Tree two times might be expensive but we can improve on it later if needed.
+
+
+== More Information
+
+=== Implementation
+
+
+=== Decision Details
+
+
+=== References
