@@ -14,6 +14,8 @@ import {
   RepresentationLoadingIndicator,
   Selection,
   useSelection,
+  ViewAccordion,
+  ViewAccordionContent,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -25,7 +27,6 @@ import {
   GQLFormRefreshedEventPayload,
   Group,
 } from '@eclipse-sirius/sirius-components-forms';
-import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ForwardedRef, forwardRef, MutableRefObject, useEffect, useRef, useState } from 'react';
@@ -184,30 +185,14 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
     }
 
     return (
-      <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Related Elements">
-        <Box
-          sx={(theme) => ({
-            display: 'flex',
-            flexDirection: 'row',
-            borderBottomWidth: '1px',
-            borderBottomStyle: 'solid',
-            borderBottomColor: theme.palette.divider,
-          })}>
-          <LinkIcon sx={(theme) => ({ margin: theme.spacing(1) })} />
-          <Typography
-            sx={(theme) => ({
-              marginTop: theme.spacing(1),
-              marginRight: theme.spacing(1),
-              marginBottom: theme.spacing(1),
-            })}>
-            Related Elements
-          </Typography>
-        </Box>
-        <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
-          <div className={classes.toolbar}>{toolbar}</div>
-          <div className={classes.content}>{contents}</div>
-        </Box>
-      </Box>
+      <ViewAccordion id={id} title="Related Elements">
+        <ViewAccordionContent>
+          <Box className={classes.view} sx={{ flexGrow: 1, minHeight: 0 }}>
+            <div className={classes.toolbar}>{toolbar}</div>
+            <div className={classes.content}>{contents}</div>
+          </Box>
+        </ViewAccordionContent>
+      </ViewAccordion>
     );
   }
 );
