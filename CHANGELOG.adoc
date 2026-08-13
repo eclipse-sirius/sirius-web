@@ -36,8 +36,9 @@ The package `@lexical/code` is not used anymore.
 If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation of `IDefaultOmniboxCommandOrderer` that is part of sirius-components will be used.
 - https://github.com/eclipse-sirius/sirius-web/issues/6736[#6736] [core] `ChangeDescription#getInput(): IInput` has been modified to `ChangeDescription#getCause(): ICause`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6674[#6674] [palette] An overridden tool contribution has to return null or an empty fragment if the `searchedValue` does not match the label of the overridden tool, we can't guess what label will be used in external contributions.
-- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Contributed views should now use the new `ViewAccordion` component.
-cf Sirius Web views to see how.
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Contributed workbench views must now use the new `ViewAccordion` component.
+Their content must be provided with `ViewAccordionContent` and, when present, their toolbar with `ViewAccordionToolbar`.
+See the Sirius Web workbench views for examples.
 
 
 === Dependency update
@@ -99,7 +100,7 @@ This will allow us to reuse the change description to propagate more information
 - https://github.com/eclipse-sirius/sirius-web/issues/6753[#6753] [sirius-web] Allow project semantic data to be deleted by project identifier and name.
 - https://github.com/eclipse-sirius/sirius-web/issues/6763[#6763] [sirius-web] Allow project semantic data to be renamed.
 - https://github.com/eclipse-sirius/sirius-web/issues/6773[#6773] [tree] Extract tree filters logic into a dedicated hook.
-- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Workbench views are now collapsible.
+- https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Workbench views are now collapsible, with their title and toolbar displayed in a single compact header.
 
 
 

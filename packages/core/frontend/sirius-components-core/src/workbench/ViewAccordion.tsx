@@ -20,8 +20,9 @@ import Typography from '@mui/material/Typography';
 import React, { isValidElement, useContext, useState } from 'react';
 import { PanelCollapseContext } from './PanelCollapseContext';
 import { PanelCollapseContextValue } from './PanelCollapseContext.types';
-import { ViewAccordionContentProps, ViewAccordionProps } from './ViewAccordion.types';
+import { ViewAccordionContentProps, ViewAccordionProps, ViewAccordionToolbarProps } from './ViewAccordion.types';
 
+export const ViewAccordionToolbar = ({ children }: ViewAccordionToolbarProps) => <>{children}</>;
 export const ViewAccordionContent = ({ children }: ViewAccordionContentProps) => <>{children}</>;
 
 export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
@@ -35,6 +36,7 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
   };
 
   const childrenArray = React.Children.toArray(children);
+  const toolbar = childrenArray.find((child) => isValidElement(child) && child.type === ViewAccordionToolbar);
   const content = childrenArray.find((child) => isValidElement(child) && child.type === ViewAccordionContent);
 
   return (
@@ -49,9 +51,12 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
         transition: { timeout: 0 },
       }}
       sx={{
-        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
         '& .MuiCollapse-root': {
           overflow: 'auto',
+          height: '100%',
         },
         '& .MuiAccordionSummary-content': {
           margin: 0,
@@ -62,15 +67,16 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
         id={`${title}-header`}
         component="div"
         sx={(theme) => ({
+          padding: theme.spacing(0.75),
           borderBottomWidth: '1px',
           borderBottomStyle: 'solid',
           borderBottomColor: theme.palette.divider,
+          borderTopWidth: '1px',
+          borderTopStyle: 'solid',
+          borderTopColor: theme.palette.divider,
+          backgroundColor: theme.palette.grey[200],
           minHeight: viewHeaderHeight,
           maxHeight: viewHeaderHeight,
-          '&.Mui-expanded': {
-            minHeight: viewHeaderHeight,
-            maxHeight: viewHeaderHeight,
-          },
           '& .MuiIconButton-root': {
             padding: theme.spacing(0.25),
           },
@@ -78,7 +84,6 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
             width: '100%',
@@ -88,16 +93,32 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
               display: 'flex',
               alignItems: 'center',
             }}>
-            {expanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
+            {expanded ? (
+              <ExpandMoreIcon sx={{ fontSize: '0.875rem' }} />
+            ) : (
+              <ChevronRightIcon sx={{ fontSize: '0.875rem' }} />
+            )}
             <Typography
               sx={(theme) => ({
-                marginTop: theme.spacing(1),
                 marginRight: theme.spacing(1),
-                marginBottom: theme.spacing(1),
+                fontWeight: theme.typography.fontWeightBold,
+                color: theme.palette.navigationBar.background,
               })}>
               {title}
             </Typography>
           </Box>
+          {toolbar ? (
+            <Box
+              onClick={(event) => event.stopPropagation()}
+              sx={(theme) => ({
+                display: 'flex',
+                alignItems: 'center',
+                overflow: 'hidden',
+                gap: theme.spacing(0.5),
+              })}>
+              {toolbar}
+            </Box>
+          ) : null}
         </Box>
       </AccordionSummary>
       <AccordionDetails sx={{ padding: 0, display: 'flex', flexDirection: 'column' }}>{content}</AccordionDetails>
