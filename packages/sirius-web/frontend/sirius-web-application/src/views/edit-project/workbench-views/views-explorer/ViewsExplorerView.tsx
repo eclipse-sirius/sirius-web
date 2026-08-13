@@ -16,6 +16,8 @@ import {
   SelectionEntry,
   useSelection,
   ViewAccordion,
+  ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -47,7 +49,7 @@ const useStyles = makeStyles()((theme) => ({
   treeView: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto auto minmax(0, 1fr)',
+    gridTemplateRows: 'auto minmax(0, 1fr)',
     justifyItems: 'stretch',
     overflow: 'hidden',
   },
@@ -226,70 +228,76 @@ export const ViewsExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCo
       );
     }
 
+    const toolbar = (
+      <TreeToolBar
+        editingContextId={editingContextId}
+        readOnly={readOnly}
+        onRevealSelection={revealSelection}
+        treeFilters={[]}
+        onTreeFilterMenuItemClick={() => {}}
+        onFilter={() => {
+          setState((prevState) => {
+            return !prevState.filterBar
+              ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
+              : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+          });
+        }}
+        treeToolBarContributionComponents={[]}>
+        <></>
+      </TreeToolBar>
+    );
+
     return (
       <ViewAccordion id={id} title="Views">
-        <Box className={classes.treeView} ref={treeElement}>
-          {!state.tree ? (
-            <RepresentationLoadingIndicator />
-          ) : (
-            <>
-              <TreeToolBar
-                editingContextId={editingContextId}
-                readOnly={readOnly}
-                onRevealSelection={revealSelection}
-                treeFilters={[]}
-                onTreeFilterMenuItemClick={() => {}}
-                onFilter={() => {
-                  setState((prevState) => {
-                    return !prevState.filterBar
-                      ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
-                      : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-                  });
-                }}
-                treeToolBarContributionComponents={[]}>
-                <></>
-              </TreeToolBar>
-              {filterBar}
-              {state.tree.children.length === 0 ? (
-                <div className={classes.idle}>
-                  <Typography variant="subtitle2">{t('noRepresentation')}</Typography>
-                </div>
-              ) : (
-                <div className={classes.treeContent}>
-                  <TreeView
-                    editingContextId={editingContextId}
-                    readOnly={readOnly}
-                    tree={state.tree}
-                    textToHighlight={state.filterBarText}
-                    textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-                    onExpandedElementChange={onExpandedElementChange}
-                    expanded={state.expanded}
-                    maxDepth={state.maxDepth}
-                    treeItemActionRender={(props) => {
-                      if (
-                        props.item.kind === 'siriusWeb://representationKind' ||
-                        props.item.kind === 'siriusWeb://representationDescriptionType'
-                      ) {
-                        return null;
-                      } else {
-                        return <TreeItemAction {...props} />;
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+        <ViewAccordionContent>
+          <Box className={classes.treeView} ref={treeElement}>
+            {!state.tree ? (
+              <RepresentationLoadingIndicator />
+            ) : (
+              <>
+                {filterBar}
+                {state.tree.children.length === 0 ? (
+                  <div className={classes.idle}>
+                    <Typography variant="subtitle2">{t('noRepresentation')}</Typography>
+                  </div>
+                ) : (
+                  <div className={classes.treeContent}>
+                    <TreeView
+                      editingContextId={editingContextId}
+                      readOnly={readOnly}
+                      tree={state.tree}
+                      textToHighlight={state.filterBarText}
+                      textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+                      onExpandedElementChange={onExpandedElementChange}
+                      expanded={state.expanded}
+                      maxDepth={state.maxDepth}
+                      treeItemActionRender={(props) => {
+                        if (
+                          props.item.kind === 'siriusWeb://representationKind' ||
+                          props.item.kind === 'siriusWeb://representationDescriptionType'
+                        ) {
+                          return null;
+                        } else {
+                          return <TreeItemAction {...props} />;
+                        }
+                      }}
+                      onTreeItemClick={onTreeItemClick}
+                      selectTreeItems={(selectedTreeItemIds: string[]) =>
+                        setState((prevState) => {
+                          return { ...prevState, selectedTreeItemIds };
+                        })
                       }
-                    }}
-                    onTreeItemClick={onTreeItemClick}
-                    selectTreeItems={(selectedTreeItemIds: string[]) =>
-                      setState((prevState) => {
-                        return { ...prevState, selectedTreeItemIds };
-                      })
-                    }
-                    selectedTreeItemIds={state.selectedTreeItemIds}
-                    data-testid="viewsexplorer://"
-                    useTreePalette={state.tree.capabilities.useTreePalette}
-                  />
-                </div>
-              )}
-            </>
-          )}
-        </Box>
+                      selectedTreeItemIds={state.selectedTreeItemIds}
+                      data-testid="viewsexplorer://"
+                      useTreePalette={state.tree.capabilities.useTreePalette}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+          </Box>
+        </ViewAccordionContent>
       </ViewAccordion>
     );
   }

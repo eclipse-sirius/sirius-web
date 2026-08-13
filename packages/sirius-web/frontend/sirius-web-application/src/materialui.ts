@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,9 @@ declare module '@mui/material/styles' {
       background: React.CSSProperties['color'];
     };
     selected: React.CSSProperties['color'];
+    view: {
+      background: React.CSSProperties['color'];
+    };
   }
 }
 
@@ -37,6 +40,9 @@ declare module '@mui/material/styles/createPalette' {
       background: React.CSSProperties['color'];
     };
     selected: React.CSSProperties['color'];
+    view: {
+      background: React.CSSProperties['color'];
+    };
   }
   export interface PaletteOptions {
     navigation: {
@@ -48,5 +54,8 @@ declare module '@mui/material/styles/createPalette' {
       background: React.CSSProperties['color'];
     };
     selected: React.CSSProperties['color'];
+    view: {
+      background: React.CSSProperties['color'];
+    };
   }
 }

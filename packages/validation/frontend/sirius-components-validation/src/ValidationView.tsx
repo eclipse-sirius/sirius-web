@@ -12,6 +12,7 @@
  *******************************************************************************/
 import {
   ViewAccordion,
+  ViewAccordionContent,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -145,7 +146,9 @@ export const ValidationView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompo
 
     return (
       <ViewAccordion id={id} title="Validation">
-        <Box sx={{ overflow: 'auto' }}>{content}</Box>
+        <ViewAccordionContent>
+          <Box sx={{ overflow: 'auto' }}>{content}</Box>
+        </ViewAccordionContent>
       </ViewAccordion>
     );
   }
