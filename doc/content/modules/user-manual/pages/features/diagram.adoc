@@ -209,6 +209,11 @@ To select multiple elements:
 |===
 | | Tool | What it does
 
+a|image::contextual-palette-pin.png[Pin or unpin]
+| *Pin / Unpin*
+| Pins all selected nodes so they stay in place when the diagram is rearranged.
+When all selected nodes are already pinned, the tool becomes *Unpin* and unpins them.
+
 a|image::contextual-palette-align-horizontal.png[Align horizontally]
 | *Align horizontally*
 | Aligns selected elements horizonally to the left, center or right.

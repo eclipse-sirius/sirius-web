@@ -2,4 +2,6 @@
 
 :sectnums!:
 
+include::release-notes:2026.9.0.adoc[leveloffset=+1]
+
 include::release-notes:2026.7.0.adoc[leveloffset=+1]

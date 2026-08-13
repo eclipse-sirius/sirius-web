@@ -1,0 +1,30 @@
+= 2026.9.0 (work in progress)
+
+== Key highlights
+
+-
+
+
+== Breaking changes
+
+-
+
+
+== Bug fixes
+
+-
+
+
+== New features
+
+-
+
+
+== Improvements
+
+* Diagram users can now pin or unpin multiple selected nodes at once from the group palette.
+
+
+== Technical details
+
+* For technical details on this {product} release, including breaking changes, please refer to {changelog-url}[changelog].

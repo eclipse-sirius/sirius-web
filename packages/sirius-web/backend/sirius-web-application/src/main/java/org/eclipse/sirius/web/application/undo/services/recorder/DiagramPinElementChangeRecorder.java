@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.eclipse.sirius.components.collaborative.api.ChangeDescription;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventConsumer;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
+import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.representations.change.IRepresentationChange;
 import org.eclipse.sirius.components.core.api.ICausalityChainVisitor;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -33,16 +35,19 @@ import org.eclipse.sirius.web.application.undo.services.changes.DiagramPinElemen
 import org.springframework.stereotype.Service;
 
 /**
- * Used to record data needed to perform the undo/redo for FadeDiagramElementEvent.
+ * Used to record data needed to perform the undo/redo for PinDiagramElementEvent.
  *
  * @author mcharfadi
  */
 @Service
 public class DiagramPinElementChangeRecorder implements IDiagramEventConsumer {
 
+    private final IDiagramQueryService diagramQueryService;
+
     private final ICausalityChainVisitor causalityChainVisitor;
 
-    public DiagramPinElementChangeRecorder(ICausalityChainVisitor causalityChainVisitor) {
+    public DiagramPinElementChangeRecorder(IDiagramQueryService diagramQueryService, ICausalityChainVisitor causalityChainVisitor) {
+        this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.causalityChainVisitor = Objects.requireNonNull(causalityChainVisitor);
     }
 
@@ -56,8 +61,15 @@ public class DiagramPinElementChangeRecorder implements IDiagramEventConsumer {
                     .filter(PinDiagramElementEvent.class::isInstance)
                     .map(PinDiagramElementEvent.class::cast)
                     .forEach(pinDiagramElementEvent -> {
-                        var diagramPinElementChange = new DiagramPinElementChange(diagramInput.id(), diagramInput.representationId(), pinDiagramElementEvent.elementIds(), !pinDiagramElementEvent.pinned(), pinDiagramElementEvent.pinned());
-                        representationChanges.add(diagramPinElementChange);
+                        var changedElementIds = pinDiagramElementEvent.elementIds().stream()
+                                .filter(elementId -> this.diagramQueryService.findNodeById(previousDiagram, elementId)
+                                        .map(node -> node.isPinned() != pinDiagramElementEvent.pinned())
+                                        .orElse(false))
+                                .collect(Collectors.toSet());
+                        if (!changedElementIds.isEmpty()) {
+                            var diagramPinElementChange = new DiagramPinElementChange(diagramInput.id(), diagramInput.representationId(), changedElementIds, !pinDiagramElementEvent.pinned(), pinDiagramElementEvent.pinned());
+                            representationChanges.add(diagramPinElementChange);
+                        }
                     });
 
             if (!representationChanges.isEmpty()) {
