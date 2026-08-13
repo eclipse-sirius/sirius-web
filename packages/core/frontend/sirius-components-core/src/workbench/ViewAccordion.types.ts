@@ -18,6 +18,10 @@ export interface ViewAccordionProps {
   children: React.ReactNode;
 }
 
+export interface ViewAccordionToolbarProps {
+  children: React.ReactNode;
+}
+
 export interface ViewAccordionContentProps {
   children: React.ReactNode;
 }

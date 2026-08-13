@@ -16,6 +16,7 @@ import {
   useSelection,
   ViewAccordion,
   ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -44,27 +45,6 @@ import {
 const useRelatedElementsViewStyles = makeStyles()((theme) => ({
   idle: {
     padding: theme.spacing(1),
-  },
-  view: {
-    display: 'grid',
-    gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto minmax(0, 1fr)',
-    justifyItems: 'stretch',
-    overflow: 'hidden',
-  },
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    overflow: 'hidden',
-    height: theme.spacing(4),
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    gap: theme.spacing(1),
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    justifyContent: 'right',
-    alignItems: 'center',
-    borderBottomColor: theme.palette.divider,
   },
   content: {
     overflow: 'auto',
@@ -182,11 +162,9 @@ export const RelatedElementsView = forwardRef<WorkbenchViewHandle, WorkbenchView
 
     return (
       <ViewAccordion id={id} title="Related Elements">
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
         <ViewAccordionContent>
-          <Box className={classes.view}>
-            <div className={classes.toolbar}>{toolbar}</div>
-            <div className={classes.content}>{contents}</div>
-          </Box>
+          <div className={classes.content}>{contents}</div>
         </ViewAccordionContent>
       </ViewAccordion>
     );

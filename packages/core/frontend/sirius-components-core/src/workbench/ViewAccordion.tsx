@@ -18,8 +18,9 @@ import Typography from '@mui/material/Typography';
 import React, { isValidElement, useContext, useState } from 'react';
 import { PanelCollapseContext } from './PanelCollapseContext';
 import { PanelCollapseContextValue } from './PanelCollapseContext.types';
-import { ViewAccordionContentProps, ViewAccordionProps } from './ViewAccordion.types';
+import { ViewAccordionContentProps, ViewAccordionProps, ViewAccordionToolbarProps } from './ViewAccordion.types';
 
+export const ViewAccordionToolbar = ({ children }: ViewAccordionToolbarProps) => <>{children}</>;
 export const ViewAccordionContent = ({ children }: ViewAccordionContentProps) => <>{children}</>;
 
 export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
@@ -33,6 +34,7 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
   };
 
   const childrenArray = React.Children.toArray(children);
+  const toolbar = childrenArray.find((child) => isValidElement(child) && child.type === ViewAccordionToolbar);
   const content = childrenArray.find((child) => isValidElement(child) && child.type === ViewAccordionContent);
 
   const headerId = `${title}-header`;
@@ -56,9 +58,14 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           overflow: 'hidden',
+          padding: theme.spacing(0.75),
+          borderTopWidth: '1px',
+          borderTopStyle: 'solid',
+          borderTopColor: theme.palette.divider,
           borderBottomWidth: '1px',
           borderBottomStyle: 'solid',
           borderBottomColor: theme.palette.divider,
+          backgroundColor: theme.palette.grey[200],
           '& .MuiIconButton-root': {
             padding: theme.spacing(0.25),
           },
@@ -84,9 +91,32 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
               outlineOffset: '-1px',
             },
           })}>
-          {expanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-          <Typography noWrap>{title}</Typography>
+          {expanded ? (
+            <ExpandMoreIcon sx={{ fontSize: '0.875rem' }} />
+          ) : (
+            <ChevronRightIcon sx={{ fontSize: '0.875rem' }} />
+          )}
+          <Typography
+            noWrap
+            sx={(theme) => ({
+              marginRight: theme.spacing(1),
+              fontWeight: theme.typography.fontWeightBold,
+              color: theme.palette.navigationBar.background,
+            })}>
+            {title}
+          </Typography>
         </ButtonBase>
+        {toolbar ? (
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              overflow: 'hidden',
+              gap: theme.spacing(0.5),
+            })}>
+            {toolbar}
+          </Box>
+        ) : null}
       </Box>
       <Box
         role="region"
