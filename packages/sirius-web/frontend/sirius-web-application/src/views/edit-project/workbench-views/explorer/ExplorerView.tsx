@@ -13,6 +13,8 @@
 import {
   RepresentationLoadingIndicator,
   ViewAccordion,
+  ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -42,7 +44,7 @@ const useStyles = makeStyles()((theme: Theme) => ({
   treeView: {
     display: 'grid',
     gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto auto minmax(0, 1fr)',
+    gridTemplateRows: 'auto minmax(0, 1fr)',
     justifyItems: 'stretch',
     overflow: 'hidden',
   },
@@ -190,57 +192,63 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       />
     );
 
+    const toolbar = (
+      <TreeToolBar
+        editingContextId={editingContextId}
+        readOnly={readOnly}
+        treeFilters={treeFilters}
+        onRevealSelection={onRevealSelection}
+        onTreeFilterMenuItemClick={setTreeFilters}
+        onFilter={() => {
+          setState((prevState) => {
+            return !prevState.filterBar
+              ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
+              : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+          });
+        }}
+        treeToolBarContributionComponents={treeToolBarContributionComponents}>
+        {treeDescriptionSelector}
+      </TreeToolBar>
+    );
+
     return (
       <ViewAccordion id={id} title="Explorer">
-        <Box className={styles.treeView} ref={treeElement}>
-          {!state.tree || treeFiltersLoading ? (
-            <RepresentationLoadingIndicator />
-          ) : (
-            <>
-              <TreeToolBar
-                editingContextId={editingContextId}
-                readOnly={readOnly}
-                treeFilters={treeFilters}
-                onRevealSelection={onRevealSelection}
-                onTreeFilterMenuItemClick={setTreeFilters}
-                onFilter={() => {
-                  setState((prevState) => {
-                    return !prevState.filterBar
-                      ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
-                      : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-                  });
-                }}
-                treeToolBarContributionComponents={treeToolBarContributionComponents}>
-                {treeDescriptionSelector}
-              </TreeToolBar>
-              <DuplicateObjectKeyboardShortcut
-                target={treeElement?.current}
-                editingContextId={editingContextId}
-                readOnly={readOnly}
-                selectedTreeItem={singleTreeItemSelected}
-                selectTreeItems={setSelectedTreeItemIds}>
-                {filterBar}
-                <div className={styles.treeContent}>
-                  <TreeView
-                    editingContextId={editingContextId}
-                    readOnly={readOnly}
-                    tree={state.tree}
-                    textToHighlight={state.filterBarText}
-                    textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-                    onExpandedElementChange={onExpandedElementChange}
-                    expanded={expanded}
-                    maxDepth={maxDepth}
-                    onTreeItemClick={onTreeItemClick}
-                    selectTreeItems={setSelectedTreeItemIds}
-                    selectedTreeItemIds={selectedTreeItemIds}
-                    data-testid="explorer://"
-                    useTreePalette={state.tree.capabilities.useTreePalette}
-                  />
-                </div>
-              </DuplicateObjectKeyboardShortcut>
-            </>
-          )}
-        </Box>
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+        <ViewAccordionContent>
+          <Box className={styles.treeView} ref={treeElement}>
+            {!state.tree || treeFiltersLoading ? (
+              <RepresentationLoadingIndicator />
+            ) : (
+              <>
+                <DuplicateObjectKeyboardShortcut
+                  target={treeElement?.current}
+                  editingContextId={editingContextId}
+                  readOnly={readOnly}
+                  selectedTreeItem={singleTreeItemSelected}
+                  selectTreeItems={setSelectedTreeItemIds}>
+                  {filterBar}
+                  <div className={styles.treeContent}>
+                    <TreeView
+                      editingContextId={editingContextId}
+                      readOnly={readOnly}
+                      tree={state.tree}
+                      textToHighlight={state.filterBarText}
+                      textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
+                      onExpandedElementChange={onExpandedElementChange}
+                      expanded={expanded}
+                      maxDepth={maxDepth}
+                      onTreeItemClick={onTreeItemClick}
+                      selectTreeItems={setSelectedTreeItemIds}
+                      selectedTreeItemIds={selectedTreeItemIds}
+                      data-testid="explorer://"
+                      useTreePalette={state.tree.capabilities.useTreePalette}
+                    />
+                  </div>
+                </DuplicateObjectKeyboardShortcut>
+              </>
+            )}
+          </Box>
+        </ViewAccordionContent>
       </ViewAccordion>
     );
   }
