@@ -32,7 +32,9 @@ import org.eclipse.sirius.components.view.emf.diagram.api.IGroupPaletteToolsProv
 import org.eclipse.sirius.components.view.emf.diagram.tools.DeleteMultipleDiagramElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.FadeElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.HideElementToolHandler;
+import org.eclipse.sirius.components.view.emf.diagram.tools.PinElementToolHandler;
 import org.eclipse.sirius.components.view.emf.diagram.tools.UnFadeElementToolHandler;
+import org.eclipse.sirius.components.view.emf.diagram.tools.UnPinElementToolHandler;
 import org.eclipse.sirius.components.view.emf.messages.IViewEMFMessageService;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +60,15 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
     @Override
     public List<ITool> createQuickAccessTools(DiagramContext diagramContext, List<IDiagramElementDescription> targetDescriptions, List<Object> diagramElements) {
         List<ITool> extraTools = new ArrayList<>();
+
+        var nodes = diagramElements.stream()
+                .filter(Node.class::isInstance)
+                .map(Node.class::cast)
+                .toList();
+        if (!nodes.isEmpty()) {
+            var pinTool = this.createPinTool(targetDescriptions, nodes);
+            extraTools.add(pinTool);
+        }
 
         if (this.containsFadedElement(diagramElements)) {
             var unFadeTool = this.createUnFadeTool(targetDescriptions);
@@ -152,6 +163,24 @@ public class GroupPaletteDefaultToolsProvider implements IGroupPaletteToolsProvi
                 .targetDescriptions(targetDescriptions)
                 .keyBindings(List.of())
                 .build();
+    }
+
+    private ITool createPinTool(List<IDiagramElementDescription> targetDescriptions, List<Node> nodes) {
+        if (nodes.stream().allMatch(Node::isPinned)) {
+            return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(UnPinElementToolHandler.UNPIN_ELEMENT_TOOL_ID)
+                    .label(this.messageService.defaultQuickToolUnPin())
+                    .iconURL(List.of(DiagramImageConstants.UNPIN_SVG))
+                    .targetDescriptions(targetDescriptions)
+                    .keyBindings(List.of())
+                    .build();
+        } else {
+            return SingleClickOnDiagramElementTool.newSingleClickOnDiagramElementTool(PinElementToolHandler.PIN_ELEMENT_TOOL_ID)
+                    .label(this.messageService.defaultQuickToolPin())
+                    .iconURL(List.of(DiagramImageConstants.PIN_SVG))
+                    .targetDescriptions(targetDescriptions)
+                    .keyBindings(List.of())
+                    .build();
+        }
     }
 
 }

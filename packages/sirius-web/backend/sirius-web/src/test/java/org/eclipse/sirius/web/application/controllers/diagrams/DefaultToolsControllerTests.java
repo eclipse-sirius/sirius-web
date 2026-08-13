@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.diagrams.layoutdata.Position;
 import org.eclipse.sirius.components.diagrams.layoutdata.Size;
 import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeSingleClickOnDiagramElementToolExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.LayoutDiagramMutationRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteExecutor;
 import org.eclipse.sirius.components.diagrams.tests.graphql.PaletteQueryRunner;
 import org.eclipse.sirius.components.diagrams.tests.navigation.DiagramNavigator;
 import org.eclipse.sirius.components.view.emf.diagram.tools.FadeElementToolHandler;
@@ -82,6 +83,9 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private PaletteQueryRunner paletteQueryRunner;
+
+    @Autowired
+    private PaletteExecutor paletteExecutor;
 
     @Autowired
     private LayoutDiagramMutationRunner layoutDiagramMutationRunner;
@@ -295,6 +299,35 @@ public class DefaultToolsControllerTests extends AbstractIntegrationTests {
                 .then(initialDiagramLayout)
                 .consumeNextWith(afterLayoutDiagramContentConsumer)
                 .then(requestEdgePalette)
+                .thenCancel()
+                .verify(Duration.ofSeconds(10));
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a diagram with a node and an edge, when the group palette is queried, then the node tools are available")
+    public void givenDiagramWithANodeAndAnEdgeWhenTheGroupPaletteIsQueriedThenTheNodeToolsAreAvailable() {
+        var flux = this.givenSubscriptionToLabelEditableDiagramDiagram();
+
+        var diagramId = new AtomicReference<String>();
+        var siriusWebDomainNodeId = new AtomicReference<String>();
+        var webApplicationToDomainEdgeId = new AtomicReference<String>();
+
+        Consumer<Object> initialDiagramContentConsumer = assertRefreshedDiagramThat(diagram -> {
+            diagramId.set(diagram.getId());
+            siriusWebDomainNodeId.set(new DiagramNavigator(diagram).nodeWithLabel("sirius-web-domain").getNode().getId());
+            webApplicationToDomainEdgeId.set(new DiagramNavigator(diagram).edgeWithLabel("sirius-web-application -> sirius-web-domain").getEdge().getId());
+        });
+
+        Runnable requestGroupPalette = () -> this.paletteExecutor.execute(
+                PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
+                diagramId.get(),
+                List.of(siriusWebDomainNodeId.get(), webApplicationToDomainEdgeId.get())
+        ).hasQuickAccessTools(quickAccessToolLabels -> assertThat(quickAccessToolLabels).contains("Pin"));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialDiagramContentConsumer)
+                .then(requestGroupPalette)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }

@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolVariable;
+import org.eclipse.sirius.components.collaborative.diagrams.services.ISingleClickOnMultipleDiagramElementHandler;
 import org.eclipse.sirius.components.collaborative.diagrams.services.ISingleClickOnOneDiagramElementHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.events.PinDiagramElementEvent;
@@ -30,7 +31,7 @@ import org.springframework.stereotype.Service;
  * @author mcharfadi
  */
 @Service
-public class UnPinElementToolHandler implements ISingleClickOnOneDiagramElementHandler {
+public class UnPinElementToolHandler implements ISingleClickOnOneDiagramElementHandler, ISingleClickOnMultipleDiagramElementHandler {
 
     public static final String UNPIN_ELEMENT_TOOL_ID = "unpin";
 
@@ -42,6 +43,17 @@ public class UnPinElementToolHandler implements ISingleClickOnOneDiagramElementH
     @Override
     public IStatus execute(IEditingContext editingContext, DiagramContext diagramContext, String toolId, String diagramElementId, List<ToolVariable> variables) {
         diagramContext.diagramEvents().add(new PinDiagramElementEvent(Set.of(diagramElementId), false));
+        return new Success();
+    }
+
+    @Override
+    public boolean canHandle(IEditingContext editingContext, DiagramContext diagramContext, String toolId, List<String> diagramElementIds) {
+        return UnPinElementToolHandler.UNPIN_ELEMENT_TOOL_ID.equals(toolId);
+    }
+
+    @Override
+    public IStatus execute(IEditingContext editingContext, DiagramContext diagramContext, String toolId, List<String> diagramElementIds, List<ToolVariable> variables) {
+        diagramContext.diagramEvents().add(new PinDiagramElementEvent(Set.copyOf(diagramElementIds), false));
         return new Success();
     }
 }
