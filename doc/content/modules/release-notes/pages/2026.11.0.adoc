@@ -2,9 +2,6 @@
 
 == Key highlights
 
-
-
-
 == Breaking changes
 
 - Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
@@ -18,23 +15,25 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot`
 - Default tools are now provided only for low-code studios.
 Each downstream project using programmatic APIs and the old `DefaultToolsFactory` to define its view should now define its own default tools.
-
+- Workbench views have been reworked: they are now collapsible, and their toolbar and title bar have been merged into a single header bar.
+A new component `ViewAccordion` has been introduced to capture this new design, with two new subcomponents:
+* `ViewAccordionToolbar` if the view has a toolbar
+* `ViewAccordionContent` for the content of the view.
+Downstream projects should now reuse them to align with the new design.
+- The workbench header bar (merge of the title + toolbar) now has a grayish background.
+This color can be changed through the theme palette `view.background`.
+Defining this color may be required.
 
 == Bug fixes
 
 * Icon label nodes can now be moved inside free-form containers.
 * Border nodes can now display their configured child and border nodes.
 
-
 == New features
-
-
-
 
 == Improvements
 
 - [deck] Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
-
 
 == Deprecation warnings
 
@@ -49,7 +48,6 @@ At the moment, we have only deprecated `VariableManager.SELF` which has been rep
 We will not remove existing variable constants such as `VariableManager.SELF` and `IEditingContext.EDITING_CONTEXT` soon, but we will start using these new locations for the variables in our own codebase.
 When we will be satisfied with the use of these new variable declarations, we will change their annotation from `@Deprecated(since = "...")` to `@Deprecated(since = "...", forRemoval = true)` and warn downstream consumers in the CHANGELOG and release notes of that version that they should migrate to the new variable declarations.
 Then, we will remove the existing variable declarations in a future release.
-
 
 == Technical details
 

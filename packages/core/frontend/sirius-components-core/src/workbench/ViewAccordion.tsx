@@ -15,10 +15,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
-import { useContext, useState } from 'react';
+import React, { isValidElement, useContext, useState } from 'react';
 import { PanelCollapseContext } from './PanelCollapseContext';
 import { PanelCollapseContextValue } from './PanelCollapseContext.types';
-import { ViewAccordionProps } from './ViewAccordion.types';
+import { ViewAccordionContentProps, ViewAccordionProps, ViewAccordionToolbarProps } from './ViewAccordion.types';
+
+export const ViewAccordionToolbar = ({ children }: ViewAccordionToolbarProps) => <>{children}</>;
+export const ViewAccordionContent = ({ children }: ViewAccordionContentProps) => <>{children}</>;
 
 export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
   const [expanded, setExpanded] = useState<boolean>(true);
@@ -29,6 +32,12 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
     setExpanded(!expanded);
     onCollapseChange(id, expanded);
   };
+
+  const childrenArray = React.Children.toArray(children);
+  const toolbar = expanded
+    ? childrenArray.find((child) => isValidElement(child) && child.type === ViewAccordionToolbar)
+    : null;
+  const content = childrenArray.find((child) => isValidElement(child) && child.type === ViewAccordionContent);
 
   const headerId = `${id}-header`;
   const contentId = `${id}-content`;
@@ -51,9 +60,14 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           overflow: 'hidden',
+          padding: theme.spacing(0.75),
+          borderTopWidth: '1px',
+          borderTopStyle: 'solid',
+          borderTopColor: theme.palette.divider,
           borderBottomWidth: '1px',
           borderBottomStyle: 'solid',
           borderBottomColor: theme.palette.divider,
+          backgroundColor: theme.palette.view.background,
           '& .MuiIconButton-root': {
             padding: theme.spacing(0.25),
           },
@@ -79,9 +93,32 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
               outlineOffset: '-1px',
             },
           })}>
-          {expanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
-          <Typography noWrap>{title}</Typography>
+          {expanded ? (
+            <ExpandMoreIcon sx={{ fontSize: '0.875rem' }} />
+          ) : (
+            <ChevronRightIcon sx={{ fontSize: '0.875rem' }} />
+          )}
+          <Typography
+            noWrap
+            sx={(theme) => ({
+              marginRight: theme.spacing(1),
+              fontWeight: theme.typography.fontWeightBold,
+              color: theme.palette.navigationBar.background,
+            })}>
+            {title}
+          </Typography>
         </ButtonBase>
+        {toolbar ? (
+          <Box
+            sx={(theme) => ({
+              display: 'flex',
+              alignItems: 'center',
+              overflow: 'hidden',
+              gap: theme.spacing(0.5),
+            })}>
+            {toolbar}
+          </Box>
+        ) : null}
       </Box>
       <Box
         role="region"
@@ -94,7 +131,7 @@ export const ViewAccordion = ({ id, title, children }: ViewAccordionProps) => {
           overflow: 'hidden',
           visibility: expanded ? 'visible' : 'hidden',
         }}>
-        {children}
+        {content}
       </Box>
     </Box>
   );

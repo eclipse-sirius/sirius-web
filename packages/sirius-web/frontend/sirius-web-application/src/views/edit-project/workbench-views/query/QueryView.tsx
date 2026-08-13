@@ -16,6 +16,8 @@ import {
   useData,
   useSelection,
   ViewAccordion,
+  ViewAccordionContent,
+  ViewAccordionToolbar,
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
@@ -79,27 +81,7 @@ import {
 import { useExpression } from './useExpression';
 import { useQueryViewHandle } from './useQueryViewHandle';
 
-const useQueryViewStyles = makeStyles()((theme) => ({
-  view: {
-    display: 'grid',
-    gridTemplateColumns: 'auto',
-    gridTemplateRows: 'auto minmax(0, 1fr)',
-    justifyItems: 'stretch',
-    overflow: 'hidden',
-  },
-  toolbar: {
-    display: 'flex',
-    flexDirection: 'row',
-    overflow: 'hidden',
-    height: theme.spacing(4),
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    borderBottomWidth: '1px',
-    borderBottomStyle: 'solid',
-    justifyContent: 'right',
-    alignItems: 'center',
-    borderBottomColor: theme.palette.divider,
-  },
+const useQueryViewStyles = makeStyles()(() => ({
   content: {
     display: 'grid',
     gridTemplateColumns: 'minmax(0, 1fr)',
@@ -173,10 +155,10 @@ export const QueryView = forwardRef<WorkbenchViewHandle, WorkbenchViewComponentP
     );
     return (
       <ViewAccordion id={id} title="Query">
-        <Box className={classes.view}>
-          <div className={classes.toolbar}>{toolbar}</div>
+        <ViewAccordionToolbar>{toolbar}</ViewAccordionToolbar>
+        <ViewAccordionContent>
           <div className={classes.content}>{contents}</div>
-        </Box>
+        </ViewAccordionContent>
       </ViewAccordion>
     );
   }
