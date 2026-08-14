@@ -22,10 +22,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.IPaletteEntry;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.Palette;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.palette.dto.IPaletteEntry;
+import org.eclipse.sirius.components.palette.dto.ITool;
+import org.eclipse.sirius.components.palette.dto.Palette;
+import org.eclipse.sirius.components.palette.dto.ToolSection;
 import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVariables;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -192,7 +192,7 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
         return true;
     }
 
-    private org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection createToolSection(NodeToolSection toolSection, VariableManager variableManager, AQLInterpreter interpreter) {
+    private org.eclipse.sirius.components.palette.dto.ToolSection createToolSection(NodeToolSection toolSection, VariableManager variableManager, AQLInterpreter interpreter) {
         String toolSelectionId = UUID.nameUUIDFromBytes(EcoreUtil.getURI(toolSection).toString().getBytes()).toString();
 
         var tools = new ArrayList<ITool>(toolSection.getNodeTools().stream()
@@ -200,7 +200,7 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
                 .map(tool -> this.nodeToolConverter.createNodeTool(interpreter, tool, variableManager))
                 .toList());
 
-        return org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection.newToolSection(toolSelectionId)
+        return org.eclipse.sirius.components.palette.dto.ToolSection.newToolSection(toolSelectionId)
                 .label(toolSection.getName())
                 .iconURL(List.of())
                 .tools(tools)

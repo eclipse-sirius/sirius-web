@@ -17,6 +17,7 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
+import org.eclipse.sirius.components.palette.dto.ITool;
 
 /**
  * A tool triggered by a single click in the palette on a diagram element.

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@ package org.eclipse.sirius.components.collaborative.diagrams.dto;
 
 import java.util.List;
 import java.util.Objects;
+
+import org.eclipse.sirius.components.palette.dto.ITool;
 
 /**
  * A tool triggered by a single click on two diagram elements thanks to the palette.

@@ -38,6 +38,9 @@ The package `@lexical/code` is not used anymore.
 If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation of `IDefaultOmniboxCommandOrderer` that is part of sirius-components will be used.
 - https://github.com/eclipse-sirius/sirius-web/issues/6736[#6736] [core] `ChangeDescription#getInput(): IInput` has been modified to `ChangeDescription#getCause(): ICause`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6674[#6674] [palette] An overridden tool contribution has to return null or an empty fragment if the `searchedValue` does not match the label of the overridden tool, we can't guess what label will be used in external contributions.
+- https://github.com/eclipse-sirius/sirius-web/issues/6799[#6799] [palette] The DTO `Palette`, `ITool`, `IPaletteEntry`, `PaletteDivider` & `ToolSection` have been moved to new maven project `sirius-components-palette`.
+`sirius-components-collaborative-diagrams` has a dependency to this new package.
+A new GraphQL schema `palette.graphqls` has been added.
 
 === Dependency update
 

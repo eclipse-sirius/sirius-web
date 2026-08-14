@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.palette.dto.ITool;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnDiagramElementTool;
 import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;

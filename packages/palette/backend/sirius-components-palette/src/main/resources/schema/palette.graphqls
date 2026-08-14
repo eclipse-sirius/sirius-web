@@ -1,0 +1,24 @@
+type Palette {
+  id: ID! @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/6470")
+  quickAccessTools: [Tool]!
+  paletteEntries: [PaletteEntry]!
+}
+
+union PaletteEntry = ToolSection | PaletteDivider
+
+type PaletteDivider {
+  id: ID!
+}
+
+type ToolSection {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+  tools: [Tool]!
+}
+
+interface Tool {
+  id: ID!
+  label: String!
+  iconURL: [String!]!
+}
