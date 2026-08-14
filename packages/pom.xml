@@ -46,6 +46,7 @@
 	</pluginRepositories>
 
 	<modules>
+		<module>palette/backend</module>
 		<module>browser/backend</module>
 		<module>core/backend</module>
 		<module>tests/backend</module>
