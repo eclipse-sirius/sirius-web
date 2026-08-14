@@ -1,0 +1,10 @@
+= sirius-components-palette
+
+== Goal
+
+This project provides support for palette DTO.
+
+== Dependencies
+
+- sirius-components-core
+- sirius-components-annotations
