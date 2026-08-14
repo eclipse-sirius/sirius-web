@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.collaborative.diagrams.api.palette;
 import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.palette.dto.ToolSection;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 

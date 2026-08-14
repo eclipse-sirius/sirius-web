@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.view.emf.diagram.tools.api;
 
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.palette.dto.ITool;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescription;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;

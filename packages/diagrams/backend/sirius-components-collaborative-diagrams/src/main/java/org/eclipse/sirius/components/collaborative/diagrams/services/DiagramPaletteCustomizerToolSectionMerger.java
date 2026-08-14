@@ -18,8 +18,8 @@ import java.util.List;
 
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.palette.IDiagramPaletteCustomizer;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ToolSection;
+import org.eclipse.sirius.components.palette.dto.ITool;
+import org.eclipse.sirius.components.palette.dto.ToolSection;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.springframework.stereotype.Service;

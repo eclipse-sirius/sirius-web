@@ -15,7 +15,7 @@ package org.eclipse.sirius.components.diagrams.graphql.datafetchers.diagram;
 import java.util.List;
 
 import org.eclipse.sirius.components.annotations.spring.graphql.QueryDataFetcher;
-import org.eclipse.sirius.components.collaborative.diagrams.dto.ITool;
+import org.eclipse.sirius.components.palette.dto.ITool;
 import org.eclipse.sirius.components.graphql.api.IDataFetcherWithFieldCoordinates;
 import org.eclipse.sirius.components.graphql.api.URLConstants;
 
