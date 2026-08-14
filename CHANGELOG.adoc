@@ -104,6 +104,7 @@ This will allow us to reuse the change description to propagate more information
 Downstream applications can now use the `spring.web.resources.static-locations` property to configure the location of its frontend artifacts.
 - https://github.com/eclipse-sirius/sirius-web/issues/6790[#6790] [tree] Extract tree states into a dedicated hook.
 - https://github.com/eclipse-sirius/sirius-web/issues/6786[#6786] [diagram] Add pin/unpin to group palette.
+- https://github.com/eclipse-sirius/sirius-web/issues/6803[#6803] [tree] Extract explorer selection logic into a dedicated hook.
 
 
 
