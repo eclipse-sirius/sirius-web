@@ -65,6 +65,7 @@ import reactor.core.publisher.Sinks.One;
  *
  * @author nvannier
  */
+@Deprecated(forRemoval = true)
 public class GetConnectorToolsEventHandlerTests {
 
     private static final String NODE_DESCRIPTION_ID = UUID.randomUUID().toString();

@@ -23,7 +23,9 @@ import org.eclipse.sirius.components.core.api.IPayload;
  * The payload of the "Get Connector Tools" query returned on success.
  *
  * @author nvannier
+ * @deprecated This service will be removed soon to be replaced by its equivalent used for DiagramDescription#connectorPalette.
  */
+@Deprecated(forRemoval = true)
 public record GetConnectorToolsSuccessPayload(UUID id, List<ITool> connectorTools) implements IPayload {
     public GetConnectorToolsSuccessPayload {
         Objects.requireNonNull(id);
