@@ -22,8 +22,11 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
+import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.InvokeFilterSelectionInput;
+import org.eclipse.sirius.components.collaborative.diagrams.dto.toolbar.tools.InvokeFilterSelectionSuccessPayload;
 import org.eclipse.sirius.components.collaborative.dto.CreateRepresentationInput;
 import org.eclipse.sirius.components.diagrams.tests.graphql.GetFilterSelectionMenuItemsActionsQueryRunner;
+import org.eclipse.sirius.components.diagrams.tests.graphql.InvokeInvokeFilterSelectionActionMutationRunner;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.diagram.services.toolbar.SelectAllNodesFilterSelectionProvider;
 import org.eclipse.sirius.web.data.FlowIdentifier;
@@ -53,7 +56,7 @@ import reactor.test.StepVerifier;
 public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegrationTests {
 
     public static final String REPRESENTATION_DESCRIPTION_ID = "siriusComponents://representationDescription?kind=diagramDescription&sourceKind=view&sourceId=942b5891-9b51-3fba-90ab-f5e49ccf345e&sourceElementId=bce2748b-a1e5-39e6-ad86-a29323589b38";
-    
+
     @Autowired
     private IGivenInitialServerState givenInitialServerState;
 
@@ -63,6 +66,9 @@ public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegr
     @Autowired
     private GetFilterSelectionMenuItemsActionsQueryRunner getFilterSelectionMenuItemsActionsQueryRunner;
 
+    @Autowired
+    private InvokeInvokeFilterSelectionActionMutationRunner invokeInvokeFilterSelectionActionMutationRunner;
+
     @BeforeEach
     public void beforeEach() {
         this.givenInitialServerState.initialize();
@@ -70,11 +76,11 @@ public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegr
 
     private Flux<Object> givenSubscriptionToActionDiagram() {
         var input = new CreateRepresentationInput(
-            UUID.randomUUID(),
+                UUID.randomUUID(),
                 FlowIdentifier.FLOW_EDITING_CONTEXT_ID,
                 REPRESENTATION_DESCRIPTION_ID,
                 FlowIdentifier.FLOW_ROOT_SYSTEM_OBJECT,
-            "FilterSelectionDiagram"
+                "FilterSelectionDiagram"
         );
 
         return this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
@@ -109,9 +115,19 @@ public class DiagramToolbarFilterSelectionControllerTests extends AbstractIntegr
                     .contains("Select all nodes");
         };
 
+        Runnable invokeSelectAllNodesAction = () -> {
+            var input = new InvokeFilterSelectionInput(UUID.randomUUID(), FlowIdentifier.FLOW_EDITING_CONTEXT_ID, diagramId.get(), List.of(), SelectAllNodesFilterSelectionProvider.ID);
+            var result = this.invokeInvokeFilterSelectionActionMutationRunner.run(input);
+            String typename = JsonPath.read(result.data(), "$.data.invokeFilterSelection.__typename");
+            assertThat(typename).isEqualTo(InvokeFilterSelectionSuccessPayload.class.getSimpleName());
+            List<String> newSelectionIds = JsonPath.read(result.data(), "$.data.invokeFilterSelection.newSelection[*]");
+            assertThat(newSelectionIds).hasSize(5);
+        };
+
         StepVerifier.create(flux)
                 .consumeNextWith(initialDiagramContentConsumer)
                 .then(getFilterMenuItems)
+                .then(invokeSelectAllNodesAction)
                 .thenCancel()
                 .verify(Duration.ofSeconds(10));
     }
