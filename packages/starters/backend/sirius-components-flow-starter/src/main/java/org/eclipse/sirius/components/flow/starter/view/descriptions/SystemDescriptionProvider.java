@@ -325,7 +325,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
 
     private NodeTool createNodeToolPowerOutput() {
         return this.diagramBuilderHelper.newNodeTool()
-                .name("Power Ouput")
+                .name("Power Output")
                 .iconURLsExpression("/icons/full/obj16/PowerOutput.gif")
                 .body(
                         this.viewBuilderHelper.newChangeContext()
