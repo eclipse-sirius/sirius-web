@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,11 +17,14 @@ import java.util.UUID;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 
 /**
- * Input for "get connector tools" query.
+ * The input for the "Get Connector Palette" query.
  *
- * @author nvannier
- * @deprecated This service will be removed soon to be replaced by its equivalent used for DiagramDescription#connectorPalette.
+ * @author mcharfadi
  */
-@Deprecated(forRemoval = true)
-public record GetConnectorToolsInput(UUID id, String editingContextId, String representationId, String sourceDiagramElementId, String targetDiagramElementId) implements IDiagramInput {
+public record GetConnectorPaletteInput(
+        UUID id,
+        String editingContextId,
+        String representationId,
+        String sourceDiagramElementId,
+        String targetDiagramElementId) implements IDiagramInput {
 }

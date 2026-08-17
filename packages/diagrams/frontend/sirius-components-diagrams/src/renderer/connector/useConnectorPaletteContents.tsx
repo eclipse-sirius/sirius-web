@@ -19,16 +19,25 @@ import { GQLPalette } from '@eclipse-sirius/sirius-components-palette';
 import { DiagramContext } from '../../contexts/DiagramContext';
 import { DiagramContextValue } from '../../contexts/DiagramContext.types';
 import {
-  GetConnectorToolsData,
-  GetConnectorToolsVariables,
   GQLDiagramDescription,
+  GQLGetConnectorPaletteData,
+  GQLGetConnectorPaletteVariables,
   GQLRepresentationDescription,
-  GQLTool,
   UseConnectorPaletteContentValue,
 } from './useConnectorPaletteContents.types';
 
-export const getConnectorToolsQuery = gql`
-  query getConnectorTools(
+export const getPaletteQuery = gql`
+  fragment ToolFields on Tool {
+    __typename
+    id
+    label
+    iconURL
+    ... on SingleClickOnTwoDiagramElementsTool {
+      dialogDescriptionId
+    }
+  }
+
+  query getConnectorPalette(
     $editingContextId: ID!
     $representationId: ID!
     $sourceDiagramElementId: ID!
@@ -39,15 +48,24 @@ export const getConnectorToolsQuery = gql`
         representation(representationId: $representationId) {
           description {
             ... on DiagramDescription {
-              connectorTools(
+              connectorPalette(
                 sourceDiagramElementId: $sourceDiagramElementId
                 targetDiagramElementId: $targetDiagramElementId
               ) {
                 id
-                label
-                iconURL
-                ... on SingleClickOnTwoDiagramElementsTool {
-                  dialogDescriptionId
+                quickAccessTools {
+                  ...ToolFields
+                }
+                paletteEntries {
+                  ...ToolFields
+                  ... on ToolSection {
+                    id
+                    label
+                    iconURL
+                    tools {
+                      ...ToolFields
+                    }
+                  }
                 }
               }
             }
@@ -69,40 +87,28 @@ export const useConnectorPaletteContents = (
   const { diagramId, editingContextId } = useContext<DiagramContextValue>(DiagramContext);
   const { addErrorMessage } = useMultiToast();
 
-  const {
-    data,
-    loading,
-    error: paletteError,
-  } = useQuery<GetConnectorToolsData, GetConnectorToolsVariables>(getConnectorToolsQuery, {
-    variables: {
-      editingContextId,
-      representationId: diagramId,
-      sourceDiagramElementId,
-      targetDiagramElementId,
-    },
-  });
+  const { data, loading, error } = useQuery<GQLGetConnectorPaletteData, GQLGetConnectorPaletteVariables>(
+    getPaletteQuery,
+    {
+      variables: {
+        editingContextId,
+        representationId: diagramId,
+        sourceDiagramElementId,
+        targetDiagramElementId,
+      },
+    }
+  );
 
   const description: GQLRepresentationDescription | undefined =
     data?.viewer.editingContext?.representation?.description;
-
-  const connectorTools: GQLTool[] | null =
-    description && isDiagramDescription(description) ? description.connectorTools : [];
+  const connectorPalette: GQLPalette | null =
+    description && isDiagramDescription(description) ? description.connectorPalette : null;
 
   useEffect(() => {
-    if (paletteError) {
-      addErrorMessage(paletteError.message);
+    if (error) {
+      addErrorMessage(error.message);
     }
-  }, [paletteError]);
-
-  let connectorPalette: GQLPalette | null = null;
-
-  if (connectorTools) {
-    connectorPalette = {
-      id: `${sourceDiagramElementId}-${targetDiagramElementId}`,
-      paletteEntries: connectorTools,
-      quickAccessTools: [],
-    };
-  }
+  }, [error]);
 
   return { connectorPalette, loading };
 };

@@ -45,8 +45,10 @@ import reactor.core.publisher.Sinks.One;
  * Event handler for "get connector tools" query.
  *
  * @author nvannier
+ * @deprecated This service will be removed soon to be replaced by its equivalent used for DiagramDescription#connectorPalette.
  */
 @Service
+@Deprecated(forRemoval = true)
 public class GetConnectorToolsEventHandler implements IDiagramEventHandler {
 
     private final IRepresentationDescriptionSearchService representationDescriptionSearchService;

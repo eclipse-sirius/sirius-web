@@ -13,19 +13,27 @@
 
 import { GQLPalette } from '@eclipse-sirius/sirius-components-palette';
 
-export interface GetConnectorToolsVariables {
+export interface UseConnectorPaletteContentValue {
+  connectorPalette: GQLPalette | null;
+  loading: boolean;
+}
+
+export interface GQLDiagramDescription extends GQLRepresentationDescription {
+  connectorPalette: GQLPalette;
+}
+
+export interface GQLRepresentationDescription {
+  __typename: string;
+}
+
+export interface GQLGetConnectorPaletteVariables {
   editingContextId: string;
   representationId: string;
   sourceDiagramElementId: string;
   targetDiagramElementId: string;
 }
 
-export interface UseConnectorPaletteContentValue {
-  connectorPalette: GQLPalette | null;
-  loading: boolean;
-}
-
-export interface GetConnectorToolsData {
+export interface GQLGetConnectorPaletteData {
   viewer: GQLViewer;
 }
 
@@ -39,19 +47,4 @@ export interface GQLEditingContext {
 
 export interface GQLRepresentationMetadata {
   description: GQLRepresentationDescription;
-}
-
-export interface GQLRepresentationDescription {
-  __typename: string;
-}
-
-export interface GQLDiagramDescription extends GQLRepresentationDescription {
-  connectorTools: GQLTool[];
-}
-
-export interface GQLTool {
-  id: string;
-  label: string;
-  iconURL: string[];
-  __typename: string;
 }

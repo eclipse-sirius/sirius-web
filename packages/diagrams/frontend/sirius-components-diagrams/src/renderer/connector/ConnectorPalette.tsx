@@ -27,7 +27,8 @@ import { useConnectorPaletteContents } from './useConnectorPaletteContents';
 import { UseConnectorPaletteContentValue } from './useConnectorPaletteContents.types';
 import { useTemporaryEdge } from './useTemporaryEdge';
 
-const getToolsCount = (connectorPalette: GQLPalette | null): number => connectorPalette?.paletteEntries.length ?? 0;
+const getToolsCount = (connectorPalette: GQLPalette | null): number =>
+  connectorPalette?.paletteEntries.filter(isTool).length ?? 0;
 
 export const ConnectorPalette = memo(({}: ConnectorPaletteProps) => {
   const { readOnly } = useContext<DiagramContextValue>(DiagramContext);

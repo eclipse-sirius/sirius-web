@@ -425,8 +425,10 @@ type DiagramDescription implements RepresentationDescription {
   edgeDescriptions: [EdgeDescription!]!
   toolbar: DiagramToolbar
   palette(diagramElementIds: [ID!]): Palette!
+  connectorPalette(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): Palette!
   actions(diagramElementId: ID!): [Action!]!
   manageVisibilityActions(diagramElementId: ID!): [ManageVisibilityAction!]!
+  @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/6813")
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
   initialDirectEditElementLabel(labelId: ID!): String!

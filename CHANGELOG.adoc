@@ -16,7 +16,7 @@
 
 === Deprecation warning
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6813[#6813] [diagram] The GraphQL field `DiagramDescription#connectorTools(...)` is now deprecated and will be removed soon in favor of `DiagramDescription#connectorPalette(...)``.
 
 
 === Breaking changes
@@ -41,6 +41,7 @@ If no `IOmniboxCommandOrdererDelegate` is implemented, a default implementation 
 - https://github.com/eclipse-sirius/sirius-web/issues/6799[#6799] [palette] The DTO `Palette`, `ITool`, `IPaletteEntry`, `PaletteDivider` & `ToolSection` have been moved to new maven project `sirius-components-palette`.
 `sirius-components-collaborative-diagrams` has a dependency to this new package.
 A new GraphQL schema `palette.graphqls` has been added.
+
 
 === Dependency update
 
@@ -74,10 +75,12 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6769[#6769] [diagram] Resize free-form parent nodes to contain child nodes moved partially outside their bounds.
 - https://github.com/eclipse-sirius/sirius-web/issues/6770[#6770] [diagram] Prevent hidden child nodes from affecting the resize of their free-form parent.
 
+
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6540[#6540] [diagram] Use the palette to render connector tools
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6813[#6813] [diagram] Retrieve an entire palette for the connector from the backend.
+For that, a new GraphQl field `DiagramDescription#connectorPalette(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): Palette!` has been added to retrieve the palette of the connector tool.
 
 
 === Improvements
