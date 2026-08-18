@@ -15,22 +15,15 @@ import {
   WorkbenchViewComponentProps,
   WorkbenchViewHandle,
 } from '@eclipse-sirius/sirius-components-core';
-import {
-  FilterBar,
-  TreeToolBar,
-  TreeToolBarContext,
-  TreeToolBarContextValue,
-  TreeView,
-} from '@eclipse-sirius/sirius-components-trees';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import Box from '@mui/material/Box';
 import { Theme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { ForwardedRef, forwardRef, useContext, useEffect, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
-import { DuplicateObjectKeyboardShortcut } from './context-menu-contributions/duplicate-object/DuplicateObjectKeyboardShortcut';
+import { ExplorerRenderer } from './ExplorerRenderer';
+import { ExplorerTreeToolbarRenderer } from './ExplorerTreeToolbarRenderer';
 import { ExplorerViewConfiguration, ExplorerViewState } from './ExplorerView.types';
-import { TreeDescriptionsMenu } from './TreeDescriptionsMenu';
 import { useExplorerDescriptions } from './useExplorerDescriptions';
 import { useExplorerSelection } from './useExplorerSelection';
 import { useExplorerSubscription } from './useExplorerSubscription';
@@ -103,10 +96,6 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
 
     useExplorerViewHandle(id, treeId, treeFilters, activeTreeDescriptionId, applySelection, ref);
 
-    const treeToolBarContributionComponents = useContext<TreeToolBarContextValue>(TreeToolBarContext).map(
-      (contribution) => contribution.props.component
-    );
-
     const activeTreeFilterIds = treeFilters.filter((filter) => filter.state).map((filter) => filter.id);
 
     const { payload } = useExplorerSubscription(
@@ -148,48 +137,17 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
       return null;
     }, [treeElement]);
 
-    let filterBar: JSX.Element = <div />;
-    if (state.filterBar) {
-      filterBar = (
-        <div className={styles.treeFilter}>
-          <FilterBar
-            onTextChange={(event) => {
-              const {
-                target: { value },
-              } = event;
-              setState((prevState) => {
-                return { ...prevState, filterBarText: value };
-              });
-            }}
-            onFilterButtonClick={(enabled) =>
-              setState((prevState) => ({
-                ...prevState,
-                filterBarTreeFiltering: enabled,
-              }))
-            }
-            onClose={() =>
-              setState((prevState) => {
-                return { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-              })
-            }
-          />
-        </div>
-      );
-    }
+    const resetTree = () => {
+      setState((prevState) => ({ ...prevState, tree: null }));
+    };
 
-    const treeDescriptionSelector: JSX.Element = explorerDescriptions.length > 1 && (
-      <TreeDescriptionsMenu
-        treeDescriptions={explorerDescriptions}
-        activeTreeDescriptionId={activeTreeDescriptionId}
-        onTreeDescriptionChange={(treeDescription) => {
-          setActiveDescriptionId(treeDescription.id);
-          setState((prevState) => ({
-            ...prevState,
-            tree: null,
-          }));
-        }}
-      />
-    );
+    const onFilter = () => {
+      setState((prevState) => {
+        return !prevState.filterBar
+          ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
+          : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
+      });
+    };
 
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column' }} data-testid="view-Explorer">
@@ -212,51 +170,35 @@ export const ExplorerView = forwardRef<WorkbenchViewHandle, WorkbenchViewCompone
           </Typography>
         </Box>
         <Box className={styles.treeView} sx={{ flexGrow: 1, minHeight: 0 }} ref={treeElement}>
-          {!state.tree || treeFiltersLoading ? (
+          {!state.tree || treeFiltersLoading || !activeTreeDescriptionId ? (
             <RepresentationLoadingIndicator />
           ) : (
             <>
-              <TreeToolBar
+              <ExplorerTreeToolbarRenderer
                 editingContextId={editingContextId}
                 readOnly={readOnly}
+                activeTreeDescriptionId={activeTreeDescriptionId}
+                explorerDescriptions={explorerDescriptions}
                 treeFilters={treeFilters}
+                resetTree={resetTree}
+                setTreeFilters={setTreeFilters}
+                setActiveDescriptionId={setActiveDescriptionId}
                 onRevealSelection={onRevealSelection}
-                onTreeFilterMenuItemClick={setTreeFilters}
-                onFilter={() => {
-                  setState((prevState) => {
-                    return !prevState.filterBar
-                      ? { ...prevState, filterBar: true, filterBarText: '', filterBarTreeFiltering: false }
-                      : { ...prevState, filterBar: false, filterBarText: '', filterBarTreeFiltering: false };
-                  });
-                }}
-                treeToolBarContributionComponents={treeToolBarContributionComponents}>
-                {treeDescriptionSelector}
-              </TreeToolBar>
-              <DuplicateObjectKeyboardShortcut
-                target={treeElement?.current}
+                onFilter={onFilter}
+              />
+              <ExplorerRenderer
                 editingContextId={editingContextId}
                 readOnly={readOnly}
+                tree={state.tree}
+                target={treeElement?.current}
                 selectedTreeItem={singleTreeItemSelected}
-                selectTreeItems={setSelectedTreeItemIds}>
-                {filterBar}
-                <div className={styles.treeContent}>
-                  <TreeView
-                    editingContextId={editingContextId}
-                    readOnly={readOnly}
-                    tree={state.tree}
-                    textToHighlight={state.filterBarText}
-                    textToFilter={state.filterBarTreeFiltering ? state.filterBarText : null}
-                    onExpandedElementChange={onExpandedElementChange}
-                    expanded={expanded}
-                    maxDepth={maxDepth}
-                    onTreeItemClick={onTreeItemClick}
-                    selectTreeItems={setSelectedTreeItemIds}
-                    selectedTreeItemIds={selectedTreeItemIds}
-                    data-testid="explorer://"
-                    useTreePalette={state.tree.capabilities.useTreePalette}
-                  />
-                </div>
-              </DuplicateObjectKeyboardShortcut>
+                selectedTreeItemIds={selectedTreeItemIds}
+                onTreeItemClick={onTreeItemClick}
+                selectTreeItems={setSelectedTreeItemIds}
+                expanded={expanded}
+                maxDepth={maxDepth}
+                onExpandedElementChange={onExpandedElementChange}
+              />
             </>
           )}
         </Box>
