@@ -364,6 +364,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
     onEdgesChange: handleEdgesChange,
     onPaneClick: () => {
       // Select the diagram itself when the user left-clicks on the background
+      store.getState().resetSelectedElements();
       setSelection({ entries: [{ id: diagramRefreshedEventPayload.diagram.id }] });
     },
     onPaneContextMenu: onPaneContextMenu,
