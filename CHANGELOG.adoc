@@ -77,7 +77,8 @@ Contributions have to return null in their component if they are not candidate o
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6540[#6540] [diagram] Use the palette to render connector tools
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6806[#6806] [diagram] Add `IDiagramToolbarFilterSelectionProvider` API & `filterSelectionMenuItems` field in GraphQL type `DiagramToolbar`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6808[#6808] [diagram] Add `invokeFilterSelection mutation` in diagram GraphQL schema.
 
 
 === Improvements
