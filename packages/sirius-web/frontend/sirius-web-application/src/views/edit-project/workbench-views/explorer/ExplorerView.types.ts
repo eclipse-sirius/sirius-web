@@ -14,9 +14,6 @@ import { WorkbenchViewConfiguration } from '@eclipse-sirius/sirius-components-co
 import { GQLTree, TreeFilter } from '@eclipse-sirius/sirius-components-trees';
 
 export interface ExplorerViewState {
-  filterBar: boolean;
-  filterBarText: string | null;
-  filterBarTreeFiltering: boolean;
   tree: GQLTree | null;
 }
 
