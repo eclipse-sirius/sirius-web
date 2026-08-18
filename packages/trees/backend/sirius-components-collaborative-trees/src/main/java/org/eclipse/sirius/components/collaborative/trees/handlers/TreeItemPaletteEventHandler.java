@@ -23,13 +23,11 @@ import org.eclipse.sirius.components.collaborative.dto.KeyBinding;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeEventHandler;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeInput;
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeItemContextMenuEntryProvider;
+import org.eclipse.sirius.components.collaborative.trees.api.ITreeItemPaletteProvider;
 import org.eclipse.sirius.components.collaborative.trees.dto.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.collaborative.trees.dto.ITreeItemContextMenuEntry;
 import org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.collaborative.trees.dto.palette.FetchTreeItemTool;
-import org.eclipse.sirius.components.palette.dto.GetPaletteSuccessPayload;
-import org.eclipse.sirius.components.palette.dto.IPaletteEntry;
-import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.collaborative.trees.dto.palette.SingleClickTreeItemTool;
 import org.eclipse.sirius.components.collaborative.trees.dto.palette.TreeItemPaletteInput;
 import org.eclipse.sirius.components.collaborative.trees.services.api.ICollaborativeTreeMessageService;
@@ -37,9 +35,13 @@ import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeQuery
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.palette.dto.GetPaletteSuccessPayload;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
+import org.eclipse.sirius.components.palette.dto.IPaletteEntry;
+import org.eclipse.sirius.components.palette.dto.Palette;
+
 import org.springframework.stereotype.Service;
 
 import io.micrometer.core.instrument.Counter;
@@ -61,17 +63,25 @@ public class TreeItemPaletteEventHandler implements ITreeEventHandler {
 
     private final Counter counter;
 
+    private final List<ITreeItemPaletteProvider> treeItemPaletteProviders;
+
     private final List<ITreeItemContextMenuEntryProvider> contextMenuEntryProviders;
 
-    public TreeItemPaletteEventHandler(ICollaborativeTreeMessageService messageService, ITreeQueryService treeQueryService,
-                                       MeterRegistry meterRegistry, List<ITreeItemContextMenuEntryProvider> contextMenuEntryProviders) {
+    public TreeItemPaletteEventHandler(
+            ICollaborativeTreeMessageService messageService,
+            ITreeQueryService treeQueryService,
+            List<ITreeItemPaletteProvider> treeItemPaletteProviders,
+            List<ITreeItemContextMenuEntryProvider> contextMenuEntryProviders,
+            MeterRegistry meterRegistry) {
         this.messageService = Objects.requireNonNull(messageService);
         this.treeQueryService = Objects.requireNonNull(treeQueryService);
+        this.treeItemPaletteProviders = Objects.requireNonNull(treeItemPaletteProviders);
         this.contextMenuEntryProviders = Objects.requireNonNull(contextMenuEntryProviders);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
                 .tag(Monitoring.NAME, this.getClass().getSimpleName())
                 .register(meterRegistry);
+
     }
 
     @Override
@@ -92,15 +102,23 @@ public class TreeItemPaletteEventHandler implements ITreeEventHandler {
             if (optionalTreeItem.isPresent()) {
                 TreeItem treeItem = optionalTreeItem.get();
 
-                var entries = this.contextMenuEntryProviders.stream()
-                        .filter(provider -> provider.canHandle(editingContext, treeDescription, tree, treeItem))
-                        .flatMap(provider -> provider.getTreeItemContextMenuEntries(editingContext, treeDescription, tree, treeItem).stream())
-                        .map(this::convertContextMenuEntryToPaletteEntry)
-                        .flatMap(Optional::stream)
-                        .toList();
+                var optionalPalette = this.treeItemPaletteProviders.stream()
+                        .filter(paletteProvider -> paletteProvider.canHandle(editingContext, treeDescription, tree, treeItem))
+                        .findFirst()
+                        .map(paletteProvider -> paletteProvider.getPalette(editingContext, treeDescription, tree, treeItem));
 
-                var palette = new Palette("", List.of(), entries);
-                payload = new GetPaletteSuccessPayload(treeInput.id(), palette);
+                if (optionalPalette.isPresent()) {
+                    payload = new GetPaletteSuccessPayload(treeInput.id(), optionalPalette.get());
+                } else {
+                    var entries = this.contextMenuEntryProviders.stream()
+                            .filter(provider -> provider.canHandle(editingContext, treeDescription, tree, treeItem))
+                            .flatMap(provider -> provider.getTreeItemContextMenuEntries(editingContext, treeDescription, tree, treeItem).stream())
+                            .map(this::convertContextMenuEntryToPaletteEntry)
+                            .flatMap(Optional::stream)
+                            .toList();
+                    var palette = new Palette("", List.of(), entries);
+                    payload = new GetPaletteSuccessPayload(treeInput.id(), palette);
+                }
             }
         }
 
