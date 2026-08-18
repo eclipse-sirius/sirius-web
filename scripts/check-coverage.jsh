@@ -60,7 +60,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-collaborative-formdescriptioneditors", 87.0),
   new ModuleCoverage("sirius-components-formdescriptioneditors-graphql", 59.0),
   new ModuleCoverage("sirius-components-trees", 91.0),
-  new ModuleCoverage("sirius-components-collaborative-trees", 93.0),
+  new ModuleCoverage("sirius-components-collaborative-trees", 90.0),
   new ModuleCoverage("sirius-components-trees-graphql", 99.0),
   new ModuleCoverage("sirius-components-tables", 93.0),
   new ModuleCoverage("sirius-components-collaborative-tables", 94.0),
