@@ -40,6 +40,8 @@ export {
 export * from './treeitems/TreeItemAction';
 export * from './treeitems/TreeItemAction.types';
 export * from './trees/FilterBar';
+export * from './trees/FilterBarContext';
+export type { FilterBarContextValue } from './trees/FilterBarContext.types';
 export * from './trees/TreeRepresentation';
 export * from './trees/useTreeSelection';
 export { type TreeItemClickResult, type UseTreeSelectionValue } from './trees/useTreeSelection.types';
