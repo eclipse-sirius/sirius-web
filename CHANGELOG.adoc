@@ -77,6 +77,8 @@ Contributions have to return null in their component if they are not candidate o
 === New Features
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6540[#6540] [diagram] Use the palette to render connector tools
+- https://github.com/eclipse-sirius/sirius-web/issues/6352[#6336] [6352] A new button in the diagram tool bar was added to filter the selection.
+You can add menu items with `IDiagramToolbarFilterSelectionProvider` and their handler with `IFilterSelectionHandler` where you need to return the list of element ids that will be selected.
 
 
 
