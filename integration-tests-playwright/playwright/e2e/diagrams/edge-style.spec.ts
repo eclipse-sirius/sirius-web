@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../fixtures/coverage';
 import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
