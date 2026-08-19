@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { expect, test } from '@playwright/test';
+import { expect, test } from '../../fixtures/coverage';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
 
@@ -39,7 +39,9 @@ test.describe('diagram - toolbar', () => {
     await expect(page.getByTestId('zoom-out')).toBeAttached();
   });
 
-  test('when toolbar is defined as collapsed, then the toolbar is visible and only the expand button is visible', async ({ page }) => {
+  test('when toolbar is defined as collapsed, then the toolbar is visible and only the expand button is visible', async ({
+    page,
+  }) => {
     const explorer = new PlaywrightExplorer(page);
     await explorer.createRepresentation('Root', 'diagramToolbar - with collapsed toolbar', 'diagram');
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
