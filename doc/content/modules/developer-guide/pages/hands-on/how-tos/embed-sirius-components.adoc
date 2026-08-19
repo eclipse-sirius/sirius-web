@@ -38,6 +38,15 @@ changeDescriptionSink.tryEmitNext(new ChangeDescription(ChangeKind.SEMANTIC_CHAN
 
 This semantic change triggers a refresh of every impacted representation and requests the editing context to be saved, so the original operation can both update the data and refresh the UI.
 
+=== Navigate a change causality chain
+
+`ChangeDescription#getCause()` returns the cause associated with the change, which may wrap the original `IInput` in a causality chain.
+When a handler or event listener needs to retrieve a specific cause, use `ICausalityChainVisitor#findFirstCauseOfType` instead of traversing `ICause#causedBy()` directly:
+
+```java
+Optional<MyInput> optionalInput = causalityChainVisitor.findFirstCauseOfType(changeDescription.getCause(), MyInput.class);
+```
+
 == Add support for a new kind of widget in forms
 
 When you need a brand-new form widget you must extend both the backend and the frontend.
