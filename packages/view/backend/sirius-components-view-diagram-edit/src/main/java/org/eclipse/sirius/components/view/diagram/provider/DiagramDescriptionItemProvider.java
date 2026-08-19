@@ -32,8 +32,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.provider.RepresentationDescriptionItemProvider;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramDescription} object.
- * <!-- begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.DiagramDescription} object. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
@@ -78,8 +77,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     }
 
     /**
-     * This adds a property descriptor for the Arrange Layout Direction feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This adds a property descriptor for the Arrange Layout Direction feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -103,10 +101,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
+     * {@link org.eclipse.emf.edit.command.RemoveCommand} or {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -171,9 +167,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
-     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -202,20 +197,19 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+        StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__TOOLBAR, DiagramFactory.eINSTANCE.createDiagramToolbar()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__STYLE, DiagramFactory.eINSTANCE.createDiagramStyleDescription()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES, DiagramFactory.eINSTANCE.createConditionalDiagramStyle()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultDiagramPalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, studioDefaultToolsFactory.createDefaultDiagramPalette()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE, DiagramFactory.eINSTANCE.createGroupPalette()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS, DiagramFactory.eINSTANCE.createNodeDecoratorDescription()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS, DiagramFactory.eINSTANCE.createSemanticDecoratorDescription()));
@@ -225,8 +219,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         var style = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         style.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeChild.setStyle(style);
-        nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
-        nodeChild.setInsideLabel(defaultToolsFactory.createDefaultInsideLabelDescription());
+        nodeChild.setPalette(studioDefaultToolsFactory.createDefaultNodePalette());
+        nodeChild.setInsideLabel(studioDefaultToolsFactory.createDefaultInsideLabelDescription());
 
         var defaultAction = DiagramFactory.eINSTANCE.createAction();
         defaultAction.setName("HideAction");
@@ -243,7 +237,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         edgeChild.setName("Edge");
         EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         edgeChild.setStyle(newEdgeStyle);
-        edgeChild.setPalette(defaultToolsFactory.createDefaultEdgePalette());
+        edgeChild.setPalette(studioDefaultToolsFactory.createDefaultEdgePalette());
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));
     }
 
