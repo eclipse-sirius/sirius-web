@@ -13,6 +13,7 @@
 import { DataExtension, useData } from '@eclipse-sirius/sirius-components-core';
 import { PaletteContextProvider } from '@eclipse-sirius/sirius-components-palette';
 import { useRef } from 'react';
+import { TreeItemToolExecutorContextProvider } from '../treeitems/palette/TreeItemToolExecutorContext';
 import { Tree } from '../trees/Tree';
 import { TreeContext } from '../trees/TreeContext';
 import { GQLTree, TreeConverter, TreeViewProps } from './TreeView.types';
@@ -45,24 +46,26 @@ export const TreeView = ({
   return (
     <div data-testid={dataTestId} ref={treeContainerRef}>
       <PaletteContextProvider>
-        <TreeContext.Provider value={{ treeContainerRef: treeContainerRef }}>
-          <Tree
-            editingContextId={editingContextId}
-            tree={convertedTree}
-            expanded={expanded}
-            maxDepth={maxDepth}
-            onExpandedElementChange={onExpandedElementChange}
-            readOnly={readOnly}
-            selectTreeItems={selectTreeItems}
-            markedItemIds={markedItemIds}
-            textToFilter={textToFilter}
-            textToHighlight={textToHighlight}
-            treeItemActionRender={treeItemActionRender}
-            onTreeItemClick={onTreeItemClick}
-            selectedTreeItemIds={selectedTreeItemIds}
-            useTreePalette={useTreePalette}
-          />
-        </TreeContext.Provider>
+        <TreeItemToolExecutorContextProvider>
+          <TreeContext.Provider value={{ treeContainerRef: treeContainerRef }}>
+            <Tree
+              editingContextId={editingContextId}
+              tree={convertedTree}
+              expanded={expanded}
+              maxDepth={maxDepth}
+              onExpandedElementChange={onExpandedElementChange}
+              readOnly={readOnly}
+              selectTreeItems={selectTreeItems}
+              markedItemIds={markedItemIds}
+              textToFilter={textToFilter}
+              textToHighlight={textToHighlight}
+              treeItemActionRender={treeItemActionRender}
+              onTreeItemClick={onTreeItemClick}
+              selectedTreeItemIds={selectedTreeItemIds}
+              useTreePalette={useTreePalette}
+            />
+          </TreeContext.Provider>
+        </TreeItemToolExecutorContextProvider>
       </PaletteContextProvider>
     </div>
   );

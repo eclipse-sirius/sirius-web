@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2026 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,18 +10,19 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLFetchTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 
-export interface UseInvokeFetchContextMenuEntryValue {
-  invokeFetchContextMenuEntry: (
+import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
+
+export interface TreeItemToolExecutorContextValue {
+  invokeTreeItemTool: (
     editingContextId: string,
     treeId: string,
     treeItemId: string,
-    menuEntry: GQLFetchTreeItemContextMenuEntry,
+    tool: GQLTool,
     onClick: () => void
   ) => void;
 }
 
-export interface UseInvokeFetchContextMenuEntryState {
-  onClick: () => void;
+export interface TreeItemToolExecutorContextProviderProps {
+  children?: React.ReactNode;
 }
