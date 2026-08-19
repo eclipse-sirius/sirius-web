@@ -13,10 +13,22 @@
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { treeItemContextMenuEntryOverrideExtensionPoint } from './TreeItemContextMenuEntryExtensionPoints';
 import { TreeItemContextMenuOverrideContribution } from './TreeItemContextMenuEntryExtensionPoints.types';
-import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
+import {
+  GQLFetchTreeItemContextMenuEntry,
+  GQLSingleClickTreeItemContextMenuEntry,
+  GQLTreeItemContextMenuEntry,
+} from './useContextMenuEntries.types';
 import { UseInvokeContextMenuEntryValue } from './useInvokeContextMenuEntry.types';
 import { useInvokeFetchContextMenuEntry } from './useInvokeFetchContextMenuEntry';
 import { useInvokeSingleClickContextMenuEntry } from './useInvokeSingleClickContextMenuEntry';
+
+export const isFetchTreeItemContextMenuEntry = (
+  tool: GQLTreeItemContextMenuEntry
+): tool is GQLFetchTreeItemContextMenuEntry => tool.__typename === 'FetchTreeItemContextMenuEntry';
+
+export const isSingleClickTreeItemContextMenuEntry = (
+  tool: GQLTreeItemContextMenuEntry
+): tool is GQLSingleClickTreeItemContextMenuEntry => tool.__typename === 'SingleClickTreeItemContextMenuEntry';
 
 export const useInvokeContextMenuEntry = (): UseInvokeContextMenuEntryValue => {
   const { data: treeItemContextMenuOverrideContributions } = useData<TreeItemContextMenuOverrideContribution[]>(
@@ -33,9 +45,9 @@ export const useInvokeContextMenuEntry = (): UseInvokeContextMenuEntryValue => {
     menuEntry: GQLTreeItemContextMenuEntry,
     onClick: () => void
   ) => {
-    if (menuEntry.__typename === 'FetchTreeItemContextMenuEntry') {
+    if (isFetchTreeItemContextMenuEntry(menuEntry)) {
       invokeFetchContextMenuEntry(editingContextId, treeId, treeItemId, menuEntry, onClick);
-    } else if (menuEntry.__typename === 'SingleClickTreeItemContextMenuEntry') {
+    } else if (isSingleClickTreeItemContextMenuEntry(menuEntry)) {
       invokeSingleClickContextMenuEntry(editingContextId, treeId, treeItemId, menuEntry, onClick);
     }
   };
