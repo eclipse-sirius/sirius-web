@@ -11,8 +11,6 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
-
 export interface UseContextMenuEntriesValue {
   contextMenuEntries: GQLTreeItemContextMenuEntry[];
   loading: boolean;
@@ -44,14 +42,19 @@ export interface GQLGetAllContextMenuEntriesRepresentationDescription {
   contextMenu: GQLTreeItemContextMenuEntry[];
 }
 
-export interface GQLTreeItemContextMenuEntry extends GQLTool {
-  __typename: string;
+export interface GQLTreeItemContextMenuEntry {
   id: string;
   label: string;
   iconURL: string[];
-  withImpactAnalysis: boolean;
   keyBindings: GQLKeyBinding[];
+  __typename: string;
 }
+
+export interface GQLSingleClickTreeItemContextMenuEntry extends GQLTreeItemContextMenuEntry {
+  withImpactAnalysis: boolean;
+}
+
+export interface GQLFetchTreeItemContextMenuEntry extends GQLTreeItemContextMenuEntry {}
 
 export interface GQLKeyBinding {
   isCtrl: boolean;

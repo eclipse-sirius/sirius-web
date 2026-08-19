@@ -20,7 +20,15 @@ export * from './treeitems/context-menu/TreeItemContextMenu.types';
 export * from './treeitems/context-menu/TreeItemContextMenuEntry.types';
 export * from './treeitems/context-menu/TreeItemContextMenuEntryExtensionPoints';
 export * from './treeitems/context-menu/TreeItemContextMenuEntryExtensionPoints.types';
-export { type GQLTreeItemContextMenuEntry } from './treeitems/context-menu/useContextMenuEntries.types';
+export {
+  type GQLFetchTreeItemContextMenuEntry,
+  type GQLSingleClickTreeItemContextMenuEntry,
+  type GQLTreeItemContextMenuEntry,
+} from './treeitems/context-menu/useContextMenuEntries.types';
+export {
+  isFetchTreeItemContextMenuEntry,
+  isSingleClickTreeItemContextMenuEntry,
+} from './treeitems/context-menu/useInvokeContextMenuEntry';
 export * from './treeitems/filterTreeItem';
 export { TreePaletteContext } from './treeitems/palette/contexts/TreePaletteContext';
 export type { TreePaletteContextValue } from './treeitems/palette/contexts/TreePaletteContext.types';

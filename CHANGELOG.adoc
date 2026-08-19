@@ -44,6 +44,7 @@ A new GraphQL schema `palette.graphqls` has been added.
 - https://github.com/eclipse-sirius/sirius-web/issues/6788[#6788] [tree] The `TreeDescriptionPaletteDataFetcher` does not retrieve all tools from the implementations of `ITreeItemPaletteProvider`, you'll need a custom `ITreeItemPaletteProvider` in order to add your own tool.
 - https://github.com/eclipse-sirius/sirius-web/issues/6815[#6815] [tree] In case a tree item palette provider is available for a representation, the `ITreeItemContextMenuEntryProvider` contributions will be ignored.
 A tree item palette provider is now provided for the explorer which will thus now ignore `ITreeItemContextMenuEntryProvider`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6835[#6835] [tree] `withImpactAnalysis` attribute has been removed from `GQLFetchTreeItemContextMenuEntry` type, it's available on `GQLSingleClickTreeItemContextMenuEntry`.
 
 
 === Dependency update
@@ -78,6 +79,8 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6769[#6769] [diagram] Resize free-form parent nodes to contain child nodes moved partially outside their bounds.
 - https://github.com/eclipse-sirius/sirius-web/issues/6770[#6770] [diagram] Prevent hidden child nodes from affecting the resize of their free-form parent.
 - https://github.com/eclipse-sirius/sirius-web/issues/6801[#6801] [diagram] Improve lasso selection to only include a single node as "last selected" instead of several ones when they are aligned.
+- https://github.com/eclipse-sirius/sirius-web/issues/6835[#6835] [tree] Fix an issue where tree item tools declared from a view dsl were not executed correctly
+
 
 === New Features
 

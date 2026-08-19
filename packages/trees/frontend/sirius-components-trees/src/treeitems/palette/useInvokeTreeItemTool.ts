@@ -12,7 +12,10 @@
  *******************************************************************************/
 import { useData } from '@eclipse-sirius/sirius-components-core';
 import { GQLTool } from '@eclipse-sirius/sirius-components-palette';
-import { GQLTreeItemContextMenuEntry } from '../context-menu/useContextMenuEntries.types';
+import {
+  GQLFetchTreeItemContextMenuEntry,
+  GQLSingleClickTreeItemContextMenuEntry,
+} from '../context-menu/useContextMenuEntries.types';
 import { treeItemContextMenuEntryOverrideExtensionPoint } from './../context-menu/TreeItemContextMenuEntryExtensionPoints';
 import { TreeItemContextMenuOverrideContribution } from './../context-menu/TreeItemContextMenuEntryExtensionPoints.types';
 import { useInvokeFetchContextMenuEntry } from './../context-menu/useInvokeFetchContextMenuEntry';
@@ -36,17 +39,15 @@ export const useInvokeTreeItemTool = (): UseInvokeTreeItemToolValue => {
     onClick: () => void
   ) => {
     if (isFetchTreeItemTool(tool)) {
-      const menuEntry: GQLTreeItemContextMenuEntry = {
+      const menuEntry: GQLFetchTreeItemContextMenuEntry = {
         ...tool,
-        withImpactAnalysis: false,
         __typename: 'FetchTreeItemContextMenuEntry',
       };
       invokeFetchContextMenuEntry(editingContextId, treeId, treeItemId, menuEntry, onClick);
     } else if (isSingleClickTreeItemTool(tool)) {
-      const withImpactAnalysis = isSingleClickTreeItemTool(tool) && tool.withImpactAnalysis;
-      const menuEntry: GQLTreeItemContextMenuEntry = {
+      const menuEntry: GQLSingleClickTreeItemContextMenuEntry = {
         ...tool,
-        withImpactAnalysis,
+        withImpactAnalysis: tool.withImpactAnalysis,
         __typename: 'SingleClickTreeItemContextMenuEntry',
       };
       invokeSingleClickContextMenuEntry(editingContextId, treeId, treeItemId, menuEntry, onClick);
@@ -61,16 +62,21 @@ export const useInvokeTreeItemTool = (): UseInvokeTreeItemToolValue => {
     onClick: () => void
   ) => {
     const menuEntryIsOverridden = treeItemContextMenuOverrideContributions.some((contribution) => {
-      if (isSingleClickTreeItemTool(tool) || isFetchTreeItemTool(tool)) {
-        const withImpactAnalysis = isSingleClickTreeItemTool(tool) && tool.withImpactAnalysis;
-        const menuEntry: GQLTreeItemContextMenuEntry = {
+      if (isSingleClickTreeItemTool(tool)) {
+        const menuEntry: GQLSingleClickTreeItemContextMenuEntry = {
           ...tool,
-          withImpactAnalysis,
-          keyBindings: tool.keyBindings,
+          withImpactAnalysis: tool.withImpactAnalysis,
+          __typename: 'SingleClickTreeItemContextMenuEntry',
+        };
+        return contribution.canHandle(menuEntry);
+      } else if (isFetchTreeItemTool(tool)) {
+        const menuEntry: GQLFetchTreeItemContextMenuEntry = {
+          ...tool,
           __typename: 'FetchTreeItemContextMenuEntry',
         };
-        contribution.canHandle(menuEntry);
+        return contribution.canHandle(menuEntry);
       }
+      return false;
     });
 
     if (menuEntryIsOverridden) {

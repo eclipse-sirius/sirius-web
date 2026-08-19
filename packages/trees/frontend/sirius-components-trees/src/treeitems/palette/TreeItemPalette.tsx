@@ -12,12 +12,13 @@
  *******************************************************************************/
 
 import { GQLTool, Palette, PaletteExtensionSection, usePalette } from '@eclipse-sirius/sirius-components-palette';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ShowInSection } from './ShowInSection';
 import { TreeItemPaletteProps } from './TreeItemPalette.types';
+import { TreeItemToolExecutorContext } from './TreeItemToolExecutorContext';
+import { TreeItemToolExecutorContextValue } from './TreeItemToolExecutorContext.types';
 import { TreePaletteContext } from './contexts/TreePaletteContext';
-import { useInvokeTreeItemTool } from './useInvokeTreeItemTool';
 import { useTreeItemPaletteContents } from './useTreeItemPaletteContents';
 import { GQLFetchTreeItemTool, GQLSingleClickTreeItemTool } from './useTreeItemPaletteContents.types';
 
@@ -45,7 +46,7 @@ export const TreeItemPalette = ({
 }: TreeItemPaletteProps) => {
   const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'treePalette' });
   const { loading, palette } = useTreeItemPaletteContents(editingContextId, treeId, treeItem.id);
-  const { invokeTreeItemTool } = useInvokeTreeItemTool();
+  const { invokeTreeItemTool } = useContext<TreeItemToolExecutorContextValue>(TreeItemToolExecutorContext);
   const { hidePalette } = usePalette();
 
   const [paletteEl, setPaletteEl] = React.useState<HTMLDivElement | null>(null);
