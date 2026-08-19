@@ -86,7 +86,7 @@ Contributions have to return null in their component if they are not candidate o
 For that, a new GraphQl field `DiagramDescription#connectorPalette(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): Palette!` has been added to retrieve the palette of the connector tool.
 - https://github.com/eclipse-sirius/sirius-web/issues/6788[#6788] [tree] Introduce GraphQL `palette` field on `TreeDescription` type, added both type `FetchTreeItemTool` & `SingleClickTreeItemTool` that implements `ITool`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6815[#6815] [tree] Add `ITreeItemPaletteProvider` interface in order to provide a tree item palette at once
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6826[#6826] [tree] Use the `palette` query on `TreeDescription` to render the tree item palette.
 
 
 === Improvements

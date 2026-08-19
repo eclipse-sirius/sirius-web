@@ -11,24 +11,21 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
-import {
-  GQLPalette,
-  GQLTool,
-  Palette,
-  PaletteExtensionSection,
-  usePalette,
-} from '@eclipse-sirius/sirius-components-palette';
+import { GQLTool, Palette, PaletteExtensionSection, usePalette } from '@eclipse-sirius/sirius-components-palette';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useContextMenuEntries } from '../context-menu/useContextMenuEntries';
-import { GQLTreeItemContextMenuEntry } from '../context-menu/useContextMenuEntries.types';
-import { useInvokeContextMenuEntry } from '../context-menu/useInvokeContextMenuEntry';
 import { ShowInSection } from './ShowInSection';
 import { TreeItemPaletteProps } from './TreeItemPalette.types';
 import { TreePaletteContext } from './contexts/TreePaletteContext';
+import { useInvokeTreeItemTool } from './useInvokeTreeItemTool';
+import { useTreeItemPaletteContents } from './useTreeItemPaletteContents';
+import { GQLFetchTreeItemTool, GQLSingleClickTreeItemTool } from './useTreeItemPaletteContents.types';
 
-const isTreeItemContextMenuEntry = (tool: GQLTool): tool is GQLTreeItemContextMenuEntry =>
-  tool.__typename === 'TreeItemContextMenuEntry';
+export const isFetchTreeItemTool = (tool: GQLTool): tool is GQLFetchTreeItemTool =>
+  tool.__typename === 'FetchTreeItemTool';
+
+export const isSingleClickTreeItemTool = (tool: GQLTool): tool is GQLSingleClickTreeItemTool =>
+  tool.__typename === 'SingleClickTreeItemTool';
 
 export const TREE_REPRESENTATION_KIND = 'tree';
 
@@ -47,8 +44,8 @@ export const TreeItemPalette = ({
   onClose,
 }: TreeItemPaletteProps) => {
   const { t } = useTranslation('sirius-components-trees', { keyPrefix: 'treePalette' });
-  const { loading, contextMenuEntries } = useContextMenuEntries(editingContextId, treeId, treeItem.id, false);
-  const { invokeContextMenuEntry } = useInvokeContextMenuEntry();
+  const { loading, palette } = useTreeItemPaletteContents(editingContextId, treeId, treeItem.id);
+  const { invokeTreeItemTool } = useInvokeTreeItemTool();
   const { hidePalette } = usePalette();
 
   const [paletteEl, setPaletteEl] = React.useState<HTMLDivElement | null>(null);
@@ -74,21 +71,11 @@ export const TreeItemPalette = ({
     return null;
   }
 
-  const handleToolClick = (tool: GQLTool) => {
-    if (isTreeItemContextMenuEntry(tool)) {
-      invokeContextMenuEntry(editingContextId, treeId, treeItem.id, tool, () => {});
-    }
-  };
+  const handleToolClick = (tool: GQLTool) => invokeTreeItemTool(editingContextId, treeId, treeItem.id, tool, () => {});
 
   const handleOnClose = () => {
     hidePalette();
     onClose();
-  };
-
-  const palette: GQLPalette = {
-    id: treeItem.id,
-    quickAccessTools: [],
-    paletteEntries: contextMenuEntries,
   };
 
   const paletteToolListExtensions = [
@@ -100,6 +87,10 @@ export const TreeItemPalette = ({
       onClose={hidePalette}
     />,
   ];
+
+  if (!palette) {
+    return null;
+  }
 
   return (
     <TreePaletteContext.Provider
