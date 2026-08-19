@@ -22,6 +22,8 @@
 Downstream projects can use either the `ITreeItemPaletteCustomizer` to transform the palette of a tree item, the `IDiagramPaletteCustomizer` to customize the palette computed for the background of the diagram or any number of diagram elements or finally the `IDiagramConnectorPaletteCustomizer` to customize the palette computed for a connector tool mostly used to create edges between diagram elements.
 * The connector tools of a diagram (used when creating a connection between 2 nodes) are now rendered in the palette component.
 * Added props to `PaletteToolOverrideContribution` to support the search feature of the palette for contributed tools.
+* Developers can now use `ICausalityChainVisitor` to navigate causality chains and retrieve the first cause matching a given type.
+This makes it possible to reliably retrieve a relevant cause even when intermediate causes have been added to the chain.
 
 
 == Improvements
