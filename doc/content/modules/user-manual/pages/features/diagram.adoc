@@ -6,7 +6,8 @@ In {product}, diagrams offer an interactive and visual way to work with your mod
 
 image::representations/diagram-representation.png[]
 
-They let you create, view, and edit elements and relationships graphically, helping you understand the structure and behavior of your system at a glance. You focus on modeling; the available tools and rules are already configured for you.
+They let you create, view, and edit elements and relationships graphically, helping you understand the structure and behavior of your system at a glance.
+You focus on modeling; the available tools and rules are already configured for you.
 
 == What You Can Do
 
@@ -25,7 +26,7 @@ All your changes are automatically reflected in the underlying model and synchro
 
 The toolbar provides general actions for navigating and managing the diagram as a whole.
 
-[cols="10%,20%,70%", options="header"]
+[cols="10%,20%,70%",options="header"]
 |===
 | | Action | What it does
 
@@ -95,7 +96,7 @@ They are computed dynamically on the frontend side, their precise layout is not 
 When you *right-click* on an element in a diagram, a *contextual palette* appears.
 It offers quick access to actions you can apply to the selected element—or to a group of elements if you've selected several.
 
-image::contextual-palette.png[Contextual palette, width=50%,height=50%]
+image::contextual-palette.png[Contextual palette,width=50%,height=50%]
 
 Unlike the toolbar, which offers tools for managing the entire diagram, the contextual palette adapts to your selection—showing tools specific to the selected nodes, edges, or diagram.
 
@@ -107,25 +108,25 @@ Unlike the toolbar, which offers tools for managing the entire diagram, the cont
 
 ==== Tools on single element
 
-[cols="20%,20%,60%", options="header"]
+[cols="20%,20%,60%",options="header"]
 |===
 | | Tool | What it does
 
-a|image::contextual-palette-create-element.png[Create element, width=80%,height=80%]
+a|image::contextual-palette-create-element.png[Create element,width=80%,height=80%]
 | *Create element (Diagram)*
 | Add a new child or related element (e.g., create a sub-component).
 You can create new nodes from the background of the diagram by right-clicking to open the palette.
 Creation tools are grouped by category; expand a section, choose a tool, and then click where you want to place the element.
 
-a|image::manage-elements-fromElement-creation.png[Creation from Diagram Element, width=80%,height=80%]
+a|image::manage-elements-fromElement-creation.png[Creation from Diagram Element,width=80%,height=80%]
 |*Create element (in Element)*
 |To add elements inside an existing node, right-click the parent element and select the appropriate creation tool.
 
-a|image::manage-elements-creation-search.png[Search, width=80%,height=80%]
+a|image::manage-elements-creation-search.png[Search,width=80%,height=80%]
 |*Search field*
 |The palette’s search field helps you filter tools across every section when a representation defines numerous element types.
 
-a|image::contextual-palette-create-connection.png[Create element, width=50%,height=50%]
+a|image::contextual-palette-create-connection.png[Create element,width=50%,height=50%]
 | *Create an edge*
 | Add a new child or related element (e.g., create a connection).
 
@@ -208,7 +209,13 @@ When a rectangular selection starts on a node, that node and its containers are 
 Start the selection outside nodes to include containers.
 ====
 
-[cols="10%,20%,70%", options="header"]
+[NOTE]
+====
+When selecting multiple elements, you can observe that the last selected element is highlighted with a different angle-handle color.
+Most of the layout tools are relative to this last selected element.
+====
+
+[cols="10%,20%,70%",options="header"]
 |===
 | | Tool | What it does
 
@@ -219,11 +226,11 @@ When all selected nodes are already pinned, the tool becomes *Unpin* and unpins 
 
 a|image::contextual-palette-align-horizontal.png[Align horizontally]
 | *Align horizontally*
-| Aligns selected elements horizonally to the left, center or right.
+| Aligns selected elements horizontally to the left, center or right, relative to the last selected element.
 
 a|image::contextual-palette-align-vertical.png[Align vertically]
 | *Align vertically*
-| Aligns selected elements vertically to the top, middle or bottom.
+| Aligns selected elements vertically to the top, middle or bottom, relative to the last selected element.
 
 a|image::contextual-palette-distribute.png[Distribute]
 | *Distribute*
@@ -246,7 +253,7 @@ a|image::contextual-palette-make-same-size.png[Make same size]
 
 The toolbar offers visual aids for precise positioning:
 
-image::representations/helper-lines-icon.png[Helper lines toggle, width=120]
+image::representations/helper-lines-icon.png[Helper lines toggle,width=120]
 
 When helper lines are enabled, guides appear as you drag a node so you can align borders or centers perfectly.
 Nodes snap to these guides automatically:
@@ -293,7 +300,6 @@ image::representations/editable-edge-path.png[Editable edge]
 * Drag the gray midpoints to insert a new bendpoint.
 * Double-click on a bendpoint to remove it.
 * image::representations/editable-edge-reset-tool.png[Reset edge path] Use the palette action to restore the original path when needed:
-
 
 == Drag and drop
 
