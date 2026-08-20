@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -50,7 +50,10 @@ const createRootObjectMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -198,8 +201,7 @@ export const NewRootObjectModal = ({ editingContextId, item, onObjectCreated, on
       if (createRootObjectData) {
         const { createRootObject } = createRootObjectData;
         if (isErrorPayload(createRootObject)) {
-          const { message } = createRootObject;
-          addMessages(message);
+          addMessages(createRootObject.messages);
         } else if (isCreateRootObjectSuccessPayload(createRootObject)) {
           const { object } = createRootObject;
           onObjectCreated({ entries: [object] });

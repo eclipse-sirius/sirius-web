@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,10 @@ const deleteProjectMutation = gql`
     deleteProject(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -42,18 +45,15 @@ export const useDeleteProject = (): UseDeleteProjectValue => {
     GQLDeleteProjectMutationData,
     GQLDeleteProjectMutationVariables
   >(deleteProjectMutation);
-
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useDeleteProject' });
+
   useEffect(() => {
+    if (data && isErrorPayload(data.deleteProject)) {
+      addMessages(data.deleteProject.messages);
+    }
     if (error) {
       addErrorMessage(t('errors.unexpected'));
-    }
-    if (data) {
-      const { deleteProject } = data;
-      if (isErrorPayload(deleteProject)) {
-        addErrorMessage(deleteProject.message);
-      }
     }
   }, [data, error]);
 

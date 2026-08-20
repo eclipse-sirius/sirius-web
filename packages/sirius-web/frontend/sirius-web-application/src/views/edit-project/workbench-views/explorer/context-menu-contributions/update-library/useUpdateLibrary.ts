@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,14 +12,10 @@
  *******************************************************************************/
 
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
-import { useEffect } from 'react';
+import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import {
-  GQLErrorPayload,
-  GQLSuccessPayload,
   GQLUpdateLibraryMutationData,
   GQLUpdateLibraryMutationVariables,
-  GQLUpdateLibraryPayload,
   UseUpdateLibraryValue,
 } from './useUpdateLibrary.types';
 
@@ -34,7 +30,6 @@ const updateLibraryMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
         messages {
           level
           body
@@ -44,33 +39,11 @@ const updateLibraryMutation = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLUpdateLibraryPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-
-const isSuccessPayload = (payload: GQLUpdateLibraryPayload): payload is GQLSuccessPayload =>
-  payload.__typename === 'SuccessPayload';
-
 export const useUpdateLibrary = (): UseUpdateLibraryValue => {
-  const { addErrorMessage, addMessages } = useMultiToast();
-  const [performUpdateLibrary, { loading, data, error }] = useMutation<
-    GQLUpdateLibraryMutationData,
-    GQLUpdateLibraryMutationVariables
-  >(updateLibraryMutation);
-
-  useEffect(() => {
-    if (data) {
-      const { updateLibrary } = data;
-      if (isErrorPayload(updateLibrary)) {
-        addMessages(updateLibrary.messages);
-      }
-      if (isSuccessPayload(updateLibrary)) {
-        addMessages(updateLibrary.messages);
-      }
-    }
-    if (error) {
-      addErrorMessage('An unexpected error has occurred, please refresh the page');
-    }
-  }, [error, data]);
+  const [performUpdateLibrary, result] = useMutation<GQLUpdateLibraryMutationData, GQLUpdateLibraryMutationVariables>(
+    updateLibraryMutation
+  );
+  useReporting(result, (payload) => payload.updateLibrary);
 
   const updateLibrary = (editingContextId: string, libraryId: string) => {
     const variables: GQLUpdateLibraryMutationVariables = {
@@ -83,6 +56,7 @@ export const useUpdateLibrary = (): UseUpdateLibraryValue => {
     performUpdateLibrary({ variables });
   };
 
+  const { loading, data } = result;
   return {
     updateLibrary,
     loading,
