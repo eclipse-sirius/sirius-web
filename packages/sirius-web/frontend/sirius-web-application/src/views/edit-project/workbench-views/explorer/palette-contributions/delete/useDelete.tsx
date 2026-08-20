@@ -11,15 +11,12 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useDeletionConfirmationDialog, useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useDeletionConfirmationDialog, useReporting } from '@eclipse-sirius/sirius-components-core';
 import { GQLTreeItem } from '@eclipse-sirius/sirius-components-trees';
-import { useEffect } from 'react';
 import {
   GQLDeleteTreeItemData,
   GQLDeleteTreeItemInput,
-  GQLDeleteTreeItemPayload,
   GQLDeleteTreeItemVariables,
-  GQLErrorPayload,
   UseDeleteValue,
 } from './useDelete.types';
 
@@ -27,22 +24,29 @@ const deleteTreeItemMutation = gql`
   mutation deleteTreeItem($input: DeleteTreeItemInput!) {
     deleteTreeItem(input: $input) {
       __typename
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
 `;
 
-const isErrorPayload = (payload: GQLDeleteTreeItemPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-
 export const useDelete = (): UseDeleteValue => {
-  const [deleteTreeItem, { data, error }] = useMutation<GQLDeleteTreeItemData, GQLDeleteTreeItemVariables>(
+  const [deleteTreeItem, result] = useMutation<GQLDeleteTreeItemData, GQLDeleteTreeItemVariables>(
     deleteTreeItemMutation
   );
-  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
+  useReporting(result, (payload) => payload.deleteTreeItem);
 
+  const { showDeletionConfirmation } = useDeletionConfirmationDialog();
   const handleDelete = (editingContextId: string, treeId: string, item: GQLTreeItem) => {
     if (item.deletable) {
       const input: GQLDeleteTreeItemInput = {
@@ -56,19 +60,6 @@ export const useDelete = (): UseDeleteValue => {
       });
     }
   };
-
-  const { addErrorMessage } = useMultiToast();
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An error has occurred while executing this action, please contact the server administrator');
-    }
-    if (data) {
-      const { deleteTreeItem } = data;
-      if (isErrorPayload(deleteTreeItem)) {
-        addErrorMessage(deleteTreeItem.message);
-      }
-    }
-  }, [error, data]);
 
   return {
     handleDelete,

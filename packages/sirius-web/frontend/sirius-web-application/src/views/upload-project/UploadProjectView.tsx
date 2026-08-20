@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import { sendFile } from '../../core/sendFile';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { useCurrentViewer } from '../../viewer/useCurrentViewer';
 import {
+  GQLErrorPayload,
   GQLUploadProjectPayload,
   GQLUploadProjectSuccessPayload,
   UploadProjectViewState,
@@ -40,7 +41,10 @@ const uploadProjectMutation = gql`
         }
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -86,10 +90,12 @@ const useUploadProjectViewStyles = makeStyles()((theme) => ({
 
 const isUploadProjectSuccessPayload = (payload: GQLUploadProjectPayload): payload is GQLUploadProjectSuccessPayload =>
   payload && payload.__typename === 'UploadProjectSuccessPayload';
+const isErrorPayload = (payload: GQLUploadProjectPayload): payload is GQLErrorPayload =>
+  payload && payload.__typename === 'ErrorPayload';
 
 export const UploadProjectView = () => {
   const { classes } = useUploadProjectViewStyles();
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'uploadProjectView' });
   const [state, setState] = useState<UploadProjectViewState>({
     file: null,
@@ -138,12 +144,12 @@ export const UploadProjectView = () => {
             newProjectId: uploadProject.project.id,
             loading: false,
           }));
-        } else {
+        } else if (isErrorPayload(uploadProject)) {
           setState((prevState) => ({
             ...prevState,
             loading: false,
           }));
-          addErrorMessage(uploadProject.message);
+          addMessages(uploadProject.messages);
         }
       }
     } catch (exception) {

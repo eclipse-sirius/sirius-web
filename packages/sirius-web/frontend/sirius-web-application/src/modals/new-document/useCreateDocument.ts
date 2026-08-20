@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,36 +29,35 @@ const createDocumentMutation = gql`
     createDocument(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
 `;
-
-const isErrorPayload = (payload: GQLCreateDocumentPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
 const isCreateDocumentSuccessPayload = (
   payload: GQLCreateDocumentPayload
 ): payload is GQLCreateDocumentSuccessPayload => payload.__typename === 'CreateDocumentSuccessPayload';
+
+const isErrorPayload = (payload: GQLCreateDocumentPayload): payload is GQLErrorPayload =>
+  payload.__typename === 'ErrorPayload';
 
 export const useCreateDocument = (): UseCreateDocumentValue => {
   const [performDocumentCreation, { data, loading, error }] = useMutation<
     GQLCreateDocumentMutationData,
     GQLCreateDocumentMutationVariables
   >(createDocumentMutation);
-
+  const { addErrorMessage, addMessages } = useMultiToast();
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useCreateDocument' });
 
-  const { addErrorMessage, addMessages } = useMultiToast();
   useEffect(() => {
     if (error) {
       addErrorMessage(t('errors.unexpected'));
     }
-    if (data) {
-      const { createDocument } = data;
-      if (isErrorPayload(createDocument)) {
-        addMessages(createDocument.messages);
-      }
+    if (data && isErrorPayload(data.createDocument)) {
+      addMessages(data.createDocument.messages);
     }
   }, [data, error]);
 
