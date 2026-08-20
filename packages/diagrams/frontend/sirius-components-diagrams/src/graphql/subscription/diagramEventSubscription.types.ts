@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 import { GQLDiagram } from './diagramFragment.types';
 import { GQLPosition } from './nodeFragment.types';
 
@@ -20,7 +21,7 @@ export interface GQLDiagramEventPayload {
 }
 
 export interface GQLErrorPayload extends GQLDiagramEventPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLDiagramRefreshedEventPayload extends GQLDiagramEventPayload {

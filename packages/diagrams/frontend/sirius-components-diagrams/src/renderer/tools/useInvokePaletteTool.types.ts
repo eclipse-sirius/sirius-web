@@ -31,17 +31,16 @@ export interface GQLGetToolSectionsVariables {
   diagramElementId: string;
 }
 
-export interface GQLErrorPayload extends GQLInvokeSingleClickOnDiagramElementToolPayload {
-  message: string;
-  messages: GQLMessage[];
-}
-
 export interface GQLInvokeSingleClickOnDiagramElementToolData {
   invokeSingleClickOnDiagramElementTool: GQLInvokeSingleClickOnDiagramElementToolPayload;
 }
 
 export interface GQLInvokeSingleClickOnDiagramElementToolPayload {
   __typename: string;
+}
+
+export interface GQLErrorPayload extends GQLInvokeSingleClickOnDiagramElementToolPayload {
+  messages: GQLMessage[];
 }
 
 export interface GQLInvokeSingleClickOnDiagramElementToolSuccessPayload

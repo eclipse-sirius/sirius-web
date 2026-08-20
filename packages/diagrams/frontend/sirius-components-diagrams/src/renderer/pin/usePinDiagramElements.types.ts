@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
+import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface UsePinDiagramElements {
   pinDiagramElements: (nodeId: string[], pinned: boolean) => void;
@@ -28,14 +28,8 @@ export interface GQLPinDiagramElementVariables {
   input: GQLPinDiagramElementInput;
 }
 
-export interface GQLPinDiagramElementPayload {
-  __typename: string;
-}
-
 export interface GQLPinDiagramElementData {
   pinDiagramElement: GQLPinDiagramElementPayload;
 }
 
-export interface GQLErrorPayload extends GQLPinDiagramElementPayload {
-  messages: GQLMessage[];
-}
+export type GQLPinDiagramElementPayload = GQLErrorPayload | GQLSuccessPayload;

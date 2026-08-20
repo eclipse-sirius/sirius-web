@@ -18,7 +18,10 @@ subscription diagramEvent($input: DiagramEventInput!) {
   diagramEvent(input: $input) {
     ... on ErrorPayload {
       id
-      message
+      messages {
+        body
+        level
+      }
     }
     ... on DiagramRefreshedEventPayload {
       id
