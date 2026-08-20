@@ -17,7 +17,8 @@
 
 == New features
 
--
+* *Add the ability to customize the palette computed in a diagram or tree thanks to various post processors.
+Downstream projects can use either the `ITreeItemPaletteCustomizer` to transform the palette of a tree item, the `IDiagramPaletteCustomizer` to customize the palette computed for the background of the diagram or any number of diagram elements or finally the `IDiagramConnectorPaletteCustomizer` to customize the palette computed for a connector tool mostly used to create edges between diagram elements.
 
 
 == Improvements

@@ -15,6 +15,8 @@
 ** xref:developer-guide:api-rest.adoc[]
 ** xref:developer-guide:api-graphql.adoc[]
 * xref:developer-guide:contributor.adoc[]
+* xref:developer-guide:diagram/diagram-services.adoc[]
+* xref:developer-guide:tree/tree-services.adoc[]
 * xref:developer-guide:custom-widget.adoc[]
 * xref:developer-guide:hands-on/how-tos/how-tos.adoc[]
 ** xref:developer-guide:hands-on/how-tos/embed-sirius-components.adoc[]

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.handlers;
+package org.eclipse.sirius.components.collaborative.diagrams.palette;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetPaletteInput;
+import org.eclipse.sirius.components.collaborative.diagrams.palette.api.IDiagramPaletteCustomizer;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.palette.dto.GetPaletteSuccessPayload;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
@@ -54,15 +55,23 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
 
     private final List<IPaletteProvider> paletteProviders;
 
+    private final List<IDiagramPaletteCustomizer> diagramPaletteCustomizers;
+
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
 
-    public GetPaletteEventHandler(IRepresentationDescriptionSearchService representationDescriptionSearchService, IDiagramQueryService diagramQueryService,
-                                  List<IPaletteProvider> paletteProviders, ICollaborativeMessageService messageService, MeterRegistry meterRegistry) {
+    public GetPaletteEventHandler(
+            IRepresentationDescriptionSearchService representationDescriptionSearchService,
+            IDiagramQueryService diagramQueryService,
+            List<IPaletteProvider> paletteProviders,
+            List<IDiagramPaletteCustomizer> diagramPaletteCustomizers,
+            ICollaborativeMessageService messageService,
+            MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.paletteProviders = Objects.requireNonNull(paletteProviders);
+        this.diagramPaletteCustomizers = Objects.requireNonNull(diagramPaletteCustomizers);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -103,6 +112,15 @@ public class GetPaletteEventHandler implements IDiagramEventHandler {
                             .flatMap(Optional::stream)
                             .toList();
                     var palette = paletteProvider.handle(editingContext, diagramContext, diagramDescription, diagramElements);
+
+                    var customizers = this.diagramPaletteCustomizers.stream()
+                            .filter(customizer -> customizer.canHandle(editingContext, diagram, diagramElements))
+                            .toList();
+
+                    for (var customizer: customizers) {
+                        palette = customizer.customize(editingContext, diagram, diagramElements, palette);
+                    }
+
                     payload = new GetPaletteSuccessPayload(diagramInput.id(), palette);
                 }
             }

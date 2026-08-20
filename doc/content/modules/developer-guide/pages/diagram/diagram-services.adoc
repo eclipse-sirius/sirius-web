@@ -1,0 +1,13 @@
+= Diagram Services
+
+== Palette
+
+The palette computed in a diagram can be customized by using a service implementing either of those interfaces:
+
+- `o.e.s.c.collaborative.diagrams.palette.api.IDiagramPaletteCustomizer`
+- `o.e.s.c.collaborative.diagrams.palette.api.IDiagramConnectorPaletteCustomizer`
+
+The `IDiagramPaletteCustomizer` is used to perform any change in a palette computed for the diagram itself, any diagram element or any set of diagram elements selected.
+On the other hand, the `IDiagramConnectorPaletteCustomizer` can be used to change the palette computed while using the connector tool which is mostly used to create edges between diagram elements.
+
+A service implementing any of those interfaces can add, transform or even remove any tools, tool sections or quick access tools from the computed palette.

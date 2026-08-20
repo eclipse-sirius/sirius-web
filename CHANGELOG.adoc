@@ -87,6 +87,9 @@ For that, a new GraphQl field `DiagramDescription#connectorPalette(sourceDiagram
 - https://github.com/eclipse-sirius/sirius-web/issues/6788[#6788] [tree] Introduce GraphQL `palette` field on `TreeDescription` type, added both type `FetchTreeItemTool` & `SingleClickTreeItemTool` that implements `ITool`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6815[#6815] [tree] Add `ITreeItemPaletteProvider` interface in order to provide a tree item palette at once
 - https://github.com/eclipse-sirius/sirius-web/issues/6826[#6826] [tree] Use the `palette` query on `TreeDescription` to render the tree item palette.
+- https://github.com/eclipse-sirius/sirius-web/issues/6829[#6829] [diagram] [tree] Add the ability to customize the palette computed in a diagram or tree thanks to various post processors.
+Downstream projects can use either the `ITreeItemPaletteCustomizer` to transform the palette of a tree item, the `IDiagramPaletteCustomizer` to customize the palette computed for the background of the diagram or any number of diagram elements or finally the `IDiagramConnectorPaletteCustomizer` to customize the palette computed for a connector tool mostly used to create edges between diagram elements.
+
 
 
 === Improvements
