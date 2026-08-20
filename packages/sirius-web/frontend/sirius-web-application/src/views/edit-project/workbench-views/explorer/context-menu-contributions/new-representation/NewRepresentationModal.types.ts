@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface NewRepresentationState {
   representationDescriptions: GQLRepresentationDescriptionMetadata[];
@@ -83,5 +84,5 @@ export interface GQLRepresentationMetadata {
 }
 
 export interface GQLErrorPayload extends GQLCreateRepresentationPayload {
-  message: string;
+  messages: GQLMessage[];
 }

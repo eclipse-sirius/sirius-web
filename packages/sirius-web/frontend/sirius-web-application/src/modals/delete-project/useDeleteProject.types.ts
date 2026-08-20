@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface UseDeleteProjectValue {
   deleteProject: (projectId: string) => void;
@@ -26,7 +28,7 @@ export interface GQLDeleteProjectPayload {
 }
 
 export interface GQLErrorPayload extends GQLDeleteProjectPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLDeleteProjectMutationVariables {
