@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Selection } from '@eclipse-sirius/sirius-components-core';
+import { GQLMessage, Selection } from '@eclipse-sirius/sirius-components-core';
 
 export interface NewRootObjectModalState {
   rootObjectCreationDescriptions: GQLChildCreationDescription[];
@@ -95,5 +95,5 @@ export interface GQLObject {
 }
 
 export interface GQLErrorPayload extends GQLCreateRootObjectPayload {
-  message: string;
+  messages: GQLMessage[];
 }

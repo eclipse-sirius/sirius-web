@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,10 @@ const uploadImageMutationFile = gql`
         id
       }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -68,7 +71,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
   const { classes } = useUploadImageModalStyle();
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'uploadImageModal' });
   const { httpOrigin } = useContext<ServerContextValue>(ServerContext);
-  const { addErrorMessage } = useMultiToast();
+  const { addErrorMessage, addMessages } = useMultiToast();
 
   const [state, setState] = useState<UploadImageModalState>({
     label: '',
@@ -103,8 +106,7 @@ export const UploadImageModal = ({ projectId, onImageUploaded, onClose }: Upload
       if (data) {
         const { uploadImage } = data;
         if (isErrorPayload(uploadImage)) {
-          const { message } = uploadImage;
-          addErrorMessage(message);
+          addMessages(uploadImage.messages);
           onClose();
         } else {
           onImageUploaded();

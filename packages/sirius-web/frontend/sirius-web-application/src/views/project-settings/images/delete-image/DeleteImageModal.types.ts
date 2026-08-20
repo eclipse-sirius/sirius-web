@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
+
 export interface DeleteImageModalProps {
   imageId: string;
   onImageDeleted: () => void;
@@ -29,10 +31,4 @@ export interface GQLDeleteImageMutationData {
   deleteImage: GQLDeleteImagePayload;
 }
 
-export interface GQLDeleteImagePayload {
-  __typename: string;
-}
-
-export interface GQLErrorPayload extends GQLDeleteImagePayload {
-  message: string;
-}
+export type GQLDeleteImagePayload = GQLSuccessPayload | GQLErrorPayload;

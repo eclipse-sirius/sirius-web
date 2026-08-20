@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLSuccessPayload, useReporting } from '@eclipse-sirius/sirius-components-core';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -21,7 +21,6 @@ import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  GQLErrorPayload,
   GQLRenameImageMutationData,
   GQLRenameImageMutationVariables,
   GQLRenameImagePayload,
@@ -33,8 +32,17 @@ const renameImageMutation = gql`
   mutation renameImage($input: RenameImageInput!) {
     renameImage(input: $input) {
       __typename
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -42,11 +50,10 @@ const renameImageMutation = gql`
 
 const isNameInvalid = (name: string) => name.trim().length < 3;
 
-const isErrorPayload = (payload: GQLRenameImagePayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
+const isSuccessPayload = (payload: GQLRenameImagePayload): payload is GQLSuccessPayload =>
+  payload.__typename === 'SuccessPayload';
 
 export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, onClose }: RenameImageModalProps) => {
-  const { addErrorMessage } = useMultiToast();
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'renameImageModal' });
   const [state, setState] = useState<RenameImageModalState>({
     name: initialImageName,
@@ -60,24 +67,14 @@ export const RenameImageModal = ({ imageId, initialImageName, onImageRenamed, on
     }));
   };
 
-  const [renameImage, { loading, data, error }] = useMutation<GQLRenameImageMutationData>(renameImageMutation);
+  const [renameImage, result] = useMutation<GQLRenameImageMutationData>(renameImageMutation);
+  useReporting(result, (payload) => payload.renameImage);
+
   useEffect(() => {
-    if (!loading) {
-      if (error) {
-        addErrorMessage(error.message);
-      }
-      if (data) {
-        const { renameImage } = data;
-        if (isErrorPayload(renameImage)) {
-          const { message } = renameImage;
-          addErrorMessage(message);
-          onClose();
-        } else {
-          onImageRenamed();
-        }
-      }
+    if (result.data && isSuccessPayload(result.data.renameImage)) {
+      onImageRenamed();
     }
-  }, [loading, data, error]);
+  }, [result]);
 
   const onRenameImage = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
