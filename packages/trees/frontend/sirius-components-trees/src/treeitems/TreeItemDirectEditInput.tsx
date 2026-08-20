@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -11,16 +11,16 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { GQLSuccessPayload, useMultiToast, useReporting } from '@eclipse-sirius/sirius-components-core';
 import TextField from '@mui/material/TextField';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  GQLErrorPayload,
   GQLInitialDirectEditElementLabelData,
   GQLInitialDirectEditElementLabelVariables,
+  GQLRenameTreeItemMutationData,
+  GQLRenameTreeItemMutationVariables,
   GQLRenameTreeItemPayload,
-  GQLSuccessPayload,
   TreeItemDirectEditInputProps,
   TreeItemDirectEditInputState,
 } from './TreeItemDirectEditInput.types';
@@ -29,8 +29,17 @@ const renameTreeItemMutation = gql`
   mutation renameTreeItem($input: RenameTreeItemInput!) {
     renameTreeItem(input: $input) {
       __typename
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -52,8 +61,6 @@ const initialDirectEditElementLabeQuery = gql`
   }
 `;
 
-const isErrorPayload = (payload: GQLRenameTreeItemPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
 const isSuccessPayload = (payload: GQLRenameTreeItemPayload): payload is GQLSuccessPayload =>
   payload.__typename === 'SuccessPayload';
 
@@ -109,33 +116,25 @@ export const TreeItemDirectEditInput = ({
     return () => {};
   }, [initialLabelTreeItemItemError, initialLabelTreeItemItemData]);
 
-  const [renameTreeItem, { data: renameTreeItemData, error: renameTreeItemError }] =
-    useMutation(renameTreeItemMutation);
+  const [renameTreeItem, result] = useMutation<GQLRenameTreeItemMutationData, GQLRenameTreeItemMutationVariables>(
+    renameTreeItemMutation
+  );
+  useReporting(result, (payload) => payload.renameTreeItem);
 
   useEffect(() => {
-    if (renameTreeItemError) {
-      addErrorMessage(t('errors.unexpected'));
+    if (result.data && isSuccessPayload(result.data.renameTreeItem)) {
+      onClose();
     }
-    if (renameTreeItemData) {
-      const { renameTreeItem } = renameTreeItemData;
-      if (isErrorPayload(renameTreeItem)) {
-        addErrorMessage(renameTreeItem.message);
-      } else if (isSuccessPayload(renameTreeItem)) {
-        if (renameTreeItem.__typename === 'SuccessPayload') {
-          onClose();
-        }
-      }
-    }
-  }, [renameTreeItemData, renameTreeItemError]);
+  }, [result.data]);
 
   const doRename = () => {
     renameTreeItem({
       variables: {
         input: {
           id: crypto.randomUUID(),
-          editingContextId: editingContextId,
+          editingContextId,
           representationId: treeId,
-          treeItemId: treeItemId,
+          treeItemId,
           newLabel: state.newLabel,
         },
       },

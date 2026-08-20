@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+import { GQLErrorPayload, GQLSuccessPayload } from '@eclipse-sirius/sirius-components-core';
 
 export interface TreeItemDirectEditInputProps {
   editingContextId: string;
@@ -50,14 +52,20 @@ export interface GQLRepresentationDescription {
   initialDirectEditTreeItemLabel: string;
 }
 
-export interface GQLRenameTreeItemPayload {
-  __typename: string;
+export interface GQLRenameTreeItemMutationVariables {
+  input: GQLRenameTreeItemInput;
 }
 
-export interface GQLSuccessPayload extends GQLRenameTreeItemPayload {
-  message: string;
+export interface GQLRenameTreeItemInput {
+  id: string;
+  editingContextId: string;
+  representationId: string;
+  treeItemId: string;
+  newLabel: string;
 }
 
-export interface GQLErrorPayload extends GQLRenameTreeItemPayload {
-  message: string;
+export interface GQLRenameTreeItemMutationData {
+  renameTreeItem: GQLRenameTreeItemPayload;
 }
+
+export type GQLRenameTreeItemPayload = GQLSuccessPayload | GQLErrorPayload;

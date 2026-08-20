@@ -11,16 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { gql, useMutation } from '@apollo/client';
-import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
+import { useReporting } from '@eclipse-sirius/sirius-components-core';
 import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-impactanalysis';
 import { useEffect, useState } from 'react';
 import { useInvokeImpactAnalysis } from './impact-analysis/useTreeImpactAnalysis';
 import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 import {
-  GQLErrorPayload,
   GQLInvokeSingleClickTreeItemContextMenuEntryData,
   GQLInvokeSingleClickTreeItemContextMenuEntryInput,
-  GQLInvokeSingleClickTreeItemContextMenuEntryPayload,
   GQLInvokeSingleClickTreeItemContextMenuEntryVariables,
   UseInvokeSingleClickContextMenuEntryState,
   UseInvokeSingleClickContextMenuEntryValue,
@@ -30,40 +28,33 @@ const invokeSingleClickTreeItemContextMenuEntryMutation = gql`
   mutation invokeSingleClickTreeItemContextMenuEntry($input: InvokeSingleClickTreeItemContextMenuEntryInput!) {
     invokeSingleClickTreeItemContextMenuEntry(input: $input) {
       __typename
+      ... on SuccessPayload {
+        messages {
+          body
+          level
+        }
+      }
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
 `;
 
-const isErrorPayload = (payload: GQLInvokeSingleClickTreeItemContextMenuEntryPayload): payload is GQLErrorPayload =>
-  payload.__typename === 'ErrorPayload';
-
 export const useInvokeSingleClickContextMenuEntry = (): UseInvokeSingleClickContextMenuEntryValue => {
-  const { addMessages, addErrorMessage } = useMultiToast();
-
   const [state, setState] = useState<UseInvokeSingleClickContextMenuEntryState>({
     currentEntry: null,
     onEntryExecution: () => {},
   });
 
-  const [invokeSingleClickTreeItemContextMenuEntry, { data, error }] = useMutation<
+  const [invokeSingleClickTreeItemContextMenuEntry, result] = useMutation<
     GQLInvokeSingleClickTreeItemContextMenuEntryData,
     GQLInvokeSingleClickTreeItemContextMenuEntryVariables
   >(invokeSingleClickTreeItemContextMenuEntryMutation);
-
-  useEffect(() => {
-    if (error) {
-      addErrorMessage('An error has occurred while executing this action, please contact the server administrator');
-    }
-    if (data) {
-      const { invokeSingleClickTreeItemContextMenuEntry } = data;
-      if (isErrorPayload(invokeSingleClickTreeItemContextMenuEntry)) {
-        addMessages(invokeSingleClickTreeItemContextMenuEntry.messages);
-      }
-    }
-  }, [error, data]);
+  useReporting(result, (payload) => payload.invokeSingleClickTreeItemContextMenuEntry);
 
   const invokeEntry = (
     editingContextId: string,
