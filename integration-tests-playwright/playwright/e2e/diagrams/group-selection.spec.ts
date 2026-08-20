@@ -11,10 +11,10 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { expect, test } from '@playwright/test';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
-import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 
 test.describe('diagram - group selection', () => {
   let projectId;
@@ -66,5 +66,47 @@ test.describe('diagram - group selection', () => {
     await playwrightNode4.click();
     expect(await playwrightNode3.isLastOneSelected());
     expect(await playwrightNode1.isNotLastOneSelected());
+  });
+
+  test('when selecting several nodes with a rectangle, only the node closest to the cursor is highlighted', async ({
+    page,
+  }) => {
+    const playwrightNode1 = new PlaywrightNode(page, 'Entity1 - Resize Both');
+    const playwrightNode2 = new PlaywrightNode(page, 'Entity2 - Resize None');
+    const playwrightNode3 = new PlaywrightNode(page, 'Entity3 - Resize HORIZONTAL');
+    const playwrightNode4 = new PlaywrightNode(page, 'Entity4 - Resize VERTICAL');
+
+    await new PlaywrightDiagram(page).hideDebugPanel();
+
+    await playwrightNode1.waitForAnimationToFinish();
+    await playwrightNode3.waitForAnimationToFinish();
+
+    const playwrightNode1BoundingBox = await playwrightNode1.getDOMBoundingBox();
+    const playwrightNode3BoundingBox = await playwrightNode3.getDOMBoundingBox();
+
+    const rectangleStart = {
+      x: playwrightNode1BoundingBox.x - 10,
+      y: playwrightNode1BoundingBox.y - 10,
+    };
+    const rectangleEnd = {
+      x: playwrightNode3BoundingBox.x + playwrightNode3BoundingBox.width / 2,
+      y: playwrightNode3BoundingBox.y + playwrightNode3BoundingBox.height + 10,
+    };
+
+    await page.keyboard.down('Shift');
+    await page.mouse.move(rectangleStart.x, rectangleStart.y);
+    await page.mouse.down();
+    await page.mouse.move(rectangleEnd.x, rectangleEnd.y, { steps: 10 });
+    await page.mouse.up();
+    await page.keyboard.up('Shift');
+
+    await expect(playwrightNode1.nodeLocator).toContainClass('selected');
+    await expect(playwrightNode2.nodeLocator).toContainClass('selected');
+    await expect(playwrightNode3.nodeLocator).toContainClass('selected');
+    await expect(playwrightNode4.nodeLocator).not.toContainClass('selected');
+
+    expect(await playwrightNode1.isNotLastOneSelected());
+    expect(await playwrightNode2.isNotLastOneSelected());
+    expect(await playwrightNode3.isLastOneSelected());
   });
 });
