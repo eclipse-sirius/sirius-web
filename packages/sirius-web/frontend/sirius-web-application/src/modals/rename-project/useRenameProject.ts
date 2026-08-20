@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,10 @@ const renameProjectMutation = gql`
     renameProject(input: $input) {
       __typename
       ... on ErrorPayload {
-        message
+        messages {
+          body
+          level
+        }
       }
     }
   }
@@ -42,7 +45,6 @@ export const useRenameProject = (): UseRenameProjectValue => {
     GQLRenameProjectMutationData,
     GQLRenameProjectMutationVariables
   >(renameProjectMutation);
-
   const { addErrorMessage, addMessages } = useMultiToast();
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'useRenameProject' });
 
@@ -50,11 +52,8 @@ export const useRenameProject = (): UseRenameProjectValue => {
     if (error) {
       addErrorMessage(t('errors.unexpected'));
     }
-    if (data) {
-      const { renameProject } = data;
-      if (isErrorPayload(renameProject)) {
-        addMessages(renameProject.message);
-      }
+    if (data && isErrorPayload(data.renameProject)) {
+      addMessages(data.renameProject.messages);
     }
   }, [data, error]);
 
