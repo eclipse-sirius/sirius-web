@@ -1,0 +1,6 @@
+= Tree Services
+
+== Palette
+
+The palette computed in a tree for a tree item can be customized by using a service implementing `o.e.s.c.collaborative.trees.palette.api.ITreeItemPaletteCustomizer`.
+Thanks to a implementation of this interface, a service can add, transform or even remove any tools, tool sections or quick access tools from the computed palette.

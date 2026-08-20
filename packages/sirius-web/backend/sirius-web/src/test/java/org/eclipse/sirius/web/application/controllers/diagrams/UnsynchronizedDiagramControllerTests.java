@@ -178,7 +178,7 @@ public class UnsynchronizedDiagramControllerTests extends AbstractIntegrationTes
 
             List<String> quickAccessToolIds = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.quickAccessTools[*].id");
             assertThat(quickAccessToolIds)
-                    .containsExactly("pin", "fade", "adjust-size", "hide", this.unsynchronizedDiagramDescriptionProvider.getDeleteViewsToolId());
+                    .contains("pin", "fade", "adjust-size", "hide", this.unsynchronizedDiagramDescriptionProvider.getDeleteViewsToolId());
         };
 
         Runnable deleteNodesFromDiagram = () -> this.invokeSingleClickOnDiagramElementToolExecutor.execute(

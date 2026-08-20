@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.diagrams.handlers;
+package org.eclipse.sirius.components.collaborative.diagrams.palette;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventHan
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramInput;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramQueryService;
 import org.eclipse.sirius.components.collaborative.diagrams.dto.GetConnectorPaletteInput;
+import org.eclipse.sirius.components.collaborative.diagrams.palette.api.IDiagramConnectorPaletteCustomizer;
 import org.eclipse.sirius.components.collaborative.messages.ICollaborativeMessageService;
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
@@ -60,6 +61,8 @@ public class GetConnectorPaletteEventHandler implements IDiagramEventHandler {
 
     private final List<IConnectorPaletteProvider> paletteProviders;
 
+    private final List<IDiagramConnectorPaletteCustomizer> diagramConnectorPaletteCustomizers;
+
     private final ICollaborativeMessageService messageService;
 
     private final Counter counter;
@@ -69,12 +72,14 @@ public class GetConnectorPaletteEventHandler implements IDiagramEventHandler {
             IDiagramQueryService diagramQueryService,
             IDiagramDescriptionService diagramDescriptionService,
             List<IConnectorPaletteProvider> paletteProviders,
+            List<IDiagramConnectorPaletteCustomizer> diagramConnectorPaletteCustomizers,
             ICollaborativeMessageService messageService,
             MeterRegistry meterRegistry) {
         this.representationDescriptionSearchService = Objects.requireNonNull(representationDescriptionSearchService);
         this.diagramQueryService = Objects.requireNonNull(diagramQueryService);
         this.diagramDescriptionService = Objects.requireNonNull(diagramDescriptionService);
         this.paletteProviders = Objects.requireNonNull(paletteProviders);
+        this.diagramConnectorPaletteCustomizers = Objects.requireNonNull(diagramConnectorPaletteCustomizers);
         this.messageService = Objects.requireNonNull(messageService);
 
         this.counter = Counter.builder(Monitoring.EVENT_HANDLER)
@@ -123,9 +128,20 @@ public class GetConnectorPaletteEventHandler implements IDiagramEventHandler {
                 var hasTargetData = optionalTargetDiagramElement.isPresent() && optionalTargetDiagramElementDescription.isPresent();
                 if (optionalPaletteProvider.isPresent() && hasSourceData && hasTargetData) {
                     IConnectorPaletteProvider paletteProvider = optionalPaletteProvider.get();
-                    palette = paletteProvider.handle(editingContext, diagramContext, diagramDescription,
-                            optionalSourceDiagramElement.get(), optionalTargetDiagramElement.get(),
-                            optionalSourceDiagramElementDescription.get(), optionalTargetDiagramElementDescription.get());
+                    var sourceDiagramElement = optionalSourceDiagramElement.get();
+                    var targetDiagramElement = optionalTargetDiagramElement.get();
+                    var sourceDiagramElementDescription = optionalSourceDiagramElementDescription.get();
+                    var targetDiagramElementDescription = optionalTargetDiagramElementDescription.get();
+
+                    palette = paletteProvider.handle(editingContext, diagramContext, diagramDescription, sourceDiagramElement, targetDiagramElement, sourceDiagramElementDescription, targetDiagramElementDescription);
+
+                    var customizers = this.diagramConnectorPaletteCustomizers.stream()
+                            .filter(customizer -> customizer.canHandle(editingContext, diagram, sourceDiagramElement, targetDiagramElement))
+                            .toList();
+
+                    for (var customizer: customizers) {
+                        palette = customizer.customize(editingContext, diagram, sourceDiagramElement, targetDiagramElement, palette);
+                    }
                 }
             }
         }
