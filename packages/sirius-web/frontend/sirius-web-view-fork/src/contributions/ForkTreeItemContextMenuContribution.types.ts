@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST and others.
+ * Copyright (c) 2024, 2026 CEA LIST and others.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+
+import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
 
 export interface ForkTreeItemContextMenuContributionState {
   isOpen: boolean;
@@ -32,7 +34,7 @@ export interface GQLProject {
 }
 
 export interface GQLErrorPayload extends CreateForkedStudioPayload {
-  message: string;
+  messages: GQLMessage[];
 }
 
 export interface GQLCreateForkedStudioInput {
