@@ -21,6 +21,7 @@ import java.util.function.Consumer;
 
 import org.eclipse.sirius.components.trees.tests.graphql.TreeItemPaletteExecutor;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.application.studio.services.representations.DomainViewTreeDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.ExplorerEventInput;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
@@ -44,6 +45,10 @@ import com.jayway.jsonpath.JsonPath;
 import reactor.test.StepVerifier;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.eclipse.sirius.components.trees.tests.TreeEventPayloadConsumer.assertRefreshedTreeThat;
+import static org.eclipse.sirius.web.data.StudioIdentifiers.DOMAIN_OBJECT;
+import static org.eclipse.sirius.web.data.StudioIdentifiers.DOMAIN_DOCUMENT;
+import static org.eclipse.sirius.web.data.StudioIdentifiers.ROOT_ENTITY_OBJECT;
+import static org.eclipse.sirius.web.data.StudioIdentifiers.HUMAN_ENTITY_OBJECT;
 
 /**
  * Integration tests of the tree item palette controllers.
@@ -66,6 +71,9 @@ public class TreeItemPaletteControllerTests extends AbstractIntegrationTests {
 
     @Autowired
     private RepresentationIdBuilder representationIdBuilder;
+
+    @Autowired
+    private DomainViewTreeDescriptionProvider domainViewTreeDescriptionProvider;
 
     @Autowired
     private ExplorerEventSubscriptionRunner explorerEventSubscriptionRunner;
@@ -220,4 +228,33 @@ public class TreeItemPaletteControllerTests extends AbstractIntegrationTests {
             .verify(Duration.ofSeconds(5));
     }
 
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a tree with a view description, when the palette is requested on an object, then the correct tools are returned")
+    public void givenPapayaProjectWhenThePaletteAreRequestedOnAnObjectThenTheCorrectToolsAreReturned2() {
+        List<String> expandedItemIds = List.of(
+                DOMAIN_DOCUMENT.toString(),
+                DOMAIN_OBJECT.toString(),
+                ROOT_ENTITY_OBJECT.toString(),
+                HUMAN_ENTITY_OBJECT.toString()
+        );
+        var explorerRepresentationId = this.representationIdBuilder.buildExplorerRepresentationId(this.domainViewTreeDescriptionProvider.getRepresentationDescriptionId(), expandedItemIds, List.of());
+        var input = new ExplorerEventInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, explorerRepresentationId);
+        var flux = this.explorerEventSubscriptionRunner.run(input).flux();
+
+        var treeId = new AtomicReference<String>();
+        Consumer<Object> initialTreeContentConsumer = assertRefreshedTreeThat(tree -> treeId.set(tree.getId()));
+
+        Runnable getPalette = () -> this.paletteExecutor.execute(
+                        StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
+                        treeId.get(),
+                        HUMAN_ENTITY_OBJECT.toString())
+                .hasPaletteEntries(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, this.domainViewTreeDescriptionProvider.getHelpMenuEntryId(), this.domainViewTreeDescriptionProvider.getToggleAbstractMenuEntryId()));
+
+        StepVerifier.create(flux)
+                .consumeNextWith(initialTreeContentConsumer)
+                .then(getPalette)
+                .thenCancel()
+                .verify(Duration.ofSeconds(30));
+    }
 }

@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.view.builder.generated.tree.TreeBuilders;
 import org.eclipse.sirius.components.view.builder.generated.view.KeyBindingBuilder;
 import org.eclipse.sirius.components.view.builder.generated.view.ViewBuilders;
 import org.eclipse.sirius.components.view.emf.tree.ITreeIdProvider;
+import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry;
 import org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntryKind;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemContextMenuEntry;
@@ -78,6 +79,8 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
 
     private TreeItemContextMenuEntry toggleAbstractMenuEntry;
 
+    private FetchTreeItemContextMenuEntry helpMenuEntry;
+
     public DomainViewTreeDescriptionProvider(IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate, ITreeIdProvider treeIdProvider) {
         this.studioCapableEditingContextPredicate = Objects.requireNonNull(studioCapableEditingContextPredicate);
         this.treeIdProvider = Objects.requireNonNull(treeIdProvider);
@@ -121,6 +124,10 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
 
     public String getToggleAbstractMenuEntryId() {
         return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.toggleAbstractMenuEntry).toString().getBytes()).toString();
+    }
+
+    public String getHelpMenuEntryId() {
+        return UUID.nameUUIDFromBytes(EcoreUtil.getURI(this.helpMenuEntry).toString().getBytes()).toString();
     }
 
     private TreeDescription domainExplorerDescription(TextStylePalette domainTextStylePalette) {
@@ -287,7 +294,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
         var callService = this.viewBuilderHelper.newChangeContext()
                 .expression("aql:self.toggleAbstractEntity()");
 
-        var helpMenuEntry = new TreeBuilders().newFetchTreeItemContextMenuEntry()
+        this.helpMenuEntry = new TreeBuilders().newFetchTreeItemContextMenuEntry()
                 .labelExpression("Help")
                 .iconURLExpression("/img/DefaultEdgeIcon.svg")
                 .preconditionExpression(AQL_SELF_IS_AN_ENTITY)
@@ -323,6 +330,6 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".isHasChildren()")
                 .build();
 
-        return List.of(expandAllMenuEntry, helpMenuEntry, this.toggleAbstractMenuEntry);
+        return List.of(expandAllMenuEntry, this.helpMenuEntry, this.toggleAbstractMenuEntry);
     }
 }
