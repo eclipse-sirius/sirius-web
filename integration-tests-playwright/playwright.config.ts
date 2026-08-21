@@ -10,13 +10,134 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { defineConfig, devices } from '@playwright/test';
+import { transform, transformSync, type Options } from '@swc/core';
+import { defineConfig, devices, type ReporterDescription } from '@playwright/test';
+import type { CoverageReportOptions } from 'monocart-reporter';
+import { readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+
+const isPlaywrightCoverageEnabled = process.env.SIRIUS_PLAYWRIGHT_COVERAGE === 'true';
+const workspaceRoot = resolve(__dirname, '..');
+const diagramSourceDirectory = resolve(workspaceRoot, 'packages/diagrams/frontend/sirius-components-diagrams/src');
+const diagramSourceMarker = 'sirius-components-diagrams/src/';
+const transformedSourceFiles = new Map<string, { code: string; map?: string }>();
+
+const normalizePath = (filePath: string): string => filePath.replaceAll('\\', '/');
+
+const getSwcOptions = (filename: string): Options => ({
+  filename,
+  sourceMaps: true,
+  jsc: {
+    parser: {
+      syntax: 'typescript',
+      tsx: filename.endsWith('.tsx'),
+    },
+    target: 'es2022',
+  },
+  module: {
+    type: 'es6',
+  },
+});
+
+const hasRuntimeCode = (code: string): boolean => {
+  const codeWithoutComments = code
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\/\/.*$/gm, '')
+    .trim();
+  return codeWithoutComments !== '' && !/^export\s*\{\s*\};?$/.test(codeWithoutComments);
+};
+
+const coverageOptions: CoverageReportOptions = {
+  name: 'Sirius Components Diagrams - Playwright coverage',
+  baseDir: workspaceRoot,
+  outputDir: resolve(__dirname, 'coverage/diagram'),
+  cleanCache: false,
+  reports: [
+    'v8',
+    ['html', { subdir: 'istanbul' }],
+    'lcovonly',
+    'json',
+    'json-summary',
+    'console-summary',
+    'markdown-summary',
+    ['raw', { outputDir: 'raw' }],
+  ],
+  entryFilter: (entry) => {
+    const normalizedUrl = normalizePath(entry.url);
+    return normalizedUrl.includes(diagramSourceMarker) || /\.(?:[cm]?js|tsx?)(?:\?|$)/.test(normalizedUrl);
+  },
+  sourceFilter: (sourcePath) => normalizePath(sourcePath).includes(diagramSourceMarker),
+  sourcePath: (sourcePath, info) => {
+    const normalizedSourcePath = normalizePath(sourcePath);
+    const markerIndex = normalizedSourcePath.lastIndexOf(diagramSourceMarker);
+
+    if (markerIndex !== -1) {
+      return normalizePath(
+        resolve(diagramSourceDirectory, normalizedSourcePath.slice(markerIndex + diagramSourceMarker.length))
+      );
+    }
+
+    const normalizedDistFile = normalizePath(info.distFile ?? '');
+    const distMarkerIndex = normalizedDistFile.lastIndexOf(diagramSourceMarker);
+    if (distMarkerIndex !== -1) {
+      const distRelativePath = normalizedDistFile.slice(distMarkerIndex + diagramSourceMarker.length);
+      const sourceUrl = normalizePath(info.url ?? normalizedSourcePath);
+      return normalizePath(resolve(diagramSourceDirectory, dirname(distRelativePath), sourceUrl));
+    }
+
+    return normalizedSourcePath;
+  },
+  all: {
+    dir: diagramSourceDirectory,
+    filter: (filePath) => {
+      const normalizedFilePath = normalizePath(filePath);
+      if (
+        !/\.tsx?$/.test(normalizedFilePath) ||
+        normalizedFilePath.includes('/__tests__/') ||
+        /\.(test|spec)\.tsx?$/.test(normalizedFilePath)
+      ) {
+        return false;
+      }
+
+      const result = transformSync(readFileSync(filePath, 'utf8'), getSwcOptions(filePath));
+      transformedSourceFiles.set(normalizedFilePath, result);
+      return hasRuntimeCode(result.code);
+    },
+    transformer: async (entry) => {
+      const filename = entry.url as string;
+      const normalizedFilename = normalizePath(filename);
+      const result =
+        transformedSourceFiles.get(normalizedFilename) ??
+        (await transform(entry.source as string, getSwcOptions(filename)));
+
+      entry.source = result.code;
+      if (result.map) {
+        entry.sourceMap = JSON.parse(result.map);
+      }
+    },
+  },
+};
+
+const reporters: ReporterDescription[] = isPlaywrightCoverageEnabled
+  ? [
+      ['html'],
+      [
+        'monocart-reporter',
+        {
+          name: 'Sirius Web Playwright tests',
+          outputFile: 'playwright-report/monocart/index.html',
+          coverage: coverageOptions,
+        },
+      ],
+    ]
+  : [['html']];
 
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
   testDir: './playwright/e2e',
+  globalSetup: isPlaywrightCoverageEnabled ? './playwright/global-setup.ts' : undefined,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -26,7 +147,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: reporters,
   timeout: process.env.CI ? 10_000 : 60_000,
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

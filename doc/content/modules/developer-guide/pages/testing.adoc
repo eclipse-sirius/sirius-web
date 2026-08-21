@@ -54,6 +54,16 @@ They give you full confidence that the UI behaves like the end user expects, but
 
 Hence, only add E2E coverage when integration tests cannot exercise the behaviour.
 
+==== Diagram frontend code coverage
+
+The Playwright diagram tests also measure the line coverage of `sirius-components-diagrams` under Chromium.
+The coverage build is enabled with `SIRIUS_PLAYWRIGHT_COVERAGE=true`; regular development and release builds do not produce coverage source maps.
+The report is written to `integration-tests-playwright/coverage/diagram` and includes files from `packages/diagrams/frontend/sirius-components-diagrams/src` only.
+
+The expected line coverage is stored in `integration-tests-playwright/diagram-coverage-baseline.json`.
+A lower value fails the continuous integration build, while an increase asks the contributor to update the baseline explicitly with `npm run coverage:update-baseline` from `integration-tests-playwright`.
+New diagram Playwright tests must import `test` and `expect` from the coverage fixture so that their execution contributes to this report.
+
 === Manual tests
 
 Manual runs are still needed, but only for scenarios that cannot be automated yet (for example multi-user concurrency) or for free-form exploratory testing to uncover new bugs.

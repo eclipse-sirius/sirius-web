@@ -52,6 +52,7 @@ import { usePinDiagramElements } from '../pin/usePinDiagramElements';
 import { SnapToGridContext } from '../snap-to-grid/SnapToGridContext';
 import { SnapToGridContextValue } from '../snap-to-grid/SnapToGridContext.types';
 import { ArrangeAllButton } from './ArrangeAllButton';
+import { DiagramCoverageProbe } from './DiagramCoverageProbe';
 import { DiagramToolbarActionProps, DiagramToolbarProps, DiagramToolbarState } from './DiagramToolbar.types';
 import { diagramToolbarActionExtensionPoint } from './DiagramToolbarExtensionPoints';
 import { ExportImageButton } from './ExportImageButton';
@@ -279,6 +280,7 @@ export const DiagramToolbar = memo(({ diagramToolbar }: DiagramToolbarProps) => 
               </span>
             </Tooltip>
             <RevealSelectionInDiagramButton editingContextId={editingContextId} />
+            <DiagramCoverageProbe />
             {diagramToolbarActionComponents.map(({ Component: DiagramToolbarActionComponent }, index) => (
               <DiagramToolbarActionComponent editingContextId={editingContextId} diagramId={diagramId} key={index} />
             ))}

@@ -10,6 +10,7 @@
     },
     "build": {
       "dependsOn": ["format-lint", "^build"],
+      "env": ["SIRIUS_PLAYWRIGHT_COVERAGE"],
       "outputs": ["dist/**"]
     },
     "test": {
@@ -24,12 +25,14 @@
     "build-dev": {
       "dependsOn": ["format-lint", "^build-dev"],
       "cache": false,
+      "env": ["SIRIUS_PLAYWRIGHT_COVERAGE"],
       "outputLogs": "hash-only"
     },
     "start": {
       "dependsOn": ["format-lint", "^build-dev"],
       "persistent": true,
-      "cache": false
+      "cache": false,
+      "env": ["SIRIUS_PLAYWRIGHT_COVERAGE"]
     }
   }
 }
