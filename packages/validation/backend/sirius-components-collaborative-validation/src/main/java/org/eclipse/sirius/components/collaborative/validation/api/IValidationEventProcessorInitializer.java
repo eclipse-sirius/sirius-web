@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,14 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.components.collaborative.validation;
+package org.eclipse.sirius.components.collaborative.validation.api;
 
+import java.util.Optional;
+
+import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.validation.Validation;
 
 /**
- * Used to keep the validation representation in memory.
+ * Used to perform the initial refresh of the validation representation for its event processor.
  *
- * @author gcoutable
+ * @author sbegaudeau
+ * @since v2026.9.0
  */
-public record ValidationContext(Validation validation) {
+public interface IValidationEventProcessorInitializer {
+
+    Optional<Validation> getRefreshedRepresentation(IEditingContext editingContext, String representationId);
 }
