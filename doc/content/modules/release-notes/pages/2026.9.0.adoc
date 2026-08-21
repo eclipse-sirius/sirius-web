@@ -26,6 +26,7 @@
 * Small pointer movements while clicking a diagram node no longer start a drag, reducing accidental node movements.
 * Studio makers can now use the `diagramServices.deleteViews(nodes)` AQL service to configure group palette actions that remove multiple selected unsynchronized nodes from a diagram without deleting their semantic elements.
 * Rectangle selection in diagrams now excludes the node where the selection starts and its containers, making it easier to select nested elements without selecting their containers.
+* RichTextEditor users can now insert, open, edit, and delete links using a dedicated link popup.
 
 == Technical details
 
