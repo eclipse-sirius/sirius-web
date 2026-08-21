@@ -37,9 +37,9 @@ import { footerExtensionPoint } from '../../footer/FooterExtensionPoints';
 import { LibrariesImportTable } from '../../libraryImport/LibrariesImportTable';
 import { NavigationBar } from '../../navigationBar/NavigationBar';
 import { useCurrentViewer } from '../../viewer/useCurrentViewer';
-import { GQLProjectTemplate } from '../project-browser/create-projects-area/useProjectTemplates.types';
 import { NewProjectViewState } from './NewProjectView.types';
 import { useAllProjectTemplates } from './useAllProjectTemplates';
+import { GQLProjectTemplate } from './useAllProjectTemplates.types';
 import { useCreateProject } from './useCreateProject';
 
 const useNewProjectViewStyles = makeStyles()((theme) => ({
@@ -216,6 +216,10 @@ export const NewProjectView = () => {
 
   const showTemplateSelection = state.availableTemplates !== null && state.availableTemplates.length > 1;
   const showLibrariesSelection = canListLibraries;
+  const requiredLibraryIds =
+    state.availableTemplates
+      ?.find((template) => template.id === state.selectedTemplateId)
+      ?.requiredLibraries.map((library) => library.id) ?? [];
   let description = t('description');
   let projectDetailsDescription = t('projectDetailsDescription');
   if (!showTemplateSelection && !showLibrariesSelection) {
@@ -385,7 +389,10 @@ export const NewProjectView = () => {
                         <Typography variant="body2" color="text.secondary" gutterBottom>
                           {t('librariesDescription')}
                         </Typography>
-                        <LibrariesImportTable onSelectedLibrariesChange={handleSelectedLibrariesChange} />
+                        <LibrariesImportTable
+                          onSelectedLibrariesChange={handleSelectedLibrariesChange}
+                          requiredLibraryIds={requiredLibraryIds}
+                        />
                       </Collapse>
                     </List>
                   ) : null}

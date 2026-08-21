@@ -16,6 +16,7 @@ import org.eclipse.sirius.web.infrastructure.configuration.persistence.JDBCConfi
 import org.eclipse.sirius.web.starter.SiriusWebStarterConfiguration;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.system.OutputCaptureExtension;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -30,6 +31,7 @@ import org.testcontainers.elasticsearch.ElasticsearchContainer;
  */
 @ExtendWith(OutputCaptureExtension.class)
 @SpringJUnitConfig(classes = { IntegrationTestConfiguration.class, SiriusWebStarterConfiguration.class, JDBCConfiguration.class })
+@ActiveProfiles("test")
 public abstract class AbstractIntegrationTests {
     public static final PostgreSQLContainer<?> POSTGRESQL_CONTAINER;
 
