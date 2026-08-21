@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateNature;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateRequiredLibrary;
 import org.springframework.stereotype.Service;
 
 /**
@@ -38,9 +39,10 @@ public class PapayaProjectTemplateProvider implements IProjectTemplateProvider {
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
         return List.of(
-                new ProjectTemplate(EMPTY_PROJECT_TEMPLATE_ID, "Papaya - Blank", "/project-templates/Retro-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE))),
-                new ProjectTemplate(SIRIUS_WEB_PROJECT_TEMPLATE_ID, "Papaya - Example", "/project-templates/Smart-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE))),
-                new ProjectTemplate(BENCHMARK_PROJECT_TEMPLATE_ID, "Papaya - Performance", "/project-templates/Cosmic-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE)))
+                new ProjectTemplate(EMPTY_PROJECT_TEMPLATE_ID, "Papaya - Blank", "/project-templates/Retro-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE)),
+                        List.of(new ProjectTemplateRequiredLibrary("papaya", "java", "0.0.3"))),
+                new ProjectTemplate(SIRIUS_WEB_PROJECT_TEMPLATE_ID, "Papaya - Example", "/project-templates/Smart-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE)), List.of()),
+                new ProjectTemplate(BENCHMARK_PROJECT_TEMPLATE_ID, "Papaya - Performance", "/project-templates/Cosmic-Papaya.jpeg", List.of(new ProjectTemplateNature(PAPAYA_NATURE)), List.of())
         );
     }
 }

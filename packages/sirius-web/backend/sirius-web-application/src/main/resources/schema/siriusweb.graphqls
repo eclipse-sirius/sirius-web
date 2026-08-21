@@ -52,6 +52,7 @@ type ProjectTemplate {
   id: ID!
   label: String!
   imageURL: String!
+  requiredLibraries: [Library!]!
 }
 
 extend type EditingContext {

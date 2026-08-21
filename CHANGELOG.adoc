@@ -61,6 +61,8 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService`
 * `org.eclipse.sirius.web.library.domain.services.api.ILibraryCreationService`
 * `org.eclipse.sirius.web.library.domain.events.LibraryCreatedEvent`
+- https://github.com/eclipse-sirius/sirius-web/issues/6740[#6740] [sirius-web] Add support for required libraries in templates.
+A new `List<ProjectTemplateRequiredLibrary>` argument is now required to create a `ProjectTemplate`.
 
 
 === Dependency update
@@ -92,7 +94,9 @@ For that, some calls to `VariableManager.SELF` have thus been replaced by `Repre
 - https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [deck] Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
 - [doc] Update the backend documentation and add a first schema of the lifecycle of the backend with the creation of a project.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [libraries] Extract the domain parts of the libraries bounded-context into the `sirius-web-library-domain` module.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6740[#6740] [sirius-web] Add support for required libraries in templates.
+Templates can now define required libraries (specifying their namespace, name, and version).
+These libraries are selected by default in the project creation's library table, and cannot be unselected.
 
 
 == 2026.9.0

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2026 Obeo.
+ * Copyright (c) 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -12,27 +12,23 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.project.services.api;
 
-import java.util.List;
 import java.util.Objects;
 
 import jakarta.validation.constraints.NotNull;
 
 /**
- * Description of a project template.
+ * The libraries of a project template.
  *
- * @author sbegaudeau
+ * @author gdaniel
  */
-public record ProjectTemplate(
-        @NotNull String id,
-        @NotNull String label,
-        @NotNull String imageURL,
-        @NotNull List<ProjectTemplateNature> natures,
-        @NotNull List<ProjectTemplateRequiredLibrary> requiredLibraries) {
-    public ProjectTemplate {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(label);
-        Objects.requireNonNull(imageURL);
-        Objects.requireNonNull(natures);
-        Objects.requireNonNull(requiredLibraries);
+public record ProjectTemplateRequiredLibrary(
+        @NotNull String namespace,
+        @NotNull String name,
+        @NotNull String version
+) {
+    public ProjectTemplateRequiredLibrary {
+        Objects.requireNonNull(namespace);
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(version);
     }
 }
