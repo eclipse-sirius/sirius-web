@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2024 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,15 +18,11 @@ import java.util.Optional;
 
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessor;
 import org.eclipse.sirius.components.collaborative.api.IRepresentationEventProcessorFactory;
-import org.eclipse.sirius.components.collaborative.api.IRepresentationRefreshPolicyRegistry;
 import org.eclipse.sirius.components.collaborative.api.ISubscriptionManagerFactory;
-import org.eclipse.sirius.components.collaborative.validation.api.IValidationDescriptionProvider;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationEventHandler;
+import org.eclipse.sirius.components.collaborative.validation.api.IValidationEventProcessorInitializer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
-import org.eclipse.sirius.components.validation.description.ValidationDescription;
 import org.springframework.stereotype.Service;
-
-import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 
 /**
  * Used to create the validation event processor.
@@ -36,20 +32,17 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 @Service
 public class ValidationEventProcessorFactory implements IRepresentationEventProcessorFactory {
 
-    private final IValidationDescriptionProvider validationDescriptionProvider;
+    private final IValidationEventProcessorInitializer validationEventProcessorInitializer;
 
     private final List<IValidationEventHandler> validationEventHandlers;
 
     private final ISubscriptionManagerFactory subscriptionManagerFactory;
 
-    private final IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry;
-
-    public ValidationEventProcessorFactory(IValidationDescriptionProvider validationDescriptionProvider, List<IValidationEventHandler> validationEventHandlers,
-            ISubscriptionManagerFactory subscriptionManagerFactory, IRepresentationRefreshPolicyRegistry representationRefreshPolicyRegistry) {
-        this.validationDescriptionProvider = Objects.requireNonNull(validationDescriptionProvider);
+    public ValidationEventProcessorFactory(IValidationEventProcessorInitializer validationEventProcessorInitializer, List<IValidationEventHandler> validationEventHandlers,
+            ISubscriptionManagerFactory subscriptionManagerFactory) {
+        this.validationEventProcessorInitializer = Objects.requireNonNull(validationEventProcessorInitializer);
         this.validationEventHandlers = Objects.requireNonNull(validationEventHandlers);
         this.subscriptionManagerFactory = Objects.requireNonNull(subscriptionManagerFactory);
-        this.representationRefreshPolicyRegistry = Objects.requireNonNull(representationRefreshPolicyRegistry);
     }
 
     @Override
@@ -59,14 +52,11 @@ public class ValidationEventProcessorFactory implements IRepresentationEventProc
 
     @Override
     public Optional<IRepresentationEventProcessor> createRepresentationEventProcessor(IEditingContext editingContext, String representationId) {
-        ValidationDescription validationDescription = this.validationDescriptionProvider.getDescription();
-
-        ValidationContext validationContext = new ValidationContext(null);
-        IRepresentationEventProcessor validationEventProcessor = new ValidationEventProcessor(editingContext, validationDescription, validationContext, this.validationEventHandlers,
-                this.subscriptionManagerFactory.create(), new SimpleMeterRegistry(), this.representationRefreshPolicyRegistry);
-
-        return Optional.of(validationEventProcessor);
-
+        return this.validationEventProcessorInitializer.getRefreshedRepresentation(editingContext, representationId)
+                .map(validation -> {
+                    var validationContext = new ValidationContext(validation);
+                    return (IRepresentationEventProcessor) new ValidationEventProcessor(editingContext, validationContext, this.validationEventHandlers, this.subscriptionManagerFactory.create());
+                });
     }
 
 }
