@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -48,8 +48,8 @@ public class StudioProjectTemplateProvider implements IProjectTemplateProvider {
     public List<ProjectTemplate> getProjectTemplates() {
         var studioImageURL = "/project-templates/Studio-Template.png";
         var studioNatures = List.of(new ProjectTemplateNature(STUDIO_NATURE));
-        var studioTemplate = new ProjectTemplate(STUDIO_TEMPLATE_ID, this.messageService.studioTemplateName(), studioImageURL, studioNatures);
-        var blankStudioTemplate = new ProjectTemplate(BLANK_STUDIO_TEMPLATE_ID, this.messageService.blankStudioTemplateName(), studioImageURL, studioNatures);
+        var studioTemplate = new ProjectTemplate(STUDIO_TEMPLATE_ID, this.messageService.studioTemplateName(), studioImageURL, studioNatures, List.of());
+        var blankStudioTemplate = new ProjectTemplate(BLANK_STUDIO_TEMPLATE_ID, this.messageService.blankStudioTemplateName(), studioImageURL, studioNatures, List.of());
 
         return List.of(studioTemplate, blankStudioTemplate);
     }

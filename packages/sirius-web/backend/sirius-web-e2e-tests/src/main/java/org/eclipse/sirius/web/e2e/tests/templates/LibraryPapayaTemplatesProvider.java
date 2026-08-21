@@ -35,7 +35,7 @@ public class LibraryPapayaTemplatesProvider implements IProjectTemplateProvider 
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var papayaTemplate = new ProjectTemplate(LIBRARY_PAPAYA_TEMPLATE_ID, "PapayaLibrary", "/project-templates/Papaya.png", List.of(new ProjectTemplateNature(PAPAYA_NATURE)));
+        var papayaTemplate = new ProjectTemplate(LIBRARY_PAPAYA_TEMPLATE_ID, "PapayaLibrary", "/project-templates/Papaya.png", List.of(new ProjectTemplateNature(PAPAYA_NATURE)), List.of());
         return List.of(papayaTemplate);
     }
 
