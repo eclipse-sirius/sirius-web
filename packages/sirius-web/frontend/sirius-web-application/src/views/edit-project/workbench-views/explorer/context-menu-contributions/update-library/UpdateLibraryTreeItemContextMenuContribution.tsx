@@ -10,12 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { TreeItemContextMenuComponentProps } from '@eclipse-sirius/sirius-components-trees';
+import {
+  isSingleClickTreeItemContextMenuEntry,
+  TreeItemContextMenuComponentProps,
+} from '@eclipse-sirius/sirius-components-trees';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
-import { Fragment, forwardRef, useState } from 'react';
+import { forwardRef, Fragment, useState } from 'react';
 import { useObject } from '../useObject';
 import { UpdateLibraryModal } from './UpdateLibraryModal';
 
@@ -51,7 +54,7 @@ export const UpdateLibraryTreeItemContextMenuContribution = forwardRef(
               name={library.name}
               version={library.version}
               title={`Update ${library.name} @${library.version}`}
-              withImpactAnalysis={entry.withImpactAnalysis}
+              withImpactAnalysis={isSingleClickTreeItemContextMenuEntry(entry) && entry.withImpactAnalysis}
               onClose={onClose}
             />
           </Fragment>

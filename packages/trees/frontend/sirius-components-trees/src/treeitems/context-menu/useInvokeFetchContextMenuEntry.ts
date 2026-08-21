@@ -12,7 +12,7 @@
  *******************************************************************************/
 
 import { useEffect, useState } from 'react';
-import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
+import { GQLFetchTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 import { useFetchContextMenuEntryData } from './useFetchContextMenuEntryData';
 import {
   UseInvokeFetchContextMenuEntryState,
@@ -42,7 +42,7 @@ export const useInvokeFetchContextMenuEntry = (): UseInvokeFetchContextMenuEntry
     editingContextId: string,
     treeId: string,
     treeItemId: string,
-    menuEntry: GQLTreeItemContextMenuEntry,
+    menuEntry: GQLFetchTreeItemContextMenuEntry,
     onClick: () => void
   ) => {
     setState((prevState) => ({

@@ -15,7 +15,7 @@ import { useMultiToast } from '@eclipse-sirius/sirius-components-core';
 import { useImpactAnalysisDialog } from '@eclipse-sirius/sirius-components-impactanalysis';
 import { useEffect, useState } from 'react';
 import { useInvokeImpactAnalysis } from './impact-analysis/useTreeImpactAnalysis';
-import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
+import { GQLSingleClickTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 import {
   GQLErrorPayload,
   GQLInvokeSingleClickTreeItemContextMenuEntryData,
@@ -79,6 +79,7 @@ export const useInvokeSingleClickContextMenuEntry = (): UseInvokeSingleClickCont
       treeItemId,
       menuEntryId,
     };
+
     invokeSingleClickTreeItemContextMenuEntry({ variables: { input } });
     onClick();
   };
@@ -106,7 +107,7 @@ export const useInvokeSingleClickContextMenuEntry = (): UseInvokeSingleClickCont
     editingContextId: string,
     treeId: string,
     treeItemId: string,
-    menuEntry: GQLTreeItemContextMenuEntry,
+    menuEntry: GQLSingleClickTreeItemContextMenuEntry,
     onClick: () => void
   ) => {
     if (menuEntry.withImpactAnalysis) {

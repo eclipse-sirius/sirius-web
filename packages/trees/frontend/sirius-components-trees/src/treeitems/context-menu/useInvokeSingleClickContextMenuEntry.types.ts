@@ -11,14 +11,14 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { GQLMessage } from '@eclipse-sirius/sirius-components-core';
-import { GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
+import { GQLSingleClickTreeItemContextMenuEntry, GQLTreeItemContextMenuEntry } from './useContextMenuEntries.types';
 
 export interface UseInvokeSingleClickContextMenuEntryValue {
   invokeSingleClickContextMenuEntry: (
     editingContextId: string,
     treeId: string,
     treeItemId: string,
-    menuEntry: GQLTreeItemContextMenuEntry,
+    menuEntry: GQLSingleClickTreeItemContextMenuEntry,
     onClick: () => void
   ) => void;
 }
