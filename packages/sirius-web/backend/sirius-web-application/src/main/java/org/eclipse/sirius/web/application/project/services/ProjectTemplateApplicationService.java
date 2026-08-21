@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,11 +21,17 @@ import java.util.stream.Stream;
 
 import org.eclipse.sirius.web.application.capability.SiriusWebCapabilities;
 import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEvaluator;
+import org.eclipse.sirius.web.application.library.dto.LibraryDTO;
+import org.eclipse.sirius.web.application.library.services.api.ILibraryMapper;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateContext;
 import org.eclipse.sirius.web.application.project.dto.ProjectTemplateDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateApplicationService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplate;
+import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateRequiredLibrary;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -39,13 +45,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProjectTemplateApplicationService implements IProjectTemplateApplicationService {
 
+    private final Logger logger = LoggerFactory.getLogger(ProjectTemplateApplicationService.class);
+
     private final List<IProjectTemplateProvider> projectTemplateProviders;
 
     private final ICapabilityEvaluator capabilityEvaluator;
 
-    public ProjectTemplateApplicationService(List<IProjectTemplateProvider> projectTemplateProviders, ICapabilityEvaluator capabilityEvaluator) {
+    private final ILibrarySearchService librarySearchService;
+
+    private final ILibraryMapper libraryMapper;
+
+    public ProjectTemplateApplicationService(List<IProjectTemplateProvider> projectTemplateProviders, ICapabilityEvaluator capabilityEvaluator, ILibrarySearchService librarySearchService,
+            ILibraryMapper libraryMapper) {
         this.projectTemplateProviders = Objects.requireNonNull(projectTemplateProviders);
         this.capabilityEvaluator = Objects.requireNonNull(capabilityEvaluator);
+        this.librarySearchService = Objects.requireNonNull(librarySearchService);
+        this.libraryMapper = Objects.requireNonNull(libraryMapper);
     }
 
     @Override
@@ -61,6 +76,7 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
     public List<ProjectTemplateDTO> findAll() {
         return this.getProjectTemplatesSortedByName().stream()
                 .map(this::toDTO)
+                .flatMap(Optional::stream)
                 .toList();
     }
 
@@ -96,7 +112,8 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
         int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
         int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), projectTemplates.size() + siriusWebProjectTemplate.size());
         var projectTemplateDTOs = Stream.concat(projectTemplates.subList(startIndex, endIndex - siriusWebProjectTemplate.size()).stream(), siriusWebProjectTemplate.stream())
-                .map(projectTemplate -> this.toDTO(projectTemplate))
+                .map(this::toDTO)
+                .flatMap(Optional::stream)
                 .toList();
 
         return new PageImpl<>(projectTemplateDTOs, pageable, projectTemplates.size());
@@ -108,21 +125,45 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
         int startIndex = (int) pageable.getOffset() * pageable.getPageSize();
         int endIndex = Math.min(((int) pageable.getOffset() + 1) * pageable.getPageSize(), projectTemplates.size());
         var projectTemplateDTOs = projectTemplates.subList(startIndex, endIndex).stream()
-                .map(projectTemplate -> this.toDTO(projectTemplate))
+                .map(this::toDTO)
+                .flatMap(Optional::stream)
                 .toList();
 
         return new PageImpl<>(projectTemplateDTOs, pageable, projectTemplates.size());
     }
 
-    private ProjectTemplateDTO toDTO(ProjectTemplate projectTemplate) {
-        return new ProjectTemplateDTO(projectTemplate.id(), projectTemplate.label(), projectTemplate.imageURL());
+    private Optional<ProjectTemplateDTO> toDTO(ProjectTemplate projectTemplate) {
+        // We should load all the libraries with findAllById once #6743 is fixed.
+        List<LibraryDTO> libraryDTOs = new ArrayList<>();
+        for (ProjectTemplateRequiredLibrary projectTemplateRequiredLibrary : projectTemplate.requiredLibraries()) {
+            Optional<LibraryDTO> optionalLibraryDTO = this.toDTO(projectTemplateRequiredLibrary);
+            if (optionalLibraryDTO.isPresent()) {
+                libraryDTOs.add(optionalLibraryDTO.get());
+            } else {
+                this.logger.atWarn()
+                        .setMessage("Cannot retrieve required library {}-{}@{} for template {}")
+                        .addArgument(projectTemplateRequiredLibrary.namespace())
+                        .addArgument(projectTemplateRequiredLibrary.name())
+                        .addArgument(projectTemplateRequiredLibrary.version())
+                        .addArgument(projectTemplate.id())
+                        .log();
+                return Optional.empty();
+            }
+        }
+
+        return Optional.of(new ProjectTemplateDTO(projectTemplate.id(), projectTemplate.label(), projectTemplate.imageURL(), libraryDTOs));
+    }
+
+    private Optional<LibraryDTO> toDTO(ProjectTemplateRequiredLibrary library) {
+        return this.librarySearchService.findByNamespaceAndNameAndVersion(library.namespace(), library.name(), library.version())
+                .map(this.libraryMapper::toDTO);
     }
 
     private Optional<ProjectTemplate> getUploadProject() {
         Optional<ProjectTemplate> result = Optional.empty();
         var canCreate = this.capabilityEvaluator.hasCapability(SiriusWebCapabilities.PROJECT, null, SiriusWebCapabilities.Project.UPLOAD);
         if (canCreate) {
-            result = Optional.of(new ProjectTemplate("upload-project", "", "", List.of()));
+            result = Optional.of(new ProjectTemplate("upload-project", "", "", List.of(), List.of()));
         }
         return  result;
     }
@@ -131,7 +172,7 @@ public class ProjectTemplateApplicationService implements IProjectTemplateApplic
         Optional<ProjectTemplate> result = Optional.empty();
         var aTemplateExists = this.projectTemplateProviders.stream().mapToLong(providers -> providers.getProjectTemplates().size()).sum() > 0;
         if (aTemplateExists) {
-            result = Optional.of(new ProjectTemplate("browse-all-project-templates", "", "", List.of()));
+            result = Optional.of(new ProjectTemplate("browse-all-project-templates", "", "", List.of(), List.of()));
         }
         return  result;
     }

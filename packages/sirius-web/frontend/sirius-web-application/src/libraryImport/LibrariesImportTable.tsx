@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,7 @@ import { useLibraries } from '../views/library-browser/useLibraries';
 import { GQLLibrary } from '../views/library-browser/useLibraries.types';
 import { LibrariesImportTableProps, LibrariesImportTableState } from './LibrariesImportTable.types';
 
-export const LibrariesImportTable = ({ onSelectedLibrariesChange }: LibrariesImportTableProps) => {
+export const LibrariesImportTable = ({ onSelectedLibrariesChange, requiredLibraryIds }: LibrariesImportTableProps) => {
   const { t } = useTranslation('sirius-web-application', { keyPrefix: 'librariesImportTable' });
   const localization = useTableTranslation();
   const [state, setState] = useState<LibrariesImportTableState>({
@@ -40,7 +40,14 @@ export const LibrariesImportTable = ({ onSelectedLibrariesChange }: LibrariesImp
   const rows: GQLLibrary[] = state.data?.viewer.libraries.edges.map((edge) => edge.node) || [];
   const count: number = state.data?.viewer.libraries.pageInfo.count ?? 0;
 
-  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
+  const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>(() =>
+    Object.fromEntries(requiredLibraryIds.map((libraryId) => [libraryId, true]))
+  );
+
+  useEffect(() => {
+    // Reset the selected rows and select the new required libraries when the required libraries change.
+    setRowSelection(Object.fromEntries(requiredLibraryIds.map((id) => [id, true])));
+  }, [requiredLibraryIds.join()]);
 
   useEffect(() => {
     if (data) {
@@ -107,7 +114,7 @@ export const LibrariesImportTable = ({ onSelectedLibrariesChange }: LibrariesImp
     enableSorting: false,
 
     // Configure selection
-    enableRowSelection: true,
+    enableRowSelection: (row) => !requiredLibraryIds.includes(row.id),
     getRowId: (originalRow) => originalRow.id,
     onRowSelectionChange: setRowSelection,
 
