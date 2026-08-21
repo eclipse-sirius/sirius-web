@@ -17,7 +17,8 @@
 
 == New features
 
--
+* Developers can now use `ICausalityChainVisitor` to navigate causality chains and retrieve the first cause matching a given type.
+This makes it possible to reliably retrieve a relevant cause even when intermediate causes have been added to the chain.
 
 
 == Improvements
