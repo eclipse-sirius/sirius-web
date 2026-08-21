@@ -2,6 +2,10 @@
 
 == Key highlights
 
+* Project templates can now declare required libraries.
+These libraries are automatically selected during project creation and cannot be unselected.
+
+
 == Breaking changes
 
 - Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
@@ -29,6 +33,8 @@ Imports of these classes must be updated to:
 * `org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService`
 * `org.eclipse.sirius.web.library.domain.services.api.ILibraryCreationService`
 * `org.eclipse.sirius.web.library.domain.events.LibraryCreatedEvent`
+- A list of required libraries must now be provided when creating a `ProjectTemplate`.
+
 
 == Bug fixes
 
@@ -36,6 +42,10 @@ Imports of these classes must be updated to:
 * Border nodes can now display their configured child and border nodes.
 
 == New features
+
+* Project templates can now define required libraries by namespace, name, and version.
+When users create a project from such a template, the required libraries are selected automatically and cannot be unselected.
+
 
 == Improvements
 

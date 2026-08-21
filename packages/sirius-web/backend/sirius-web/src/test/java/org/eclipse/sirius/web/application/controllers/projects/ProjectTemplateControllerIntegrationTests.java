@@ -18,6 +18,7 @@ import com.jayway.jsonpath.JsonPath;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
@@ -29,6 +30,10 @@ import org.eclipse.sirius.web.application.project.services.BlankProjectTemplateP
 import org.eclipse.sirius.web.application.studio.services.StudioProjectTemplateProvider;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticDataDependency;
+import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataSearchService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.papaya.projecttemplates.PapayaProjectTemplateProvider;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.CreateProjectExecutor;
@@ -49,6 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author sbegaudeau
  */
 @Transactional
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = { "sirius.web.enabled=*" })
 public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrationTests {
 
@@ -66,6 +72,12 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
 
     @Autowired
     private IProjectSemanticDataSearchService projectSemanticDataSearchService;
+
+    @Autowired
+    private ILibrarySearchService librarySearchService;
+
+    @Autowired
+    private ISemanticDataSearchService semanticDataSearchService;
 
     @BeforeEach
     public void beforeEach() {
@@ -172,5 +184,75 @@ public class ProjectTemplateControllerIntegrationTests extends AbstractIntegrati
 
         var emfEditingContext = (IEMFEditingContext) editingContext;
         assertThat(emfEditingContext.getDomain().getResourceSet().getResources()).hasSizeGreaterThan(10);
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName("Given a project template with required and optional libraries, when the mutation is performed, then the project is created with a dependency to the libraries")
+    public void givenProjectTemplateWithRequiredAndOptionalLibrariesWhenTheMutationIsPerformedThenTheProjectIsCreatedWithDependencyToTheLibraries(CapturedOutput capturedOutput) throws Exception {
+        Optional<Library> optionalJavaLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.3");
+        assertThat(optionalJavaLibrary).isPresent();
+        Library javaLibrary = optionalJavaLibrary.get();
+        Optional<Library> optionalSiriusWebTestsDataLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        assertThat(optionalSiriusWebTestsDataLibrary).isPresent();
+        Library siriusWebTestsDataLibrary = optionalSiriusWebTestsDataLibrary.get();
+
+        // The library is part of the input: this is the nominal use case where the frontend sends consistent data.
+        var input = new CreateProjectInput(UUID.randomUUID(), "Papaya - Empty", PapayaProjectTemplateProvider.EMPTY_PROJECT_TEMPLATE_ID,
+                List.of(javaLibrary.getId().toString(), siriusWebTestsDataLibrary.getId().toString()));
+        var projectId = this.createProjectExecutor.execute(input, capturedOutput)
+                .isSuccess()
+                .getProjectId();
+
+        var optionalSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
+                .map(ProjectSemanticData::getSemanticData)
+                .map(AggregateReference::getId)
+                .flatMap(this.semanticDataSearchService::findById);
+
+        assertThat(optionalSemanticData)
+                .isPresent()
+                .get()
+                .satisfies(semanticData ->
+                        assertThat(semanticData.getDependencies())
+                                .map(SemanticDataDependency::dependencySemanticDataId)
+                                .map(AggregateReference::getId)
+                                .containsExactlyInAnyOrder(javaLibrary.getSemanticData().getId(), siriusWebTestsDataLibrary.getSemanticData().getId())
+                );
+
+    }
+
+    @Test
+    @GivenSiriusWebServer
+    @DisplayName(
+            "Given a project template with required and optional libraries, when the mutation is performed from an input without the required library, then the project is created with dependencies to all the libraries")
+    public void givenProjectTemplateWithRequiredAndOptionalLibrariesWhenTheMutationIsPerformedFromAnInputWithoutTheRequiredLibraryThenTheProjectIsCreatedWithDependenciesToAllTheLibraries(
+            CapturedOutput capturedOutput) throws Exception {
+        Optional<Library> optionalJavaLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "java", "0.0.3");
+        assertThat(optionalJavaLibrary).isPresent();
+        Library javaLibrary = optionalJavaLibrary.get();
+        Optional<Library> optionalSiriusWebTestsDataLibrary = this.librarySearchService.findByNamespaceAndNameAndVersion("papaya", "sirius-web-tests-data", "3.0.0");
+        assertThat(optionalSiriusWebTestsDataLibrary).isPresent();
+        Library siriusWebTestsDataLibrary = optionalSiriusWebTestsDataLibrary.get();
+
+        // The library is not part of the input: this is not the nominal case, but it should create a project with required dependencies anyways.
+        var input = new CreateProjectInput(UUID.randomUUID(), "Papaya - Empty", PapayaProjectTemplateProvider.EMPTY_PROJECT_TEMPLATE_ID, List.of(siriusWebTestsDataLibrary.getId().toString()));
+        var projectId = this.createProjectExecutor.execute(input, capturedOutput)
+                .isSuccess()
+                .getProjectId();
+
+        var optionalSemanticData = this.projectSemanticDataSearchService.findByProjectId(AggregateReference.to(projectId))
+                .map(ProjectSemanticData::getSemanticData)
+                .map(AggregateReference::getId)
+                .flatMap(this.semanticDataSearchService::findById);
+
+        assertThat(optionalSemanticData)
+                .isPresent()
+                .get()
+                .satisfies(semanticData ->
+                        assertThat(semanticData.getDependencies())
+                                .map(SemanticDataDependency::dependencySemanticDataId)
+                                .map(AggregateReference::getId)
+                                .containsExactlyInAnyOrder(javaLibrary.getSemanticData().getId(), siriusWebTestsDataLibrary.getSemanticData().getId())
+                );
     }
 }

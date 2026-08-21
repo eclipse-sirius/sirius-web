@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ public class FlowProjectTemplatesProvider implements IProjectTemplateProvider {
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var flowTemplate = new ProjectTemplate(FLOW_TEMPLATE_ID, "Flow", "/project-templates/Flow-Template.png", List.of(new ProjectTemplateNature(FLOW_NATURE)));
+        var flowTemplate = new ProjectTemplate(FLOW_TEMPLATE_ID, "Flow", "/project-templates/Flow-Template.png", List.of(new ProjectTemplateNature(FLOW_NATURE)), List.of());
         return List.of(flowTemplate);
     }
 

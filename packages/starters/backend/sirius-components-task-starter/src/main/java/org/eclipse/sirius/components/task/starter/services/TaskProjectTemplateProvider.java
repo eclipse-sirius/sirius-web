@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2024 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ public class TaskProjectTemplateProvider implements IProjectTemplateProvider {
 
     @Override
     public List<ProjectTemplate> getProjectTemplates() {
-        var taskTemplate = new ProjectTemplate(TASK_EXAMPLE_TEMPLATE_ID, "Task", "/project-templates/Task-Template.png", List.of(new ProjectTemplateNature(TASK_NATURE)));
+        var taskTemplate = new ProjectTemplate(TASK_EXAMPLE_TEMPLATE_ID, "Task", "/project-templates/Task-Template.png", List.of(new ProjectTemplateNature(TASK_NATURE)), List.of());
         return List.of(taskTemplate);
     }
 

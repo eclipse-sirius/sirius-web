@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.web.papaya.services.library.api.IPapayaLibraryPublisher;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @SuppressWarnings("checkstyle:MultipleStringLiterals")
+@Profile("!test")
 public class PapayaLibraryInitializer implements CommandLineRunner {
 
     private final List<IPapayaLibraryPublisher> papayaLibraryPublishers;

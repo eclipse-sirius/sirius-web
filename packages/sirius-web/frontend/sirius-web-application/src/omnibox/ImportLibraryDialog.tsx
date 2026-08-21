@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -55,7 +55,7 @@ export const ImportLibraryDialog = ({ open, title, onClose }: ImportLibraryDialo
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="lg" scroll="paper" data-testid="import-library">
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>
-        <LibrariesImportTable onSelectedLibrariesChange={onSelectedLibrariesChange} />
+        <LibrariesImportTable onSelectedLibrariesChange={onSelectedLibrariesChange} requiredLibraryIds={[]} />
       </DialogContent>
       <DialogActions>
         {state.actions.length > 0 ? (
