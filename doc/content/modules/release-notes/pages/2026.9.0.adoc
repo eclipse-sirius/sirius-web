@@ -12,17 +12,21 @@
 
 == Bug fixes
 
--
+*  Fix an issue where a node was not correctly selected after the execution of a tool.
+*  Fix an issue where a node creation handle could stay highlighted after a connection.
 
 
 == New features
 
 * *Add the ability to customize the palette computed in a diagram or tree thanks to various post processors.
 Downstream projects can use either the `ITreeItemPaletteCustomizer` to transform the palette of a tree item, the `IDiagramPaletteCustomizer` to customize the palette computed for the background of the diagram or any number of diagram elements or finally the `IDiagramConnectorPaletteCustomizer` to customize the palette computed for a connector tool mostly used to create edges between diagram elements.
+* The connector tools of a diagram (used when creating a connection between 2 nodes) are now rendered in the palette component.
+* Added props to `PaletteToolOverrideContribution` to support the search feature of the palette for contributed tools.
 
 
 == Improvements
 
+* The internationalization of the tree item palette tools have been moved to the backend.
 * Diagram users can now pin or unpin multiple selected nodes at once from the group palette.
 * Small pointer movements while clicking a diagram node no longer start a drag, reducing accidental node movements.
 * Studio makers can now use the `diagramServices.deleteViews(nodes)` AQL service to configure group palette actions that remove multiple selected unsynchronized nodes from a diagram without deleting their semantic elements.

@@ -4,3 +4,23 @@
 
 The palette computed in a tree for a tree item can be customized by using a service implementing `o.e.s.c.collaborative.trees.palette.api.ITreeItemPaletteCustomizer`.
 Thanks to a implementation of this interface, a service can add, transform or even remove any tools, tool sections or quick access tools from the computed palette.
+
+The tool of a tree palette can be overridden using the `paletteToolOverrideExtensionPoint`.
+Some configuration is required to make an overridden tool work with the last tool used & the search feature of the palette.
+Some props are available to make it easier.
+
+For a tree, using the `canHandle: (representationKind: string, tool: GQLTool)` method, the value of representationKind will be `TREE_REPRESENTATION_KIND` (exported from the tree package).
+
+
+=== Last tool used
+
+The last tool used is displayed on top the tool section.
+You need to call the prop `onInvoked()` after the execution of a tool to set it as the last tool used.
+
+
+=== Search feature
+
+The current searched value is available from the prop `searchedValue`.
+Palette package export the function `fuzzyMatch = (candidate: string, searchTerm: string): MatchResult`.
+If there is a `searchedValue` you need to test your label with `fuzzyMatch` it in order to know if the tool is candidate.
+If there is a `searchedValue` but the attributed `matches` of `MatchResult` is false then the contributed component should not render.
