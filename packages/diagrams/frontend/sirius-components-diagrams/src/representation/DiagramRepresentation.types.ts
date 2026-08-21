@@ -61,6 +61,7 @@ export interface GQLDiagramDescription {
   nodeDescriptions: GQLNodeDescription[];
   toolbar?: GQLDiagramToolbar;
   dropNodeCompatibility: GQLDropNodeCompatibility[];
+  keyBindings: string[];
   debug: boolean;
   arrangeLayoutDirection: GQLArrangeLayoutDirection;
   layoutOption: GQLDiagramLayoutOption;

@@ -431,6 +431,7 @@ type DiagramDescription implements RepresentationDescription {
   @deprecated(reason: "https://github.com/eclipse-sirius/sirius-web/issues/6813")
   connectorTools(sourceDiagramElementId: ID!, targetDiagramElementId: ID!): [Tool!]!
   dropNodeCompatibility: [DropNodeCompatibilityEntry!]!
+  keyBindings: [String!]!
   initialDirectEditElementLabel(labelId: ID!): String!
   diagramImpactAnalysisReport(toolId: ID!, diagramElementId: ID!, variables: [ToolVariable!]!): ImpactAnalysisReport!
   debug: Boolean
