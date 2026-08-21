@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
+import org.eclipse.sirius.components.view.diagram.provider.StudioDefaultToolsFactory;
 
 /**
  * Used to create the relation edge description.
@@ -70,7 +70,7 @@ public class RelationEdgeDescriptionProvider implements IEdgeDescriptionProvider
         return new DiagramBuilders().newEdgePalette()
                 .centerLabelEditTool(labelEditTool)
                 .deleteTool(deleteTool)
-                .toolSections(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection())
+                .toolSections(new StudioDefaultToolsFactory().createDefaultHideRevealEdgeToolSection())
                 .build();
     }
 

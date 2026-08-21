@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -29,8 +29,7 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgeStyle;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeDescription} object.
- * <!-- begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.EdgeDescription} object. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
@@ -68,8 +67,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Begin Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This adds a property descriptor for the Begin Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -81,8 +79,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Center Label Expression feature. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This adds a property descriptor for the Center Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -94,8 +91,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the End Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This adds a property descriptor for the End Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -107,8 +103,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Is Domain Based Edge feature. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This adds a property descriptor for the Is Domain Based Edge feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -120,8 +115,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Source Descriptions feature. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This adds a property descriptor for the Source Descriptions feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -133,8 +127,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds a property descriptor for the Target Descriptions feature. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This adds a property descriptor for the Target Descriptions feature. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -170,10 +163,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
+     * {@link org.eclipse.emf.edit.command.RemoveCommand} or {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -233,9 +224,8 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
-     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -262,17 +252,16 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+        StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultEdgePalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__PALETTE, studioDefaultToolsFactory.createDefaultEdgePalette()));
 
         EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__STYLE, newEdgeStyle));
@@ -282,8 +271,7 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     }
 
     /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */

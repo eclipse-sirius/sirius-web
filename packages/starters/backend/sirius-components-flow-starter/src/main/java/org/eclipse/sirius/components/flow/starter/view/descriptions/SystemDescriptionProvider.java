@@ -31,7 +31,6 @@ import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Used to create the system node description.
@@ -138,7 +137,7 @@ public class SystemDescriptionProvider implements INodeDescriptionProvider {
                 .dropNodeTool(dropNodeTool)
                 .toolSections(
                         this.createNodeToolSection(cache),
-                        new DefaultToolsFactory().createDefaultHideRevealNodeToolSection()
+                        this.flowViewBuilder.createHideRevealNodeToolSection()
                 );
 
         if (this.synchronizationPolicy == SynchronizationPolicy.UNSYNCHRONIZED) {
