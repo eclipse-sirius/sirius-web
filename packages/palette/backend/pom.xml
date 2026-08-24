@@ -17,7 +17,7 @@
 
     <groupId>org.eclipse.sirius</groupId>
     <artifactId>sirius-components-palette-root</artifactId>
-    <version>2026.7.2</version>
+    <version>2026.7.3</version>
 
     <name>sirius-components-palette-root</name>
     <description>Sirius Components Palette Root</description>
