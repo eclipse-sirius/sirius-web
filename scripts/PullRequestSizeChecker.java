@@ -38,7 +38,7 @@ public class PullRequestSizeChecker {
         var headCommit = args[1];
 
         try {
-            var processBuilder = new ProcessBuilder("git", "log", "-p", baseCommit + ".." + headCommit);
+            var processBuilder = new ProcessBuilder("git", "log", "-p", "-w", baseCommit + ".." + headCommit);
             processBuilder.redirectErrorStream(true);
             var process = processBuilder.start();
 
