@@ -118,6 +118,7 @@ public class PullRequestSizeChecker {
         return List.of(
                 "CHANGELOG.adoc",
                 "package-lock.json",
+                "package.json",
                 "doc/",
                 "tests/",
                 "org.eclipse.core.resources.prefs",
@@ -130,6 +131,7 @@ public class PullRequestSizeChecker {
                 ".checkstyle",
                 ".classpath",
                 ".project",
+                "pom.xml",
                 "packages/papaya/backend/sirius-components-papaya",
                 "packages/papaya/backend/sirius-components-papaya-edit",
                 "packages/view/backend/sirius-components-view-builder",
