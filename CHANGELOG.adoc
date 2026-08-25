@@ -80,6 +80,7 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6770[#6770] [diagram] Prevent hidden child nodes from affecting the resize of their free-form parent.
 - https://github.com/eclipse-sirius/sirius-web/issues/6801[#6801] [diagram] Improve lasso selection to only include a single node as "last selected" instead of several ones when they are aligned.
 - https://github.com/eclipse-sirius/sirius-web/issues/6835[#6835] [tree] Fix an issue where tree item tools declared from a view dsl were not executed correctly
+- https://github.com/eclipse-sirius/sirius-web/issues/6847[#6847] [sirius-web] Fix invalid studio when created from template by setting a default name to generated color palette.
 
 
 === New Features

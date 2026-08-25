@@ -78,7 +78,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         viewDiagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
         view.getDescriptions().add(viewDiagramDescription);
 
-        view.getColorPalettes().add(this.createColorPalette());
+        view.getColorPalettes().add(this.createColorPalette(domainName));
 
         var entity1Node = this.createNodeDescriptionsEntity1(view, domainName, defaultToolsFactory);
 
@@ -147,7 +147,8 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         entity1Node.getPalette().getEdgeTools().add(createLinkTo);
     }
 
-    private void addEdgeDescription(NodeDescription entity1Node, NodeDescription entity2Node, DefaultToolsFactory defaultToolsFactory, org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, View view) {
+    private void addEdgeDescription(NodeDescription entity1Node, NodeDescription entity2Node, DefaultToolsFactory defaultToolsFactory,
+            org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, View view) {
         EdgeDescription linkedToEdge = DiagramFactory.eINSTANCE.createEdgeDescription();
         linkedToEdge.setName("LinkedTo Edge");
         linkedToEdge.setSemanticCandidatesExpression("");
@@ -211,8 +212,10 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         return tool;
     }
 
-    private ColorPalette createColorPalette() {
+    private ColorPalette createColorPalette(String domainName) {
         var colorPalette = ViewFactory.eINSTANCE.createColorPalette();
+
+        colorPalette.setName(domainName + " Color Palette");
 
         colorPalette.getColors().add(this.createFixedColor(COLOR_NAME_DARK, "#002639"));
         colorPalette.getColors().add(this.createFixedColor("color_blue", "#E5F5F8"));
