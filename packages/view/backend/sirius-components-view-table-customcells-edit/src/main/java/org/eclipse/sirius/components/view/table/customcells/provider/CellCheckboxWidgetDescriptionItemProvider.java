@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -97,7 +97,7 @@ public class CellCheckboxWidgetDescriptionItemProvider extends ItemProviderAdapt
     /**
      * This returns CellCheckboxWidgetDescription.svg. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {

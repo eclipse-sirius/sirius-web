@@ -80,7 +80,7 @@ public class CellLabelWidgetDescriptionItemProvider extends ItemProviderAdapter
     /**
      * This returns CellLabelWidgetDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
