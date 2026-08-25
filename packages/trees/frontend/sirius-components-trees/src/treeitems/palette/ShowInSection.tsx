@@ -73,10 +73,10 @@ export const ShowInSection = ({ onBackToMainList }: PaletteExtensionSectionCompo
       <Tooltip
         title={t('showInTarget', { target: target.label })}
         placement="right"
-        key={`push-diagram-selection-to-${target.id}`}>
+        key={`push-selection-to-${target.id}`}>
         <ListItemButton
           className={classes.toolListItemButton}
-          data-testid={`push-diagram-selection-to-${target.id}`}
+          data-testid={`push-selection-to-${target.label}`}
           onClick={() => {
             const localSelection = { entries: selectedTreeItems.map((id) => ({ id })) };
             target.applySelection(localSelection);
