@@ -163,7 +163,7 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
     /**
      * This returns TableDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
@@ -223,7 +223,7 @@ public class TableDescriptionItemProvider extends RepresentationDescriptionItemP
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
      * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
