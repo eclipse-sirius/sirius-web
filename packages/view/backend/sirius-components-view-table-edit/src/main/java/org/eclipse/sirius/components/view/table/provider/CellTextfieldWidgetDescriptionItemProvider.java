@@ -98,7 +98,7 @@ public class CellTextfieldWidgetDescriptionItemProvider extends ItemProviderAdap
     /**
      * This returns CellTextfieldWidgetDescription.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated NOT
+     * @generated
      */
     @Override
     public Object getImage(Object object) {
