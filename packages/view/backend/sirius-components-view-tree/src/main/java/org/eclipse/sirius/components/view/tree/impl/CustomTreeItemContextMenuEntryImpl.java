@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,8 @@ import org.eclipse.sirius.components.view.tree.TreePackage;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.CustomTreeItemContextMenuEntryImpl#getContributionId
  * <em>Contribution Id</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.impl.CustomTreeItemContextMenuEntryImpl#getLabelExpression
+ * <em>Label Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.impl.CustomTreeItemContextMenuEntryImpl#isWithImpactAnalysis
  * <em>With Impact Analysis</em>}</li>
  * </ul>
@@ -53,6 +55,26 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
      * @ordered
      */
     protected String contributionId = CONTRIBUTION_ID_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected static final String LABEL_EXPRESSION_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getLabelExpression() <em>Label Expression</em>}' attribute. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @see #getLabelExpression()
+     * @generated
+     * @ordered
+     */
+    protected String labelExpression = LABEL_EXPRESSION_EDEFAULT;
 
     /**
      * The default value of the '{@link #isWithImpactAnalysis() <em>With Impact Analysis</em>}' attribute. <!--
@@ -122,6 +144,29 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
      * @generated
      */
     @Override
+    public String getLabelExpression() {
+        return this.labelExpression;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setLabelExpression(String newLabelExpression) {
+        String oldLabelExpression = this.labelExpression;
+        this.labelExpression = newLabelExpression;
+        if (this.eNotificationRequired())
+            this.eNotify(new ENotificationImpl(this, Notification.SET, TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, oldLabelExpression, this.labelExpression));
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public boolean isWithImpactAnalysis() {
         return this.withImpactAnalysis;
     }
@@ -149,6 +194,8 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
         switch (featureID) {
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
                 return this.getContributionId();
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+                return this.getLabelExpression();
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
                 return this.isWithImpactAnalysis();
         }
@@ -165,6 +212,9 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
         switch (featureID) {
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
                 this.setContributionId((String) newValue);
+                return;
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+                this.setLabelExpression((String) newValue);
                 return;
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
                 this.setWithImpactAnalysis((Boolean) newValue);
@@ -184,6 +234,9 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
                 this.setContributionId(CONTRIBUTION_ID_EDEFAULT);
                 return;
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+                this.setLabelExpression(LABEL_EXPRESSION_EDEFAULT);
+                return;
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
                 this.setWithImpactAnalysis(WITH_IMPACT_ANALYSIS_EDEFAULT);
                 return;
@@ -201,6 +254,8 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
         switch (featureID) {
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
                 return CONTRIBUTION_ID_EDEFAULT == null ? this.contributionId != null : !CONTRIBUTION_ID_EDEFAULT.equals(this.contributionId);
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
+                return LABEL_EXPRESSION_EDEFAULT == null ? this.labelExpression != null : !LABEL_EXPRESSION_EDEFAULT.equals(this.labelExpression);
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
                 return this.withImpactAnalysis != WITH_IMPACT_ANALYSIS_EDEFAULT;
         }
@@ -220,6 +275,8 @@ public class CustomTreeItemContextMenuEntryImpl extends TreeItemContextMenuEntry
         StringBuilder result = new StringBuilder(super.toString());
         result.append(" (contributionId: ");
         result.append(this.contributionId);
+        result.append(", labelExpression: ");
+        result.append(this.labelExpression);
         result.append(", withImpactAnalysis: ");
         result.append(this.withImpactAnalysis);
         result.append(')');

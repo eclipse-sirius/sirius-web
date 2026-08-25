@@ -82,6 +82,16 @@ public class CustomTreeItemContextMenuEntryBuilder {
         return this;
     }
     /**
+     * Setter for LabelExpression.
+     *
+     * @generated
+     */
+    public CustomTreeItemContextMenuEntryBuilder labelExpression(java.lang.String value) {
+        this.getCustomTreeItemContextMenuEntry().setLabelExpression(value);
+        return this;
+    }
+
+    /**
      * Setter for WithImpactAnalysis.
      *
      * @generated

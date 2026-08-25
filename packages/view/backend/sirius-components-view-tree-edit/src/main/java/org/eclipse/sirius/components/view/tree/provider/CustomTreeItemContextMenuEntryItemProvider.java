@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,7 @@ public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextM
             super.getPropertyDescriptors(object);
 
             this.addContributionIdPropertyDescriptor(object);
+            this.addLabelExpressionPropertyDescriptor(object);
             this.addWithImpactAnalysisPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -67,6 +68,18 @@ public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextM
                 this.getString("_UI_CustomTreeItemContextMenuEntry_contributionId_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_CustomTreeItemContextMenuEntry_contributionId_feature", "_UI_CustomTreeItemContextMenuEntry_type"),
                 TreePackage.Literals.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Label Expression feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addLabelExpressionPropertyDescriptor(Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_CustomTreeItemContextMenuEntry_labelExpression_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_CustomTreeItemContextMenuEntry_labelExpression_feature", "_UI_CustomTreeItemContextMenuEntry_type"),
+                TreePackage.Literals.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION, true, false, false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -126,6 +139,7 @@ public class CustomTreeItemContextMenuEntryItemProvider extends TreeItemContextM
 
         switch (notification.getFeatureID(CustomTreeItemContextMenuEntry.class)) {
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID:
+            case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION:
             case TreePackage.CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS:
                 this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
                 return;

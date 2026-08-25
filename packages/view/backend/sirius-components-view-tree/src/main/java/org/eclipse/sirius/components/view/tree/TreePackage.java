@@ -118,6 +118,15 @@ public interface TreePackage extends EPackage {
     int TREE_DESCRIPTION__DESCRIPTION = ViewPackage.REPRESENTATION_DESCRIPTION__DESCRIPTION;
 
     /**
+     * The feature id for the '<em><b>End User Documentation</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int TREE_DESCRIPTION__END_USER_DOCUMENTATION = ViewPackage.REPRESENTATION_DESCRIPTION__END_USER_DOCUMENTATION;
+
+    /**
      * The feature id for the '<em><b>Kind Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -769,13 +778,22 @@ public interface TreePackage extends EPackage {
     int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 0;
 
     /**
+     * The feature id for the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @generated
+     * @ordered
+     */
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 1;
+
+    /**
      * The feature id for the '<em><b>With Impact Analysis</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 1;
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Custom Tree Item Context Menu Entry</em>' class. <!--
@@ -784,7 +802,7 @@ public interface TreePackage extends EPackage {
      * @generated
      * @ordered
      */
-    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 2;
+    int CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT = TREE_ITEM_CONTEXT_MENU_ENTRY_FEATURE_COUNT + 3;
 
     /**
      * The number of operations of the '<em>Custom Tree Item Context Menu Entry</em>' class. <!-- begin-user-doc -->
@@ -1350,6 +1368,18 @@ public interface TreePackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute
+     * '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getLabelExpression <em>Label
+     * Expression</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Label Expression</em>'.
+     * @see org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getLabelExpression()
+     * @see #getCustomTreeItemContextMenuEntry()
+     * @generated
+     */
+    EAttribute getCustomTreeItemContextMenuEntry_LabelExpression();
+
+    /**
+     * Returns the meta object for the attribute
      * '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#isWithImpactAnalysis <em>With
      * Impact Analysis</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -1790,6 +1820,14 @@ public interface TreePackage extends EPackage {
          * @generated
          */
         EAttribute CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID = eINSTANCE.getCustomTreeItemContextMenuEntry_ContributionId();
+
+        /**
+         * The meta object literal for the '<em><b>Label Expression</b></em>' attribute feature. <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION = eINSTANCE.getCustomTreeItemContextMenuEntry_LabelExpression();
 
         /**
          * The meta object literal for the '<em><b>With Impact Analysis</b></em>' attribute feature. <!-- begin-user-doc

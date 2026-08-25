@@ -107,19 +107,19 @@ public class TreeItemPaletteControllerTests extends AbstractIntegrationTests {
                 PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                 treeId.get(),
                 PapayaIdentifiers.PAPAYA_SIRIUS_WEB_ARCHITECTURE_DOCUMENT.toString())
-                .hasPaletteEntries(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
+                .hasPaletteEntriesIds(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.NEW_ROOT_OBJECT, ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
 
         Runnable getObjectPalette = () -> this.paletteExecutor.execute(
                         PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                         treeId.get(),
                         PapayaIdentifiers.PROJECT_OBJECT.toString())
-                .hasPaletteEntries(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
+                .hasPaletteEntriesIds(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.NEW_OBJECT, ExplorerTreeItemContextMenuEntryProvider.NEW_REPRESENTATION, ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_OBJECT, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
 
         Runnable getRepresentationPalette = () -> this.paletteExecutor.execute(
                         PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                         treeId.get(),
                         PapayaIdentifiers.PAPAYA_PACKAGE_TABLE_REPRESENTATION.toString())
-                .hasPaletteEntries(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION));
+                .hasPaletteEntriesIds(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.DUPLICATE_REPRESENTATION));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)
@@ -158,7 +158,7 @@ public class TreeItemPaletteControllerTests extends AbstractIntegrationTests {
                         StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                         treeId.get(),
                         StudioIdentifiers.ROOT_ENTITY_OBJECT.toString())
-                .hasPaletteEntries(toolIds -> assertThat(toolIds)
+                .hasPaletteEntriesIds(toolIds -> assertThat(toolIds)
                         .isNotEmpty()
                         .hasSizeGreaterThanOrEqualTo(3)
                         .anyMatch(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL::equals))
@@ -219,7 +219,8 @@ public class TreeItemPaletteControllerTests extends AbstractIntegrationTests {
                         PapayaIdentifiers.PAPAYA_EDITING_CONTEXT_ID.toString(),
                         treeId.get(),
                         PapayaIdentifiers.PAPAYA_SIRIUS_WEB_TESTS_DATA_DOCUMENT.toString())
-                .hasPaletteEntries(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY, ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL));
+                .hasPaletteEntriesIds(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.DOWNLOAD_DOCUMENT, ExplorerTreeItemContextMenuEntryProvider.UPDATE_LIBRARY, ExplorerTreeItemContextMenuEntryProvider.REMOVE_LIBRARY, ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL))
+                .hasPaletteEntriesLabels(entries -> assertThat(entries).containsExactly("Download", "Update library", "Remove library", "Expand all"));
 
         StepVerifier.create(flux)
             .consumeNextWith(initialTreeContentConsumer)
@@ -249,7 +250,7 @@ public class TreeItemPaletteControllerTests extends AbstractIntegrationTests {
                         StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID,
                         treeId.get(),
                         HUMAN_ENTITY_OBJECT.toString())
-                .hasPaletteEntries(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, this.domainViewTreeDescriptionProvider.getHelpMenuEntryId(), this.domainViewTreeDescriptionProvider.getToggleAbstractMenuEntryId()));
+                .hasPaletteEntriesIds(entries -> assertThat(entries).containsExactly(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL, this.domainViewTreeDescriptionProvider.getHelpMenuEntryId(), this.domainViewTreeDescriptionProvider.getToggleAbstractMenuEntryId()));
 
         StepVerifier.create(flux)
                 .consumeNextWith(initialTreeContentConsumer)

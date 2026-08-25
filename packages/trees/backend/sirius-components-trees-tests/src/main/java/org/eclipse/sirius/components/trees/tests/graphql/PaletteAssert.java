@@ -43,8 +43,14 @@ public class PaletteAssert {
         return this;
     }
 
-    public PaletteAssert hasPaletteEntries(Consumer<List<String>> consumer) {
+    public PaletteAssert hasPaletteEntriesIds(Consumer<List<String>> consumer) {
         List<String> paletteEntryLabels = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].id");
+        consumer.accept(paletteEntryLabels);
+        return this;
+    }
+
+    public PaletteAssert hasPaletteEntriesLabels(Consumer<List<String>> consumer) {
+        List<String> paletteEntryLabels = JsonPath.read(this.result, "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
         consumer.accept(paletteEntryLabels);
         return this;
     }

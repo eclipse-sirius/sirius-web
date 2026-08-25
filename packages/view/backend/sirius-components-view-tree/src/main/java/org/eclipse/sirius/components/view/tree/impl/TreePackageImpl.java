@@ -661,8 +661,18 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
      * @generated
      */
     @Override
-    public EAttribute getCustomTreeItemContextMenuEntry_WithImpactAnalysis() {
+    public EAttribute getCustomTreeItemContextMenuEntry_LabelExpression() {
         return (EAttribute) this.customTreeItemContextMenuEntryEClass.getEStructuralFeatures().get(1);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public EAttribute getCustomTreeItemContextMenuEntry_WithImpactAnalysis() {
+        return (EAttribute) this.customTreeItemContextMenuEntryEClass.getEStructuralFeatures().get(2);
     }
 
     /**
@@ -752,6 +762,7 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
 
         this.customTreeItemContextMenuEntryEClass = this.createEClass(CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY);
         this.createEAttribute(this.customTreeItemContextMenuEntryEClass, CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__CONTRIBUTION_ID);
+        this.createEAttribute(this.customTreeItemContextMenuEntryEClass, CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__LABEL_EXPRESSION);
         this.createEAttribute(this.customTreeItemContextMenuEntryEClass, CUSTOM_TREE_ITEM_CONTEXT_MENU_ENTRY__WITH_IMPACT_ANALYSIS);
 
         // Create enums
@@ -887,6 +898,8 @@ public class TreePackageImpl extends EPackageImpl implements TreePackage {
         this.initEClass(this.customTreeItemContextMenuEntryEClass, CustomTreeItemContextMenuEntry.class, "CustomTreeItemContextMenuEntry", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEAttribute(this.getCustomTreeItemContextMenuEntry_ContributionId(), theViewPackage.getIdentifier(), "contributionId", null, 0, 1, CustomTreeItemContextMenuEntry.class, !IS_TRANSIENT,
                 !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getCustomTreeItemContextMenuEntry_LabelExpression(), theViewPackage.getInterpretedExpression(), "labelExpression", null, 0, 1, CustomTreeItemContextMenuEntry.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getCustomTreeItemContextMenuEntry_WithImpactAnalysis(), this.ecorePackage.getEBoolean(), "withImpactAnalysis", null, 0, 1, CustomTreeItemContextMenuEntry.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

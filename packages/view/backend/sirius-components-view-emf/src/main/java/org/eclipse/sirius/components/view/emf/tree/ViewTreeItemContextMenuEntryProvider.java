@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.trees.api.ITreeItemContextMen
 import org.eclipse.sirius.components.collaborative.trees.dto.ITreeItemContextMenuEntry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -115,7 +116,8 @@ public class ViewTreeItemContextMenuEntryProvider implements ITreeItemContextMen
             result = new org.eclipse.sirius.components.collaborative.trees.dto.FetchTreeItemContextMenuEntry(id, label, iconURL, keyBindings);
         } else if (viewTreeItemContextAction instanceof CustomTreeItemContextMenuEntry customTreeItemContextMenuEntry) {
             // Use a SingleClickTreeItemContextMenuEntry instance with a dedicated ID to pass the information to the frontend.
-            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(customTreeItemContextMenuEntry.getContributionId(), "", List.of(), customTreeItemContextMenuEntry.isWithImpactAnalysis(), keyBindings);
+            var label = new StringValueProvider(interpreter, customTreeItemContextMenuEntry.getLabelExpression()).apply(variableManager);
+            result = new org.eclipse.sirius.components.collaborative.trees.dto.SingleClickTreeItemContextMenuEntry(customTreeItemContextMenuEntry.getContributionId(), label, List.of(), customTreeItemContextMenuEntry.isWithImpactAnalysis(), keyBindings);
         }
         return result;
     }
