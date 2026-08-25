@@ -71,6 +71,7 @@
     </genClasses>
     <genClasses ecoreClass="tree.ecore#//CustomTreeItemContextMenuEntry">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//CustomTreeItemContextMenuEntry/contributionId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//CustomTreeItemContextMenuEntry/labelExpression"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute tree.ecore#//CustomTreeItemContextMenuEntry/withImpactAnalysis"/>
     </genClasses>
   </genPackages>

@@ -119,9 +119,11 @@ public class ViewTreeItemPaletteProvider implements ITreeItemPaletteProvider {
                 var iconURL = new MultiValueProvider(interpreter, fetchTreeItemContextMenuEntry.getIconURLExpression(), String.class).apply(variableManager);
                 result = new FetchTreeItemTool(id, label, iconURL, keyBindings);
             }
-            case CustomTreeItemContextMenuEntry customTreeItemContextMenuEntry ->
-                // Use a SingleClickTreeItemTool instance with a dedicated ID to pass the information to the frontend.
-                result = new SingleClickTreeItemTool(customTreeItemContextMenuEntry.getContributionId(), "", List.of(), customTreeItemContextMenuEntry.isWithImpactAnalysis(), keyBindings);
+            case CustomTreeItemContextMenuEntry customTreeItemContextMenuEntry -> {
+                // Use a SingleClickTreeItemTool instance with a dedicated ID to pass the information to the frontend
+                var label = new StringValueProvider(interpreter, customTreeItemContextMenuEntry.getLabelExpression()).apply(variableManager);
+                result = new SingleClickTreeItemTool(customTreeItemContextMenuEntry.getContributionId(), label, List.of(), customTreeItemContextMenuEntry.isWithImpactAnalysis(), keyBindings);
+            }
             default -> {
             }
         }

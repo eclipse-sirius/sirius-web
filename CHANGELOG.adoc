@@ -45,6 +45,8 @@ A new GraphQL schema `palette.graphqls` has been added.
 - https://github.com/eclipse-sirius/sirius-web/issues/6815[#6815] [tree] In case a tree item palette provider is available for a representation, the `ITreeItemContextMenuEntryProvider` contributions will be ignored.
 A tree item palette provider is now provided for the explorer which will thus now ignore `ITreeItemContextMenuEntryProvider`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6835[#6835] [tree] `withImpactAnalysis` attribute has been removed from `GQLFetchTreeItemContextMenuEntry` type, it's available on `GQLSingleClickTreeItemContextMenuEntry`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6866[#6866] [tree] When using `CustomTreeItemContextMenuEntry` with a `contributionId` reused from sirius web, you will now also need to set the `labelExpression` in order for the label to render correctly on the frontend contribution.
+All contributed or overridden tools from sirius web frontend (the list is available on the documentation) expect the label to be set on the backend (since the internationalization is done on the backend)
 
 
 === Dependency update
@@ -101,7 +103,7 @@ For that, a new GraphQl field `DiagramDescription#connectorPalette(sourceDiagram
 - https://github.com/eclipse-sirius/sirius-web/issues/6826[#6826] [tree] Use the `palette` query on `TreeDescription` to render the tree item palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6829[#6829] [diagram] [tree] Add the ability to customize the palette computed in a diagram or tree thanks to various post processors.
 Downstream projects can use either the `ITreeItemPaletteCustomizer` to transform the palette of a tree item, the `IDiagramPaletteCustomizer` to customize the palette computed for the background of the diagram or any number of diagram elements or finally the `IDiagramConnectorPaletteCustomizer` to customize the palette computed for a connector tool mostly used to create edges between diagram elements.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6866[#6866] [tree] Add `labelExpression` to `CustomTreeItemContextMenuEntry`.
 
 
 === Improvements
@@ -232,6 +234,7 @@ This is to make it easier to type when the area overlaps another elements.
 Added `asLastToolUsed` to `PaletteToolOverriddenContributionComponentProps` & `PaletteToolContributionComponentProps`
 Added `isToolInPalette` to `PaletteToolOverriddenContributionComponentProps`, this can be use to know if a tool rendered as the last tool used should be disabled because the precondition of the tool is false (and thus it's not in the palette of that element)
 - https://github.com/eclipse-sirius/sirius-web/issues/6655[#6655] [trees] Fix an issue where the Tree palette was rendered outside the workbench.
+
 
 === New Features
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,8 @@ package org.eclipse.sirius.components.view.tree;
  * <ul>
  * <li>{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getContributionId <em>Contribution
  * Id</em>}</li>
+ * <li>{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getLabelExpression <em>Label
+ * Expression</em>}</li>
  * <li>{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#isWithImpactAnalysis <em>With
  * Impact Analysis</em>}</li>
  * </ul>
@@ -54,6 +56,30 @@ public interface CustomTreeItemContextMenuEntry extends TreeItemContextMenuEntry
      * @generated
      */
     void setContributionId(String value);
+
+    /**
+     * Returns the value of the '<em><b>Label Expression</b></em>' attribute. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     *
+     * @return the value of the '<em>Label Expression</em>' attribute.
+     * @see #setLabelExpression(String)
+     * @see org.eclipse.sirius.components.view.tree.TreePackage#getCustomTreeItemContextMenuEntry_LabelExpression()
+     * @model dataType="org.eclipse.sirius.components.view.InterpretedExpression"
+     * @generated
+     */
+    String getLabelExpression();
+
+    /**
+     * Sets the value of the
+     * '{@link org.eclipse.sirius.components.view.tree.CustomTreeItemContextMenuEntry#getLabelExpression <em>Label
+     * Expression</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Label Expression</em>' attribute.
+     * @see #getLabelExpression()
+     * @generated
+     */
+    void setLabelExpression(String value);
 
     /**
      * Returns the value of the '<em><b>With Impact Analysis</b></em>' attribute. <!-- begin-user-doc --> <!--

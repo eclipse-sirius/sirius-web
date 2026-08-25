@@ -57,7 +57,20 @@ Three concrete types are available:
 
 * `SingleClickTreeItemContextMenuEntry`: declares inline actions stored in the `body` (list of operations) and exposes `labelExpression`, `iconURLExpression`, plus an optional `withImpactAnalysis` flag when the operation has significant side effects.
 * `FetchTreeItemContextMenuEntry`: lets you describe actions that fetch external resources, with `urlExpression`, a `kind` enum (`DOWNLOAD`, `OPEN`), and optional label/icon expressions.
-* `CustomTreeItemContextMenuEntry`: registers contribution identifiers provided by the frontend (`contributionId`) and can optionally set `withImpactAnalysis`.
+* `CustomTreeItemContextMenuEntry`: registers contribution identifiers provided by the frontend (`contributionId`) and can optionally set `withImpactAnalysis` & `labelExpression`.
+
+When using a `CustomTreeItemContextMenuEntry` you can reuse an existing contributed tool, some of the available ids are :
+
+* `expand-all` : Expand all the children of the tree item
+* `new-root-object` : If the tree item is a document, open a modal to create a root object
+* `download-document` : If the tree item is a document, download the document
+* `new-object` : If the tree item is an eobject, open a modal to create a children
+* `new-representation` : If the tree item is an eobject, open a modal to create a representation
+* `duplicate-object` : If the tree item is an eobject, open a modal to duplicate the object
+* `duplicate-representation` : If the tree item is a representation, duplicate the representation
+* `update-library` : If the tree item is a library, open a modal to update the library
+
+Note that you have to check the type of the tree item (using a precondition for example) to avoid rendering it on a type that is not compatible with the tool).
 
 Operation bodies reuse the shared operation language (`ChangeContext`, `CreateInstance`, `SetValue`, `UnsetValue`, `DeleteElement`, `Let`, `If`, `For`), so context menu actions can create semantic children, open representations, or trigger validation services directly from the tree.
 Context menu actions can create semantic children, open representations, or trigger validation services directly from the tree.

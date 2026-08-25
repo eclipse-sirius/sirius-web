@@ -38,6 +38,7 @@ import org.eclipse.sirius.components.view.tree.TreeItemLabelDescription;
 import org.eclipse.sirius.components.view.tree.TreeItemLabelElementDescription;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.editingcontext.EditingContext;
+import org.eclipse.sirius.web.application.messages.ISiriusWebApplicationMessageService;
 import org.eclipse.sirius.web.application.studio.services.api.IStudioCapableEditingContextPredicate;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerDescriptionProvider;
 import org.eclipse.sirius.web.application.views.explorer.services.ExplorerTreeItemContextMenuEntryProvider;
@@ -69,6 +70,8 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
 
     private final IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate;
 
+    private final ISiriusWebApplicationMessageService messageService;
+
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     private final View view;
@@ -81,8 +84,9 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
 
     private FetchTreeItemContextMenuEntry helpMenuEntry;
 
-    public DomainViewTreeDescriptionProvider(IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate, ITreeIdProvider treeIdProvider) {
+    public DomainViewTreeDescriptionProvider(IStudioCapableEditingContextPredicate studioCapableEditingContextPredicate, ISiriusWebApplicationMessageService messageService, ITreeIdProvider treeIdProvider) {
         this.studioCapableEditingContextPredicate = Objects.requireNonNull(studioCapableEditingContextPredicate);
+        this.messageService = Objects.requireNonNull(messageService);
         this.treeIdProvider = Objects.requireNonNull(treeIdProvider);
         this.view = this.createView();
     }
@@ -326,6 +330,7 @@ public class DomainViewTreeDescriptionProvider implements IEditingContextProcess
                 .build();
 
         var expandAllMenuEntry = new TreeBuilders().newCustomTreeItemContextMenuEntry()
+                .labelExpression("aql:'" + this.messageService.treeToolExpandAll() + "'")
                 .contributionId(ExplorerTreeItemContextMenuEntryProvider.EXPAND_ALL)
                 .preconditionExpression("aql:" + TreeItem.SELECTED_TREE_ITEM + ".isHasChildren()")
                 .build();

@@ -6,7 +6,7 @@
 
 == Breaking changes
 
--
+- All palette contributed tools from sirius web (the list of tools is available on the documentation) expects to have their label declared on the backend side.
 
 == Bug fixes
 
@@ -28,6 +28,7 @@ Downstream projects can use either the `ITreeItemPaletteCustomizer` to transform
 * Added props to `PaletteToolOverrideContribution` to support the search feature of the palette for contributed tools.
 * Developers can now use `ICausalityChainVisitor` to navigate causality chains and retrieve the first cause matching a given type.
 This makes it possible to reliably retrieve a relevant cause even when intermediate causes have been added to the chain.
+* Add an attribute `labelExpression` to `CustomTreeItemContextMenuEntry` in the tree view dsl, this can be useful for backend internationalization of labels.
 
 == Improvements
 
