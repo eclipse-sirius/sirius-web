@@ -139,7 +139,12 @@ public class GeneralPurposeTests {
     private static final List<String> GENERATED_EDIT_MODULE_PATHS = List.of(
             "/sirius-components-widget-reference-view-edit",
             "/sirius-components-view-gantt-edit",
-            "/sirius-components-view-deck-edit"
+            "/sirius-components-view-deck-edit",
+            "/sirius-components-view-edit",
+            "/sirius-components-view-table-edit",
+            "/sirius-components-view-table-customcells-edit",
+            "/sirius-components-widget-table-view-edit",
+            "/sirius-components-view-tree-edit"
     );
 
     private static final List<String> IGNORED_GENERATED_EDIT_CLASSES_SUFFIX = List.of(
