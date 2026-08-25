@@ -183,6 +183,7 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
           const previousNode = previousNodes.find((n) => n.id === convertedNode.id);
           if (previousNode) {
             convertedNode.selected = previousNode.selected;
+            convertedNode.data.isLastNodeSelected = previousNode.data.isLastNodeSelected;
             convertedNode.data.isDraggedNode = previousNode.data.isDraggedNode;
             convertedNode.data.isDragNodeSource = previousNode.data.isDragNodeSource;
             convertedNode.data.isDropNodeTarget = previousNode.data.isDropNodeTarget;
@@ -222,6 +223,10 @@ export const DiagramRenderer = memo(({ diagramRefreshedEventPayload }: DiagramRe
               return {
                 ...node,
                 selected: !!nodeLookup.get(node.id)?.selected,
+                data: {
+                  ...node.data,
+                  isLastNodeSelected: !!nodeLookup.get(node.id)?.data.isLastNodeSelected,
+                },
               };
             }
             return node;
