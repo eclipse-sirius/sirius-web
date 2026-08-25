@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { type Locator, type Page } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 
 export class PlaywrightExplorer {
   readonly page: Page;
@@ -33,10 +33,20 @@ export class PlaywrightExplorer {
 
   async createNewObject(treeItemLabel: string, childCreationDescriptionLabel: string) {
     await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
-    await this.page.getByTestId('new-object').click();
+    await this.page.getByTestId('new-object').first().click();
     await this.page.getByTestId('childCreationDescription').click();
     await this.page.locator(`[data-value="${childCreationDescriptionLabel}"]`).click();
     await this.page.getByTestId('create-object').click();
+    await expect(this.page.getByTestId('new-object-modal')).not.toBeAttached();
+  }
+
+  async createNewModel(modelName: string, stereotypeId: string): Promise<void> {
+    await this.page.getByTestId('new-model').click();
+    const dialog = this.page.getByTestId('create-new-model');
+    await dialog.getByTestId('name-input').fill(modelName);
+    await dialog.getByTestId('stereotype').click();
+    await this.page.locator(`[data-value="${stereotypeId}"]`).click();
+    await dialog.getByTestId('create-document').click();
   }
 
   async createRepresentation(
@@ -71,6 +81,10 @@ export class PlaywrightExplorer {
     await this.page.getByTestId('expand-all').click();
   }
 
+  async openPalette(treeItemLabel: string) {
+    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+  }
+
   async uploadDocument(fileName: string) {
     await this.page.getByTestId('upload-document-icon').click();
     await this.page.locator('input[name="file"]').setInputFiles(`./playwright/resources/${fileName}`);
@@ -87,8 +101,8 @@ export class PlaywrightExplorer {
   }
 
   async showIn(treeItemLabel: string, selectionTargetLabel: string) {
-    await this.explorerLocator.locator(`[data-treeitemlabel="${treeItemLabel}"]`).click();
-    await this.explorerLocator.getByTestId(`${treeItemLabel}-more`).click();
+    await this.openPalette(treeItemLabel);
+    await this.page.getByTestId(`toolSection-Show in`).click();
     await this.page.getByTestId(`push-selection-to-${selectionTargetLabel}`).click();
   }
 
