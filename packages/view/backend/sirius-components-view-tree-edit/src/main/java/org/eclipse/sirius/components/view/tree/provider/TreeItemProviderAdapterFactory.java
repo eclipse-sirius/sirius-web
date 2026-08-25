@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -41,6 +41,13 @@ import org.eclipse.sirius.components.view.ViewPackage;
 import org.eclipse.sirius.components.view.tree.TreeDescription;
 import org.eclipse.sirius.components.view.tree.TreeFactory;
 import org.eclipse.sirius.components.view.tree.TreePackage;
+import org.eclipse.sirius.components.view.tree.provider.spec.FetchTreeItemContextMenuEntryItemProviderSpec;
+import org.eclipse.sirius.components.view.tree.provider.spec.ForTreeItemLabelElementDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.tree.provider.spec.IfTreeItemLabelElementDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.tree.provider.spec.SingleClickTreeItemContextMenuEntryItemProviderSpec;
+import org.eclipse.sirius.components.view.tree.provider.spec.TreeDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.tree.provider.spec.TreeItemLabelDescriptionItemProviderSpec;
+import org.eclipse.sirius.components.view.tree.provider.spec.TreeItemLabelFragmentDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.tree.util.TreeAdapterFactory;
 import org.eclipse.sirius.components.view.util.ViewSwitch;
 
@@ -146,12 +153,12 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.tree.TreeDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTreeDescriptionAdapter() {
         if (this.treeDescriptionItemProvider == null) {
-            this.treeDescriptionItemProvider = new TreeDescriptionItemProvider(this);
+            this.treeDescriptionItemProvider = new TreeDescriptionItemProviderSpec(this);
         }
 
         return this.treeDescriptionItemProvider;
@@ -161,12 +168,12 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.tree.TreeItemLabelDescription}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTreeItemLabelDescriptionAdapter() {
         if (this.treeItemLabelDescriptionItemProvider == null) {
-            this.treeItemLabelDescriptionItemProvider = new TreeItemLabelDescriptionItemProvider(this);
+            this.treeItemLabelDescriptionItemProvider = new TreeItemLabelDescriptionItemProviderSpec(this);
         }
 
         return this.treeItemLabelDescriptionItemProvider;
@@ -185,12 +192,12 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.tree.IfTreeItemLabelElementDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createIfTreeItemLabelElementDescriptionAdapter() {
         if (this.ifTreeItemLabelElementDescriptionItemProvider == null) {
-            this.ifTreeItemLabelElementDescriptionItemProvider = new IfTreeItemLabelElementDescriptionItemProvider(this);
+            this.ifTreeItemLabelElementDescriptionItemProvider = new IfTreeItemLabelElementDescriptionItemProviderSpec(this);
         }
 
         return this.ifTreeItemLabelElementDescriptionItemProvider;
@@ -209,12 +216,12 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.tree.ForTreeItemLabelElementDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createForTreeItemLabelElementDescriptionAdapter() {
         if (this.forTreeItemLabelElementDescriptionItemProvider == null) {
-            this.forTreeItemLabelElementDescriptionItemProvider = new ForTreeItemLabelElementDescriptionItemProvider(this);
+            this.forTreeItemLabelElementDescriptionItemProvider = new ForTreeItemLabelElementDescriptionItemProviderSpec(this);
         }
 
         return this.forTreeItemLabelElementDescriptionItemProvider;
@@ -224,12 +231,12 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.tree.TreeItemLabelFragmentDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTreeItemLabelFragmentDescriptionAdapter() {
         if (this.treeItemLabelFragmentDescriptionItemProvider == null) {
-            this.treeItemLabelFragmentDescriptionItemProvider = new TreeItemLabelFragmentDescriptionItemProvider(this);
+            this.treeItemLabelFragmentDescriptionItemProvider = new TreeItemLabelFragmentDescriptionItemProviderSpec(this);
         }
 
         return this.treeItemLabelFragmentDescriptionItemProvider;
@@ -240,12 +247,12 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
      * {@link org.eclipse.sirius.components.view.tree.SingleClickTreeItemContextMenuEntry}. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createSingleClickTreeItemContextMenuEntryAdapter() {
         if (this.singleClickTreeItemContextMenuEntryItemProvider == null) {
-            this.singleClickTreeItemContextMenuEntryItemProvider = new SingleClickTreeItemContextMenuEntryItemProvider(this);
+            this.singleClickTreeItemContextMenuEntryItemProvider = new SingleClickTreeItemContextMenuEntryItemProviderSpec(this);
         }
 
         return this.singleClickTreeItemContextMenuEntryItemProvider;
@@ -255,12 +262,12 @@ public class TreeItemProviderAdapterFactory extends TreeAdapterFactory implement
      * This creates an adapter for a {@link org.eclipse.sirius.components.view.tree.FetchTreeItemContextMenuEntry}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createFetchTreeItemContextMenuEntryAdapter() {
         if (this.fetchTreeItemContextMenuEntryItemProvider == null) {
-            this.fetchTreeItemContextMenuEntryItemProvider = new FetchTreeItemContextMenuEntryItemProvider(this);
+            this.fetchTreeItemContextMenuEntryItemProvider = new FetchTreeItemContextMenuEntryItemProviderSpec(this);
         }
 
         return this.fetchTreeItemContextMenuEntryItemProvider;

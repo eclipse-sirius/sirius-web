@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.view.form.FormPackage;
 import org.eclipse.sirius.components.view.form.GroupDescription;
 import org.eclipse.sirius.components.view.form.util.FormSwitch;
 import org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetFactory;
+import org.eclipse.sirius.components.view.widget.tablewidget.provider.spec.TableWidgetDescriptionItemProviderSpec;
 import org.eclipse.sirius.components.view.widget.tablewidget.util.TableWidgetAdapterFactory;
 
 /**
@@ -109,12 +110,12 @@ public class TableWidgetItemProviderAdapterFactory extends TableWidgetAdapterFac
      * {@link org.eclipse.sirius.components.view.widget.tablewidget.TableWidgetDescription}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @generated
+     * @generated NOT
      */
     @Override
     public Adapter createTableWidgetDescriptionAdapter() {
         if (this.tableWidgetDescriptionItemProvider == null) {
-            this.tableWidgetDescriptionItemProvider = new TableWidgetDescriptionItemProvider(this);
+            this.tableWidgetDescriptionItemProvider = new TableWidgetDescriptionItemProviderSpec(this);
         }
 
         return this.tableWidgetDescriptionItemProvider;
