@@ -82,6 +82,7 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6835[#6835] [tree] Fix an issue where tree item tools declared from a view dsl were not executed correctly
 - https://github.com/eclipse-sirius/sirius-web/issues/6847[#6847] [sirius-web] Fix invalid studio when created from template by setting a default name to generated color palette.
 - https://github.com/eclipse-sirius/sirius-web/issues/6846[#6846] [diagram] Fix "Last Selected Element" that was not correctly set after a diagram refresh.
+- https://github.com/eclipse-sirius/sirius-web/issues/6849[#6849] [diagram] Fix "Last Selected Element" that was not correctly set after a tool redefined the selection.
 
 === New Features
 

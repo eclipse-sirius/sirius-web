@@ -38,7 +38,6 @@ export const usePostToolSelection = (diagramRefreshedEventPayload: GQLDiagramRef
         const targetObjectIdAlreadySelected: Set<string> = new Set();
         const nodesToSelect: string[] = [];
         const edgesToSelect: string[] = [];
-        let lastNodeSelectedId: string = '';
 
         getEdges()
           .filter((edge) => !edge.hidden)
@@ -66,12 +65,10 @@ export const usePostToolSelection = (diagramRefreshedEventPayload: GQLDiagramRef
             }
           });
 
+        const lastNodeSelectedId = nodesToSelect.at(-1);
         setNodes((previousNodes) =>
           previousNodes.map((previousNode) => {
             if (nodesToSelect.includes(previousNode.id)) {
-              if (!lastNodeSelectedId) {
-                lastNodeSelectedId = previousNode.id;
-              }
               return {
                 ...previousNode,
                 selected: true,

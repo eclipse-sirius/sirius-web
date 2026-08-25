@@ -13,6 +13,7 @@
 * Fix an issue where a node was not correctly selected after the execution of a tool.
 * Fix an issue where a node creation handle could stay highlighted after a connection.
 * Fix "Last Selected Element" that was not correctly set after a diagram refresh.
+* Fix "Last Selected Element" that was not correctly set after a tool redefined the selection.
 
 == New features
 
