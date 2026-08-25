@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ export class Flow {
   static readonly FLOW_NATURE = 'siriusWeb://nature?kind=flow';
 
   public createRobotProject(name: string): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProject(name, 'flow-template').then((res) => {
+    return cy.createProject(name, 'flow-template', []).then((res) => {
       const payload = res.body.data.createProject;
       if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;
@@ -37,7 +37,7 @@ export class Flow {
   }
 
   public createFlowProject(): Cypress.Chainable<CreatedProjectData> {
-    return cy.createProject('Flow', 'flow-template').then((res) => {
+    return cy.createProject('Flow', 'flow-template', []).then((res) => {
       const payload = res.body.data.createProject;
       if (isCreateProjectSuccessPayload(payload)) {
         const projectId = payload.project.id;

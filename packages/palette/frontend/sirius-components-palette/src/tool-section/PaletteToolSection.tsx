@@ -209,7 +209,7 @@ export const PaletteToolSection = ({
   return (
     <Box className={classes.container}>
       {lastUsedTool}
-      <Box className={classes.toolListContainer} ref={containerRef}>
+      <Box className={classes.toolListContainer} ref={containerRef} data-testid={'palette-tool-section'}>
         <Slide
           key={state.currentSectionId ?? 'main'}
           direction={state.direction}
