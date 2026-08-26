@@ -7,7 +7,8 @@
 
 == Breaking changes
 
-
+- Add a new module named `sirius-web-core-domain` to start extracting the core reusable parts of `sirius-web-domain`.
+To get started, the class `AbstractValidatingAggregateRoot` has been moved to this new module.
 
 
 == Bug fixes
