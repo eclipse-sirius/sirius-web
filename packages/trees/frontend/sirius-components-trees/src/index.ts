@@ -32,7 +32,11 @@ export {
 export * from './treeitems/filterTreeItem';
 export { TreePaletteContext } from './treeitems/palette/contexts/TreePaletteContext';
 export type { TreePaletteContextValue } from './treeitems/palette/contexts/TreePaletteContext.types';
-export { TREE_REPRESENTATION_KIND } from './treeitems/palette/TreeItemPalette';
+export {
+  isFetchTreeItemTool,
+  isSingleClickTreeItemTool,
+  TREE_REPRESENTATION_KIND,
+} from './treeitems/palette/TreeItemPalette';
 export * from './treeitems/TreeItemAction';
 export * from './treeitems/TreeItemAction.types';
 export * from './trees/FilterBar';

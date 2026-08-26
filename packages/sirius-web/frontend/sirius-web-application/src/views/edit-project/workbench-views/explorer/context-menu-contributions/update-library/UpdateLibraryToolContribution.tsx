@@ -12,11 +12,14 @@
  *******************************************************************************/
 import {
   fuzzyMatch,
-  isSingleClickOnDiagramElementTool,
   PaletteToolOverriddenContributionComponentProps,
   ToolListItemText,
 } from '@eclipse-sirius/sirius-components-palette';
-import { TreePaletteContext, TreePaletteContextValue } from '@eclipse-sirius/sirius-components-trees';
+import {
+  isSingleClickTreeItemTool,
+  TreePaletteContext,
+  TreePaletteContextValue,
+} from '@eclipse-sirius/sirius-components-trees';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import MenuItem from '@mui/material/MenuItem';
@@ -62,7 +65,7 @@ export const UpdateLibraryToolContribution = forwardRef(
               name={library.name}
               version={library.version}
               title={`Update ${library.name} @${library.version}`}
-              withImpactAnalysis={isSingleClickOnDiagramElementTool(tool) && tool.withImpactAnalysis}
+              withImpactAnalysis={isSingleClickTreeItemTool(tool) && tool.withImpactAnalysis}
               onClose={onClose}
             />
           </Fragment>
