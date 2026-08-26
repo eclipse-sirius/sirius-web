@@ -39,7 +39,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
+import org.eclipse.sirius.components.view.diagram.provider.StudioDefaultToolsFactory;
 
 /**
  * Used to create the entity node description.
@@ -51,7 +51,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
 
     public static final String ENTITY_NODE_DESCRIPTION_NAME = "Entity";
 
-    public  static final String ATTRIBUTE_NODE_DESCRIPTION_NAME = "Attribute";
+    public static final String ATTRIBUTE_NODE_DESCRIPTION_NAME = "Attribute";
 
     private static final String ENTITY_NODE_TOOL_SECTION_NAME = "Attributes";
 
@@ -93,7 +93,6 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .condition("aql:self.abstract")
                 .build();
 
-
         NodeDescription attributeNodeDescription = this.attributeNodeDescription();
 
         var entityNodeDescription = new DiagramBuilders()
@@ -127,7 +126,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .deleteTool(deleteTool)
                 .dropNodeTool(dropNodeTool)
                 .edgeTools(relationEdgeTool, containmentEdgeTool, supertypeEdgeTool)
-                .toolSections(nodeToolSection, new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
+                .toolSections(nodeToolSection, new StudioDefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .build();
     }
 
@@ -248,16 +247,16 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .name("Drop attributes")
                 .acceptedNodeTypes(attributeNodeDescription)
                 .body(new ViewBuilders().newFor()
-                       .expression("aql:droppedElements")
-                       .iteratorName("droppedAttribute")
-                       .children(new ViewBuilders().newChangeContext()
-                                  .expression("aql:targetElement")
-                                  .children(new ViewBuilders().newSetValue()
-                                             .featureName("attributes")
-                                             .valueExpression("aql:droppedAttribute")
-                                             .build())
-                                  .build())
-                       .build())
+                        .expression("aql:droppedElements")
+                        .iteratorName("droppedAttribute")
+                        .children(new ViewBuilders().newChangeContext()
+                                .expression("aql:targetElement")
+                                .children(new ViewBuilders().newSetValue()
+                                        .featureName("attributes")
+                                        .valueExpression("aql:droppedAttribute")
+                                        .build())
+                                .build())
+                        .build())
                 .build();
     }
 
@@ -375,7 +374,7 @@ public class EntityNodeDescriptionProvider implements INodeDescriptionProvider {
                 .newNodePalette()
                 .labelEditTool(labelEditTool)
                 .deleteTool(deleteTool)
-                .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
+                .toolSections(new StudioDefaultToolsFactory().createDefaultHideRevealNodeToolSection())
                 .build();
 
         return new DiagramBuilders()

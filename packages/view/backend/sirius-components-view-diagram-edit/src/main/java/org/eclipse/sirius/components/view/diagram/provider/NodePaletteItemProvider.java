@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,8 +33,7 @@ import org.eclipse.sirius.components.view.diagram.DiagramPackage;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 
 /**
- * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.NodePalette} object. <!--
- * begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link org.eclipse.sirius.components.view.diagram.NodePalette} object. <!-- begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
@@ -65,10 +64,8 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-     * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-     * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an {@link org.eclipse.emf.edit.command.AddCommand},
+     * {@link org.eclipse.emf.edit.command.RemoveCommand} or {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -131,9 +128,8 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating
-     * a viewer notification, which it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!-- end-user-doc
-     * -->
+     * This handles model notifications by calling {@link #updateChildren} to update any cached children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
@@ -156,8 +152,7 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
     }
 
     /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created
-     * under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that can be created under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */
@@ -165,20 +160,19 @@ public class NodePaletteItemProvider extends ItemProviderAdapter
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__DELETE_TOOL, defaultToolsFactory.createDefaultDeleteTool()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL, defaultToolsFactory.createDefaultLabelEditTool()));
+        StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__DELETE_TOOL, studioDefaultToolsFactory.createDefaultDeleteTool()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__LABEL_EDIT_TOOL, studioDefaultToolsFactory.createDefaultLabelEditTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__DROP_NODE_TOOL, DiagramFactory.eINSTANCE.createDropNodeTool()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS, defaultToolsFactory.createDefaultNodeCreationTool()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__QUICK_ACCESS_TOOLS, defaultToolsFactory.createDefaultNodeCreationTool()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS, defaultToolsFactory.createDefaultEdgeTool()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__NODE_TOOLS, studioDefaultToolsFactory.createDefaultNodeCreationTool()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__QUICK_ACCESS_TOOLS, studioDefaultToolsFactory.createDefaultNodeCreationTool()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__EDGE_TOOLS, studioDefaultToolsFactory.createDefaultEdgeTool()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.NODE_PALETTE__TOOL_SECTIONS, DiagramFactory.eINSTANCE.createNodeToolSection()));
 
     }
 
     /**
-     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated NOT
      */

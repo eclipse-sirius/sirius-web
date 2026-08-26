@@ -1381,7 +1381,7 @@ public class DiagramItemProviderAdapterFactory extends DiagramAdapterFactory imp
             public Object caseView(View object) {
                 DiagramDescription newDiagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
                 newDiagramDescription.setName("New Diagram Description");
-                newDiagramDescription.setPalette(new DefaultToolsFactory().createDefaultDiagramPalette());
+                newDiagramDescription.setPalette(new StudioDefaultToolsFactory().createDefaultDiagramPalette());
                 newDiagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
                 this.newChildDescriptors.add(this.createChildParameter(ViewPackage.Literals.VIEW__DESCRIPTIONS, newDiagramDescription));
 

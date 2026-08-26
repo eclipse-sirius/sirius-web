@@ -19,7 +19,12 @@
 
 === Breaking changes
 
-
+- [view] Default tools are now provided only for low-code studios.
+`DefaultToolsFactory` has been renamed to `StudioDefaultToolsFactory`.
+The following factory methods have been removed: `createDefaultSourceEdgeReconnectionTool`, `createDefaultTargetEdgeReconnectionTool`, `createDefaultBeginLabelEditTool`, `createDefaultCenterLabelEditTool`, `createDefaultEndLabelEditTool`, `createDefaultHideAllChildrenNodeTool`, `createDefaultRevealAllChildrenNodeTool`, `createDefaultResetAllChildrenVisibilityModifiersNodeTool`, and `createDefaultRevealChildrenWithValueNodeTool`.
+`Reset All Children Visibility` and `Reveal Children With Value` tools used by Flow DSL have been removed.
+`DefaultMultiSelectionVisibilityToolsFactory` has been removed from `sirius-components-view-diagram-edit`.
+Programmatic DSLs that relied on these factories must define the tools they expose in their own description providers.
 
 
 === Dependency update

@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Used to create the powerInput node description.
@@ -74,7 +73,7 @@ public class PowerInputDescriptionProvider implements INodeDescriptionProvider {
 
     private NodePalette createNodePalette() {
         return this.diagramBuilderHelper.newNodePalette()
-                .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
+                .toolSections(this.flowViewBuilder.createHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .build();
     }

@@ -12,6 +12,11 @@
  *******************************************************************************/
 package org.eclipse.sirius.web.application.controllers.diagrams;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
+
+import com.jayway.jsonpath.JsonPath;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jayway.jsonpath.JsonPath;
 import reactor.test.StepVerifier;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.eclipse.sirius.components.diagrams.tests.DiagramEventPayloadConsumer.assertRefreshedDiagramThat;
 
 /**
  * Integration tests of the palette controllers IPaletteToolsProvider API.
@@ -70,7 +72,8 @@ public class PaletteToolProviderControllerTests extends AbstractIntegrationTests
     @GivenSiriusWebServer
     @DisplayName("Given a domain diagram, when the palette is requested for a node element, then the relevant contributed tools are available")
     public void givenDomainDiagramWhenPaletteIsRequestedOnNodeElementThenRelevantContributedToolsAreAvailable() {
-        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(), StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
+        var input = new CreateRepresentationInput(UUID.randomUUID(), StudioIdentifiers.SAMPLE_STUDIO_EDITING_CONTEXT_ID, this.domainDiagramDescriptionProvider.getDescriptionId(),
+                StudioIdentifiers.DOMAIN_OBJECT.toString(), "Domain");
         var flux = this.givenCreatedDiagramSubscription.createAndSubscribe(input).flux();
 
         var diagramId = new AtomicReference<String>();
@@ -92,7 +95,7 @@ public class PaletteToolProviderControllerTests extends AbstractIntegrationTests
             List<String> paletteEntriesLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].label");
             assertThat(paletteEntriesLabels).containsExactly("Relation", "Containment", "Supertype", "Attributes", "Show/Hide", "Edit");
             List<String> paletteEntriesToolsLabels = JsonPath.read(result.data(), "$.data.viewer.editingContext.representation.description.palette.paletteEntries[*].tools[*].label");
-            assertThat(paletteEntriesToolsLabels).containsExactly("Text", "Boolean", "Number", "Hide", "Hide all content", "Reset content", "extraTool", "Edit", "Delete from model");
+            assertThat(paletteEntriesToolsLabels).containsExactly("Text", "Boolean", "Number", "Hide", "extraTool", "Edit", "Delete from model");
         };
 
         StepVerifier.create(flux)
