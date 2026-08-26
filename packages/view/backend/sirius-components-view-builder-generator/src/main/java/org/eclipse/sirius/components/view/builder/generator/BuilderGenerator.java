@@ -18,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -32,12 +33,17 @@ import org.eclipse.emf.codegen.merge.java.JControlModel;
 import org.eclipse.emf.codegen.merge.java.JMerger;
 import org.eclipse.emf.codegen.merge.java.facade.ast.ASTFacadeHelper;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVariableProvider;
+import org.eclipse.sirius.components.collaborative.forms.variables.FormVariableProvider;
+import org.eclipse.sirius.components.core.api.variables.IVariableProvider;
+import org.eclipse.sirius.components.representations.Variable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,6 +61,8 @@ public class BuilderGenerator {
     private static final String BUILDER_CLASSNAME = "#builderClassName";
 
     private static final String BUILDER_EOBJECT_NAME = "#eObjName";
+
+    private static final String OPERATION_ANNOTATION_SOURCE = "https://github.com/eclipse-sirius/sirius-web";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BuilderGenerator.class);
 
@@ -262,7 +270,7 @@ public class BuilderGenerator {
                             .replace("#paramType", feat.getListItemType(clazz))
                             .replace("#accessor", feat.getAccessorName())
                             .replace("#featName", feat.getSafeName())
-                            .replace("#javadoc", this.getDocumentation(feat))
+                            .replace("#javadoc", this.getDocumentation(clazz, feat))
                             .replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getName())));
                 } else {
                     body.append("""
@@ -282,7 +290,7 @@ public class BuilderGenerator {
                             .replace("#paramType", feat.getListItemType(clazz))
                             .replace("#accessor", feat.getAccessorName())
                             .replace("#featName", feat.getSafeName())
-                            .replace("#javadoc", this.getDocumentation(feat))
+                            .replace("#javadoc", this.getDocumentation(clazz, feat))
                             .replace(BUILDER_EOBJECT_NAME, clazz.capName(clazz.getName())));
                 }
             }
@@ -406,11 +414,59 @@ public class BuilderGenerator {
         return this.basePackage + "." + pak.getGenModel().getModelName().toLowerCase();
     }
 
-    private String getDocumentation(GenFeature feat) {
-        if (feat.getDocumentation() != null) {
-            return " " + feat.getDocumentation();
+    private String getDocumentation(GenClass clazz, GenFeature feat) {
+        StringBuilder documentation = new StringBuilder();
+        String featureDocumentation = feat.getDocumentation();
+        if (feat.getDocumentation() != null && !featureDocumentation.isBlank()) {
+            documentation.append(" ").append(feat.getDocumentation());
         }
-        return "";
+
+        EAnnotation operationAnnotation = feat.getEcoreFeature().getEAnnotation(OPERATION_ANNOTATION_SOURCE);
+        if (operationAnnotation != null) {
+            String operationId = operationAnnotation.getDetails().get("operation_id");
+            if (operationId != null && !operationId.isBlank()) {
+                List<IVariableProvider> variableProviders = List.of(
+                        new DiagramVariableProvider(),
+                        new FormVariableProvider()
+                );
+
+                String operation = clazz.getName() + "#" + operationId;
+                List<Variable> variables = variableProviders.stream()
+                        .map(variableProvider -> variableProvider.getVariables(operation))
+                        .flatMap(Collection::stream)
+                        .toList();
+
+                if (!variables.isEmpty()) {
+                    if (!documentation.isEmpty()) {
+                        documentation.append("\n     *");
+                    }
+
+                    documentation.append("\n     * <p>Available variables:</p>");
+                    documentation.append("\n     * <ul>");
+
+                    variables.forEach(variable ->
+                            documentation.append("\n     *   <li>{@code ")
+                                    .append(variable.name())
+                                    .append(": ")
+                                    .append(this.getVariableType(variable))
+                                    .append("} - ")
+                                    .append(variable.documentation())
+                                    .append("</li>"));
+
+                    documentation.append("\n     * </ul>");
+                    documentation.append("\n     *");
+                }
+            }
+        }
+        return documentation.toString();
+    }
+
+    private String getVariableType(Variable variable) {
+        String typeName = variable.type().getSimpleName();
+        if (variable.isMany()) {
+            return "List<" + typeName + ">";
+        }
+        return typeName;
     }
 
     private void generateOrMerge(JControlModel jControlModel, String outDirectory, String fileName, String contentToGenerate) throws IOException {

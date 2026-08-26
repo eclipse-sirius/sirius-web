@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,7 +86,7 @@ public class EdgeComponent implements IComponent {
 
             Map<String, Integer> edgeIdPrefixToCount = new HashMap<>();
             List<String> lastPreviousRenderedEdgeIds = new ArrayList<>();
-            this.props.getOperationValidator().validate(DiagramRenderingOperations.EDGE_SEMANTIC_CANDIDATES, semanticElementsVariableManager.getVariables());
+            this.props.getOperationValidator().validate(DiagramRenderingOperations.EDGE_DESCRIPTION_SEMANTIC_CANDIDATES, semanticElementsVariableManager.getVariables());
             List<?> semanticElements = edgeDescription.getSemanticElementsProvider().apply(semanticElementsVariableManager);
             for (Object semanticElement : semanticElements) {
                 List<Element> edgesToRender = this.renderEdge(variableManager, edgeDescription, diagramEvents, edgeIdPrefixToCount, lastPreviousRenderedEdgeIds, semanticElement);
@@ -122,7 +122,7 @@ public class EdgeComponent implements IComponent {
                     edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_SOURCE, sourceElement);
                     edgeInstanceVariableManager.put(EdgeDescription.GRAPHICAL_EDGE_TARGET, targetElement);
 
-                    this.props.getOperationValidator().validate(DiagramRenderingOperations.EDGE_PRECONDITION, edgeInstanceVariableManager.getVariables());
+                    this.props.getOperationValidator().validate(DiagramRenderingOperations.EDGE_DESCRIPTION_PRECONDITION, edgeInstanceVariableManager.getVariables());
                     var shouldRender = edgeDescription.getShouldRenderPredicate().test(edgeInstanceVariableManager);
                     if (shouldRender) {
                         this.doRenderEdge(edgeInstanceVariableManager, edgeDescription, sourceElement, targetElement, diagramEvents, edgeIdPrefixToCount, lastPreviousRenderedEdgeIds)

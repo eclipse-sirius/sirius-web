@@ -63,6 +63,19 @@ public class NodeDescriptionBuilder {
     /**
      * Setter for SemanticCandidatesExpression.
      *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code collapsingState: CollapsingState} - Indicates if a node is collapsed or expanded</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code semanticElementIds: List<String>} - The list of the identifiers of all semantic elements which should appear in the diagram with the current description</li>
+     *   <li>{@code diagramEvent: IDiagramEvent} - Indicates the potential event which has triggered a new rendering</li>
+     *   <li>{@code previousDiagram: Diagram} - The diagram rendered during the previous refresh</li>
+     *   <li>{@code label: String} - The label of the diagram</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     *   <li>{@code ancestors: List<Object>} - The semantic ancestors of the node</li>
+     * </ul>
+     *
      * @generated
      */
     public NodeDescriptionBuilder semanticCandidatesExpression(java.lang.String value) {
@@ -96,7 +109,6 @@ public class NodeDescriptionBuilder {
         this.getNodeDescription().setDescription(value);
         return this;
     }
-
     /**
      * Setter for Collapsible.
      *
@@ -282,4 +294,3 @@ public class NodeDescriptionBuilder {
     }
 
 }
-

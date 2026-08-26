@@ -131,7 +131,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="domainType" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//DomainType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="semanticCandidatesExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral="aql:self.eContents()"/>
+        defaultValueLiteral="aql:self.eContents()">
+      <eAnnotations source="https://github.com/eclipse-sirius/sirius-web">
+        <details key="operation_id" value="semanticCandidates"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="synchronizationPolicy"
