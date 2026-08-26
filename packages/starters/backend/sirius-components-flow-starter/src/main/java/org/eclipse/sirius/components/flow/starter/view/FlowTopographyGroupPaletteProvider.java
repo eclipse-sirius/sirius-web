@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,6 @@ package org.eclipse.sirius.components.flow.starter.view;
 import org.eclipse.sirius.components.view.builder.IViewDiagramElementFinder;
 import org.eclipse.sirius.components.view.builder.generated.diagram.DiagramBuilders;
 import org.eclipse.sirius.components.view.diagram.GroupPalette;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultMultiSelectionVisibilityToolsFactory;
-
 
 /**
  * Used to create the group palette for Flow Topography.
@@ -27,9 +25,11 @@ public class FlowTopographyGroupPaletteProvider {
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
 
+    private final FlowViewBuilder flowViewBuilder = new FlowViewBuilder();
+
     public GroupPalette createPalette(IViewDiagramElementFinder cache) {
         return this.diagramBuilderHelper.newGroupPalette()
-                .toolSections(new DefaultMultiSelectionVisibilityToolsFactory().createDefaultHideRevealNodeToolSection())
+                .toolSections(this.flowViewBuilder.createGroupHideRevealNodeToolSection())
                 .build();
     }
 
