@@ -22,14 +22,12 @@ public class DiagramDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.DiagramDescription.
-     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.DiagramDescription diagramDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createDiagramDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.DiagramDescription.
-     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.DiagramDescription getDiagramDescription() {
@@ -38,7 +36,6 @@ public class DiagramDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.DiagramDescription.
-     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.DiagramDescription build() {
