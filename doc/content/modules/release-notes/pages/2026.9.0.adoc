@@ -16,6 +16,7 @@
 * Fix "Last Selected Element" that was not correctly set after a tool redefined the selection.
 * Fix an issue where a tree item tooltip could stay displayed while the palette was opened.
 * Fix an issue where the Details view did not always display the last selected element.
+* Fix an issue where a tool could be executed in a readonly diagram using a tool's keyboard shortcut.
 
 == New features
 
