@@ -63,7 +63,6 @@
   <merge:pull 
     sourceMarkup="^gen$"
     sourceGet="Member/getComment"
-    sourceTransfer="(\s*&lt;!--\s*begin-user-doc.*?end-user-doc\s*-->\s*)(?:\n\r?|\r\n?)"
     targetMarkup="^gen$"
     targetPut="Member/setComment"/>
   <merge:pull 

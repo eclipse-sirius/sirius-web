@@ -22,14 +22,12 @@ public class NodeDecoratorDescriptionBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription.
-     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription nodeDecoratorDescription = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createNodeDecoratorDescription();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription.
-     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription getNodeDecoratorDescription() {
@@ -38,7 +36,6 @@ public class NodeDecoratorDescriptionBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription.
-     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.NodeDecoratorDescription build() {
