@@ -137,7 +137,11 @@
       </eAnnotations>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="preconditionExpression"
-        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression">
+      <eAnnotations source="https://github.com/eclipse-sirius/sirius-web">
+        <details key="operation_id" value="precondition"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="synchronizationPolicy"
         eType="#//SynchronizationPolicy"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -163,9 +167,17 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="userResizable" lowerBound="1"
         eType="#//UserResizableDirection" defaultValueLiteral="BOTH"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultWidthExpression"
-        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression">
+      <eAnnotations source="https://github.com/eclipse-sirius/sirius-web">
+        <details key="operation_id" value="widthComputation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultHeightExpression"
-        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+        eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression">
+      <eAnnotations source="https://github.com/eclipse-sirius/sirius-web">
+        <details key="operation_id" value="heightComputation"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="keepAspectRatio" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isCollapsedByDefaultExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
@@ -180,12 +192,24 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EdgeDescription" eSuperTypes="#//DiagramElementDescription">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="beginLabelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral=""/>
+        defaultValueLiteral="">
+      <eAnnotations source="https://github.com/eclipse-sirius/sirius-web">
+        <details key="operation_id" value="beginLabel"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="centerLabelExpression"
         eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral="aql:self.name"/>
+        defaultValueLiteral="aql:self.name">
+      <eAnnotations source="https://github.com/eclipse-sirius/sirius-web">
+        <details key="operation_id" value="label"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="endLabelExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral=""/>
+        defaultValueLiteral="">
+      <eAnnotations source="https://github.com/eclipse-sirius/sirius-web">
+        <details key="operation_id" value="endLabel"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDomainBasedEdge" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="palette" eType="#//EdgePalette"
         containment="true"/>
@@ -193,9 +217,17 @@
         upperBound="-1" eType="#//DiagramElementDescription"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="targetDescriptions" lowerBound="1"
         upperBound="-1" eType="#//DiagramElementDescription"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="sourceExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression">
+      <eAnnotations source="https://github.com/eclipse-sirius/sirius-web">
+        <details key="operation_id" value="sourceNodes"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="targetExpression" eType="ecore:EDataType ../../../../../sirius-components-view/src/main/resources/model/view.ecore#//InterpretedExpression"
-        defaultValueLiteral="aql:self.eCrossReferences()"/>
+        defaultValueLiteral="aql:self.eCrossReferences()">
+      <eAnnotations source="https://github.com/eclipse-sirius/sirius-web">
+        <details key="operation_id" value="targetNodes"/>
+      </eAnnotations>
+    </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EReference" name="style" eType="#//EdgeStyle"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="conditionalStyles" upperBound="-1"
