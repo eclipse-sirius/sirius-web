@@ -58,6 +58,14 @@ public class DiagramNodeDomainProvider implements IDomainProvider {
         entity1s.setTargetType(entity1);
         root.getRelations().add(entity1s);
 
+        Relation entity1s2 = DomainFactory.eINSTANCE.createRelation();
+        entity1s2.setName("entity1s2");
+        entity1s2.setContainment(true);
+        entity1s2.setOptional(true);
+        entity1s2.setMany(true);
+        entity1s2.setTargetType(entity1);
+        entity1.getRelations().add(entity1s2);
+
 
         this.addAttribute(entity1, "name", DataType.STRING);
 

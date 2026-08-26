@@ -294,9 +294,7 @@ test.describe('diagram - drag and drop', () => {
     await new PlaywrightProject(request).deleteProject(projectId);
   });
 
-  test('when a list node is dragged from its child, then wrong drop location reset the node position', async ({
-    page,
-  }) => {
+  test('when an icon label child of a list node is dragged, then its position is reset', async ({ page }) => {
     await expect(page.getByTestId('rf__wrapper')).toBeAttached();
     await page.getByTestId('arrange-all-main-button').click();
 
@@ -304,10 +302,14 @@ test.describe('diagram - drag and drop', () => {
     const parentNodePositionInitial = await parentNode.getReactFlowXYPosition('Description');
 
     const childNode = new PlaywrightNode(page, 'Weight: 0', 'IconLabel');
+    const childNodePositionInitial = await childNode.getReactFlowXYPosition('Weight: 0');
     await childNode.move({ x: -300, y: 0 });
     await childNode.waitForAnimationToFinish();
 
+    const childNodePosition = await childNode.getReactFlowXYPosition('Weight: 0');
     const parentNodePosition = await parentNode.getReactFlowXYPosition('Description', true);
+    expect(childNodePosition.x).toBe(childNodePositionInitial.x);
+    expect(childNodePosition.y).toBe(childNodePositionInitial.y);
     expect(parentNodePosition.x).toBe(parentNodePositionInitial.x);
     expect(parentNodePosition.y).toBe(parentNodePositionInitial.y);
   });
