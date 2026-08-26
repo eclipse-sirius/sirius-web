@@ -81,6 +81,8 @@ public class DiagramNodeViewProvider implements IE2EViewProvider {
                 .expandedByDefault(false)
                 .build();
 
+        var iconLabelNodeDescription = this.getIconLabelNodeDescription(colorProvider);
+
         return new DiagramBuilders()
                 .newDiagramDescription()
                 .name(DiagramNodeDomainProvider.DOMAIN_NAME + " - node")
@@ -88,14 +90,14 @@ public class DiagramNodeViewProvider implements IE2EViewProvider {
                 .titleExpression(DiagramNodeDomainProvider.DOMAIN_NAME + " diagram")
                 .layoutOption(DiagramLayoutOption.NONE)
                 .arrangeLayoutDirection(ArrangeLayoutDirection.UNDEFINED)
-                .nodeDescriptions(this.getRectangularNodeDescription(colorProvider), this.getIconLabelNodeDescription(colorProvider))
+                .nodeDescriptions(this.getRectangularNodeDescription(colorProvider, iconLabelNodeDescription), iconLabelNodeDescription)
                 .toolbar(toolbar)
                 .style(new DiagramBuilders().newDiagramStyleDescription().build())
                 .build();
     }
 
 
-    private NodeDescription getRectangularNodeDescription(IColorProvider colorProvider) {
+    private NodeDescription getRectangularNodeDescription(IColorProvider colorProvider, NodeDescription iconLabelNodeDescription) {
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("RectangularNodeStyle")
@@ -105,6 +107,9 @@ public class DiagramNodeViewProvider implements IE2EViewProvider {
                 .collapsible(true)
                 .userResizable(UserResizableDirection.BOTH)
                 .keepAspectRatio(false)
+                .defaultWidthExpression("400")
+                .defaultHeightExpression("400")
+                .reusedChildNodeDescriptions(iconLabelNodeDescription)
                 .style(
                         new DiagramBuilders()
                                 .newRectangularNodeStyleDescription()
