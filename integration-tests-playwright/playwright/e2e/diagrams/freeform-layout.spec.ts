@@ -15,6 +15,7 @@ import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
 import { PlaywrightNodeLabel } from '../../helpers/PlaywrightNodeLabel';
 import { PlaywrightProject } from '../../helpers/PlaywrightProject';
+import { PlaywrightDiagram } from '../../helpers/PlaywrightDiagram';
 
 test.describe('diagram - freeform layout', () => {
   let projectId;
@@ -53,6 +54,39 @@ test.describe('diagram - freeform layout', () => {
 
     expect(applicationLayerSize.height).toBe(controllerPosition.y + controllerSize.height + nodePadding + borderWidth);
     expect(controllerPosition.x).toBe(nodePadding + borderWidth);
+  });
+});
+
+test.describe('diagram - freeform layout', () => {
+  let projectId;
+  test.beforeEach(async ({ page, request }) => {
+    const project = await new PlaywrightProject(request).createProject('freeform-layout', 'blank-project');
+    projectId = project.projectId;
+
+    await page.goto(`/projects/${projectId}/edit`);
+    const playwrightExplorer = new PlaywrightExplorer(page);
+    await playwrightExplorer.uploadDocument('diagramNode.xml');
+    await playwrightExplorer.expand('diagramNode.xml');
+    await playwrightExplorer.createRepresentation('Root', 'diagramNode - node', 'diagram');
+  });
+
+  test.afterEach(async ({ request }) => {
+    await new PlaywrightProject(request).deleteProject(projectId);
+  });
+
+  test('when an icon label child of a freeform node is moved, then its new position is preserved', async ({ page }) => {
+    const childNode = new PlaywrightNode(page, 'Child', 'IconLabel');
+    await expect(childNode.nodeLocator).toBeAttached();
+    await childNode.click();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+
+    const childNodePositionBefore = await childNode.getReactFlowXYPosition('Child');
+    await childNode.move({ x: 75, y: 75 });
+    await childNode.waitForAnimationToFinish();
+    const childNodePositionAfter = await childNode.getReactFlowXYPosition('Child', false);
+
+    expect(childNodePositionAfter.x).toBeGreaterThan(childNodePositionBefore.x);
+    expect(childNodePositionAfter.y).toBeGreaterThan(childNodePositionBefore.y);
   });
 });
 

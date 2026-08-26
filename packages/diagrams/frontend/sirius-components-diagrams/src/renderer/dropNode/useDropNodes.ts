@@ -340,6 +340,8 @@ export const useDropNodes = (): UseDropNodesValue => {
 
         const isDropOnSameParent: boolean =
           isDropOnNode && !!draggedNode?.parentId && draggedNode.parentId === targetNode?.id;
+        const isMovableIconLabelNode: boolean =
+          draggedNode?.type === 'iconLabelNode' && targetNode?.type === 'freeFormNode';
 
         const isDropFromDiagramToDiagram: boolean = !isDropOnNode && !draggedNode?.parentId;
         const isBorderNodeDrop: boolean =
@@ -372,7 +374,12 @@ export const useDropNodes = (): UseDropNodesValue => {
           dropCancelled = true;
         } else if (isDropOnNode && !isValidDropOnNode && !isDropOnSameParent) {
           dropCancelled = true;
-        } else if (isDropOnNode && draggedNode?.type === 'iconLabelNode' && isDropOnSameParent) {
+        } else if (
+          isDropOnNode &&
+          draggedNode?.type === 'iconLabelNode' &&
+          !isMovableIconLabelNode &&
+          isDropOnSameParent
+        ) {
           dropCancelled = true;
         }
 

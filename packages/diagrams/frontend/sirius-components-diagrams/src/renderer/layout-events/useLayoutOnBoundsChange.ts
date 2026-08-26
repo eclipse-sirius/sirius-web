@@ -51,12 +51,14 @@ export const useLayoutOnBoundsChange = (): UseLayoutOnBoundsChangeValue => {
     const targetNode = nodes.find((node) => node.data.isDropNodeTarget);
     const draggedNode = nodes.find((node) => node.dragging);
     const isDropOnNode: boolean = !!targetNode;
+    const isMovableIconLabelNode: boolean =
+      draggedNode?.type === 'iconLabelNode' && targetNode?.type === 'freeFormNode';
 
     const isDropOnSameParent: boolean =
       isDropOnNode &&
       !!draggedNode?.parentId &&
       draggedNode.parentId === targetNode?.id &&
-      draggedNode?.type !== 'iconLabelNode';
+      (draggedNode.type !== 'iconLabelNode' || isMovableIconLabelNode);
 
     const isDropFromDiagramToDiagram: boolean = !isDropOnNode && !draggedNode?.parentId;
 
