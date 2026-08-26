@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,12 +22,12 @@ import org.eclipse.sirius.components.representations.Operation;
  */
 public class DiagramRenderingOperations {
 
-    public static final String NODE_SEMANTIC_CANDIDATES = "Node#semanticCandidates";
-    public static final Operation NODE_SEMANTIC_CANDIDATES_OPERATION = new Operation(NODE_SEMANTIC_CANDIDATES, "Used to provide the semantic elements that will be rendered as nodes");
+    public static final String NODE_DESCRIPTION_SEMANTIC_CANDIDATES = "NodeDescription#semanticCandidates";
+    public static final Operation NODE_DESCRIPTION_SEMANTIC_CANDIDATES_OPERATION = new Operation(NODE_DESCRIPTION_SEMANTIC_CANDIDATES, "Used to provide the semantic elements that will be rendered as nodes");
 
-    public static final String EDGE_SEMANTIC_CANDIDATES = "Edge#semanticCandidates";
-    public static final Operation EDGE_SEMANTIC_CANDIDATES_OPERATION = new Operation(EDGE_SEMANTIC_CANDIDATES, "Used to provide the semantic elements that will be rendered as edges");
+    public static final String EDGE_DESCRIPTION_SEMANTIC_CANDIDATES = "EdgeDescription#semanticCandidates";
+    public static final Operation EDGE_DESCRIPTION_SEMANTIC_CANDIDATES_OPERATION = new Operation(EDGE_DESCRIPTION_SEMANTIC_CANDIDATES, "Used to provide the semantic elements that will be rendered as edges");
 
-    public static final String EDGE_PRECONDITION = "Edge#precondition";
-    public static final Operation EDGE_PRECONDITION_OPERATION = new Operation(EDGE_PRECONDITION, "Used to filter the semantic elements which should be rendered as edges");
+    public static final String EDGE_DESCRIPTION_PRECONDITION = "EdgeDescription#precondition";
+    public static final Operation EDGE_DESCRIPTION_PRECONDITION_OPERATION = new Operation(EDGE_DESCRIPTION_PRECONDITION, "Used to filter the semantic elements which should be rendered as edges");
 }

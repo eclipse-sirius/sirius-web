@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,19 +16,19 @@ import static org.eclipse.sirius.components.collaborative.diagrams.api.DiagramIn
 import static org.eclipse.sirius.components.collaborative.diagrams.api.DiagramInteractionOperations.NODE_DROP;
 import static org.eclipse.sirius.components.collaborative.diagrams.api.DiagramInteractionOperations.OBJECT_DROP;
 import static org.eclipse.sirius.components.collaborative.diagrams.api.DiagramInteractionOperations.SINGLE_CLICK_TOOL;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.DIAGRAM_DROP_NODES;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_BEGIN_LABEL;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_END_LABEL;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_LABEL;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_SOURCE_NODES;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_TARGET_NODES;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.NODE_HEIGHT_COMPUTATION;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.NODE_LABEL;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.NODE_PRECONDITION;
-import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.NODE_WIDTH_COMPUTATION;
-import static org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations.EDGE_PRECONDITION;
-import static org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations.EDGE_SEMANTIC_CANDIDATES;
-import static org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations.NODE_SEMANTIC_CANDIDATES;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.DIAGRAM_DESCRIPTION_DROP_NODES;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_DESCRIPTION_BEGIN_LABEL;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_DESCRIPTION_END_LABEL;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_DESCRIPTION_LABEL;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_DESCRIPTION_SOURCE_NODES;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.EDGE_DESCRIPTION_TARGET_NODES;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.NODE_DESCRIPTION_HEIGHT_COMPUTATION;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.NODE_DESCRIPTION_LABEL;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.NODE_DESCRIPTION_PRECONDITION;
+import static org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramOperationProvider.NODE_DESCRIPTION_WIDTH_COMPUTATION;
+import static org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations.EDGE_DESCRIPTION_PRECONDITION;
+import static org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations.EDGE_DESCRIPTION_SEMANTIC_CANDIDATES;
+import static org.eclipse.sirius.components.diagrams.variables.DiagramRenderingOperations.NODE_DESCRIPTION_SEMANTIC_CANDIDATES;
 
 import java.util.List;
 
@@ -48,15 +48,15 @@ public class DiagramVariableProvider implements IVariableProvider {
     @Override
     public List<Variable> getVariables(String operation) {
         return switch (operation) {
-            case NODE_SEMANTIC_CANDIDATES -> this.nodeSemanticCandidates();
-            case NODE_PRECONDITION -> this.nodePrecondition();
-            case NODE_LABEL -> this.nodeLabel();
-            case NODE_WIDTH_COMPUTATION, NODE_HEIGHT_COMPUTATION -> this.nodeWidthAndHeight();
-            case EDGE_SEMANTIC_CANDIDATES -> this.edgeSemanticCandidates();
-            case EDGE_SOURCE_NODES, EDGE_TARGET_NODES -> this.edgeSourceAndTargetNodes();
-            case EDGE_PRECONDITION -> this.edgePrecondition();
-            case EDGE_BEGIN_LABEL, EDGE_LABEL, EDGE_END_LABEL -> this.edgeLabels();
-            case DIAGRAM_DROP_NODES -> this.diagramDropNodes();
+            case NODE_DESCRIPTION_SEMANTIC_CANDIDATES -> this.nodeSemanticCandidates();
+            case NODE_DESCRIPTION_PRECONDITION -> this.nodePrecondition();
+            case NODE_DESCRIPTION_LABEL -> this.nodeLabel();
+            case NODE_DESCRIPTION_WIDTH_COMPUTATION, NODE_DESCRIPTION_HEIGHT_COMPUTATION -> this.nodeWidthAndHeight();
+            case EDGE_DESCRIPTION_SEMANTIC_CANDIDATES -> this.edgeSemanticCandidates();
+            case EDGE_DESCRIPTION_SOURCE_NODES, EDGE_DESCRIPTION_TARGET_NODES -> this.edgeSourceAndTargetNodes();
+            case EDGE_DESCRIPTION_PRECONDITION -> this.edgePrecondition();
+            case EDGE_DESCRIPTION_BEGIN_LABEL, EDGE_DESCRIPTION_LABEL, EDGE_DESCRIPTION_END_LABEL -> this.edgeLabels();
+            case DIAGRAM_DESCRIPTION_DROP_NODES -> this.diagramDropNodes();
             case SINGLE_CLICK_TOOL -> this.singleClickTool();
             case GROUP_TOOL -> this.groupTool();
             case NODE_DROP -> this.nodeDrop();

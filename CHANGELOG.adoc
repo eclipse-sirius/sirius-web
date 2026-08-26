@@ -60,6 +60,7 @@ cf Papaya view and Related Element view to see how.
 A new provisional method `IValidationEventProcessor#update` is available to update the state of the validation event processor and publish a new validation representation to subscribers.
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
 The classes `Module`, `Window`, `Failure`, `IResult`, `Success`, and `AbstractValidatingAggregateRoot` has been moved to this new module.
+- https://github.com/eclipse-sirius/sirius-web/issues/6844[#6844] [view] Expose available variables in the Javadoc of generated View DSL builders.
 
 - https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Papaya view and Related Element view are now collapsible.
 
