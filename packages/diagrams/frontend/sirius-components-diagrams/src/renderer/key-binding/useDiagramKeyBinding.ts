@@ -64,7 +64,7 @@ const toolHasKeyBinding = (tool: GQLSingleClickOnDiagramElementTool, event: Reac
 };
 
 export const useDiagramKeyBinding = (diagramTargetObjectId: string): UseDiagramKeyBindingValue => {
-  const { editingContextId, diagramId } = useContext<DiagramContextValue>(DiagramContext);
+  const { editingContextId, diagramId, readOnly } = useContext<DiagramContextValue>(DiagramContext);
   const { getNodes, getNode, getEdges, getEdge } = useReactFlow<Node<NodeData>, Edge<EdgeData>>();
   const [state, setState] = useState<UseDiagramKeyBindingState>({
     currentEvent: null,
@@ -95,7 +95,7 @@ export const useDiagramKeyBinding = (diagramTargetObjectId: string): UseDiagramK
     );
   };
 
-  const { palette, loading } = usePaletteContents(elementIds, !state.currentEvent);
+  const { palette, loading } = usePaletteContents(elementIds, !state.currentEvent || readOnly);
 
   useEffect(() => {
     if (!loading && palette && state.currentEvent) {
