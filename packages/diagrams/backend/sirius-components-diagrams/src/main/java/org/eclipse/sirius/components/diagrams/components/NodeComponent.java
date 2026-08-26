@@ -90,7 +90,7 @@ public class NodeComponent implements IComponent {
         }
 
         List<Element> children = new ArrayList<>();
-        this.props.getOperationValidator().validate(DiagramRenderingOperations.NODE_SEMANTIC_CANDIDATES, nodeComponentVariableManager.getVariables());
+        this.props.getOperationValidator().validate(DiagramRenderingOperations.NODE_DESCRIPTION_SEMANTIC_CANDIDATES, nodeComponentVariableManager.getVariables());
         List<?> semanticElements = nodeDescription.getSemanticElementsProvider().apply(nodeComponentVariableManager);
 
         for (Object semanticElement : semanticElements) {
