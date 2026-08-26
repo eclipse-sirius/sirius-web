@@ -10,15 +10,16 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-@Module(
-    name = "Library",
-    allowedDependencies = { "Semantic Data" },
-    exposedPackages = {
-        "org.eclipse.sirius.web.domain.boundedcontexts.library",
-        "org.eclipse.sirius.web.domain.boundedcontexts.library.services.api",
-        "org.eclipse.sirius.web.domain.boundedcontexts.library.events"
-    }
-)
-package org.eclipse.sirius.web.domain.boundedcontexts.library;
+package org.eclipse.sirius.web.library.domain.services.api;
 
-import org.eclipse.sirius.web.core.domain.annotations.Module;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.library.domain.Library;
+
+/**
+ * Used to create a library.
+ *
+ * @author sbegaudeau
+ */
+public interface ILibraryCreationService {
+    IResult<Library> createLibrary(Library library);
+}

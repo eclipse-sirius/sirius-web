@@ -23,6 +23,12 @@ Downstream projects should now reuse them to align with the new design.
 - The workbench header bar (merge of the title + toolbar) now has a grayish background.
 This color can be changed through the theme palette `view.background`.
 Defining this color may be required.
+- Classes from the library domain such as `Library`, `ILibrarySearchService`, `ILibraryCreationService` or `LibraryCreatedEvent` have been moved to the new module `sirius-web-library-domain`.
+Imports of these classes must be updated to:
+* `org.eclipse.sirius.web.library.domain.Library`
+* `org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService`
+* `org.eclipse.sirius.web.library.domain.services.api.ILibraryCreationService`
+* `org.eclipse.sirius.web.library.domain.events.LibraryCreatedEvent`
 
 == Bug fixes
 

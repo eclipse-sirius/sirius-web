@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJdbcRepositories(basePackages = { "org.eclipse.sirius.web.domain" })
+@EnableJdbcRepositories(basePackages = { "org.eclipse.sirius.web.domain", "org.eclipse.sirius.web.library.domain" })
 public class JDBCConfiguration {
 }

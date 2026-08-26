@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.library;
+package org.eclipse.sirius.web.library.domain;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.events.LibraryCreatedEvent;
+import org.eclipse.sirius.web.library.domain.events.LibraryCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
