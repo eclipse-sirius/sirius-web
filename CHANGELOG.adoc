@@ -41,6 +41,8 @@
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [validation] Perform the refresh of the validation representation outside of its representation event processor.
 A new provisional method `IValidationEventProcessor#update` is available to update the state of the validation event processor and publish a new validation representation to subscribers.
+- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] Add a new module named `sirius-web-core-domain` to start extracting the core reusable parts of `sirius-web-domain`.
+To get started, the class `AbstractValidatingAggregateRoot` has been moved to this new module.
 
 
 
