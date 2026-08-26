@@ -1,3 +1,4 @@
 // Reference all the files defined in the features folder
+* xref:release-notes:2026.11.0.adoc[]
 * xref:release-notes:2026.9.0.adoc[]
 * xref:release-notes:2026.7.0.adoc[]
