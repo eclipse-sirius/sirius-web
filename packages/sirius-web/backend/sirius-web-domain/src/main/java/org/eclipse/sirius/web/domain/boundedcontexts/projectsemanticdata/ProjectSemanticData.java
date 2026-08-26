@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.boundedcontexts.AbstractValidatingAggregateRoot;
+import org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataCreatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataDeletedEvent;

@@ -1,0 +1,54 @@
+= 002 - Extracting the Sirius Web core domain module
+
+This post-mortem records the first implementation step of xref:../adrs/237_improve_the_modularity_of_sirius_web_domain.adoc[ADR-237 - Improve the Modularity of Sirius Web Domain].
+It covers the issue https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868].
+
+
+== Goal
+
+`sirius-web-domain` contained both the bounded-context implementations and shared aggregate infrastructure.
+This made every bounded context depend on a single large domain artifact, even when it only needed the common aggregate-root behavior.
+
+The first extraction establishes a reusable, dependency-light home for those shared types and a repeatable pattern for the later bounded-context splits.
+
+
+== What changed
+
+The change introduced `sirius-web-core-domain` in `packages/core/backend` and registered it in the Core Maven reactor.
+It has its own Maven, Eclipse, Checkstyle, JaCoCo, resources, and architecture-test configuration, following the conventions of the existing backend modules.
+
+The type `AbstractValidatingAggregateRoot` has been moved from `org.eclipse.sirius.web.domain.boundedcontexts` to `org.eclipse.sirius.web.core.domain`.
+
+The class kept the same event-validation behavior and Spring Data aggregate-root contract.
+The new module has no dependency on another Sirius Web module; it only declares the Spring dependencies needed by this shared base class.
+
+`sirius-web-domain` now has an explicit dependency on `sirius-web-core-domain`.
+The eight aggregate roots in the Project, Library, Semantic Data, Project Semantic Data, Representation Data, Project Image, and Image bounded contexts import the new type.
+
+
+== What worked well
+
+* The shared type was isolated: moving it did not require changing its behavior or altering the bounded contexts' aggregate implementations.
+* Updating the Java package exposed every consumer at compile time, making the dependency migration complete and easy to review.
+* Duplicating the established architecture-test suite gave the new artifact immediate protection against coding and Spring-configuration regressions.
+* Registering the core module before downstream consumers in the appropriate Maven reactor made the new build dependency explicit.
+
+
+== Lessons and follow-up
+
+The first extraction validates the module pattern, but it does not by itself separate any bounded-context implementation.
+Future extractions should follow the same order:
+
+. Move only types owned by the target module and give them a stable `org.eclipse.sirius.web.<context>.domain` namespace.
+. Add the module to the Maven reactor and make every dependency explicit; do not rely on transitive access through `sirius-web-domain`.
+. Move the module's architecture tests and preserve the standard development metadata so local tooling remains consistent.
+. Compile the producer and every direct consumer in the reactor before extracting the next bounded context.
+
+`sirius-web-core-domain` is the intended home for generic domain infrastructure, including future event, result, pagination, message-service, and module-annotation types when their dependencies permit it.
+It must remain independent of the bounded-context modules so those modules can depend on it without recreating the original coupling.
+
+
+== Verification
+
+The core module must run its architecture tests, and the `sirius-web-domain` reactor build must compile and test against the source-built core module.
+For each later extraction, repeat those focused checks for the new module and all of its direct consumers before running broader backend verification.
