@@ -22,14 +22,12 @@ public class ConditionalDiagramStyleBuilder {
 
     /**
      * Create instance org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle.
-     *
      * @generated
      */
     private org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle conditionalDiagramStyle = org.eclipse.sirius.components.view.diagram.DiagramFactory.eINSTANCE.createConditionalDiagramStyle();
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle.
-     *
      * @generated
      */
     protected org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle getConditionalDiagramStyle() {
@@ -38,7 +36,6 @@ public class ConditionalDiagramStyleBuilder {
 
     /**
      * Return instance org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle.
-     *
      * @generated
      */
     public org.eclipse.sirius.components.view.diagram.ConditionalDiagramStyle build() {
