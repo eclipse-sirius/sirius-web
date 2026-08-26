@@ -28,7 +28,6 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Used to create the powerOutput node description.
@@ -79,7 +78,7 @@ public class PowerOutputDescriptionProvider implements INodeDescriptionProvider 
         return this.diagramBuilderHelper.newNodePalette()
                 .edgeTools(this.createEdgeToolPowerLink(cache))
                 .toolSections(
-                        new DefaultToolsFactory().createDefaultHideRevealNodeToolSection()
+                        this.flowViewBuilder.createHideRevealNodeToolSection()
                 )
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .build();

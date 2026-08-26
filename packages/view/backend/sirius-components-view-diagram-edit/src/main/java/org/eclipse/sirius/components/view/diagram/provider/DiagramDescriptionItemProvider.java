@@ -210,12 +210,12 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+        StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
 
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__TOOLBAR, DiagramFactory.eINSTANCE.createDiagramToolbar()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__STYLE, DiagramFactory.eINSTANCE.createDiagramStyleDescription()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__CONDITIONAL_STYLES, DiagramFactory.eINSTANCE.createConditionalDiagramStyle()));
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultDiagramPalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__PALETTE, studioDefaultToolsFactory.createDefaultDiagramPalette()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__GROUP_PALETTE, DiagramFactory.eINSTANCE.createGroupPalette()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS, DiagramFactory.eINSTANCE.createNodeDecoratorDescription()));
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__DECORATOR_DESCRIPTIONS, DiagramFactory.eINSTANCE.createSemanticDecoratorDescription()));
@@ -225,8 +225,8 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         var style = DiagramFactory.eINSTANCE.createRectangularNodeStyleDescription();
         style.setChildrenLayoutStrategy(DiagramFactory.eINSTANCE.createFreeFormLayoutStrategyDescription());
         nodeChild.setStyle(style);
-        nodeChild.setPalette(defaultToolsFactory.createDefaultNodePalette());
-        nodeChild.setInsideLabel(defaultToolsFactory.createDefaultInsideLabelDescription());
+        nodeChild.setPalette(studioDefaultToolsFactory.createDefaultNodePalette());
+        nodeChild.setInsideLabel(studioDefaultToolsFactory.createDefaultInsideLabelDescription());
 
         var defaultAction = DiagramFactory.eINSTANCE.createAction();
         defaultAction.setName("HideAction");
@@ -243,7 +243,7 @@ public class DiagramDescriptionItemProvider extends RepresentationDescriptionIte
         edgeChild.setName("Edge");
         EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         edgeChild.setStyle(newEdgeStyle);
-        edgeChild.setPalette(defaultToolsFactory.createDefaultEdgePalette());
+        edgeChild.setPalette(studioDefaultToolsFactory.createDefaultEdgePalette());
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.DIAGRAM_DESCRIPTION__EDGE_DESCRIPTIONS, edgeChild));
     }
 
