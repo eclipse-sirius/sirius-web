@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
- Copyright (c) 2024, 2026 Obeo.
+ Copyright (c) 2026 Obeo.
  This program and the accompanying materials
  are made available under the terms of the Eclipse Public License v2.0
  which accompanies this distribution, and is available at
@@ -23,43 +23,12 @@
 	</parent>
 
 	<groupId>org.eclipse.sirius</groupId>
-	<artifactId>sirius-web-domain</artifactId>
+	<artifactId>sirius-web-core-domain</artifactId>
 	<version>2026.7.3</version>
-	<name>sirius-web-domain</name>
-	<description>Sirius Web Domain</description>
-
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.jmolecules</groupId>
-				<artifactId>jmolecules-bom</artifactId>
-				<version>2023.1.7</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+	<name>sirius-web-core-domain</name>
+	<description>Sirius Web Core Domain</description>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-web-core-domain</artifactId>
-			<version>2026.7.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-annotations</artifactId>
-			<version>2026.7.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.sirius</groupId>
-			<artifactId>sirius-components-events</artifactId>
-			<version>2026.7.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jmolecules</groupId>
-			<artifactId>jmolecules-onion-architecture</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jdbc</artifactId>
@@ -94,13 +63,13 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.6.0</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.puppycrawl.tools</groupId>
-                        <artifactId>checkstyle</artifactId>
-                        <version>13.3.0</version>
-                    </dependency>
-                </dependencies>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>13.3.0</version>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<configLocation>../../../releng/backend/sirius-components-resources/checkstyle/CheckstyleConfiguration.xml</configLocation>
 					<includeTestSourceDirectory>true</includeTestSourceDirectory>

@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts;
+package org.eclipse.sirius.web.core.domain;
 
 import java.util.stream.Collectors;
 
