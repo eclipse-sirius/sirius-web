@@ -63,6 +63,18 @@ public class EdgeToolBuilder {
     /**
      * Setter for Body.
      *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     *   <li>{@code diagramContext: DiagramContext} - Used to retrieve the diagram context which contains the diagram, the view creation and deletion requests and the diagram events</li>
+     *   <li>{@code diagramServices: IDiagramService} - Used to access generic diagram services</li>
+     *   <li>{@code semanticEdgeSource: Object} - The semantic element at the source of the edge</li>
+     *   <li>{@code semanticEdgeTarget: Object} - The semantic element at the target of the edge</li>
+     *   <li>{@code edgeSource: IDiagramElement} - The diagram element at the source of the edge</li>
+     *   <li>{@code edgeTarget: IDiagramElement} - The diagram element at the target of the edge</li>
+     * </ul>
+     *
      * @generated
      */
     public EdgeToolBuilder body(org.eclipse.sirius.components.view.Operation ... values) {
@@ -123,4 +135,3 @@ public class EdgeToolBuilder {
     }
 
 }
-

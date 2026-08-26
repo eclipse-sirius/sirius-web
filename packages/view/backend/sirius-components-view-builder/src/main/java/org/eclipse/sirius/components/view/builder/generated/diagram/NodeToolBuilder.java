@@ -63,6 +63,17 @@ public class NodeToolBuilder {
     /**
      * Setter for Body.
      *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     *   <li>{@code diagramContext: DiagramContext} - Used to retrieve the diagram context which contains the diagram, the view creation and deletion requests and the diagram events</li>
+     *   <li>{@code diagramServices: IDiagramService} - Used to access generic diagram services</li>
+     *   <li>{@code selectedNode: Node} - The node on which the tool is being executed</li>
+     *   <li>{@code selectedEdge: Edge} - The edge on which the tool is being executed</li>
+     * </ul>
+     *
      * @generated
      */
     public NodeToolBuilder body(org.eclipse.sirius.components.view.Operation ... values) {
