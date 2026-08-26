@@ -55,6 +55,12 @@ Defining this color may be required.
 - [cleanup] Rename test profile to e2e.
 `sirius-web/backend/sirius-web/docker-compose.yml` now activates the `e2e` profile instead of the `test` profile.
 Existing services requiring the `test` profile have been updated.
+- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [libraries] Classes from the library domain such as `Library`, `ILibrarySearchService`, `ILibraryCreationService` or `LibraryCreatedEvent` have been moved to the new module `sirius-web-library-domain`.
+Imports of these classes must be updated to:
+* `org.eclipse.sirius.web.library.domain.Library`
+* `org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService`
+* `org.eclipse.sirius.web.library.domain.services.api.ILibraryCreationService`
+* `org.eclipse.sirius.web.library.domain.events.LibraryCreatedEvent`
 
 
 === Dependency update
@@ -85,6 +91,8 @@ The classes `Module`, `Window`, `Failure`, `IResult`, `Success`, and `AbstractVa
 For that, some calls to `VariableManager.SELF` have thus been replaced by `RepresentationVariables.SELF.name()` and calls to `IEditingContext.EDITING_CONTEXT` have been replaced by `CoreVariables.EDITING_CONTEXT.name()`.
 - https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [deck] Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
 - [doc] Update the backend documentation and add a first schema of the lifecycle of the backend with the creation of a project.
+- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [libraries] Extract the domain parts of the libraries bounded-context into the `sirius-web-library-domain` module.
+
 
 
 == 2026.9.0

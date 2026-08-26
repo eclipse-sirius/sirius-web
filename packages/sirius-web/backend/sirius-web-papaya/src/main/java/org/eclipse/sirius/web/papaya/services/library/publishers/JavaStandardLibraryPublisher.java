@@ -27,7 +27,7 @@ import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.web.application.editingcontext.services.EPackageEntry;
 import org.eclipse.sirius.web.application.editingcontext.services.api.IResourceToDocumentService;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
 import org.eclipse.sirius.web.papaya.factories.JavaIoFactory;
 import org.eclipse.sirius.web.papaya.factories.JavaLangFactory;

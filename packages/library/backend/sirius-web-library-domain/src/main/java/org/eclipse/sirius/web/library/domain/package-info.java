@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.library.events;
+@Module(
+    name = "Library",
+    allowedDependencies = { "Semantic Data" },
+    exposedPackages = {
+        "org.eclipse.sirius.web.library.domain",
+        "org.eclipse.sirius.web.library.domain.services.api",
+        "org.eclipse.sirius.web.library.domain.events"
+    }
+)
+package org.eclipse.sirius.web.library.domain;
 
-import org.eclipse.sirius.web.domain.events.IDomainEvent;
-
-/**
- * Interface implemented by all the domain events of the library bounded context.
- *
- * @author gdaniel
- */
-public interface ILibraryEvent extends IDomainEvent {
-
-}
+import org.eclipse.sirius.web.core.domain.annotations.Module;

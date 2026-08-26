@@ -17,8 +17,8 @@ import java.util.Optional;
 
 import org.eclipse.sirius.web.application.library.dto.PublishLibrariesInput;
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibraryCreationService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.services.api.ILibraryCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.events.SemanticDataCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

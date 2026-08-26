@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import com.jayway.jsonpath.JsonPath;
 import java.util.Map;
 
 import org.eclipse.sirius.web.AbstractIntegrationTests;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
+import org.eclipse.sirius.web.library.domain.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;
 import org.eclipse.sirius.web.tests.graphql.LibrariesQueryRunner;
 import org.eclipse.sirius.web.tests.graphql.LibraryQueryRunner;
