@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
-import org.eclipse.sirius.web.domain.pagination.Window;
+import org.eclipse.sirius.web.core.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 
 /**

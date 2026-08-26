@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,11 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.service
 
 import java.util.Objects;
 
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataCreationService;
-import org.eclipse.sirius.web.domain.services.IResult;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.springframework.stereotype.Service;
 
 /**

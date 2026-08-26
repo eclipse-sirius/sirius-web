@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.services.IResult;
+import org.eclipse.sirius.web.core.domain.results.IResult;
 
 /**
  * Used to delete project semantic data.

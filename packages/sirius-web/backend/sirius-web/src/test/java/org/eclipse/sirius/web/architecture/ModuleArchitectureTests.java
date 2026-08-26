@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ import static com.tngtech.archunit.library.modules.syntax.ModuleRuleDefinition.m
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.core.importer.ImportOption;
 
-import org.eclipse.sirius.web.domain.annotations.Module;
+import org.eclipse.sirius.web.core.domain.annotations.Module;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

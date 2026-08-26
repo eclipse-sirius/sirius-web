@@ -148,7 +148,7 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
 
                     var input = new RenameRepresentationInput(UUID.randomUUID(), editingContext.getId(), representationMetadata.getRepresentationMetadataId().toString(), newValue);
                     var result = this.representationMetadataUpdateService.updateLabel(input, AggregateReference.to(semanticDataId), representationMetadata.getRepresentationMetadataId(), newValue);
-                    if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
+                    if (result instanceof org.eclipse.sirius.web.core.domain.results.Success) {
                         Map<String, Object> parameters = new HashMap<>();
                         parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, representationMetadata.getRepresentationMetadataId().toString());
                         parameters.put(ChangeDescriptionParameters.REPRESENTATION_LABEL, newValue);
@@ -187,7 +187,7 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
                 var representationMetadata = optionalRepresentationMetadata.get();
 
                 return Optional.of(this.representationMetadataUpdateService.updateDocumentation(null, AggregateReference.to(semanticDataId), representationMetadata.getRepresentationMetadataId(), newValue))
-                        .filter(org.eclipse.sirius.web.domain.services.Success.class::isInstance)
+                        .filter(org.eclipse.sirius.web.core.domain.results.Success.class::isInstance)
                         .map(success -> (IStatus) new Success(ChangeKind.REPRESENTATION_METADATA_UPDATE, Map.of()))
                         .orElseGet(() -> new Failure(""));
             }

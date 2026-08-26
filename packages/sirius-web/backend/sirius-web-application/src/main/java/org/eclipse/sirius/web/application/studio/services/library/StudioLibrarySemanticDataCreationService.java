@@ -39,11 +39,11 @@ import org.eclipse.sirius.web.application.library.services.LibraryMetadataAdapte
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.application.studio.services.library.api.DependencyGraph;
 import org.eclipse.sirius.web.application.studio.services.library.api.IStudioLibrarySemanticDataCreationService;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibrarySearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.services.api.ISemanticDataCreationService;
-import org.eclipse.sirius.web.domain.services.IResult;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;

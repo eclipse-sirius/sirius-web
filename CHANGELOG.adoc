@@ -19,6 +19,14 @@
 
 === Breaking changes
 
+- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] The classes `Module`, `Window`, `Failure`, `IResult`, `Success`, and `AbstractValidatingAggregateRoot` has been moved to the new module `sirius-web-core-domain`.
+Imports of these classes must be updated to:
+* `org.eclipse.sirius.web.core.domain.annotations.Module`
+* `org.eclipse.sirius.web.core.domain.pagination.Window`
+* `org.eclipse.sirius.web.core.domain.results.Failure`
+* `org.eclipse.sirius.web.core.domain.results.IResult`
+* `org.eclipse.sirius.web.core.domain.results.Success`
+* `org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot`
 - [view] Default tools are now provided only for low-code studios.
 `DefaultToolsFactory` has been renamed to `StudioDefaultToolsFactory`.
 The following factory methods have been removed: `createDefaultSourceEdgeReconnectionTool`, `createDefaultTargetEdgeReconnectionTool`, `createDefaultBeginLabelEditTool`, `createDefaultCenterLabelEditTool`, `createDefaultEndLabelEditTool`, `createDefaultHideAllChildrenNodeTool`, `createDefaultRevealAllChildrenNodeTool`, `createDefaultResetAllChildrenVisibilityModifiersNodeTool`, and `createDefaultRevealChildrenWithValueNodeTool`.
@@ -46,8 +54,8 @@ Programmatic DSLs that relied on these factories must define the tools they expo
 
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [validation] Perform the refresh of the validation representation outside of its representation event processor.
 A new provisional method `IValidationEventProcessor#update` is available to update the state of the validation event processor and publish a new validation representation to subscribers.
-- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] Add a new module named `sirius-web-core-domain` to start extracting the core reusable parts of `sirius-web-domain`.
-To get started, the class `AbstractValidatingAggregateRoot` has been moved to this new module.
+- https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
+The classes `Module`, `Window`, `Failure`, `IResult`, `Success`, and `AbstractValidatingAggregateRoot` has been moved to this new module.
 
 
 

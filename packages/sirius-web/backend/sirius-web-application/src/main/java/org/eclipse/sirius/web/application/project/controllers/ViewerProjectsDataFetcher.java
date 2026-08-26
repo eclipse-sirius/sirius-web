@@ -27,7 +27,7 @@ import org.eclipse.sirius.web.application.capability.services.api.ICapabilityEva
 import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
-import org.eclipse.sirius.web.domain.pagination.Window;
+import org.eclipse.sirius.web.core.domain.pagination.Window;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.KeysetScrollPosition;
