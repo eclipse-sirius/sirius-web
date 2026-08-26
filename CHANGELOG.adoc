@@ -84,6 +84,7 @@ Contributions have to return null in their component if they are not candidate o
 - https://github.com/eclipse-sirius/sirius-web/issues/6846[#6846] [diagram] Fix "Last Selected Element" that was not correctly set after a diagram refresh.
 - https://github.com/eclipse-sirius/sirius-web/issues/6849[#6849] [diagram] Fix "Last Selected Element" that was not correctly set after a tool redefined the selection.
 - https://github.com/eclipse-sirius/sirius-web/issues/6855[#6855] [tree] Fix an issue where a tree item tooltip could stay displayed while the palette was opened.
+- https://github.com/eclipse-sirius/sirius-web/issues/6851[#6851] [diagram] Fix global selection so it targets the last selected element.
 
 === New Features
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -44,10 +44,15 @@ export const useDiagramSelection = (): UseDiagramSelectionValue => {
    */
   const onSelectionChange: OnSelectionChangeFunc<Node<NodeData>, Edge<EdgeData>> = useCallback(({ nodes, edges }) => {
     const newSelectedElementsIds: string[] = [];
-    let entries: SelectionEntry[] = [];
+    const entries: SelectionEntry[] = [];
+    let lastSelectedEntry: SelectionEntry | null = null;
 
     nodes.forEach((node) => {
-      entries.push({ id: node.data.targetObjectId });
+      const entry: SelectionEntry = { id: node.data.targetObjectId };
+      entries.push(entry);
+      if (node.data.isLastNodeSelected) {
+        lastSelectedEntry = entry;
+      }
       newSelectedElementsIds.push(node.id);
     });
     edges.forEach((edge) => {
@@ -62,6 +67,11 @@ export const useDiagramSelection = (): UseDiagramSelectionValue => {
       selectedElementsInOrder = mergeNewSelectedElementIds(previousSelectedElementsIds, newSelectedElementsIds);
       return selectedElementsInOrder;
     });
+
+    if (lastSelectedEntry) {
+      entries.splice(entries.indexOf(lastSelectedEntry), 1);
+      entries.unshift(lastSelectedEntry);
+    }
 
     // Publish semantic selection globally (if any)
     if (entries.length > 0) {
