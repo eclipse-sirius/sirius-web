@@ -1,0 +1,30 @@
+= 2026.11.0
+
+== Key highlights
+
+
+
+
+== Breaking changes
+
+
+
+
+== Bug fixes
+
+
+
+
+== New features
+
+
+
+
+== Improvements
+
+
+
+
+== Technical details
+
+* For technical details on this {product} release, including breaking changes, please refer to {changelog-url}[changelog].
