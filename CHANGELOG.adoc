@@ -9,7 +9,7 @@
 
 === Architectural decision records
 
-
+- [ADR-237] Improve the modularity of Sirius Web domain
 
 
 === Deprecation warning
