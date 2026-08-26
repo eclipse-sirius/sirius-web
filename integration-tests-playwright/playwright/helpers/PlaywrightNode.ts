@@ -99,6 +99,32 @@ export class PlaywrightNode {
     };
   }
 
+  async getReactFlowId(label: string | null = null, withClick = true): Promise<string> {
+    if (withClick) {
+      await this.nodeLocator.click({ position: { x: 10, y: 10 } });
+    }
+    let nodePanel = this.page.locator(`div[data-testid="nodePanelInfos"]`);
+    if (label) {
+      nodePanel = nodePanel.filter({ hasText: `Label : ${label}` });
+    }
+
+    const nodeIdText = await nodePanel.locator('span:has-text("Node id :")').textContent();
+    return nodeIdText?.split(':')[1]?.trim() ?? '';
+  }
+
+  async getReactFlowParentId(label: string | null = null, withClick = true): Promise<string> {
+    if (withClick) {
+      await this.nodeLocator.click({ position: { x: 10, y: 10 } });
+    }
+    let nodePanel = this.page.locator(`div[data-testid="nodePanelInfos"]`);
+    if (label) {
+      nodePanel = nodePanel.filter({ hasText: `Label : ${label}` });
+    }
+
+    const parentIdText = await nodePanel.locator('span:has-text("ParentId :")').textContent();
+    return parentIdText?.split(':')[1]?.trim() ?? '';
+  }
+
   async move(offset: { x: number; y: number }, steps: number = 10) {
     const xyPosition = await this.getDOMXYPosition();
     await this.nodeLocator.hover({ position: { x: 10, y: 10 } });

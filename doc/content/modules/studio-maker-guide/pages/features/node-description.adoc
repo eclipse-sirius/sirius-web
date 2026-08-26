@@ -119,6 +119,8 @@ A node description can have multiple outside label description.
 A node can contain child nodes and border nodes.
 To configure this structure, a node description can contain various child node descriptions and reuse existing node descriptions as its children too.
 One can for example, create a node description that reuses itself as a child node description to create a recursive structure of nodes in a diagram.
+Border nodes can themselves contain child nodes and other border nodes when their style supports children.
+Nodes using an icon label style remain leaf nodes and ignore their configured child and border node descriptions.
 
 * `childrenDescriptions: NodeDescription` The list of child node descriptions which can be used to render child nodes
 * `borderNodesDescriptions: NodeDescription` The list of border node descriptions which can be used to render nodes on the border of the current node.
