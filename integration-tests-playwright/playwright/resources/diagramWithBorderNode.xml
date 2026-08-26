@@ -3,5 +3,8 @@
 	<entity1s name="Entity1">
 		<borders name="north" />
 		<borders name="east" />
+		<borders name="container">
+			<children name="child" />
+		</borders>
 	</entity1s>
 </diagrambordernode:Root>
