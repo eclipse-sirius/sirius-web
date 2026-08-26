@@ -27,12 +27,12 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectDuplicati
 import org.eclipse.sirius.web.application.project.services.api.IProjectEditingContextService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectExportService;
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
+import org.eclipse.sirius.web.core.domain.results.Failure;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
-import org.eclipse.sirius.web.domain.services.Failure;
-import org.eclipse.sirius.web.domain.services.IResult;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

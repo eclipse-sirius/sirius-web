@@ -16,14 +16,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
+import org.eclipse.sirius.web.core.domain.results.Failure;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.data.MultiEditingContextFlowIdentifiers;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.events.ProjectSemanticDataNameUpdatedEvent;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataUpdateService;
-import org.eclipse.sirius.web.domain.services.Failure;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.eclipse.sirius.web.services.api.IDomainEventCollector;
 import org.eclipse.sirius.web.tests.data.GivenSiriusWebServer;

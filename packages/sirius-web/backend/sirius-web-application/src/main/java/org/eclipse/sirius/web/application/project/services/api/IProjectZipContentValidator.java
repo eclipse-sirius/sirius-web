@@ -13,7 +13,7 @@
 package org.eclipse.sirius.web.application.project.services.api;
 
 import org.eclipse.sirius.web.application.project.services.ProjectZipContent;
-import org.eclipse.sirius.web.domain.services.IResult;
+import org.eclipse.sirius.web.core.domain.results.IResult;
 
 /**
  * Used to validate the content of the zipped project.

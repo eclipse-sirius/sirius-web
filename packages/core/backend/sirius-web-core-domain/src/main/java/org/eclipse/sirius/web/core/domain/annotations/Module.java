@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services;
+package org.eclipse.sirius.web.core.domain.annotations;
 
 /**
- * Interface used as the return value of all mutations of the system performed by domain services.
- *
- * @param <T> The expected type of the result
+ * Used to define the boundaries of a module.
  *
  * @author sbegaudeau
  */
-public sealed interface IResult<T> permits Failure, Success {
-    // Nothing on purpose
+public @interface Module {
+    String name();
+    String[] allowedDependencies() default {};
+    String[] exposedPackages() default {};
 }

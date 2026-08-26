@@ -16,13 +16,13 @@ import java.util.Objects;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.Failure;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.repositories.IRepresentationMetadataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataUpdateService;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
-import org.eclipse.sirius.web.domain.services.Failure;
-import org.eclipse.sirius.web.domain.services.IResult;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 import org.springframework.stereotype.Service;

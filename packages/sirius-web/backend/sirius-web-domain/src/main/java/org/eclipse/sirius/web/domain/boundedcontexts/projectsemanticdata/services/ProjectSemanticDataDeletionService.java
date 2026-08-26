@@ -17,12 +17,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.Failure;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.repositories.IProjectSemanticDataRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataDeletionService;
-import org.eclipse.sirius.web.domain.services.Failure;
-import org.eclipse.sirius.web.domain.services.IResult;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 
