@@ -192,7 +192,7 @@ Downstream applications can now use the `spring.web.resources.static-locations` 
 - https://github.com/eclipse-sirius/sirius-web/issues/6194[#6194] [core] Ensure that the frontend GraphQL error payloads now use `ErrorPayload#messages` instead of `ErrorPayload#message`, and the affected mutation hooks now log server feedback with `useMultiToast` when they use custom payloads and `useReporting` when they use the shared success/error contract.
 - https://github.com/eclipse-sirius/sirius-web/issues/6047[#6047] [deck] Simplify the lifecycle of the Deck representation event processor.
 Add dedicated executors and fluent assertion classes for the deck card creation, deletion, visibility, and lane-collapse mutations.
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6844[#6844] [diagram] Expose available variables in the Javadoc of generated View DSL builders.
 
 
 == 2026.7.0

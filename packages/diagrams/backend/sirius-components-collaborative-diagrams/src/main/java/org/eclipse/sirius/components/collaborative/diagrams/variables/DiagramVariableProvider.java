@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.sirius.components.collaborative.diagrams.variables;
 
+import static org.eclipse.sirius.components.collaborative.diagrams.api.DiagramInteractionOperations.EDGE_TOOL;
 import static org.eclipse.sirius.components.collaborative.diagrams.api.DiagramInteractionOperations.GROUP_TOOL;
 import static org.eclipse.sirius.components.collaborative.diagrams.api.DiagramInteractionOperations.NODE_DROP;
 import static org.eclipse.sirius.components.collaborative.diagrams.api.DiagramInteractionOperations.OBJECT_DROP;
@@ -61,6 +62,7 @@ public class DiagramVariableProvider implements IVariableProvider {
             case GROUP_TOOL -> this.groupTool();
             case NODE_DROP -> this.nodeDrop();
             case OBJECT_DROP -> this.objectDrop();
+            case EDGE_TOOL -> this.edgeTool();
             default -> this.noVariables();
         };
     }
@@ -115,5 +117,9 @@ public class DiagramVariableProvider implements IVariableProvider {
 
     private List<Variable> objectDrop() {
         return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODE);
+    }
+
+    private List<Variable> edgeTool() {
+        return List.of(CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.EDGE_SOURCE, DiagramVariables.EDGE_TARGET);
     }
 }
