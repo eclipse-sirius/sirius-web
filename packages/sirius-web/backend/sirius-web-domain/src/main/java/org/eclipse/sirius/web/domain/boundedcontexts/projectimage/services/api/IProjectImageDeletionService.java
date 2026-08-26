@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.domain.boundedcontexts.projectimage.services.api;
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
-import org.eclipse.sirius.web.domain.services.IResult;
+import org.eclipse.sirius.web.core.domain.results.IResult;
 
 /**
  * Used to delete project images.

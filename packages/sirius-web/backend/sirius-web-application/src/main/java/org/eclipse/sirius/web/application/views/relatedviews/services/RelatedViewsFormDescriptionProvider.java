@@ -296,7 +296,7 @@ public class RelatedViewsFormDescriptionProvider implements IRepresentationsDesc
             var semanticDataId = optionalSemanticDataId.get();
             var representationUUID = optionalRepresentationUUID.get();
             var result = this.representationMetadataDeletionService.delete(input, AggregateReference.to(semanticDataId), representationUUID);
-            if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
+            if (result instanceof org.eclipse.sirius.web.core.domain.results.Success) {
                 Map<String, Object> parameters = new HashMap<>();
                 parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, representationId);
                 return new Success(ChangeKind.REPRESENTATION_DELETION, parameters);

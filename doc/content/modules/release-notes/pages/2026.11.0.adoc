@@ -7,10 +7,18 @@
 
 == Breaking changes
 
-- Add a new module named `sirius-web-core-domain` to start extracting the core reusable parts of `sirius-web-domain`.
-To get started, the class `AbstractValidatingAggregateRoot` has been moved to this new module.
+- Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
+The classes `Module`, `Window`, `Failure`, `IResult`, `Success`, and `AbstractValidatingAggregateRoot` has been moved to this new module.
+Imports of these classes must be updated to:
+* `org.eclipse.sirius.web.core.domain.annotations.Module`
+* `org.eclipse.sirius.web.core.domain.pagination.Window`
+* `org.eclipse.sirius.web.core.domain.results.Failure`
+* `org.eclipse.sirius.web.core.domain.results.IResult`
+* `org.eclipse.sirius.web.core.domain.results.Success`
+* `org.eclipse.sirius.web.core.domain.AbstractValidatingAggregateRoot`
 - Default tools are now provided only for low-code studios.
 Each downstream project using programmatic APIs and the old `DefaultToolsFactory` to define its view should now define its own default tools.
+
 
 == Bug fixes
 

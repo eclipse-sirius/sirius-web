@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,20 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.annotations;
+package org.eclipse.sirius.web.core.domain.results;
+
+import java.util.Objects;
 
 /**
- * Used to define the boundaries of a module.
+ * Used to indicate that an invariant of the domain has been violated.
+ *
+ * @param message Description of the violation
+ * @param <T> The expected type of the result
  *
  * @author sbegaudeau
  */
-public @interface Module {
-    String name();
-    String[] allowedDependencies() default {};
-    String[] exposedPackages() default {};
+public record Failure<T>(String message) implements IResult<T> {
+    public Failure {
+        Objects.requireNonNull(message);
+    }
 }

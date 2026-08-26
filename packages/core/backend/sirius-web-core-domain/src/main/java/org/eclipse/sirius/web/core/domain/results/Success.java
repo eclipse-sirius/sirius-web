@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,20 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.services;
-
-import java.util.Objects;
+package org.eclipse.sirius.web.core.domain.results;
 
 /**
- * Used to indicate that an invariant of the domain has been violated.
+ * Used to indicate that a transformation of the domain has been performed successfully.
  *
- * @param message Description of the violation
+ * @param data The data
  * @param <T> The expected type of the result
  *
  * @author sbegaudeau
  */
-public record Failure<T>(String message) implements IResult<T> {
-    public Failure {
-        Objects.requireNonNull(message);
-    }
+public record Success<T>(T data) implements IResult<T> {
 }

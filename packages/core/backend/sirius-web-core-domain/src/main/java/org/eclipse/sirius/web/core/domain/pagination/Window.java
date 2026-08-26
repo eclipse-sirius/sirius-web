@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025, 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.pagination;
+package org.eclipse.sirius.web.core.domain.pagination;
 
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +30,7 @@ import org.springframework.data.domain.ScrollPosition;
 public class Window<T> implements org.springframework.data.domain.Window<T> {
 
     private final org.springframework.data.domain.Window<T> delegate;
-    
+
     private final boolean hasPrevious;
 
     public Window(List<T> items, IntFunction<? extends ScrollPosition> positionFunction, boolean hasNext, boolean hasPrevious) {
