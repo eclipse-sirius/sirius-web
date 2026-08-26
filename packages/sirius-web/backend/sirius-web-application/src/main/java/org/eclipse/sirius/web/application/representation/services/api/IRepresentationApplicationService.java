@@ -15,7 +15,7 @@ package org.eclipse.sirius.web.application.representation.services.api;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.graphql.dto.RepresentationMetadataDTO;
-import org.eclipse.sirius.web.domain.pagination.Window;
+import org.eclipse.sirius.web.core.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 
 /**

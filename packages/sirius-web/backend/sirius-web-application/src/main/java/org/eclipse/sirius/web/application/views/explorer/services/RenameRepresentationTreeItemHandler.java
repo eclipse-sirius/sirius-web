@@ -67,7 +67,7 @@ public class RenameRepresentationTreeItemHandler implements IRenameTreeItemHandl
 
             var input = new RenameTreeItemInput(UUID.randomUUID(), editingContext.getId(), tree.getId(), representationMetadataId, newLabel);
             var result = this.representationMetadataUpdateService.updateLabel(input, AggregateReference.to(semanticDataId), representationMetadataId, newLabel);
-            if (result instanceof org.eclipse.sirius.web.domain.services.Success) {
+            if (result instanceof org.eclipse.sirius.web.core.domain.results.Success) {
                 Map<String, Object> parameters = new HashMap<>();
                 parameters.put(ChangeDescriptionParameters.REPRESENTATION_ID, treeItem.getId());
                 parameters.put(ChangeDescriptionParameters.REPRESENTATION_LABEL, newLabel);

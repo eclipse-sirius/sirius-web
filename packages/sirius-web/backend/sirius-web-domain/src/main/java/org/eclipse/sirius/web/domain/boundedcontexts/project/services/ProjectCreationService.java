@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,13 +16,13 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.Failure;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectNameValidator;
-import org.eclipse.sirius.web.domain.services.Failure;
-import org.eclipse.sirius.web.domain.services.IResult;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.springframework.stereotype.Service;
 

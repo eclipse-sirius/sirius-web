@@ -29,7 +29,7 @@ import java.util.stream.StreamSupport;
 import org.eclipse.sirius.web.AbstractIntegrationTests;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
 import org.eclipse.sirius.web.application.project.services.api.IProjectSearchApplicationService;
-import org.eclipse.sirius.web.domain.pagination.Window;
+import org.eclipse.sirius.web.core.domain.pagination.Window;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

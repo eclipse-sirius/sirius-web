@@ -24,10 +24,10 @@ import org.eclipse.sirius.web.application.project.services.api.IProjectCreationA
 import org.eclipse.sirius.web.application.project.services.api.IProjectMapper;
 import org.eclipse.sirius.web.application.project.services.api.IProjectTemplateProvider;
 import org.eclipse.sirius.web.application.project.services.api.ProjectTemplateNature;
+import org.eclipse.sirius.web.core.domain.results.Failure;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
-import org.eclipse.sirius.web.domain.services.Failure;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

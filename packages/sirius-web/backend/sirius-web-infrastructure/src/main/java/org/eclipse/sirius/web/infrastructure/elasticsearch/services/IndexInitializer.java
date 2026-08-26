@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,11 +18,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContextSearchService;
+import org.eclipse.sirius.web.core.domain.pagination.Window;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectSearchService;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.ProjectSemanticData;
 import org.eclipse.sirius.web.domain.boundedcontexts.projectsemanticdata.services.api.IProjectSemanticDataSearchService;
-import org.eclipse.sirius.web.domain.pagination.Window;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexCreationService;
 import org.eclipse.sirius.web.infrastructure.elasticsearch.services.api.IIndexUpdateService;
 import org.springframework.boot.CommandLineRunner;

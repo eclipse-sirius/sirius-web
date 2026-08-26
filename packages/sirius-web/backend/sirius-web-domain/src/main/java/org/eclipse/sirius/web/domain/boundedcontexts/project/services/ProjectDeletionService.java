@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -15,13 +15,12 @@ package org.eclipse.sirius.web.domain.boundedcontexts.project.services;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.Failure;
+import org.eclipse.sirius.web.core.domain.results.IResult;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.repositories.IProjectRepository;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectDeletionService;
-import org.eclipse.sirius.web.domain.services.Failure;
-import org.eclipse.sirius.web.domain.services.IResult;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,13 +33,10 @@ public class ProjectDeletionService implements IProjectDeletionService {
 
     private final IProjectRepository projectRepository;
 
-    private final ApplicationEventPublisher applicationEventPublisher;
-
     private final IMessageService messageService;
 
-    public ProjectDeletionService(IProjectRepository projectRepository, ApplicationEventPublisher applicationEventPublisher, IMessageService messageService) {
+    public ProjectDeletionService(IProjectRepository projectRepository, IMessageService messageService) {
         this.projectRepository = Objects.requireNonNull(projectRepository);
-        this.applicationEventPublisher = Objects.requireNonNull(applicationEventPublisher);
         this.messageService = Objects.requireNonNull(messageService);
     }
 
