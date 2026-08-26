@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 import { expect, test } from '@playwright/test';
+import { PlaywrightDetails } from '../../helpers/PlaywrightDetails';
 import { PlaywrightEdge } from '../../helpers/PlaywrightEdge';
 import { PlaywrightExplorer } from '../../helpers/PlaywrightExplorer';
 import { PlaywrightNode } from '../../helpers/PlaywrightNode';
@@ -43,6 +44,16 @@ test.describe('selection', () => {
     const explorer = new PlaywrightExplorer(page);
     const treeItem = await explorer.getTreeItemLabel('CompositeProcessor1');
     await expect(treeItem).not.toBeVisible();
+  });
+
+  test('when several diagram nodes are selected, the Details view shows the last selected node', async ({ page }) => {
+    const compositeProcessor = new PlaywrightNode(page, 'CompositeProcessor1');
+    const dataSource = new PlaywrightNode(page, 'DataSource1');
+
+    await compositeProcessor.click();
+    await dataSource.controlClick();
+
+    await expect(new PlaywrightDetails(page).detailsLocator.getByTestId('input-Name')).toHaveValue('DataSource1');
   });
 
   test('rectangle selection does not select the node where it starts', async ({ page }) => {
