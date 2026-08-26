@@ -63,6 +63,13 @@ public class EdgeDescriptionBuilder {
     /**
      * Setter for SemanticCandidatesExpression.
      *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     * </ul>
+     *
      * @generated
      */
     public EdgeDescriptionBuilder semanticCandidatesExpression(java.lang.String value) {

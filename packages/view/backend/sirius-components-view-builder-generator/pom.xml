@@ -115,13 +115,23 @@
 			<artifactId>sirius-components-view-table-customcells</artifactId>
 			<version>2026.7.3</version>
 		</dependency>
+        <dependency>
+            <groupId>org.eclipse.sirius</groupId>
+            <artifactId>sirius-components-collaborative-diagrams</artifactId>
+            <version>2026.7.3</version>
+        </dependency>
+		<dependency>
+			<groupId>org.eclipse.sirius</groupId>
+			<artifactId>sirius-components-collaborative-forms</artifactId>
+			<version>2026.7.3</version>
+		</dependency>
 		<dependency>
 			<groupId>org.eclipse.sirius</groupId>
 			<artifactId>sirius-components-tests</artifactId>
 			<version>2026.7.3</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>
