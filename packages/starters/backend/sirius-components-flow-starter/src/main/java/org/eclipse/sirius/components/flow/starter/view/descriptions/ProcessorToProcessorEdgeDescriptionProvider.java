@@ -26,7 +26,6 @@ import org.eclipse.sirius.components.view.diagram.EdgeDescription;
 import org.eclipse.sirius.components.view.diagram.EdgePalette;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.LineStyle;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Used to create the processor to processor edge description.
@@ -83,7 +82,7 @@ public class ProcessorToProcessorEdgeDescriptionProvider implements IEdgeDescrip
 
     private EdgePalette createEdgePalette() {
         return this.diagramBuilderHelper.newEdgePalette()
-                .toolSections(new DefaultToolsFactory().createDefaultHideRevealEdgeToolSection())
+                .toolSections(this.flowViewBuilder.createHideRevealEdgeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .centerLabelEditTool(this.createLabelEditTool())
                 .edgeReconnectionTools(this.diagramBuilderHelper.newTargetEdgeEndReconnectionTool()

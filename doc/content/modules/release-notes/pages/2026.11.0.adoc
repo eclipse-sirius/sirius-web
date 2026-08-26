@@ -9,7 +9,8 @@
 
 - Add a new module named `sirius-web-core-domain` to start extracting the core reusable parts of `sirius-web-domain`.
 To get started, the class `AbstractValidatingAggregateRoot` has been moved to this new module.
-
+- Default tools are now provided only for low-code studios.
+Each downstream project using programmatic APIs and the old `DefaultToolsFactory` to define its view should now define its own default tools.
 
 == Bug fixes
 

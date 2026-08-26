@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,6 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodePalette;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
 import org.eclipse.sirius.components.view.diagram.UserResizableDirection;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
 
 /**
  * Used to create the processor node description.
@@ -150,7 +149,7 @@ public class ProcessorDescriptionProvider implements INodeDescriptionProvider {
 
     private NodePalette createNodePalette(NodeDescription processorNodeDescription) {
         var nodePaletteBuilder = this.diagramBuilderHelper.newNodePalette()
-                .toolSections(new DefaultToolsFactory().createDefaultHideRevealNodeToolSection())
+                .toolSections(this.flowViewBuilder.createHideRevealNodeToolSection())
                 .deleteTool(this.flowViewBuilder.createDeleteTool())
                 .labelEditTool(this.flowViewBuilder.createLabelEditTool())
                 .edgeTools(this.flowViewBuilder.createEdgeToProcessorTool(processorNodeDescription));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -270,16 +270,16 @@ public class EdgeDescriptionItemProvider extends DiagramElementDescriptionItemPr
     @Override
     protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+        StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
 
-        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__PALETTE, defaultToolsFactory.createDefaultEdgePalette()));
+        newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__PALETTE, studioDefaultToolsFactory.createDefaultEdgePalette()));
 
         EdgeStyle newEdgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__STYLE, newEdgeStyle));
 
         ConditionalEdgeStyle conditionalEdgeStyle = DiagramFactory.eINSTANCE.createConditionalEdgeStyle();
         newChildDescriptors.add(this.createChildParameter(DiagramPackage.Literals.EDGE_DESCRIPTION__CONDITIONAL_STYLES, conditionalEdgeStyle));
-    }
+        }
 
     /**
      * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!-- begin-user-doc -->
