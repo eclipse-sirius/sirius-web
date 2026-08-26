@@ -9,7 +9,7 @@ asciidoc:
     sirius: "Sirius"
 
     product: "Sirius Web"
-    product-tag: "v2026.1.0"
+    product-tag: "v2026.11.0"
     product-artefact: "sirius-web"
     product-jar: "{product-artefact}-YYYY.M.X.jar"
 
