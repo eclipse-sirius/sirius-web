@@ -18,6 +18,7 @@
 * Fix an issue where the Details view did not always display the last selected element.
 * Fix an issue where a tool could be executed in a readonly diagram using a tool's keyboard shortcut.
 * Fix an issue where no remaining node was marked as last selected after unselecting multiple nodes with the lasso.
+* Fix an issue where the impact analysis modal was not opening after updating a library with the tree item palette.
 
 == New features
 
