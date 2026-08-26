@@ -90,6 +90,16 @@ public class BorderNodeDiagramDescriptionProvider implements IEditingContextProc
     }
 
     private DiagramDescription createDiagramDescription() {
+        var childNodeStyle = new RectangularNodeStyleDescriptionBuilder()
+                .build();
+
+        var childNodeDescription = new NodeDescriptionBuilder()
+                .name("ComponentChild")
+                .domainType("papaya::Component")
+                .semanticCandidatesExpression("aql:self")
+                .style(childNodeStyle)
+                .build();
+
         var borderNodeStyle = new RectangularNodeStyleDescriptionBuilder()
                 .build();
 
@@ -98,6 +108,7 @@ public class BorderNodeDiagramDescriptionProvider implements IEditingContextProc
                 .domainType("papaya::Component")
                 .semanticCandidatesExpression("aql:self.eContents()")
                 .style(borderNodeStyle)
+                .childrenDescriptions(childNodeDescription)
                 .build();
 
         LayoutStrategyDescription layoutStrategy = new FreeFormLayoutStrategyDescriptionBuilder()
