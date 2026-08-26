@@ -1,0 +1,99 @@
+:author: Stéphane Bégaudeau
+:date: 2026-08-26
+:status: proposed
+:consulted: Florian Rouëné
+:informed: Laurent Delaigue
+:deciders: Stéphane Bégaudeau
+:pitch: 
+:issue: https://github.com/eclipse-sirius/sirius-web/issues/6868
+
+= ADR-237 - Improve the Modularity of Sirius Web Domain
+
+== Context and Problem Statement
+
+The switch to a domain driven architecture in Sirius Web has been a major step forward in terms of maintainability and scalability.
+However, the current implementation of the domains creates a tight coupling between all the domain parts of the various bounded contexts.
+This makes it difficult to see the boundaries between the different bounded contexts and to understand the responsibilities of each domain.
+The goal of this ADR is to improve the modularity of the Sirius Web domain by introducing a more explicit separation between the different bounded contexts and their respective domains.
+This will make it easier to maintain each bounded context independently and reuse them in other projects.
+
+
+== Decision Drivers
+
+We will evaluate the potential solutions based on the following criteria:
+
+- It should improve the modularity of the Sirius Web domain.
+- It should make it easier to maintain each bounded context independently.
+- It should make it easier to reuse the bounded contexts in other projects.
+
+
+== Considered Options
+
+There are not many options to improve the modularity of the Sirius Web domain module.
+We want to extract the domain part of each bounded context into its own module, and make the dependencies between the modules explicit.
+This first step will allow us to see more clearly the boundaries between the different bounded contexts and prepare the split of the application layer which will be vastly more complex.
+
+=== Separation of the sirius-web-domain module into multiple modules
+
+==== Core domain module
+
+We will start by creating a new module named `sirius-web-core-domain` which will contain shared artifacts such as `AbstractValidatingAggregateRoot`.
+This module will be located in `packages/core/backend/sirius-web-core-domain`.
+It will not depend on any other Sirius Web modules but will be reused by `sirius-web-domain` at first.
+This new module will use the namespace `org.eclipse.sirius.web.core.domain`.
+It will end up containing generic event, result, pagination, message-service, and module-annotation types.
+
+
+==== Dedicated domain modules for each bounded context
+
+Then, we will extract the domain parts of each bounded context into their own modules, and make the dependencies between the modules explicit.
+For that we will create the following maven modules:
+
+- `sirius-web-semanticdata-domain`
+- `sirius-web-representation-domain`
+- `sirius-web-library-domain`
+- `sirius-web-image-domain`
+- `sirius-web-project-domain`
+- `sirius-web-project-semanticdata-domain`
+- `sirius-web-project-image-domain`
+
+They will be located in the following directories:
+
+- `packages/semanticdata/backend/sirius-web-semanticdata-domain`
+- `packages/representations/backend/sirius-web-representation-domain`
+- `packages/libraries/backend/sirius-web-library-domain`
+- `packages/images/backend/sirius-web-image-domain`
+- `packages/projects/backend/sirius-web-project-domain`
+- `packages/projects/backend/sirius-web-project-domain-semanticdata`
+- `packages/projects/backend/sirius-web-project-domain-image`
+
+This will allow everyone to see the boundaries between the different bounded contexts and the boundaries of each domain and subdomains within them.
+For example, the projects bounded context will have three subdomains with the main domain in `sirius-web-project-domain`, the semanticdata subdomain in `sirius-web-project-domain-semanticdata` and the image subdomain in `sirius-web-project-domain-image`.
+Both `sirius-web-project-domain-semanticdata` and `sirius-web-project-domain-image` will then depend on `sirius-web-project-domain` but not on each other.
+
+
+== Decision Outcome
+
+In the context of improve the modularity of the Sirius Web domain, facing the need to clearly define the boundaries between bounded contexts, we decided for the creation of separate modules to achieve a clean separation, accepting the need to update the codebase to fix imports.
+
+
+== Consequences
+
+=== Advantages
+
+It will be easier to maintain each bounded context independently and reuse them in other projects.
+It will make the boundaries between the different bounded contexts more explicit and easier to understand.
+
+
+=== Drawbacks
+
+This will require updating the codebase to fix imports and possibly some refactoring to ensure that the dependencies between the modules are well defined.
+
+
+== More Information
+
+=== Implementation
+
+We will first start by extracting the shared parts of the Sirius Web domain module into a new module called sirius-web-core-domain.
+Then, we will extract the domain parts of each bounded context into their own modules, and make the dependencies between the modules explicit.
+We will probably contribute one module at a time to minimize the impact on the codebase and make it easier to review the changes.
