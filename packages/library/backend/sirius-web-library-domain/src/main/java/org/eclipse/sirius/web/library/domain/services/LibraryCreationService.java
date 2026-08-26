@@ -10,15 +10,15 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.library.services;
+package org.eclipse.sirius.web.library.domain.services;
 
 import java.util.Objects;
 
 import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.core.domain.results.Success;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.repositories.ILibraryRepository;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.services.api.ILibraryCreationService;
+import org.eclipse.sirius.web.library.domain.Library;
+import org.eclipse.sirius.web.library.domain.repositories.ILibraryRepository;
+import org.eclipse.sirius.web.library.domain.services.api.ILibraryCreationService;
 import org.springframework.stereotype.Service;
 
 /**

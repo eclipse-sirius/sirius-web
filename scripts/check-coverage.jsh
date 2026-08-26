@@ -104,6 +104,7 @@ var moduleCoverageData = List.of(
   new ModuleCoverage("sirius-components-view-diagram-customnodes-edit", 80.0),
   new ModuleCoverage("sirius-web-domain", 93.0),
   new ModuleCoverage("sirius-web-core-domain", 10.0),
+  new ModuleCoverage("sirius-web-library-domain", 10.0),
   new ModuleCoverage("sirius-web-application", 90.0),
   new ModuleCoverage("sirius-web-infrastructure", 91.0),
   new ModuleCoverage("sirius-web-starter", 96.0),

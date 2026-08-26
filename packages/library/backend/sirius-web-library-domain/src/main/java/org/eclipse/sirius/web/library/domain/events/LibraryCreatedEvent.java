@@ -10,16 +10,25 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-package org.eclipse.sirius.web.domain.boundedcontexts.library.services.api;
+package org.eclipse.sirius.web.library.domain.events;
 
-import org.eclipse.sirius.web.core.domain.results.IResult;
-import org.eclipse.sirius.web.domain.boundedcontexts.library.Library;
+import java.time.Instant;
+import java.util.UUID;
+
+import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.library.domain.Library;
+
+import jakarta.validation.constraints.NotNull;
 
 /**
- * Used to create a library.
+ * Event fired when a library is created.
  *
- * @author sbegaudeau
+ * @author gdaniel
  */
-public interface ILibraryCreationService {
-    IResult<Library> createLibrary(Library library);
+public record LibraryCreatedEvent(
+        @NotNull UUID id,
+        @NotNull Instant createdOn,
+        @NotNull ICause causedBy,
+        @NotNull Library library) implements ILibraryEvent {
+
 }
