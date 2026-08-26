@@ -79,6 +79,21 @@ public class EdgeDescriptionBuilder {
     /**
      * Setter for PreconditionExpression.
      *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code semanticEdgeSource: Object} - The semantic element at the source of the edge</li>
+     *   <li>{@code semanticEdgeTarget: Object} - The semantic element at the target of the edge</li>
+     *   <li>{@code graphicalEdgeSource: Element} - The virtual diagram element at the source of the edge</li>
+     *   <li>{@code graphicalEdgeTarget: Element} - The virtual diagram element at the target of the edge</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code diagramEvent: IDiagramEvent} - Indicates the potential event which has triggered a new rendering</li>
+     *   <li>{@code previousDiagram: Diagram} - The diagram rendered during the previous refresh</li>
+     *   <li>{@code cache: DiagramRenderingCache} - An internal cache used to retrieve some internal data during the rendering</li>
+     *   <li>{@code label: String} - The label of the diagram</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     * </ul>
+     *
      * @generated
      */
     public EdgeDescriptionBuilder preconditionExpression(java.lang.String value) {
@@ -107,6 +122,21 @@ public class EdgeDescriptionBuilder {
     /**
      * Setter for BeginLabelExpression.
      *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code semanticEdgeSource: Object} - The semantic element at the source of the edge</li>
+     *   <li>{@code semanticEdgeTarget: Object} - The semantic element at the target of the edge</li>
+     *   <li>{@code graphicalEdgeSource: Element} - The virtual diagram element at the source of the edge</li>
+     *   <li>{@code graphicalEdgeTarget: Element} - The virtual diagram element at the target of the edge</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code diagramEvent: IDiagramEvent} - Indicates the potential event which has triggered a new rendering</li>
+     *   <li>{@code previousDiagram: Diagram} - The diagram rendered during the previous refresh</li>
+     *   <li>{@code cache: DiagramRenderingCache} - An internal cache used to retrieve some internal data during the rendering</li>
+     *   <li>{@code label: String} - The label of the diagram</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     * </ul>
+     *
      * @generated
      */
     public EdgeDescriptionBuilder beginLabelExpression(java.lang.String value) {
@@ -116,6 +146,21 @@ public class EdgeDescriptionBuilder {
     /**
      * Setter for CenterLabelExpression.
      *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code semanticEdgeSource: Object} - The semantic element at the source of the edge</li>
+     *   <li>{@code semanticEdgeTarget: Object} - The semantic element at the target of the edge</li>
+     *   <li>{@code graphicalEdgeSource: Element} - The virtual diagram element at the source of the edge</li>
+     *   <li>{@code graphicalEdgeTarget: Element} - The virtual diagram element at the target of the edge</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code diagramEvent: IDiagramEvent} - Indicates the potential event which has triggered a new rendering</li>
+     *   <li>{@code previousDiagram: Diagram} - The diagram rendered during the previous refresh</li>
+     *   <li>{@code cache: DiagramRenderingCache} - An internal cache used to retrieve some internal data during the rendering</li>
+     *   <li>{@code label: String} - The label of the diagram</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     * </ul>
+     *
      * @generated
      */
     public EdgeDescriptionBuilder centerLabelExpression(java.lang.String value) {
@@ -124,6 +169,21 @@ public class EdgeDescriptionBuilder {
     }
     /**
      * Setter for EndLabelExpression.
+     *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code semanticEdgeSource: Object} - The semantic element at the source of the edge</li>
+     *   <li>{@code semanticEdgeTarget: Object} - The semantic element at the target of the edge</li>
+     *   <li>{@code graphicalEdgeSource: Element} - The virtual diagram element at the source of the edge</li>
+     *   <li>{@code graphicalEdgeTarget: Element} - The virtual diagram element at the target of the edge</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code diagramEvent: IDiagramEvent} - Indicates the potential event which has triggered a new rendering</li>
+     *   <li>{@code previousDiagram: Diagram} - The diagram rendered during the previous refresh</li>
+     *   <li>{@code cache: DiagramRenderingCache} - An internal cache used to retrieve some internal data during the rendering</li>
+     *   <li>{@code label: String} - The label of the diagram</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     * </ul>
      *
      * @generated
      */
@@ -176,6 +236,13 @@ public class EdgeDescriptionBuilder {
     /**
      * Setter for SourceExpression.
      *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     * </ul>
+     *
      * @generated
      */
     public EdgeDescriptionBuilder sourceExpression(java.lang.String value) {
@@ -184,6 +251,13 @@ public class EdgeDescriptionBuilder {
     }
     /**
      * Setter for TargetExpression.
+     *
+     * <p>Available variables:</p>
+     * <ul>
+     *   <li>{@code self: Object} - The current element on which the operation is performed</li>
+     *   <li>{@code editingContext: IEditingContext} - The editing context is an abstraction used to access all the semantic data</li>
+     *   <li>{@code environment: Environment} - The environment may contain some information on the application currently running</li>
+     * </ul>
      *
      * @generated
      */
