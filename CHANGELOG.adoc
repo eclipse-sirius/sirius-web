@@ -47,6 +47,7 @@ cf Papaya view and Related Element view to see how.
 === Bug fixes
 
 - https://github.com/eclipse-sirius/sirius-web/issues/3914[#3914] [diagram] Allow icon label nodes to be moved inside free-form containers.
+- https://github.com/eclipse-sirius/sirius-web/issues/3712[#3712] [diagram] Render child and border nodes declared under a border node.
 
 
 === New Features

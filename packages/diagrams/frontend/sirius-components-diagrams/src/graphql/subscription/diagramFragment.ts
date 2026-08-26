@@ -15,6 +15,31 @@ import { edgeFragment } from './edgeFragment';
 import { insideLabelFragment, labelFragment, outsideLabelFragment } from './labelFragment';
 import { nodeFragment } from './nodeFragment';
 
+const MAX_NODE_HIERARCHY_DEPTH = 13;
+
+const nodeHierarchyFragments = Array.from({ length: MAX_NODE_HIERARCHY_DEPTH + 1 }, (_, depth): string => {
+  const fragmentName = `nodeHierarchyFragment${depth}`;
+
+  if (depth === 0) {
+    return `
+fragment ${fragmentName} on Node {
+  ...nodeFragment
+}`;
+  }
+
+  const descendantFragmentName = `nodeHierarchyFragment${depth - 1}`;
+  return `
+fragment ${fragmentName} on Node {
+  ...nodeFragment
+  childNodes {
+    ...${descendantFragmentName}
+  }
+  borderNodes {
+    ...${descendantFragmentName}
+  }
+}`;
+}).join('\n');
+
 export const diagramFragment = `
 fragment diagramFragment on Diagram {
   id
@@ -62,88 +87,14 @@ fragment diagramFragment on Diagram {
     autoLaidOut
   }
   nodes {
-    ...nodeFragment
-    borderNodes {
-      ...nodeFragment
-    }
-    childNodes {
-      ...nodeFragment
-      borderNodes {
-        ...nodeFragment
-      }
-      childNodes {
-        ...nodeFragment
-        borderNodes {
-          ...nodeFragment
-        }
-        childNodes {
-          ...nodeFragment
-          borderNodes {
-            ...nodeFragment
-          }
-          childNodes {
-            ...nodeFragment
-            borderNodes {
-              ...nodeFragment
-            }
-            childNodes {
-              ...nodeFragment
-              borderNodes {
-                ...nodeFragment
-              }
-              childNodes {
-                ...nodeFragment
-                borderNodes {
-                  ...nodeFragment
-                }
-                childNodes {
-                  ...nodeFragment
-                  borderNodes {
-                    ...nodeFragment
-                  }
-                  childNodes {
-                    ...nodeFragment
-                    borderNodes {
-                      ...nodeFragment
-                    }
-                    childNodes {
-                      ...nodeFragment
-                      borderNodes {
-                        ...nodeFragment
-                      }
-                      childNodes {
-                        ...nodeFragment
-                        borderNodes {
-                          ...nodeFragment
-                        }
-                        childNodes {
-                          ...nodeFragment
-                          borderNodes {
-                            ...nodeFragment
-                          }
-                          childNodes {
-                            ...nodeFragment
-                            borderNodes {
-                              ...nodeFragment
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    ...nodeHierarchyFragment${MAX_NODE_HIERARCHY_DEPTH}
   }
   edges {
     ...edgeFragment
   }
 }
 
+${nodeHierarchyFragments}
 ${nodeFragment}
 ${edgeFragment}
 ${labelFragment}

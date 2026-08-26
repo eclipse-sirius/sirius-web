@@ -23,6 +23,7 @@ Each downstream project using programmatic APIs and the old `DefaultToolsFactory
 == Bug fixes
 
 * Icon label nodes can now be moved inside free-form containers.
+* Border nodes can now display their configured child and border nodes.
 
 
 == New features
