@@ -43,7 +43,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
- * The view provider for the border-node.cy.ts test suite.
+ * The view provider for the border node end-to-end test suite.
  *
  * @author frouene
  */
@@ -100,7 +100,8 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
     private NodeDescription getNodeDescription(IColorProvider colorProvider) {
         var borderNodeNorthDescription = this.getChildrenBorderDescription(colorProvider, "north");
         var borderNodeEastDescription = this.getChildrenBorderDescription(colorProvider, "east");
-        var borderNodeFreeDescription = this.getFreeChildrenBorderDescription(colorProvider);
+        var borderNodeChildDescription = this.getBorderNodeChildDescription(colorProvider);
+        var borderNodeFreeDescription = this.getFreeChildrenBorderDescription(colorProvider, borderNodeChildDescription);
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Entity Node 1")
@@ -121,6 +122,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                                 .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription()
                                         .onNorthAtCreationBorderNodes(borderNodeNorthDescription)
                                         .onEastAtCreationBorderNodes(borderNodeEastDescription)
+                                        .onSouthAtCreationBorderNodes(borderNodeFreeDescription)
                                         .build())
                                 .build()
                 )
@@ -204,7 +206,7 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                 .build();
     }
 
-    private NodeDescription getFreeChildrenBorderDescription(IColorProvider colorProvider) {
+    private NodeDescription getFreeChildrenBorderDescription(IColorProvider colorProvider, NodeDescription borderNodeChildDescription) {
         return new DiagramBuilders()
                 .newNodeDescription()
                 .name("Border")
@@ -221,6 +223,33 @@ public class DiagramBorderNodeViewProvider implements IE2EViewProvider {
                         new DiagramBuilders()
                                 .newRectangularNodeStyleDescription()
                                 .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_RED))
+                                .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
+                                .borderRadius(0)
+                                .borderSize(1)
+                                .borderLineStyle(LineStyle.SOLID)
+                                .childrenLayoutStrategy(new DiagramBuilders().newFreeFormLayoutStrategyDescription().build())
+                                .build()
+                )
+                .childrenDescriptions(borderNodeChildDescription)
+                .build();
+    }
+
+    private NodeDescription getBorderNodeChildDescription(IColorProvider colorProvider) {
+        return new DiagramBuilders()
+                .newNodeDescription()
+                .name("Border child")
+                .domainType(DiagramBorderNodeDomainProvider.DOMAIN_NAME + "::Child")
+                .semanticCandidatesExpression("aql:self.eContents()")
+                .synchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED)
+                .collapsible(false)
+                .userResizable(UserResizableDirection.NONE)
+                .keepAspectRatio(false)
+                .defaultWidthExpression("40")
+                .defaultHeightExpression("30")
+                .style(
+                        new DiagramBuilders()
+                                .newRectangularNodeStyleDescription()
+                                .background(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_GREEN))
                                 .borderColor(colorProvider.getColor(SiriusWebE2EColorPaletteBuilderProvider.COLOR_DARK))
                                 .borderRadius(0)
                                 .borderSize(1)

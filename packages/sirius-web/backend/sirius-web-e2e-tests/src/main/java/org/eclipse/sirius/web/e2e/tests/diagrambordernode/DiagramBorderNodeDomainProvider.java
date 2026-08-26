@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 /**
- * Used to contribute domains for border-node.cy.ts tests.
+ * Used to contribute domains for the border node end-to-end tests.
  *
  * @author frouene
  */
@@ -36,6 +36,8 @@ import org.springframework.stereotype.Service;
 public class DiagramBorderNodeDomainProvider implements IDomainProvider {
 
     public static final String DOMAIN_NAME = "diagramBorderNode";
+
+    private static final String NAME_ATTRIBUTE = "name";
 
     @Override
     public List<Domain> getDomains(IEditingContext editingContext) {
@@ -70,8 +72,21 @@ public class DiagramBorderNodeDomainProvider implements IDomainProvider {
         borders.setTargetType(border);
         entity1.getRelations().add(borders);
 
-        this.addAttribute(entity1, "name", DataType.STRING);
-        this.addAttribute(border, "name", DataType.STRING);
+        Entity child = DomainFactory.eINSTANCE.createEntity();
+        child.setName("Child");
+        domain.getTypes().add(child);
+
+        Relation children = DomainFactory.eINSTANCE.createRelation();
+        children.setName("children");
+        children.setContainment(true);
+        children.setOptional(true);
+        children.setMany(true);
+        children.setTargetType(child);
+        border.getRelations().add(children);
+
+        this.addAttribute(entity1, NAME_ATTRIBUTE, DataType.STRING);
+        this.addAttribute(border, NAME_ATTRIBUTE, DataType.STRING);
+        this.addAttribute(child, NAME_ATTRIBUTE, DataType.STRING);
 
         return List.of(domain);
     }

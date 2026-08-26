@@ -98,6 +98,43 @@ test.describe('diagram - border-node', () => {
     const reactFlowXYPositionEastAfterTopLeft = await playwrightBorderNodeEast.getReactFlowXYPosition('east');
     expect(reactFlowXYPositionEastAfterTopLeft.x).toBe(parentSizeAfterTopLeft.width - borderNodeGap);
   });
+
+  test('When a border node has a child, then the child is displayed inside it after resize and reload', async ({
+    page,
+  }) => {
+    const borderNodeGap: number = 5;
+    const parentNode = new PlaywrightNode(page, 'Entity1');
+    const borderNode = new PlaywrightNode(page, 'container');
+    const childNode = new PlaywrightNode(page, 'child');
+    await parentNode.click();
+    await new PlaywrightDiagram(page).hideDebugPanel();
+
+    await expect(borderNode.nodeLocator).toBeVisible();
+    await expect(childNode.nodeLocator).toBeVisible();
+
+    const parentNodeId = await parentNode.getReactFlowId('Entity1');
+    const parentNodeSize = await parentNode.getReactFlowSize('Entity1', false);
+
+    await borderNode.nodeLocator.click({ position: { x: 2, y: 2 } });
+    const borderNodeId = await borderNode.getReactFlowId('container', false);
+    const borderNodeParentId = await borderNode.getReactFlowParentId('container', false);
+    const borderNodePosition = await borderNode.getReactFlowXYPosition('container', false);
+    const borderNodeSize = await borderNode.getReactFlowSize('container', false);
+
+    const childNodeParentId = await childNode.getReactFlowParentId('child');
+    const childNodePosition = await childNode.getReactFlowXYPosition('child', false);
+    const childNodeSize = await childNode.getReactFlowSize('child', false);
+
+    expect(borderNodeParentId).toBe(parentNodeId);
+    expect(childNodeParentId).toBe(borderNodeId);
+    expect(borderNodePosition.y).toBeCloseTo(parentNodeSize.height - borderNodeGap);
+    expect(borderNodeSize.width).toBeGreaterThan(20);
+    expect(borderNodeSize.height).toBeGreaterThan(20);
+    expect(childNodePosition.x).toBeGreaterThanOrEqual(0);
+    expect(childNodePosition.y).toBeGreaterThanOrEqual(0);
+    expect(childNodePosition.x + childNodeSize.width).toBeLessThanOrEqual(borderNodeSize.width);
+    expect(childNodePosition.y + childNodeSize.height).toBeLessThanOrEqual(borderNodeSize.height);
+  });
 });
 
 test.describe('diagram - border-node', () => {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -86,10 +86,15 @@ public class BorderNodeDiagramControllerTests extends AbstractIntegrationTests {
                 .map(DiagramRefreshedEventPayload::diagram)
                 .ifPresentOrElse(diagram -> {
                     assertThat(diagram.getNodes()).hasSize(1);
-                    assertThat(diagram.getNodes().get(0).getBorderNodes()).hasSize(5);
-                    assertThat(diagram.getNodes().get(0).getBorderNodes().get(0))
+                    var rootNode = diagram.getNodes().getFirst();
+                    assertThat(rootNode.getBorderNodes()).hasSize(5);
+                    var borderNode = rootNode.getBorderNodes().getFirst();
+                    assertThat(borderNode)
                             .hasFieldOrPropertyWithValue("borderNode", true)
                             .hasFieldOrPropertyWithValue("initialBorderNodePosition", BorderNodePosition.SOUTH);
+                    assertThat(borderNode.getChildNodes()).hasSize(1);
+                    assertThat(borderNode.getChildNodes().getFirst())
+                            .hasFieldOrPropertyWithValue("borderNode", false);
                 }, () -> fail("Missing diagram"));
 
         StepVerifier.create(flux)
