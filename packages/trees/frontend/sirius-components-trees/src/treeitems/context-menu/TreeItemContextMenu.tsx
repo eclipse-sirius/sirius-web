@@ -16,6 +16,7 @@ import {
   useData,
   useSelectionTargets,
 } from '@eclipse-sirius/sirius-components-core';
+import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
@@ -74,12 +75,13 @@ export const TreeItemContextMenu = ({
 
   const { loading, contextMenuEntries } = useContextMenuEntries(editingContextId, treeId, item.id, false);
   const { treeContainerRef } = useContext<TreeContextValue>(TreeContext);
+  const { isOpened } = usePalette();
 
   if (loading) {
     return null;
   }
 
-  if (useTreePalette) {
+  if (useTreePalette && isOpened) {
     return (
       <Popper
         open={!!menuAnchor}
