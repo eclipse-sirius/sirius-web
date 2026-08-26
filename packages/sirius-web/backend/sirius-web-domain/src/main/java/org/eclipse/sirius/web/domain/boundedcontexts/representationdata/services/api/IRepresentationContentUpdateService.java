@@ -15,9 +15,9 @@ package org.eclipse.sirius.web.domain.boundedcontexts.representationdata.service
 import java.util.UUID;
 
 import org.eclipse.sirius.components.events.ICause;
+import org.eclipse.sirius.web.core.domain.results.IResult;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.RepresentationMetadata;
 import org.eclipse.sirius.web.domain.boundedcontexts.semanticdata.SemanticData;
-import org.eclipse.sirius.web.domain.services.IResult;
 import org.springframework.data.jdbc.core.mapping.AggregateReference;
 
 /**

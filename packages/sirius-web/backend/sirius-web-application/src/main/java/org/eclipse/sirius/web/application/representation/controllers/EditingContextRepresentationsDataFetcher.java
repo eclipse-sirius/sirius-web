@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.graphql.api.LocalContextConstants;
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.pagination.services.api.ILimitProvider;
 import org.eclipse.sirius.web.application.representation.services.api.IRepresentationApplicationService;
-import org.eclipse.sirius.web.domain.pagination.Window;
+import org.eclipse.sirius.web.core.domain.pagination.Window;
 import org.springframework.data.domain.KeysetScrollPosition;
 import org.springframework.data.domain.ScrollPosition;
 

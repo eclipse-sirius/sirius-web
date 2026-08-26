@@ -28,10 +28,10 @@ import org.eclipse.sirius.components.view.emf.IRepresentationDescriptionIdProvid
 import org.eclipse.sirius.web.application.UUIDParser;
 import org.eclipse.sirius.web.application.project.dto.NatureDTO;
 import org.eclipse.sirius.web.application.project.dto.ProjectDTO;
+import org.eclipse.sirius.web.core.domain.results.Success;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.Project;
 import org.eclipse.sirius.web.domain.boundedcontexts.project.services.api.IProjectCreationService;
 import org.eclipse.sirius.web.domain.boundedcontexts.representationdata.services.api.IRepresentationMetadataSearchService;
-import org.eclipse.sirius.web.domain.services.Success;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
 import org.eclipse.sirius.web.view.fork.dto.CreateForkedStudioInput;
 import org.eclipse.sirius.web.view.fork.dto.CreateProjectSuccessPayload;
