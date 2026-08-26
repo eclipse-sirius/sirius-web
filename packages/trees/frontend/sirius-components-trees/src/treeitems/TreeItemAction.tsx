@@ -10,6 +10,7 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
+import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
@@ -48,6 +49,7 @@ export const TreeItemAction = ({
     showContextMenu: false,
     menuAnchor: null,
   });
+  const { showPalette, hidePalette } = usePalette();
 
   const openContextMenu = (event) => {
     if (!state.showContextMenu) {
@@ -57,6 +59,7 @@ export const TreeItemAction = ({
         showContextMenu: true,
         menuAnchor: currentTarget,
       }));
+      showPalette(0, 0, selectedTreeItemIds);
     }
   };
 
@@ -68,13 +71,16 @@ export const TreeItemAction = ({
         showContextMenu: false,
         menuAnchor: null,
       }));
+      hidePalette();
     };
+
     const enterEditingMode = () => {
       setState((prevState) => ({
         ...prevState,
         showContextMenu: false,
         menuAnchor: null,
       }));
+      hidePalette();
       onEnterEditingMode();
     };
 

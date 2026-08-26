@@ -11,6 +11,7 @@
  *     Obeo - initial API and implementation
  *******************************************************************************/
 import { DRAG_SOURCES_TYPE, GQLStyledString, StyledLabel, useDebounce } from '@eclipse-sirius/sirius-components-core';
+import { usePalette } from '@eclipse-sirius/sirius-components-palette';
 import Tooltip from '@mui/material/Tooltip';
 import React, { useEffect, useRef, useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
@@ -137,6 +138,7 @@ export const TreeItem = ({
 
   const { classes } = useTreeItemStyle({ depth });
   const { onDropTreeItem } = useDropTreeItem(editingContextId, treeId);
+  const { isOpened } = usePalette();
 
   const partHoveredForTooltip: string | null = useDebounce(state.partHovered, 500);
   const { tooltip } = useTreeItemTooltip(editingContextId, treeId, item.id, partHoveredForTooltip !== 'item');
@@ -289,6 +291,7 @@ export const TreeItem = ({
   };
 
   let currentTreeItem: JSX.Element | null;
+
   if (textToFilter && isFilterCandidate(item, textToFilter)) {
     currentTreeItem = null;
   } else {
@@ -344,7 +347,7 @@ export const TreeItem = ({
             data-testid={dataTestid}>
             <div className={`${classes.content} ${item.selectable ? '' : classes.nonSelectable}`}>
               <Tooltip
-                open={tooltip?.length > 0 && state.partHovered === 'item'}
+                open={tooltip?.length > 0 && state.partHovered === 'item' && !isOpened}
                 title={tooltip}
                 placement="top-start"
                 disableInteractive
