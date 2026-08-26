@@ -41,7 +41,7 @@ import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
 import org.eclipse.sirius.components.view.diagram.RectangularNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.SynchronizationPolicy;
-import org.eclipse.sirius.components.view.diagram.provider.DefaultToolsFactory;
+import org.eclipse.sirius.components.view.diagram.provider.StudioDefaultToolsFactory;
 import org.eclipse.sirius.emfjson.resource.JsonResource;
 import org.eclipse.sirius.web.application.studio.services.api.IDefaultViewResourceProvider;
 import org.springframework.stereotype.Service;
@@ -68,31 +68,31 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
     @SuppressWarnings("checkstyle:MultipleStringLiterals")
     public Resource getResource(String domainName) {
         View view = ViewFactory.eINSTANCE.createView();
-        DefaultToolsFactory defaultToolsFactory = new DefaultToolsFactory();
+        StudioDefaultToolsFactory studioDefaultToolsFactory = new StudioDefaultToolsFactory();
 
         org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription = DiagramFactory.eINSTANCE.createDiagramDescription();
         viewDiagramDescription.setName(domainName + " Diagram Description");
         viewDiagramDescription.setDomainType(domainName + "::Root");
         viewDiagramDescription.setTitleExpression(domainName + " diagram");
-        viewDiagramDescription.setPalette(defaultToolsFactory.createDefaultDiagramPalette());
+        viewDiagramDescription.setPalette(studioDefaultToolsFactory.createDefaultDiagramPalette());
         viewDiagramDescription.setStyle(DiagramFactory.eINSTANCE.createDiagramStyleDescription());
         view.getDescriptions().add(viewDiagramDescription);
 
         view.getColorPalettes().add(this.createColorPalette());
 
-        var entity1Node = this.createNodeDescriptionsEntity1(view, domainName, defaultToolsFactory);
+        var entity1Node = this.createNodeDescriptionsEntity1(view, domainName, studioDefaultToolsFactory);
 
         viewDiagramDescription.getNodeDescriptions().add(entity1Node);
         viewDiagramDescription.getPalette().getNodeTools().add(this.createNewInstanceTool(domainName + "::Entity1", "entity1s"));
 
-        var entity2Node = this.createNodeDescriptionsEntity2(view, domainName, defaultToolsFactory);
+        var entity2Node = this.createNodeDescriptionsEntity2(view, domainName, studioDefaultToolsFactory);
 
         viewDiagramDescription.getNodeDescriptions().add(entity2Node);
         viewDiagramDescription.getPalette().getNodeTools().add(this.createNewInstanceTool(domainName + "::Entity2", "entity2s"));
 
         this.addEdgeTool(entity1Node, entity2Node);
 
-        this.addEdgeDescription(entity1Node, entity2Node, defaultToolsFactory, viewDiagramDescription, view);
+        this.addEdgeDescription(entity1Node, entity2Node, studioDefaultToolsFactory, viewDiagramDescription, view);
 
         DiagramToolbar toolbar = DiagramFactory.eINSTANCE.createDiagramToolbar();
         toolbar.setExpandedByDefault(true);
@@ -109,7 +109,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         return resource;
     }
 
-    private NodeDescription createNodeDescriptionsEntity1(View view, String domainName, DefaultToolsFactory defaultToolsFactory) {
+    private NodeDescription createNodeDescriptionsEntity1(View view, String domainName, StudioDefaultToolsFactory studioDefaultToolsFactory) {
         NodeDescription entity1Node = DiagramFactory.eINSTANCE.createNodeDescription();
         entity1Node.setName("Entity1 Node");
         entity1Node.setDomainType(domainName + "::Entity1");
@@ -117,11 +117,11 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         entity1Node.setInsideLabel(this.createInsideLabelDescription(view));
         entity1Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         entity1Node.setStyle(this.createRectangularNodeStyle(view, "color_blue", "border_blue"));
-        entity1Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
+        entity1Node.setPalette(studioDefaultToolsFactory.createDefaultNodePalette());
         return entity1Node;
     }
 
-    private NodeDescription createNodeDescriptionsEntity2(View view, String domainName, DefaultToolsFactory defaultToolsFactory) {
+    private NodeDescription createNodeDescriptionsEntity2(View view, String domainName, StudioDefaultToolsFactory studioDefaultToolsFactory) {
         NodeDescription entity2Node = DiagramFactory.eINSTANCE.createNodeDescription();
         entity2Node.setName("Entity2 Node");
         entity2Node.setDomainType(domainName + "::Entity2");
@@ -129,7 +129,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         entity2Node.setInsideLabel(this.createInsideLabelDescription(view));
         entity2Node.setSynchronizationPolicy(SynchronizationPolicy.SYNCHRONIZED);
         entity2Node.setStyle(this.createRectangularNodeStyle(view, "color_green", "border_green"));
-        entity2Node.setPalette(defaultToolsFactory.createDefaultNodePalette());
+        entity2Node.setPalette(studioDefaultToolsFactory.createDefaultNodePalette());
         return entity2Node;
     }
 
@@ -147,7 +147,8 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         entity1Node.getPalette().getEdgeTools().add(createLinkTo);
     }
 
-    private void addEdgeDescription(NodeDescription entity1Node, NodeDescription entity2Node, DefaultToolsFactory defaultToolsFactory, org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, View view) {
+    private void addEdgeDescription(NodeDescription entity1Node, NodeDescription entity2Node, StudioDefaultToolsFactory studioDefaultToolsFactory,
+            org.eclipse.sirius.components.view.diagram.DiagramDescription viewDiagramDescription, View view) {
         EdgeDescription linkedToEdge = DiagramFactory.eINSTANCE.createEdgeDescription();
         linkedToEdge.setName("LinkedTo Edge");
         linkedToEdge.setSemanticCandidatesExpression("");
@@ -156,7 +157,7 @@ public class DefaultViewResourceProvider implements IDefaultViewResourceProvider
         linkedToEdge.setSourceExpression("aql:self");
         linkedToEdge.getTargetDescriptions().add(entity2Node);
         linkedToEdge.setTargetExpression("aql:self.linkedTo");
-        linkedToEdge.setPalette(defaultToolsFactory.createDefaultEdgePalette());
+        linkedToEdge.setPalette(studioDefaultToolsFactory.createDefaultEdgePalette());
         viewDiagramDescription.getEdgeDescriptions().add(linkedToEdge);
 
         EdgeStyle edgeStyle = DiagramFactory.eINSTANCE.createEdgeStyle();

@@ -18,6 +18,7 @@ import org.eclipse.sirius.components.view.builder.providers.IColorProvider;
 import org.eclipse.sirius.components.view.diagram.DeleteTool;
 import org.eclipse.sirius.components.view.diagram.DiagramFactory;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
+import org.eclipse.sirius.components.view.diagram.EdgeToolSection;
 import org.eclipse.sirius.components.view.diagram.HeaderSeparatorDisplayMode;
 import org.eclipse.sirius.components.view.diagram.ImageNodeStyleDescription;
 import org.eclipse.sirius.components.view.diagram.InsideLabelDescription;
@@ -25,6 +26,7 @@ import org.eclipse.sirius.components.view.diagram.InsideLabelPosition;
 import org.eclipse.sirius.components.view.diagram.LabelEditTool;
 import org.eclipse.sirius.components.view.diagram.NodeDescription;
 import org.eclipse.sirius.components.view.diagram.NodeTool;
+import org.eclipse.sirius.components.view.diagram.NodeToolSection;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelDescription;
 import org.eclipse.sirius.components.view.diagram.OutsideLabelPosition;
 
@@ -58,6 +60,14 @@ public class FlowViewBuilder {
     public static final String CPU_STANDARD_SVG_ID = "/flow-images/cpu_standard.svg";
     public static final String CPU_UNUSED_SVG_ID = "/flow-images/cpu_unused.svg";
 
+    private static final String HIDE_TOOL_NAME = "Hide";
+
+    private static final String HIDE_TOOL_ICON_EXPRESSION = "aql:'/icons/full/obj16/HideTool.svg'";
+
+    private static final String SHOW_TOOL_ICON_EXPRESSION = "aql:'/icons/full/obj16/ShowTool.svg'";
+
+    private static final String SHOW_HIDE_TOOL_SECTION_NAME = "Show/Hide";
+
     private final ViewBuilders viewBuilderHelper = new ViewBuilders();
 
     private final DiagramBuilders diagramBuilderHelper = new DiagramBuilders();
@@ -88,6 +98,83 @@ public class FlowViewBuilder {
         return this.diagramBuilderHelper.newLabelEditTool()
                 .name("Edit")
                 .body(callEditService.build())
+                .build();
+    }
+
+    public NodeToolSection createHideRevealNodeToolSection() {
+        var hideNodeTool = this.diagramBuilderHelper.newNodeTool()
+                .name(HIDE_TOOL_NAME)
+                .iconURLsExpression(HIDE_TOOL_ICON_EXPRESSION)
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression("aql:diagramServices.hide(Sequence{selectedNode})")
+                        .build())
+                .build();
+        var hideAllChildrenNodeTool = this.diagramBuilderHelper.newNodeTool()
+                .name("Hide all content")
+                .iconURLsExpression(HIDE_TOOL_ICON_EXPRESSION)
+                .preconditionExpression("aql:selectedNode.getChildNodes()->notEmpty() or selectedNode.getBorderNodes()->notEmpty()")
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression("aql:diagramServices.hide(selectedNode.getChildNodes()->union(selectedNode.getBorderNodes()))")
+                        .build())
+                .build();
+        var revealAllChildrenNodeTool = this.diagramBuilderHelper.newNodeTool()
+                .name("Show all content")
+                .iconURLsExpression(SHOW_TOOL_ICON_EXPRESSION)
+                .preconditionExpression("aql:selectedNode.getChildNodes()->union(selectedNode.getBorderNodes())->select(n | n.isHidden())->notEmpty()")
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression("aql:diagramServices.reveal(selectedNode.getChildNodes()->union(selectedNode.getBorderNodes()))")
+                        .build())
+                .build();
+
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name(SHOW_HIDE_TOOL_SECTION_NAME)
+                .nodeTools(hideNodeTool, hideAllChildrenNodeTool, revealAllChildrenNodeTool)
+                .build();
+    }
+
+    public EdgeToolSection createHideRevealEdgeToolSection() {
+        var hideEdgeTool = this.diagramBuilderHelper.newNodeTool()
+                .name(HIDE_TOOL_NAME)
+                .iconURLsExpression(HIDE_TOOL_ICON_EXPRESSION)
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression("aql:diagramServices.hide(Sequence{selectedEdge})")
+                        .build())
+                .build();
+
+        return this.diagramBuilderHelper.newEdgeToolSection()
+                .name(SHOW_HIDE_TOOL_SECTION_NAME)
+                .nodeTools(hideEdgeTool)
+                .build();
+    }
+
+    public NodeToolSection createGroupHideRevealNodeToolSection() {
+        var hideNodeTool = this.diagramBuilderHelper.newNodeTool()
+                .name(HIDE_TOOL_NAME)
+                .iconURLsExpression(HIDE_TOOL_ICON_EXPRESSION)
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression("aql:diagramServices.hide(selectedNodes)")
+                        .build())
+                .build();
+        var hideAllChildrenNodeTool = this.diagramBuilderHelper.newNodeTool()
+                .name("Hide all content")
+                .iconURLsExpression(HIDE_TOOL_ICON_EXPRESSION)
+                .preconditionExpression("aql:selectedNodes.getChildNodes()->notEmpty() or selectedNodes.getBorderNodes()->notEmpty()")
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression("aql:diagramServices.hide(selectedNodes.getChildNodes()->union(selectedNodes.getBorderNodes()))")
+                        .build())
+                .build();
+        var revealAllChildrenNodeTool = this.diagramBuilderHelper.newNodeTool()
+                .name("Show all content")
+                .iconURLsExpression(SHOW_TOOL_ICON_EXPRESSION)
+                .preconditionExpression("aql:selectedNodes.getChildNodes()->union(selectedNodes.getBorderNodes())->select(n | n.isHidden())->notEmpty()")
+                .body(this.viewBuilderHelper.newChangeContext()
+                        .expression("aql:diagramServices.reveal(selectedNodes.getChildNodes()->union(selectedNodes.getBorderNodes()))")
+                        .build())
+                .build();
+
+        return this.diagramBuilderHelper.newNodeToolSection()
+                .name(SHOW_HIDE_TOOL_SECTION_NAME)
+                .nodeTools(hideNodeTool, hideAllChildrenNodeTool, revealAllChildrenNodeTool)
                 .build();
     }
 
