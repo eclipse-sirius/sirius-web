@@ -10,8 +10,8 @@
  * Contributors:
  *     Obeo - initial API and implementation
  *******************************************************************************/
-import { Edge, InternalNode, Node, NodeChange, NodeSelectionChange, XYPosition, useStoreApi } from '@xyflow/react';
-import { pointToRendererPoint } from '@xyflow/system';
+import { Edge, InternalNode, Node, NodeChange, NodeSelectionChange, useStoreApi, XYPosition } from '@xyflow/react';
+import { pointToRendererPoint, SelectionRect } from '@xyflow/system';
 import { useCallback } from 'react';
 import { EdgeData, NodeData } from '../DiagramRenderer.types';
 import { findClosest } from './distanceComputation';
@@ -25,39 +25,68 @@ export const useLastElementSelectedChange = (): UseLastElementSelectedChangeValu
   const reactFlowStore = useStoreApi<Node<NodeData>, Edge<EdgeData>>();
 
   /**
-   * Set data.isLastNodeSelected on the last selected node excluding border nodes
+   * When a rectangular selection is active, the closest element from the cursor will be the last selected element.
    */
-  const computeLastElementSelected = (changes: NodeChange<Node<NodeData>>[], nodes: Node<NodeData>[]) => {
-    const selectedChangeIds = changes
-      .filter(isNodeSelectionChange)
-      .filter((change) => change.selected)
-      .map((change) => change.id);
-
+  const computeLastElementSelectedForRectangleSelection = (
+    selectedChangeIds: string[],
+    userSelectionRect: SelectionRect
+  ): string | null => {
     const changedNodes: InternalNode<Node<NodeData>>[] = selectedChangeIds
       .map((id) => reactFlowStore.getState().nodeLookup.get(id))
       .filter((node): node is InternalNode<Node<NodeData>> => !!node);
 
-    const userSelectionRect = reactFlowStore.getState().userSelectionRect;
-    // We are in the context of a rectangle group selection, so we return the closest node to the group selection end position
-    if (reactFlowStore.getState().userSelectionActive && !!userSelectionRect) {
-      // The user selection rectangle is expressed in pane coordinates whereas the nodes are
-      // positioned in flow coordinates, so the cursor position has to be converted first.
-      const cursorPanePosition: XYPosition = {
-        x:
-          userSelectionRect.x === userSelectionRect.startX
-            ? userSelectionRect.x + userSelectionRect.width
-            : userSelectionRect.x,
-        y:
-          userSelectionRect.y === userSelectionRect.startY
-            ? userSelectionRect.y + userSelectionRect.height
-            : userSelectionRect.y,
-      };
-      const cursorPosition: XYPosition = pointToRendererPoint(cursorPanePosition, reactFlowStore.getState().transform);
+    const cursorPanePosition: XYPosition = {
+      x:
+        userSelectionRect.x === userSelectionRect.startX
+          ? userSelectionRect.x + userSelectionRect.width
+          : userSelectionRect.x,
+      y:
+        userSelectionRect.y === userSelectionRect.startY
+          ? userSelectionRect.y + userSelectionRect.height
+          : userSelectionRect.y,
+    };
+    const cursorPosition: XYPosition = pointToRendererPoint(cursorPanePosition, reactFlowStore.getState().transform);
 
-      return findClosest(cursorPosition, changedNodes);
-      // We are in the context of a single selection so we return the element selected
+    return findClosest(cursorPosition, changedNodes)?.id ?? null;
+  };
+
+  const computedLastSelectedElement = (
+    changes: NodeChange<Node<NodeData>>[],
+    sortedSelectedElementIds: string[]
+  ): string | null => {
+    const atLeastOneSelectedChange = changes.filter(isNodeSelectionChange).find((change) => change.selected);
+
+    let candidateIds: string[];
+
+    // In case there is a newly selected element, then the last select change will give the last selected element
+    if (atLeastOneSelectedChange) {
+      candidateIds = changes
+        .filter(isNodeSelectionChange)
+        .filter((change) => change.selected)
+        .filter((change) => !reactFlowStore.getState().nodeLookup.get(change.id)?.data.isBorderNode)
+        .map((change) => change.id);
+      // Whereas the changes includes only unselect changes, then the last selected element will be the last from the sorted previous selection
     } else {
-      return nodes.find((node) => node.id === selectedChangeIds[0]);
+      const unselectedNodeIds = new Set(
+        changes
+          .filter(isNodeSelectionChange)
+          .filter((change) => !change.selected)
+          .map((change) => change.id)
+      );
+      candidateIds = sortedSelectedElementIds
+        .filter((elementId) => !unselectedNodeIds.has(elementId))
+        .map((elementId) => reactFlowStore.getState().nodeLookup.get(elementId))
+        .filter((node): node is InternalNode<Node<NodeData>> => !!node && !node.data.isBorderNode)
+        .map((node) => node.id);
+    }
+
+    const userSelectionRect = reactFlowStore.getState().userSelectionRect;
+
+    // While a rectangular selection is active
+    if (reactFlowStore.getState().userSelectionActive && !!userSelectionRect) {
+      return computeLastElementSelectedForRectangleSelection(candidateIds, userSelectionRect);
+    } else {
+      return candidateIds.at(-1) ?? null;
     }
   };
 
@@ -65,69 +94,30 @@ export const useLastElementSelectedChange = (): UseLastElementSelectedChangeValu
     (
       changes: NodeChange<Node<NodeData>>[],
       nodes: Node<NodeData>[],
-      selectedElementsIds: string[]
+      sortedSelectedElementIds: string[]
     ): Node<NodeData>[] => {
-      const selectChanges: NodeSelectionChange[] = changes.filter(isNodeSelectionChange);
+      if (!changes.some(isNodeSelectionChange)) {
+        return nodes;
+      }
 
-      const previousCandidateLastSelectedElementIds = selectedElementsIds
-        .map((elementId) => reactFlowStore.getState().nodeLookup.get(elementId))
-        .filter((node) => !!node && !node.data.isBorderNode)
-        .map((node) => node?.id);
-
-      const isOnlyOneUnSelectChange =
-        changes.filter(isNodeSelectionChange).filter((change) => !change.selected).length === 1;
-
-      const lastNodeSelected = computeLastElementSelected(changes, nodes);
-
-      const isBorderNodeSelectionChange = changes
+      const containsBorderNodeSelectionChange = changes
         .filter(isNodeSelectionChange)
         .map((change) => reactFlowStore.getState().nodeLookup.get(change.id))
         .find((node) => node && node.data.isBorderNode);
 
-      if (selectChanges.length > 0 && !isBorderNodeSelectionChange) {
-        return nodes.map((previousNode) => {
-          if (!!lastNodeSelected && previousNode.id === lastNodeSelected.id) {
-            return {
-              ...previousNode,
-              data: {
-                ...previousNode.data,
-                isLastNodeSelected: true,
-              },
-            };
-          }
-          const unSelectChange = changes.filter(isNodeSelectionChange).find((change) => !change.selected);
-          const candidateIds = previousCandidateLastSelectedElementIds.filter(
-            (id) => !!unSelectChange && id !== unSelectChange.id
-          );
-          const candidateId = candidateIds.at(candidateIds.length - 1);
-          // When the selection changes, then the previous LastNodeSelected can be invalidated
-          if (previousNode.data.isLastNodeSelected && previousNode.id != candidateId) {
-            return {
-              ...previousNode,
-              data: {
-                ...previousNode.data,
-                isLastNodeSelected: false,
-              },
-            };
-          }
-          // When an element is unSelected then if there was another one selected previously then it's the LastNodeSelected
-          if (isOnlyOneUnSelectChange && previousNode.id === candidateId) {
-            return {
-              ...previousNode,
-              data: {
-                ...previousNode.data,
-                isLastNodeSelected: true,
-              },
-            };
-          }
-
-          return previousNode;
-        });
+      if (!containsBorderNodeSelectionChange) {
+        const candidateId = computedLastSelectedElement(changes, sortedSelectedElementIds);
+        return nodes.map((previousNode) => ({
+          ...previousNode,
+          data: {
+            ...previousNode.data,
+            isLastNodeSelected: previousNode.id === candidateId,
+          },
+        }));
       } else {
         return nodes;
       }
     },
-
     [reactFlowStore]
   );
 

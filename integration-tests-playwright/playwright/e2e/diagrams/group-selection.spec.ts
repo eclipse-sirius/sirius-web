@@ -92,13 +92,15 @@ test.describe('diagram - group selection', () => {
       x: playwrightNode3BoundingBox.x + playwrightNode3BoundingBox.width / 2,
       y: playwrightNode3BoundingBox.y + playwrightNode3BoundingBox.height + 10,
     };
+    const rectangleEndWithOnlyNode1 = {
+      x: playwrightNode1BoundingBox.x + playwrightNode1BoundingBox.width + 10,
+      y: playwrightNode1BoundingBox.y + playwrightNode1BoundingBox.height + 10,
+    };
 
     await page.keyboard.down('Shift');
     await page.mouse.move(rectangleStart.x, rectangleStart.y);
     await page.mouse.down();
     await page.mouse.move(rectangleEnd.x, rectangleEnd.y, { steps: 10 });
-    await page.mouse.up();
-    await page.keyboard.up('Shift');
 
     await expect(playwrightNode1.nodeLocator).toContainClass('selected');
     await expect(playwrightNode2.nodeLocator).toContainClass('selected');
@@ -108,5 +110,15 @@ test.describe('diagram - group selection', () => {
     expect(await playwrightNode1.isNotLastOneSelected());
     expect(await playwrightNode2.isNotLastOneSelected());
     expect(await playwrightNode3.isLastOneSelected());
+
+    await page.mouse.move(rectangleEndWithOnlyNode1.x, rectangleEndWithOnlyNode1.y);
+
+    await expect(playwrightNode1.nodeLocator).toContainClass('selected');
+    await expect(playwrightNode2.nodeLocator).not.toContainClass('selected');
+    await expect(playwrightNode3.nodeLocator).not.toContainClass('selected');
+    expect(await playwrightNode1.isLastOneSelected());
+
+    await page.mouse.up();
+    await page.keyboard.up('Shift');
   });
 });
