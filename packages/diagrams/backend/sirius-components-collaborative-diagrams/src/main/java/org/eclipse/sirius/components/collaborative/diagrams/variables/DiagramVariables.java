@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramService;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
+import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.events.IDiagramEvent;
 import org.eclipse.sirius.components.diagrams.renderer.DiagramRenderingCache;
@@ -38,6 +39,8 @@ public class DiagramVariables {
     public static final Variable SEMANTIC_ELEMENT_IDS = new Variable("semanticElementIds", String.class, true, "The list of the identifiers of all semantic elements which should appear in the diagram with the current description");
     public static final Variable SEMANTIC_EDGE_SOURCE = new Variable("semanticEdgeSource", Object.class, false, "The semantic element at the source of the edge");
     public static final Variable SEMANTIC_EDGE_TARGET = new Variable("semanticEdgeTarget", Object.class, false, "The semantic element at the target of the edge");
+    public static final Variable EDGE_SOURCE = new Variable("edgeSource", IDiagramElement.class, false, "The diagram element at the source of the edge");
+    public static final Variable EDGE_TARGET = new Variable("edgeTarget", IDiagramElement.class, false, "The diagram element at the target of the edge");
     public static final Variable GRAPHICAL_EDGE_SOURCE = new Variable("graphicalEdgeSource", Element.class, false, "The virtual diagram element at the source of the edge");
     public static final Variable GRAPHICAL_EDGE_TARGET = new Variable("graphicalEdgeTarget", Element.class, false, "The virtual diagram element at the target of the edge");
     public static final Variable CACHE = new Variable("cache", DiagramRenderingCache.class, false, "An internal cache used to retrieve some internal data during the rendering");

@@ -84,6 +84,8 @@ public class DiagramOperationProvider implements IOperationProvider {
         operations.add(DiagramInteractionOperations.SINGLE_CLICK_TOOL_OPERATION);
         operations.add(DiagramInteractionOperations.GROUP_TOOL_OPERATION);
         operations.add(DiagramInteractionOperations.NODE_DROP_OPERATION);
+        operations.add(DiagramInteractionOperations.EDGE_TOOL_OPERATION);
+
         operations.add(DIAGRAM_DESCRIPTION_DROP_NODES_OPERATION);
 
         return operations;
