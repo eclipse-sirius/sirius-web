@@ -81,6 +81,10 @@ a|image::global-palette-unpin.png[Unpin elements]
 a|image::global-palette-filter.png[Filter]
 | Filter
 | Applies visual filters to focus on elements matching specific attributes or types.
+
+a|image::global-palette-manage-selection.png[Manage selection]
+| Manage selection
+| Select or unselect elements based on their type or hierarchy on the diagram.
 |===
 
 TIP: You can combine `Arrange All`, `Helper Lines`, and `Snap to Grid` to quickly clean up complex diagrams.

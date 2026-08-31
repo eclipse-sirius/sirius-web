@@ -27,6 +27,9 @@
     "expand": "Expand toolbar",
     "collapse": "Collapse toolbar"
   },
+  "filterSelectionToolbarButton": {
+    "filterSelectedElement": "Manage selection"
+  },
   "exportImageButton": {
     "exportDiagram": "Export the diagram as an image",
     "experimentalFeature": "Experimental"
