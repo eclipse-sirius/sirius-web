@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -47,8 +49,8 @@ public class TreeCreationService {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, targetObject);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(RepresentationVariables.SELF.name(), targetObject);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
 
         Tree newTree = new TreeRenderer(variableManager, treeDescription).render();
 

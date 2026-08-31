@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 CEA LIST.
+ * Copyright (c) 2024, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.components.ICustomCellDescriptor;
@@ -57,9 +59,9 @@ public class TableCreationService {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
+        variableManager.put(RepresentationVariables.SELF.name(), targetObject);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variableManager.put(TableDescription.LABEL, label);
-        variableManager.put(VariableManager.SELF, targetObject);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(TableRenderer.PAGINATION_CURSOR, null);
         variableManager.put(TableRenderer.PAGINATION_SIZE, 0);
         variableManager.put(TableRenderer.PAGINATION_DIRECTION, "NEXT");

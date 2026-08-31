@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.core.api.IObjectService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.forms.Form;
 import org.eclipse.sirius.components.forms.components.FormComponent;
 import org.eclipse.sirius.components.forms.components.FormComponentProps;
@@ -51,6 +52,7 @@ import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentation;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
@@ -145,10 +147,10 @@ public class FormEventProcessor implements IFormEventProcessor {
         }
 
         VariableManager initialVariableManager = new VariableManager();
-        initialVariableManager.put(VariableManager.SELF, self);
+        initialVariableManager.put(RepresentationVariables.SELF.name(), self);
+        initialVariableManager.put(CoreVariables.EDITING_CONTEXT.name(), this.editingContext);
         initialVariableManager.put(FormVariableProvider.SELECTION.name(), this.formCreationParameters.getSelection());
         initialVariableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.formCreationParameters.getId());
-        initialVariableManager.put(IEditingContext.EDITING_CONTEXT, this.editingContext);
 
         var initializer = formDescription.getVariableManagerInitializer();
         return initializer.apply(initialVariableManager);
@@ -284,7 +286,7 @@ public class FormEventProcessor implements IFormEventProcessor {
         if (this.currentForm.get() != null) {
             self = this.objectService.getObject(this.editingContext, this.currentForm.get().getTargetObjectId()).orElse(self);
         }
-        this.variableManager.put(VariableManager.SELF, self);
+        this.variableManager.put(RepresentationVariables.SELF.name(), self);
 
         FormComponentProps formComponentProps = new FormComponentProps(this.variableManager, this.formCreationParameters.getFormDescription(), this.widgetDescriptors);
         Element element = new Element(FormComponent.class, formComponentProps);

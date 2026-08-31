@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVar
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
-import org.eclipse.sirius.components.core.api.variables.CommonVariables;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.DiagramStyle;
@@ -128,7 +128,7 @@ public class ToolExecutionLabelProviderTests {
         IEditingContext editingContext = () -> EDITING_CONTEXT_ID;
 
         var variableManager = new VariableManager();
-        variableManager.put(CommonVariables.EDITING_CONTEXT.name(), editingContext);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variableManager.put(DiagramVariables.DIAGRAM_CONTEXT.name(), new DiagramContext(diagram));
         return variableManager;
     }

@@ -28,13 +28,14 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableContext;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableEventHandler;
 import org.eclipse.sirius.components.collaborative.tables.api.ITableInput;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationInput;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentation;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Table;
 import org.eclipse.sirius.components.tables.components.TableComponent;
@@ -234,9 +235,9 @@ public class TableEventProcessor implements IRepresentationEventProcessor {
 
     private Table refreshTable() {
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, this.tableCreationParameters.getTargetObject());
+        variableManager.put(RepresentationVariables.SELF.name(), this.tableCreationParameters.getTargetObject());
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, this.tableCreationParameters.getId());
-        variableManager.put(IEditingContext.EDITING_CONTEXT, this.tableCreationParameters.getEditingContext());
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), this.tableCreationParameters.getEditingContext());
         variableManager.put(TableRenderer.PAGINATION_CURSOR, this.tableCreationParameters.getCursorBasedPaginationData().cursor());
         variableManager.put(TableRenderer.PAGINATION_DIRECTION, this.tableCreationParameters.getCursorBasedPaginationData().direction());
         variableManager.put(TableRenderer.PAGINATION_SIZE, this.tableCreationParameters.getCursorBasedPaginationData().size());

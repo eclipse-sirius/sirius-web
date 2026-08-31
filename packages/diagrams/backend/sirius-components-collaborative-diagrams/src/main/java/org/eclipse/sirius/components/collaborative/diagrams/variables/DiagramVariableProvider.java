@@ -33,8 +33,9 @@ import static org.eclipse.sirius.components.diagrams.variables.DiagramRenderingO
 
 import java.util.List;
 
-import org.eclipse.sirius.components.core.api.variables.CommonVariables;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.core.api.variables.IVariableProvider;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Variable;
 import org.springframework.stereotype.Service;
 
@@ -68,58 +69,58 @@ public class DiagramVariableProvider implements IVariableProvider {
     }
 
     private List<Variable> nodeSemanticCandidates() {
-        return List.of(CommonVariables.SELF, DiagramVariables.COLLAPSING_STATE, CommonVariables.EDITING_CONTEXT, DiagramVariables.SEMANTIC_ELEMENT_IDS, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.LABEL, CommonVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+        return List.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, DiagramVariables.SEMANTIC_ELEMENT_IDS, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
     }
 
     private List<Variable> nodePrecondition() {
-        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
     }
 
     private List<Variable> nodeLabel() {
-        return List.of(CommonVariables.SELF, DiagramVariables.COLLAPSING_STATE, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+        return List.of(RepresentationVariables.SELF, DiagramVariables.COLLAPSING_STATE, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
     }
 
     private List<Variable> nodeWidthAndHeight() {
-        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.ANCESTORS);
     }
 
     private List<Variable> edgeSemanticCandidates() {
-        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT);
     }
 
     private List<Variable> edgeSourceAndTargetNodes() {
-        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT);
     }
 
     private List<Variable> edgePrecondition() {
-        return List.of(CommonVariables.SELF, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.GRAPHICAL_EDGE_SOURCE, DiagramVariables.GRAPHICAL_EDGE_TARGET, CommonVariables.EDITING_CONTEXT, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.CACHE, DiagramVariables.LABEL, CommonVariables.ENVIRONMENT);
+        return List.of(RepresentationVariables.SELF, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.GRAPHICAL_EDGE_SOURCE, DiagramVariables.GRAPHICAL_EDGE_TARGET, CoreVariables.EDITING_CONTEXT, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.CACHE, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT);
     }
 
     private List<Variable> edgeLabels() {
-        return List.of(CommonVariables.SELF, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.GRAPHICAL_EDGE_SOURCE, DiagramVariables.GRAPHICAL_EDGE_TARGET, CommonVariables.EDITING_CONTEXT, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.CACHE, DiagramVariables.LABEL, CommonVariables.ENVIRONMENT);
+        return List.of(RepresentationVariables.SELF, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.GRAPHICAL_EDGE_SOURCE, DiagramVariables.GRAPHICAL_EDGE_TARGET, CoreVariables.EDITING_CONTEXT, DiagramVariables.DIAGRAM_EVENT, DiagramVariables.PREVIOUS_DIAGRAM, DiagramVariables.CACHE, DiagramVariables.LABEL, CoreVariables.ENVIRONMENT);
     }
 
     private List<Variable> diagramDropNodes() {
-        return List.of(CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DROPPED_ELEMENTS, DiagramVariables.DROPPED_NODES, DiagramVariables.DROPPED_ELEMENT, DiagramVariables.DROPPED_NODE, DiagramVariables.TARGET_ELEMENT, DiagramVariables.TARGET_NODE);
+        return List.of(CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DROPPED_ELEMENTS, DiagramVariables.DROPPED_NODES, DiagramVariables.DROPPED_ELEMENT, DiagramVariables.DROPPED_NODE, DiagramVariables.TARGET_ELEMENT, DiagramVariables.TARGET_NODE);
     }
 
     private List<Variable> singleClickTool() {
-        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODE, DiagramVariables.SELECTED_EDGE);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODE, DiagramVariables.SELECTED_EDGE);
     }
 
     private List<Variable> groupTool() {
-        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODES, DiagramVariables.SELECTED_EDGES);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODES, DiagramVariables.SELECTED_EDGES);
     }
 
     private List<Variable> nodeDrop() {
-        return List.of(CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.DROPPED_ELEMENTS, DiagramVariables.DROPPED_NODES, DiagramVariables.DROPPED_ELEMENT, DiagramVariables.DROPPED_NODE, DiagramVariables.TARGET_ELEMENT, DiagramVariables.TARGET_NODE);
+        return List.of(CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.DROPPED_ELEMENTS, DiagramVariables.DROPPED_NODES, DiagramVariables.DROPPED_ELEMENT, DiagramVariables.DROPPED_NODE, DiagramVariables.TARGET_ELEMENT, DiagramVariables.TARGET_NODE);
     }
 
     private List<Variable> objectDrop() {
-        return List.of(CommonVariables.SELF, CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODE);
+        return List.of(RepresentationVariables.SELF, CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SELECTED_NODE);
     }
 
     private List<Variable> edgeTool() {
-        return List.of(CommonVariables.EDITING_CONTEXT, CommonVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.EDGE_SOURCE, DiagramVariables.EDGE_TARGET);
+        return List.of(CoreVariables.EDITING_CONTEXT, CoreVariables.ENVIRONMENT, DiagramVariables.DIAGRAM_CONTEXT, DiagramVariables.DIAGRAM_SERVICES, DiagramVariables.SEMANTIC_EDGE_SOURCE, DiagramVariables.SEMANTIC_EDGE_TARGET, DiagramVariables.EDGE_SOURCE, DiagramVariables.EDGE_TARGET);
     }
 }

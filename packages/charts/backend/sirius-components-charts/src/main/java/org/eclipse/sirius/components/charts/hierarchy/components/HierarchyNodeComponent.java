@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.Fragment;
 import org.eclipse.sirius.components.representations.FragmentProps;
 import org.eclipse.sirius.components.representations.IComponent;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 
 /**
@@ -57,7 +58,7 @@ public class HierarchyNodeComponent implements IComponent {
         List<Object> semanticElements = hierarchyDescription.getChildSemanticElementsProvider().apply(variableManager);
         for (Object semanticElement : semanticElements) {
             VariableManager childVariableManager = variableManager.createChild();
-            childVariableManager.put(VariableManager.SELF, semanticElement);
+            childVariableManager.put(RepresentationVariables.SELF.name(), semanticElement);
 
             String targetObjectId = hierarchyDescription.getTargetObjectIdProvider().apply(childVariableManager);
             Optional<HierarchyNode> optionalPreviousNode = Optional.ofNullable(targetObjectId2Nodes.get(targetObjectId));

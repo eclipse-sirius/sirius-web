@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -87,7 +87,10 @@ public interface IEditingContext {
 
     /**
      * The name of the variable used to store and retrieve the editing context from a variable manager.
+     *
+     * @deprecated Use org.eclipse.sirius.components.core.api.variables.CommonVariables#EDITING_CONTEXT.name() instead.
      */
+    @Deprecated(since = "v2026.11.0")
     String EDITING_CONTEXT = "editingContext";
 
     /**

@@ -20,12 +20,14 @@ import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.deck.DeckContext;
 import org.eclipse.sirius.components.collaborative.deck.api.IDeckCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.description.DeckDescription;
 import org.eclipse.sirius.components.deck.renderer.DeckRenderer;
 import org.eclipse.sirius.components.deck.renderer.component.DeckComponent;
 import org.eclipse.sirius.components.deck.renderer.component.DeckComponentProps;
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -53,9 +55,9 @@ public class DeckCreationService implements IDeckCreationService {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, targetObject);
+        variableManager.put(RepresentationVariables.SELF.name(), targetObject);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variableManager.put(DeckDescription.DECK_TARGET, targetObject);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         Optional<Deck> optionalPreviousDeck = Optional.ofNullable(deckContext).map(DeckContext::deck);
         var deckEvents = Optional.ofNullable(deckContext).map(DeckContext::deckEvents).orElse(List.of());
 
