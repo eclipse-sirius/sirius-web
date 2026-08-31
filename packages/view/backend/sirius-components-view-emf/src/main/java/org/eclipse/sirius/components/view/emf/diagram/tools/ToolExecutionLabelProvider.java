@@ -24,7 +24,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVar
 import org.eclipse.sirius.components.core.RepresentationMetadata;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationMetadataProvider;
-import org.eclipse.sirius.components.core.api.variables.CommonVariables;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.InsideLabel;
 import org.eclipse.sirius.components.diagrams.Label;
@@ -64,7 +64,7 @@ public class ToolExecutionLabelProvider implements IToolExecutionLabelProvider {
     }
 
     private Optional<String> getTargetLabel(VariableManager variableManager) {
-        return variableManager.get(CommonVariables.EDITING_CONTEXT.name(), IEditingContext.class)
+        return variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                 .flatMap(editingContext -> variableManager.get(DiagramVariables.DIAGRAM_CONTEXT.name(), DiagramContext.class)
                         .map(diagramContext -> this.getTargetLabel(variableManager, editingContext, diagramContext)));
     }

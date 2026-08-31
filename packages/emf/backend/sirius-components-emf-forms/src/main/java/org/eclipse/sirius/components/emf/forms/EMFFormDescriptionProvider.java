@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,9 +28,9 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -40,6 +40,7 @@ import org.eclipse.sirius.components.forms.description.ForDescription;
 import org.eclipse.sirius.components.forms.description.FormDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.PageDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -81,7 +82,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
         Function<VariableManager, String> labelProvider = variableManager -> "Properties";
 
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
 
@@ -107,7 +108,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
         Function<VariableManager, String> idProvider = variableManager -> {
-            var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+            var optionalSelf = variableManager.get(RepresentationVariables.SELF.name(), Object.class);
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
                 return this.identityService.getId(self);
@@ -116,7 +117,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         };
 
         Function<VariableManager, String> labelProvider = variableManager -> {
-            var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+            var optionalSelf = variableManager.get(RepresentationVariables.SELF.name(), Object.class);
             if (optionalSelf.isPresent()) {
                 Object self = optionalSelf.get();
                 return this.labelService.getStyledLabel(self).toString();
@@ -127,7 +128,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         return PageDescription.newPageDescription("firstPageId")
                 .idProvider(idProvider)
                 .labelProvider(labelProvider)
-                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
+                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(RepresentationVariables.SELF.name())))
                 .groupDescriptions(groupDescriptions)
                 .canCreatePredicate(variableManager -> true)
                 .build();
@@ -139,8 +140,8 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         Function<VariableManager, List<?>> iterableProvider = variableManager -> {
             List<Object> objects = new ArrayList<>();
 
-            var self = variableManager.getVariables().get(VariableManager.SELF);
-            var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+            var self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
+            var optionalAdapterFactory = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class)
                     .map(IEMFEditingContext::getDomain)
                     .map(AdapterFactoryEditingDomain::getAdapterFactory);
 
@@ -160,7 +161,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
             return objects;
         };
 
-        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
 
@@ -182,7 +183,7 @@ public class EMFFormDescriptionProvider implements IEMFFormDescriptionProvider {
         return GroupDescription.newGroupDescription("groupId")
                 .idProvider(variableManager -> "Core Properties")
                 .labelProvider(variableManager -> this.messageService.coreProperties())
-                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
+                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(RepresentationVariables.SELF.name())))
                 .controlDescriptions(controlDescriptions)
                 .build();
     }

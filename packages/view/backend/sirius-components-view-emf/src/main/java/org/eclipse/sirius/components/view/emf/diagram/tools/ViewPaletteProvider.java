@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
@@ -26,6 +27,7 @@ import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.emf.IViewRepresentationDescriptionPredicate;
@@ -85,8 +87,8 @@ public class ViewPaletteProvider implements IPaletteProvider {
             var diagramElementDescription = optionalDiagramElementDescription.get();
 
             VariableManager variableManager = new VariableManager();
-            variableManager.put(VariableManager.SELF, targetElement);
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(RepresentationVariables.SELF.name(), targetElement);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
 
             var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -17,9 +17,10 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeService;
 import org.eclipse.sirius.components.collaborative.trees.api.TreeCreationParameters;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationRenderVariableCustomizer;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
@@ -52,9 +53,9 @@ public class TreeService implements ITreeService {
 
     private VariableManager createDefaultVariables(TreeCreationParameters treeCreationParameters) {
         VariableManager variableManager = new VariableManager();
+        variableManager.put(RepresentationVariables.SELF.name(), treeCreationParameters.getTargetObject());
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), treeCreationParameters.getEditingContext());
         variableManager.put(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, treeCreationParameters.getId());
-        variableManager.put(IEditingContext.EDITING_CONTEXT, treeCreationParameters.getEditingContext());
-        variableManager.put(VariableManager.SELF, treeCreationParameters.getTargetObject());
         variableManager.put(TreeRenderer.EXPANDED, treeCreationParameters.getExpanded());
         variableManager.put(TreeRenderer.ACTIVE_FILTER_IDS, treeCreationParameters.getActiveFilterIds());
         return variableManager;

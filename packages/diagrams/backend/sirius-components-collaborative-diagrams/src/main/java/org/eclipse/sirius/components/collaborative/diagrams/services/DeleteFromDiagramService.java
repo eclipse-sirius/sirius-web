@@ -28,6 +28,7 @@ import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.description.NodeDescription;
 import org.eclipse.sirius.components.diagrams.events.RemoveEdgeEvent;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.slf4j.Logger;
@@ -202,11 +204,11 @@ public class DeleteFromDiagramService implements IDeleteFromDiagramService {
 
     private VariableManager populateVariableManager(IEditingContext editingContext, DiagramContext diagramContext, Object self, Node selectedNode, Edge selectedEdge) {
         VariableManager variableManager = new VariableManager();
+        variableManager.put(RepresentationVariables.SELF.name(), self);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
-        variableManager.put(VariableManager.SELF, self);
         variableManager.put(Node.SELECTED_NODE, selectedNode);
         variableManager.put(Edge.SELECTED_EDGE, selectedEdge);
         return variableManager;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,10 @@ public class VariableManager {
      *     behavior executed with a variable manager should have access to a variable named <strong>self</strong>.
      *     This variable would then contain the main semantic element that should be used as the context of the execution.
      * </p>
+     *
+     * @deprecated Use org.eclipse.sirius.components.core.api.variables.CommonVariables#SELF.name() instead.
      */
+    @Deprecated(since = "v2026.11.0")
     public static final String SELF = "self";
 
     /**

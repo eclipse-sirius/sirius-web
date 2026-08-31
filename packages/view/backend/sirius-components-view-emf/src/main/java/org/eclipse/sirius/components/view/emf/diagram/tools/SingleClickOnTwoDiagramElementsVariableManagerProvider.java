@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVar
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.variables.CommonVariables;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -71,8 +71,8 @@ public class SingleClickOnTwoDiagramElementsVariableManagerProvider implements I
 
         if (optionalSourceDiagramElement.isPresent() && optionalTargetDiagramElement.isPresent() && optionalSemanticEdgeSource.isPresent() && optionalSemanticEdgeTarget.isPresent()) {
             VariableManager variableManager = new VariableManager();
-            variableManager.put(CommonVariables.EDITING_CONTEXT.name(), editingContext);
-            variableManager.put(CommonVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
+            variableManager.put(CoreVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
             variableManager.put(DiagramVariables.DIAGRAM_CONTEXT.name(), diagramContext);
             variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
             variableManager.put(DiagramVariables.SEMANTIC_EDGE_SOURCE.name(), optionalSemanticEdgeSource.get());
