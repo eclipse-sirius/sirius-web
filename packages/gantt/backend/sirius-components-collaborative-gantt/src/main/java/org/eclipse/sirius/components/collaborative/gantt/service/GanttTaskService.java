@@ -39,6 +39,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.gantt.Gantt;
 import org.eclipse.sirius.components.gantt.Task;
 import org.eclipse.sirius.components.gantt.TemporalType;
@@ -47,6 +48,7 @@ import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttColumnEven
 import org.eclipse.sirius.components.gantt.renderer.events.ChangeGanttTaskCollapseStateEvent;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -86,8 +88,8 @@ public class GanttTaskService implements IGanttTaskService {
                 targetObjectOpt = this.objectSearchService.getObject(editingContext, gantt.targetObjectId());
             }
             if (targetObjectOpt.isPresent()) {
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-                variableManager.put(VariableManager.SELF, targetObjectOpt.get());
+                variableManager.put(RepresentationVariables.SELF.name(), targetObjectOpt.get());
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 ganttDescriptionOpt.get().createTaskProvider().accept(variableManager);
             }
 
@@ -108,8 +110,8 @@ public class GanttTaskService implements IGanttTaskService {
             Optional<Object> targetObjectOpt = this.objectSearchService.getObject(editingContext, taskOpt.get().targetObjectId());
             if (targetObjectOpt.isPresent()) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-                variableManager.put(VariableManager.SELF, targetObjectOpt.get());
+                variableManager.put(RepresentationVariables.SELF.name(), targetObjectOpt.get());
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 ganttDescriptionOpt.get().deleteTaskProvider().accept(variableManager);
 
                 payload = this.getPayload(deleteGanttTaskInput.id());
@@ -129,8 +131,8 @@ public class GanttTaskService implements IGanttTaskService {
             Optional<Object> targetObjectOpt = this.objectSearchService.getObject(editingContext, taskOpt.get().targetObjectId());
             if (targetObjectOpt.isPresent()) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(VariableManager.SELF, targetObjectOpt.get());
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+                variableManager.put(RepresentationVariables.SELF.name(), targetObjectOpt.get());
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 variableManager.put(GanttDescription.NEW_NAME, editGanttTaskInput.newDetail().name());
                 variableManager.put(GanttDescription.NEW_DESCRIPTION, editGanttTaskInput.newDetail().description());
                 variableManager.put(GanttDescription.NEW_START_TIME, getTemporal(editGanttTaskInput.newDetail().startTime(), editGanttTaskInput.newDetail().temporalType()));
@@ -203,8 +205,8 @@ public class GanttTaskService implements IGanttTaskService {
             Optional<Object> targetObjectOpt = this.objectSearchService.getObject(editingContext, targetObjectId);
             if (draggedObjectOpt.isPresent() && targetObjectOpt.isPresent()) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(VariableManager.SELF, draggedObjectOpt.get());
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+                variableManager.put(RepresentationVariables.SELF.name(), draggedObjectOpt.get());
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 variableManager.put(GanttDescription.SOURCE_OBJECT, draggedObjectOpt.get());
                 variableManager.put(GanttDescription.TARGET_OBJECT, targetObjectOpt.get());
                 variableManager.put(GanttDescription.SOURCE_TASK, droppedTaskOpt.get());
@@ -226,7 +228,7 @@ public class GanttTaskService implements IGanttTaskService {
 
         if (ganttDescriptionOpt.isPresent()) {
             VariableManager variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
 
             Optional<Object> sourceObjectOpt = Optional.of(createTaskDependencyInput.sourceTaskId())
                     .flatMap(taskId -> this.getTaskSemanticObject(taskId, gantt, editingContext));
@@ -257,7 +259,7 @@ public class GanttTaskService implements IGanttTaskService {
 
         if (ganttDescriptionOpt.isPresent()) {
             VariableManager variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
 
             Optional<Object> sourceObjectOpt = Optional.of(deleteTaskDependencyInput.sourceTaskId())
                     .flatMap(taskId -> this.getTaskSemanticObject(taskId, gantt, editingContext));

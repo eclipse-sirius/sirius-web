@@ -29,7 +29,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
-import org.eclipse.sirius.components.core.api.variables.CommonVariables;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -73,7 +73,7 @@ public class DiagramFilterHelper implements IDiagramFilterHelper {
 
     @Override
     public IStatus sendDiagramEvent(VariableManager variableManager, IDiagramInput diagramInput) {
-        var optionalEditingContext = variableManager.get(CommonVariables.EDITING_CONTEXT.name(), IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalRepresentationEventProcessor = variableManager.get(DiagramFilterDescriptionProvider.DIAGRAM_EVENT_PROCESSOR, IRepresentationEventProcessor.class);
         var optionalEditingContextEventProcessor = variableManager.get(DiagramFilterDescriptionProvider.EDITING_CONTEXT_EVENT_PROCESSOR, IEditingContextEventProcessor.class);
 

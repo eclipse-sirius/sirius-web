@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -83,7 +84,7 @@ public class DeleteTreeItemEventHandler implements ITreeEventHandler {
                 TreeItem treeItem = optionalTreeItem.get();
 
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
                 variableManager.put(TreeDescription.TREE, tree);
 

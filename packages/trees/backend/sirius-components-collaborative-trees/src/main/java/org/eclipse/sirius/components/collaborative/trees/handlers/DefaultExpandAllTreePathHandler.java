@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,7 +28,9 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.IRepresentationRenderVariableCustomizer;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -79,9 +81,9 @@ public class DefaultExpandAllTreePathHandler {
                     .orElse(List.of());
             int index = this.computeIndexOf(treeItemId, tree.getChildren());
             var variableManager = new VariableManager();
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(TreeRenderer.INDEX, index);
             variableManager.put(TreeRenderer.ANCESTOR_IDS, itemAncestors);
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             variableManager.put(TreeDescription.ID, treeItemId);
             variableManager.put(TreeRenderer.ACTIVE_FILTER_IDS, activeFilterIds);
 
@@ -115,7 +117,7 @@ public class DefaultExpandAllTreePathHandler {
             treeItemIdsToExpand.add(treeItemId);
             variableManager.put(TreeRenderer.EXPANDED, treeItemIdsToExpand.stream().toList());
             if (optionalObject.isPresent()) {
-                variableManager.put(VariableManager.SELF, optionalObject.get());
+                variableManager.put(RepresentationVariables.SELF.name(), optionalObject.get());
                 if (this.hasChildren(treeDescription, variableManager)) {
 
                     List<?> children = this.getChildren(treeDescription, variableManager);
@@ -152,7 +154,7 @@ public class DefaultExpandAllTreePathHandler {
 
     private Optional<String> getTreeItemId(TreeDescription treeDescription, Object object) {
         var variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, object);
+        variableManager.put(RepresentationVariables.SELF.name(), object);
         return Optional.of(treeDescription.getTreeItemIdProvider().apply(variableManager));
     }
 

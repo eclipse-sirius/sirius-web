@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SuccessPayload;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.deck.Card;
 import org.eclipse.sirius.components.deck.Deck;
 import org.eclipse.sirius.components.deck.Lane;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.deck.description.DeckDescription;
 import org.eclipse.sirius.components.deck.description.LaneDescription;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -84,12 +86,12 @@ public class DeckCardService implements IDeckCardService {
                 optionalTargetObject = this.objectSearchService.getObject(editingContext, deck.targetObjectId());
             }
             if (optionalTargetObject.isPresent()) {
-                variableManager.put(VariableManager.SELF, optionalTargetObject.get());
+                variableManager.put(RepresentationVariables.SELF.name(), optionalTargetObject.get());
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 variableManager.put(DeckDescription.DECK_TARGET, optionalDeckTarget.get());
                 variableManager.put(DeckDescription.TITLE, createDeckCardInput.title());
                 variableManager.put(DeckDescription.DESCRIPTION, createDeckCardInput.description());
                 variableManager.put(DeckDescription.LABEL, createDeckCardInput.label());
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
                 optionalLaneDescription.get().createCardProvider().accept(variableManager);
             }
 
@@ -110,7 +112,8 @@ public class DeckCardService implements IDeckCardService {
             Optional<Object> optionalTargetObject = this.objectSearchService.getObject(editingContext, optionalCard.get().targetObjectId());
             if (optionalTargetObject.isPresent()) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(VariableManager.SELF, optionalTargetObject.get());
+                variableManager.put(RepresentationVariables.SELF.name(), optionalTargetObject.get());
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 optionalCardDescription.get().deleteCardProvider().accept(variableManager);
 
                 payload = this.getPayload(deleteDeckCardInput.id());
@@ -130,7 +133,8 @@ public class DeckCardService implements IDeckCardService {
             Optional<Object> optionalTargetObject = this.objectSearchService.getObject(editingContext, optionalCard.get().targetObjectId());
             if (optionalTargetObject.isPresent()) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(VariableManager.SELF, optionalTargetObject.get());
+                variableManager.put(RepresentationVariables.SELF.name(), optionalTargetObject.get());
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 variableManager.put(DeckDescription.NEW_TITLE, editDeckCardInput.newTitle());
                 variableManager.put(DeckDescription.NEW_DESCRIPTION, editDeckCardInput.newDescription());
                 variableManager.put(DeckDescription.NEW_LABEL, editDeckCardInput.newLabel());
@@ -156,7 +160,8 @@ public class DeckCardService implements IDeckCardService {
             Optional<Object> optionalTargetObject = this.objectSearchService.getObject(editingContext, optionalCard.get().targetObjectId());
             if (optionalTargetObject.isPresent()) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(VariableManager.SELF, optionalTargetObject.get());
+                variableManager.put(RepresentationVariables.SELF.name(), optionalTargetObject.get());
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 variableManager.put(LaneDescription.OLD_LANE, optionalOldLane.orElse(null));
                 variableManager.put(LaneDescription.OLD_LANE_TARGET, optionalOldLane.flatMap(lane -> this.objectSearchService.getObject(editingContext, lane.targetObjectId())).orElse(null));
                 variableManager.put(LaneDescription.NEW_LANE, optionalNewLane.orElse(null));

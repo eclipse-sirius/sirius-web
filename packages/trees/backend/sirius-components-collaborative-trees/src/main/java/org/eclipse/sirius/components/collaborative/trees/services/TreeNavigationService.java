@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,8 @@ import java.util.Optional;
 import org.eclipse.sirius.components.collaborative.trees.services.api.ITreeNavigationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -64,9 +66,9 @@ public class TreeNavigationService implements ITreeNavigationService {
         var optionalTreeDescription = this.getTreeDescription(editingContext, tree.getDescriptionId());
 
         if (optionalSemanticObject.isPresent() && optionalTreeDescription.isPresent()) {
-            variableManager.put(VariableManager.SELF, optionalSemanticObject.get());
+            variableManager.put(RepresentationVariables.SELF.name(), optionalSemanticObject.get());
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(TreeDescription.ID, elementId);
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
             result = Optional.ofNullable(optionalTreeDescription.get().getParentObjectProvider().apply(variableManager));
         }
         return result;
@@ -88,7 +90,7 @@ public class TreeNavigationService implements ITreeNavigationService {
 
         if (optionalTreeDescription.isPresent()) {
             var variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(TreeDescription.ID, id);
             return Optional.ofNullable(optionalTreeDescription.get().getTreeItemObjectProvider().apply(variableManager));
         }

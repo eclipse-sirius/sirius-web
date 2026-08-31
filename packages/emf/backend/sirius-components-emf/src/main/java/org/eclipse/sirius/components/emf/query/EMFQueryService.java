@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2023 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.collaborative.dto.QueryBasedStringSuccessPa
 import org.eclipse.sirius.components.core.api.ErrorPayload;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.query.api.IQueryJavaServiceProvider;
 import org.eclipse.sirius.components.emf.services.IEditingContextEPackageService;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -128,7 +129,7 @@ public class EMFQueryService implements IQueryService {
         List<EPackage> ePackages = this.editingContextEPackageService.getEPackages(editingContext.getId());
 
         Map<String, Object> variables = new HashMap<>(providedVariables);
-        variables.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variables.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
 
         var interpreter = new AQLInterpreter(classes, ePackages);
         return interpreter.evaluateExpression(variables, query);

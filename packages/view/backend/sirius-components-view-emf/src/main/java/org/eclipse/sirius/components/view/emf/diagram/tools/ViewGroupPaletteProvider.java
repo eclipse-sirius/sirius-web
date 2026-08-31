@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.diagrams.DiagramContext;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramDescriptionService;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IPaletteProvider;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.palette.dto.IPaletteEntry;
 import org.eclipse.sirius.components.palette.dto.ITool;
 import org.eclipse.sirius.components.palette.dto.Palette;
@@ -37,6 +38,7 @@ import org.eclipse.sirius.components.diagrams.description.IDiagramElementDescrip
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.NodeToolSection;
@@ -97,8 +99,8 @@ public class ViewGroupPaletteProvider implements IPaletteProvider {
                 .toList();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, targetElements);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(RepresentationVariables.SELF.name(), targetElements);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
         variableManager.put(DiagramVariables.SELECTED_EDGES.name(), diagramElements.stream().filter(Edge.class::isInstance).toList());
         variableManager.put(DiagramVariables.SELECTED_NODES.name(), diagramElements.stream().filter(Node.class::isInstance).toList());

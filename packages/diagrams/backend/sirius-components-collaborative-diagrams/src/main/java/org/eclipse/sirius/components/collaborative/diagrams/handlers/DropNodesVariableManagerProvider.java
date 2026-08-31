@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.variables.DiagramVar
 import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
-import org.eclipse.sirius.components.core.api.variables.CommonVariables;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.representations.IOperationValidator;
@@ -83,8 +83,8 @@ public class DropNodesVariableManagerProvider implements IDropNodesVariableManag
                     .orElse(null);
 
             VariableManager variableManager = new VariableManager();
-            variableManager.put(CommonVariables.EDITING_CONTEXT.name(), editingContext);
-            variableManager.put(CommonVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
+            variableManager.put(CoreVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
             variableManager.put(DiagramVariables.DIAGRAM_CONTEXT.name(), diagramContext);
             variableManager.put(DiagramVariables.DIAGRAM_SERVICES.name(), new DiagramService(diagramContext));
             variableManager.put(DiagramVariables.DROPPED_ELEMENTS.name(), droppedElements);

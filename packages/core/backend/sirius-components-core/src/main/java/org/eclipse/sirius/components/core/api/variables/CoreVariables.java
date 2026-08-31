@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,15 +21,13 @@ import org.eclipse.sirius.components.representations.Variable;
  *
  * @author sbegaudeau
  */
-public final class CommonVariables {
-
-    public static final Variable SELF = new Variable("self", Object.class, false, "The current element on which the operation is performed");
+public final class CoreVariables {
 
     public static final Variable EDITING_CONTEXT = new Variable("editingContext", IEditingContext.class, false, "The editing context is an abstraction used to access all the semantic data");
 
     public static final Variable ENVIRONMENT = new Variable("environment", Environment.class, false, "The environment may contain some information on the application currently running");
 
-    private CommonVariables() {
+    private CoreVariables() {
         // Prevent instantiation
     }
 }
