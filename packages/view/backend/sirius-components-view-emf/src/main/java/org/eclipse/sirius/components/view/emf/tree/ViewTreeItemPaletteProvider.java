@@ -24,10 +24,12 @@ import org.eclipse.sirius.components.collaborative.trees.api.ITreeItemPalettePro
 import org.eclipse.sirius.components.collaborative.trees.dto.palette.FetchTreeItemTool;
 import org.eclipse.sirius.components.collaborative.trees.dto.palette.SingleClickTreeItemTool;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.StringValueProvider;
 import org.eclipse.sirius.components.palette.dto.IPaletteEntry;
 import org.eclipse.sirius.components.palette.dto.Palette;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -86,12 +88,12 @@ public class ViewTreeItemPaletteProvider implements ITreeItemPaletteProvider {
             AQLInterpreter interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewTreeDescription.eContainer());
 
             VariableManager variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(TreeDescription.TREE, tree);
             variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
             variableManager.put(TreeDescription.ID, treeItem.getId());
             var semanticTreeItemObject = treeDescription.getTreeItemObjectProvider().apply(variableManager);
-            variableManager.put(VariableManager.SELF, semanticTreeItemObject);
+            variableManager.put(RepresentationVariables.SELF.name(), semanticTreeItemObject);
 
             paletteEntries = viewTreeDescription.getContextMenuEntries().stream()
                     .filter(viewAction -> this.isValidActionPrecondition(viewAction, variableManager, interpreter))

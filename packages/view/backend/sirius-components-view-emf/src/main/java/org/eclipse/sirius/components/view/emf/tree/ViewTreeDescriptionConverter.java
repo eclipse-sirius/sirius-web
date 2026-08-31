@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,10 +25,12 @@ import org.eclipse.sirius.components.collaborative.trees.api.IDeleteTreeItemHand
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.DomainClassPredicate;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -79,7 +81,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
                 .canCreatePredicate(variableManager -> this.canCreate(viewTreeDescription.getDomainType(), viewTreeDescription.getPreconditionExpression(), variableManager, interpreter))
                 .labelProvider(variableManager -> StyledString.of(this.evaluateString(interpreter, variableManager, viewTreeDescription.getTitleExpression())))
                 .kindProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewTreeDescription.getKindExpression()))
-                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .treeItemIdProvider(variableManager -> this.evaluateString(interpreter, variableManager, viewTreeDescription.getTreeItemIdExpression()))
                 .treeItemObjectProvider(variableManager -> this.evaluateObject(interpreter, variableManager, viewTreeDescription.getTreeItemObjectExpression()))
                 .treeItemLabelProvider(variableManager -> this.getTreeItemLabel(interpreter, variableManager, viewTreeDescription))
@@ -123,7 +125,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
 
     private boolean canCreate(String domainType, String preconditionExpression, VariableManager variableManager, AQLInterpreter interpreter) {
         boolean result = false;
-        Optional<EClass> optionalEClass = variableManager.get(VariableManager.SELF, EObject.class)
+        Optional<EClass> optionalEClass = variableManager.get(RepresentationVariables.SELF.name(), EObject.class)
                 .map(EObject::eClass)
                 .filter(new DomainClassPredicate(domainType));
         if (optionalEClass.isPresent()) {
@@ -172,7 +174,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private IStatus getDeleteHandler(VariableManager variableManager) {
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
 
@@ -193,7 +195,7 @@ public class ViewTreeDescriptionConverter implements IRepresentationDescriptionC
     }
 
     private IStatus getRenameHandler(VariableManager variableManager, String newLabel) {
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
 

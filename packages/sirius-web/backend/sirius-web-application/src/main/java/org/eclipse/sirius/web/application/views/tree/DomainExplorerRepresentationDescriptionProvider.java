@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Optional;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
@@ -54,7 +55,7 @@ public class DomainExplorerRepresentationDescriptionProvider implements IEditing
                 .label("Domain explorer")
                 .idProvider(new GetOrCreateRandomIdProvider())
                 .canCreatePredicate(variableManager -> false)
-                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .elementsProvider(this::getElements)
                 .build();
 
@@ -62,7 +63,7 @@ public class DomainExplorerRepresentationDescriptionProvider implements IEditing
     }
 
     private List<Domain> getElements(VariableManager variableManager) {
-        var optionalEditingContext = Optional.of(variableManager.getVariables().get(IEditingContext.EDITING_CONTEXT));
+        var optionalEditingContext = Optional.of(variableManager.getVariables().get(CoreVariables.EDITING_CONTEXT.name()));
         var optionalResourceSet = optionalEditingContext.filter(IEditingContext.class::isInstance)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)

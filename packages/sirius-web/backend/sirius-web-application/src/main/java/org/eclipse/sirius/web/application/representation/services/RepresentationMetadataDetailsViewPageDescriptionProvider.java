@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.LabelDescription;
@@ -42,6 +43,7 @@ import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -89,7 +91,7 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
         List<AbstractControlDescription> controls = this.createControlDescriptions();
         GroupDescription groupDescription = this.createGroupDescription(controls);
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .filter(RepresentationMetadata.class::isInstance)
                 .isPresent();
 
@@ -104,7 +106,7 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
     }
 
     private GroupDescription createGroupDescription(List<AbstractControlDescription> controls) {
-        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).stream().toList();
 
         return GroupDescription.newGroupDescription("group")
                 .idProvider(variableManager -> "group")
@@ -115,8 +117,8 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
     }
 
     private PageDescription createPageDescription(String id, GroupDescription groupDescription, Predicate<VariableManager> canCreatePredicate) {
-        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
-        Function<VariableManager, String> pageLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).stream().toList();
+        Function<VariableManager, String> pageLabelProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.labelService::getStyledLabel)
                 .map(Object::toString)
                 .orElse(null);
@@ -131,15 +133,15 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
     }
 
     private TextfieldDescription createLabelTextField() {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class)
                 .map(RepresentationMetadata::getLabel)
                 .orElse("");
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var optionalRepresentationMetadata = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
+            var optionalRepresentationMetadata = variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class);
             if (optionalRepresentationMetadata.isPresent()) {
                 var representationMetadata = optionalRepresentationMetadata.get();
-                var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+                var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
 
                 var optionalSemanticDataId = optionalEditingContext.map(IEditingContext::getId).flatMap(new UUIDParser()::parse);
                 if (optionalEditingContext.isPresent() && optionalSemanticDataId.isPresent()) {
@@ -173,15 +175,15 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
     }
 
     private TextareaDescription createDocumentationTextArea() {
-        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
+        Function<VariableManager, String> valueProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class)
                 .map(RepresentationMetadata::getDocumentation)
                 .orElse("");
 
         BiFunction<VariableManager, String, IStatus> newValueHandler = (variableManager, newValue) -> {
-            var optionalSemanticDataId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+            var optionalSemanticDataId = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                     .map(IEditingContext::getId)
                     .flatMap(new UUIDParser()::parse);
-            var optionalRepresentationMetadata = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
+            var optionalRepresentationMetadata = variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class);
             if (optionalSemanticDataId.isPresent() && optionalRepresentationMetadata.isPresent()) {
                 var semanticDataId = optionalSemanticDataId.get();
                 var representationMetadata = optionalRepresentationMetadata.get();
@@ -228,7 +230,7 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
     }
 
     private String semanticTargetIdProvider(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
     }
@@ -248,8 +250,8 @@ public class RepresentationMetadataDetailsViewPageDescriptionProvider implements
     }
 
     private String representationDescriptionNameValueProvider(VariableManager variableManager) {
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
-        var optionalSelf = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
+        var optionalSelf = variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class);
         if (optionalEditingContext.isPresent() && optionalSelf.isPresent()) {
             return this.representationDescriptionSearchService.findById(optionalEditingContext.get(), optionalSelf.get().getDescriptionId())
                     .map(IRepresentationDescription::getLabel)

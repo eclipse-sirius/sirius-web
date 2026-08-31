@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.diagrams.api.IReconnectionToolsExecutor;
 import org.eclipse.sirius.components.collaborative.diagrams.api.ReconnectionToolInterpreterData;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.diagrams.description.EdgeDescription;
@@ -93,6 +94,7 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
 
     private VariableManager createVariableManager(ReconnectionToolInterpreterData toolInterpreterData, IEditingContext editingContext) {
         VariableManager variableManager = new VariableManager();
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variableManager.put("diagram", toolInterpreterData.getDiagramContext().diagram());
         variableManager.put("semanticReconnectionSource", toolInterpreterData.getSemanticReconnectionSource());
         variableManager.put("reconnectionSourceView", toolInterpreterData.getReconnectionSourceView());
@@ -102,7 +104,6 @@ public class ViewReconnectionToolsExecutor implements IReconnectionToolsExecutor
         variableManager.put("otherEnd", toolInterpreterData.getOtherEdgeEnd());
         variableManager.put("semanticOtherEnd", toolInterpreterData.getSemanticOtherEdgeEnd());
         variableManager.put("edgeView", toolInterpreterData.getEdgeView());
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
         return variableManager;
     }
 

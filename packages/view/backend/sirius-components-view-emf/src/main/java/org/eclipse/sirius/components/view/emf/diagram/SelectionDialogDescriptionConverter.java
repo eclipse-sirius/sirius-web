@@ -30,6 +30,7 @@ import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
@@ -38,6 +39,7 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.selection.description.SelectionDescription;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -117,11 +119,11 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         TreeDescription treeDescription = this.createTreeDescription(selectionDescription, interpreter);
         return SelectionDescription.newSelectionDescription(selectionDescriptionId)
                 .idProvider(variableManager -> SELECTION_PREFIX)
-                .labelProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .labelProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                         .map(this.labelService::getStyledLabel)
                         .map(StyledString::toString)
                         .orElse(null))
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                         .map(this.identityService::getId)
                         .orElse(null))
                 .label("Selection Description")
@@ -153,19 +155,19 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         BiFunction<VariableManager, String, IStatus> renameHandler = (variableManager, newValue) -> new Failure("Unexecutable rename handler");
 
         Function<VariableManager, String> treeItemIdProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, Object.class)
+            return variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                     .map(this.identityService::getId)
                     .orElse("");
         };
 
         Function<VariableManager, String> kindProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, Object.class)
+            return variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                     .map(this.identityService::getKind)
                     .orElse("");
         };
 
         Function<VariableManager, StyledString> labelProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, Object.class)
+            return variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                     .map(this.labelService::getStyledLabel)
                     .orElse(StyledString.of(""));
         };
@@ -175,7 +177,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         };
 
         Function<VariableManager, List<String>> imageURLProvider = variableManager -> {
-            return variableManager.get(VariableManager.SELF, Object.class)
+            return variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                     .map(this.labelService::getImagePaths)
                     .orElse(List.of());
         };
@@ -235,7 +237,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
     private Object getTreeItemObject(VariableManager variableManager) {
         Object result = null;
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalId = variableManager.get(TreeDescription.ID, String.class);
         if (optionalId.isPresent() && optionalEditingContext.isPresent()) {
             var optionalObject = this.objectSearchService.getObject(optionalEditingContext.get(), optionalId.get());
@@ -266,7 +268,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
     private Object getParentObject(VariableManager variableManager) {
         Object result = null;
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();
             if (semanticContainer == null) {
@@ -313,7 +315,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
 
     private Function<VariableManager, List<?>> getElementProvider(AQLInterpreter interpreter, SelectionDialogTreeDescription selectionDialogTreeDescription) {
         return variableManager -> {
-            Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+            Optional<IEditingContext> optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
             if (optionalEditingContext.isPresent()) {
                 //Set the targetObject as the SELF value.
                 //The targetObjectId is provided by the frontend in the treeId.
@@ -338,7 +340,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
     }
 
     private String getTreeItemId(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         String id = null;
         if (self != null) {
             id = this.identityService.getId(self);
@@ -350,7 +352,7 @@ public class SelectionDialogDescriptionConverter implements IDialogDescriptionCo
         Map<String, List<String>> parameters = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class)
                 .map(this.urlParser::getParameterValues)
                 .orElse(Map.of());
-        this.safeAddVariable(parameters, variableManager, editingContext, TARGET_OBJECT_ID, VariableManager.SELF);
+        this.safeAddVariable(parameters, variableManager, editingContext, TARGET_OBJECT_ID, RepresentationVariables.SELF.name());
         this.safeAddVariable(parameters, variableManager, editingContext, SOURCE_DIAGRAM_ELEMENT_TARGET_OBJECT_ID, SOURCE_DIAGRAM_ELEMENT_TARGET_OBJECT);
         this.safeAddVariable(parameters, variableManager, editingContext, TARGET_DIAGRAM_ELEMENT_TARGET_OBJECT_ID, TARGET_DIAGRAM_ELEMENT_TARGET_OBJECT);
     }

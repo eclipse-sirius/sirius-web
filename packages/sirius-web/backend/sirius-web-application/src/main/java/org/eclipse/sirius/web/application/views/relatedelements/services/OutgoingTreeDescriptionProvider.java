@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,14 +28,15 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.sirius.components.core.CoreImageConstants;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.TreeComponent;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.relatedelements.services.api.IOutgoingTreeDescriptionProvider;
@@ -81,7 +82,7 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
     public TreeDescription getTreeDescription() {
         return TreeDescription.newTreeDescription(WIDGET_ID)
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
@@ -103,7 +104,7 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private String getNodeId(VariableManager variableManager) {
         String result = null;
-        var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
+        var self = variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         if (self instanceof EReference eReference) {
             result = "reference/" + eReference.getName();
         } else if (self != null) {
@@ -114,11 +115,11 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private String getNodeLabel(VariableManager variableManager) {
         String result = null;
-        var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
+        var self = variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         if (self instanceof EReference eReference) {
             result = this.labelService.getStyledLabel(eReference).toString();
-            var optionalRootEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+            var optionalRootEObject = variableManager.get(RepresentationVariables.SELF.name(), EObject.class);
+            var optionalAdapterFactory = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class)
                     .map(IEMFEditingContext::getDomain)
                     .map(AdapterFactoryEditingDomain::getAdapterFactory);
             if (optionalRootEObject.isPresent() && optionalAdapterFactory.isPresent()) {
@@ -146,7 +147,7 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private List<String> getNodeImageURL(VariableManager variableManager) {
         List<String> result = List.of(CoreImageConstants.DEFAULT_SVG);
-        var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
+        var self = variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         if (self instanceof EReference) {
             result = List.of(OUTGOING_REFERENCE_ICON_URL);
         } else if (self != null) {
@@ -157,7 +158,7 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
 
     private String getNodeKind(VariableManager variableManager) {
         String result = null;
-        var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
+        var self = variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         if (self instanceof EReference) {
             result = OUTGOING_REFERENCE_KIND;
         } else if (self != null) {
@@ -167,12 +168,12 @@ public class OutgoingTreeDescriptionProvider implements IOutgoingTreeDescription
     }
 
     private boolean isNodeSelectable(VariableManager variableManager) {
-        var self = variableManager.get(VariableManager.SELF, Object.class).orElse(null);
+        var self = variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         return self instanceof EObject && !(self instanceof EReference);
     }
 
     private List<?> getOutgoingChildren(VariableManager variableManager) {
-        var self = variableManager.get(VariableManager.SELF, Object.class);
+        var self = variableManager.get(RepresentationVariables.SELF.name(), Object.class);
         var root = variableManager.get(TreeComponent.ROOT_VARIABLE, EObject.class);
         var ancestors = variableManager.get(TreeComponent.ANCESTORS_VARIABLE, List.class);
         if (root.isPresent() && self.isPresent() && ancestors.isPresent()) {

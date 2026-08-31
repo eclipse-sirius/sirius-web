@@ -16,7 +16,9 @@ import java.util.Objects;
 
 import org.eclipse.sirius.components.collaborative.trees.api.ITreeItemTooltipProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -65,12 +67,12 @@ public class ViewTreeItemTooltipProvider implements ITreeItemTooltipProvider {
             AQLInterpreter interpreter = this.viewAQLInterpreterFactory.createInterpreter(editingContext, (View) viewTreeDescription.eContainer());
 
             VariableManager variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(TreeDescription.TREE, tree);
             variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
             variableManager.put(TreeDescription.ID, treeItem.getId());
             Object semanticTreeItemObject = treeDescription.getTreeItemObjectProvider().apply(variableManager);
-            variableManager.put(VariableManager.SELF, semanticTreeItemObject);
+            variableManager.put(RepresentationVariables.SELF.name(), semanticTreeItemObject);
 
             result = interpreter.evaluateExpression(variableManager.getVariables(), viewTreeDescription.getTreeItemTooltipExpression())
                     .asString()

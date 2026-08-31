@@ -34,10 +34,12 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.domain.Domain;
 import org.eclipse.sirius.components.domain.Entity;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
@@ -98,7 +100,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
                 .treeItemLabelProvider(this::getLabel)
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.identityService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.identityService::getId).orElse(null))
                 .treeItemIconURLsProvider(this::getImageURL)
                 .editableProvider(variableManager -> false)
                 .deletableProvider(variableManager -> false)
@@ -116,12 +118,12 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
     }
 
     private boolean canCreate(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         return self instanceof Domain;
     }
 
     private String getTreeItemId(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
 
         String id = null;
         if (self instanceof RepresentationMetadata representationMetadata) {
@@ -136,7 +138,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     private String getKind(VariableManager variableManager) {
         String kind = "";
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof RepresentationMetadata representationMetadata) {
             kind = representationMetadata.getKind();
         } else if (self instanceof Setting) {
@@ -148,7 +150,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
     }
 
     private StyledString getLabel(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
 
         String label = "";
         if (self instanceof RepresentationMetadata representationMetadata) {
@@ -166,7 +168,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
     }
 
     private List<String> getImageURL(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
 
         List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
         if (self instanceof EObject) {
@@ -188,7 +190,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     private List<Object> getElements(VariableManager variableManager) {
         List<Object> elements = new ArrayList<>();
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof Domain domain) {
             elements.add(domain);
         }
@@ -196,12 +198,12 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
     }
 
     private boolean hasChildren(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
 
         boolean hasChildren = false;
         if (self instanceof EObject eObject) {
             hasChildren = !eObject.eContents().isEmpty();
-            var optionalSemanticDataId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+            var optionalSemanticDataId = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                     .map(IEditingContext::getId)
                     .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId));
 
@@ -225,7 +227,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     public List<Object> getChildren(VariableManager variableManager) {
         List<Object> children = new ArrayList<>();
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self != null) {
             children = this.getDefaultChildren(variableManager);
         }
@@ -234,7 +236,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
 
     private List<Object> getDefaultChildren(VariableManager variableManager) {
         List<Object> result = new ArrayList<>();
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         List<String> expandedIds = new ArrayList<>();
         Object objects = variableManager.getVariables().get(TreeRenderer.EXPANDED);
         if (objects instanceof List<?> list) {
@@ -246,7 +248,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
         String id = this.getTreeItemId(variableManager);
         if (expandedIds.contains(id)) {
             if (self instanceof EObject) {
-                var optionalSemanticDataId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                var optionalSemanticDataId = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                         .map(IEditingContext::getId)
                         .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId));
                 if (optionalSemanticDataId.isPresent()) {
@@ -273,7 +275,7 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
     private Object getTreeItemObject(VariableManager variableManager) {
         Object result = null;
         var optionalTreeItemId = variableManager.get(TreeDescription.ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
 
         if (optionalEditingContext.isPresent() && optionalTreeItemId.isPresent()) {
             var treeItemId = optionalTreeItemId.get();
@@ -300,9 +302,9 @@ public class DomainTreeRepresentationDescriptionProvider implements IEditingCont
     }
 
     private Object getParentObject(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         var optionalTreeItemId = variableManager.get(TreeDescription.ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         Object result = null;
 
         if (self instanceof RepresentationMetadata && optionalTreeItemId.isPresent() && optionalEditingContext.isPresent()) {

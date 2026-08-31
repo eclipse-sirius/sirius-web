@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.CompletionProposal;
 import org.eclipse.sirius.components.forms.CompletionRequest;
@@ -64,7 +64,7 @@ public class DomainTypeTextfieldCustomizer implements ITextfieldCustomizer {
             int cursorPosition = variableManager.get(CompletionRequest.CURSOR_POSITION, Integer.class).orElse(0);
 
             List<String> choices = List.of();
-            var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
+            var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class);
             if (optionalEditingContext.isPresent()) {
                 ResourceSet resourceSet = optionalEditingContext.get().getDomain().getResourceSet();
                 List<EPackage> ePackages = this.getEPackagesFromRegistry(resourceSet.getPackageRegistry());

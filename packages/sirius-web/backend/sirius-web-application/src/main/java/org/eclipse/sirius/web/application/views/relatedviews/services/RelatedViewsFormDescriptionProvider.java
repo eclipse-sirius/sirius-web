@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.core.CoreImageConstants;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.forms.TreeNode;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.components.ListComponent;
@@ -49,6 +50,7 @@ import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.portals.Portal;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.UUIDParser;
@@ -102,7 +104,7 @@ public class RelatedViewsFormDescriptionProvider implements IRepresentationsDesc
 
     @Override
     public FormDescription getRepresentationsDescription() {
-        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.labelService::getStyledLabel)
                 .map(Object::toString)
                 .orElse(this.messageService.relatedViewsLabel());
@@ -131,7 +133,7 @@ public class RelatedViewsFormDescriptionProvider implements IRepresentationsDesc
         return PageDescription.newPageDescription("representationPageId")
                 .idProvider(variableManager -> PAGE_LABEL)
                 .labelProvider(variableManager -> PAGE_LABEL)
-                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
+                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(RepresentationVariables.SELF.name())))
                 .groupDescriptions(List.of(this.getGroupDescription()))
                 .canCreatePredicate(variableManager -> true)
                 .build();
@@ -161,7 +163,7 @@ public class RelatedViewsFormDescriptionProvider implements IRepresentationsDesc
         IfDescription ifSemanticElementDescription = IfDescription.newIfDescription("ifSemanticElement")
                 .targetObjectIdProvider(this::getTargetObjectId)
                 .predicate(variableManager -> {
-                    var optionalSelf = variableManager.get(VariableManager.SELF, Object.class);
+                    var optionalSelf = variableManager.get(RepresentationVariables.SELF.name(), Object.class);
                     if (optionalSelf.isEmpty() || optionalSelf.get() instanceof RepresentationMetadata) {
                         return false;
                     } else {
@@ -195,7 +197,7 @@ public class RelatedViewsFormDescriptionProvider implements IRepresentationsDesc
 
         IfDescription ifPortalDescription = IfDescription.newIfDescription("ifPortal")
                 .targetObjectIdProvider(this::getTargetObjectId)
-                .predicate(variableManager -> variableManager.get(VariableManager.SELF, RepresentationMetadata.class).map(RepresentationMetadata::getKind).filter(Portal.KIND::equals).isPresent())
+                .predicate(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class).map(RepresentationMetadata::getKind).filter(Portal.KIND::equals).isPresent())
                 .controlDescriptions(List.of(treeDescription))
                 .build();
         controlDescriptions.add(ifPortalDescription);
@@ -203,20 +205,20 @@ public class RelatedViewsFormDescriptionProvider implements IRepresentationsDesc
         return GroupDescription.newGroupDescription("relatedViewsGroupId")
                 .idProvider(variableManager -> GROUP_LABEL)
                 .labelProvider(variableManager -> GROUP_LABEL)
-                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
+                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(RepresentationVariables.SELF.name())))
                 .controlDescriptions(controlDescriptions)
                 .build();
     }
 
     private String getTargetObjectId(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
     }
 
     private List<?> getItems(VariableManager variableManager) {
-        Object object = variableManager.getVariables().get(VariableManager.SELF);
-        var optionalSemanticDataId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+        Object object = variableManager.getVariables().get(RepresentationVariables.SELF.name());
+        var optionalSemanticDataId = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                 .map(IEditingContext::getId)
                 .flatMap(semanticDataId -> new UUIDParser().parse(semanticDataId));
 
@@ -271,7 +273,7 @@ public class RelatedViewsFormDescriptionProvider implements IRepresentationsDesc
     }
 
     private IStatus deleteItem(VariableManager variableManager) {
-        var optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+        var optionalEditingContextId = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                 .map(IEditingContext::getId);
         var optionalRepresentationId = variableManager.get(ListComponent.CANDIDATE_VARIABLE, RepresentationMetadata.class)
                 .map(RepresentationMetadata::getRepresentationMetadataId)
@@ -307,10 +309,10 @@ public class RelatedViewsFormDescriptionProvider implements IRepresentationsDesc
 
     private List<?> getChildren(VariableManager variableManager) {
         List<RepresentationMetadata> items = List.of();
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         if (optionalEditingContext.isPresent()) {
             IEditingContext editingContext = optionalEditingContext.get();
-            var optionalObject = variableManager.get(VariableManager.SELF, Object.class);
+            var optionalObject = variableManager.get(RepresentationVariables.SELF.name(), Object.class);
             if (optionalObject.isPresent()) {
                 var object = optionalObject.get();
                 String id = this.identityService.getId(object);
@@ -349,26 +351,26 @@ public class RelatedViewsFormDescriptionProvider implements IRepresentationsDesc
     }
 
     private String getNodeId(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class)
                 .map(RepresentationMetadata::getRepresentationMetadataId)
                 .map(UUID::toString)
                 .orElse(null);
     }
 
     private String getNodeLabel(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class)
                 .map(RepresentationMetadata::getLabel)
                 .orElse(null);
     }
 
     private String getNodeKind(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, RepresentationMetadata.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class)
                 .map(RepresentationMetadata::getKind)
                 .orElse(null);
     }
 
     private List<String> getNodeIconURL(VariableManager variableManager) {
-        var optionalRepresentationMetadata = variableManager.get(VariableManager.SELF, RepresentationMetadata.class);
+        var optionalRepresentationMetadata = variableManager.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class);
         if (optionalRepresentationMetadata.isPresent()) {
             RepresentationMetadata representationMetadata = optionalRepresentationMetadata.get();
 
