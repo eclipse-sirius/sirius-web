@@ -29,11 +29,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.CompletionProposal;
 import org.eclipse.sirius.components.forms.CompletionRequest;
 import org.eclipse.sirius.components.forms.TextareaStyle;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.ViewPackage;
@@ -93,8 +95,10 @@ public class AQLTextfieldCustomizer implements ITextfieldCustomizer {
                 return List.of(new CompletionProposal("AQL prefix", AQL_PREFIX, cursorPosition));
             }
 
-            List<EPackage> visibleEPackages = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(this::getAccessibleEPackages).orElse(List.of());
-            View view = variableManager.get(VariableManager.SELF, EObject.class).map(self -> {
+            List<EPackage> visibleEPackages = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
+                    .map(this::getAccessibleEPackages)
+                    .orElse(List.of());
+            View view = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).map(self -> {
                 EObject current = self;
                 while (current != null) {
                     if (current instanceof View) {

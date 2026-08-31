@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,10 +25,12 @@ import org.eclipse.sirius.components.core.api.Environment;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.IDiagramElement;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.Action;
@@ -149,11 +151,11 @@ public class ViewActionHandler implements IActionHandler {
 
     private VariableManager populateVariableManager(IEditingContext editingContext, DiagramContext diagramContext, Node node, Object self) {
         var variableManager = new VariableManager();
-        variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(RepresentationVariables.SELF.name(), self);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
         variableManager.put(IDiagramService.DIAGRAM_SERVICES, new DiagramService(diagramContext));
-        variableManager.put(VariableManager.SELF, self);
+        variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
         variableManager.put(Node.SELECTED_NODE, node);
         return variableManager;
     }

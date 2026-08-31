@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwo
 import org.eclipse.sirius.components.collaborative.diagrams.dto.SingleClickOnTwoDiagramElementsTool;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IURLParser;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Edge;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
@@ -40,6 +41,7 @@ import org.eclipse.sirius.components.palette.dto.ITool;
 import org.eclipse.sirius.components.palette.dto.Palette;
 import org.eclipse.sirius.components.palette.dto.PaletteDivider;
 import org.eclipse.sirius.components.palette.dto.ToolSection;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.View;
 import org.eclipse.sirius.components.view.diagram.EdgeTool;
@@ -95,8 +97,8 @@ public class ViewConnectorPaletteProvider implements IConnectorPaletteProvider {
     public Palette handle(IEditingContext editingContext, DiagramContext diagramContext, DiagramDescription diagramDescription, Object sourceDiagramElement, Object targetDiagramElement, Object sourceElementDescription, Object targetElementDescription) {
         Palette palette = null;
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, targetDiagramElement);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(RepresentationVariables.SELF.name(), targetDiagramElement);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variableManager.put(DiagramContext.DIAGRAM_CONTEXT, diagramContext);
 
         var optionalDiagramDescription = this.viewDiagramDescriptionSearchService.findById(editingContext, diagramDescription.getId());

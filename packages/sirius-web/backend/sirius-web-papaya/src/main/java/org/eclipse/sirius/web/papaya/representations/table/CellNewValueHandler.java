@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
@@ -52,8 +54,8 @@ public class CellNewValueHandler implements BiFunction<VariableManager, Object, 
     @Override
     public IStatus apply(VariableManager variableManager, Object newValue) {
         IStatus status = new Failure("");
-        var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEObject = variableManager.get(RepresentationVariables.SELF.name(), EObject.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalFeatureName = variableManager.get(ColumnDescription.COLUMN_TARGET_OBJECT_ID, String.class)
                 .flatMap(this::toFeatureName);
 

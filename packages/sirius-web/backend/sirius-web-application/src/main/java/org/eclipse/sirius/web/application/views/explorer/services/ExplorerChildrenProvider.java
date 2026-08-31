@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerChildrenProvider;
@@ -46,7 +48,7 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
     @Override
     public boolean hasChildren(VariableManager variableManager) {
         Object self = this.getSelf(variableManager);
-        Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        Optional<IEditingContext> optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         return this.explorerServices.hasChildren(self, optionalEditingContext.orElse(null), this.getExistingRepresentations(variableManager));
     }
 
@@ -77,13 +79,13 @@ public class ExplorerChildrenProvider implements IExplorerChildrenProvider {
                     .map(String.class::cast)
                     .toList();
         }
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         Object self = this.getSelf(variableManager);
         return this.explorerServices.getDefaultChildren(self, optionalEditingContext.orElse(null), expandedIds, this.getExistingRepresentations(variableManager));
     }
 
     private Object getSelf(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class).orElse(null);
+        return variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
     }
 
     private List<RepresentationMetadata> getExistingRepresentations(VariableManager variableManager) {

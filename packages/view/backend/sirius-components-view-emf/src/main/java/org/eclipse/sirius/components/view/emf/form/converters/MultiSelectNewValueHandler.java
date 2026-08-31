@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import java.util.function.BiFunction;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -63,7 +64,7 @@ public class MultiSelectNewValueHandler implements BiFunction<VariableManager, L
     @Override
     public IStatus apply(VariableManager variableManager, List<String> newValue) {
         IStatus status = this.buildFailureWithFeedbackMessages("An error occurred while handling the new selected values.");
-        Optional<IEditingContext> optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        Optional<IEditingContext> optionalEditingDomain = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         if (optionalEditingDomain.isPresent()) {
             IEditingContext editingContext = optionalEditingDomain.get();
 
