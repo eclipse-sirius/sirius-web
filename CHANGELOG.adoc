@@ -14,7 +14,17 @@
 
 === Deprecation warning
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [core] Improve the consitency of the variables used.
+For that, the available variables will be found in dedicated variables classes such as:
+* `org.eclipse.sirius.components.representations.RepresentationVariables`
+* `org.eclipse.sirius.components.core.api.variables.CoreVariables`
+These variable declarations allow us to easily find all the available variables instead of having to look at various types scattered all accross the codebase.
+On top of that, they are now being used for the generation of the documentation of the View DSL builders and are used to validate the execution of some behavior at runtime.
+We have thus starting to deprecate the existing variable constants which will be replaced by the new ones in the dedicated variables classes.
+At the moment, we have only deprecated `VariableManager.SELF` which has been replaced by `RepresentationVariables.SELF.name()` and `IEditingContext.EDITING_CONTEXT` which has been replaced by `CoreVariables.EDITING_CONTEXT.name()`.
+We will not remove existing variable constants such as `VariableManager.SELF` and `IEditingContext.EDITING_CONTEXT` soon, but we will start using these new locations for the variables in our own codebase.
+When we will be satisfied with the use of these new variable declarations, we will change their annotation from `@Deprecated(since = "...")` to `@Deprecated(since = "...", forRemoval = true)` and warn downstream consumers in the CHANGELOG and release notes of that version that they should migrate to the new variable declarations.
+Then, we will remove the existing variable declarations in a future release.
 
 
 === Breaking changes
@@ -36,7 +46,6 @@ Programmatic DSLs that relied on these factories must define the tools they expo
 - https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Contributed views should now use the new `ViewAccordion` component.
 cf Papaya view and Related Element view to see how.
 `ViewAccordion` gives its content a definite height, so the content of a view must not scroll the view itself: it has to declare its own `overflow` on the element which is expected to scroll.
-
 
 
 === Dependency update
@@ -62,8 +71,11 @@ A new provisional method `IValidationEventProcessor#update` is available to upda
 - https://github.com/eclipse-sirius/sirius-web/issues/6868[#6868] [core] Add a new module named `sirius-web-core-domain` to extract the core reusable parts of `sirius-web-domain`.
 The classes `Module`, `Window`, `Failure`, `IResult`, `Success`, and `AbstractValidatingAggregateRoot` has been moved to this new module.
 - https://github.com/eclipse-sirius/sirius-web/issues/6844[#6844] [view] Expose available variables in the Javadoc of generated View DSL builders.
-
 - https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] Papaya view and Related Element view are now collapsible.
+- https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [core] Improve the consistency of the variables used.
+For that, some calls to `VariableManager.SELF` have thus been replaced by `RepresentationVariables.SELF.name()` and calls to `IEditingContext.EDITING_CONTEXT` have been replaced by `CoreVariables.EDITING_CONTEXT.name()`.
+- https://github.com/eclipse-sirius/sirius-web/issues/6887[#6887] [deck] Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
+
 
 
 == 2026.9.0

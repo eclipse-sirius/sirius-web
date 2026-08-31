@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Element;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.validation.Validation;
@@ -51,7 +52,7 @@ public class ValidationCreationService implements IValidationCreationService {
         long start = System.currentTimeMillis();
 
         var variableManager = new VariableManager();
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
 
         var optionalPreviousValidation = Optional.ofNullable(validationContext).map(ValidationContext::validation);
         var validationComponentProps = new ValidationComponentProps(variableManager, validationDescription, optionalPreviousValidation);

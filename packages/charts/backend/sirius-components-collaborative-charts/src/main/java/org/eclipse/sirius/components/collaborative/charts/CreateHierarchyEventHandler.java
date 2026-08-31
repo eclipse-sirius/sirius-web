@@ -35,6 +35,7 @@ import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -110,7 +111,7 @@ public class CreateHierarchyEventHandler implements IEditingContextEventHandler 
                 HierarchyDescription representationDescription = optionalHierarchyDescription.get();
 
                 var variableManager = new VariableManager();
-                variableManager.put(VariableManager.SELF, object);
+                variableManager.put(RepresentationVariables.SELF.name(), object);
                 variableManager.put(HierarchyDescription.LABEL, createRepresentationInput.representationName());
                 String label = representationDescription.getLabelProvider().apply(variableManager);
                 List<String> iconURLs = representationDescription.getIconURLsProvider().apply(variableManager);

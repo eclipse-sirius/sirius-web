@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2019, 2025 Obeo.
+ * Copyright (c) 2019, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -35,13 +35,14 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
-import org.eclipse.sirius.components.core.api.variables.CommonVariables;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
 import org.eclipse.sirius.components.diagrams.description.DiagramDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IOperationValidator;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
@@ -129,9 +130,9 @@ public class DropOnDiagramEventHandler implements IDiagramEventHandler {
 
             for (Object self : objects) {
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(CommonVariables.SELF.name(), self);
-                variableManager.put(CommonVariables.EDITING_CONTEXT.name(), editingContext);
-                variableManager.put(CommonVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
+                variableManager.put(RepresentationVariables.SELF.name(), self);
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
+                variableManager.put(CoreVariables.ENVIRONMENT.name(), new Environment(Environment.SIRIUS_COMPONENTS));
                 variableManager.put(DiagramVariables.DIAGRAM_CONTEXT.name(), diagramContext);
                 variableManager.put(DiagramVariables.DIAGRAM_SERVICES.name(), new DiagramService(diagramContext));
                 variableManager.put(DiagramVariables.SELECTED_NODE.name(), node.orElse(null));

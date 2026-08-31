@@ -33,7 +33,22 @@ Each downstream project using programmatic APIs and the old `DefaultToolsFactory
 
 == Improvements
 
+- [deck] Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
 
+
+== Deprecation warnings
+
+- Improve the consitency of the variables used.
+For that the available variables will be found in dedicated variables classes such as:
+* `org.eclipse.sirius.components.representations.RepresentationVariables`
+* `org.eclipse.sirius.components.core.api.variables.CoreVariables`
+These variable declarations allow us to easily find all the available variables instead of having to look at various types scattered all accross the codebase.
+On top of that, they are now being used for the generation of the documentation of the View DSL builders and are used to validate the execution of some behavior at runtime.
+We have thus starting to deprecate the existing variable constants which will be replaced by the new ones in the dedicated variables classes.
+At the moment, we have only deprecated `VariableManager.SELF` which has been replaced by `RepresentationVariables.SELF.name()` and `IEditingContext.EDITING_CONTEXT` which has been replaced by `CoreVariables.EDITING_CONTEXT.name()`.
+We will not remove existing variable constants such as `VariableManager.SELF` and `IEditingContext.EDITING_CONTEXT` soon, but we will start using these new locations for the variables in our own codebase.
+When we will be satisfied with the use of these new variable declarations, we will change their annotation from `@Deprecated(since = "...")` to `@Deprecated(since = "...", forRemoval = true)` and warn downstream consumers in the CHANGELOG and release notes of that version that they should migrate to the new variable declarations.
+Then, we will remove the existing variable declarations in a future release.
 
 
 == Technical details
