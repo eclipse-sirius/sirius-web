@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.FormDescription;
@@ -52,6 +53,7 @@ import org.eclipse.sirius.components.papaya.PapayaFactory;
 import org.eclipse.sirius.components.papaya.PapayaPackage;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.components.SelectCellComponent;
 import org.eclipse.sirius.components.tables.descriptions.ColumnDescription;
@@ -97,14 +99,14 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
         GroupDescription taskGroup = GroupDescription.newGroupDescription("iterationGroupId")
                 .idProvider(variableManager -> "iterationGroupId")
                 .labelProvider(variableManager -> "Iteration Group")
-                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
+                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(RepresentationVariables.SELF.name())))
                 .controlDescriptions(List.of(tableWidgetDescription))
                 .build();
 
         PageDescription pageDescription = PageDescription.newPageDescription("iterationPageId")
                 .idProvider(variableManager -> "iterationPageId")
                 .labelProvider(variableManager -> "Iteration Page")
-                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(VariableManager.SELF)))
+                .semanticElementsProvider(variableManager -> Collections.singletonList(variableManager.getVariables().get(RepresentationVariables.SELF.name())))
                 .groupDescriptions(List.of(taskGroup))
                 .canCreatePredicate(variableManager -> true)
                 .build();
@@ -122,7 +124,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
     }
 
     private TableWidgetDescription getTableWidgetDescription(IEditingContext editingContext) {
-        Function<VariableManager, PaginatedData> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Iteration.class)
+        Function<VariableManager, PaginatedData> semanticElementsProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Iteration.class)
                 .map(eObject -> {
                     List<Object> objects = new ArrayList<>();
                     objects.addAll(eObject.getTasks());
@@ -130,7 +132,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
                 })
                 .orElse(new PaginatedData(List.of(), false, false, 0));
 
-        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.labelService::getStyledLabel)
                 .map(Object::toString)
                 .orElse(null);
@@ -227,19 +229,19 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
     }
 
     private String getTargetObjectId(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
     }
 
     private String getTargetObjectKind(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getKind)
                 .orElse(null);
     }
 
     private boolean canCreate(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, EObject.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), EObject.class)
                 .filter(Iteration.class::isInstance)
                 .isPresent();
     }
@@ -247,7 +249,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
     private List<ColumnDescription> getColumnDescriptions(IEditingContext editingContext) {
         Map<EStructuralFeature, String> featureToDisplayName = this.getColumnsStructuralFeaturesDisplayName(editingContext, PapayaFactory.eINSTANCE.createTask(), PapayaPackage.eINSTANCE.getTask());
 
-        Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(VariableManager.SELF, EStructuralFeature.class)
+        Function<VariableManager, String> headerLabelProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), EStructuralFeature.class)
                 .map(featureToDisplayName::get)
                 .orElse("");
 
@@ -269,7 +271,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
     private BiFunction<VariableManager, Object, String> getCellStringValueProvider() {
         return (variableManager, columnTargetObject) -> {
             String value = "";
-            Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
+            Optional<EObject> optionalEObject = variableManager.get(RepresentationVariables.SELF.name(), EObject.class);
             if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
                 EObject eObject = optionalEObject.get();
                 Object objectValue = eObject.eGet(eStructuralFeature);
@@ -288,7 +290,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
     private BiFunction<VariableManager, Object, List<String>> getCellStringListValueProvider() {
         return (variableManager, columnTargetObject) -> {
             List<String> value = List.of();
-            Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
+            Optional<EObject> optionalEObject = variableManager.get(RepresentationVariables.SELF.name(), EObject.class);
             if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
                 EObject eObject = optionalEObject.get();
                 Object objectValue = eObject.eGet(eStructuralFeature);
@@ -307,7 +309,7 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
     private BiFunction<VariableManager, Object, Boolean> getCellBooleanValueProvider() {
         return (variableManager, columnTargetObject) -> {
             boolean value = false;
-            Optional<EObject> optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
+            Optional<EObject> optionalEObject = variableManager.get(RepresentationVariables.SELF.name(), EObject.class);
             if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature) {
                 EObject eObject = optionalEObject.get();
                 Object objectValue = eObject.eGet(eStructuralFeature);
@@ -337,8 +339,8 @@ public class FormWithTableDescriptionProvider implements IEditingContextRepresen
     private BiFunction<VariableManager, Object, List<Object>> getCellOptionsProvider() {
         return (variableManager, columnTargetObject) -> {
             List<Object> options = new ArrayList<>();
-            var optionalEObject = variableManager.get(VariableManager.SELF, EObject.class);
-            var editingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
+            var optionalEObject = variableManager.get(RepresentationVariables.SELF.name(), EObject.class);
+            var editingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class);
 
             if (optionalEObject.isPresent() && columnTargetObject instanceof EStructuralFeature eStructuralFeature && editingContext.isPresent()) {
                 EObject eObject = optionalEObject.get();

@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
 import org.eclipse.sirius.web.application.views.explorer.services.api.IExplorerContentService;
@@ -45,7 +46,7 @@ public class ExplorerElementsProvider implements IExplorerElementsProvider {
     @Override
     public List<Object> getElements(VariableManager variableManager) {
         List<Object> elements = new ArrayList<>();
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         if (optionalEditingContext.isPresent()) {
             elements.addAll(this.getDefaultElements(variableManager));
             List<String> activeFilterIds = this.getActiveFilterIds(variableManager);
@@ -62,7 +63,7 @@ public class ExplorerElementsProvider implements IExplorerElementsProvider {
     }
 
     private List<Object> getDefaultElements(VariableManager variableManager) {
-        Optional<IEditingContext> optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        Optional<IEditingContext> optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         if (optionalEditingContext.isPresent()) {
             var editingContext = optionalEditingContext.get();
             return this.explorerContentService.getContents(editingContext);

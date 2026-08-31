@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,11 +25,13 @@ import org.eclipse.sirius.components.collaborative.tables.api.IRowContextMenuEnt
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Line;
@@ -93,13 +95,13 @@ public class ViewRowContextMenuEntryExecutor implements IRowContextMenuEntryExec
                 AQLInterpreter interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, view);
 
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 variableManager.put(TableDescription.TABLE, table);
                 variableManager.put(LineDescription.SELECTED_ROW, row);
                 var optionalSemanticObject = this.objectSearchService.getObject(editingContext, row.getTargetObjectId());
                 if (optionalSemanticObject.isPresent()) {
                     var semanticObject = optionalSemanticObject.get();
-                    variableManager.put(VariableManager.SELF, semanticObject);
+                    variableManager.put(RepresentationVariables.SELF.name(), semanticObject);
                 }
                 var contextMenuEntry = viewTableDescription.getRowDescription().getContextMenuEntries().stream()
                         .filter(entry -> Objects.equals(rowMenuContextEntryId, UUID.nameUUIDFromBytes(EcoreUtil.getURI(entry).toString().getBytes()).toString()))

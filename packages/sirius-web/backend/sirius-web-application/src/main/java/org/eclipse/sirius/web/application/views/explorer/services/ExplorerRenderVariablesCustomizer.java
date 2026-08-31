@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IRepresentationRenderVariableCustomizer;
 import org.eclipse.sirius.components.representations.VariableManager;
@@ -47,7 +48,7 @@ public class ExplorerRenderVariablesCustomizer implements IRepresentationRenderV
     @Override
     public VariableManager customize(IRepresentationDescription representationDescription, VariableManager variableManager) {
         if (ExplorerDescriptionProvider.DESCRIPTION_ID.equals(representationDescription.getId())) {
-            var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+            var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
             if (optionalEditingContext.isPresent()) {
                 VariableManager customizedVariableManager = variableManager.createChild();
                 String editingContextId = optionalEditingContext.get().getId();

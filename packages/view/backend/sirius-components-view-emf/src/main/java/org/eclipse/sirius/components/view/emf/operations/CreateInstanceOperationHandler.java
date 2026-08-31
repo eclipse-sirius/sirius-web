@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,9 +22,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.edit.domain.EditingDomain;
-import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.CreateInstance;
 import org.eclipse.sirius.components.view.Operation;
@@ -55,8 +56,8 @@ public class CreateInstanceOperationHandler implements IOperationHandler {
 
     @Override
     public OperationEvaluationResult handle(AQLInterpreter interpreter, VariableManager variableManager, Operation operation) {
-        var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
-        var optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+        var optionalSelf = variableManager.get(RepresentationVariables.SELF.name(), EObject.class);
+        var optionalEditingDomain = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class)
                 .map(IEMFEditingContext::getDomain);
         if (operation instanceof CreateInstance createInstanceOperation && optionalSelf.isPresent() && optionalEditingDomain.isPresent()) {
             var self = optionalSelf.get();
