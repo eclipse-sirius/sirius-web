@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2025 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.events.ICause;
 import org.eclipse.sirius.components.formdescriptioneditors.FormDescriptionEditor;
 import org.eclipse.sirius.components.formdescriptioneditors.IWidgetPreviewConverterProvider;
@@ -35,6 +36,7 @@ import org.eclipse.sirius.components.formdescriptioneditors.description.FormDesc
 import org.eclipse.sirius.components.formdescriptioneditors.renderer.FormDescriptionEditorRenderer;
 import org.eclipse.sirius.components.forms.renderer.IWidgetDescriptor;
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -106,8 +108,8 @@ public class FormDescriptionEditorCreationService implements IFormDescriptionEdi
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, targetObject);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(RepresentationVariables.SELF.name(), targetObject);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
         variableManager.put(Environment.ENVIRONMENT, new Environment(Environment.SIRIUS_COMPONENTS));
 
         Optional<FormDescriptionEditor> optionalPreviousFormDescriptionEditor = optionalFormDescriptionEditorContext.map(IFormDescriptionEditorContext::getFormDescriptionEditor);

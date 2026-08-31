@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2022, 2024 Obeo.
+ * Copyright (c) 2022, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.sirius.components.charts.descriptions.IChartDescription;
 import org.eclipse.sirius.components.charts.piechart.PieChartDescription;
 import org.eclipse.sirius.components.charts.piechart.components.PieChartStyle;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorForDescription;
 import org.eclipse.sirius.components.formdescriptioneditors.description.FormDescriptionEditorIfDescription;
@@ -60,6 +61,7 @@ import org.eclipse.sirius.components.forms.description.SplitButtonDescription;
 import org.eclipse.sirius.components.forms.description.TextareaDescription;
 import org.eclipse.sirius.components.forms.description.TextfieldDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.form.BarChartDescriptionStyle;
@@ -106,7 +108,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseTreeDescription(org.eclipse.sirius.components.view.form.TreeDescription treeDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, treeDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), treeDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         return TreeDescription.newTreeDescription(id)
@@ -135,7 +137,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseTextfieldDescription(org.eclipse.sirius.components.view.form.TextfieldDescription viewTextfieldDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewTextfieldDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewTextfieldDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, TextfieldStyle> styleProvider = vm -> {
@@ -165,7 +167,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseCheckboxDescription(org.eclipse.sirius.components.view.form.CheckboxDescription viewCheckboxDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewCheckboxDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewCheckboxDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, CheckboxStyle> styleProvider = vm -> {
@@ -195,7 +197,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseSelectDescription(org.eclipse.sirius.components.view.form.SelectDescription viewSelectDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewSelectDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewSelectDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, SelectStyle> styleProvider = vm -> {
@@ -229,7 +231,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseTextAreaDescription(org.eclipse.sirius.components.view.form.TextAreaDescription viewTextareaDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewTextareaDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewTextareaDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, TextareaStyle> styleProvider = vm -> {
@@ -259,7 +261,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseMultiSelectDescription(org.eclipse.sirius.components.view.form.MultiSelectDescription viewMultiSelectDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewMultiSelectDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewMultiSelectDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, MultiSelectStyle> styleProvider = vm -> {
@@ -293,7 +295,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseRadioDescription(org.eclipse.sirius.components.view.form.RadioDescription viewRadioDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewRadioDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewRadioDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, RadioStyle> styleProvider = vm -> {
@@ -327,7 +329,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseFlexboxContainerDescription(org.eclipse.sirius.components.view.form.FlexboxContainerDescription viewFlexboxContainerDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewFlexboxContainerDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewFlexboxContainerDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         FlexDirection flexDirection = FlexDirection.valueOf(viewFlexboxContainerDescription.getFlexDirection().getName());
@@ -363,7 +365,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseButtonDescription(org.eclipse.sirius.components.view.form.ButtonDescription viewButtonDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewButtonDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewButtonDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, ButtonStyle> styleProvider = vm -> {
@@ -394,7 +396,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseSplitButtonDescription(org.eclipse.sirius.components.view.form.SplitButtonDescription splitButtonDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, splitButtonDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), splitButtonDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         List<ButtonDescription> actions = splitButtonDescription.getActions().stream()
@@ -421,7 +423,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseLabelDescription(org.eclipse.sirius.components.view.form.LabelDescription viewLabelDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewLabelDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewLabelDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, LabelWidgetStyle> styleProvider = vm -> {
@@ -450,7 +452,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseLinkDescription(org.eclipse.sirius.components.view.form.LinkDescription viewLinkDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewLinkDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewLinkDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, LinkStyle> styleProvider = vm -> {
@@ -479,7 +481,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseListDescription(org.eclipse.sirius.components.view.form.ListDescription viewListDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewListDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewListDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, ListStyle> styleProvider = vm -> {
@@ -515,7 +517,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseImageDescription(org.eclipse.sirius.components.view.form.ImageDescription viewImageDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewImageDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewImageDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         ImageDescription.Builder builder = ImageDescription.newImageDescription(UUID.randomUUID().toString())
@@ -535,7 +537,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseRichTextDescription(org.eclipse.sirius.components.view.form.RichTextDescription viewRichTextDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, viewRichTextDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), viewRichTextDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         RichTextDescription.Builder builder = RichTextDescription.newRichTextDescription(UUID.randomUUID().toString())
@@ -566,7 +568,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
         IChartDescription chartDescription = BarChartDescription.newBarChartDescription(UUID.randomUUID().toString())
                 .label(Optional.ofNullable(viewBarChartDescription.getName()).orElse(""))
                 .labelProvider(vm -> this.getWidgetLabel(viewBarChartDescription, "BarChart"))
-                .targetObjectIdProvider(vm -> vm.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
+                .targetObjectIdProvider(vm -> vm.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .keysProvider(vm -> List.of())
                 .valuesProvider(vm -> List.of())
                 .styleProvider(styleProvider)
@@ -590,7 +592,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
         IChartDescription chartDescription =  PieChartDescription.newPieChartDescription(UUID.randomUUID().toString())
                 .label(this.getWidgetLabel(viewPieChartDescription, "PieChart"))
-                .targetObjectIdProvider(vm -> vm.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
+                .targetObjectIdProvider(vm -> vm.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .keysProvider(vm -> List.of())
                 .valuesProvider(vm -> List.of())
                 .styleProvider(styleProvider)
@@ -601,7 +603,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
 
     private AbstractWidgetDescription createChartWidgetDescription(org.eclipse.sirius.components.view.form.WidgetDescription widgetDescription, IChartDescription chartDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, widgetDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), widgetDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         ChartWidgetDescription.Builder builder = ChartWidgetDescription.newChartWidgetDescription(chartDescription.getId())
@@ -621,7 +623,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseFormElementFor(FormElementFor formElementFor) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, formElementFor);
+        childVariableManager.put(RepresentationVariables.SELF.name(), formElementFor);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         List<AbstractControlDescription> children = new ArrayList<>();
@@ -653,7 +655,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseFormElementIf(FormElementIf formElementIf) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, formElementIf);
+        childVariableManager.put(RepresentationVariables.SELF.name(), formElementIf);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         List<AbstractControlDescription> children = new ArrayList<>();
@@ -686,7 +688,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseSliderDescription(SliderDescription sliderDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, sliderDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), sliderDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
         var builder =  org.eclipse.sirius.components.forms.description.SliderDescription.newSliderDescription(UUID.randomUUID().toString())
                 .idProvider(vm -> id)
@@ -708,7 +710,7 @@ public class ViewFormDescriptionEditorConverterSwitch extends FormSwitch<Abstrac
     @Override
     public AbstractWidgetDescription caseDateTimeDescription(DateTimeDescription dateTimeDescription) {
         VariableManager childVariableManager = this.variableManager.createChild();
-        childVariableManager.put(VariableManager.SELF, dateTimeDescription);
+        childVariableManager.put(RepresentationVariables.SELF.name(), dateTimeDescription);
         String id = this.formDescriptionEditorDescription.getTargetObjectIdProvider().apply(childVariableManager);
 
         Function<VariableManager, DateTimeStyle> styleProvider = vm -> {

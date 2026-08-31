@@ -23,7 +23,9 @@ import org.eclipse.sirius.components.charts.hierarchy.renderer.HierarchyRenderer
 import org.eclipse.sirius.components.collaborative.api.Monitoring;
 import org.eclipse.sirius.components.collaborative.charts.api.IHierarchyCreationService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Element;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.springframework.stereotype.Service;
 
@@ -51,8 +53,8 @@ public class HierarchyCreationService implements IHierarchyCreationService {
         long start = System.currentTimeMillis();
 
         VariableManager variableManager = new VariableManager();
-        variableManager.put(VariableManager.SELF, targetObject);
-        variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+        variableManager.put(RepresentationVariables.SELF.name(), targetObject);
+        variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
 
         Optional<Hierarchy> optionalPreviousHierarchy = Optional.ofNullable(hierarchyContext).map(HierarchyContext::hierarchy);
 
