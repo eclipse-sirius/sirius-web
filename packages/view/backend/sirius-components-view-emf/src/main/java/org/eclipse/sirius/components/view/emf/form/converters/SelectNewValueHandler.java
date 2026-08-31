@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import java.util.function.BiFunction;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -63,7 +64,7 @@ public class SelectNewValueHandler implements BiFunction<VariableManager, String
     public IStatus apply(VariableManager variableManager, String newValue) {
         Object newValueObject = null;
         if (newValue != null && !newValue.isBlank()) {
-            newValueObject = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+            newValueObject = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                     .flatMap(editingContext -> this.objectSearchService.getObject(editingContext, newValue))
                     .orElse(newValue);
         }

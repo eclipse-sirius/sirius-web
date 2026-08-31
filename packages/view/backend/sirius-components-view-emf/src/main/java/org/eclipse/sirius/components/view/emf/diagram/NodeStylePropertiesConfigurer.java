@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2021, 2025 Obeo.
+ * Copyright (c) 2021, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -33,6 +33,7 @@ import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertie
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.NodeType;
 import org.eclipse.sirius.components.emf.forms.EMFFormDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.EStructuralFeatureChoiceOfValueProvider;
@@ -45,6 +46,7 @@ import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ColorPalette;
@@ -149,7 +151,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .filter(ListLayoutStrategyDescription.class::isInstance)
                 .isPresent();
 
@@ -187,7 +189,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .filter(ImageNodeStyleDescription.class::isInstance)
                 .isPresent();
 
@@ -201,7 +203,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .filter(IconLabelNodeStyleDescription.class::isInstance)
                 .isPresent();
 
@@ -216,7 +218,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         GroupDescription groupDescription = this.propertiesWidgetCreationService.createSimpleGroupDescription(controls);
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .filter(RectangularNodeStyleDescription.class::isInstance)
                 .isPresent();
 
@@ -275,7 +277,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .idProvider(variableManager -> "nodestyle.borderstyle")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Border Line Style")
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, BorderStyle.class)
+                .valueProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), BorderStyle.class)
                         .map(BorderStyle::getBorderLineStyle)
                         .map(LineStyle::toString)
                         .orElse(""))
@@ -285,7 +287,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .optionIconURLProvider(variableManager -> variableManager.get(SelectComponent.CANDIDATE_VARIABLE, Object.class).map(this.labelService::getImagePaths)
                         .orElse(List.of()))
                 .newValueHandler((variableManager, newValue) -> {
-                    var optionalBorderStyle = variableManager.get(VariableManager.SELF, BorderStyle.class);
+                    var optionalBorderStyle = variableManager.get(RepresentationVariables.SELF.name(), BorderStyle.class);
                     if (optionalBorderStyle.isPresent()) {
                         if (newValue != null && LineStyle.get(newValue) != null) {
                             optionalBorderStyle.get().setBorderLineStyle(LineStyle.get(newValue));
@@ -304,7 +306,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
 
     private Stream<UserColor> getColorsFromColorPalettesStream(VariableManager variableManager) {
-        return variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+        return variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)
                 .map(IEMFEditingContext::getDomain)
@@ -328,9 +330,9 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .idProvider(variableManager -> "nodestyle.shapeSelector")
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Shape")
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(""))
+                .valueProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(""))
                 .optionsProvider(variableManager -> {
-                    Optional<String> optionalEditingContextId = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId);
+                    Optional<String> optionalEditingContextId = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).map(IEditingContext::getId);
 
                     List<CustomImageMetadata> customImages = optionalEditingContextId.map(this.customImageSearchService::getAvailableImages).orElse(List.of());
 
@@ -359,7 +361,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .idProvider(variableManager -> "nodestyle.shapePreview")
                 .labelProvider(variableManager -> "Shape Preview")
-                .urlProvider(variableManager -> variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(""))
+                .urlProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), ImageNodeStyleDescription.class).map(ImageNodeStyleDescription::getShape).orElse(""))
                 .maxWidthProvider(variableManager -> "300px")
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(this.propertiesConfigurerService.getKindProvider())
@@ -370,7 +372,7 @@ public class NodeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getNewShapeValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalNodeStyle = variableManager.get(VariableManager.SELF, ImageNodeStyleDescription.class);
+            var optionalNodeStyle = variableManager.get(RepresentationVariables.SELF.name(), ImageNodeStyleDescription.class);
             if (optionalNodeStyle.isPresent()) {
                 String newShape = newValue;
                 if (newValue != null && newValue.isBlank()) {

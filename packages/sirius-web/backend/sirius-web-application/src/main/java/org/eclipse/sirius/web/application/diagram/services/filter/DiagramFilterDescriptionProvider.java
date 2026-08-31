@@ -31,6 +31,7 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.IDiagramEventPro
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.CollapsingState;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.diagrams.Node;
@@ -45,6 +46,7 @@ import org.eclipse.sirius.components.forms.description.PageDescription;
 import org.eclipse.sirius.components.forms.description.SplitButtonDescription;
 import org.eclipse.sirius.components.forms.description.TreeDescription;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterActionContributionProvider;
@@ -104,20 +106,20 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     public FormDescription getFormDescription() {
         List<GroupDescription> groupDescriptions = List.of(this.getGroupDescription());
 
-        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> targetObjectIdProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.objectService::getId)
                 .orElse(null);
 
         return FormDescription.newFormDescription(FORM_DESCRIPTION_ID)
                 .label(FORM_TITLE)
                 .idProvider(new GetOrCreateRandomIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
                 .labelProvider(variableManager -> FORM_TITLE)
                 .targetObjectIdProvider(targetObjectIdProvider)
                 .canCreatePredicate(variableManager -> false)
                 .variableManagerInitializer(vm -> {
-                    String editingContextId = vm.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse("");
-                    Optional<RepresentationMetadata> optionalRepresentationMetadata = vm.get(VariableManager.SELF, RepresentationMetadata.class);
+                    String editingContextId = vm.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).map(IEditingContext::getId).orElse("");
+                    Optional<RepresentationMetadata> optionalRepresentationMetadata = vm.get(RepresentationVariables.SELF.name(), RepresentationMetadata.class);
                     String representationId = optionalRepresentationMetadata
                             .map(RepresentationMetadata::getRepresentationMetadataId)
                             .map(UUID::toString)
@@ -151,16 +153,16 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     }
 
     private PageDescription getPageDescription(List<GroupDescription> groupDescriptions) {
-        Function<VariableManager, String> idProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> idProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.objectService::getId)
                 .orElseGet(() -> UUID.randomUUID().toString());
 
-        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> labelProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.labelService::getStyledLabel)
                 .map(Object::toString)
                 .orElse("");
 
-        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList();
+        Function<VariableManager, List<?>> semanticElementsProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).stream().toList();
 
         return PageDescription.newPageDescription(PAGE_DESCRIPTION_ID)
                 .idProvider(idProvider)
@@ -181,14 +183,14 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
         return GroupDescription.newGroupDescription(GROUP_DESCRIPTION_ID)
                 .idProvider(variableManager -> FORM_TITLE)
                 .labelProvider(variableManager -> this.messageService.diagramFilterFormTitle())
-                .semanticElementsProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).stream().toList())
+                .semanticElementsProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).stream().toList())
                 .controlDescriptions(controlDescriptions)
                 .build();
     }
 
     private LabelDescription createTreeLabelDescription() {
         return LabelDescription.newLabelDescription("diagram-filter/tree-label")
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
                 .idProvider(new WidgetIdProvider())
                 .labelProvider(variableManager -> "")
                 .valueProvider(variableManager -> this.messageService.diagramFilterElementsOnDiagram())
@@ -201,7 +203,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
 
     private CheckboxDescription createTreeCheckboxDescription() {
         return CheckboxDescription.newCheckboxDescription("diagram-filter/tree-checkbox")
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
                 .idProvider(variableManager -> "TreeCheckBox")
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();
@@ -228,7 +230,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     private TreeDescription createTreeDescription() {
         return TreeDescription.newTreeDescription("diagram-filter/tree")
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
                 .diagnosticsProvider(variableManager -> List.of())
                 .kindProvider(variableManager -> "")
                 .messageProvider(variableManager -> "")
@@ -255,7 +257,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     private SplitButtonDescription createSplitButtonDescription() {
         return SplitButtonDescription.newSplitButtonDescription("diagram-filter/split-button")
                 .idProvider(variableManager -> "TreeSplitButton")
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
                 .labelProvider(variableManager -> {
                     int selectedElementCount = this.diagramFilterHelper.getSelectedElementIds(variableManager).size();
                     if (selectedElementCount <= 1) {
@@ -277,7 +279,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     }
 
     private String getNodeId(VariableManager vm) {
-        var self = vm.get(VariableManager.SELF, Object.class).orElse(null);
+        var self = vm.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         if (self instanceof Node node) {
             return node.getId();
         } else {
@@ -286,7 +288,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     }
 
     private String getNodeLabel(VariableManager vm) {
-        var self = vm.get(VariableManager.SELF, Object.class).orElse(null);
+        var self = vm.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         String result = "";
         if (self instanceof Node node) {
             if (node.getInsideLabel() != null) {
@@ -301,7 +303,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     }
 
     private List<Node> getNodeChildren(VariableManager vm) {
-        var self = vm.get(VariableManager.SELF, Object.class).orElse(null);
+        var self = vm.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
         List<Node> result = new ArrayList<>();
         if (self instanceof RepresentationMetadata) {
             var diagramEventProcessor = vm.get(DIAGRAM_EVENT_PROCESSOR, DiagramEventProcessor.class).orElse(null);
@@ -317,7 +319,7 @@ public class DiagramFilterDescriptionProvider implements IDiagramFilterDescripti
     }
 
     private List<List<String>> computeNodeEndIcons(VariableManager vm) {
-        var node = vm.get(VariableManager.SELF, Object.class)
+        var node = vm.get(RepresentationVariables.SELF.name(), Object.class)
                 .filter(Node.class::isInstance)
                 .map(Node.class::cast)
                 .orElse(null);

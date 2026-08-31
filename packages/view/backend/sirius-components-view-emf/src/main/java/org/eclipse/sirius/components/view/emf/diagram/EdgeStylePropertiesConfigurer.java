@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistry;
 import org.eclipse.sirius.components.collaborative.forms.services.api.IPropertiesDescriptionRegistryConfigurer;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.SelectStyle;
 import org.eclipse.sirius.components.forms.components.SelectComponent;
@@ -38,6 +39,7 @@ import org.eclipse.sirius.components.forms.description.GroupDescription;
 import org.eclipse.sirius.components.forms.description.SelectDescription;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.ColorPalette;
@@ -86,7 +88,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
         List<AbstractControlDescription> controls = new ArrayList<>(this.getGeneralControlDescription());
 
-        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Predicate<VariableManager> canCreatePagePredicate = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .filter(EdgeStyle.class::isInstance)
                 .isPresent();
 
@@ -203,7 +205,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
     }
 
     private Stream<UserColor> getColorsFromColorPalettesStream(VariableManager variableManager) {
-        return variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+        return variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                 .filter(IEMFEditingContext.class::isInstance)
                 .map(IEMFEditingContext.class::cast)
                 .map(IEMFEditingContext::getDomain)
@@ -227,7 +229,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Source Arrow Style")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getSourceArrowStyle)
+                .valueProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class).map(EdgeStyle::getSourceArrowStyle)
                         .map(ArrowStyle::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -249,7 +251,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getSourceArrowValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newArrowStyle = Integer.parseInt(newValue);
                 ArrowStyle arrowStyle = ArrowStyle.get(newArrowStyle);
@@ -268,7 +270,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Target Arrow Style")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getTargetArrowStyle)
+                .valueProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class).map(EdgeStyle::getTargetArrowStyle)
                         .map(ArrowStyle::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -290,7 +292,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getTargetArrowValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newArrowStyle = Integer.parseInt(newValue);
                 ArrowStyle arrowStyle = ArrowStyle.get(newArrowStyle);
@@ -309,7 +311,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Line Style")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getLineStyle)
+                .valueProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class).map(EdgeStyle::getLineStyle)
                         .map(LineStyle::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -331,7 +333,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getLineStyleValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newLineStyle = Integer.parseInt(newValue);
                 LineStyle lineStyle = LineStyle.get(newLineStyle);
@@ -350,8 +352,8 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Custom Icon")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getLabelIcon).orElse(EMPTY))
-                .optionsProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                .valueProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class).map(EdgeStyle::getLabelIcon).orElse(EMPTY))
+                .optionsProvider(variableManager -> variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                         .map(IEditingContext::getId)
                         .map(this.customImageSearchService::getAvailableImages)
                         .orElse(List.of())
@@ -375,7 +377,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getIconLabelValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class);
             if (optionalEdgeStyle.isPresent()) {
                 String newIcon = newValue;
                 if (newValue != null && newValue.isBlank()) {
@@ -394,7 +396,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Border Line Style")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getBorderLineStyle)
+                .valueProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class).map(EdgeStyle::getBorderLineStyle)
                         .map(LineStyle::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -416,7 +418,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getBorderLineStyleValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newLineStyle = Integer.parseInt(newValue);
                 LineStyle lineStyle = LineStyle.get(newLineStyle);
@@ -435,7 +437,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
                 .targetObjectIdProvider(this.propertiesConfigurerService.getSemanticTargetIdProvider())
                 .labelProvider(variableManager -> "Edge Type")
                 .styleProvider(vm -> SelectStyle.newSelectStyle().showIcon(true).build())
-                .valueProvider(variableManager -> variableManager.get(VariableManager.SELF, EdgeStyle.class).map(EdgeStyle::getEdgeType)
+                .valueProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class).map(EdgeStyle::getEdgeType)
                         .map(EdgeType::getValue)
                         .map(String::valueOf)
                         .orElse(EMPTY))
@@ -457,7 +459,7 @@ public class EdgeStylePropertiesConfigurer implements IPropertiesDescriptionRegi
 
     private BiFunction<VariableManager, String, IStatus> getEdgeTypeValueHandler() {
         return (variableManager, newValue) -> {
-            var optionalEdgeStyle = variableManager.get(VariableManager.SELF, EdgeStyle.class);
+            var optionalEdgeStyle = variableManager.get(RepresentationVariables.SELF.name(), EdgeStyle.class);
             if (optionalEdgeStyle.isPresent() && newValue != null && newValue.matches(INT_PATTERN)) {
                 int newEdgeType = Integer.parseInt(newValue);
                 EdgeType edgeType = EdgeType.get(newEdgeType);

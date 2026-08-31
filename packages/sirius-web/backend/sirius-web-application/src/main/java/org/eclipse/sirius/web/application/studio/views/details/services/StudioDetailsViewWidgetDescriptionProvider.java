@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -25,8 +25,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.forms.EStringIfDescriptionProvider;
 import org.eclipse.sirius.components.emf.forms.WidgetReadOnlyProvider;
 import org.eclipse.sirius.components.emf.forms.api.IEMFFormIfDescriptionProvider;
@@ -34,6 +34,7 @@ import org.eclipse.sirius.components.emf.forms.api.IPropertiesValidationProvider
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.forms.description.AbstractControlDescription;
 import org.eclipse.sirius.components.forms.description.ForDescription;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.ITextfieldCustomizer;
 import org.eclipse.sirius.web.application.studio.views.details.services.api.IStudioDetailsViewWidgetDescriptionProvider;
@@ -73,8 +74,8 @@ public class StudioDetailsViewWidgetDescriptionProvider implements IStudioDetail
         Function<VariableManager, List<?>> iterableProvider = variableManager -> {
             List<Object> objects = new ArrayList<>();
 
-            var self = variableManager.getVariables().get(VariableManager.SELF);
-            var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+            var self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
+            var optionalAdapterFactory = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class)
                     .map(IEMFEditingContext::getDomain)
                     .map(AdapterFactoryEditingDomain::getAdapterFactory);
 
@@ -95,7 +96,7 @@ public class StudioDetailsViewWidgetDescriptionProvider implements IStudioDetail
         };
         List<AbstractControlDescription> controlDescriptions = new ArrayList<>();
 
-        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(VariableManager.SELF, Object.class)
+        Function<VariableManager, String> semanticTargetIdProvider = variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
 

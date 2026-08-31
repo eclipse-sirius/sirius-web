@@ -21,6 +21,7 @@ import org.eclipse.sirius.components.core.api.IEditService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Success;
@@ -65,7 +66,7 @@ public class DeleteObjectTreeItemEventHandler implements IDeleteTreeItemHandler 
 
         if (optionalTreeDescription.isPresent()) {
             var variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(TreeDescription.ID, treeItem.getId());
 
             var object = optionalTreeDescription.get().getTreeItemObjectProvider().apply(variableManager);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -22,11 +22,13 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
 import org.eclipse.sirius.components.representations.Message;
 import org.eclipse.sirius.components.representations.MessageLevel;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.Success;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.Column;
@@ -95,12 +97,13 @@ public class ViewEditCellExecutor implements IViewEditCellExecutor {
             var self = optionalRowSemanticObject.get();
 
             VariableManager variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(RepresentationVariables.SELF.name(), self);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put("cell", cell);
             variableManager.put("row", row);
             variableManager.put("column", column);
             variableManager.put("newValue", newValue);
-            variableManager.put(VariableManager.SELF, self);
+
             return this.executeCellWidgetDescription(variableManager, interpreter, viewCellDescription.getCellWidgetDescription());
         }
         return this.buildFailureWithFeedbackMessages(this.viewEMFMessageService.tableCellEditError());

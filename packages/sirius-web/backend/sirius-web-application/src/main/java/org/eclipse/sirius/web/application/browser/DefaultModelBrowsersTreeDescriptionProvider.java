@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023, 2025 Obeo.
+ * Copyright (c) 2023, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -45,6 +45,7 @@ import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IURLParser;
 import org.eclipse.sirius.components.core.api.SemanticKindConstants;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.emf.services.JSONResourceFactory;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
@@ -53,6 +54,7 @@ import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.GetOrCreateRandomIdProvider;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.description.TreeDescription;
 import org.eclipse.sirius.components.trees.renderer.TreeRenderer;
@@ -134,7 +136,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
-                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+                .targetObjectIdProvider(variableManager -> variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                         .map(IEditingContext::getId)
                         .orElse(null))
                 .treeItemIconURLsProvider(this::getImageURL)
@@ -157,12 +159,12 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
     }
 
     private boolean isContainerSelectable(VariableManager variableManager, EClass referenceKind) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         boolean isSelectable = false;
         if (self instanceof Resource) {
             isSelectable = true;
         } else if (self instanceof EObject selfEObject && referenceKind != null) {
-            var optionalEditingDomain = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+            var optionalEditingDomain = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class)
                     .map(IEMFEditingContext::getDomain);
             if (optionalEditingDomain.isPresent()) {
                 Collection<?> newChildDescriptors = optionalEditingDomain.get().getNewChildDescriptors(selfEObject, null);
@@ -177,7 +179,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
     }
 
     private boolean isTypeSelectable(VariableManager variableManager, EClass targetType, boolean isContainment) {
-        var optionalSelf = variableManager.get(VariableManager.SELF, EObject.class);
+        var optionalSelf = variableManager.get(RepresentationVariables.SELF.name(), EObject.class);
         if (optionalSelf.isPresent() && targetType != null) {
             return targetType.isInstance(optionalSelf.get())
                     && this.resolveOwnerEObject(variableManager).map(eObject -> !(isContainment && EcoreUtil.isAncestor(optionalSelf.get(), eObject))).orElse(true);
@@ -188,7 +190,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private Optional<EObject> resolveOwnerEObject(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(ModelBrowserEventProcessorFactory.PREFIX) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String ownerId = parameters.get("ownerId").get(0);
@@ -203,7 +205,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private Optional<EClass> resolveReferenceEClass(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(ModelBrowserEventProcessorFactory.PREFIX) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
@@ -223,7 +225,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private Optional<EClass> resolveTargetType(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(ModelBrowserEventProcessorFactory.PREFIX) && optionalEditingContext.isPresent()) {
             Registry ePackageRegistry = optionalEditingContext.get().getDomain().getResourceSet().getPackageRegistry();
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
@@ -262,7 +264,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
     }
 
     private String getTreeItemId(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         String id = null;
         if (self instanceof Resource || self instanceof EObject) {
             id = this.identityService.getId(self);
@@ -272,7 +274,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private String getKind(VariableManager variableManager) {
         String kind;
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof Resource) {
             kind = DOCUMENT_KIND;
         } else {
@@ -282,7 +284,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
     }
 
     private StyledString getLabel(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         String label = "";
         if (self instanceof Resource resource) {
             label = this.getResourceLabel(resource);
@@ -317,7 +319,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
     }
 
     private List<String> getImageURL(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         List<String> imageURL = List.of(CoreImageConstants.DEFAULT_SVG);
         if (self instanceof EObject) {
             imageURL = this.labelService.getImagePaths(self);
@@ -329,7 +331,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private List<? extends Object> getSearchScopeElements(VariableManager variableManager) {
         var optionalTreeId = variableManager.get(GetOrCreateRandomIdProvider.PREVIOUS_REPRESENTATION_ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class);
         if (optionalTreeId.isPresent() && optionalTreeId.get().startsWith(ModelBrowserEventProcessorFactory.PREFIX) && optionalEditingContext.isPresent()) {
             Map<String, List<String>> parameters = this.urlParser.getParameterValues(optionalTreeId.get());
             String descriptionId = parameters.get("descriptionId").get(0);
@@ -348,7 +350,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
     }
 
     private List<? extends Object> getCreationScopeElements(VariableManager variableManager) {
-        var optionalResourceSet = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+        var optionalResourceSet = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class)
                 .map(IEMFEditingContext::getDomain)
                 .map(EditingDomain::getResourceSet);
 
@@ -363,7 +365,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
     }
 
     private boolean hasChildren(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         boolean hasChildren = false;
         if (self instanceof Resource resource) {
             hasChildren = !resource.getContents().isEmpty();
@@ -382,12 +384,12 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
             expandedIds = list.stream().filter(String.class::isInstance).map(String.class::cast).toList();
         }
 
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
 
         if (optionalEditingContext.isPresent()) {
             String id = this.getTreeItemId(variableManager);
             if (expandedIds.contains(id)) {
-                Object self = variableManager.getVariables().get(VariableManager.SELF);
+                Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
 
                 if (self instanceof Resource resource) {
                     result.addAll(resource.getContents());
@@ -410,7 +412,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private Object getTreeItemObject(VariableManager variableManager) {
         Object result = null;
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalId = variableManager.get(TreeDescription.ID, String.class);
         if (optionalId.isPresent() && optionalEditingContext.isPresent()) {
             var optionalObject = this.objectSearchService.getObject(optionalEditingContext.get(), optionalId.get());
@@ -439,7 +441,7 @@ public class DefaultModelBrowsersTreeDescriptionProvider implements IEditingCont
 
     private Object getParentObject(VariableManager variableManager) {
         Object result = null;
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         if (self instanceof EObject eObject) {
             Object semanticContainer = eObject.eContainer();
             if (semanticContainer == null) {
