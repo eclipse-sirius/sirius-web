@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.sirius.components.collaborative.api.ChangeKind;
 import org.eclipse.sirius.components.collaborative.trees.api.IRenameTreeItemHandler;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IRepresentationDescriptionSearchService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.ResourceMetadataAdapter;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IStatus;
@@ -59,7 +60,7 @@ public class RenameDocumentTreeItemHandler implements IRenameTreeItemHandler {
 
         if (optionalTreeDescription.isPresent()) {
             var variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(TreeDescription.ID, treeItem.getId());
 
             var object = optionalTreeDescription.get().getTreeItemObjectProvider().apply(variableManager);

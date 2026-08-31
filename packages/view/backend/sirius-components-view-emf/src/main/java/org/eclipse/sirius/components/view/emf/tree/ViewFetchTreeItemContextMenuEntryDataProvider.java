@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.sirius.components.collaborative.trees.api.IFetchTreeItemContextMenuEntryDataProvider;
 import org.eclipse.sirius.components.collaborative.trees.dto.FetchTreeItemContextMenuEntryData;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.FetchTreeItemContextMenuEntryKind;
 import org.eclipse.sirius.components.trees.Tree;
@@ -73,12 +75,12 @@ public class ViewFetchTreeItemContextMenuEntryDataProvider implements IFetchTree
             AQLInterpreter interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, (View) viewTreeDescription.eContainer());
 
             VariableManager variableManager = new VariableManager();
-            variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+            variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
             variableManager.put(org.eclipse.sirius.components.trees.description.TreeDescription.TREE, tree);
             variableManager.put(TreeItem.SELECTED_TREE_ITEM, treeItem);
             variableManager.put(org.eclipse.sirius.components.trees.description.TreeDescription.ID, treeItem.getId());
             var semanticTreeItemObject = treeDescription.getTreeItemObjectProvider().apply(variableManager);
-            variableManager.put(VariableManager.SELF, semanticTreeItemObject);
+            variableManager.put(RepresentationVariables.SELF.name(), semanticTreeItemObject);
 
             var fetchEntry = viewTreeDescription.getContextMenuEntries().stream()
                     .filter(FetchTreeItemContextMenuEntry.class::isInstance)

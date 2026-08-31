@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.sirius.components.core.api.IDefaultIdentityService;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.IDAdapter;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,7 @@ public class DefaultIdentityService implements IDefaultIdentityService {
         if (object instanceof EObject eObject) {
             kind = this.emfKindService.getKind(eObject.eClass());
         } else if (object instanceof IEditingContext) {
-            return "siriusComponents://" + IEditingContext.EDITING_CONTEXT;
+            return "siriusComponents://" + CoreVariables.EDITING_CONTEXT.name();
         }
         return kind;
     }

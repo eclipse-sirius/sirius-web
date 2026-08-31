@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,16 +28,17 @@ import org.eclipse.emf.edit.domain.AdapterFactoryEditingDomain;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
-import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.IReadOnlyObjectPredicate;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.emf.services.api.IEMFEditingContext;
 import org.eclipse.sirius.components.emf.services.api.IEMFKindService;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.StringValueProvider;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.view.emf.widget.reference.api.IReferenceWidgetPropertiesConverter;
 import org.eclipse.sirius.components.view.widget.reference.ReferenceWidgetDescription;
@@ -145,7 +146,7 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
     private List<?> getReferenceOptions(AQLInterpreter interpreter, ReferenceWidgetDescription referenceDescription, VariableManager variableManager) {
         EObject owner = this.getReferenceOwner(interpreter, variableManager, referenceDescription.getReferenceOwnerExpression());
         String referenceName = new StringValueProvider(interpreter, Optional.ofNullable(referenceDescription.getReferenceNameExpression()).orElse("")).apply(variableManager);
-        var optionalAdapterFactory = variableManager.get(IEditingContext.EDITING_CONTEXT, IEMFEditingContext.class)
+        var optionalAdapterFactory = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEMFEditingContext.class)
                 .map(IEMFEditingContext::getDomain)
                 .map(AdapterFactoryEditingDomain::getAdapterFactory);
 
@@ -171,7 +172,7 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
 
     private EObject getReferenceOwner(AQLInterpreter interpreter, VariableManager variableManager, String referenceOwnerExpression) {
         String safeValueExpression = Optional.ofNullable(referenceOwnerExpression).orElse("");
-        EObject referenceOwner = variableManager.get(VariableManager.SELF, EObject.class).orElse(null);
+        EObject referenceOwner = variableManager.get(RepresentationVariables.SELF.name(), EObject.class).orElse(null);
         if (!safeValueExpression.isBlank()) {
             Result result = interpreter.evaluateExpression(variableManager.getVariables(), safeValueExpression);
             referenceOwner = result.asObject()
@@ -207,7 +208,7 @@ public class ReferenceWidgetPropertiesConverter implements IReferenceWidgetPrope
     }
 
     private String getOwnerKind(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, EObject.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), EObject.class)
                 .map(self -> this.emfKindService.getKind(self.eClass()))
                 .orElse("");
     }

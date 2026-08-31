@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.sirius.components.collaborative.validation.api.IValidationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IValidationService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.validation.description.ValidationDescription;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
         return ValidationDescription.newValidationDescription(DESCRIPTION_ID)
                 .label(LABEL)
                 .canCreatePredicate(variableManager -> false)
-                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .diagnosticsProvider(this::getDiagnosticsProvider)
                 .kindProvider(this::kindProvider)
                 .messageProvider(this::messageProvider)
@@ -57,7 +58,7 @@ public class ValidationDescriptionProvider implements IValidationDescriptionProv
     }
 
     private List<Object> getDiagnosticsProvider(VariableManager variableManager) {
-        return variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+        return variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                 .map(editingContext -> this.validationServices.stream()
                         .map(validationService -> validationService.validate(editingContext))
                         .flatMap(Collection::stream)

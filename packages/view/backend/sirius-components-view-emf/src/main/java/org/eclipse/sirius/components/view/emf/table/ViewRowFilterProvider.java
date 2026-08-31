@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 CEA LIST.
+ * Copyright (c) 2025, 2026 CEA LIST.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import java.util.Objects;
 import org.eclipse.sirius.components.collaborative.tables.api.IRowFilterProvider;
 import org.eclipse.sirius.components.collaborative.tables.api.RowFilter;
 import org.eclipse.sirius.components.core.api.IEditingContext;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.interpreter.AQLInterpreter;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.tables.descriptions.TableDescription;
@@ -70,7 +71,7 @@ public class ViewRowFilterProvider implements IRowFilterProvider {
             if (viewTableDescription.eContainer() instanceof View view) {
                 AQLInterpreter interpreter = this.aqlInterpreterFactory.createInterpreter(editingContext, view);
                 VariableManager variableManager = new VariableManager();
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 variableManager.put("descriptionId", tableDescription.getId());
                 variableManager.put("representationId", representationId);
                 result = viewTableDescription.getRowFilters().stream()

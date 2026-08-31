@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -23,9 +23,11 @@ import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescriptionProvider;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -89,7 +91,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
                 .treeItemIdProvider(this::getTreeItemId)
                 .kindProvider(this::getKind)
                 .labelProvider(this::getLabel)
-                .targetObjectIdProvider(variableManager -> variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).map(IEditingContext::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).map(IEditingContext::getId).orElse(null))
                 .parentObjectProvider(this::getParentObject)
                 .treeItemIconURLsProvider(this::getImageURL)
                 .editableProvider(this::isEditable)
@@ -133,42 +135,42 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     }
 
     private String getTreeItemId(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         return this.explorerServices.getTreeItemId(self);
     }
 
     private String getKind(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         return this.explorerServices.getKind(self);
     }
 
     private StyledString getLabel(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         return this.labelService.getStyledLabel(self);
     }
 
     private boolean isEditable(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         return this.explorerLabelService.isEditable(self);
     }
 
     private boolean isDeletable(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         return this.explorerServices.isDeletable(self);
     }
 
     private boolean isSelectable(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         return this.explorerServices.isSelectable(self);
     }
 
     private List<String> getImageURL(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         return this.labelService.getImagePaths(self);
     }
 
     private IStatus getDeleteHandler(VariableManager variableManager) {
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
 
@@ -189,7 +191,7 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
     }
 
     private IStatus getRenameHandler(VariableManager variableManager, String newLabel) {
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
 
@@ -211,14 +213,14 @@ public class ExplorerDescriptionProvider implements IEditingContextRepresentatio
 
     private Object getTreeItemObject(VariableManager variableManager) {
         var optionalTreeItemId = variableManager.get(TreeDescription.ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         return this.explorerServices.getTreeItemObject(optionalTreeItemId.orElse(null), optionalEditingContext.orElse(null));
     }
 
     private Object getParentObject(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         var optionalTreeItemId = variableManager.get(TreeDescription.ID, String.class);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         return this.explorerServices.getParent(self, optionalTreeItemId.orElse(null), optionalEditingContext.orElse(null));
     }
 

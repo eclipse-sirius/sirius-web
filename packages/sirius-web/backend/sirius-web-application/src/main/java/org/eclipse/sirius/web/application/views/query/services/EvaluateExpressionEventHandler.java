@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2025 Obeo.
+ * Copyright (c) 2025, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -28,8 +28,10 @@ import org.eclipse.sirius.components.core.api.IFeedbackMessageService;
 import org.eclipse.sirius.components.core.api.IInput;
 import org.eclipse.sirius.components.core.api.IObjectSearchService;
 import org.eclipse.sirius.components.core.api.IPayload;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.interpreter.Result;
 import org.eclipse.sirius.components.interpreter.Status;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.web.application.views.query.dto.BooleanExpressionResult;
 import org.eclipse.sirius.web.application.views.query.dto.EvaluateExpressionInput;
@@ -106,8 +108,8 @@ public class EvaluateExpressionEventHandler implements IEditingContextEventHandl
                         .orElse(null);
 
                 var variableManager = new VariableManager();
-                variableManager.put(IEditingContext.EDITING_CONTEXT, editingContext);
-                variableManager.put(VariableManager.SELF, self);
+                variableManager.put(RepresentationVariables.SELF.name(), self);
+                variableManager.put(CoreVariables.EDITING_CONTEXT.name(), editingContext);
                 variableManager.put("selection", selection);
                 var evaluationResult = interpreter.evaluateExpression(variableManager.getVariables(), evaluateExpressionInput.expression());
 

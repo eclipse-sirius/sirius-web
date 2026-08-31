@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2024, 2025 Obeo.
+ * Copyright (c) 2024, 2026 Obeo.
  * This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v2.0
  * which accompanies this distribution, and is available at
@@ -20,11 +20,12 @@ import org.eclipse.sirius.components.collaborative.diagrams.api.DiagramImageCons
 import org.eclipse.sirius.components.collaborative.diagrams.dto.PinDiagramElementInput;
 import org.eclipse.sirius.components.core.api.IEditingContext;
 import org.eclipse.sirius.components.core.api.IObjectService;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.diagrams.Diagram;
 import org.eclipse.sirius.components.forms.ButtonStyle;
 import org.eclipse.sirius.components.forms.WidgetIdProvider;
 import org.eclipse.sirius.components.forms.description.ButtonDescription;
-import org.eclipse.sirius.components.representations.VariableManager;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterActionContributionProvider;
 import org.eclipse.sirius.web.application.diagram.services.filter.api.IDiagramFilterHelper;
 import org.eclipse.sirius.web.domain.services.api.IMessageService;
@@ -55,7 +56,7 @@ public class PinButtonDescriptionProvider implements IDiagramFilterActionContrib
     public ButtonDescription getButtonDescription() {
         return ButtonDescription.newButtonDescription("diagram-filter/split-button/pin")
                 .idProvider(new WidgetIdProvider())
-                .targetObjectIdProvider(variableManager -> variableManager.get(VariableManager.SELF, Object.class).map(this.objectService::getId).orElse(null))
+                .targetObjectIdProvider(variableManager -> variableManager.get(RepresentationVariables.SELF.name(), Object.class).map(this.objectService::getId).orElse(null))
                 .labelProvider(variableManager -> this.messageService.diagramFilterPinElements())
                 .iconURLProvider(variableManager -> List.of())
                 .isReadOnlyProvider(variableManager -> false)
@@ -64,7 +65,7 @@ public class PinButtonDescriptionProvider implements IDiagramFilterActionContrib
                 .pushButtonHandler(variableManager -> {
                     var diagram = variableManager.get(DiagramFilterDescriptionProvider.DIAGRAM, Diagram.class).get();
                     var nodeIds = this.diagramFilterHelper.getSelectedElementIds(variableManager);
-                    var editingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class).get();
+                    var editingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class).get();
                     return this.diagramFilterHelper.sendDiagramEvent(variableManager, new PinDiagramElementInput(UUID.randomUUID(), editingContext.getId(), diagram.getId(), nodeIds, true));
                 })
                 .diagnosticsProvider(variableManager -> List.of())

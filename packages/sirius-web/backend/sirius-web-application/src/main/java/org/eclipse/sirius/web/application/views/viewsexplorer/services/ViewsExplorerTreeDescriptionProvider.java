@@ -25,9 +25,11 @@ import org.eclipse.sirius.components.core.api.IEditingContextRepresentationDescr
 import org.eclipse.sirius.components.core.api.IIdentityService;
 import org.eclipse.sirius.components.core.api.ILabelService;
 import org.eclipse.sirius.components.core.api.labels.StyledString;
+import org.eclipse.sirius.components.core.api.variables.CoreVariables;
 import org.eclipse.sirius.components.representations.Failure;
 import org.eclipse.sirius.components.representations.IRepresentationDescription;
 import org.eclipse.sirius.components.representations.IStatus;
+import org.eclipse.sirius.components.representations.RepresentationVariables;
 import org.eclipse.sirius.components.representations.VariableManager;
 import org.eclipse.sirius.components.trees.Tree;
 import org.eclipse.sirius.components.trees.TreeItem;
@@ -120,7 +122,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
     }
 
     private String getTreeItemId(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         String result;
         if (self instanceof RepresentationKind kind) {
             result = kind.id();
@@ -133,7 +135,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
     }
 
     private String getKind(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         var result = "";
         if (self instanceof RepresentationKind) {
             result = "siriusWeb://representationKind";
@@ -146,21 +148,21 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
     }
 
     private StyledString getLabel(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         return optionalEditingContext
             .map(editingContext -> this.viewsExplorerLabelService.getLabel(editingContext, self))
             .orElse(StyledString.of(""));
     }
 
     private String getTargetObjectId(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class)
+        return variableManager.get(RepresentationVariables.SELF.name(), Object.class)
                 .map(this.identityService::getId)
                 .orElse(null);
     }
 
     private List<String> getImageURL(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
         List<String> result = null;
         if (self instanceof RepresentationKind representationKind) {
             result = this.getRepresentationImageURL(representationKind.id());
@@ -186,7 +188,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
     }
 
     private IStatus getDeleteHandler(VariableManager variableManager) {
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
 
@@ -197,7 +199,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
     }
 
     private IStatus getRenameHandler(VariableManager variableManager, String newLabel) {
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         var optionalTreeItem = variableManager.get(TreeItem.SELECTED_TREE_ITEM, TreeItem.class);
         var optionalTree = variableManager.get(TreeDescription.TREE, Tree.class);
 
@@ -215,7 +217,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
         }
 
         String treeItemId = optionalTreeItemId.get();
-        List<RepresentationKind> representationKinds = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+        List<RepresentationKind> representationKinds = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                 .map(this.viewsElementsProvider::getContents)
                 .orElse(List.of());
 
@@ -248,14 +250,14 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
     }
 
     private Object getParentObject(VariableManager variableManager) {
-        Object self = variableManager.getVariables().get(VariableManager.SELF);
+        Object self = variableManager.getVariables().get(RepresentationVariables.SELF.name());
 
         if (self instanceof RepresentationKind) {
             return null;
         }
 
         String selfId = this.identityService.getId(self);
-        List<RepresentationKind> representationKinds = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class)
+        List<RepresentationKind> representationKinds = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class)
                 .map(this.viewsElementsProvider::getContents)
                 .orElse(List.of());
 
@@ -289,7 +291,7 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
 
     private boolean isEditable(VariableManager variableManager) {
         Object self = this.getSelf(variableManager);
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         return optionalEditingContext.isEmpty() || this.viewsExplorerLabelService.isEditable(optionalEditingContext.get(), self);
     }
 
@@ -327,11 +329,11 @@ public class ViewsExplorerTreeDescriptionProvider implements IEditingContextRepr
     }
 
     private Object getSelf(VariableManager variableManager) {
-        return variableManager.get(VariableManager.SELF, Object.class).orElse(null);
+        return variableManager.get(RepresentationVariables.SELF.name(), Object.class).orElse(null);
     }
 
     private List<?> getElements(VariableManager variableManager) {
-        var optionalEditingContext = variableManager.get(IEditingContext.EDITING_CONTEXT, IEditingContext.class);
+        var optionalEditingContext = variableManager.get(CoreVariables.EDITING_CONTEXT.name(), IEditingContext.class);
         return optionalEditingContext.map(this.viewsElementsProvider::getContents).orElse(List.of());
     }
 }
