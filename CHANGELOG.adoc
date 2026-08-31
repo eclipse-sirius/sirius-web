@@ -52,7 +52,7 @@ cf Papaya view and Related Element view to see how.
 
 === New Features
 
-
+- https://github.com/eclipse-sirius/sirius-web/issues/6810[#6810] [diagram] Add a new toolbar menu button to manage the select or unselect diagram elements
 
 
 === Improvements

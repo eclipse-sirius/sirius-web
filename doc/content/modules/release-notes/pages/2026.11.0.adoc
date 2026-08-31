@@ -28,7 +28,7 @@ Each downstream project using programmatic APIs and the old `DefaultToolsFactory
 
 == New features
 
-
+* Add a new menu button in the diagram panel to manage the current selection, you can for example select all nodes or unselect child nodes.
 
 
 == Improvements
