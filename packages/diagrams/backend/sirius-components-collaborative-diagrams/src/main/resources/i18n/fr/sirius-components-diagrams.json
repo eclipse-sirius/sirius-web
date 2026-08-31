@@ -27,6 +27,9 @@
     "expand": "Étendre la barre d'outils",
     "collapse": "Plier la barre d'outils"
   },
+  "filterSelectionToolbarButton": {
+    "filterSelectedElement": "Manage selection"
+  },
   "exportImageButton": {
     "exportDiagram": "Exporter le diagramme en image",
     "experimentalFeature": "Expérimental"

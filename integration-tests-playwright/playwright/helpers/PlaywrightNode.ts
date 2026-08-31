@@ -157,6 +157,13 @@ export class PlaywrightNode {
     await this.nodeLocator.click({ trial: true });
   }
 
+  async isSelected() {
+    await expect(this.nodeLocator).toHaveClass(/\bselected\b/);
+  }
+  async isNotSelected() {
+    await expect(this.nodeLocator).not.toHaveClass(/\bselected\b/);
+  }
+
   async isLastOneSelected() {
     await expect(await this.nodeLocator.locator('.react-flow__resize-control.nodrag.top.left.handle')).toHaveCSS(
       'background-color',

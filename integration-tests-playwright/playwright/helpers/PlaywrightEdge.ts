@@ -33,6 +33,10 @@ export class PlaywrightEdge {
     await expect(this.edgeLocator).toHaveClass(/selected/);
   }
 
+  async isNotSelected() {
+    await expect(this.edgeLocator).not.toHaveClass(/selected/);
+  }
+
   async getEdgePath() {
     return await this.edgeLocator.locator('path').first().getAttribute('d');
   }
