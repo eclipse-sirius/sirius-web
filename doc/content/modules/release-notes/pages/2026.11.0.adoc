@@ -33,7 +33,8 @@ Defining this color may be required.
 
 == Improvements
 
-- [deck] Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
+- Specifiers customizing the creation, deletion, edition and drop of cards will now be able to leverage the `editingContext` variable.
+- Update the backend documentation and add a first schema of the lifecycle of the backend with the creation of a project.
 
 == Deprecation warnings
 
