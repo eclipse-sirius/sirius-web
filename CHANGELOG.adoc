@@ -97,6 +97,8 @@ For that, some calls to `VariableManager.SELF` have thus been replaced by `Repre
 - https://github.com/eclipse-sirius/sirius-web/issues/6740[#6740] [sirius-web] Add support for required libraries in templates.
 Templates can now define required libraries (specifying their namespace, name, and version).
 These libraries are selected by default in the project creation's library table, and cannot be unselected.
+- [releng] Run end-to-end tests on master and only on relevant pull requests.
+The `ci: run e2e` label can be added to a pull request to force end-to-end test execution.
 
 
 == 2026.9.0
