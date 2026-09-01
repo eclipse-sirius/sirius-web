@@ -52,6 +52,9 @@ Using the `ViewAccordion` will merge the title bar and the toolbar (if any) of t
 - https://github.com/eclipse-sirius/sirius-web/issues/5928[#5928] [workbench] The workbench header bar (merge of the title + toolbar) now has a grayish background.
 This color can be changed with through the theme palette `view.background`.
 Defining this color may be required.
+- [cleanup] Rename test profile to e2e.
+`sirius-web/backend/sirius-web/docker-compose.yml` now activates the `e2e` profile instead of the `test` profile.
+Existing services requiring the `test` profile have been updated.
 
 
 === Dependency update
