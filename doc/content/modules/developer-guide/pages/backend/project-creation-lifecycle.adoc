@@ -1,0 +1,63 @@
+= Project-creation lifecycle
+
+This page describes the causality chain started by the creation of a new project.
+It covers the standard GraphQL and REST project creation input, the creation of the project, and identifies the work performed after the initial project transaction is committed.
+
+== Initial transaction
+
+The GraphQL `createProject` mutation is handled by `MutationCreateProjectDataFetcher`, which first checks the `PROJECT:CREATE` capability and converts the raw JSON payload into the input.
+On the other hand, the REST endpoint constructs the `CreateProjectInput` directly.
+In both cases, the controllers will then call the application service to perform the creation of the project.
+
+The input is both the command data and the root of the causality chain.
+It provides the following information to the application service:
+
+* `id`: the correlation identifier supplied by `IInput`
+* `name`: the name of the project to create
+* `templateId`: used to select an available `ProjectTemplate` to configure the newly created project
+* `libraryIds`: used to specify the semantic data dependencies.
+
+The application service `ProjectCreationApplicationService` opens the initial transaction, resolves the template, and delegates the creation of the project itself to the domain service `IProjectCreationService`.
+The service `ProjectCreationService` creates and saves the `Project` aggregate root.
+The builder of the aggregate root registers a `ProjectCreatedEvent` to emit when the transaction is committed, whose `causedBy` value is the original input.
+If the template is missing or the sanitized name is invalid, the application service returns an `ErrorPayload`; no aggregate is saved and no lifecycle event is emitted.
+
+
+== Lifecycle diagram
+
+Every `@TransactionalEventListener` below uses Spring's default `AFTER_COMMIT`.
+The listeners that mutate data use `REQUIRES_NEW`, so each successful listener operation commits before it publishes the next event; no specific ordering is defined between listeners of the same event.
+
+image::project-creation-lifecycle.svg[Project creation lifecycle]
+
+
+== Aggregate roots and emitted events
+
+The standard path manipulates these aggregate roots in order:
+
+* `Project`: `ProjectCreatedEvent`.
+* `SemanticData`: `SemanticDataCreatedEvent`; `SemanticDataUpdatedEvent` when an initializer persists documents or imported libraries add at least one new dependency.
+* `ProjectSemanticData`: `ProjectSemanticDataCreatedEvent`, linking the project to its main semantic data.
+
+For the studio template, the `StudioRepresentationInitializer` additionally creates `RepresentationMetadata` and `RepresentationContent` aggregates through their persistence services, registering `RepresentationMetadataCreatedEvent` and `RepresentationContentCreatedEvent`.
+
+
+== Transactional listeners in scope
+
+The following `@TransactionalEventListener` services can receive events from this path:
+
+* `SemanticDataCreator` listens unconditionally to `ProjectCreatedEvent` and starts the semantic-data branch.
+* `ProjectSemanticDataCreator` listens to the resulting `SemanticDataCreatedEvent` when it was caused by `ProjectCreatedEvent`.
+* `ProjectSemanticDataInitializer` listens to the resulting `ProjectSemanticDataCreatedEvent` when its complete cause chain ends in `ICreateProjectInput`; it selects the template-specific `ISemanticDataInitializer`.
+* `ProjectLibrariesImporter` listens to the same `SemanticDataCreatedEvent`; for an `ICreateProjectInput`, it resolves `libraryIds` and updates the `SemanticData` aggregate only when there are new dependencies.
+* `StudioRepresentationInitializer` listens to `SemanticDataUpdatedEvent` caused by `StudioTemplateInitialization`; that cause is produced only by the studio template initializer.
+
+Other listeners with compatible event parameter types intentionally do not participate in this application service path because their cause guards require a different initiating input.
+For example, `ProjectContentImporter` requires `InitializeProjectInput` (project upload), while the fork and studio-library listeners require their own specialized commands.
+
+
+== Extension points
+
+Downstream applications can contribute `IProjectTemplateProvider` implementations to expose templates and `ISemanticDataInitializer` implementations to populate their newly created semantic data.
+The initializer receives the `ProjectSemanticDataCreatedEvent` as its cause, preserving the full chain back to the original `ICreateProjectInput`.
+It should use the editing context persistence service so that changes flow back through the `SemanticData` aggregate and emit `SemanticDataUpdatedEvent`.

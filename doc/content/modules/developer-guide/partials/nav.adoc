@@ -2,9 +2,11 @@
 //
 // A navigation file contains one or more AsciiDoc lists.
 // Each navigation file must be declared in the component descriptor if you want it to be displayed in the component’s navigation menu.
-* xref:developer-guide:architecture.adoc[]
-* xref:developer-guide:backend.adoc[]
-* xref:developer-guide:capabilities.adoc[]
+* Backend
+** xref:developer-guide:backend/architecture.adoc[]
+** xref:developer-guide:backend/technical-stack.adoc[]
+** xref:developer-guide:backend/project-creation-lifecycle.adoc[]
+** xref:developer-guide:capabilities.adoc[]
 * xref:developer-guide:testing.adoc[]
 * xref:developer-guide:workstation.adoc[]
 * xref:developer-guide:interoperability.adoc[]
